@@ -366,6 +366,9 @@ export default {
             }],
             echartslineoption: {
                 tooltip: {},
+                legend: {
+                    data: ['远程盖章', '智能用印', '普通用印']
+                },
                 toolbox: {
                     show: true,
                     feature: {
@@ -518,6 +521,9 @@ export default {
             },
             echartsbaroption: {
                 tooltip: {},
+                legend: {
+                    data: ['远程盖章', '智能用印', '普通用印']
+                },
                 toolbox: {
                     show: true,
                     feature: {

@@ -103,6 +103,9 @@ export default {
                 //         saveAsImage: {}
                 //     }
                 // },
+                legend: {
+                    data: ['智能用印', '普通用印']
+                },
                 xAxis: {
                     axisLabel: {
                         interval: 0,
@@ -268,7 +271,7 @@ export default {
                                         <li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center list-li">
                                                 <div class="ms-3 flex-grow-1 list-li-t">
-                                                    <div class="list-li-t-text">10月智能印章采购合同盖章</div>
+                                                    <div class="list-li-t-text">新刻财务章</div>
                                                     <div class="list-li-t-but">审批</div>
                                                 </div>
                                                 <div class="ms-3 flex-grow-1 list-li-t-b">
