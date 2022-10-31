@@ -327,7 +327,7 @@ export default {
           <!-- App Search-->
           <form class="app-search d-none d-md-block">
             <div class="position-relative">
-              <input type="text" class="form-control" placeholder="搜索..." autocomplete="off" id="search-options"
+              <input type="text" class="form-control" placeholder="请输入关键词" autocomplete="off" id="search-options"
                 value="" />
               <span class="mdi mdi-magnify search-widget-icon"></span>
               <span class="
@@ -546,8 +546,8 @@ export default {
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
               id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true"
               aria-expanded="false">
-              <!-- <i class='bx bx-shopping-bag fs-22'></i> -->
-              <iconpark-icon class="nav-bar-iconpark" name="youjian"></iconpark-icon>
+              <i class='bx bx-envelope fs-22'></i>
+              <!-- <iconpark-icon class="nav-bar-iconpark" name="youjian"></iconpark-icon> -->
               <span
                 class="position-absolute topbar-badge cartitem-badge fs-10 translate-middle badge rounded-pill bg-info">5</span>
             </button>
@@ -708,19 +708,20 @@ export default {
           <div class="ms-1 header-item d-none d-sm-flex">
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
               data-toggle="fullscreen" @click="initFullScreen">
-              <!-- <i class="bx bx-fullscreen fs-22"></i> -->
-              <iconpark-icon class="nav-bar-iconpark" name="bangzhu"></iconpark-icon>
+              <i class="bx bx-help-circle fs-22"></i>
+              <!-- <iconpark-icon class="nav-bar-iconpark" name="bangzhu"></iconpark-icon> -->
             </button>
           </div>
 
           <div class="ms-1 header-item d-none d-sm-flex">
             <button type="button" class=" btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode"
               @click="mhs_clk_homePage">
-              <!-- <i class="bx bx-moon fs-22"></i> -->
-              <iconpark-icon class="nav-bar-iconpark" name="xitongshezhi" v-if="state.CurrentSystemType == 'business'">
+              <i class="bx bx-sidebar fs-22" v-if="state.CurrentSystemType == 'business'"></i>
+              <i class="bx bx-home-alt fs-22" v-if="state.CurrentSystemType == 'system'"></i>
+              <!-- <iconpark-icon class="nav-bar-iconpark" name="xitongshezhi" v-if="state.CurrentSystemType == 'business'">
               </iconpark-icon>
               <iconpark-icon class="nav-bar-iconpark" name="shouye-744cj75e" v-if="state.CurrentSystemType == 'system'">
-              </iconpark-icon>
+              </iconpark-icon> -->
             </button>
           </div>
 
@@ -1024,8 +1025,8 @@ export default {
                 <img class="rounded-circle header-profile-user" src="@/assets/images/users/avatar-1.jpg"
                   alt="Header Avatar" />
                 <span class="text-start ms-xl-2">
-                  <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna Adame</span>
-                  <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Founder</span>
+                  <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">马丽丽</span>
+                  <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">137****4176</span>
                 </span>
               </span>
             </button>

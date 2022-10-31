@@ -11,7 +11,7 @@ import vClickOutside from "click-outside-vue3";
 import VueApexCharts from "vue3-apexcharts";
 import Maska from "maska";
 
-import VueFeather from "vue-feather";
+import VueFeather from "vue-feather"; 
 import Particles from "particles.vue3";
 
 import "@/assets/scss/config/minimal/app.scss";
