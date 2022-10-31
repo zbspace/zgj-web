@@ -1,5 +1,5 @@
 <script>
-localStorage.setItem("rightbar_isopen", true);
+localStorage.setItem("rightbar_isopen", false);
 import { layoutMethods, layoutComputed } from "@/state/helpers";
 import { SimpleBar } from "simplebar-vue3";
 /**
@@ -40,7 +40,7 @@ export default {
     }
   },
   mounted() {
-    let rightbar_isopen = localStorage.getItem('rightbar_isopen')
+    let rightbar_isopen = localStorage.getItem('rightbar_isopen');
     if (rightbar_isopen == 'true') {
       document.getElementById('mdi-cog').click()
       localStorage.setItem("rightbar_isopen", false);
