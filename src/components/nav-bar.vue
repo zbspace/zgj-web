@@ -327,7 +327,7 @@ export default {
           <!-- App Search-->
           <form class="app-search d-none d-md-block">
             <div class="position-relative">
-              <input type="text" class="form-control" placeholder="搜索..." autocomplete="off" id="search-options"
+              <input type="text" class="form-control" placeholder="请输入关键词" autocomplete="off" id="search-options"
                 value="" />
               <span class="mdi mdi-magnify search-widget-icon"></span>
               <span class="
@@ -1024,8 +1024,8 @@ export default {
                 <img class="rounded-circle header-profile-user" src="@/assets/images/users/avatar-1.jpg"
                   alt="Header Avatar" />
                 <span class="text-start ms-xl-2">
-                  <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna Adame</span>
-                  <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Founder</span>
+                  <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">马丽丽</span>
+                  <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">137****4176</span>
                 </span>
               </span>
             </button>

@@ -25,10 +25,11 @@ function getChartColorsArray(colors) {
 import {
     CountTo
 } from "vue3-count-to";
-
+import { VueEcharts } from "vue3-echarts";
 export default {
     components: {
         CountTo,
+        VueEcharts
     },
     setup() {
         return {
@@ -38,7 +39,7 @@ export default {
             },
             {
                 name: "普通用印",
-                color:"#00bd9d",
+                color: "#00bd9d",
                 data: [40, 120, 83, 45, 31, 74, 35, 34, 78, 35, 34, 78],
             },
             ],
@@ -87,6 +88,54 @@ export default {
                     colors: ["#0AB39C", "#F06548"],
                     type: "solid",
                 },
+            },
+            echartslineoption: {
+                tooltip: {},
+                // toolbox: {
+                //     show: true,
+                //     feature: {
+                //         dataZoom: {
+                //             yAxisIndex: 'none'
+                //         },
+                //         dataView: { readOnly: false },
+                //         magicType: { type: ['line', 'bar'] },
+                //         restore: {},
+                //         saveAsImage: {}
+                //     }
+                // },
+                xAxis: {
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 45,
+                    },
+                    data: [
+                        "2022-01",
+                        "2022-02",
+                        "2022-03",
+                        "2022-04",
+                        "2022-05",
+                        "2022-06",
+                        "2022-07",
+                        "2022-08",
+                        "2022-09",
+                        "2022-10",
+                        "2022-11",
+                        "2022-10",
+                    ],
+                },
+                yAxis: {},
+                series: [{
+                    name: "智能用印",
+                    type: "line",
+                    data: [10, 41, 35, 51, 49, 62, 69, 91, 148, 35, 34, 78],
+                },
+                {
+                    name: "普通用印",
+                    color: "#00bd9d",
+                    type: "line",
+                    data: [40, 120, 83, 45, 31, 74, 35, 34, 78, 35, 34, 78],
+                },
+                ],
             },
         };
     },
@@ -186,7 +235,7 @@ export default {
                                                 <div class="ms-3 flex-grow-1 list-li-t-b">
                                                     <div class="list-li-t-b-span list-li-t-b-but">用印申请</div>
                                                     <div class="list-li-t-b-span">王丹阳</div>
-                                                    <div class="list-li-t-b-span">2022-10-25 10：21</div>
+                                                    <div class="list-li-t-b-span">2022-10-25 10:21</div>
                                                 </div>
                                             </div>
                                         </li>
@@ -199,7 +248,7 @@ export default {
                                                 <div class="ms-3 flex-grow-1 list-li-t-b">
                                                     <div class="list-li-t-b-span list-li-t-b-but">用印申请</div>
                                                     <div class="list-li-t-b-span">王丹阳</div>
-                                                    <div class="list-li-t-b-span">2022-10-24 12：00</div>
+                                                    <div class="list-li-t-b-span">2022-10-24 12:00</div>
                                                 </div>
                                             </div>
                                         </li>
@@ -212,7 +261,7 @@ export default {
                                                 <div class="ms-3 flex-grow-1 list-li-t-b">
                                                     <div class="list-li-t-b-span list-li-t-b-but">刻章申请</div>
                                                     <div class="list-li-t-b-span">李峰</div>
-                                                    <div class="list-li-t-b-span">2022-10-24 10：30</div>
+                                                    <div class="list-li-t-b-span">2022-10-24 10:30</div>
                                                 </div>
                                             </div>
                                         </li>
@@ -225,7 +274,7 @@ export default {
                                                 <div class="ms-3 flex-grow-1 list-li-t-b">
                                                     <div class="list-li-t-b-span list-li-t-b-but">刻章申请</div>
                                                     <div class="list-li-t-b-span">汪洋</div>
-                                                    <div class="list-li-t-b-span">2022-10-22 16：19</div>
+                                                    <div class="list-li-t-b-span">2022-10-22 16:19</div>
                                                 </div>
                                             </div>
                                         </li>
@@ -241,25 +290,26 @@ export default {
                 <div class="col-xxl-4">
                     <div class="">
                         <div class="card-header border-0 align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1">Marketplace</h4>
+                            <h4 class="card-title mb-0 flex-grow-1">用印统计</h4>
                             <div>
                                 <button type="button" class="btn btn-soft-secondary btn-sm">
-                                    ALL
+                                    全部
                                 </button>
                                 <button type="button" class="btn btn-soft-secondary btn-sm">
-                                    1M
+                                    一个月
                                 </button>
                                 <button type="button" class="btn btn-soft-secondary btn-sm">
-                                    6M
+                                    六个月
                                 </button>
                                 <button type="button" class="btn btn-soft-primary btn-sm">
-                                    1Y
+                                    一年
                                 </button>
                             </div>
                         </div><!-- end card header -->
-                  
-                        <apexchart class="apex-charts" height="350" dir="ltr" :series="series" :options="chartOptions">
-                        </apexchart>
+
+                        <!-- <apexchart class="apex-charts" height="350" dir="ltr" :series="series" :options="chartOptions">
+                        </apexchart> -->
+                        <vue-echarts :option="echartslineoption" style="height: 350px" />
                     </div>
                 </div>
             </div>
