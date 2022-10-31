@@ -1893,7 +1893,7 @@ export default {
 
 <style lang='scss' scoped>
 .menu-iconpark {
-  font-size: 20px;
+  font-size: 26px;
   margin-right: 10px;
 }
 </style>
