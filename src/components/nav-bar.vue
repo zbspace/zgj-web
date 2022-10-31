@@ -546,8 +546,8 @@ export default {
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
               id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true"
               aria-expanded="false">
-              <!-- <i class='bx bx-shopping-bag fs-22'></i> -->
-              <iconpark-icon class="nav-bar-iconpark" name="youjian"></iconpark-icon>
+              <i class='bx bx-envelope fs-22'></i>
+              <!-- <iconpark-icon class="nav-bar-iconpark" name="youjian"></iconpark-icon> -->
               <span
                 class="position-absolute topbar-badge cartitem-badge fs-10 translate-middle badge rounded-pill bg-info">5</span>
             </button>
@@ -708,19 +708,20 @@ export default {
           <div class="ms-1 header-item d-none d-sm-flex">
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
               data-toggle="fullscreen" @click="initFullScreen">
-              <!-- <i class="bx bx-fullscreen fs-22"></i> -->
-              <iconpark-icon class="nav-bar-iconpark" name="bangzhu"></iconpark-icon>
+              <i class="bx bx-help-circle fs-22"></i>
+              <!-- <iconpark-icon class="nav-bar-iconpark" name="bangzhu"></iconpark-icon> -->
             </button>
           </div>
 
           <div class="ms-1 header-item d-none d-sm-flex">
             <button type="button" class=" btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode"
               @click="mhs_clk_homePage">
-              <!-- <i class="bx bx-moon fs-22"></i> -->
-              <iconpark-icon class="nav-bar-iconpark" name="xitongshezhi" v-if="state.CurrentSystemType == 'business'">
+              <i class="bx bx-sidebar fs-22" v-if="state.CurrentSystemType == 'business'"></i>
+              <i class="bx bx-home-alt fs-22" v-if="state.CurrentSystemType == 'system'"></i>
+              <!-- <iconpark-icon class="nav-bar-iconpark" name="xitongshezhi" v-if="state.CurrentSystemType == 'business'">
               </iconpark-icon>
               <iconpark-icon class="nav-bar-iconpark" name="shouye-744cj75e" v-if="state.CurrentSystemType == 'system'">
-              </iconpark-icon>
+              </iconpark-icon> -->
             </button>
           </div>
 
