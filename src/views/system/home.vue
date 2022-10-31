@@ -82,7 +82,7 @@
 </template>
 <script>
 import { VueEcharts } from "vue3-echarts";
-import Layout from "../../layouts/main.vue"; 
+import Layout from "../../layouts/main.vue";
 export default {
     name: "systemHome",
     data() {
