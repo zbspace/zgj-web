@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <div class="frontDeskHome">
+        <div class="frontDesk-home">
             <div class="row dash-nft">
                 <div class="col-xxl-12">
                     <div class="row">
@@ -338,7 +338,7 @@
 import { VueEcharts } from "vue3-echarts";
 import Layout from "../../layouts/main.vue";
 export default {
-    name: "frontDeskHome",
+    name: "frontDesk-home",
     data() {
         return {
             echartslineoption: {
@@ -407,7 +407,7 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.frontDeskHome {
+.frontDesk-home {
     .info {
         display: flex;
         justify-content: space-between;
