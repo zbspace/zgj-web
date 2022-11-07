@@ -259,7 +259,7 @@ export default {
       if (this.state.CurrentSystemType == "business") {
         this.mhs_clk_redirect("/system/Home")
       } else if (this.state.CurrentSystemType == "system") {
-        this.mhs_clk_redirect("/dashboard/nft")
+        this.mhs_clk_redirect("/frontDesk/home")
       }
     }
   },

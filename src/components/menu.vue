@@ -1394,7 +1394,7 @@ export default {
       <ul class="navbar-nav h-100" id="navbar-nav">
         <div v-if="state.CurrentSystemType == 'business'">
           <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/dashboard/nft">
+            <router-link class="nav-link menu-link" to="/frontDesk/home">
               <iconpark-icon class="menu-iconpark" name="shouye-73n5dhb1"></iconpark-icon>
               <!-- <iconpark-icon class="menu-iconpark" name="shouye"></iconpark-icon> -->
               <span data-key="t-widgets">首页</span>

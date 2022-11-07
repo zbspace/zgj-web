@@ -58,7 +58,7 @@ export default [
   {
     path: "/",
     name: "default",
-    redirect: "/dashboard/nft",
+    redirect: "/frontDesk/home",
     meta: {
       title: "Dashboard",
       authRequired: true,
@@ -1162,6 +1162,12 @@ export default [
   },
 
   // 章管家
+  {
+    path: "/frontDesk/home",
+    name: "frontDeskHome",
+    meta: { title: "frontDeskHome", authRequired: true },
+    component: () => import("../views/frontDesk/home"),
+  },
   {
     path: "/system/home",
     name: "systemHome",
