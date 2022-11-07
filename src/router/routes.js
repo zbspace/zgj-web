@@ -1174,4 +1174,10 @@ export default [
     meta: { title: "system-home", authRequired: true },
     component: () => import("../views/system/home"),
   },
+  {
+    path: "/components/table",
+    name: "components-table",
+    meta: { title: "components-table", authRequired: true },
+    component: () => import("../views/components/table"),
+  },
 ];

@@ -257,7 +257,7 @@ export default {
       //business / system
       // 跳转业务首页或者系统首页
       if (this.state.CurrentSystemType == "business") {
-        this.mhs_clk_redirect("/system/Home")
+        this.mhs_clk_redirect("/system/home")
       } else if (this.state.CurrentSystemType == "system") {
         this.mhs_clk_redirect("/frontDesk/home")
       }
