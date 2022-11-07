@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <div class="systemHome">
+        <div class="system-home">
             <div class="row ap-row">
                 <div class="col-xxl-3 panel-box">
                     <div class="panel-cent">
@@ -84,7 +84,7 @@
 import { VueEcharts } from "vue3-echarts";
 import Layout from "../../layouts/main.vue";
 export default {
-    name: "systemHome",
+    name: "system-home",
     data() {
         return {
             dashedLineChartoptions: {
@@ -704,7 +704,7 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.systemHome {
+.system-home {
     .ap-row {
         margin: 1rem 0 0 0;
     }

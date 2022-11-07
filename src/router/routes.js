@@ -1164,14 +1164,14 @@ export default [
   // 章管家
   {
     path: "/frontDesk/home",
-    name: "frontDeskHome",
-    meta: { title: "frontDeskHome", authRequired: true },
+    name: "frontDesk-home",
+    meta: { title: "frontDesk-home", authRequired: true },
     component: () => import("../views/frontDesk/home"),
   },
   {
     path: "/system/home",
-    name: "systemHome",
-    meta: { title: "systemHome", authRequired: true },
+    name: "system-home",
+    meta: { title: "system-home", authRequired: true },
     component: () => import("../views/system/home"),
   },
 ];
