@@ -547,6 +547,7 @@ export default {
             }
         }
     }
+
     .table-card {
         margin: 0%;
     }
