@@ -1,9 +1,16 @@
 <template>
     <div class="components-table">
-        <el-table :data="props.data" border style="width: 100%">
+        <el-table :data="props.data" border style="width: 100%" :cell-style="cellStyle">
+            <!-- 多选 -->
             <el-table-column type="selection" width="55" v-if="props.isSelection" />
+            <!-- 列表内容 -->
             <el-table-column :prop="item.prop" :label="item.label" :width="item.width"
-                v-for="(item, index) in  props.header" />
+                v-for="(item, index) in  props.header">
+                <!-- 自定义内容显示 -->
+                <template #default="scope" v-if="item.isCustom">
+                    <slot :name="item.prop"></slot>
+                </template>
+            </el-table-column>
         </el-table>
     </div>
 </template>
@@ -19,31 +26,17 @@ const props = defineProps({
     //是否多选
     isSelection: Boolean,
 })
-const state = {
-    tableData: [
-        {
-            date: '2016-05-03',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-            date: '2016-05-02',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-            date: '2016-05-04',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-        },
-    ]
+const state = {};
+// 单元格样式回调
+function cellStyle({ row, column, rowIndex, columnIndex }) {
+    // console.log({ row, column, rowIndex, columnIndex });
+    console.log(props.header[columnIndex]);
+    let style = {}
+    if (props.header[columnIndex] && props.header[columnIndex].style) {
+        style = props.header[columnIndex].style;
+    }
+    return style;
 };
-console.log(props.type);
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 })

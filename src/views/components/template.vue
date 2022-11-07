@@ -2,6 +2,9 @@
     <div class="components-template">
         <componentsTable type="1" :data="state.componentsTable.data" :header="state.componentsTable.header"
             :isSelection="true">
+            <template #Tom>
+                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+            </template>
         </componentsTable>
     </div>
 </template>
@@ -20,9 +23,15 @@ const state = {
         }, {
             prop: 'date',
             label: "date",
+            style: { "font-size": "2px", "color": "red" }
         }, {
             prop: 'address',
             label: "address",
+        }, {
+            prop: 'Tom',
+            label: "Tom",
+            // 是否自定义  自定义时  插槽名为  prop名
+            isCustom: true
         }],
         data: [
             {
