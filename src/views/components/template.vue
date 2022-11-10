@@ -1,20 +1,41 @@
 <template>
     <div class="components-template">
-        <componentsTable type="1" :data="state.componentsTable.data" :header="state.componentsTable.header"
-            :isSelection="true">
-            <template #Tom>
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-            </template>
-        </componentsTable>
+        <!-- 表格 -->
+        <div class="ap-box">
+            <componentsTable type="1" :data="state.componentsTable.data" :header="state.componentsTable.header"
+                :isSelection="true" @row-click="rowClick" @select="select">
+                <!-- #Tom   Tom 就是表头header里的 prop 值 代表当前列 -->
+                <template #Tom>
+                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                    <span>remove</span>
+                </template>
+            </componentsTable>
+        </div>
+        <!-- 表格搜索 -->
+        <div class="ap-box">
+            <componentsSearchForm :data="state.componentsSearchForm.data"
+                :inputStyle="state.componentsSearchForm.inputStyle" :labelStyle="state.componentsSearchForm.labelStyle"
+                @input="input" @input-all="inputAll">
+            </componentsSearchForm>
+        </div>
+        <!-- 树 -->
+        <div class="ap-box">
+            <componentsTree :data="state.componentsTree.data" :defaultAttribute="state.componentsTree.defaultAttribute"
+                @node-click="nodeClick">
+
+            </componentsTree>
+        </div>
     </div>
 </template>
 <script setup>
-import { defineProps, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, onBeforeMount, onMounted } from "vue"
 import componentsTable from "./table"
+import componentsSearchForm from "./searchForm"
+import componentsTree from "./tree"
 const props = defineProps({
     type: String,
 })
-const state = {
+const state = reactive({
     componentsTable: {
         header: [{
             prop: 'name',
@@ -38,6 +59,7 @@ const state = {
                 date: '2016-05-03',
                 name: 'Tom',
                 address: 'No. 189, Grove St, Los Angeles',
+                style: { "font-size": "2px", "color": "green" }
             },
             {
                 date: '2016-05-02',
@@ -54,10 +76,131 @@ const state = {
                 name: 'Tom',
                 address: 'No. 189, Grove St, Los Angeles',
             },
-        ]
-    }
-};
-console.log(props.type);
+        ],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+
+        }
+    },
+    componentsSearchForm: {
+        labelStyle: {
+            width: "50px"
+        },
+        inputStyle: {
+            width: "150px"
+        },
+        data: [{
+            id: 'name',
+            label: "name",
+            placeholder: "请输入",
+
+        }, {
+            id: 'label',
+            label: "label",
+            placeholder: "请输入",
+
+        }],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+
+        }
+    },
+    componentsTree: {
+        data: [
+            {
+                label: 'Level one 1',
+                children: [
+                    {
+                        label: 'Level two 1-1',
+                        children: [
+                            {
+                                label: 'Level three 1-1-1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'Level one 2',
+                children: [
+                    {
+                        label: 'Level two 2-1',
+                        children: [
+                            {
+                                label: 'Level three 2-1-1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'Level two 2-2',
+                        children: [
+                            {
+                                label: 'Level three 2-2-1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'Level one 3',
+                children: [
+                    {
+                        label: 'Level two 3-1',
+                        children: [
+                            {
+                                label: 'Level three 3-1-1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'Level two 3-2',
+                        children: [
+                            {
+                                label: 'Level three 3-2-1',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            "check-on-click-node": true,
+            "show-checkbox": true,
+            "default-expand-all": true,
+            "expand-on-click-node": false,
+        }
+    },
+});
+//--------------------componentsTable------------------//
+//	当某个单元格被点击时会触发该事件
+function rowClick(row, column, event) {
+    // ['select', 'select-all', 'selection-change', 'cell-click', 'row-click']  仅支持这些方法
+    console.log(row, column, event);
+}
+// 	当用户手动勾选数据行的 Checkbox 时触发的事件
+function select(selection, row) {
+    // ['select', 'select-all', 'selection-change', 'cell-click', 'row-click']  仅支持这些方法
+    console.log(selection, row);
+}
+
+//---------------componentsSearchForm----------------------//
+function input(item, index) {
+    console.log(item, index);
+}
+function inputAll(data) {
+    console.log(data);
+}
+
+//----------------------componentsTree--------------------//
+
+//	当节点被点击的时候触发   	四个参数：对应于节点点击的节点对象，TreeNode 的 node 属性, TreeNode和事件对象
+function nodeClick(NodeObjects, node, TreeNode, event) {
+    // ['node-click', 'check-change', 'check', 'current-change']  仅支持这些方法
+    console.log(NodeObjects, node, TreeNode, event);
+}
+
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 })
@@ -68,5 +211,9 @@ onMounted(() => {
 <style lang='scss' scoped>
 .components-template {
     margin: 0%;
+
+    .ap-box {
+        padding: 10px;
+    }
 }
 </style>
