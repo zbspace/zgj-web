@@ -1175,9 +1175,9 @@ export default [
     component: () => import("../views/system/home"),
   },
   {
-    path: "/components/table",
-    name: "components-table",
-    meta: { title: "components-table", authRequired: true },
-    component: () => import("../views/components/table"),
+    path: "/components/template",
+    name: "components-template",
+    meta: { title: "components-template", authRequired: true },
+    component: () => import("../views/components/template"),
   },
 ];
