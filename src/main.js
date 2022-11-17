@@ -19,7 +19,7 @@ import "@vueform/slider/themes/default.css";
 
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
-// 测试回滚数据分之
+
 AOS.init({
   easing: "ease-out-back",
   duration: 1000,
