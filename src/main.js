@@ -20,6 +20,9 @@ import "@vueform/slider/themes/default.css";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 
+import ArcoVue from '@arco-design/web-vue';
+import '@arco-design/web-vue/dist/arco.css';
+
 AOS.init({
   easing: "ease-out-back",
   duration: 1000,
@@ -36,4 +39,5 @@ createApp(App)
   .use(i18n)
   .use(vClickOutside)
   .use(ElementPlus)
+  .use(ArcoVue)
   .mount("#app");
