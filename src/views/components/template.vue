@@ -236,7 +236,6 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-@import "../../style/index.scss";
 
 .components-template {
     margin: 0%;
