@@ -2,29 +2,17 @@ import store from "@/state/store";
 
 export default [
   {
-    path: "/login",
-    name: "login",
-    component: () => import("../views/account/login.vue"),
-    meta: {
-      title: "Login",
-      beforeResolve(routeTo, routeFrom, next) {
-        // If the user is already logged in
-        if (store.getters["auth/loggedIn"]) {
-          // Redirect to the home page instead
-          next({ name: "default" });
-        } else {
-          // Continue to the login page
-          next();
-        }
-      },
-    },
-  },
-  {
     path: "/",
     name: "default",
-    redirect: "/frontDesk/home",
+    redirect: "/login/account",
   },
   // 章管家
+  {
+    path: "/login/account",
+    name: "login-account",
+    meta: { title: "login-account", authRequired: true },
+    component: () => import("../views/login/account"),
+  },
   {
     path: "/frontDesk/home",
     name: "frontDesk-home",
