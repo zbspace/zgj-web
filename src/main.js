@@ -20,8 +20,11 @@ import "@vueform/slider/themes/default.css";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 
-import ArcoVue from '@arco-design/web-vue';
-import '@arco-design/web-vue/dist/arco.css';
+import ArcoVue from "@arco-design/web-vue";
+import "@arco-design/web-vue/dist/arco.css";
+
+/* 引入自定义全局变量 */
+import "./style/index.scss";
 
 AOS.init({
   easing: "ease-out-back",
