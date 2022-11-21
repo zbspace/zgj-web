@@ -1,5 +1,14 @@
 <template>
     <div class="components-template">
+        <!-- 颜色 -->
+        <div class="ap-box color">颜色</div>
+        <!-- 表格搜索 -->
+        <div class="ap-box">
+            <componentsSearchForm :data="state.componentsSearchForm.data"
+                :inputStyle="state.componentsSearchForm.inputStyle" :labelStyle="state.componentsSearchForm.labelStyle"
+                @input="input" @input-all="inputAll">
+            </componentsSearchForm>
+        </div>
         <!-- 表格 -->
         <div class="ap-box">
             <componentsTable type="1" :data="state.componentsTable.data" :header="state.componentsTable.header"
@@ -11,12 +20,16 @@
                 </template>
             </componentsTable>
         </div>
-        <!-- 表格搜索 -->
+        <!-- 分页 -->
         <div class="ap-box">
-            <componentsSearchForm :data="state.componentsSearchForm.data"
-                :inputStyle="state.componentsSearchForm.inputStyle" :labelStyle="state.componentsSearchForm.labelStyle"
-                @input="input" @input-all="inputAll">
-            </componentsSearchForm>
+            <componentsTable type="1" :data="state.componentsTable.data" :header="state.componentsTable.header"
+                :isSelection="true" @row-click="rowClick" @select="select">
+                <!-- #Tom   Tom 就是表头header里的 prop 值 代表当前列 -->
+                <template #Tom>
+                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                    <span>remove</span>
+                </template>
+            </componentsTable>
         </div>
         <!-- 树 -->
         <div class="ap-box">
@@ -36,6 +49,34 @@ const props = defineProps({
     type: String,
 })
 const state = reactive({
+    componentsSearchForm: {
+        labelStyle: {
+            width: "50px"
+        },
+        inputStyle: {
+            width: "150px"
+        },
+        data: [{
+            id: 'name',
+            label: "name",
+            placeholder: "请输入",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+
+            },
+            style: {
+
+            }
+        }, {
+            id: 'label',
+            label: "label",
+            placeholder: "请输入",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+
+            }
+        }],
+    },
     componentsTable: {
         header: [{
             prop: 'name',
@@ -77,29 +118,6 @@ const state = reactive({
                 address: 'No. 189, Grove St, Los Angeles',
             },
         ],
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-
-        }
-    },
-    componentsSearchForm: {
-        labelStyle: {
-            width: "50px"
-        },
-        inputStyle: {
-            width: "150px"
-        },
-        data: [{
-            id: 'name',
-            label: "name",
-            placeholder: "请输入",
-
-        }, {
-            id: 'label',
-            label: "label",
-            placeholder: "请输入",
-
-        }],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
 
@@ -172,7 +190,10 @@ const state = reactive({
         }
     },
 });
-//--------------------componentsTable------------------//
+
+/* 
+componentsTable
+*/
 //	当某个单元格被点击时会触发该事件
 function rowClick(row, column, event) {
     // ['select', 'select-all', 'selection-change', 'cell-click', 'row-click']  仅支持这些方法
@@ -184,7 +205,9 @@ function select(selection, row) {
     console.log(selection, row);
 }
 
-//---------------componentsSearchForm----------------------//
+/* 
+componentsSearchForm
+*/
 function input(item, index) {
     console.log(item, index);
 }
@@ -192,7 +215,9 @@ function inputAll(data) {
     console.log(data);
 }
 
-//----------------------componentsTree--------------------//
+/* 
+componentsTree
+*/
 
 //	当节点被点击的时候触发   	四个参数：对应于节点点击的节点对象，TreeNode 的 node 属性, TreeNode和事件对象
 function nodeClick(NodeObjects, node, TreeNode, event) {
@@ -200,7 +225,9 @@ function nodeClick(NodeObjects, node, TreeNode, event) {
     console.log(NodeObjects, node, TreeNode, event);
 }
 
-
+/* 
+开始调用
+*/
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 })
@@ -209,8 +236,14 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
+@import "../../style/index.scss";
+
 .components-template {
     margin: 0%;
+
+    .color {
+        color: var(--primary-6);
+    }
 
     .ap-box {
         padding: 10px;

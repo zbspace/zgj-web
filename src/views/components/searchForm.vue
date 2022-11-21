@@ -1,9 +1,11 @@
 <template>
     <div class="components-searchForm">
         <div class="ap-box" v-for="(item, index) in props.data">
-            <label class="ap-box-label" :style="props.labelStyle" :for="item.id">{{ item.label }}</label>
-            <el-input v-bind="props.defaultAttribute" :refs="refs" :style="props.inputStyle" :id="item.id" v-model="item.value"
-                :placeholder="item.placeholder" @input="input(item, index)" />
+            <div v-if="item">
+                <label class="ap-box-label" :style="props.labelStyle" :for="item.id">{{ item.label }}</label>
+                <el-input v-bind="item.defaultAttribute" :refs="refs" :style="props.inputStyle" :id="item.id"
+                    v-model="item.value" :placeholder="item.placeholder" @input="input(item, index)" />
+            </div>
         </div>
     </div>
 </template>

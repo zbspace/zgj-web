@@ -1,5 +1,11 @@
 /* 
 引用全局样式
+
+使用方法
+    .color {
+        color: var(--primary-6);
+    }
+
 */
 // 变量
 @import "./variable.scss";
