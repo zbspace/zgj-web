@@ -59,22 +59,42 @@ const state = reactive({
         data: [{
             id: 'name',
             label: "name",
-            placeholder: "请输入",
+            type: "input",
             // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
             defaultAttribute: {
-
+                placeholder: "请输入name",
             },
             style: {
 
             }
         }, {
-            id: 'label',
-            label: "label",
-            placeholder: "请输入",
+            id: 'select',
+            label: "select",
+            type: "select",
             // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
             defaultAttribute: {
-
-            }
+                placeholder: "请输入label",
+            },
+            options: [{
+                value: 'Option1',
+                label: 'Option1',
+            },
+            {
+                value: 'Option2',
+                label: 'Option2',
+            },
+            {
+                value: 'Option3',
+                label: 'Option3',
+            },
+            {
+                value: 'Option4',
+                label: 'Option4',
+            },
+            {
+                value: 'Option5',
+                label: 'Option5',
+            },]
         }],
     },
     componentsTable: {
@@ -236,7 +256,6 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-
 .components-template {
     margin: 0%;
 

@@ -1,10 +1,16 @@
 <template>
     <div class="components-searchForm">
         <div class="ap-box" v-for="(item, index) in props.data">
-            <div v-if="item">
-                <label class="ap-box-label" :style="props.labelStyle" :for="item.id">{{ item.label }}</label>
-                <el-input v-bind="item.defaultAttribute" :refs="refs" :style="props.inputStyle" :id="item.id"
-                    v-model="item.value" :placeholder="item.placeholder" @input="input(item, index)" />
+            <div class="ap-box-cont" v-if="item.type == 'input'">
+                <div class="ap-box-label" :style="props.labelStyle" :for="item.id">{{ item.label }}</div>
+                <el-input v-bind="item.defaultAttribute" :refs="refs" :style="item.style" :id="item.id"
+                    v-model="item.value" @input="input(item, index)" />
+            </div>
+            <div class="ap-box-cont" v-else-if="item.type == 'select'">
+                <div class="ap-box-label" :style="props.labelStyle" :for="item.id">{{ item.label }}</div>
+                <el-select v-bind="item.defaultAttribute" v-model="item.value" :style="item.style">
+                    <el-option v-for="data in item.options" :key="data.value" :label="data.label" :value="data.value" />
+                </el-select>
             </div>
         </div>
     </div>
@@ -74,9 +80,15 @@ onMounted(() => {
         align-items: center;
         margin: 10px 0;
 
+        .ap-box-cont {
+            display: flex;
+            align-items: center;
+        }
+
         .ap-box-label {
             margin: 0 10px;
         }
+
     }
 }
 </style>
