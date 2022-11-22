@@ -1,0 +1,36 @@
+// 变量
+@import "./variable.scss";
+
+$unify-primary-color: var(--primary-6);
+
+/* 多选框 */
+.el-checkbox {
+    --el-checkbox-checked-text-color: #{$unify-primary-color};
+    --el-checkbox-checked-input-border-color: #{$unify-primary-color};
+    --el-checkbox-checked-bg-color: #{$unify-primary-color};
+    --el-checkbox-input-border-color-hover: #{$unify-primary-color};
+    height: auto;
+    margin-bottom: 0%;
+}
+
+/* 单选框 */
+.el-radio {
+    --el-radio-input-border-color-hover: #{$unify-primary-color};
+    height: auto;
+    margin-bottom: 0%;
+
+    .el-radio__input.is-checked .el-radio__inner {
+        border-color: #{$unify-primary-color};
+        background: #{$unify-primary-color};
+    }
+
+    .el-radio__input.is-checked+.el-radio__label {
+        color:#{$unify-primary-color};
+    }
+}
+
+
+/* 日期选择器 */
+.el-date-editor.el-input, .el-date-editor.el-input__wrapper{
+    width: 100%;
+}

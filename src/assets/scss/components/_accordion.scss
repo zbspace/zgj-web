@@ -98,7 +98,7 @@
 
 .accordion-border-box {
     .accordion-item {
-        border-top: $accordion-border-width solid $accordion-border-color;
+        border-top: accordion-border-width solid $accordion-border-color;
         border-radius: $accordion-border-radius;
 
         &:not(:first-of-type) {
