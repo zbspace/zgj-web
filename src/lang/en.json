@@ -1,4 +1,5 @@
 {
+    "l-language": "English",
     "t-menu": "Menu",
     "t-dashboards": "Dashboards",
     "t-analytics": "Analytics",
@@ -2131,7 +2132,7 @@
     "t-zgj-F_OCR_SEALAPPLY_AFTER_REUPLOAD": "Re Upload",
     "t-zgj-F_OCR_SEALAPPLY_AFTER_HISTORY": "History",
     "t-zgj-F_OCR_SEALAPPLY_BEFORE_HISTORY": "History",
-    "t-zgj-DownloadApp.Download": "Download Zhangguanjia app",
+    "t-zgj-DownloadApp.Download": "Download ZGJ app",
     "t-zgj-DownloadApp.AppScanDownload": "Scan code and download Zhangguanjia app",
     "t-zgj-DownloadApp.slogan": "Prevent unauthorized use of official seal, use the Zhangguanjia",
     "t-zgj-DownloadApp.Android": "Download for Android",
