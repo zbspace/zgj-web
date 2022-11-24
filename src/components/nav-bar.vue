@@ -43,16 +43,27 @@
 
           <!-- App Search-->
           <form class="app-search d-none d-md-block">
-            <!-- <div class="position-relative">
-              <input type="text" class="form-control" placeholder="请输入关键词" autocomplete="off" id="search-options"
+            <div class="ap-dropdown">
+              <!-- <input type="text" class="form-control" placeholder="请输入关键词" autocomplete="off" id="search-options"
                 value="" />
               <span class="mdi mdi-magnify search-widget-icon"></span>
               <span class="
                     mdi mdi-close-circle
                     search-widget-icon search-widget-icon-close
                     d-none
-                  " id="search-close-options"></span>
-            </div> -->
+                  " id="search-close-options"></span> -->
+              <el-dropdown trigger="click">
+                <span class="ap-dropdown-text">
+                  <span>上海建业科技股份有限公司</span>&nbsp;&nbsp;
+                  <i class="ri-arrow-down-s-line"></i>
+                </span>
+                <template #dropdown>
+                  <div style="width:300px;height:300px">
+
+                  </div>
+                </template>
+              </el-dropdown>
+            </div>
             <div class="dropdown-menu dropdown-menu-lg" id="search-dropdown">
               <SimpleBar data-simplebar style="max-height: 320px">
                 <!-- item-->
@@ -1085,5 +1096,18 @@ export default {
 .dropdown-item {
   display: flex;
   align-items: center;
+}
+
+.ap-dropdown {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  .ap-dropdown-text {
+    font-size: var(--font-size-title-1);
+    font-weight: var(--font-weight-700);
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
