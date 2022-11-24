@@ -39,7 +39,7 @@
         
         <!-- 切换语言 -->
         <div class="language" @click="changeLangToop">
-          <div class="common-btn user-select" :class="state.showLangToop ? 'open-toop' : 'close-toop'">{{ $t("l-language") }}</div>
+          <div class="common-btn user-select" :class="state.showLangToop ? 'open-toop' : 'close-toop'">{{ $t("t-zgj-type") }}</div>
           <div class="tooltip-lan" :style="{'display': state.showLangToop ? 'block' : 'none'}">
             <div class="item user-select" @click="changeLanguage('ch')">简体中文</div>
             <div class="item user-select" @click="changeLanguage('en')">English</div>
@@ -51,7 +51,9 @@
 
     <!-- content -->
     <div class="content-login">
-      <div class="login-type" @click="changeLogin" :class="state.showAccountLogin ? 'account-icon' : 'code-icon'"></div>
+      <div class="login-type" @click="changeLogin" :class="state.showAccountLogin ? 'account-icon' : 'code-icon'">
+        <div class="l-type-tip user-select" :class="state.languageCh ? 'tip' : 'tip-left'">{{ state.showAccountLogin ? $t('t-scan-login') : $t('t-code-login')}}</div>
+      </div>
 
       <!-- 登录-账号密码 -->
       <div v-show="state.showAccountLogin">
@@ -59,7 +61,32 @@
       </div>
 
       <!-- 登录-扫码 -->
-      <div v-show="!state.showAccountLogin">2</div>
+      <div v-show="!state.showAccountLogin" class="l-scan-box">
+
+        <!-- title -->
+        <div class="scan-title user-select">{{ $t('t-scan-login') }}</div>
+
+        <!-- msg -->
+        <div class="scan-msg user-select">{{ $t('t-zgj-login.scan') }}</div>
+
+        <!-- 二维码 -->
+        <div class="scan-code" @click="updateScanCode">
+          <div class="code">
+            <div :style="{ display: state.scanCodeError ? 'block' : 'none'}">
+              <div class="mask-code"></div>
+              <div class="mask-top user-select">
+                <!-- 二维码已失效 -->
+                <div class="mask-title"> {{ $t('t-scan-code-error') }}</div>
+
+                <!-- 刷新 -->
+                <div class="mask-btn">{{ $t('t-zgj-refesh') }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="scan-bg"></div>
+        </div>
+      </div>
     </div>
 
     <!-- footer -->
@@ -75,10 +102,13 @@ const state = reactive({
   showDownToop: false, // 下载弹窗
   showLangToop: false, // 切换语言弹窗
   showAccountLogin: true, // 账号密码登录页
+  languageCh: true, // 中文
+  scanCodeError: true // 二维码失效
 })
 // 切换语言
 const changeLanguage = (locale) => {
   I18n.global.locale = locale
+  state.languageCh = locale === 'ch'
 }
 
 // 监听 切换语言展示弹窗
@@ -94,6 +124,11 @@ const downloadToop = () => {
 // 监听 登录方式切换
 const changeLogin = () => {
   state.showAccountLogin = !state.showAccountLogin;
+}
+
+// 监听 二维码刷新
+const updateScanCode = () => {
+  state.scanCodeError = false
 }
 
 </script>
@@ -331,6 +366,57 @@ const changeLogin = () => {
         position: absolute;
         top: 0;
         right: 0;
+        cursor: pointer;
+        font-family: Helvetica-Bold;
+        font-weight: 700;
+        font-size: 14px;
+        color: #FAFAFA;
+        letter-spacing: 0;
+        line-height: 50px;
+        text-align: center;
+
+        .l-type-tip {
+          display: none;
+          position: absolute;
+          // left: -130px;
+          top: 20px;
+          min-width: 127px;
+          // padding: 0 4px;
+          height: 50px;
+          background: #D0963E;
+          box-shadow: 0 0 6px 0 rgba(0,0,0,0.12);
+          border-radius: 2px;
+
+          &::after {
+            content: "";
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-radius: 2px;
+            border-right: 10px solid transparent;
+            border-left: 10px solid #D0963E;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+          }
+        }
+
+        .tip-left {
+          left: -180px;
+          padding: 0 10px;
+        }
+
+        .tip {
+          left: -130px;
+        }
+      }
+
+      .login-type:hover {
+        .l-type-tip {
+          display: block;
+        }
       }
 
       .account-icon {
@@ -341,10 +427,87 @@ const changeLogin = () => {
       .code-icon {
         background: url(../../assets/images/login/account.png) no-repeat center center;
         background-size: 100%;
-      }       
+      }
+      
+      .l-scan-box {
+        text-align: center;
+        .scan-title {
+          font-family: Helvetica-Bold;
+          font-weight: 700;
+          font-size: 22px;
+          color: #303133;
+          margin-top: 90px;
+        }
+
+        .scan-msg {
+          font-family: Helvetica;
+          font-size: 14px;
+          color: #909399;
+          margin: 40px 0 20px 0;
+        }
+
+        .scan-code {
+          display: flex;
+          padding: 0 50px;
+          .code {
+            position: relative;
+            width: 214px;
+            height: 214px;
+            background: #FFFFFF;
+            border: 1px solid #F0F0F0;
+            border-radius: 8px;
+            background: url(../../assets/images/login/test.png) no-repeat center center;
+            background-size: 100%;
+          }
+
+          .mask-code {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 214px;
+            height: 214px;
+            opacity: 0.8;
+            background: #303133;
+            border-radius: 8px;
+          }
+
+          .mask-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 214px;
+            height: 214px;
+            .mask-title {
+              font-family: Helvetica-Bold;
+              font-weight: 700;
+              font-size: 16px;
+              color: #FAFAFA;
+              text-align: center;
+              margin: 60px 0 22px 0;
+            }
+
+            .mask-btn {
+              width: 120px;
+              height: 50px;
+              background: #FFFFFF;
+              border-radius: 4px;
+              margin: auto;
+              color: #606266;
+              line-height: 50px;
+              text-align: center;
+              cursor: pointer;
+            }
+          }
+          .scan-bg {
+            height: 206px;
+            width: 168px;
+            margin-left: 4px;
+            background: url(../../assets/images/login/l_scan_bg.png) no-repeat center center;
+            background-size: 100%;
+          }
+        }
+      }
     }
-
-
 
     .footer-login {
       position: fixed;

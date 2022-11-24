@@ -34,3 +34,52 @@ $unify-primary-color: var(--primary-6);
 .el-date-editor.el-input, .el-date-editor.el-input__wrapper{
     width: 100%;
 }
+
+// 待删除
+.el-button {
+  --el-button-text-color: #FFFFFF;
+  --el-button-bg-color: #D0963E;
+  --el-button-border-color: #D0963E;
+  --el-button-outline-color:  #D0963E;
+  --el-button-active-color:  #D0963E;
+  --el-button-hover-text-color: #FFFFFF;
+  --el-button-hover-bg-color: #D9AB5B;
+  --el-button-hover-border-color: #D9AB5B;
+  --el-button-active-bg-color: #AF7427;
+  --el-button-active-border-color: #AF7427;
+  --el-button-disabled-border-color: #F0F0F0;
+}
+
+.el-input {
+  --el-input-text-color: rgba(0,0,0,0.85);
+  --el-input-border: #D0963E;
+  --el-input-hover-border: #D0963E;
+  --el-input-focus-border: #D0963E;
+  --el-input-transparent-border: 0 0 0 1px transparent inset;
+  --el-input-border-color: #dcdfe6;
+  --el-input-border-radius: 4px;
+  --el-input-bg-color: #FFFFFF;
+  --el-input-icon-color: #606266;
+  --el-input-placeholder-color: #606266;
+  --el-input-hover-border-color: #D0963E;
+  --el-input-clear-hover-color: #D0963E;
+  --el-input-focus-border-color: #D0963E;
+}
+
+.el-select {
+  --el-select-border-color-hover: #D0963E;
+  --el-select-disabled-border: #D0963E;
+  --el-select-font-size: 14px;
+  --el-select-close-hover-color: #D0963E;
+  --el-select-input-focus-border-color: #D0963E;
+  --el-select-input-font-size: 14px;
+}
+
+
+.login-input {
+  --el-component-size-large: 50px;
+}
+
+.el-select-dropdown__item.selected {
+  color: #D0963E;
+}
