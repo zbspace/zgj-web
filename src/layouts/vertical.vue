@@ -1,3 +1,62 @@
+<template>
+  <div id="layout-wrapper">
+    <NavBar />
+    <div>
+      <!-- ========== Left Sidebar Start ========== -->
+      <!-- ========== App Menu ========== -->
+      <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+          <!-- Dark Logo-->
+          <router-link to="/" class="logo logo-dark">
+            <span class="logo-sm">
+              <img src="@/assets/icon/logo.png" alt="" height="22" />
+            </span>
+            <span class="logo-lg">
+              <img src="@/assets/icon/logo.png" alt="" height="30" />
+            </span>
+          </router-link>
+          <!-- Light Logo-->
+          <router-link to="/" class="logo logo-light">
+            <span class="logo-sm">
+              <img src="@/assets/icon/logo.png" alt="" height="22" />
+            </span>
+            <span class="logo-lg">
+              <img src="@/assets/icon/logo.png" alt="" height="30" />
+            </span>
+          </router-link>
+          <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+            id="vertical-hover" @click="initActiveMenu">
+            <i class="ri-record-circle-line"></i>
+          </button>
+        </div>
+
+        <SimpleBar id="scrollbar" class="h-100" ref="scrollbar">
+          <Menu></Menu>
+        </SimpleBar>
+        <div class="sidebar-background"></div>
+      </div>
+      <!-- Left Sidebar End -->
+      <!-- Vertical Overlay-->
+      <div class="vertical-overlay" id="overlay"></div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
+
+    <div class="main-content">
+      <div class="page-content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+          <slot />
+        </div>
+      </div>
+      <Footer />
+    </div>
+    <RightBar />
+  </div>
+</template>
+
 <script>
 import router from "@/router";
 import { SimpleBar } from "simplebar-vue3";
@@ -77,61 +136,3 @@ export default {
 };
 </script>
   
-<template>
-  <div id="layout-wrapper">
-    <NavBar />
-    <div>
-      <!-- ========== Left Sidebar Start ========== -->
-      <!-- ========== App Menu ========== -->
-      <div class="app-menu navbar-menu">
-        <!-- LOGO -->
-        <div class="navbar-brand-box">
-          <!-- Dark Logo-->
-          <router-link to="/" class="logo logo-dark">
-            <span class="logo-sm">
-              <img src="@/assets/icon/logo.png" alt="" height="22" />
-            </span>
-            <span class="logo-lg">
-              <img src="@/assets/icon/logo.png" alt="" height="30" />
-            </span>
-          </router-link>
-          <!-- Light Logo-->
-          <router-link to="/" class="logo logo-light">
-            <span class="logo-sm">
-              <img src="@/assets/icon/logo.png" alt="" height="22" />
-            </span>
-            <span class="logo-lg">
-              <img src="@/assets/icon/logo.png" alt="" height="30" />
-            </span>
-          </router-link>
-          <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-            id="vertical-hover" @click="initActiveMenu">
-            <i class="ri-record-circle-line"></i>
-          </button>
-        </div>
-
-        <SimpleBar id="scrollbar" class="h-100" ref="scrollbar">
-          <Menu></Menu>
-        </SimpleBar>
-        <div class="sidebar-background"></div>
-      </div>
-      <!-- Left Sidebar End -->
-      <!-- Vertical Overlay-->
-      <div class="vertical-overlay" id="overlay"></div>
-    </div>
-    <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
-
-    <div class="main-content">
-      <div class="page-content">
-        <!-- Start Content-->
-        <div class="container-fluid">
-          <slot />
-        </div>
-      </div>
-      <Footer />
-    </div>
-    <RightBar />
-  </div>
-</template>

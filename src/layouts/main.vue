@@ -1,3 +1,22 @@
+
+
+<template>
+<div>
+    <Vertical v-if="layoutType === 'vertical'" :layout="layoutType">
+        <slot />
+    </Vertical>
+ 
+    <Horizontal v-if="layoutType === 'horizontal'" :layout="layoutType">
+        <slot />
+    </Horizontal>
+
+    <TwoColumns v-if="layoutType === 'twocolumn'" :layout="layoutType">
+        <slot />
+    </TwoColumns>
+</div>
+</template>
+
+
 <script>
 import { layoutComputed } from "@/state/helpers";
 
@@ -22,19 +41,3 @@ export default {
     }
 };
 </script>
-
-<template>
-<div>
-    <Vertical v-if="layoutType === 'vertical'" :layout="layoutType">
-        <slot />
-    </Vertical>
- 
-    <Horizontal v-if="layoutType === 'horizontal'" :layout="layoutType">
-        <slot />
-    </Horizontal>
-
-    <TwoColumns v-if="layoutType === 'twocolumn'" :layout="layoutType">
-        <slot />
-    </TwoColumns>
-</div>
-</template>

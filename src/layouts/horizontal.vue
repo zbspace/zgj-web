@@ -1,96 +1,4 @@
-<script>
-  import NavBar from "@/components/nav-bar";
-  import RightBar from "@/components/right-bar";
-  import Footer from "@/components/footer";
-  import {
-    HomeIcon,
-    GridIcon,
-    UsersIcon,
-    CommandIcon,
-    PackageIcon,
-    LayersIcon,
-    CopyIcon,
-    FileTextIcon,
-    DatabaseIcon,
-    PieChartIcon,
-    ArchiveIcon,
-    MapPinIcon,
-    Share2Icon
-  } from "@zhuowenli/vue-feather-icons";
 
-  export default {
-    watch: {
-      $route: {
-        handler: "onRoutechange",
-        immediate: true,
-        deep: true,
-      },
-    },
-    methods: {
-      onRoutechange(ele) {
-        this.initActiveMenu(ele.path);
-      },
-      initActiveMenu(ele) {
-        setTimeout(() => {
-          if (document.querySelector("#navbar-nav")) {
-            let a = document
-              .querySelector("#navbar-nav")
-              .querySelector('[href="' + ele + '"]');
-
-            if (a) {
-              a.classList.add("active");
-              let parentCollapseDiv = a.closest(".collapse.menu-dropdown");
-              if (parentCollapseDiv) {
-                parentCollapseDiv.classList.add("show");
-                parentCollapseDiv.parentElement.children[0].classList.add(
-                  "active"
-                );
-                parentCollapseDiv.parentElement.children[0].setAttribute(
-                  "aria-expanded",
-                  "true"
-                );
-                if (
-                  parentCollapseDiv.parentElement.closest(
-                    ".collapse.menu-dropdown"
-                  )
-                ) {
-                  parentCollapseDiv.parentElement
-                    .closest(".collapse")
-                    .classList.add("show");
-                  if (
-                    parentCollapseDiv.parentElement.closest(".collapse")
-                    .previousElementSibling
-                  )
-                    parentCollapseDiv.parentElement
-                    .closest(".collapse")
-                    .previousElementSibling.classList.add("active");
-                }
-              }
-            }
-          }
-        }, 1000);
-      },
-    },
-    components: {
-      NavBar,
-      RightBar,
-      Footer,
-      HomeIcon,
-      GridIcon,
-      UsersIcon,
-      CommandIcon,
-      PackageIcon,
-      LayersIcon,
-      CopyIcon,
-      FileTextIcon,
-      DatabaseIcon,
-      PieChartIcon,
-      ArchiveIcon,
-      MapPinIcon,
-      Share2Icon
-    },
-  };
-</script>
 
 <template>
   <div>
@@ -103,19 +11,19 @@
           <!-- Dark Logo-->
           <router-link to="/" class="logo logo-dark">
             <span class="logo-sm">
-              <img  src="@/assets/icon/logo.png" alt="" height="22" />
+              <img src="@/assets/icon/logo.png" alt="" height="22" />
             </span>
             <span class="logo-lg">
-              <img  src="@/assets/icon/logo.png" alt="" height="17" />
+              <img src="@/assets/icon/logo.png" alt="" height="17" />
             </span>
           </router-link>
           <!-- Light Logo-->
           <router-link to="/" class="logo logo-light">
             <span class="logo-sm">
-              <img  src="@/assets/icon/logo.png" alt="" height="22" />
+              <img src="@/assets/icon/logo.png" alt="" height="22" />
             </span>
             <span class="logo-lg">
-              <img  src="@/assets/icon/logo.png" alt="" height="17" />
+              <img src="@/assets/icon/logo.png" alt="" height="17" />
             </span>
           </router-link>
           <button type="button" class="
@@ -212,7 +120,7 @@
                               aria-expanded="false" aria-controls="sidebarsubemail" data-key="t-projects">
                               {{ $t("t-email-templates") }}
                               <span class="badge badge-pill bg-danger" data-key="t-new">{{
-                              $t("t-new")
+                                  $t("t-new")
                               }}</span>
                             </a>
                             <div class="collapse menu-dropdown" id="sidebarsubemail">
@@ -537,7 +445,7 @@
                   aria-expanded="false" aria-controls="sidebarAuth">
                   <UsersIcon></UsersIcon>
                   <span data-key="t-authentication">{{
-                    $t("t-authentication")
+                      $t("t-authentication")
                   }}</span>
                 </a>
                 <div class="collapse menu-dropdown" id="sidebarAuth">
@@ -965,7 +873,7 @@
                         aria-expanded="false" aria-controls="sidebarAdvanceUI">
                         <LayersIcon></LayersIcon>
                         <span data-key="t-advance-ui">{{
-                          $t("t-advance-ui")
+                            $t("t-advance-ui")
                         }}</span>
                         <span class="badge badge-pill bg-success" data-key="t-new">{{ $t("t-new") }}</span>
                       </a>
@@ -1260,7 +1168,7 @@
                         aria-expanded="false" aria-controls="sidebarMultilevel">
                         <Share2Icon></Share2Icon>
                         <span data-key="t-multi-level">{{
-                          $t("t-multi-level")
+                            $t("t-multi-level")
                         }}</span>
                       </a>
                       <div class="collapse menu-dropdown" id="sidebarMultilevel">
@@ -1336,3 +1244,98 @@
     </div>
   </div>
 </template>
+
+
+<script>
+import NavBar from "@/components/nav-bar";
+import RightBar from "@/components/right-bar";
+import Footer from "@/components/footer";
+import {
+  HomeIcon,
+  GridIcon,
+  UsersIcon,
+  CommandIcon,
+  PackageIcon,
+  LayersIcon,
+  CopyIcon,
+  FileTextIcon,
+  DatabaseIcon,
+  PieChartIcon,
+  ArchiveIcon,
+  MapPinIcon,
+  Share2Icon
+} from "@zhuowenli/vue-feather-icons";
+
+export default {
+  watch: {
+    $route: {
+      handler: "onRoutechange",
+      immediate: true,
+      deep: true,
+    },
+  },
+  methods: {
+    onRoutechange(ele) {
+      this.initActiveMenu(ele.path);
+    },
+    initActiveMenu(ele) {
+      setTimeout(() => {
+        if (document.querySelector("#navbar-nav")) {
+          let a = document
+            .querySelector("#navbar-nav")
+            .querySelector('[href="' + ele + '"]');
+
+          if (a) {
+            a.classList.add("active");
+            let parentCollapseDiv = a.closest(".collapse.menu-dropdown");
+            if (parentCollapseDiv) {
+              parentCollapseDiv.classList.add("show");
+              parentCollapseDiv.parentElement.children[0].classList.add(
+                "active"
+              );
+              parentCollapseDiv.parentElement.children[0].setAttribute(
+                "aria-expanded",
+                "true"
+              );
+              if (
+                parentCollapseDiv.parentElement.closest(
+                  ".collapse.menu-dropdown"
+                )
+              ) {
+                parentCollapseDiv.parentElement
+                  .closest(".collapse")
+                  .classList.add("show");
+                if (
+                  parentCollapseDiv.parentElement.closest(".collapse")
+                    .previousElementSibling
+                )
+                  parentCollapseDiv.parentElement
+                    .closest(".collapse")
+                    .previousElementSibling.classList.add("active");
+              }
+            }
+          }
+        }
+      }, 1000);
+    },
+  },
+  components: {
+    NavBar,
+    RightBar,
+    Footer,
+    HomeIcon,
+    GridIcon,
+    UsersIcon,
+    CommandIcon,
+    PackageIcon,
+    LayersIcon,
+    CopyIcon,
+    FileTextIcon,
+    DatabaseIcon,
+    PieChartIcon,
+    ArchiveIcon,
+    MapPinIcon,
+    Share2Icon
+  },
+};
+</script>

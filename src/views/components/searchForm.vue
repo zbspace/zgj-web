@@ -2,14 +2,20 @@
     <div class="components-searchForm">
         <div class="ap-box" v-for="(item, index) in props.data" :style="[props.style.lineStyle, item.style]">
             <div class="ap-box-cont" v-if="item.type == 'input'">
-                <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
+                <div class="ap-box-label" :style="props.style.labelStyle">
+                    <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                    {{ item.label }}
+                </div>
                 <div class="ap-box-contBox">
                     <el-input class="width-100" v-bind="item.defaultAttribute" v-model="item.value"
                         @input="getCurrentValue(item, index)" />
                 </div>
             </div>
             <div class="ap-box-cont" v-else-if="item.type == 'select'">
-                <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
+                <div class="ap-box-label" :style="props.style.labelStyle">
+                    <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                    {{ item.label }}
+                </div>
                 <div class="ap-box-contBox">
                     <el-select class="width-100" v-bind="item.defaultAttribute" v-model="item.value"
                         @change="getCurrentValue(item, index)">
@@ -19,14 +25,20 @@
                 </div>
             </div>
             <div class="ap-box-cont" v-else-if="item.type == 'picker'">
-                <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
+                <div class="ap-box-label" :style="props.style.labelStyle">
+                    <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                    {{ item.label }}
+                </div>
                 <div class="ap-box-contBox">
                     <el-date-picker class="width-100" v-bind="item.defaultAttribute" v-model="item.value"
                         @change="getCurrentValue(item, index)" />
                 </div>
             </div>
             <div class="ap-box-cont" v-else-if="item.type == 'checkbox'">
-                <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
+                <div class="ap-box-label" :style="props.style.labelStyle">
+                    <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                    {{ item.label }}
+                </div>
                 <div class="ap-box-autoBox checkbox" v-for="data in item.checkbox">
                     <el-checkbox v-bind="data.defaultAttribute" :style="data.style" v-model="data.value"
                         @change="getCurrentValue(item, index)" />
@@ -42,10 +54,31 @@
                 </div>
             </div>
             <div class="ap-box-cont" v-else-if="item.type == 'cascader'">
-                <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
+                <div class="ap-box-label" :style="props.style.labelStyle">
+                    <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                    {{ item.label }}
+                </div>
                 <div class="ap-box-contBox">
                     <el-cascader class="width-100" style="width: 100%;" v-bind="item.defaultAttribute"
                         v-model="item.value" @change="getCurrentValue(item, index)" />
+                </div>
+            </div>
+            <div class="ap-box-cont" v-else-if="item.type == 'switch'">
+                <div class="ap-box-label" :style="props.style.labelStyle">
+                    <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                    {{ item.label }}
+                </div>
+                <div class="ap-box-contBox">
+                    <el-switch v-bind="item.defaultAttribute" v-model="item.value" />
+                </div>
+            </div>
+            <div class="ap-box-cont" v-else-if="item.type == 'button'">
+                <div class="ap-box-label" :style="props.style.labelStyle">
+                    <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                    {{ item.label }}
+                </div>
+                <div class="ap-box-contBox" v-for="data in item.data">
+                    <el-button v-bind="data.defaultAttribute" v-model="data.value">{{ data.name }}</el-button>
                 </div>
             </div>
         </div>
@@ -154,6 +187,17 @@ onMounted(() => {
         display: flex;
         align-items: center;
         margin: 10px 0;
+
+        .ap-box-label {
+
+            position: relative;
+
+            .ap-box-label-necessary {
+                color: red;
+                left: 0%;
+                position: absolute;
+            }
+        }
 
         .ap-box-cont {
             display: flex;

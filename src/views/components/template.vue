@@ -29,6 +29,24 @@
                 @node-click="nodeClick">
             </componentsTree>
         </div>
+        <!-- 下拉菜单 -->
+        <div class="ap-box">
+            <el-dropdown trigger="click">
+                <span class="el-dropdown-link">
+                    Dropdown List
+                </span>
+                <template #dropdown>
+                    <div style="width:300px;height:300px">
+
+                    </div>
+                </template>
+            </el-dropdown>
+        </div>
+        <!-- 单据详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails Layout="">
+            </componentsDocumentsDetails>
+        </div>
     </div>
 </template>
 <script setup>
@@ -37,6 +55,7 @@ import componentsTable from "./table"
 import componentsSearchForm from "./searchForm"
 import componentsTree from "./tree"
 import componentsPagination from "./pagination.vue"
+import componentsDocumentsDetails from "./documentsDetails.vue"
 const props = defineProps({
     type: String,
 })
@@ -61,6 +80,7 @@ const state = reactive({
             id: 'name',
             label: "name",
             type: "input",
+            isNecessary: true,
             // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
             defaultAttribute: {
                 placeholder: "请输入name",
@@ -441,6 +461,30 @@ const state = reactive({
             style: {
                 width: "100%",
             }
+        }, {
+            id: 'switch',
+            label: "switch",
+            type: "switch",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+
+            },
+            style: {
+
+            }
+        }, {
+            id: 'button',
+            label: "button",
+            type: "button",
+            data: [{
+                name: "but",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    style: {
+
+                    }
+                },
+            }]
         },],
         butData: [{
             id: "submit",
@@ -598,7 +642,8 @@ const state = reactive({
         defaultAttribute: {
             layout: "sizes, prev, pager, next, slot",
             total: 500,
-            'page-sizes': [10, 100, 200, 300, 400]
+            'page-sizes': [10, 100, 200, 300, 400],
+            background: true,
         }
     },
 });
@@ -656,6 +701,13 @@ function sizeChange(val) {
 function currentChange(val) {
     console.log(val);
 }
+
+/* 
+componentsDocumentsDetails
+*/
+
+
+
 
 
 /* 

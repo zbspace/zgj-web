@@ -31,8 +31,34 @@ $unify-primary-color: var(--primary-6);
 
 
 /* 日期选择器 */
-.el-date-editor.el-input, .el-date-editor.el-input__wrapper{
+.el-date-editor.el-input,
+.el-date-editor.el-input__wrapper {
     width: 100%;
 }
 
+/* 分页 */
+.el-pagination {
+    .el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+        background-color: var(--primary-2);
+    }
 
+    .el-pagination.is-background .el-pager li:not(.is-disabled):hover {
+        color: var(--color-text-1);
+    }
+
+    .el-icon {
+        color: var(--Warning-5);
+    }
+}
+
+/* 选项卡 */
+.el-tabs {
+    .el-tabs__nav-wrap::after {
+        height: 0;
+    }
+}
+
+/* 下拉菜单 */
+.el-popper__arrow {
+    display: none;
+}

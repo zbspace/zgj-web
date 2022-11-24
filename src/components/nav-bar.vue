@@ -1,287 +1,4 @@
-<script>
-import {
-  SimpleBar
-} from "simplebar-vue3";
 
-import i18n from "../i18n";
-
-/**
- * Nav-bar Component
- */
-export default {
-  data() {
-    return {
-      languages: [{
-        flag: require("@/assets/images/flags/us.svg"),
-        language: "en",
-        title: "English",
-      },
-      {
-        flag: require("@/assets/images/flags/spain.svg"),
-        language: "sp",
-        title: "Española",
-      },
-      {
-        flag: require("@/assets/images/flags/germany.svg"),
-        language: "gr",
-        title: "Deutsche",
-      },
-      {
-        flag: require("@/assets/images/flags/italy.svg"),
-        language: "it",
-        title: "italiana",
-      },
-      {
-        flag: require("@/assets/images/flags/russia.svg"),
-        language: "ru",
-        title: "русский",
-      },
-      {
-        flag: require("@/assets/images/flags/china.svg"),
-        language: "ch",
-        title: "中國人",
-      },
-      {
-        flag: require("@/assets/images/flags/french.svg"),
-        language: "fr",
-        title: "Français",
-      },
-      ],
-      lan: i18n.locale,
-      text: null,
-      flag: null,
-      value: null,
-      myVar: 1,
-
-      state: {
-        CurrentSystemType: "business" //business / system
-      },
-    };
-  },
-  components: {
-    SimpleBar
-  },
-  created() {
-    let CurrentSystemType = sessionStorage.getItem("CurrentSystemType");
-    if (CurrentSystemType) {
-      this.state.CurrentSystemType = CurrentSystemType
-    }
-  },
-  methods: {
-
-    isCustomDropdown() {
-      //Search bar
-      var searchOptions = document.getElementById("search-close-options");
-      var dropdown = document.getElementById("search-dropdown");
-      var searchInput = document.getElementById("search-options");
-
-      searchInput.addEventListener("focus", () => {
-        var inputLength = searchInput.value.length;
-        if (inputLength > 0) {
-          dropdown.classList.add("show");
-          searchOptions.classList.remove("d-none");
-        } else {
-          dropdown.classList.remove("show");
-          searchOptions.classList.add("d-none");
-        }
-      });
-
-      searchInput.addEventListener("keyup", () => {
-        var inputLength = searchInput.value.length;
-        if (inputLength > 0) {
-          dropdown.classList.add("show");
-          searchOptions.classList.remove("d-none");
-        } else {
-          dropdown.classList.remove("show");
-          searchOptions.classList.add("d-none");
-        }
-      });
-
-      searchOptions.addEventListener("click", () => {
-        searchInput.value = "";
-        dropdown.classList.remove("show");
-        searchOptions.classList.add("d-none");
-      });
-
-      document.body.addEventListener("click", (e) => {
-        if (e.target.getAttribute("id") !== "search-options") {
-          dropdown.classList.remove("show");
-          searchOptions.classList.add("d-none");
-        }
-      });
-    },
-    toggleHamburgerMenu() {
-      var windowSize = document.documentElement.clientWidth;
-
-      if (windowSize > 767)
-        document.querySelector(".hamburger-icon").classList.toggle("open");
-
-      //For collapse horizontal menu
-      if (
-        document.documentElement.getAttribute("data-layout") === "horizontal"
-      ) {
-        document.body.classList.contains("menu") ?
-          document.body.classList.remove("menu") :
-          document.body.classList.add("menu");
-      }
-
-      //For collapse vertical menu
-      if (document.documentElement.getAttribute("data-layout") === "vertical") {
-        if (windowSize < 1025 && windowSize > 767) {
-          document.body.classList.remove("vertical-sidebar-enable");
-          document.documentElement.getAttribute("data-sidebar-size") == "sm" ?
-            document.documentElement.setAttribute("data-sidebar-size", "") :
-            document.documentElement.setAttribute("data-sidebar-size", "sm");
-        } else if (windowSize > 1025) {
-          document.body.classList.remove("vertical-sidebar-enable");
-          document.documentElement.getAttribute("data-sidebar-size") == "lg" ?
-            document.documentElement.setAttribute("data-sidebar-size", "sm") :
-            document.documentElement.setAttribute("data-sidebar-size", "lg");
-        } else if (windowSize <= 767) {
-          document.body.classList.add("vertical-sidebar-enable");
-          document.documentElement.setAttribute("data-sidebar-size", "lg");
-        }
-      }
-
-      //Two column menu
-      if (document.documentElement.getAttribute("data-layout") == "twocolumn") {
-        document.body.classList.contains("twocolumn-panel") ?
-          document.body.classList.remove("twocolumn-panel") :
-          document.body.classList.add("twocolumn-panel");
-      }
-    },
-    toggleMenu() {
-      this.$parent.toggleMenu();
-    },
-    toggleRightSidebar() {
-      this.$parent.toggleRightSidebar();
-    },
-    initFullScreen() {
-      document.body.classList.toggle("fullscreen-enable");
-      if (
-        !document.fullscreenElement &&
-        /* alternative standard method */
-        !document.mozFullScreenElement &&
-        !document.webkitFullscreenElement
-      ) {
-        // current working methods
-        if (document.documentElement.requestFullscreen) {
-          document.documentElement.requestFullscreen();
-        } else if (document.documentElement.mozRequestFullScreen) {
-          document.documentElement.mozRequestFullScreen();
-        } else if (document.documentElement.webkitRequestFullscreen) {
-          document.documentElement.webkitRequestFullscreen(
-            Element.ALLOW_KEYBOARD_INPUT
-          );
-        }
-      } else {
-        if (document.cancelFullScreen) {
-          document.cancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        }
-      }
-    },
-    setLanguage(locale, country, flag) {
-      this.lan = locale;
-      this.text = country;
-      this.flag = flag;
-      document.getElementById("header-lang-img").setAttribute("src", flag);
-      i18n.global.locale = locale;
-    },
-    toggleDarkMode() {
-      if (document.documentElement.getAttribute("data-layout-mode") == "dark") {
-        document.documentElement.setAttribute("data-layout-mode", "light");
-      } else {
-        document.documentElement.setAttribute("data-layout-mode", "dark");
-      }
-    },
-    initTopbarComponents() {
-      function updateCartPrice() {
-        var currencySign = "$";
-        var subtotal = 0;
-        Array.from(document.getElementsByClassName("cart-item-price")).forEach(function (e) {
-          subtotal += parseFloat(e.innerHTML);
-        });
-        if (document.getElementById("cart-item-total")) {
-          document.getElementById("cart-item-total").innerHTML = currencySign + subtotal.toFixed(2);
-        }
-      }
-      if (document.getElementsByClassName("dropdown-item-cart")) {
-        var dropdownItemCart = document.querySelectorAll(".dropdown-item-cart").length;
-        Array.from(document.querySelectorAll("#page-topbar .dropdown-menu-cart .remove-item-btn")).forEach(function (item) {
-          item.addEventListener("click", function () {
-            dropdownItemCart--;
-            this.closest(".dropdown-item-cart").remove();
-            Array.from(document.getElementsByClassName("cartitem-badge")).forEach(function (e) {
-              e.innerHTML = dropdownItemCart;
-            });
-            updateCartPrice();
-            if (document.getElementById("empty-cart")) {
-              document.getElementById("empty-cart").style.display = dropdownItemCart == 0 ? "block" : "none";
-            }
-            if (document.getElementById("checkout-elem")) {
-              document.getElementById("checkout-elem").style.display = dropdownItemCart == 0 ? "none" : "block";
-            }
-          });
-        });
-        Array.from(document.getElementsByClassName("cartitem-badge")).forEach(function (e) {
-          e.innerHTML = dropdownItemCart;
-        });
-        if (document.getElementById("empty-cart")) {
-          document.getElementById("empty-cart").style.display = "none";
-        }
-        if (document.getElementById("checkout-elem")) {
-          document.getElementById("checkout-elem").style.display = "block";
-        }
-        updateCartPrice();
-      }
-
-      // notification messages
-      if (document.getElementsByClassName("notification-check")) {
-        Array.from(document.querySelectorAll(".notification-check input")).forEach(function (element) {
-          element.addEventListener("click", function (el) {
-            el.target.closest(".notification-item").classList.toggle("active");
-          });
-        });
-      }
-    },
-    // 跳转页面
-    mhs_clk_redirect(path) {
-      this.$router.push(path);
-    },
-    // 跳转业务首页或者系统首页
-    mhs_clk_homePage() {
-      //business / system
-      // 跳转业务首页或者系统首页
-      if (this.state.CurrentSystemType == "business") {
-        this.mhs_clk_redirect("/system/home")
-      } else if (this.state.CurrentSystemType == "system") {
-        this.mhs_clk_redirect("/frontDesk/home")
-      }
-    }
-  },
-  computed: {},
-  mounted() {
-    document.addEventListener("scroll", function () {
-      var pageTopbar = document.getElementById("page-topbar");
-      if (pageTopbar) {
-        document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50 ? pageTopbar.classList.add(
-          "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
-      }
-    });
-    if (document.getElementById("topnav-hamburger-icon"))
-      document
-        .getElementById("topnav-hamburger-icon")
-        .addEventListener("click", this.toggleHamburgerMenu);
-
-    this.isCustomDropdown();
-    this.initTopbarComponents();
-  },
-};
-</script>
   
 <template>
   <header id="page-topbar">
@@ -326,7 +43,7 @@ export default {
 
           <!-- App Search-->
           <form class="app-search d-none d-md-block">
-            <div class="position-relative">
+            <!-- <div class="position-relative">
               <input type="text" class="form-control" placeholder="请输入关键词" autocomplete="off" id="search-options"
                 value="" />
               <span class="mdi mdi-magnify search-widget-icon"></span>
@@ -335,7 +52,7 @@ export default {
                     search-widget-icon search-widget-icon-close
                     d-none
                   " id="search-close-options"></span>
-            </div>
+            </div> -->
             <div class="dropdown-menu dropdown-menu-lg" id="search-dropdown">
               <SimpleBar data-simplebar style="max-height: 320px">
                 <!-- item-->
@@ -1074,6 +791,292 @@ export default {
     </div>
   </header>
 </template>
+
+
+<script>
+import {
+  SimpleBar
+} from "simplebar-vue3";
+
+import i18n from "../i18n";
+
+/**
+ * Nav-bar Component
+ */
+export default {
+  data() {
+    return {
+      languages: [{
+        flag: require("@/assets/images/flags/us.svg"),
+        language: "en",
+        title: "English",
+      },
+      {
+        flag: require("@/assets/images/flags/spain.svg"),
+        language: "sp",
+        title: "Española",
+      },
+      {
+        flag: require("@/assets/images/flags/germany.svg"),
+        language: "gr",
+        title: "Deutsche",
+      },
+      {
+        flag: require("@/assets/images/flags/italy.svg"),
+        language: "it",
+        title: "italiana",
+      },
+      {
+        flag: require("@/assets/images/flags/russia.svg"),
+        language: "ru",
+        title: "русский",
+      },
+      {
+        flag: require("@/assets/images/flags/china.svg"),
+        language: "ch",
+        title: "中國人",
+      },
+      {
+        flag: require("@/assets/images/flags/french.svg"),
+        language: "fr",
+        title: "Français",
+      },
+      ],
+      lan: i18n.locale,
+      text: null,
+      flag: null,
+      value: null,
+      myVar: 1,
+
+      state: {
+        CurrentSystemType: "business" //business / system
+      },
+    };
+  },
+  components: {
+    SimpleBar
+  },
+  created() {
+    let CurrentSystemType = sessionStorage.getItem("CurrentSystemType");
+    if (CurrentSystemType) {
+      this.state.CurrentSystemType = CurrentSystemType
+    }
+  },
+  methods: {
+
+    isCustomDropdown() {
+      //Search bar
+      var searchOptions = document.getElementById("search-close-options");
+      var dropdown = document.getElementById("search-dropdown");
+      var searchInput = document.getElementById("search-options");
+
+      searchInput.addEventListener("focus", () => {
+        var inputLength = searchInput.value.length;
+        if (inputLength > 0) {
+          dropdown.classList.add("show");
+          searchOptions.classList.remove("d-none");
+        } else {
+          dropdown.classList.remove("show");
+          searchOptions.classList.add("d-none");
+        }
+      });
+
+      searchInput.addEventListener("keyup", () => {
+        var inputLength = searchInput.value.length;
+        if (inputLength > 0) {
+          dropdown.classList.add("show");
+          searchOptions.classList.remove("d-none");
+        } else {
+          dropdown.classList.remove("show");
+          searchOptions.classList.add("d-none");
+        }
+      });
+
+      searchOptions.addEventListener("click", () => {
+        searchInput.value = "";
+        dropdown.classList.remove("show");
+        searchOptions.classList.add("d-none");
+      });
+
+      document.body.addEventListener("click", (e) => {
+        if (e.target.getAttribute("id") !== "search-options") {
+          dropdown.classList.remove("show");
+          searchOptions.classList.add("d-none");
+        }
+      });
+    },
+    toggleHamburgerMenu() {
+      var windowSize = document.documentElement.clientWidth;
+
+      if (windowSize > 767)
+        document.querySelector(".hamburger-icon").classList.toggle("open");
+
+      //For collapse horizontal menu
+      if (
+        document.documentElement.getAttribute("data-layout") === "horizontal"
+      ) {
+        document.body.classList.contains("menu") ?
+          document.body.classList.remove("menu") :
+          document.body.classList.add("menu");
+      }
+
+      //For collapse vertical menu
+      if (document.documentElement.getAttribute("data-layout") === "vertical") {
+        if (windowSize < 1025 && windowSize > 767) {
+          document.body.classList.remove("vertical-sidebar-enable");
+          document.documentElement.getAttribute("data-sidebar-size") == "sm" ?
+            document.documentElement.setAttribute("data-sidebar-size", "") :
+            document.documentElement.setAttribute("data-sidebar-size", "sm");
+        } else if (windowSize > 1025) {
+          document.body.classList.remove("vertical-sidebar-enable");
+          document.documentElement.getAttribute("data-sidebar-size") == "lg" ?
+            document.documentElement.setAttribute("data-sidebar-size", "sm") :
+            document.documentElement.setAttribute("data-sidebar-size", "lg");
+        } else if (windowSize <= 767) {
+          document.body.classList.add("vertical-sidebar-enable");
+          document.documentElement.setAttribute("data-sidebar-size", "lg");
+        }
+      }
+
+      //Two column menu
+      if (document.documentElement.getAttribute("data-layout") == "twocolumn") {
+        document.body.classList.contains("twocolumn-panel") ?
+          document.body.classList.remove("twocolumn-panel") :
+          document.body.classList.add("twocolumn-panel");
+      }
+    },
+    toggleMenu() {
+      this.$parent.toggleMenu();
+    },
+    toggleRightSidebar() {
+      this.$parent.toggleRightSidebar();
+    },
+    initFullScreen() {
+      document.body.classList.toggle("fullscreen-enable");
+      if (
+        !document.fullscreenElement &&
+        /* alternative standard method */
+        !document.mozFullScreenElement &&
+        !document.webkitFullscreenElement
+      ) {
+        // current working methods
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) {
+          document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen(
+            Element.ALLOW_KEYBOARD_INPUT
+          );
+        }
+      } else {
+        if (document.cancelFullScreen) {
+          document.cancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+      }
+    },
+    setLanguage(locale, country, flag) {
+      this.lan = locale;
+      this.text = country;
+      this.flag = flag;
+      document.getElementById("header-lang-img").setAttribute("src", flag);
+      i18n.global.locale = locale;
+    },
+    toggleDarkMode() {
+      if (document.documentElement.getAttribute("data-layout-mode") == "dark") {
+        document.documentElement.setAttribute("data-layout-mode", "light");
+      } else {
+        document.documentElement.setAttribute("data-layout-mode", "dark");
+      }
+    },
+    initTopbarComponents() {
+      function updateCartPrice() {
+        var currencySign = "$";
+        var subtotal = 0;
+        Array.from(document.getElementsByClassName("cart-item-price")).forEach(function (e) {
+          subtotal += parseFloat(e.innerHTML);
+        });
+        if (document.getElementById("cart-item-total")) {
+          document.getElementById("cart-item-total").innerHTML = currencySign + subtotal.toFixed(2);
+        }
+      }
+      if (document.getElementsByClassName("dropdown-item-cart")) {
+        var dropdownItemCart = document.querySelectorAll(".dropdown-item-cart").length;
+        Array.from(document.querySelectorAll("#page-topbar .dropdown-menu-cart .remove-item-btn")).forEach(function (item) {
+          item.addEventListener("click", function () {
+            dropdownItemCart--;
+            this.closest(".dropdown-item-cart").remove();
+            Array.from(document.getElementsByClassName("cartitem-badge")).forEach(function (e) {
+              e.innerHTML = dropdownItemCart;
+            });
+            updateCartPrice();
+            if (document.getElementById("empty-cart")) {
+              document.getElementById("empty-cart").style.display = dropdownItemCart == 0 ? "block" : "none";
+            }
+            if (document.getElementById("checkout-elem")) {
+              document.getElementById("checkout-elem").style.display = dropdownItemCart == 0 ? "none" : "block";
+            }
+          });
+        });
+        Array.from(document.getElementsByClassName("cartitem-badge")).forEach(function (e) {
+          e.innerHTML = dropdownItemCart;
+        });
+        if (document.getElementById("empty-cart")) {
+          document.getElementById("empty-cart").style.display = "none";
+        }
+        if (document.getElementById("checkout-elem")) {
+          document.getElementById("checkout-elem").style.display = "block";
+        }
+        updateCartPrice();
+      }
+
+      // notification messages
+      if (document.getElementsByClassName("notification-check")) {
+        Array.from(document.querySelectorAll(".notification-check input")).forEach(function (element) {
+          element.addEventListener("click", function (el) {
+            el.target.closest(".notification-item").classList.toggle("active");
+          });
+        });
+      }
+    },
+    // 跳转页面
+    mhs_clk_redirect(path) {
+      this.$router.push(path);
+    },
+    // 跳转业务首页或者系统首页
+    mhs_clk_homePage() {
+      //business / system
+      // 跳转业务首页或者系统首页
+      if (this.state.CurrentSystemType == "business") {
+        this.mhs_clk_redirect("/system/home")
+      } else if (this.state.CurrentSystemType == "system") {
+        this.mhs_clk_redirect("/frontDesk/home")
+      }
+    }
+  },
+  computed: {},
+  mounted() {
+    document.addEventListener("scroll", function () {
+      var pageTopbar = document.getElementById("page-topbar");
+      if (pageTopbar) {
+        document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50 ? pageTopbar.classList.add(
+          "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
+      }
+    });
+    if (document.getElementById("topnav-hamburger-icon"))
+      document
+        .getElementById("topnav-hamburger-icon")
+        .addEventListener("click", this.toggleHamburgerMenu);
+
+    // this.isCustomDropdown();
+    this.initTopbarComponents();
+  },
+};
+</script>
 <style lang='scss' scoped>
 .nav-bar-iconpark {
   font-size: 22px;

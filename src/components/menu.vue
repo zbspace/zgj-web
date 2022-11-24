@@ -1,273 +1,3 @@
-<script>
-import { layoutComputed } from "@/state/helpers";
-import { SimpleBar } from "simplebar-vue3";
-import "../unit/SvgIconPack"
-import {
-  HomeIcon,
-  GridIcon,
-  UsersIcon,
-  CommandIcon,
-  PackageIcon,
-  LayersIcon,
-  CopyIcon,
-  FileTextIcon,
-  DatabaseIcon,
-  PieChartIcon,
-  ArchiveIcon,
-  MapPinIcon,
-  Share2Icon,
-} from "@zhuowenli/vue-feather-icons";
-
-export default {
-  components: {
-    SimpleBar,
-    HomeIcon,
-    GridIcon,
-    UsersIcon,
-    CommandIcon,
-    PackageIcon,
-    LayersIcon,
-    CopyIcon,
-    FileTextIcon,
-    DatabaseIcon,
-    PieChartIcon,
-    ArchiveIcon,
-    MapPinIcon,
-    Share2Icon,
-  },
-  data() {
-    return {
-      settings: {
-        minScrollbarLength: 60,
-      },
-      state: {
-        menu: [
-          {
-            name: "首页",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "item",
-            id: "",
-          },
-          {
-            name: "印控管理",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "title",
-            id: "",
-          },
-          {
-            name: "用印管理",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "item",
-            id: "",
-            children: [
-              {
-                name: "首页",
-                language: "",
-                to: "/dashboard/analytics",
-                key: "",
-                type: "item",
-                id: "",
-              },
-            ],
-          },
-          {
-            name: "用印管理",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "item",
-            id: "",
-            children: [
-              {
-                name: "首页",
-                language: "",
-                to: "/dashboard/analytics",
-                key: "",
-                type: "item",
-                id: "",
-              },
-            ],
-          },
-          {
-            name: "电子签章",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "item",
-            id: "",
-            children: [
-              {
-                name: "首页",
-                language: "",
-                to: "/dashboard/analytics",
-                key: "",
-                type: "item",
-                id: "",
-              },
-            ],
-          },
-        ],
-
-        CurrentSystemType: "business" //business / system
-      },
-    };
-  },
-
-  created() {
-    let CurrentSystemType = sessionStorage.getItem("CurrentSystemType");
-    if (CurrentSystemType) {
-      this.state.CurrentSystemType = CurrentSystemType
-    }
-  },
-  computed: {
-    ...layoutComputed,
-    layoutType: {
-      get() {
-        return this.$store ? this.$store.state.layout.layoutType : {} || {};
-      },
-    },
-  },
-
-  watch: {
-    $route: {
-      handler: "onRoutechange",
-      immediate: true,
-      deep: true,
-    },
-  },
-
-  mounted() {
-    if (document.querySelectorAll(".navbar-nav .collapse")) {
-      let collapses = document.querySelectorAll(".navbar-nav .collapse");
-
-      collapses.forEach((collapse) => {
-        // Hide sibling collapses on `show.bs.collapse`
-        collapse.addEventListener("show.bs.collapse", (e) => {
-          e.stopPropagation();
-          let closestCollapse = collapse.parentElement.closest(".collapse");
-          if (closestCollapse) {
-            let siblingCollapses =
-              closestCollapse.querySelectorAll(".collapse");
-            siblingCollapses.forEach((siblingCollapse) => {
-              if (siblingCollapse.classList.contains("show")) {
-                siblingCollapse.classList.remove("show");
-              }
-            });
-          } else {
-            let getSiblings = (elem) => {
-              // Setup siblings array and get the first sibling
-              let siblings = [];
-              let sibling = elem.parentNode.firstChild;
-              // Loop through each sibling and push to the array
-              while (sibling) {
-                if (sibling.nodeType === 1 && sibling !== elem) {
-                  siblings.push(sibling);
-                }
-                sibling = sibling.nextSibling;
-              }
-              return siblings;
-            };
-            let siblings = getSiblings(collapse.parentElement);
-            siblings.forEach((item) => {
-              if (item.childNodes.length > 2)
-                item.firstElementChild.setAttribute("aria-expanded", "false");
-              let ids = item.querySelectorAll("*[id]");
-              ids.forEach((item1) => {
-                item1.classList.remove("show");
-                if (item1.childNodes.length > 2) {
-                  let val = item1.querySelectorAll("ul li a");
-
-                  val.forEach((subitem) => {
-                    if (subitem.hasAttribute("aria-expanded"))
-                      subitem.setAttribute("aria-expanded", "false");
-                  });
-                }
-              });
-            });
-          }
-        });
-
-        // Hide nested collapses on `hide.bs.collapse`
-        collapse.addEventListener("hide.bs.collapse", (e) => {
-          e.stopPropagation();
-          let childCollapses = collapse.querySelectorAll(".collapse");
-          childCollapses.forEach((childCollapse) => {
-            let childCollapseInstance = childCollapse;
-            childCollapseInstance.style.display = "none";
-          });
-        });
-      });
-    }
-  },
-
-  methods: {
-    onRoutechange(ele) {
-      this.initActiveMenu(ele.path);
-      if (document.getElementsByClassName("mm-active").length > 0) {
-        const currentPosition =
-          document.getElementsByClassName("mm-active")[0].offsetTop;
-        if (currentPosition > 500)
-          if (this.$refs.isSimplebar)
-            this.$refs.isSimplebar.value.getScrollElement().scrollTop =
-              currentPosition + 300;
-      }
-    },
-
-    initActiveMenu(ele) {
-      setTimeout(() => {
-        if (document.querySelector("#navbar-nav")) {
-          let a = document
-            .querySelector("#navbar-nav")
-            .querySelector('[href="' + ele + '"]');
-          if (a) {
-            a.classList.add("active");
-            let parentCollapseDiv = a.closest(".collapse.menu-dropdown");
-            if (parentCollapseDiv) {
-              parentCollapseDiv.classList.add("show");
-              parentCollapseDiv.parentElement.children[0].classList.add(
-                "active"
-              );
-              parentCollapseDiv.parentElement.children[0].setAttribute(
-                "aria-expanded",
-                "true"
-              );
-              if (
-                parentCollapseDiv.parentElement.closest(
-                  ".collapse.menu-dropdown"
-                )
-              ) {
-                parentCollapseDiv.parentElement
-                  .closest(".collapse")
-                  .classList.add("show");
-                if (
-                  parentCollapseDiv.parentElement.closest(".collapse")
-                    .previousElementSibling
-                )
-                  parentCollapseDiv.parentElement
-                    .closest(".collapse")
-                    .previousElementSibling.classList.add("active");
-                const grandparent = parentCollapseDiv.parentElement
-                  .closest(".collapse")
-                  .previousElementSibling.parentElement.closest(".collapse");
-                if (grandparent && grandparent.previousElementSibling) {
-                  grandparent.previousElementSibling.classList.add("active");
-                  grandparent.classList.add("show");
-                }
-              }
-            }
-          }
-        }
-      }, 0);
-    },
-  },
-};
-</script>
 
 <template>
   <div class="container-fluid">
@@ -1419,17 +1149,22 @@ export default {
                 </li>
                 <li class="nav-item">
                   <router-link to="/dashboard/crm" class="nav-link" data-key="t-crm">
-                    待智能用印
+                    智能用印
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/dashboard/crm" class="nav-link" data-key="t-crm">
+                    文件归档
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/dashboard/crypto" class="nav-link" data-key="t-crypto">
+                    用印记录
                   </router-link>
                 </li>
                 <li class="nav-item">
                   <router-link to="/" class="nav-link" data-key="t-ecommerce">
                     用印轨迹
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/dashboard/crypto" class="nav-link" data-key="t-crypto">
-                    水印验证
                   </router-link>
                 </li>
               </ul>
@@ -1444,11 +1179,6 @@ export default {
             <div class="collapse menu-dropdown" id="sidebarApps">
               <ul class="nav nav-sm flex-column">
                 <li class="nav-item">
-                  <router-link to="/calendar" class="nav-link" data-key="t-calendar">
-                    印章类型
-                  </router-link>
-                </li>
-                <li class="nav-item">
                   <router-link to="/chat" class="nav-link" data-key="t-chat">
                     印章库
                   </router-link>
@@ -1459,9 +1189,50 @@ export default {
                   </router-link>
                 </li>
                 <li class="nav-item">
+                  <router-link to="/calendar" class="nav-link" data-key="t-calendar">
+                    印章类型
+                  </router-link>
+                </li>
+                <li class="nav-item">
                   <router-link to="/apps-todo" class="nav-link" data-key="t-to-do">
                     印章外借信息
                   </router-link>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button"
+              aria-expanded="false" aria-controls="sidebarApps">
+              <iconpark-icon class="menu-iconpark" name="yinzhangguanli"></iconpark-icon>
+              <span data-key="t-apps"> 文件防篡改</span>
+            </a>
+            <div class="collapse menu-dropdown" id="sidebarApps">
+              <ul class="nav nav-sm flex-column">
+                <li class="nav-item">
+                  <router-link to="/chat" class="nav-link" data-key="t-chat">
+                    防伪水印验证
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <a href="#sidebaremail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="sidebaremail" data-key="t-projects">
+                    文件内容核验
+                  </a>
+                  <div class="collapse menu-dropdown" id="sidebaremail">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
+                          用印前核验
+                        </router-link>
+                      </li>
+                      <li class="nav-item">
+                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
+                          用印后核验
+                        </router-link>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -1482,7 +1253,11 @@ export default {
                   <router-link to="/auth/signup-basic" class="nav-link" data-key="t-basic">待电子签章
                   </router-link>
                 </li>
-
+                <li class="nav-item">
+                  <router-link to="/dashboard/projects" class="nav-link" data-key="t-projects">
+                    电子签章记录
+                  </router-link>
+                </li>
                 <li class="nav-item">
                   <router-link to="/dashboard/projects" class="nav-link" data-key="t-projects">
                     电子印章库
@@ -1509,14 +1284,44 @@ export default {
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/pages/profile" class="nav-link" data-key="t-simple-page">
+                  <a href="#sidebaremail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="sidebaremail" data-key="t-projects">
                     智能印章盒管理
-                  </router-link>
+                  </a>
+                  <div class="collapse menu-dropdown" id="sidebaremail">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
+                          智能印章盒管理
+                        </router-link>
+                      </li>
+                      <li class="nav-item">
+                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
+                          智能印章盒格口管理
+                        </router-link>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/pages/profile-setting" class="nav-link" data-key="t-settings">
+                  <a href="#sidebaremail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="sidebaremail" data-key="t-projects">
                     智能印章柜管理
-                  </router-link>
+                  </a>
+                  <div class="collapse menu-dropdown" id="sidebaremail">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
+                          智能印章柜管理
+                        </router-link>
+                      </li>
+                      <li class="nav-item">
+                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
+                          智能印章柜格口管理
+                        </router-link>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -1527,38 +1332,15 @@ export default {
           </li>
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="4leixing-73n2ei1l"></iconpark-icon>
-              <span data-key="t-widgets">文件类型</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="wenjian"></iconpark-icon>
               <span data-key="t-widgets">文件库</span>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="wenjianguidang"></iconpark-icon>
-              <span data-key="t-widgets">文件归档</span>
+              <iconpark-icon class="menu-iconpark" name="4leixing-73n2ei1l"></iconpark-icon>
+              <span data-key="t-widgets">文件类型</span>
             </router-link>
-          </li>
-          <li class="nav-item">
-            <a href="#sidebarlanding" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false"
-              aria-controls="sidebarlanding" data-key="t-projects">
-              <iconpark-icon class="menu-iconpark" name="wenjian-wenjianchazhao"></iconpark-icon>
-              <span data-key="t-landing">文件核验</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarlanding">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/ui/colors" class="nav-link" data-key="t-colors">用印前核验</router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/ui/colors" class="nav-link" data-key="t-colors">用印后核验</router-link>
-                </li>
-              </ul>
-            </div>
           </li>
 
           <li class="menu-title">
@@ -1567,25 +1349,25 @@ export default {
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="daishenpiliucheng"></iconpark-icon>
-              <span data-key="t-widgets">待审批流程</span>
+              <span data-key="t-widgets">实时确认</span>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="daichulirenwu"></iconpark-icon>
-              <span data-key="t-widgets">待处理任务</span>
+              <span data-key="t-widgets">审批流程</span>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="yishenpiliucheng"></iconpark-icon>
-              <span data-key="t-widgets">已审批流程</span>
+              <span data-key="t-widgets">处理任务</span>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="yichulirenwu"></iconpark-icon>
-              <span data-key="t-widgets">已处理任务</span>
+              <span data-key="t-widgets">抄送给我</span>
             </router-link>
           </li>
           <li class="nav-item">
@@ -1617,11 +1399,11 @@ export default {
                     用印告警提醒</router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/advance-ui/scrollbar" class="nav-link" data-key="t-scrollbar">用印告警预警提醒
+                  <router-link to="/advance-ui/scrollbar" class="nav-link" data-key="t-scrollbar">领用印章告警提醒
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/advance-ui/animation" class="nav-link" data-key="t-animation">审批通过未用印
+                  <router-link to="/advance-ui/animation" class="nav-link" data-key="t-animation">流程规范告警提醒
                   </router-link>
                 </li>
               </ul>
@@ -1668,6 +1450,12 @@ export default {
             </router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link menu-link" to="/widgets">
+              <iconpark-icon class="menu-iconpark" name="qiyexinxi"></iconpark-icon>
+              <span data-key="t-widgets">往来企业</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
             <a class="nav-link menu-link" href="#sidebarForms" data-bs-toggle="collapse" role="button"
               aria-expanded="false" aria-controls="sidebarForms">
               <iconpark-icon class="menu-iconpark" name="bumenyuyuangong"></iconpark-icon>
@@ -1677,15 +1465,15 @@ export default {
               <ul class="nav nav-sm flex-column">
                 <li class="nav-item">
                   <router-link to="/form/elements" class="nav-link" data-key="t-basic-elements">
-                    单位管理</router-link>
+                    单位与部门管理</router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/form/select" class="nav-link" data-key="t-form-select">部门与成员
+                  <router-link to="/form/select" class="nav-link" data-key="t-form-select">员工管理
                   </router-link>
                 </li>
                 <li class="nav-item">
                   <router-link to="/form/checkboxs-radios" class="nav-link" data-key="t-checkboxs-radios">
-                    用户组管理</router-link>
+                    邀请审核</router-link>
                 </li>
                 <li class="nav-item">
                   <router-link to="/form/pickers" class="nav-link" data-key="t-pickers">
@@ -1696,22 +1484,23 @@ export default {
             </div>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="qiyeshezhi"></iconpark-icon>
-              <span data-key="t-widgets">企业设置</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="wanglaiqiye"></iconpark-icon>
-              <span data-key="t-widgets">往来企业</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="yaoqingshenhe"></iconpark-icon>
-              <span data-key="t-widgets">邀请审核</span>
-            </router-link>
+            <a class="nav-link menu-link" href="#sidebarForms" data-bs-toggle="collapse" role="button"
+              aria-expanded="false" aria-controls="sidebarForms">
+              <iconpark-icon class="menu-iconpark" name="bumenyuyuangong"></iconpark-icon>
+              <span data-key="t-forms">权限管理</span>
+            </a>
+            <div class="collapse menu-dropdown" id="sidebarForms">
+              <ul class="nav nav-sm flex-column">
+                <li class="nav-item">
+                  <router-link to="/form/elements" class="nav-link" data-key="t-basic-elements">
+                    角色权限配置</router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/form/select" class="nav-link" data-key="t-form-select">基础权限配置
+                  </router-link>
+                </li>
+              </ul>
+            </div>
           </li>
 
           <li class="menu-title">
@@ -1721,6 +1510,12 @@ export default {
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="quanjucanshushezhi"></iconpark-icon>
               <span data-key="t-widgets">全局参数设置</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link menu-link" to="/widgets">
+              <iconpark-icon class="menu-iconpark" name="zhongduanbanbenguanli"></iconpark-icon>
+              <span data-key="t-widgets">固件版本管理</span>
             </router-link>
           </li>
           <li class="nav-item">
@@ -1758,19 +1553,19 @@ export default {
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="tongzhishijian"></iconpark-icon>
-              <span data-key="t-widgets">通知事件</span>
+              <span data-key="t-widgets">消息事件</span>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="tongzhimoban"></iconpark-icon>
-              <span data-key="t-widgets">通知模板</span>
+              <span data-key="t-widgets">消息模板</span>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="qudaoguanli"></iconpark-icon>
-              <span data-key="t-widgets">渠道管理</span>
+              <span data-key="t-widgets">渠道配置</span>
             </router-link>
           </li>
           <li class="nav-item">
@@ -1814,7 +1609,19 @@ export default {
           <li class="nav-item">
             <router-link class="nav-link menu-link" to="/widgets">
               <iconpark-icon class="menu-iconpark" name="xitongcaozuorizhi"></iconpark-icon>
+              <span data-key="t-widgets">登录日志</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link menu-link" to="/widgets">
+              <iconpark-icon class="menu-iconpark" name="xitongcaozuorizhi"></iconpark-icon>
               <span data-key="t-widgets">系统操作日志</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link menu-link" to="/widgets">
+              <iconpark-icon class="menu-iconpark" name="xitongcaozuorizhi"></iconpark-icon>
+              <span data-key="t-widgets">系统运行日志</span>
             </router-link>
           </li>
           <li class="nav-item">
@@ -1829,67 +1636,282 @@ export default {
               <span data-key="t-widgets">固件升级日志</span>
             </router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarTables" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarTables">
-              <iconpark-icon class="menu-iconpark" name="denglurizhi"></iconpark-icon>
-              <span data-key="t-tables">登录日志</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarTables">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/tables/basic" class="nav-link" data-key="t-basic-tables">登录日志
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/tables/gridjs" class="nav-link" data-key="t-grid-js">异常登录日志
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
         </div>
-
-
-
-
-
-        <!-- 章管家 -->
-        <!-- <div v-for="(item, i) in state.menu" :key="`menu${i}`">
-          <li class="menu-title" v-if="item.type == 'title'">
-            <i class="ri-more-fill"></i>
-            <span data-key="t-components">{{ item.name }}</span>
-          </li>
-          <li class="nav-item" v-else>
-            <div v-if="item.children && item.children.length > 0">
-              <a class="nav-link menu-link" href="" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                aria-controls="">
-                <MapPinIcon></MapPinIcon>
-                <span data-key="t-maps">{{ item.name }}</span>
-              </a>
-              <div class="collapse menu-dropdown">
-                <ul class="nav nav-sm flex-column">
-                  <li class="nav-item" v-for="(data, j) in item" :key="`item${j}`">
-                    <router-link :to="data.to" class="nav-link" data-key="t-google">
-                      {{ data.name }}
-                    </router-link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div v-else>
-              <router-link class="nav-link menu-link" :to="item.to">
-                <CopyIcon></CopyIcon>
-                <span data-key="t-zgj-index.index">{{ item.name }}</span>
-              </router-link>
-            </div>
-          </li>
-        </div> -->
       </ul>
     </template>
   </div>
   <!-- Sidebar -->
 </template>
+<script>
+import { layoutComputed } from "@/state/helpers";
+import { SimpleBar } from "simplebar-vue3";
+import "../unit/SvgIconPack"
+import {
+  HomeIcon,
+  GridIcon,
+  UsersIcon,
+  CommandIcon,
+  PackageIcon,
+  LayersIcon,
+  CopyIcon,
+  FileTextIcon,
+  DatabaseIcon,
+  PieChartIcon,
+  ArchiveIcon,
+  MapPinIcon,
+  Share2Icon,
+} from "@zhuowenli/vue-feather-icons";
+
+export default {
+  components: {
+    SimpleBar,
+    HomeIcon,
+    GridIcon,
+    UsersIcon,
+    CommandIcon,
+    PackageIcon,
+    LayersIcon,
+    CopyIcon,
+    FileTextIcon,
+    DatabaseIcon,
+    PieChartIcon,
+    ArchiveIcon,
+    MapPinIcon,
+    Share2Icon,
+  },
+  data() {
+    return {
+      settings: {
+        minScrollbarLength: 60,
+      },
+      state: {
+        menu: [
+          {
+            name: "首页",
+            language: "",
+            to: "/dashboard/analytics",
+            key: "",
+            type: "item",
+            id: "",
+          },
+          {
+            name: "印控管理",
+            language: "",
+            to: "/dashboard/analytics",
+            key: "",
+            type: "title",
+            id: "",
+          },
+          {
+            name: "用印管理",
+            language: "",
+            to: "/dashboard/analytics",
+            key: "",
+            type: "item",
+            id: "",
+            children: [
+              {
+                name: "首页",
+                language: "",
+                to: "/dashboard/analytics",
+                key: "",
+                type: "item",
+                id: "",
+              },
+            ],
+          },
+          {
+            name: "用印管理",
+            language: "",
+            to: "/dashboard/analytics",
+            key: "",
+            type: "item",
+            id: "",
+            children: [
+              {
+                name: "首页",
+                language: "",
+                to: "/dashboard/analytics",
+                key: "",
+                type: "item",
+                id: "",
+              },
+            ],
+          },
+          {
+            name: "电子签章",
+            language: "",
+            to: "/dashboard/analytics",
+            key: "",
+            type: "item",
+            id: "",
+            children: [
+              {
+                name: "首页",
+                language: "",
+                to: "/dashboard/analytics",
+                key: "",
+                type: "item",
+                id: "",
+              },
+            ],
+          },
+        ],
+
+        CurrentSystemType: "business" //business / system
+      },
+    };
+  },
+
+  created() {
+    let CurrentSystemType = sessionStorage.getItem("CurrentSystemType");
+    if (CurrentSystemType) {
+      this.state.CurrentSystemType = CurrentSystemType
+    }
+  },
+  computed: {
+    ...layoutComputed,
+    layoutType: {
+      get() {
+        return this.$store ? this.$store.state.layout.layoutType : {} || {};
+      },
+    },
+  },
+
+  watch: {
+    $route: {
+      handler: "onRoutechange",
+      immediate: true,
+      deep: true,
+    },
+  },
+
+  mounted() {
+    if (document.querySelectorAll(".navbar-nav .collapse")) {
+      let collapses = document.querySelectorAll(".navbar-nav .collapse");
+
+      collapses.forEach((collapse) => {
+        // Hide sibling collapses on `show.bs.collapse`
+        collapse.addEventListener("show.bs.collapse", (e) => {
+          e.stopPropagation();
+          let closestCollapse = collapse.parentElement.closest(".collapse");
+          if (closestCollapse) {
+            let siblingCollapses =
+              closestCollapse.querySelectorAll(".collapse");
+            siblingCollapses.forEach((siblingCollapse) => {
+              if (siblingCollapse.classList.contains("show")) {
+                siblingCollapse.classList.remove("show");
+              }
+            });
+          } else {
+            let getSiblings = (elem) => {
+              // Setup siblings array and get the first sibling
+              let siblings = [];
+              let sibling = elem.parentNode.firstChild;
+              // Loop through each sibling and push to the array
+              while (sibling) {
+                if (sibling.nodeType === 1 && sibling !== elem) {
+                  siblings.push(sibling);
+                }
+                sibling = sibling.nextSibling;
+              }
+              return siblings;
+            };
+            let siblings = getSiblings(collapse.parentElement);
+            siblings.forEach((item) => {
+              if (item.childNodes.length > 2)
+                item.firstElementChild.setAttribute("aria-expanded", "false");
+              let ids = item.querySelectorAll("*[id]");
+              ids.forEach((item1) => {
+                item1.classList.remove("show");
+                if (item1.childNodes.length > 2) {
+                  let val = item1.querySelectorAll("ul li a");
+
+                  val.forEach((subitem) => {
+                    if (subitem.hasAttribute("aria-expanded"))
+                      subitem.setAttribute("aria-expanded", "false");
+                  });
+                }
+              });
+            });
+          }
+        });
+
+        // Hide nested collapses on `hide.bs.collapse`
+        collapse.addEventListener("hide.bs.collapse", (e) => {
+          e.stopPropagation();
+          let childCollapses = collapse.querySelectorAll(".collapse");
+          childCollapses.forEach((childCollapse) => {
+            let childCollapseInstance = childCollapse;
+            childCollapseInstance.style.display = "none";
+          });
+        });
+      });
+    }
+  },
+
+  methods: {
+    onRoutechange(ele) {
+      this.initActiveMenu(ele.path);
+      if (document.getElementsByClassName("mm-active").length > 0) {
+        const currentPosition =
+          document.getElementsByClassName("mm-active")[0].offsetTop;
+        if (currentPosition > 500)
+          if (this.$refs.isSimplebar)
+            this.$refs.isSimplebar.value.getScrollElement().scrollTop =
+              currentPosition + 300;
+      }
+    },
+
+    initActiveMenu(ele) {
+      setTimeout(() => {
+        if (document.querySelector("#navbar-nav")) {
+          let a = document
+            .querySelector("#navbar-nav")
+            .querySelector('[href="' + ele + '"]');
+          if (a) {
+            a.classList.add("active");
+            let parentCollapseDiv = a.closest(".collapse.menu-dropdown");
+            if (parentCollapseDiv) {
+              parentCollapseDiv.classList.add("show");
+              parentCollapseDiv.parentElement.children[0].classList.add(
+                "active"
+              );
+              parentCollapseDiv.parentElement.children[0].setAttribute(
+                "aria-expanded",
+                "true"
+              );
+              if (
+                parentCollapseDiv.parentElement.closest(
+                  ".collapse.menu-dropdown"
+                )
+              ) {
+                parentCollapseDiv.parentElement
+                  .closest(".collapse")
+                  .classList.add("show");
+                if (
+                  parentCollapseDiv.parentElement.closest(".collapse")
+                    .previousElementSibling
+                )
+                  parentCollapseDiv.parentElement
+                    .closest(".collapse")
+                    .previousElementSibling.classList.add("active");
+                const grandparent = parentCollapseDiv.parentElement
+                  .closest(".collapse")
+                  .previousElementSibling.parentElement.closest(".collapse");
+                if (grandparent && grandparent.previousElementSibling) {
+                  grandparent.previousElementSibling.classList.add("active");
+                  grandparent.classList.add("show");
+                }
+              }
+            }
+          }
+        }
+      }, 0);
+    },
+  },
+};
+</script>
 
 <style lang='scss' scoped>
 .menu-iconpark {
