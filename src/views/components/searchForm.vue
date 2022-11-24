@@ -1,17 +1,17 @@
 <template>
     <div class="components-searchForm">
-        <div class="ap-box" v-for="(item, index) in props.data" :style="props.style.lineStyle">
+        <div class="ap-box" v-for="(item, index) in props.data" :style="[props.style.lineStyle, item.style]">
             <div class="ap-box-cont" v-if="item.type == 'input'">
                 <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
                 <div class="ap-box-contBox">
-                    <el-input class="width-100" v-bind="item.defaultAttribute" :style="item.style" v-model="item.value"
+                    <el-input class="width-100" v-bind="item.defaultAttribute" v-model="item.value"
                         @input="getCurrentValue(item, index)" />
                 </div>
             </div>
             <div class="ap-box-cont" v-else-if="item.type == 'select'">
                 <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
                 <div class="ap-box-contBox">
-                    <el-select class="width-100" v-bind="item.defaultAttribute" :style="item.style" v-model="item.value"
+                    <el-select class="width-100" v-bind="item.defaultAttribute" v-model="item.value"
                         @change="getCurrentValue(item, index)">
                         <el-option v-for="data in item.options" :key="data.value" :label="data.label"
                             :value="data.value" />
@@ -21,8 +21,8 @@
             <div class="ap-box-cont" v-else-if="item.type == 'picker'">
                 <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
                 <div class="ap-box-contBox">
-                    <el-date-picker class="width-100" v-bind="item.defaultAttribute" :style="item.style"
-                        v-model="item.value" @change="getCurrentValue(item, index)" />
+                    <el-date-picker class="width-100" v-bind="item.defaultAttribute" v-model="item.value"
+                        @change="getCurrentValue(item, index)" />
                 </div>
             </div>
             <div class="ap-box-cont" v-else-if="item.type == 'checkbox'">
@@ -35,7 +35,7 @@
             <div class="ap-box-cont" v-else-if="item.type == 'radio'">
                 <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
                 <div class="ap-box-autoBox">
-                    <el-radio-group v-bind="item.defaultAttribute" :style="item.style" v-model="item.value"
+                    <el-radio-group v-bind="item.defaultAttribute" v-model="item.value"
                         @change="getCurrentValue(item, index)">
                         <el-radio v-for="data in item.radio" :label="data.label">{{ data.name }}</el-radio>
                     </el-radio-group>
@@ -45,21 +45,22 @@
                 <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
                 <div class="ap-box-contBox">
                     <el-cascader class="width-100" style="width: 100%;" v-bind="item.defaultAttribute"
-                        :style="item.style" v-model="item.value" @change="getCurrentValue(item, index)" />
+                        v-model="item.value" @change="getCurrentValue(item, index)" />
                 </div>
             </div>
         </div>
         <!-- 分割 -->
         <div class="ap-division" :style="props.style.cutOffRuleStyle"></div>
         <div class="butData" :style="props.style.butLayoutStyle">
-            <div class="ap-box" v-for="(item, index) in props.butData" @click="clickBut(item, index)">
+            <div class="ap-box" v-for="(item, index) in props.butData" @click="clickBut(item, index)"
+                :style="item.style">
                 <div class="ap-box-cont" v-if="item.type == 'click'">
                     <el-button v-bind="item.defaultAttribute">{{ item.name }}</el-button>
                 </div>
                 <div class="ap-box-cont unfold" v-if="item.type == 'unfold'">
                     <el-button v-bind="item.defaultAttribute">{{ item.name }}</el-button>
                 </div>
-                <div class="ap-box-cont" v-if="item.type == 'text'" :style="item.style">
+                <div class="ap-box-cont" v-if="item.type == 'text'">
                     {{ item.name }}
                 </div>
             </div>

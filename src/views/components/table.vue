@@ -6,11 +6,11 @@
             <!-- 多选 -->
             <el-table-column type="selection" width="55" v-if="props.isSelection" />
             <!-- 列表内容 -->
-            <el-table-column :prop="item.prop" :label="item.label" :width="item.width"
-                v-for="(item, index) in  props.header">
+            <el-table-column v-bind="item" v-for="(item, index) in  props.header">
                 <!-- 自定义内容显示 -->
                 <template #default="scope" v-if="item.isCustom">
-                    <slot :name="item.prop"></slot>
+                    <el-button size="small" @click="customClick(scope.$index, scope.row)">Edit</el-button>
+                    <span>remove</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -50,7 +50,7 @@ const props = defineProps({
         default: {}
     },
 })
-const emit = defineEmits(['select', 'select-all', 'selection-change', 'cell-click', 'row-click']);
+const emit = defineEmits(['select', 'select-all', 'selection-change', 'cell-click', 'row-click', 'custom-click']);
 const state = reactive({
 
 });
@@ -86,6 +86,11 @@ function cellClick(row, column, cell, event) {
 //	当某个单元格被点击时会触发该事件
 function rowClick(row, column, event) {
     emit("row-click", row, column, event);
+}
+//点击自定义元素
+function customClick(index, row) {
+    // console.log(index, row);
+    emit("custom-click", index, row);
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
