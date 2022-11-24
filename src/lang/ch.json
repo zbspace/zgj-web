@@ -1,4 +1,5 @@
 {
+    "l-language": "简体中文",
     "t-menu": "菜单",
     "t-dashboards": "仪表板",
     "t-analytics": "分析",
@@ -232,7 +233,7 @@
     "t-zgj-login.forgot": "忘记密码？",
     "t-zgj-login.scanlogin": "扫码登录",
     "t-zgj-login.accountlogin": "账号登录",
-    "t-zgj-login.verification": "验证码",
+    "t-zgj-login.verification": "验证码登录",
     "t-zgj-login.domainAuthorized": "您的域名未授权登录，请联系管理员",
     "t-zgj-login.endDate": "服务已到期，请联系客服获取技术支持",
     "t-zgj-login.license": "license有误，请联系客服获取技术支持",
