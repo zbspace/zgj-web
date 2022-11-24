@@ -11,31 +11,22 @@
         </div>
         <!-- 表格 -->
         <div class="ap-box">
-            <componentsTable type="1" :data="state.componentsTable.data" :header="state.componentsTable.header"
-                :isSelection="true" @row-click="rowClick" @select="select">
-                <!-- #Tom   Tom 就是表头header里的 prop 值 代表当前列 -->
-                <template #Tom>
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-                    <span>remove</span>
-                </template>
+            <componentsTable :data="state.componentsTable.data" :header="state.componentsTable.header"
+                :isSelection="true" @row-click="rowClick" @select="select" @custom-click="customClick">
             </componentsTable>
         </div>
         <!-- 分页 -->
         <div class="ap-box">
-            <componentsTable type="1" :data="state.componentsTable.data" :header="state.componentsTable.header"
-                :isSelection="true" @row-click="rowClick" @select="select">
-                <!-- #Tom   Tom 就是表头header里的 prop 值 代表当前列 -->
-                <template #Tom>
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-                    <span>remove</span>
-                </template>
-            </componentsTable>
+            <componentsPagination :data="state.componentsPagination.data"
+                :defaultAttribute="state.componentsPagination.defaultAttribute" @size-change="sizeChange"
+                @current-change="currentChange">
+                自定义内容
+            </componentsPagination>
         </div>
         <!-- 树 -->
         <div class="ap-box">
             <componentsTree :data="state.componentsTree.data" :defaultAttribute="state.componentsTree.defaultAttribute"
                 @node-click="nodeClick">
-
             </componentsTree>
         </div>
     </div>
@@ -45,6 +36,7 @@ import { reactive, defineProps, onBeforeMount, onMounted } from "vue"
 import componentsTable from "./table"
 import componentsSearchForm from "./searchForm"
 import componentsTree from "./tree"
+import componentsPagination from "./pagination.vue"
 const props = defineProps({
     type: String,
 })
@@ -74,7 +66,7 @@ const state = reactive({
                 placeholder: "请输入name",
             },
             style: {
-
+                width: "100%",
             }
         }, {
             id: 'select',
@@ -147,7 +139,7 @@ const state = reactive({
                 label: "Option 1"
             },
             style: {
-                width: "100%",
+
             },
             radio: [{
                 label: '1',
@@ -437,6 +429,18 @@ const state = reactive({
             style: {
 
             },
+        }, {
+            id: 'textarea',
+            label: "textarea",
+            type: "input",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                placeholder: "请输入name",
+                type: "textarea",
+            },
+            style: {
+                width: "100%",
+            }
         },],
         butData: [{
             id: "submit",
@@ -478,10 +482,12 @@ const state = reactive({
             prop: 'name',
             label: "name",
             width: 100,
+
         }, {
             prop: 'date',
             label: "date",
-            style: { "font-size": "2px", "color": "red" }
+            style: { "font-size": "20px", "color": "red" },
+            sortable: true
         }, {
             prop: 'address',
             label: "address",
@@ -496,7 +502,7 @@ const state = reactive({
                 date: '2016-05-03',
                 name: 'Tom',
                 address: 'No. 189, Grove St, Los Angeles',
-                style: { "font-size": "2px", "color": "green" }
+                style: { "font-size": "20px", "color": "green" }
             },
             {
                 date: '2016-05-02',
@@ -583,6 +589,16 @@ const state = reactive({
             "show-checkbox": true,
             "default-expand-all": true,
             "expand-on-click-node": false,
+            "check-strictly": true,
+        }
+    },
+    componentsPagination: {
+        data: {},
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            layout: "sizes, prev, pager, next, slot",
+            total: 500,
+            'page-sizes': [10, 100, 200, 300, 400]
         }
     },
 });
@@ -599,6 +615,9 @@ function rowClick(row, column, event) {
 function select(selection, row) {
     // ['select', 'select-all', 'selection-change', 'cell-click', 'row-click']  仅支持这些方法
     console.log(selection, row);
+}
+function customClick(index, item) {
+    console.log(index, item);
 }
 
 /* 
@@ -622,6 +641,22 @@ function nodeClick(NodeObjects, node, TreeNode, event) {
     // ['node-click', 'check-change', 'check', 'current-change']  仅支持这些方法
     console.log(NodeObjects, node, TreeNode, event);
 }
+
+
+/* 
+componentsPagination
+*/
+
+
+// page-size 改变时触发
+function sizeChange(val) {
+    console.log(val);
+}
+// current-page 改变时触发
+function currentChange(val) {
+    console.log(val);
+}
+
 
 /* 
 开始调用
