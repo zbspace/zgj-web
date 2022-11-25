@@ -10,7 +10,7 @@
       <!-- title -->
       <div class="back-t">{{ $t('t-zgj-F_SYSTEM_PERSON_MANAGE_RESET_PWD') }}</div>
 
-      <div></div>
+      <div class="back-btn"></div>
     </div>
 
     <!-- 步骤条 -->
@@ -164,19 +164,21 @@ watch(()=> i18n.global.locale, () => {
 
   .up-top {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-  .back-btn {
+    .back-btn {
+      width: 40px;
       font-size: 34px;
       font-weight: 400;
       cursor: pointer;
     }
 
     .back-t {
+      flex: 1;
       font-family: PingFang-SC-Bold;
       font-weight: 700;
       font-size: 20px;
       color: #303133;
+      text-align: center;
     }
   }
 
