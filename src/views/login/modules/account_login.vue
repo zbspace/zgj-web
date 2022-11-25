@@ -85,7 +85,7 @@
               <img v-else src="../../../assets/images/login/l_no_select.svg" class="img" />
               <span :style="{ color: state.rememberPas ?  '#1985F5' : '#909399'}">{{ $t('t-zgj-login.remember') }}</span>
             </div>
-            <div>{{ $t('t-zgj-login.forgot')}}</div>
+            <div @click="getUpdateDialog">{{ $t('t-zgj-login.forgot')}}</div>
           </div>
         </div>
       </div>
@@ -131,13 +131,16 @@
         </div>
       </div>
     </div>
+
+    <!-- 重置密码弹窗 -->
+    <UpdagePasswordDialog v-if="state.showUpdateDialog" @close="closeUpdateDialog"></UpdagePasswordDialog>
   </div>
 </template>
 <script setup>
 import  i18n from "../../../i18n";
 import { reactive, watch } from "vue";
 import VerificationBtn from "../components/VerificationBtn.vue"
-
+import UpdagePasswordDialog from  "../components/UpdagePasswordDialog.vue"
 const state = reactive({
   activeCodeLogin: false, // 验证码登录
   protocal: false, // 协议
@@ -152,6 +155,7 @@ const state = reactive({
   placeholderPassword: null,
   lang: i18n.global.locale,
   showPass: true, // 显示密码
+  showUpdateDialog: false,
 })
 
 // 监听 语言切换
@@ -165,6 +169,16 @@ watch(()=> i18n.global.locale, () => {
 // 监听 tabs 切换
 const changeTabs = (val) => {
   state.activeCodeLogin = val;
+}
+
+// 打开 重置密码
+const getUpdateDialog = () => {
+  state.showUpdateDialog = true
+}
+
+// 关闭 重置密码弹窗
+const closeUpdateDialog = () => {
+  state.showUpdateDialog = false
 }
 </script>
 

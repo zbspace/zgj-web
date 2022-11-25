@@ -359,6 +359,7 @@ const updateScanCode = () => {
       box-shadow: 0 8px 100px 0 rgba(19,59,99,0.07);
       border-radius: 4px;
       margin: auto;
+      z-index: 99;
 
       .login-type{
         width: 80px;
