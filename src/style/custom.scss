@@ -1,0 +1,125 @@
+// 变量
+@import "./variable.scss";
+
+$unify-primary-color: var(--primary-6);
+
+/* 多选框 */
+.el-checkbox {
+    --el-checkbox-checked-text-color: #{$unify-primary-color};
+    --el-checkbox-checked-input-border-color: #{$unify-primary-color};
+    --el-checkbox-checked-bg-color: #{$unify-primary-color};
+    --el-checkbox-input-border-color-hover: #{$unify-primary-color};
+    height: auto;
+    margin-bottom: 0%;
+}
+
+/* 单选框 */
+.el-radio {
+    --el-radio-input-border-color-hover: #{$unify-primary-color};
+    height: auto;
+    margin-bottom: 0%;
+
+    .el-radio__input.is-checked .el-radio__inner {
+        border-color: #{$unify-primary-color};
+        background: #{$unify-primary-color};
+    }
+
+    .el-radio__input.is-checked+.el-radio__label {
+        color:#{$unify-primary-color};
+    }
+}
+
+
+/* 日期选择器 */
+.el-date-editor.el-input,
+.el-date-editor.el-input__wrapper {
+    width: 100%;
+}
+
+// 待删除
+.el-button {
+    --el-button-text-color: #FFFFFF;
+    --el-button-bg-color: #D0963E;
+    --el-button-border-color: #D0963E;
+    --el-button-outline-color: #D0963E;
+    --el-button-active-color: #D0963E;
+    --el-button-hover-text-color: #FFFFFF;
+    --el-button-hover-bg-color: #D9AB5B;
+    --el-button-hover-border-color: #D9AB5B;
+    --el-button-active-bg-color: #AF7427;
+    --el-button-active-border-color: #AF7427;
+    --el-button-disabled-border-color: #F0F0F0;
+}
+
+/* 分页 */
+.el-pagination {
+    .el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+        background-color: var(--primary-2);
+    }
+}
+
+.el-input {
+    --el-input-text-color: rgba(0, 0, 0, 0.85);
+    --el-input-border: #D0963E;
+    --el-input-hover-border: #D0963E;
+    --el-input-focus-border: #D0963E;
+    --el-input-transparent-border: 0 0 0 1px transparent inset;
+    --el-input-border-color: #dcdfe6;
+    --el-input-border-radius: 4px;
+    --el-input-bg-color: #FFFFFF;
+    --el-input-icon-color: #606266;
+    --el-input-placeholder-color: #606266;
+    --el-input-hover-border-color: #D0963E;
+    --el-input-clear-hover-color: #D0963E;
+    --el-input-focus-border-color: #D0963E;
+}
+
+.el-select {
+    --el-select-border-color-hover: #D0963E;
+    --el-select-disabled-border: #D0963E;
+    --el-select-font-size: 14px;
+    --el-select-close-hover-color: #D0963E;
+    --el-select-input-focus-border-color: #D0963E;
+    --el-select-input-font-size: 14px;
+}
+
+
+.login-input {
+    --el-component-size-large: 50px;
+}
+
+.el-select-dropdown__item.selected {
+    color: #D0963E;
+}
+
+.el-pagination.is-background .el-pager li:not(.is-disabled):hover {
+    color: var(--color-text-1);
+}
+
+.el-icon {
+    color: var(--Warning-5);
+}
+
+
+/* 选项卡 */
+.el-tabs {
+    .el-tabs__nav-wrap::after {
+        height: 0;
+    }
+}
+
+/* 下拉菜单 */
+// .el-popper__arrow {
+//     display: none;
+// }
+
+
+
+
+
+
+
+/* 左侧菜单 */
+[data-layout="vertical"][data-sidebar-size="sm"] .navbar-menu .navbar-nav .nav-item:hover>a.menu-link {
+    background-color: var(--Secondary-3);
+}
