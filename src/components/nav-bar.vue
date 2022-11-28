@@ -387,7 +387,7 @@
               <template #dropdown>
                 <div class="ap-hint-dropdown ap-hintDropdown">
                   <div class="dropdown-list">
-                    <div class="dropdown-list-cont" v-for="(item, index) in cache.hint">
+                    <div class="dropdown-list-cont" v-for="(item, index) in state.hint">
                       <img class="dropdown-list-cont-img" :src="item.icon" alt="" srcset="">
                       <div class="dropdown-list-cont-name">{{ item.name }}</div>
                     </div>
@@ -410,7 +410,7 @@
               <template #dropdown>
                 <div class="ap-more-dropdown ap-moreDropdown">
                   <div class="dropdown-list">
-                    <div class="dropdown-list-cont" v-for="(item, index) in cache.more">
+                    <div class="dropdown-list-cont" v-for="(item, index) in state.more">
                       <img class="dropdown-list-cont-img" :src="item.icon" alt="" srcset="">
                       <div class="dropdown-list-cont-name">{{ item.name }}</div>
                     </div>
@@ -572,16 +572,7 @@ export default {
       myVar: 1,
 
       state: {
-        CurrentSystemType: "business" //business / system
-      },
-
-
-
-
-
-
-
-      cache: {
+        CurrentSystemType: "business" ,//business / system
         more: [{
           icon: require("../assets/svg/more-Seal-Application.svg"),
           name: "用印申请",
@@ -604,7 +595,7 @@ export default {
         hint: [{
 
         }],
-      }
+      },
     };
   },
   components: {
