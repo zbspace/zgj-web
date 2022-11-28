@@ -160,7 +160,7 @@ const state = reactive({
   lang: i18n.global.locale,
   showPass: true, // 显示密码
   showUpdateDialog: false,
-  ImmediateRegisterDialog: true
+  ImmediateRegisterDialog: false
 })
 
 // 监听 语言切换
