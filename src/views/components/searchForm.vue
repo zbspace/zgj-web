@@ -1,6 +1,7 @@
 <template>
     <div class="components-searchForm">
-        <div class="ap-box" v-for="(item, index) in props.data" :style="[props.style.lineStyle, item.style]">
+        <div class="ap-box" v-for="(item, index) in props.data" :style="[props.style.lineStyle, item.style]"
+            @click="clickElement(item, index)">
             <div class="ap-box-cont" v-if="item.type == 'input'">
                 <div class="ap-box-label" :style="props.style.labelStyle">
                     <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
@@ -81,11 +82,20 @@
                     <el-button v-bind="data.defaultAttribute" v-model="data.value">{{ data.name }}</el-button>
                 </div>
             </div>
+            <div class="ap-box-cont" v-else-if="item.type == 'custom'">
+                <div class="ap-box-label" :style="props.style.labelStyle">
+                    <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                    {{ item.label }}
+                </div>
+                <div class="ap-box-contBox" v-for="data in item.data">
+                    <slot :name="data.id"></slot>
+                </div>
+            </div>
         </div>
         <!-- 分割 -->
         <div class="ap-division" :style="props.style.cutOffRuleStyle"></div>
         <div class="butData" :style="props.style.butLayoutStyle">
-            <div class="ap-box" v-for="(item, index) in props.butData" @click="clickBut(item, index)"
+            <div class="ap-box" v-for="(item, index) in props.butData" @click="clickElement(item, index)"
                 :style="item.style">
                 <div class="ap-box-cont" v-if="item.type == 'click'">
                     <el-button v-bind="item.defaultAttribute">{{ item.name }}</el-button>
@@ -148,7 +158,7 @@ const props = defineProps({
         default: {}
     },
 })
-const emit = defineEmits(['getCurrentValue', 'getCurrentValueAll', 'clickBut']);
+const emit = defineEmits(['getCurrentValue', 'getCurrentValueAll', 'clickElement']);
 const state = reactive({
     cache: {
         //分割线样式
@@ -167,8 +177,8 @@ function getCurrentValueAll() {
     emit("getCurrentValueAll", props.data);
 }
 //点击按钮
-function clickBut(item, index) {
-    emit("clickBut", item, index);
+function clickElement(item, index) {
+    emit("clickElement", item, index);
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

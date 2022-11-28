@@ -112,3 +112,14 @@ $unify-primary-color: var(--primary-6);
 // .el-popper__arrow {
 //     display: none;
 // }
+
+
+
+
+
+
+
+/* 左侧菜单 */
+[data-layout="vertical"][data-sidebar-size="sm"] .navbar-menu .navbar-nav .nav-item:hover>a.menu-link {
+    background-color: var(--Secondary-3);
+}

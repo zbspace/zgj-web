@@ -1,8 +1,7 @@
 <template>
     <div class="components-table">
-        <el-table v-bind="props.defaultAttribute" :refs="refs" :data="props.data" border style="width: 100%"
-            :cell-style="cellStyle" @select="select" @select-all="selectAll" @selection-change="selectionChange"
-            @cell-click="cellClick" @row-click="rowClick">
+        <el-table v-bind="props.defaultAttribute" :refs="refs" :data="props.data" style="width: 100%" @select="select"
+            @select-all="selectAll" @selection-change="selectionChange" @cell-click="cellClick" @row-click="rowClick">
             <!-- 多选 -->
             <el-table-column type="selection" width="55" v-if="props.isSelection" />
             <!-- 列表内容 -->
@@ -54,19 +53,6 @@ const emit = defineEmits(['select', 'select-all', 'selection-change', 'cell-clic
 const state = reactive({
 
 });
-// 单元格样式回调
-function cellStyle({ row, column, rowIndex, columnIndex }) {
-    // console.log({ row, column, rowIndex, columnIndex });
-    // console.log(props.header[columnIndex]);
-    let style = {}
-    if (props.header[columnIndex] && props.header[columnIndex].style) {
-        style = props.header[columnIndex].style;
-    }
-    if (props.data[rowIndex] && props.data[rowIndex].style) {
-        style = props.data[rowIndex].style;
-    }
-    return style;
-};
 // 	当用户手动勾选数据行的 Checkbox 时触发的事件
 function select(selection, row) {
     emit("select", selection, row);

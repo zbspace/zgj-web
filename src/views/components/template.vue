@@ -6,13 +6,20 @@
         <div class="ap-box">
             <componentsSearchForm :data="state.componentsSearchForm.data" :butData="state.componentsSearchForm.butData"
                 :style="state.componentsSearchForm.style" @getCurrentValue="getCurrentValue"
-                @getCurrentValueAll="getCurrentValueAll" @clickBut="clickBut">
+                @getCurrentValueAll="getCurrentValueAll" @clickElement="clickElement">
             </componentsSearchForm>
         </div>
         <!-- 表格 -->
         <div class="ap-box">
             <componentsTable :data="state.componentsTable.data" :header="state.componentsTable.header"
                 :isSelection="true" @row-click="rowClick" @select="select" @custom-click="customClick">
+            </componentsTable>
+        </div>
+        <!-- 合并行表格 -->
+        <div class="ap-box">
+            <componentsTable :data="state.componentsTable.data" :header="state.componentsTable.header"
+                :defaultAttribute="state.componentsTable.defaultAttribute" @row-click="rowClick" @select="select"
+                @custom-click="customClick">
             </componentsTable>
         </div>
         <!-- 分页 -->
@@ -43,10 +50,10 @@
             </el-dropdown>
         </div>
         <!-- 单据详情 -->
-        <div class="ap-box">
+        <!-- <div class="ap-box">
             <componentsDocumentsDetails Layout="">
             </componentsDocumentsDetails>
-        </div>
+        </div> -->
     </div>
 </template>
 <script setup>
@@ -526,7 +533,6 @@ const state = reactive({
             prop: 'name',
             label: "name",
             width: 100,
-
         }, {
             prop: 'date',
             label: "date",
@@ -566,7 +572,36 @@ const state = reactive({
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
-
+            border: true,
+            "show-header": false,
+            "span-method": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (rowIndex === 0 && columnIndex === 0) {    //用于设置要合并的列
+                    return {
+                        rowspan: 1,　　　　　//合并的行数
+                        colspan: 2          //合并的列数，设为０则直接不显示
+                    };
+                }
+                if (rowIndex === 0 && columnIndex === 1) {    //用于设置要合并的列
+                    return {
+                        rowspan: 1,　　　　　//合并的行数
+                        colspan: 0          //合并的列数，设为０则直接不显示
+                    };
+                }
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                console.log({ row, column, rowIndex, columnIndex });
+                if (rowIndex === 0 && columnIndex === 0) {
+                    return {
+                        "background": "red"
+                    }
+                }
+                if (columnIndex === 0) {
+                    return {
+                        "background": "yellow"
+                    }
+                }
+            },
         }
     },
     componentsTree: {
@@ -674,7 +709,7 @@ function getCurrentValue(item, index) {
 function getCurrentValueAll(data) {
     console.log(data);
 }
-function clickBut(item, index) {
+function clickElement(item, index) {
     console.log(item, index);
 }
 /* 

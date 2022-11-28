@@ -50,6 +50,7 @@
     "particles.vue3": "^1.40.2",
     "prismjs": "^1.26.0",
     "sass-loader": "^10.2.1",
+    "sass-resources-loader": "^2.2.5",
     "simplebar": "^5.3.6",
     "simplebar-vue3": "^0.1.5",
     "sweetalert2": "^11.4.32",

@@ -1,6 +1,7 @@
 /* 
 变量
 */
+body,
 #app {
     /* #### 主色 */
     --primary-6: #d0963e;
@@ -56,6 +57,9 @@
     --Secondary-2: #d4dbeb;
     --Secondary-1: #e8f0ff;
 
+    /* 常用颜色 */
+    --in-common-use-1: #ffffff;
+    --in-common-use-2: #000000;
     /* 描边色 */
 
     --color-border-1: rgba(0, 0, 0, 0.15);
@@ -87,4 +91,7 @@
     --font-weight-500: 500;
     --font-weight-600: 600;
     --font-weight-700: 700;
+
+    /* 圆角 */
+    --border-radius-4: 4px;
 }
