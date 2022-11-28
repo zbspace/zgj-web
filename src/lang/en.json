@@ -9,6 +9,8 @@
     "t-scan-login": "ZGJ scan code login",
     "t-code-login":"Account Password Login",
     "t-scan-code-error":"The QR code has failed",
+    "t-tips-register": "Tip: You are now signing up for a public trial system for the test experience",
+    "t-register": "Register",
     "t-menu": "Menu",
     "t-dashboards": "Dashboards",
     "t-analytics": "Analytics",

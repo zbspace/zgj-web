@@ -97,7 +97,7 @@
 <script setup>
 import  I18n from "../../i18n";
 import { reactive } from "vue";
-import VAccountLogin from "./modules/account_login.vue"
+import VAccountLogin from "./modules/AccountLogin.vue"
 const state = reactive({
   showDownToop: false, // 下载弹窗
   showLangToop: false, // 切换语言弹窗
@@ -359,6 +359,7 @@ const updateScanCode = () => {
       box-shadow: 0 8px 100px 0 rgba(19,59,99,0.07);
       border-radius: 4px;
       margin: auto;
+      z-index: 99;
 
       .login-type{
         width: 80px;
