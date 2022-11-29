@@ -54,6 +54,49 @@
             <componentsDocumentsDetails Layout="">
             </componentsDocumentsDetails>
         </div> -->
+
+        <!-- 布局页面 -->
+        <div class="ap-box">
+            <componentsLayout Layout="tabs,searchForm,tree,table,pagination">
+                <template #tabs>
+                    <div>
+                        <componentsTabs activeName="dfadfa" :data="state.componentsTabs.data" @tab-change="tabChange">
+                        </componentsTabs>
+                    </div>
+                </template>
+                <template #searchForm>
+                    <div>
+                        <componentsSearchForm :data="state.componentsSearchForm.data"
+                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style"
+                            @getCurrentValue="getCurrentValue" @getCurrentValueAll="getCurrentValueAll"
+                            @clickElement="clickElement">
+                        </componentsSearchForm>
+                    </div>
+                </template>
+                <template #tree>
+                    <div>
+                        <componentsTree :data="state.componentsTree.data"
+                            :defaultAttribute="state.componentsTree.defaultAttribute" @node-click="nodeClick">
+                        </componentsTree>
+                    </div>
+                </template>
+                <template #table>
+                    <div>
+                        <componentsTable :data="state.componentsTable.data" :header="state.componentsTable.header"
+                            :isSelection="true" @row-click="rowClick" @select="select" @custom-click="customClick">
+                        </componentsTable>
+                    </div>
+                </template>
+                <template #pagination>
+                    <div>
+                        <componentsPagination :data="state.componentsPagination.data"
+                            :defaultAttribute="state.componentsPagination.defaultAttribute" @size-change="sizeChange"
+                            @current-change="currentChange">
+                        </componentsPagination>
+                    </div>
+                </template>
+            </componentsLayout>
+        </div>
     </div>
 </template>
 <script setup>
@@ -63,6 +106,8 @@ import componentsSearchForm from "./searchForm"
 import componentsTree from "./tree"
 import componentsPagination from "./pagination.vue"
 import componentsDocumentsDetails from "./documentsDetails.vue"
+import componentsTabs from "./tabs.vue"
+import componentsLayout from "./Layout.vue"
 const props = defineProps({
     type: String,
 })
@@ -681,6 +726,15 @@ const state = reactive({
             background: true,
         }
     },
+    componentsTabs: {
+        data: [{
+            label: 'dfad',
+            name: "dfadfa",
+        }, {
+            label: 'fff',
+            name: "ffff",
+        }]
+    },
 });
 
 /* 
@@ -741,8 +795,12 @@ function currentChange(val) {
 componentsDocumentsDetails
 */
 
+/* 
 
-
+*/
+function tabChange(name) {
+    console.log(name);
+}
 
 
 /* 

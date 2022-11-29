@@ -1,8 +1,10 @@
 <template>
     <div class="components-pagination">
-        <el-pagination v-bind="props.defaultAttribute" @size-change="sizeChange" @current-change="currentChange">
-            <slot></slot>
-        </el-pagination>
+        <div class="ap-box">
+            <el-pagination v-bind="props.defaultAttribute" @size-change="sizeChange" @current-change="currentChange">
+                <slot></slot>
+            </el-pagination>
+        </div>
     </div>
 </template>
 <script setup>
@@ -68,5 +70,37 @@ onMounted(() => {
 <style lang='scss' scoped>
 .components-pagination {
     margin: 0%;
+
+    /* 分页 */
+    :deep(.ap-box) {
+        .el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+            background-color: var(--primary-2);
+            color: var(--primary-6);
+        }
+
+        .el-pagination.is-background .el-pager li {
+            background-color: rgba($color: #000000, $alpha: 0);
+        }
+
+        .el-pagination.is-background .el-pager li:hover {
+            background-color: var(--color-fill--2);
+        }
+
+        .el-pagination.is-background .btn-prev:disabled {
+            background-color: rgba($color: #000000, $alpha: 0);
+        }
+
+        .el-pagination.is-background .btn-next {
+            background-color: rgba($color: #000000, $alpha: 0);
+        }
+
+        .el-pagination.is-background .btn-prev {
+            background-color: rgba($color: #000000, $alpha: 0);
+        }
+
+        .components-pagination[data-v-26def509] .ap-box .el-pagination.is-background .btn-prev {
+            background-color: rgba($color: #000000, $alpha: 0);
+        }
+    }
 }
 </style>
