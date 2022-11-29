@@ -1,6 +1,6 @@
 
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid components-menu">
     <div id="two-column-menu"></div>
 
     <template v-if="layoutType === 'twocolumn'">
@@ -1122,520 +1122,61 @@
 
     <template v-else>
       <ul class="navbar-nav h-100" id="navbar-nav">
-        <div v-if="state.CurrentSystemType == 'business'">
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/frontDesk/home">
-              <iconpark-icon class="menu-iconpark" name="shouye-73n5dhb1"></iconpark-icon>
-              <!-- <iconpark-icon class="menu-iconpark" name="shouye"></iconpark-icon> -->
-              <span data-key="t-widgets">首页</span>
-            </router-link>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 印控管理</span>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarDashboards">
-              <iconpark-icon class="menu-iconpark" name="gaizhang"></iconpark-icon>
-              <span data-key="t-dashboards"> 用印管理</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarDashboards">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/dashboard/analytics" class="nav-link custom-abc" data-key="t-analytics">
-                    用印申请
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/dashboard/crm" class="nav-link" data-key="t-crm">
-                    智能用印
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/dashboard/crm" class="nav-link" data-key="t-crm">
-                    文件归档
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/dashboard/crypto" class="nav-link" data-key="t-crypto">
-                    用印记录
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/" class="nav-link" data-key="t-ecommerce">
-                    用印轨迹
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarApps">
-              <iconpark-icon class="menu-iconpark" name="yinzhangguanli"></iconpark-icon>
-              <span data-key="t-apps"> 印章管理</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarApps">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/chat" class="nav-link" data-key="t-chat">
-                    印章库
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/apps-file-manager" class="nav-link" data-key="t-file-manager">
-                    印章申请
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/calendar" class="nav-link" data-key="t-calendar">
-                    印章类型
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/apps-todo" class="nav-link" data-key="t-to-do">
-                    印章外借信息
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarApps">
-              <iconpark-icon class="menu-iconpark" name="yinzhangguanli"></iconpark-icon>
-              <span data-key="t-apps"> 文件防篡改</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarApps">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/chat" class="nav-link" data-key="t-chat">
-                    防伪水印验证
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <a href="#sidebaremail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                    aria-controls="sidebaremail" data-key="t-projects">
-                    文件内容核验
-                  </a>
-                  <div class="collapse menu-dropdown" id="sidebaremail">
-                    <ul class="nav nav-sm flex-column">
+        <div v-for="(item, index) in state.menu">
+          <div v-if="item.type == 'part'">
+            <li class="menu-title">
+              <span data-key="t-menu"> {{ item.name }}</span>
+            </li>
+          </div>
+          <div v-else-if="item.children && item.children.length > 0">
+            <li class="nav-item">
+              <a class="nav-link menu-link" :href="'#' + item.label" data-bs-toggle="collapse" role="button"
+                aria-expanded="false" :aria-controls="item.label">
+                <img class="menu-iconpark" :src="item.icon" alt="" srcset="">
+                <span data-key="t-dashboards"> {{ item.name }}</span>
+              </a>
+              <div class="collapse menu-dropdown" :id="item.label">
+                <ul class="nav nav-sm flex-column">
+                  <div v-for="data in item.children">
+                    <div v-if="data.children && data.children.length > 0">
                       <li class="nav-item">
-                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
-                          用印前核验
+                        <a :href="'#' + data.label" class="nav-link" data-bs-toggle="collapse" role="button"
+                          aria-expanded="false" :aria-controls="data.label" data-key="t-projects">
+                          {{ data.name }}
+                        </a>
+                        <div class="collapse menu-dropdown" :id="data.label">
+                          <ul class="nav nav-sm flex-column">
+                            <div v-for="node in data.children">
+                              <li class="nav-item">
+                                <router-link :to="node.to" class="nav-link custom-abc" data-key="t-analytics">
+                                  {{ node.name }}
+                                </router-link>
+                              </li>
+                            </div>
+                          </ul>
+                        </div>
+                      </li>
+                    </div>
+                    <div v-else>
+                      <li class="nav-item">
+                        <router-link :to="data.to" class="nav-link custom-abc" data-key="t-analytics">
+                          {{ data.name }}
                         </router-link>
                       </li>
-                      <li class="nav-item">
-                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
-                          用印后核验
-                        </router-link>
-                      </li>
-                    </ul>
+                    </div>
                   </div>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarAuth">
-              <iconpark-icon class="menu-iconpark" name="bianzu4"></iconpark-icon>
-              <span data-key="t-authentication">电子签章</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarAuth">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/auth/signin-basic" class="nav-link" data-key="t-basic">电子签章申请
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/auth/signup-basic" class="nav-link" data-key="t-basic">待电子签章
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/dashboard/projects" class="nav-link" data-key="t-projects">
-                    电子签章记录
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/dashboard/projects" class="nav-link" data-key="t-projects">
-                    电子印章库
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/dashboard/nft" class="nav-link" data-key="t-nft">
-                    用户认证
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarPages">
-              <iconpark-icon class="menu-iconpark" name="shebeiguanli"></iconpark-icon>
-              <span data-key="t-pages">设备管理</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarPages">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/pages/starter" class="nav-link" data-key="t-starter">工作台管理
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <a href="#sidebaremail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                    aria-controls="sidebaremail" data-key="t-projects">
-                    智能印章盒管理
-                  </a>
-                  <div class="collapse menu-dropdown" id="sidebaremail">
-                    <ul class="nav nav-sm flex-column">
-                      <li class="nav-item">
-                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
-                          智能印章盒管理
-                        </router-link>
-                      </li>
-                      <li class="nav-item">
-                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
-                          智能印章盒格口管理
-                        </router-link>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="nav-item">
-                  <a href="#sidebaremail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                    aria-controls="sidebaremail" data-key="t-projects">
-                    智能印章柜管理
-                  </a>
-                  <div class="collapse menu-dropdown" id="sidebaremail">
-                    <ul class="nav nav-sm flex-column">
-                      <li class="nav-item">
-                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
-                          智能印章柜管理
-                        </router-link>
-                      </li>
-                      <li class="nav-item">
-                        <router-link to="/mailbox" class="nav-link" data-key="t-mailbox">
-                          智能印章柜格口管理
-                        </router-link>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 文件管理</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="wenjian"></iconpark-icon>
-              <span data-key="t-widgets">文件库</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="4leixing-73n2ei1l"></iconpark-icon>
-              <span data-key="t-widgets">文件类型</span>
-            </router-link>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 流程审批</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="daishenpiliucheng"></iconpark-icon>
-              <span data-key="t-widgets">实时确认</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="daichulirenwu"></iconpark-icon>
-              <span data-key="t-widgets">审批流程</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="yishenpiliucheng"></iconpark-icon>
-              <span data-key="t-widgets">处理任务</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="yichulirenwu"></iconpark-icon>
-              <span data-key="t-widgets">抄送给我</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="chaosonggeiwodeliucheng"></iconpark-icon>
-              <span data-key="t-widgets">抄送给我的流程</span>
-            </router-link>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 风控预警</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="fengxianfenjiguankongguanli-73n2ehpo"></iconpark-icon>
-              <span data-key="t-widgets">风险提醒设置</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarAdvanceUI">
-              <iconpark-icon class="menu-iconpark" name="shenhejilu"></iconpark-icon>
-              <span data-key="t-advance-ui">风险提醒记录</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarAdvanceUI">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/advance-ui/sweetalerts" class="nav-link" data-key="t-sweet-alerts">
-                    用印告警提醒</router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/advance-ui/scrollbar" class="nav-link" data-key="t-scrollbar">领用印章告警提醒
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/advance-ui/animation" class="nav-link" data-key="t-animation">流程规范告警提醒
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 数据报表</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="xianchangkanban-73n2ei12"></iconpark-icon>
-              <span data-key="t-widgets">数据看板</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="yinkongguanlibeifen5-73n2ei2g"></iconpark-icon>
-              <span data-key="t-widgets">用印数据分析</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="yinkongguanlibeifen52-73n2ei1o"></iconpark-icon>
-              <span data-key="t-widgets">印章数据分析</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="yujingguanli-73n2ei1f"></iconpark-icon>
-              <span data-key="t-widgets">预警数据分析</span>
-            </router-link>
-          </li>
-        </div>
-        <!-- 系统 -->
-        <div v-if="state.CurrentSystemType == 'system'">
-          <li class="menu-title">
-            <span data-key="t-menu"> 企业管理</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="qiyexinxi"></iconpark-icon>
-              <span data-key="t-widgets">企业信息</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="qiyexinxi"></iconpark-icon>
-              <span data-key="t-widgets">往来企业</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarForms" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarForms">
-              <iconpark-icon class="menu-iconpark" name="bumenyuyuangong"></iconpark-icon>
-              <span data-key="t-forms">部门与员工</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarForms">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/form/elements" class="nav-link" data-key="t-basic-elements">
-                    单位与部门管理</router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/form/select" class="nav-link" data-key="t-form-select">员工管理
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/form/checkboxs-radios" class="nav-link" data-key="t-checkboxs-radios">
-                    邀请审核</router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/form/pickers" class="nav-link" data-key="t-pickers">
-                    角色权限管理
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarForms" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="sidebarForms">
-              <iconpark-icon class="menu-iconpark" name="bumenyuyuangong"></iconpark-icon>
-              <span data-key="t-forms">权限管理</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarForms">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <router-link to="/form/elements" class="nav-link" data-key="t-basic-elements">
-                    角色权限配置</router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/form/select" class="nav-link" data-key="t-form-select">基础权限配置
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 基础设置</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="quanjucanshushezhi"></iconpark-icon>
-              <span data-key="t-widgets">全局参数设置</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="zhongduanbanbenguanli"></iconpark-icon>
-              <span data-key="t-widgets">固件版本管理</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="zhongduanbanbenguanli"></iconpark-icon>
-              <span data-key="t-widgets">终端版本管理</span>
-            </router-link>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 业务管理</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="biaodanguanli"></iconpark-icon>
-              <span data-key="t-widgets">表单管理</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="liuchengguanli"></iconpark-icon>
-              <span data-key="t-widgets">流程管理</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="yewuguizepeizhi"></iconpark-icon>
-              <span data-key="t-widgets">业务规则配置</span>
-            </router-link>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 消息中心</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="tongzhishijian"></iconpark-icon>
-              <span data-key="t-widgets">消息事件</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="tongzhimoban"></iconpark-icon>
-              <span data-key="t-widgets">消息模板</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="qudaoguanli"></iconpark-icon>
-              <span data-key="t-widgets">渠道配置</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="xiaoxirizhi"></iconpark-icon>
-              <span data-key="t-widgets">消息日志</span>
-            </router-link>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 集成管理</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="dingdingduijiepeizhi"></iconpark-icon>
-              <span data-key="t-widgets">钉钉对接配置</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="qiyeweixinduijiepeizhi"></iconpark-icon>
-              <span data-key="t-widgets">企业微信对接配置</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="yunzhijiaduijiepeizhi"></iconpark-icon>
-              <span data-key="t-widgets">云之家对接配置</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="zidingyiduijiepeizhi"></iconpark-icon>
-              <span data-key="t-widgets">自定义对接配置</span>
-            </router-link>
-          </li>
-
-          <li class="menu-title">
-            <span data-key="t-menu"> 日志管理</span>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="xitongcaozuorizhi"></iconpark-icon>
-              <span data-key="t-widgets">登录日志</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="xitongcaozuorizhi"></iconpark-icon>
-              <span data-key="t-widgets">系统操作日志</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="xitongcaozuorizhi"></iconpark-icon>
-              <span data-key="t-widgets">系统运行日志</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="zhongduancaozuorizhi"></iconpark-icon>
-              <span data-key="t-widgets">终端操作日志</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link menu-link" to="/widgets">
-              <iconpark-icon class="menu-iconpark" name="gujianshengjirizhi"></iconpark-icon>
-              <span data-key="t-widgets">固件升级日志</span>
-            </router-link>
-          </li>
+                </ul>
+              </div>
+            </li>
+          </div>
+          <div v-else>
+            <li class="nav-item">
+              <router-link class="nav-link menu-link" :to="item.to">
+                <img class="menu-iconpark" :src="item.icon" alt="" srcset="">
+                <span data-key="t-widgets">{{ item.name }}</span>
+              </router-link>
+            </li>
+          </div>
         </div>
       </ul>
     </template>
@@ -1685,79 +1226,411 @@ export default {
         minScrollbarLength: 60,
       },
       state: {
-        menu: [
+        menu: [],
+        business: [
           {
             name: "首页",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "item",
-            id: "",
+            label: "shouye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/shouye-1.svg"),
           },
           {
             name: "印控管理",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "title",
-            id: "",
+            type: "part",
+            label: "yinkongguanli",
           },
           {
             name: "用印管理",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "item",
-            id: "",
-            children: [
-              {
-                name: "首页",
-                language: "",
-                to: "/dashboard/analytics",
-                key: "",
-                type: "item",
-                id: "",
-              },
-            ],
+            label: "yongyinguanli",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/yongyin-guanli-1.svg"),
+            children: [{
+              name: "用印申请",
+              to: "/frontDesk/home",
+            }, {
+              name: "智能用印",
+              to: "/frontDesk/home",
+            }, {
+              name: "文件归档",
+              to: "/frontDesk/home",
+            }, {
+              name: "用印记录",
+              to: "/frontDesk/home",
+            }, {
+              name: "用印轨迹",
+              to: "/frontDesk/home",
+            }]
           },
           {
-            name: "用印管理",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "item",
-            id: "",
+            name: "印章管理",
+            label: "yinzhangguanli",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/yinzhang-guanli-1.svg"),
+            children: [{
+              name: "印章库",
+              to: "/frontDesk/home",
+            }, {
+              name: "印章申请",
+              to: "/frontDesk/home",
+            }, {
+              name: "印章类型",
+              to: "/frontDesk/home",
+            }, {
+              name: "印章外借信息",
+              to: "/frontDesk/home",
+            },]
+          },
+          {
+            name: "文件防篡改",
+            label: "wenjianfangchuangai",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/yinzhang-guanli-1.svg"),
             children: [
               {
-                name: "首页",
-                language: "",
-                to: "/dashboard/analytics",
-                key: "",
-                type: "item",
-                id: "",
+                name: "防伪水印验证",
+                to: "/frontDesk/home",
+              }, {
+                name: "文件内容核验",
+                label: "wenjianneirongheyan",
+                to: "/frontDesk/home",
+                children: [
+                  {
+                    name: "用印前核验",
+                    to: "/frontDesk/home",
+                  },
+                  {
+                    name: "用印后核验",
+                    to: "/frontDesk/home",
+                  }
+                ]
               },
-            ],
+            ]
           },
           {
             name: "电子签章",
-            language: "",
-            to: "/dashboard/analytics",
-            key: "",
-            type: "item",
-            id: "",
+            label: "dianzibiaoqian",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/dianzi-qianzhang.svg"),
+            children: [{
+              name: "电子签章申请",
+              to: "/frontDesk/home",
+            }, {
+              name: "待电子签章",
+              to: "/frontDesk/home",
+            }, {
+              name: "电子签章记录",
+              to: "/frontDesk/home",
+            }, {
+              name: "电子印章库",
+              to: "/frontDesk/home",
+            }, {
+              name: "用户认证",
+              to: "/frontDesk/home",
+            },]
+          },
+          {
+            name: "设备管理",
+            label: "shebeiguanli",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/shebei-guanli.svg"),
             children: [
               {
-                name: "首页",
-                language: "",
-                to: "/dashboard/analytics",
-                key: "",
-                type: "item",
-                id: "",
+                name: "智能印章盒管理",
+                label: "zhinengyizhangheguanli",
+                to: "/frontDesk/home",
+                children: [{
+                  name: "智能印章盒管理",
+                  to: "/frontDesk/home",
+                }, {
+                  name: "智能印章盒格口管理",
+                  to: "/frontDesk/home",
+                }]
               },
-            ],
+              {
+                name: "智能印章柜管理",
+                to: "/frontDesk/home",
+                label: "zhinengyinzhangguiguanli",
+                children: [{
+                  name: "智能印章柜管理",
+                  to: "/frontDesk/home",
+                }, {
+                  name: "智能印章柜格口管理",
+                  to: "/frontDesk/home",
+                }]
+              },
+            ]
+          },
+
+          {
+            name: "文件管理",
+            type: "part",
+            label: "wenjianguanli",
+          },
+          {
+            name: "文件库",
+            label: "wenjianku",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/wenjianku-1.svg"),
+          },
+          {
+            name: "文件类型",
+            label: "wenjianleixing",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/wenjian-leixing-1.svg"),
+          },
+
+          {
+            name: "流程审批",
+            label: "liuchengshenpi",
+            type: "part",
+          },
+
+          {
+            name: "实时确认",
+            label: "shishiqueren",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/shebei-guanli.svg"),
+          },
+          {
+            name: "审批流程",
+            label: "shenpiliucheng",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/dai-shenpi-liucheng.svg"),
+          },
+          {
+            name: "处理任务",
+            label: "chuliyewu",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/dai-chuli-renwu.svg"),
+          },
+          {
+            name: "抄送给我",
+            label: "caosonggeiwo",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/chaosong-geiwode-liucheng.svg"),
+          },
+          {
+            name: "风控预警",
+            label: "fengkongyujing",
+            type: "part",
+          },
+          {
+            name: "风控提醒设置",
+            label: "fengkongtixingshezhi",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/fengxian-tixing-jilu-1.svg"),
+          },
+          {
+            name: "风险提醒记录",
+            label: "fengxiantixingjilu",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/fengxian-tixing-jilu-1.svg"),
+            children: [
+              {
+                name: "用印告警提醒",
+                to: "/frontDesk/home",
+              },
+              {
+                name: "领用印章告警提醒",
+                to: "/frontDesk/home",
+              },
+              {
+                name: "流程规范告警提醒",
+                to: "/frontDesk/home",
+              },
+            ]
+          },
+          {
+            name: "数据报表",
+            label: "shujubaobiao",
+            type: "part",
+          },
+          {
+            name: "数据看板",
+            label: "shuju-kanban",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/shuju-kanban-1.svg"),
+          },
+          {
+            name: "用印数据分析",
+            label: "yongyin-shuju-fenxi",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/yongyin-shuju-fenxi-1.svg"),
+          },
+          {
+            name: "印章数据分析",
+            label: "yinzhang-shuju-fenxi",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/yinzhang-shuju-fenxi-1.svg"),
+          },
+          {
+            name: "预警数据分析",
+            label: "yujing-shuju-fenxi",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/yujing-guanli.svg"),
           },
         ],
-
+        system: [
+          {
+            name: "企业管理",
+            type: "part",
+            label: "qiyeguanli",
+          },
+          {
+            name: "企业信息",
+            label: "quyexinxi",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/qiye-xinxi.svg"),
+          },
+          {
+            name: "往来企业",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/wanglai-qiye.svg"),
+          },
+          {
+            name: "部门与员工",
+            label: "bumenyuyuangong",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/bumen-yu-yuangong.svg"),
+            children: [
+              {
+                name: "单位与部门管理",
+                to: "/frontDesk/home",
+              },
+              {
+                name: "员工管理",
+                to: "/frontDesk/home",
+              },
+              {
+                name: "邀请审核",
+                to: "/frontDesk/home",
+              }
+            ]
+          },
+          {
+            name: "权限管理",
+            label: "quanxianguanli",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/quanju-canshu-peizhi.svg"),
+            children: [
+              {
+                name: "角色权限配置",
+                to: "/frontDesk/home",
+              },
+              {
+                name: "基础权限配置",
+                to: "/frontDesk/home",
+              }
+            ]
+          },
+          {
+            name: "基础设置",
+            type: "part",
+          },
+          {
+            name: "全局参数设置",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/quanju-canshu-peizhi.svg"),
+          },
+          {
+            name: "固件版本管理",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/gujian-shengji-rizhi.svg"),
+          },
+          {
+            name: "终端版本管理",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/zongduan-banben-guanli.svg"),
+          },
+          {
+            name: "业务管理",
+            type: "part",
+          },
+          {
+            name: "表单管理",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/biaodan-guanli.svg"),
+          },
+          {
+            name: "流程管理",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/liucheng-guanli.svg"),
+          },
+          {
+            name: "业务规则配置",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/yewu-guizhe-peizhi.svg"),
+          },
+          {
+            name: "消息中心",
+            type: "part",
+          },
+          {
+            name: "消息事件",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/xiaoxi-rizhi.svg"),
+          },
+          {
+            name: "消息模板",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/xiaoxi-rizhi.svg"),
+          },
+          {
+            name: "渠道配置",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/xiaoxi-rizhi.svg"),
+          },
+          {
+            name: "消息日志",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/xiaoxi-rizhi.svg"),
+          },
+          {
+            name: "日志管理",
+            type: "part",
+          },
+          {
+            name: "登录日志",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/denglu-rizi.svg"),
+          },
+          {
+            name: "系统操作日志",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/xitong-caozuo-rizhi.svg"),
+          },
+          {
+            name: "系统运行日志",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/xitong-caozuo-rizhi.svg"),
+          },
+          {
+            name: "终端操作日志",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/zongduan-caozuo-rizhi.svg"),
+          },
+          {
+            name: "固件升级日志",
+            label: "wanglai-qiye",
+            to: "/frontDesk/home",
+            icon: require("../assets/svg/gujian-shengji-rizhi.svg"),
+          },
+        ],
         CurrentSystemType: "business" //business / system
       },
     };
@@ -1767,6 +1640,11 @@ export default {
     let CurrentSystemType = sessionStorage.getItem("CurrentSystemType");
     if (CurrentSystemType) {
       this.state.CurrentSystemType = CurrentSystemType
+    }
+    if (CurrentSystemType == "business") {
+      this.state.menu = this.state.business;
+    } else if (CurrentSystemType == "system") {
+      this.state.menu = this.state.system;
     }
   },
   computed: {
@@ -1914,8 +1792,22 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.menu-iconpark {
-  font-size: 26px;
-  margin-right: 10px;
+.components-menu {
+  .menu-iconpark {
+    @include mixin-width(26);
+    margin-right: 10px;
+  }
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link:before {
+  content: '';
+  width: 6px;
+  height: 1.5px;
+  background-color: var(--vz-vertical-menu-sub-item-color);
+  position: absolute;
+  left: 2px;
+  top: 16.5px;
+  transition: all .4s ease-in-out;
+  opacity: 0.5;
 }
 </style>
