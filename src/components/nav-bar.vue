@@ -1,5 +1,3 @@
-
-  
 <template>
   <header id="page-topbar">
     <div class="layout-width">
@@ -175,8 +173,6 @@
             </div>
           </div>
 
-
-
           <!-- <div class="dropdown ms-1 topbar-head-dropdown header-item">
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -194,7 +190,6 @@
             </div>
           </div> -->
 
-
           <div class="ms-1 header-item d-none d-sm-flex">
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
               data-toggle="fullscreen" @click="initFullScreen">
@@ -205,7 +200,6 @@
               <!-- <iconpark-icon class="nav-bar-iconpark" name="bangzhu"></iconpark-icon> -->
             </button>
           </div>
-
 
           <div class="dropdown topbar-head-dropdown ms-1 header-item">
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
@@ -370,9 +364,6 @@
             </div>
           </div>
 
-
-
-
           <div class="ap-hint">
             <el-dropdown trigger="click">
               <div class="ap-hint-text">
@@ -396,7 +387,6 @@
               </template>
             </el-dropdown>
           </div>
-
 
           <div class="ap-more">
             <el-dropdown trigger="click">
@@ -472,8 +462,6 @@
             </el-dropdown>
           </div>
 
-
-
           <!-- <div class="dropdown ms-sm-3 header-item topbar-user">
             <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
@@ -508,7 +496,6 @@
             </div>
           </div> -->
 
-
         </div>
       </div>
     </div>
@@ -516,7 +503,7 @@
 </template>
 
 
-<script>
+<script lang="js">
 import {
   SimpleBar
 } from "simplebar-vue3";
@@ -789,19 +776,11 @@ export default {
       }
     },
 
-
-
-
-
-
-
-
-
-
     // 跳转页面
     mhs_clk_redirect(path) {
       this.$router.push(path);
     },
+
     // 跳转业务首页或者系统首页
     mhs_clk_homePage() {
       //business / system
@@ -813,9 +792,9 @@ export default {
       }
     }
 
-
   },
   computed: {},
+
   mounted() {
     document.addEventListener("scroll", function () {
       var pageTopbar = document.getElementById("page-topbar");

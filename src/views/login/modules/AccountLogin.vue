@@ -104,7 +104,7 @@
 
       <!-- btn -->
       <div class="l-btn">
-        <el-button type="primary" class="btn">{{ $t('t-zgj-login.loginButton') }}</el-button>
+        <el-button type="primary" class="btn" @click="login">{{ $t('t-zgj-login.loginButton') }}</el-button>
       </div>
 
       <!-- 注册 -->
@@ -141,7 +141,8 @@
 </template>
 <script setup>
 import  i18n from "../../../i18n";
-import { reactive, watch } from "vue";
+import { reactive, watch, onMounted } from "vue";
+import router from "../../../router/index";
 import VerificationBtn from "../components/VerificationBtn.vue"
 import UpdagePasswordDialog from  "./UpdagePasswordDialog.vue"
 import ImmediateRegister from "./Register.vue"
@@ -158,7 +159,7 @@ const state = reactive({
   placeholderCodeAndAccount: null,
   placeholderPassword: null,
   lang: i18n.global.locale,
-  showPass: true, // 显示密码
+  showPass: false, // 显示密码
   showUpdateDialog: false,
   ImmediateRegisterDialog: false
 })
@@ -170,6 +171,11 @@ watch(()=> i18n.global.locale, () => {
   state.placeholderCodeAndAccount = i18n.global.t('t-zgj-person.PleaseAccount')
   state.placeholderPassword = i18n.global.t('t-zgj-password.required')
 }, { immediate: true, deep: true})
+
+onMounted(() => {
+  state.inputAccount = '156666666666'
+  state.inputPassword = '666666'
+})
 
 // 监听 tabs 切换
 const changeTabs = (val) => {
@@ -185,6 +191,10 @@ const getUpdateDialog = () => {
 const closeUpdateDialog = () => {
   state.showUpdateDialog = false
   state.ImmediateRegisterDialog = false
+}
+
+const login = () => {
+  router.push('/frontDesk/home')
 }
 </script>
 
