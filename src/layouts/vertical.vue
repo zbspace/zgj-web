@@ -51,7 +51,7 @@
           <slot />
         </div>
       </div>
-      <Footer />
+      <!-- <Footer /> -->
     </div>
     <RightBar />
   </div>

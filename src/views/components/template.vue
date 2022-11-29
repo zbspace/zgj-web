@@ -587,8 +587,9 @@ const state = reactive({
         }, {
             prop: 'Tom',
             label: "Tom",
-            // 是否自定义  自定义时  插槽名为  prop名
-            isCustom: true
+            rankDisplayData: [{
+                name: "1223"
+            }],
         }],
         data: [
             {
@@ -752,8 +753,8 @@ function select(selection, row) {
     // ['select', 'select-all', 'selection-change', 'cell-click', 'row-click']  仅支持这些方法
     console.log(selection, row);
 }
-function customClick(index, item) {
-    console.log(index, item);
+function customClick(index, item, butItem) {
+    console.log(index, item, butItem);
 }
 
 /* 

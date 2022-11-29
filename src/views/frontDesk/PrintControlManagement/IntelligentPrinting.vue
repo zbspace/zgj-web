@@ -1,11 +1,54 @@
 <!-- 智能用印 -->
 <template>
-    <div class="PrintControlManagement-IntelligentPrinting">
-
-    </div>
+    <Layout>
+        <div class="PrintControlManagement-IntelligentPrinting">
+            <componentsLayout Layout="tabs,searchForm,tree,table,pagination">
+                <template #tabs>
+                    <div>
+                        <componentsTabs activeName="dfadfa" :data="state.componentsTabs.data">
+                        </componentsTabs>
+                    </div>
+                </template>
+                <template #searchForm>
+                    <div>
+                        <componentsSearchForm :data="state.componentsSearchForm.data"
+                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                        </componentsSearchForm>
+                    </div>
+                </template>
+                <template #tree>
+                    <div>
+                        <componentsTree :data="state.componentsTree.data"
+                            :defaultAttribute="state.componentsTree.defaultAttribute">
+                        </componentsTree>
+                    </div>
+                </template>
+                <template #table>
+                    <div>
+                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                            :data="state.componentsTable.data" :header="state.componentsTable.header"
+                            :isSelection="true">
+                        </componentsTable>
+                    </div>
+                </template>
+                <template #pagination>
+                    <componentsPagination :data="state.componentsPagination.data"
+                        :defaultAttribute="state.componentsPagination.defaultAttribute">
+                    </componentsPagination>
+                </template>
+            </componentsLayout>
+        </div>
+    </Layout>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import Layout from "../../../layouts/main.vue";
+import componentsTable from "../../components/table"
+import componentsSearchForm from "../../components/searchForm"
+import componentsTree from "../../components/tree"
+import componentsPagination from "../../components/pagination.vue"
+import componentsTabs from "../../components/tabs.vue"
+import componentsLayout from "../../components/Layout.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -15,7 +58,610 @@ const props = defineProps({
 })
 const emit = defineEmits([]);
 const state = reactive({
+    componentsSearchForm: {
+        style: {
+            lineStyle: {
+                width: "50%",
+            },
+            cutOffRuleStyle: {
+                width: "100%",
+            },
+            labelStyle: {
+                width: "100px"
+            },
+            butLayoutStyle: {
+                width: "100%",
+                "justify-content": "center",
+            },
+        },
+        data: [{
+            id: 'name',
+            label: "name",
+            type: "input",
+            isNecessary: true,
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                placeholder: "请输入name",
+            },
+            style: {
+                width: "100%",
+            }
+        }, {
+            id: 'select',
+            label: "select",
+            type: "select",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                placeholder: "请输入label",
+            },
+            options: [{
+                value: 'Option1',
+                label: 'Option1',
+            },
+            {
+                value: 'Option2',
+                label: 'Option2',
+            },
+            {
+                value: 'Option3',
+                label: 'Option3',
+            },
+            {
+                value: 'Option4',
+                label: 'Option4',
+            },
+            {
+                value: 'Option5',
+                label: 'Option5',
+            },]
+        }, {
+            id: 'picker',
+            label: "picker",
+            type: "picker",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                type: "daterange",
+                "start-placeholder": "Start date",
+                "end-placeholder": "End date"
+            },
+            style: {
 
+            }
+        }, {
+            id: 'checkbox',
+            label: "checkbox",
+            type: "checkbox",
+            checkbox: [{
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    label: "Option 1"
+                },
+                style: {
+
+                }
+            }, {
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    label: "Option 2"
+                },
+                style: {
+
+                }
+            }]
+        }, {
+            id: 'radio',
+            label: "radio",
+            type: "radio",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                label: "Option 1"
+            },
+            style: {
+
+            },
+            radio: [{
+                label: '1',
+                name: "op1"
+            }, {
+                label: '2',
+                name: "op2"
+            }]
+        }, {
+            id: 'cascader',
+            label: "cascader",
+            type: "cascader",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                props: {
+                    expandTrigger: 'hover',
+                },
+                options: [
+                    {
+                        value: 'guide',
+                        label: 'Guide',
+                        children: [
+                            {
+                                value: 'disciplines',
+                                label: 'Disciplines',
+                                children: [
+                                    {
+                                        value: 'consistency',
+                                        label: 'Consistency',
+                                    },
+                                    {
+                                        value: 'feedback',
+                                        label: 'Feedback',
+                                    },
+                                    {
+                                        value: 'efficiency',
+                                        label: 'Efficiency',
+                                    },
+                                    {
+                                        value: 'controllability',
+                                        label: 'Controllability',
+                                    },
+                                ],
+                            },
+                            {
+                                value: 'navigation',
+                                label: 'Navigation',
+                                children: [
+                                    {
+                                        value: 'side nav',
+                                        label: 'Side Navigation',
+                                    },
+                                    {
+                                        value: 'top nav',
+                                        label: 'Top Navigation',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        value: 'component',
+                        label: 'Component',
+                        children: [
+                            {
+                                value: 'basic',
+                                label: 'Basic',
+                                children: [
+                                    {
+                                        value: 'layout',
+                                        label: 'Layout',
+                                    },
+                                    {
+                                        value: 'color',
+                                        label: 'Color',
+                                    },
+                                    {
+                                        value: 'typography',
+                                        label: 'Typography',
+                                    },
+                                    {
+                                        value: 'icon',
+                                        label: 'Icon',
+                                    },
+                                    {
+                                        value: 'button',
+                                        label: 'Button',
+                                    },
+                                ],
+                            },
+                            {
+                                value: 'form',
+                                label: 'Form',
+                                children: [
+                                    {
+                                        value: 'radio',
+                                        label: 'Radio',
+                                    },
+                                    {
+                                        value: 'checkbox',
+                                        label: 'Checkbox',
+                                    },
+                                    {
+                                        value: 'input',
+                                        label: 'Input',
+                                    },
+                                    {
+                                        value: 'input-number',
+                                        label: 'InputNumber',
+                                    },
+                                    {
+                                        value: 'select',
+                                        label: 'Select',
+                                    },
+                                    {
+                                        value: 'cascader',
+                                        label: 'Cascader',
+                                    },
+                                    {
+                                        value: 'switch',
+                                        label: 'Switch',
+                                    },
+                                    {
+                                        value: 'slider',
+                                        label: 'Slider',
+                                    },
+                                    {
+                                        value: 'time-picker',
+                                        label: 'TimePicker',
+                                    },
+                                    {
+                                        value: 'date-picker',
+                                        label: 'DatePicker',
+                                    },
+                                    {
+                                        value: 'datetime-picker',
+                                        label: 'DateTimePicker',
+                                    },
+                                    {
+                                        value: 'upload',
+                                        label: 'Upload',
+                                    },
+                                    {
+                                        value: 'rate',
+                                        label: 'Rate',
+                                    },
+                                    {
+                                        value: 'form',
+                                        label: 'Form',
+                                    },
+                                ],
+                            },
+                            {
+                                value: 'data',
+                                label: 'Data',
+                                children: [
+                                    {
+                                        value: 'table',
+                                        label: 'Table',
+                                    },
+                                    {
+                                        value: 'tag',
+                                        label: 'Tag',
+                                    },
+                                    {
+                                        value: 'progress',
+                                        label: 'Progress',
+                                    },
+                                    {
+                                        value: 'tree',
+                                        label: 'Tree',
+                                    },
+                                    {
+                                        value: 'pagination',
+                                        label: 'Pagination',
+                                    },
+                                    {
+                                        value: 'badge',
+                                        label: 'Badge',
+                                    },
+                                ],
+                            },
+                            {
+                                value: 'notice',
+                                label: 'Notice',
+                                children: [
+                                    {
+                                        value: 'alert',
+                                        label: 'Alert',
+                                    },
+                                    {
+                                        value: 'loading',
+                                        label: 'Loading',
+                                    },
+                                    {
+                                        value: 'message',
+                                        label: 'Message',
+                                    },
+                                    {
+                                        value: 'message-box',
+                                        label: 'MessageBox',
+                                    },
+                                    {
+                                        value: 'notification',
+                                        label: 'Notification',
+                                    },
+                                ],
+                            },
+                            {
+                                value: 'navigation',
+                                label: 'Navigation',
+                                children: [
+                                    {
+                                        value: 'menu',
+                                        label: 'Menu',
+                                    },
+                                    {
+                                        value: 'tabs',
+                                        label: 'Tabs',
+                                    },
+                                    {
+                                        value: 'breadcrumb',
+                                        label: 'Breadcrumb',
+                                    },
+                                    {
+                                        value: 'dropdown',
+                                        label: 'Dropdown',
+                                    },
+                                    {
+                                        value: 'steps',
+                                        label: 'Steps',
+                                    },
+                                ],
+                            },
+                            {
+                                value: 'others',
+                                label: 'Others',
+                                children: [
+                                    {
+                                        value: 'dialog',
+                                        label: 'Dialog',
+                                    },
+                                    {
+                                        value: 'tooltip',
+                                        label: 'Tooltip',
+                                    },
+                                    {
+                                        value: 'popover',
+                                        label: 'Popover',
+                                    },
+                                    {
+                                        value: 'card',
+                                        label: 'Card',
+                                    },
+                                    {
+                                        value: 'carousel',
+                                        label: 'Carousel',
+                                    },
+                                    {
+                                        value: 'collapse',
+                                        label: 'Collapse',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        value: 'resource',
+                        label: 'Resource',
+                        children: [
+                            {
+                                value: 'axure',
+                                label: 'Axure Components',
+                            },
+                            {
+                                value: 'sketch',
+                                label: 'Sketch Templates',
+                            },
+                            {
+                                value: 'docs',
+                                label: 'Design Documentation',
+                            },
+                        ],
+                    },
+                ]
+            },
+            style: {
+
+            },
+        }, {
+            id: 'textarea',
+            label: "textarea",
+            type: "input",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                placeholder: "请输入name",
+                type: "textarea",
+            },
+            style: {
+                width: "100%",
+            }
+        }, {
+            id: 'switch',
+            label: "switch",
+            type: "switch",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+
+            },
+            style: {
+
+            }
+        }, {
+            id: 'button',
+            label: "button",
+            type: "button",
+            data: [{
+                name: "but",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    style: {
+
+                    }
+                },
+            }]
+        },],
+        butData: [{
+            id: "submit",
+            name: "提交",
+            type: "click",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                type: "primary"
+            },
+            style: {
+
+            }
+        }, {
+            id: "more",
+            name: "更多",
+            type: "unfold",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                type: "primary"
+            },
+            style: {
+
+            }
+        }, {
+            id: "add",
+            name: "添加",
+            type: "text",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+
+            },
+            style: {
+                color: "var(--primary-6)"
+            }
+        }],
+    },
+    componentsTable: {
+        header: [{
+            prop: 'name',
+            label: "name",
+            width: 100,
+        }, {
+            prop: 'date',
+            label: "date",
+            sortable: true
+        }, {
+            prop: 'address',
+            label: "address",
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            rankDisplayData: [{
+                name:"1223"
+            },{
+                name:"1223"
+            },{
+                name:"1223"
+            },{
+                name:"1223"
+            }],
+        }],
+        data: [
+            {
+                date: '2016-05-03',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles',
+            },
+            {
+                date: '2016-05-02',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles',
+            },
+            {
+                date: '2016-05-04',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles',
+            },
+            {
+                date: '2016-05-01',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles',
+            },
+        ],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            border: true,
+            stripe: true,
+        }
+    },
+    componentsTree: {
+        data: [
+            {
+                label: 'Level one 1',
+                children: [
+                    {
+                        label: 'Level two 1-1',
+                        children: [
+                            {
+                                label: 'Level three 1-1-1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'Level one 2',
+                children: [
+                    {
+                        label: 'Level two 2-1',
+                        children: [
+                            {
+                                label: 'Level three 2-1-1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'Level two 2-2',
+                        children: [
+                            {
+                                label: 'Level three 2-2-1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'Level one 3',
+                children: [
+                    {
+                        label: 'Level two 3-1',
+                        children: [
+                            {
+                                label: 'Level three 3-1-1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'Level two 3-2',
+                        children: [
+                            {
+                                label: 'Level three 3-2-1',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            "check-on-click-node": true,
+            "show-checkbox": true,
+            "default-expand-all": true,
+            "expand-on-click-node": false,
+            "check-strictly": true,
+        }
+    },
+    componentsPagination: {
+        data: {
+            amount: 500,
+            index: 1,
+            pageNumber: 10,
+        },
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            layout: "sizes, prev, pager, next, slot",
+            total: 500,
+            'page-sizes': [10, 100, 200, 300, 400],
+            background: true,
+        }
+    },
+    componentsTabs: {
+        data: [{
+            label: 'dfad',
+            name: "dfadfa",
+        }, {
+            label: 'fff',
+            name: "ffff",
+        }]
+    },
 });
 
 onBeforeMount(() => {
@@ -27,5 +673,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-
+.PrintControlManagement-IntelligentPrinting {
+    margin: 0%;
+}
 </style>

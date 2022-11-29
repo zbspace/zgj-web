@@ -1249,7 +1249,7 @@ export default {
               to: "/frontDesk/home",
             }, {
               name: "智能用印",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/IntelligentPrinting",
             }, {
               name: "文件归档",
               to: "/frontDesk/home",

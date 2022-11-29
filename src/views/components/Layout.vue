@@ -3,20 +3,22 @@
         <div class="ap-box-tabs" v-if="state.Layout.tabs">
             <slot name="tabs"></slot>
         </div>
+        <div class="ap-box-cont">
+            <div class="ap-box-tree" v-if="state.Layout.tree">
+                <slot name="tree"></slot>
+            </div>
+            <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
+            </div>
+            <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
+                <div class="ap-box-searchForm" v-if="state.Layout.searchForm">
+                    <slot name="searchForm"></slot>
+                </div>
+                <div class="ap-box-table" v-if="state.Layout.table">
+                    <slot name="table"></slot>
+                </div>
+            </div>
+        </div>
 
-        <div class="ap-box-tree" v-if="state.Layout.tree">
-            <slot name="tree"></slot>
-        </div>
-        <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
-        </div>
-        <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
-            <div class="ap-box-searchForm" v-if="state.Layout.searchForm">
-                <slot name="searchForm"></slot>
-            </div>
-            <div class="ap-box-table" v-if="state.Layout.table">
-                <slot name="table"></slot>
-            </div>
-        </div>
         <div class="ap-box-pagination" v-if="state.Layout.pagination">
             <slot name="pagination"></slot>
         </div>
@@ -76,10 +78,18 @@ onMounted(() => {
 
     display: flex;
     flex-flow: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
 
     .ap-box-tabs {
         width: 100%;
 
+    }
+
+    .ap-box-cont {
+        display: flex;
+        width: 100%;
     }
 
     .ap-box-searchForm {

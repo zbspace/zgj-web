@@ -7,9 +7,15 @@
             <!-- 列表内容 -->
             <el-table-column v-bind="item" v-for="(item, index) in  props.header">
                 <!-- 自定义内容显示 -->
-                <template #default="scope" v-if="item.isCustom">
-                    <el-button size="small" @click="customClick(scope.$index, scope.row)">Edit</el-button>
-                    <span>remove</span>
+                <template #default="scope" v-if="item.rankDisplayData && item.rankDisplayData.length > 0">
+                    <div class="rankDisplayData">
+                        <div v-for="(data, num) in item.rankDisplayData.slice(0, 3)"
+                            @click="customClick(scope.$index, scope.row, data)">
+                            <span>{{ data.name }}</span>
+                        </div>
+                        <img src="../../assets/svg/sangedian.svg" alt="" v-if="item.rankDisplayData.length > 2"
+                            @click="customClick(scope.$index, scope.row, { type: 'more' })">
+                    </div>
                 </template>
             </el-table-column>
         </el-table>
@@ -74,9 +80,9 @@ function rowClick(row, column, event) {
     emit("row-click", row, column, event);
 }
 //点击自定义元素
-function customClick(index, row) {
-    // console.log(index, row);
-    emit("custom-click", index, row);
+function customClick(index, row, item) {
+    // console.log(index, row, item);
+    emit("custom-click", index, row, item);
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -88,5 +94,12 @@ onMounted(() => {
 <style lang='scss' scoped>
 .components-table {
     margin: 0%;
+
+    .rankDisplayData {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        color: var(--Info-6);
+    }
 }
 </style>

@@ -20,6 +20,18 @@ export default [
     component: () => import("../views/frontDesk/home"),
   },
   {
+    path: "/PrintControlManagement/IntelligentPrinting",
+    name: "PrintControlManagement-IntelligentPrinting",
+    meta: {
+      title: "IntelligentPrinting",
+      authRequired: true,
+    },
+    component: () =>
+      import(
+        "../views/frontDesk/PrintControlManagement/IntelligentPrinting.vue"
+      ),
+  },
+  {
     path: "/system/home",
     name: "system-home",
     meta: { title: "system-home", authRequired: true },
