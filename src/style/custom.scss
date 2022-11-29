@@ -51,12 +51,17 @@ $unify-primary-color: var(--primary-6);
     --el-button-disabled-border-color: #F0F0F0;
 }
 
-/* 分页 */
-.el-pagination {
-    .el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
-        background-color: var(--primary-2);
-    }
-}
+
+
+/* 下拉菜单 */
+// .el-popper__arrow {
+//     display: none;
+// }
+
+
+
+
+
 
 .el-input {
     --el-input-text-color: rgba(0, 0, 0, 0.85);
@@ -101,17 +106,7 @@ $unify-primary-color: var(--primary-6);
 }
 
 
-/* 选项卡 */
-.el-tabs {
-    .el-tabs__nav-wrap::after {
-        height: 0;
-    }
-}
 
-/* 下拉菜单 */
-// .el-popper__arrow {
-//     display: none;
-// }
 
 
 
