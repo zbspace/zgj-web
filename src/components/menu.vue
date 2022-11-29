@@ -1334,9 +1334,14 @@ export default {
             to: "/frontDesk/home",
             icon: require("../assets/svg/shebei-guanli.svg"),
             children: [
+            {
+                name: "工作台管理",
+                label: "gongzuotaiguanli",
+                to: "/frontDesk/home",
+              },
               {
                 name: "智能印章盒管理",
-                label: "zhinengyizhangheguanli",
+                label: "zhinengyizhangheguanlidfadfa",
                 to: "/frontDesk/home",
                 children: [{
                   name: "智能印章盒管理",

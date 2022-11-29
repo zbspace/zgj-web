@@ -88,12 +88,10 @@
                     </div>
                 </template>
                 <template #pagination>
-                    <div>
-                        <componentsPagination :data="state.componentsPagination.data"
-                            :defaultAttribute="state.componentsPagination.defaultAttribute" @size-change="sizeChange"
-                            @current-change="currentChange">
-                        </componentsPagination>
-                    </div>
+                    <componentsPagination :data="state.componentsPagination.data"
+                        :defaultAttribute="state.componentsPagination.defaultAttribute" @size-change="sizeChange"
+                        @current-change="currentChange">
+                    </componentsPagination>
                 </template>
             </componentsLayout>
         </div>
@@ -717,7 +715,11 @@ const state = reactive({
         }
     },
     componentsPagination: {
-        data: {},
+        data: {
+            amount: 500,
+            index: 1,
+            pageNumber: 10,
+        },
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
             layout: "sizes, prev, pager, next, slot",

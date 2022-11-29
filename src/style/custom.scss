@@ -107,8 +107,12 @@ $unify-primary-color: var(--primary-6);
 
 
 
-
-
+/* 
+左侧菜单 字体大小
+*/
+.navbar-menu .navbar-nav .nav-link {
+    font-size: var(--font-size-body-2);
+}
 
 
 

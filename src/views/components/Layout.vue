@@ -3,14 +3,19 @@
         <div class="ap-box-tabs" v-if="state.Layout.tabs">
             <slot name="tabs"></slot>
         </div>
-        <div class="ap-box-searchForm" v-if="state.Layout.searchForm">
-            <slot name="searchForm"></slot>
-        </div>
+
         <div class="ap-box-tree" v-if="state.Layout.tree">
             <slot name="tree"></slot>
         </div>
-        <div class="ap-box-table" :style="state.tableStyle" v-if="state.Layout.table">
-            <slot name="table"></slot>
+        <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
+        </div>
+        <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
+            <div class="ap-box-searchForm" v-if="state.Layout.searchForm">
+                <slot name="searchForm"></slot>
+            </div>
+            <div class="ap-box-table" v-if="state.Layout.table">
+                <slot name="table"></slot>
+            </div>
         </div>
         <div class="ap-box-pagination" v-if="state.Layout.pagination">
             <slot name="pagination"></slot>
@@ -39,7 +44,7 @@ const props = defineProps({
 const emit = defineEmits([]);
 const state = reactive({
     Layout: {},
-    tableStyle: {}
+    centStyle: {}
 });
 // 初始化布局
 function initLayout() {
@@ -49,7 +54,7 @@ function initLayout() {
         })
     };
     if (!state.Layout.tree) {
-        state.tableStyle.width = "100%"
+        state.centStyle.width = "100%"
     }
     // console.log(state.Layout);
 };
@@ -83,18 +88,23 @@ onMounted(() => {
     }
 
     .ap-box-tree {
-        width: 20%;
+        width: 15%;
     }
 
-    .ap-box-table {
-        width: 80%;
+    .ap-box-cutOffRule {
+        border-left: 1px solid var(--primary-2);
+        margin: 0 0.5rem;
+    }
+
+    .ap-box-cent {
+        width: calc(85% - 1rem - 1px);
     }
 
     .ap-box-pagination {
         width: 100%;
         display: flex;
         justify-content: flex-end;
-        padding: 1rem 0;
+        padding: 1.5rem 0;
         box-sizing: border-box;
     }
 }
