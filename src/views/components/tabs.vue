@@ -59,9 +59,9 @@ onMounted(() => {
     margin: 0%;
 
     :deep(.ap-box) {
-        .el-tabs__nav-wrap::after {
-            height: 0;
-        }
+        // .el-tabs__nav-wrap::after {
+        //     height: 0;
+        // }
 
         .el-tabs__item.is-active {
             color: var(--primary-6);

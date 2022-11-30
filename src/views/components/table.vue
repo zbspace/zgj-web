@@ -9,11 +9,12 @@
                 <!-- 自定义内容显示 -->
                 <template #default="scope" v-if="item.rankDisplayData && item.rankDisplayData.length > 0">
                     <div class="rankDisplayData">
-                        <div v-for="(data, num) in item.rankDisplayData.slice(0, 3)"
+                        <div class="rankDisplayData-node" v-for="(data, num) in item.rankDisplayData.slice(0, 3)"
                             @click="customClick(scope.$index, scope.row, data)">
                             <span>{{ data.name }}</span>
                         </div>
-                        <img src="../../assets/svg/sangedian.svg" alt="" v-if="item.rankDisplayData.length > 2"
+                        <img class="rankDisplayData-node" src="../../assets/svg/sangedian.svg" alt=""
+                            v-if="item.rankDisplayData.length > 2"
                             @click="customClick(scope.$index, scope.row, { type: 'more' })">
                     </div>
                 </template>
@@ -100,6 +101,10 @@ onMounted(() => {
         justify-content: space-around;
         text-align: center;
         color: var(--Info-6);
+
+        .rankDisplayData-node {
+            cursor: pointer;
+        }
     }
 }
 </style>
