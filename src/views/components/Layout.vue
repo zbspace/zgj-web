@@ -1,5 +1,8 @@
 <template>
     <div class="components-Layout">
+        <div class="ap-box-breadcrumb" v-if="state.Layout.breadcrumb">
+            <slot name="breadcrumb"></slot>
+        </div>
         <div class="ap-box-tabs" v-if="state.Layout.tabs">
             <slot name="tabs"></slot>
         </div>
@@ -81,6 +84,10 @@ onMounted(() => {
     align-content: flex-start;
     justify-content: flex-start;
     align-items: flex-start;
+
+    .ap-box-breadcrumb {
+        width: 100%;
+    }
 
     .ap-box-tabs {
         width: 100%;

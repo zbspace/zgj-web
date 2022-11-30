@@ -1,6 +1,6 @@
 <template>
     <div class="components-tabs">
-        <div class="ap-box">
+        <div class="ap-box" :class="{ cancelBottomLine: props.cancelBottomLine }">
             <el-tabs v-model="state.activeName" class="demo-tabs" @tab-change="tabChange">
                 <el-tab-pane :label="item.label" :name="item.name" v-for="item in props.data"> </el-tab-pane>
             </el-tabs>
@@ -19,6 +19,11 @@ const props = defineProps({
     type: {
         type: String,
         default: "0",
+    },
+    //取消底部的线
+    cancelBottomLine: {
+        type: Boolean,
+        default: false,
     },
     // 布局
     data: {
@@ -59,9 +64,6 @@ onMounted(() => {
     margin: 0%;
 
     :deep(.ap-box) {
-        // .el-tabs__nav-wrap::after {
-        //     height: 0;
-        // }
 
         .el-tabs__item.is-active {
             color: var(--primary-6);
@@ -76,5 +78,10 @@ onMounted(() => {
         }
     }
 
+    :deep(.cancelBottomLine) {
+        .el-tabs__nav-wrap::after {
+            height: 0;
+        }
+    }
 }
 </style>

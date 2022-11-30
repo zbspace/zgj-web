@@ -2,7 +2,14 @@
 <template>
     <Layout>
         <div class="PrintControlManagement-IntelligentPrinting">
-            <componentsLayout Layout="tabs,searchForm,table,pagination">
+            <componentsLayout Layout="breadcrumb,tabs,searchForm,table,pagination">
+                <template #breadcrumb>
+                    <div>
+                        <componentsBreadcrumb :defaultAttribute="state.componentsBreadcrumb.defaultAttribute"
+                            :data="state.componentsBreadcrumb.data">
+                        </componentsBreadcrumb>
+                    </div>
+                </template>
                 <template #tabs>
                     <div>
                         <componentsTabs activeName="dfadfa" :data="state.componentsTabs.data">
@@ -46,6 +53,7 @@ import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
 import componentsTree from "../../components/tree"
+import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
@@ -265,6 +273,20 @@ const state = reactive({
             name: "ffff",
         }]
     },
+    componentsBreadcrumb: {
+        data: [
+            {
+                name: "ceshi",
+            },
+            {
+                name: "ceshi",
+            }
+        ],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            separator: "/",
+        }
+    }
 });
 
 onBeforeMount(() => {

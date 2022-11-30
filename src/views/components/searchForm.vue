@@ -189,9 +189,10 @@ onMounted(() => {
 </script>
 <style lang='scss' scoped>
 .components-searchForm {
-    margin: 0%;
+    padding: 0rem 0% 1rem 0%;
     display: flex;
     flex-flow: wrap;
+    box-sizing: border-box;
 
     .ap-box {
         display: flex;
