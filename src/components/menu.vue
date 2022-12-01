@@ -1246,7 +1246,7 @@ export default {
             icon: require("../assets/svg/yongyin-guanli-1.svg"),
             children: [{
               name: "用印申请",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/SealApplication",
               label: "t-zgj-cg-menu-yongyin-shenqing",
             }, {
               name: "智能用印",
@@ -1258,7 +1258,7 @@ export default {
               label: "t-zgj-cg-menu-wenjian-guidang",
             }, {
               name: "用印记录",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/recordWithSeal",
               label: "t-zgj-cg-menu-yongyin-jilu",
             }, {
               name: "用印轨迹",
@@ -1273,15 +1273,15 @@ export default {
             icon: require("../assets/svg/yinzhang-guanli-1.svg"),
             children: [{
               name: "印章库",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/LibraryOfSeals",
               label: "t-zgj-cg-menu-yinzhang-ku",
             }, {
               name: "印章申请",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/ApplicationForSeal",
               label: "t-zgj-cg-menu-yinzhang-shenqing",
             }, {
               name: "印章类型",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/TypeOfSeal",
               label: "t-zgj-cg-menu-yinzhang-leixing",
             }, {
               name: "印章外借信息",
@@ -1329,11 +1329,11 @@ export default {
               label: "t-zgj-cg-menu-dianzi-qianzhang-shenqing",
             }, {
               name: "待电子签章",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/ElectronicSignatureRequired",
               label: "t-zgj-cg-menu-dai-dianzi-qianzhang",
             }, {
               name: "电子签章记录",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/electronicSignatureRecord",
               label: "t-zgj-cg-menu-dianzi-qianzhang-jilu",
             }, {
               name: "电子印章库",
@@ -1354,7 +1354,7 @@ export default {
               {
                 name: "工作台管理",
                 label: "t-zgj-cg-menu-gongzuotai-guanli",
-                to: "/frontDesk/home",
+                to: "/PrintControlManagement/WorkbenchManagement",
               },
               {
                 name: "智能印章盒管理",
@@ -1362,7 +1362,7 @@ export default {
                 to: "/frontDesk/home",
                 children: [{
                   name: "智能印章盒管理",
-                  to: "/frontDesk/home",
+                  to: "/PrintControlManagement/IntelligentSealBoxManagement",
                   label: "t-zgj-cg-menu-zhineng-yinzhang-he-guanli",
                 }, {
                   name: "智能印章盒格口管理",
@@ -1376,7 +1376,7 @@ export default {
                 label: "t-zgj-cg-menu-zhineng-yinzhang-gui-guanli",
                 children: [{
                   name: "智能印章柜管理",
-                  to: "/frontDesk/home",
+                  to: "/PrintControlManagement/IntelligentSealCabinetManagement",
                   label: "t-zgj-cg-menu-zhineng-yinzhang-gui-guanli",
                 }, {
                   name: "智能印章柜格口管理",
@@ -1395,13 +1395,13 @@ export default {
           {
             name: "文件库",
             label: "t-zgj-cg-menu-wenjian-ku",
-            to: "/frontDesk/home",
+            to: "/fileManagement/documentLibrary",
             icon: require("../assets/svg/wenjianku-1.svg"),
           },
           {
             name: "文件类型",
             label: "t-zgj-cg-menu-wenjian-leixing",
-            to: "/frontDesk/home",
+            to: "/fileManagement/documentType",
             icon: require("../assets/svg/wenjian-leixing-1.svg"),
           },
 
@@ -1420,7 +1420,7 @@ export default {
           {
             name: "审批流程",
             label: "t-zgj-cg-menu-shenpi-liucheng",
-            to: "/frontDesk/home",
+            to: "/approvalFlow/approvalFlow",
             icon: require("../assets/svg/dai-shenpi-liucheng.svg"),
           },
           {
@@ -1454,17 +1454,17 @@ export default {
             children: [
               {
                 name: "用印告警提醒",
-                to: "/frontDesk/home",
+                to: "/riskControlWarning/UseAPrintedAlarmReminder",
                 label: "t-zgj-cg-menu-yongyin-gaojing-tixing",
               },
               {
                 name: "领用印章告警提醒",
-                to: "/frontDesk/home",
+                to: "/riskControlWarning/ReceiveSealAlarmReminder",
                 label: "t-zgj-cg-menu-lingyong-yinzhang-gaojing-tixing",
               },
               {
                 name: "流程规范告警提醒",
-                to: "/frontDesk/home",
+                to: "/riskControlWarning/ProcessSpecificationAlarmNotification",
                 label: "t-zgj-cg-menu-liucheng-guifan-gaojing-tixing",
               },
             ]

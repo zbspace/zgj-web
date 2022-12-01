@@ -214,7 +214,7 @@ onMounted(() => {
 </script>
 <style lang='scss' scoped>
 .components-searchForm {
-    padding: 0rem 0% 1rem 0%;
+    padding: 0rem 0% 0rem 0%;
     display: flex;
     flex-flow: wrap;
     box-sizing: border-box;
@@ -222,7 +222,10 @@ onMounted(() => {
     .ap-box {
         display: flex;
         align-items: center;
-        margin: 10px 0;
+        @include mixin-padding-top(10);
+        @include mixin-padding-bottom(10);
+        @include mixin-padding-right(10);
+        box-sizing: border-box;
 
         .ap-box-label {
 
@@ -257,7 +260,7 @@ onMounted(() => {
         }
 
         .ap-box-label {
-            padding: 0 10px;
+            @include mixin-padding-right(10);
             box-sizing: border-box;
         }
 
@@ -294,34 +297,6 @@ onMounted(() => {
         width: 100% !important;
     }
 
-    :deep(.butData) {
-        .el-button:hover {
-            color: var(--primary-6);
-            border-color: var(--primary-6);
-            background-color: var(--primary-1);
-        }
 
-        .el-button--primary:hover {
-            color: var(--in-common-use-1);
-            border-color: var(--primary-6);
-            background-color: var(--primary-6);
-        }
-
-        .el-button--primary {
-            --el-button-text-color: var(--in-common-use-1);
-            --el-button-bg-color: var(--primary-6);
-            --el-button-border-color: var(--primary-6);
-            --el-button-outline-color: var(--primary-6);
-            --el-button-active-color: var(--primary-6);
-            --el-button-hover-text-color: var(--in-common-use-1);
-            --el-button-hover-bg-color: var(--primary-5);
-            --el-button-hover-border-color: var(--primary-5);
-            --el-button-active-bg-color: var(--primary-7);
-            --el-button-active-border-color: var(--primary-7);
-            --el-button-disabled-border-color: var(--in-common-use-1);
-        }
-
-
-    }
 }
 </style>

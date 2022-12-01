@@ -1,11 +1,11 @@
-<!-- 风险提醒设置 -->
+<!-- 用印申请 -->
 <template>
     <Layout>
-        <div class="PrintControlManagement-RiskAlertSetting">
-            <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+        <div class="PrintControlManagement-SealApplication">
+            <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
                 <template #title>
                     <div class="title">
-                        风险提醒设置
+                        用印申请
                     </div>
                 </template>
                 <template #tabs>
@@ -21,13 +21,13 @@
                         </componentsSearchForm>
                     </div>
                 </template>
-                <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
+                <template #batch>
+                    <div class="batch">
+                        <div class="batch-desc">已选择 10 项</div>
+                        <el-button>批量操作</el-button>
+                        <el-button>...</el-button>
                     </div>
-                </template> -->
+                </template>
                 <template #table>
                     <div>
                         <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
@@ -349,9 +349,15 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.PrintControlManagement-RiskAlertSetting {
+.PrintControlManagement-SealApplication {
     margin: 0%;
 
-
+.batch{
+    display: flex;
+    align-items: center;
+    .batch-desc{
+        @include mixin-margin-right(12) 
+    }
+}
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="components-Layout">
+    <div class="components-Layout Custom-button">
         <div class="ap-box-title" v-if="state.Layout.title">
             <slot name="title"></slot>
         </div>
@@ -16,17 +16,19 @@
             <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
             </div>
             <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
-                <div class="ap-box-searchForm" v-if="state.Layout.searchForm">
+                <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
                     <slot name="searchForm"></slot>
+                </div>
+                <div class="ap-box-batch" v-if="state.Layout.batch">
+                    <slot name="batch"></slot>
                 </div>
                 <div class="ap-box-table" v-if="state.Layout.table">
                     <slot name="table"></slot>
                 </div>
+                <div class="ap-box-pagination" v-if="state.Layout.pagination">
+                    <slot name="pagination"></slot>
+                </div>
             </div>
-        </div>
-
-        <div class="ap-box-pagination" v-if="state.Layout.pagination">
-            <slot name="pagination"></slot>
         </div>
     </div>
 </template>
@@ -79,16 +81,19 @@ onMounted(() => {
 .components-Layout {
     margin: 0%;
     width: 100%;
-    height: 100%;
-    overflow: auto;
+    height: calc(100vh - 70px);
 
     display: flex;
-    flex-flow: wrap;
+    // flex-flow: wrap;
     align-content: flex-start;
     justify-content: flex-start;
     align-items: flex-start;
+    flex-direction: column;
+    @include mixin-padding-bottom(10);
+    box-sizing: border-box;
 
     .ap-box-title {
+        width: 100%;
         padding: 0rem 0 0.5rem 0;
         box-sizing: border-box;
         font-size: var(--font-size-title-2);
@@ -106,6 +111,8 @@ onMounted(() => {
     .ap-box-cont {
         display: flex;
         width: 100%;
+        flex-grow: 1;
+        overflow: auto;
     }
 
     .ap-box-searchForm {
@@ -113,17 +120,28 @@ onMounted(() => {
 
     }
 
+    .ap-box-batch {
+        width: 100%;
+        padding: 0.5rem 0 0.5rem 0;
+        box-sizing: border-box;
+
+    }
+
     .ap-box-tree {
-        width: 15%;
+        width: 12%;
+        height: 100%;
+        overflow: auto;
     }
 
     .ap-box-cutOffRule {
         border-left: 1px solid var(--primary-2);
-        margin: 0 0.5rem;
+        margin: 0 1rem;
     }
 
     .ap-box-cent {
-        width: calc(85% - 1rem - 1px);
+        width: calc(88% - 2rem - 2px);
+        height: 100%;
+        overflow: auto;
     }
 
     .ap-box-pagination {
@@ -133,5 +151,7 @@ onMounted(() => {
         padding: 1.5rem 0;
         box-sizing: border-box;
     }
+
+
 }
 </style>

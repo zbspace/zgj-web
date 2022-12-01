@@ -5,7 +5,7 @@
             <!-- 列表内容 -->
             <el-table-column v-bind="item" v-for="(item, index) in  props.header">
                 <!-- 自定义内容显示 -->
-                <template #default="scope" v-if="item.displayType == 'switch'">
+                <template #default="scope" v-if="item.customDisplayType == 'switch'">
                     <div class="switch">
                         <el-switch v-model="scope.row.switchValue" />
                     </div>
@@ -18,7 +18,7 @@
                             <span>{{ data.name }}</span>
                         </div>
                         <img class="rankDisplayData-node" src="../../assets/svg/sangedian.svg" alt=""
-                            v-if="item.rankDisplayData.length > 2"
+                            v-if="item.rankDisplayData.length > 3"
                             @click="customClick(scope.$index, scope.row, { type: 'more' })">
                     </div>
                 </template>
