@@ -98,6 +98,25 @@ export default [
       import("../views/frontDesk/approvalFlow/RealTimeConfirmation.vue"),
   },
   {
+    path: "/approvalFlow/handleTask",
+    name: "approvalFlow-handleTask",
+    meta: {
+      title: "handleTask",
+      authRequired: true,
+    },
+    component: () => import("../views/frontDesk/approvalFlow/handleTask.vue"),
+  },
+  {
+    path: "/riskControlWarning/RiskAlertSetting",
+    name: "riskControlWarning-RiskAlertSetting",
+    meta: {
+      title: "RiskAlertSetting",
+      authRequired: true,
+    },
+    component: () =>
+      import("../views/frontDesk/riskControlWarning/RiskAlertSetting.vue"),
+  },
+  {
     path: "/system/home",
     name: "system-home",
     meta: { title: "system-home", authRequired: true },

@@ -5,7 +5,13 @@
             <!-- 列表内容 -->
             <el-table-column v-bind="item" v-for="(item, index) in  props.header">
                 <!-- 自定义内容显示 -->
-                <template #default="scope" v-if="item.rankDisplayData && item.rankDisplayData.length > 0">
+                <template #default="scope" v-if="item.displayType == 'switch'">
+                    <div class="switch">
+                        <el-switch v-model="scope.row.switchValue" />
+                    </div>
+                </template>
+                <!-- 自定义内容显示 -->
+                <template #default="scope" v-else-if="item.rankDisplayData && item.rankDisplayData.length > 0">
                     <div class="rankDisplayData">
                         <div class="rankDisplayData-node" v-for="(data, num) in item.rankDisplayData.slice(0, 3)"
                             @click="customClick(scope.$index, scope.row, data)">

@@ -1,7 +1,7 @@
 <!-- 实时确认 -->
 <template>
     <Layout>
-        <div class="PrintControlManagement-SealloanInformation">
+        <div class="PrintControlManagement-RealTimeConfirmation">
             <componentsLayout Layout="title,tabs,searchForm,table,pagination">
                 <template #title>
                     <div class="title">
@@ -333,7 +333,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.PrintControlManagement-SealloanInformation {
+.PrintControlManagement-RealTimeConfirmation {
     margin: 0%;
 
 

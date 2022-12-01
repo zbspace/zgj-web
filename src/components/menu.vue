@@ -1426,7 +1426,7 @@ export default {
           {
             name: "处理任务",
             label: "t-zgj-cg-menu-chuli-renwu",
-            to: "/frontDesk/home",
+            to: "/approvalFlow/handleTask",
             icon: require("../assets/svg/dai-chuli-renwu.svg"),
           },
           {
@@ -1443,7 +1443,7 @@ export default {
           {
             name: "风控提醒设置",
             label: "t-zgj-cg-menu-fengkong-tixing-shezhi",
-            to: "/frontDesk/home",
+            to: "/riskControlWarning/RiskAlertSetting",
             icon: require("../assets/svg/fengxian-tixing-jilu-1.svg"),
           },
           {
