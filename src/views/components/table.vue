@@ -2,8 +2,6 @@
     <div class="components-table">
         <el-table v-bind="props.defaultAttribute" :refs="refs" :data="props.data" style="width: 100%" @select="select"
             @select-all="selectAll" @selection-change="selectionChange" @cell-click="cellClick" @row-click="rowClick">
-            <!-- 多选 -->
-            <el-table-column type="selection" width="55" v-if="props.isSelection" />
             <!-- 列表内容 -->
             <el-table-column v-bind="item" v-for="(item, index) in  props.header">
                 <!-- 自定义内容显示 -->
@@ -60,6 +58,7 @@ const emit = defineEmits(['select', 'select-all', 'selection-change', 'cell-clic
 const state = reactive({
 
 });
+console.log(props.defaultAttribute);
 // 	当用户手动勾选数据行的 Checkbox 时触发的事件
 function select(selection, row) {
     emit("select", selection, row);
@@ -98,12 +97,13 @@ onMounted(() => {
 
     .rankDisplayData {
         display: flex;
-        justify-content: space-around;
-        text-align: center;
+        // justify-content: space-around;
+        // text-align: center;
         color: var(--Info-6);
 
         .rankDisplayData-node {
             cursor: pointer;
+            margin-right: 0.5rem;
         }
     }
 }

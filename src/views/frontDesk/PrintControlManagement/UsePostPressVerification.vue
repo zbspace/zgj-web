@@ -1,11 +1,11 @@
-<!-- 用印前核验 -->
+<!-- 用印后核验 -->
 <template>
     <Layout>
-        <div class="PrintControlManagement-UsePrepressVerification">
+        <div class="PrintControlManagement-UsePostPressVerification">
             <componentsLayout Layout="title,tabs,searchForm,table,pagination">
                 <template #title>
                     <div class="title">
-                        用印前核验
+                        归档后核验
                     </div>
                 </template>
                 <template #tabs>
@@ -345,7 +345,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.PrintControlManagement-UsePrepressVerification {
+.PrintControlManagement-UsePostPressVerification {
     margin: 0%;
 
 

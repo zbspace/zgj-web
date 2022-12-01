@@ -137,6 +137,7 @@ const state = reactive({
             label: "name",
             type: "input",
             isNecessary: true,
+            inCommonUse: true,
             // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
             defaultAttribute: {
                 placeholder: "请输入name",
@@ -576,6 +577,9 @@ const state = reactive({
                 color: "var(--primary-6)"
             }
         }],
+        defaultAttribute:{
+            isUnfold:false,
+        }
     },
     componentsTable: {
         header: [{

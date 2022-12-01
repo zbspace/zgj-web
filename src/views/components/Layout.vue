@@ -1,5 +1,8 @@
 <template>
     <div class="components-Layout">
+        <div class="ap-box-title" v-if="state.Layout.title">
+            <slot name="title"></slot>
+        </div>
         <div class="ap-box-breadcrumb" v-if="state.Layout.breadcrumb">
             <slot name="breadcrumb"></slot>
         </div>
@@ -84,6 +87,12 @@ onMounted(() => {
     align-content: flex-start;
     justify-content: flex-start;
     align-items: flex-start;
+
+    .ap-box-title {
+        padding: 0rem 0 0.5rem 0;
+        box-sizing: border-box;
+        font-size: var(--font-size-title-2);
+    }
 
     .ap-box-breadcrumb {
         width: 100%;

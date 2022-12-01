@@ -1254,7 +1254,7 @@ export default {
               label: "t-zgj-cg-menu-zhineng-yongyin",
             }, {
               name: "文件归档",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/Archive",
               label: "t-zgj-cg-menu-wenjian-guidang",
             }, {
               name: "用印记录",
@@ -1285,7 +1285,7 @@ export default {
               label: "t-zgj-cg-menu-yinzhang-leixing",
             }, {
               name: "印章外借信息",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/SealloanInformation",
               label: "t-zgj-cg-menu-yinzhang-waijie-xinxi",
             },]
           },
@@ -1297,7 +1297,7 @@ export default {
             children: [
               {
                 name: "防伪水印验证",
-                to: "/frontDesk/home",
+                to: "/PrintControlManagement/SecurityWatermark",
                 label: "t-zgj-cg-menu-fangwei-shuiyin-yanzheng",
               }, {
                 name: "文件内容核验",
@@ -1306,12 +1306,12 @@ export default {
                 children: [
                   {
                     name: "用印前核验",
-                    to: "/frontDesk/home",
+                    to: "/PrintControlManagement/UsePrepressVerification",
                     label: "t-zgj-cg-menu-yongyin-qian-heyan",
                   },
                   {
                     name: "用印后核验",
-                    to: "/frontDesk/home",
+                    to: "/PrintControlManagement/UsePostPressVerification",
                     label: "t-zgj-cg-menu-yongyin-hou-heyan",
                   }
                 ]
@@ -1414,7 +1414,7 @@ export default {
           {
             name: "实时确认",
             label: "t-zgj-cg-menu-shishi-queren",
-            to: "/frontDesk/home",
+            to: "/approvalFlow/RealTimeConfirmation",
             icon: require("../assets/svg/shebei-guanli.svg"),
           },
           {

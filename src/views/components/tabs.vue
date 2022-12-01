@@ -64,6 +64,9 @@ onMounted(() => {
     margin: 0%;
 
     :deep(.ap-box) {
+        .el-tabs__nav-wrap::after {
+            height: 1px;
+        }
 
         .el-tabs__item.is-active {
             color: var(--primary-6);

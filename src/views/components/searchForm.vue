@@ -1,6 +1,6 @@
 <template>
     <div class="components-searchForm">
-        <div class="ap-box" v-for="(item, index) in props.data" :style="[props.style.lineStyle, item.style]"
+        <div class="ap-box" v-for="(item, index) in state.cache.formData" :style="[props.style.lineStyle, item.style]"
             @click="clickElement(item, index)">
             <div class="ap-box-cont" v-if="item.type == 'input'">
                 <div class="ap-box-label" :style="props.style.labelStyle">
@@ -101,7 +101,8 @@
                     <el-button v-bind="item.defaultAttribute">{{ item.name }}</el-button>
                 </div>
                 <div class="ap-box-cont unfold" v-if="item.type == 'unfold'">
-                    <el-button v-bind="item.defaultAttribute">{{ item.name }}</el-button>
+                    {{ item.name }}
+                    <img class="unfold-icon" src="../../assets/svg/xiangxia-lan.svg" alt="" srcset="">
                 </div>
                 <div class="ap-box-cont" v-if="item.type == 'text'">
                     {{ item.name }}
@@ -138,7 +139,7 @@ const props = defineProps({
         type: Object,
         default: {
             lineStyle: {
-                width: "50%",
+                width: "30%",
             },
             cutOffRuleStyle: {
                 width: "100%",
@@ -164,9 +165,31 @@ const state = reactive({
         //分割线样式
         cutOffRuleStyle: {
             width: "100%",
-        }
+        },
+        //是否展开
+        isUnfold: 0,
+        //表单数据
+        formData: [],
     }
 });
+//初始化表单单数据
+function initFormData() {
+    let formData = [];
+    if (props.defaultAttribute.isUnfold) {
+        state.cache.isUnfold = props.defaultAttribute.isUnfold
+    }
+    if (state.cache.isUnfold == 0) {
+        props.data.map((item) => {
+            if (item.inCommonUse) {
+                formData.push(item);
+            }
+        })
+    } else if (state.cache.isUnfold == 1) {
+        formData = props.data
+    }
+
+    state.cache.formData = formData;
+}
 //获取当前表单的值
 function getCurrentValue(item, index) {
     emit("getCurrentValue", item, index);
@@ -185,6 +208,8 @@ onBeforeMount(() => {
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)
+    //初始化表单单数据
+    initFormData()
 })
 </script>
 <style lang='scss' scoped>
@@ -245,14 +270,58 @@ onMounted(() => {
     .butData {
         display: flex;
         flex-flow: wrap;
+        justify-content: flex-end;
+        flex-grow: 1;
 
         .ap-box {
             margin-left: 10px;
+        }
+
+        .unfold {
+            display: flex;
+            align-items: center;
+            color: var(--Info-6);
+            cursor: pointer;
+            margin-right: 0.5rem;
+
+            .unfold-icon {
+                margin-left: 0.3rem;
+            }
         }
     }
 
     .width-100 {
         width: 100% !important;
+    }
+
+    :deep(.butData) {
+        .el-button:hover {
+            color: var(--primary-6);
+            border-color: var(--primary-6);
+            background-color: var(--primary-1);
+        }
+
+        .el-button--primary:hover {
+            color: var(--in-common-use-1);
+            border-color: var(--primary-6);
+            background-color: var(--primary-6);
+        }
+
+        .el-button--primary {
+            --el-button-text-color: var(--in-common-use-1);
+            --el-button-bg-color: var(--primary-6);
+            --el-button-border-color: var(--primary-6);
+            --el-button-outline-color: var(--primary-6);
+            --el-button-active-color: var(--primary-6);
+            --el-button-hover-text-color: var(--in-common-use-1);
+            --el-button-hover-bg-color: var(--primary-5);
+            --el-button-hover-border-color: var(--primary-5);
+            --el-button-active-bg-color: var(--primary-7);
+            --el-button-active-border-color: var(--primary-7);
+            --el-button-disabled-border-color: var(--in-common-use-1);
+        }
+
+
     }
 }
 </style>

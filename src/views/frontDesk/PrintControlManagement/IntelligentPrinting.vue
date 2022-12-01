@@ -2,17 +2,15 @@
 <template>
     <Layout>
         <div class="PrintControlManagement-IntelligentPrinting">
-            <componentsLayout Layout="breadcrumb,tabs,searchForm,table,pagination">
-                <template #breadcrumb>
-                    <div>
-                        <componentsBreadcrumb :defaultAttribute="state.componentsBreadcrumb.defaultAttribute"
-                            :data="state.componentsBreadcrumb.data">
-                        </componentsBreadcrumb>
+            <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+                <template #title>
+                    <div class="title">
+                        智能用印
                     </div>
                 </template>
                 <template #tabs>
                     <div>
-                        <componentsTabs activeName="dfadfa" :data="state.componentsTabs.data">
+                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
                         </componentsTabs>
                     </div>
                 </template>
@@ -66,10 +64,22 @@ const props = defineProps({
 })
 const emit = defineEmits([]);
 const state = reactive({
+    componentsTabs: {
+        data: [{
+            label: '待智能用印',
+            name: "1",
+        }, {
+            label: '智能用印中',
+            name: "2",
+        }, {
+            label: '已完成用印',
+            name: "3",
+        }]
+    },
     componentsSearchForm: {
         style: {
             lineStyle: {
-                width: "25rem",
+                width: "30%",
             },
             labelStyle: {
                 width: "100px"
@@ -78,37 +88,18 @@ const state = reactive({
         data: [
             {
                 id: 'name',
-                label: "name",
+                label: "单据名称",
                 type: "input",
+                inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'name',
-                label: "name",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "请输入单据名称",
                 },
             },
         ],
         butData: [{
-            id: "submit",
-            name: "提交",
-            type: "click",
-            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-            defaultAttribute: {
-                type: "primary"
-            },
-            style: {
-
-            }
-        }, {
             id: "more",
-            name: "更多",
+            name: "展开",
             type: "unfold",
             // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
             defaultAttribute: {
@@ -118,69 +109,178 @@ const state = reactive({
 
             }
         }, {
-            id: "add",
-            name: "添加",
-            type: "text",
+            id: "inquire",
+            name: "查询",
+            type: "click",
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                type: "primary"
+            },
+            style: {
+
+            }
+        }, {
+            id: "reset",
+            name: "重置",
+            type: "click",
             // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
             defaultAttribute: {
 
             },
             style: {
-                color: "var(--primary-6)"
+
             }
-        }],
+        },],
     },
     componentsTable: {
         header: [{
-            prop: 'name',
-            label: "name",
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '1',
+            label: "单据编号",
             width: 100,
         }, {
-            prop: 'date',
-            label: "date",
+            prop: '2',
+            label: "单据名称",
             sortable: true
         }, {
-            prop: 'address',
-            label: "address",
+            prop: '3',
+            label: "使用印章",
+        }, {
+            prop: '4',
+            label: "盖章码",
+        }, {
+            prop: '5',
+            label: "申请盖章次数",
+        }, {
+            prop: '6',
+            label: "实际盖章次数",
+        }, {
+            prop: '7',
+            label: "申请人",
+        }, {
+            prop: '8',
+            label: "申请部门",
+        }, {
+            prop: '9',
+            label: "申请时间",
+        }, {
+            prop: '10',
+            label: "用印状态",
         }, {
             prop: 'caozuo',
             label: "操作",
             rankDisplayData: [{
-                name: "1223"
+                name: "转办"
             }, {
-                name: "1223"
-            }, {
-                name: "1223"
-            }, {
-                name: "1223"
-            }],
+                name: "申请重置"
+            },],
         }],
         data: [
             {
-                date: '2016-05-03',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles',
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '2022/10/30',
+                9: '',
+                10: '',
             },
             {
-                date: '2016-05-02',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles',
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '2022/10/30',
+                9: '',
+                10: '',
             },
             {
-                date: '2016-05-04',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles',
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '2022/10/30',
+                9: '',
+                10: '',
             },
             {
-                date: '2016-05-01',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles',
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '2022/10/30',
+                9: '',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '2022/10/30',
+                9: '',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '2022/10/30',
+                9: '',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '2022/10/30',
+                9: '',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '2022/10/30',
+                9: '',
+                10: '',
             },
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
-            border: true,
             stripe: true,
+            "header-cell-style": {
+                background: "var(--color-fill--1)",
+            }
         }
     },
     componentsTree: {
@@ -252,26 +352,17 @@ const state = reactive({
     },
     componentsPagination: {
         data: {
-            amount: 500,
+            amount: 400,
             index: 1,
-            pageNumber: 10,
+            pageNumber: 80,
         },
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
-            layout: "sizes, prev, pager, next, slot",
+            layout: "sizes, prev, pager, next, jumper",
             total: 500,
             'page-sizes': [10, 100, 200, 300, 400],
             background: true,
         }
-    },
-    componentsTabs: {
-        data: [{
-            label: 'dfad',
-            name: "dfadfa",
-        }, {
-            label: 'fff',
-            name: "ffff",
-        }]
     },
     componentsBreadcrumb: {
         data: [
@@ -300,5 +391,7 @@ onMounted(() => {
 <style lang='scss' scoped>
 .PrintControlManagement-IntelligentPrinting {
     margin: 0%;
+
+
 }
 </style>
