@@ -1,5 +1,5 @@
 // import store from "@/state/store";
-
+import systemRoutes from "./system/index.js";
 export default [
   {
     path: "/",
@@ -245,7 +245,9 @@ export default [
       authRequired: true,
     },
     component: () =>
-      import("../views/frontDesk/riskControlWarning/UseAPrintedAlarmReminder.vue"),
+      import(
+        "../views/frontDesk/riskControlWarning/UseAPrintedAlarmReminder.vue"
+      ),
   },
   {
     path: "/riskControlWarning/ProcessSpecificationAlarmNotification",
@@ -255,7 +257,9 @@ export default [
       authRequired: true,
     },
     component: () =>
-      import("../views/frontDesk/riskControlWarning/ProcessSpecificationAlarmNotification.vue"),
+      import(
+        "../views/frontDesk/riskControlWarning/ProcessSpecificationAlarmNotification.vue"
+      ),
   },
   {
     path: "/riskControlWarning/ReceiveSealAlarmReminder",
@@ -265,7 +269,9 @@ export default [
       authRequired: true,
     },
     component: () =>
-      import("../views/frontDesk/riskControlWarning/ReceiveSealAlarmReminder.vue"),
+      import(
+        "../views/frontDesk/riskControlWarning/ReceiveSealAlarmReminder.vue"
+      ),
   },
   {
     path: "/fileManagement/documentLibrary",
@@ -299,4 +305,5 @@ export default [
     meta: { title: "components-template", authRequired: true },
     component: () => import("../views/components/template"),
   },
+  systemRoutes,
 ];

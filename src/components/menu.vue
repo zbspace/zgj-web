@@ -1508,34 +1508,34 @@ export default {
           {
             name: "企业信息",
             label: "t-zgj-cg-menu-qiye-xinxi",
-            to: "/frontDesk/home",
+            to: "/system/company/info",
             icon: require("../assets/svg/qiye-xinxi.svg"),
           },
           {
             name: "往来企业",
             label: "t-zgj-cg-menu-wanglai-qiye",
-            to: "/frontDesk/home",
+            to: "/system/company/company_dealing",
             icon: require("../assets/svg/wanglai-qiye.svg"),
           },
           {
             name: "部门与员工",
             label: "t-zgj-cg-menu-bumen-yu-yuangong",
-            to: "/frontDesk/home",
+            to: "/system/company/department_staff/",
             icon: require("../assets/svg/bumen-yu-yuangong.svg"),
             children: [
               {
                 name: "单位与部门管理",
-                to: "/frontDesk/home",
+                to: "/system/company/department_staff/department",
                 label: "t-zgj-cg-menu-danwei-yu-bumen-guanli",
               },
               {
                 name: "员工管理",
-                to: "/frontDesk/home",
+                to: "/system/company/department_staff/staff",
                 label: "t-zgj-cg-menu-yuangong-guanli",
               },
               {
                 name: "邀请审核",
-                to: "/frontDesk/home",
+                to: "/system/company/department_staff/audit",
                 label: "t-zgj-cg-menu-yaoqing-shenhe",
               }
             ]
@@ -1543,17 +1543,17 @@ export default {
           {
             name: "权限管理",
             label: "t-zgj-cg-menu-quanxian-guanli",
-            to: "/frontDesk/home",
+            to: "/system/company",
             icon: require("../assets/svg/quanju-canshu-peizhi.svg"),
             children: [
               {
                 name: "角色权限配置",
-                to: "/frontDesk/home",
+                to: "/system/company/permission/role",
                 label: "t-zgj-cg-menu-jueshe-quanxian-peizhi",
               },
               {
                 name: "基础权限配置",
-                to: "/frontDesk/home",
+                to: "/system/company/permission/rule",
                 label: "t-zgj-cg-menu-jichu-quanxian-peizhi",
               }
             ]
@@ -1566,19 +1566,19 @@ export default {
           {
             name: "全局参数设置",
             label: "t-zgj-cg-menu-quanju-canshu-shezhi",
-            to: "/frontDesk/home",
+            to: "/system/base_setting/global_parameter",
             icon: require("../assets/svg/quanju-canshu-peizhi.svg"),
           },
           {
             name: "固件版本管理",
             label: "t-zgj-cg-menu-gujian-banben-guanli",
-            to: "/frontDesk/home",
+            to: "/system/base_setting/firmware_version",
             icon: require("../assets/svg/gujian-shengji-rizhi.svg"),
           },
           {
             name: "终端版本管理",
             label: "t-zgj-cg-menu-zongduan-banben-guanli",
-            to: "/frontDesk/home",
+            to: "/system/base_setting/terminal_version",
             icon: require("../assets/svg/zongduan-banben-guanli.svg"),
           },
           {
@@ -1589,19 +1589,19 @@ export default {
           {
             name: "表单管理",
             label: "t-zgj-cg-menu-biaodan-guanli",
-            to: "/frontDesk/home",
+            to: "/system/business_manage/form_manage",
             icon: require("../assets/svg/biaodan-guanli.svg"),
           },
           {
             name: "流程管理",
             label: "t-zgj-cg-menu-liucheng-guanli",
-            to: "/frontDesk/home",
+            to: "/system/business_manage/flow_manage",
             icon: require("../assets/svg/liucheng-guanli.svg"),
           },
           {
             name: "业务规则配置",
             label: "t-zgj-cg-menu-yewu-guizhe-peizhi",
-            to: "/frontDesk/home",
+            to: "/system/business_manage/business_rule",
             icon: require("../assets/svg/yewu-guizhe-peizhi.svg"),
           },
           {
@@ -1612,25 +1612,25 @@ export default {
           {
             name: "消息事件",
             label: "t-zgj-cg-menu-xiaoxi-shijan",
-            to: "/frontDesk/home",
+            to: "/system/message_center/event",
             icon: require("../assets/svg/xiaoxi-rizhi.svg"),
           },
           {
             name: "消息模板",
             label: "t-zgj-cg-menu-xiaoxi-muban",
-            to: "/frontDesk/home",
+            to: "/system/message_center/template",
             icon: require("../assets/svg/xiaoxi-rizhi.svg"),
           },
           {
             name: "渠道配置",
             label: "t-zgj-cg-menu-qudao-peizhi",
-            to: "/frontDesk/home",
+            to: "/system/message_center/channel",
             icon: require("../assets/svg/xiaoxi-rizhi.svg"),
           },
           {
             name: "消息日志",
             label: "t-zgj-cg-menu-xiaoxi-rizhi",
-            to: "/frontDesk/home",
+            to: "/system/message_center/log",
             icon: require("../assets/svg/xiaoxi-rizhi.svg"),
           },
           {
@@ -1641,31 +1641,31 @@ export default {
           {
             name: "登录日志",
             label: "t-zgj-cg-menu-denglu-rizhi",
-            to: "/frontDesk/home",
+            to: "/system/log_mamage/login",
             icon: require("../assets/svg/denglu-rizi.svg"),
           },
           {
             name: "系统操作日志",
             label: "t-zgj-cg-menu-xitong-caozuo-rizhi",
-            to: "/frontDesk/home",
+            to: "/system/log_mamage/system_operation",
             icon: require("../assets/svg/xitong-caozuo-rizhi.svg"),
           },
           {
             name: "系统运行日志",
             label: "t-zgj-cg-menu-xitong-yunxing-rizhi",
-            to: "/frontDesk/home",
+            to: "/system/log_mamage/system_running",
             icon: require("../assets/svg/xitong-caozuo-rizhi.svg"),
           },
           {
             name: "终端操作日志",
             label: "t-zgj-cg-menu-zongduan-caozuorizhi",
-            to: "/frontDesk/home",
+            to: "/system/log_mamage/terminal_operation",
             icon: require("../assets/svg/zongduan-caozuo-rizhi.svg"),
           },
           {
             name: "固件升级日志",
             label: "t-zgj-cg-menu-gujian-shengji-rizhi",
-            to: "/frontDesk/home",
+            to: "/system/log_mamage/firmware_upgrade",
             icon: require("../assets/svg/gujian-shengji-rizhi.svg"),
           },
         ],
