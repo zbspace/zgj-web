@@ -1,5 +1,8 @@
 <template>
     <div class="components-pagination">
+        <div class="ap-desc">
+            共 {{ props.data.amount }} 条记录 第 {{ props.data.index }} / {{ props.data.pageNumber }} 页
+        </div>
         <div class="ap-box">
             <el-pagination v-bind="props.defaultAttribute" @size-change="sizeChange" @current-change="currentChange">
                 <slot></slot>
@@ -70,6 +73,12 @@ onMounted(() => {
 <style lang='scss' scoped>
 .components-pagination {
     margin: 0%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+
 
     /* 分页 */
     :deep(.ap-box) {

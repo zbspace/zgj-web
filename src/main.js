@@ -18,6 +18,7 @@ import "@/assets/scss/config/minimal/app.scss";
 import "@vueform/slider/themes/default.css";
 
 import ElementPlus from "element-plus";
+import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import "element-plus/dist/index.css";
 
 import ArcoVue from "@arco-design/web-vue";
@@ -41,6 +42,6 @@ createApp(App)
   .use(Particles)
   .use(i18n)
   .use(vClickOutside)
-  .use(ElementPlus)
+  .use(ElementPlus, { locale: zhCn })
   .use(ArcoVue)
   .mount("#app");

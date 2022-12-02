@@ -1,19 +1,34 @@
 <template>
-    <div class="components-Layout">
+    <div class="components-Layout Custom-button">
+        <div class="ap-box-title" v-if="state.Layout.title">
+            <slot name="title"></slot>
+        </div>
+        <div class="ap-box-breadcrumb" v-if="state.Layout.breadcrumb">
+            <slot name="breadcrumb"></slot>
+        </div>
         <div class="ap-box-tabs" v-if="state.Layout.tabs">
             <slot name="tabs"></slot>
         </div>
-        <div class="ap-box-searchForm" v-if="state.Layout.searchForm">
-            <slot name="searchForm"></slot>
-        </div>
-        <div class="ap-box-tree" v-if="state.Layout.tree">
-            <slot name="tree"></slot>
-        </div>
-        <div class="ap-box-table" :style="state.tableStyle" v-if="state.Layout.table">
-            <slot name="table"></slot>
-        </div>
-        <div class="ap-box-pagination" v-if="state.Layout.pagination">
-            <slot name="pagination"></slot>
+        <div class="ap-box-cont">
+            <div class="ap-box-tree" v-if="state.Layout.tree">
+                <slot name="tree"></slot>
+            </div>
+            <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
+            </div>
+            <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
+                <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
+                    <slot name="searchForm"></slot>
+                </div>
+                <div class="ap-box-batch" v-if="state.Layout.batch">
+                    <slot name="batch"></slot>
+                </div>
+                <div class="ap-box-table" v-if="state.Layout.table">
+                    <slot name="table"></slot>
+                </div>
+                <div class="ap-box-pagination" v-if="state.Layout.pagination">
+                    <slot name="pagination"></slot>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -39,7 +54,7 @@ const props = defineProps({
 const emit = defineEmits([]);
 const state = reactive({
     Layout: {},
-    tableStyle: {}
+    centStyle: {}
 });
 // 初始化布局
 function initLayout() {
@@ -49,7 +64,7 @@ function initLayout() {
         })
     };
     if (!state.Layout.tree) {
-        state.tableStyle.width = "100%"
+        state.centStyle.width = "100%"
     }
     // console.log(state.Layout);
 };
@@ -66,15 +81,38 @@ onMounted(() => {
 .components-Layout {
     margin: 0%;
     width: 100%;
-    height: 100%;
-    overflow: auto;
+    height: calc(100vh - 70px);
 
     display: flex;
-    flex-flow: wrap;
+    // flex-flow: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    @include mixin-padding-bottom(10);
+    box-sizing: border-box;
+
+    .ap-box-title {
+        width: 100%;
+        padding: 0rem 0 0.5rem 0;
+        box-sizing: border-box;
+        font-size: var(--font-size-title-2);
+    }
+
+    .ap-box-breadcrumb {
+        width: 100%;
+    }
 
     .ap-box-tabs {
         width: 100%;
 
+    }
+
+    .ap-box-cont {
+        display: flex;
+        width: 100%;
+        flex-grow: 1;
+        overflow: auto;
     }
 
     .ap-box-searchForm {
@@ -82,20 +120,38 @@ onMounted(() => {
 
     }
 
-    .ap-box-tree {
-        width: 20%;
+    .ap-box-batch {
+        width: 100%;
+        padding: 0.5rem 0 0.5rem 0;
+        box-sizing: border-box;
+
     }
 
-    .ap-box-table {
-        width: 80%;
+    .ap-box-tree {
+        width: 12%;
+        height: 100%;
+        overflow: auto;
+    }
+
+    .ap-box-cutOffRule {
+        border-left: 1px solid var(--primary-2);
+        margin: 0 1rem;
+    }
+
+    .ap-box-cent {
+        width: calc(88% - 2rem - 2px);
+        height: 100%;
+        overflow: auto;
     }
 
     .ap-box-pagination {
         width: 100%;
         display: flex;
         justify-content: flex-end;
-        padding: 1rem 0;
+        padding: 1.5rem 0;
         box-sizing: border-box;
     }
+
+
 }
 </style>

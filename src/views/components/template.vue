@@ -49,6 +49,11 @@
                 </template>
             </el-dropdown>
         </div>
+        <div class="ap-box">
+            <componentsBreadcrumb :defaultAttribute="state.componentsBreadcrumb.defaultAttribute"
+                :data="state.componentsBreadcrumb.data">
+            </componentsBreadcrumb>
+        </div>
         <!-- 单据详情 -->
         <!-- <div class="ap-box">
             <componentsDocumentsDetails Layout="">
@@ -88,12 +93,10 @@
                     </div>
                 </template>
                 <template #pagination>
-                    <div>
-                        <componentsPagination :data="state.componentsPagination.data"
-                            :defaultAttribute="state.componentsPagination.defaultAttribute" @size-change="sizeChange"
-                            @current-change="currentChange">
-                        </componentsPagination>
-                    </div>
+                    <componentsPagination :data="state.componentsPagination.data"
+                        :defaultAttribute="state.componentsPagination.defaultAttribute" @size-change="sizeChange"
+                        @current-change="currentChange">
+                    </componentsPagination>
                 </template>
             </componentsLayout>
         </div>
@@ -108,6 +111,7 @@ import componentsPagination from "./pagination.vue"
 import componentsDocumentsDetails from "./documentsDetails.vue"
 import componentsTabs from "./tabs.vue"
 import componentsLayout from "./Layout.vue"
+import componentsBreadcrumb from "./breadcrumb.vue"
 const props = defineProps({
     type: String,
 })
@@ -133,6 +137,7 @@ const state = reactive({
             label: "name",
             type: "input",
             isNecessary: true,
+            inCommonUse: true,
             // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
             defaultAttribute: {
                 placeholder: "请输入name",
@@ -572,6 +577,9 @@ const state = reactive({
                 color: "var(--primary-6)"
             }
         }],
+        defaultAttribute:{
+            isUnfold:false,
+        }
     },
     componentsTable: {
         header: [{
@@ -589,8 +597,9 @@ const state = reactive({
         }, {
             prop: 'Tom',
             label: "Tom",
-            // 是否自定义  自定义时  插槽名为  prop名
-            isCustom: true
+            rankDisplayData: [{
+                name: "1223"
+            }],
         }],
         data: [
             {
@@ -717,7 +726,11 @@ const state = reactive({
         }
     },
     componentsPagination: {
-        data: {},
+        data: {
+            amount: 500,
+            index: 1,
+            pageNumber: 10,
+        },
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
             layout: "sizes, prev, pager, next, slot",
@@ -735,6 +748,17 @@ const state = reactive({
             name: "ffff",
         }]
     },
+    componentsBreadcrumb: {
+        data: [
+            {
+                name: "ceshi",
+            }
+        ],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            separator: "/",
+        }
+    }
 });
 
 /* 
@@ -750,8 +774,8 @@ function select(selection, row) {
     // ['select', 'select-all', 'selection-change', 'cell-click', 'row-click']  仅支持这些方法
     console.log(selection, row);
 }
-function customClick(index, item) {
-    console.log(index, item);
+function customClick(index, item, butItem) {
+    console.log(index, item, butItem);
 }
 
 /* 

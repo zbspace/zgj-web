@@ -1125,7 +1125,7 @@
         <div v-for="(item, index) in state.menu">
           <div v-if="item.type == 'part'">
             <li class="menu-title">
-              <span data-key="t-menu"> {{ item.name }}</span>
+              <span data-key="t-menu"> {{ $t(item.label) }}</span>
             </li>
           </div>
           <div v-else-if="item.children && item.children.length > 0">
@@ -1133,7 +1133,7 @@
               <a class="nav-link menu-link" :href="'#' + item.label" data-bs-toggle="collapse" role="button"
                 aria-expanded="false" :aria-controls="item.label">
                 <img class="menu-iconpark" :src="item.icon" alt="" srcset="">
-                <span data-key="t-dashboards"> {{ item.name }}</span>
+                <span data-key="t-dashboards"> {{ $t(item.label) }}</span>
               </a>
               <div class="collapse menu-dropdown" :id="item.label">
                 <ul class="nav nav-sm flex-column">
@@ -1142,14 +1142,14 @@
                       <li class="nav-item">
                         <a :href="'#' + data.label" class="nav-link" data-bs-toggle="collapse" role="button"
                           aria-expanded="false" :aria-controls="data.label" data-key="t-projects">
-                          {{ data.name }}
+                          {{ $t(data.label) }}
                         </a>
                         <div class="collapse menu-dropdown" :id="data.label">
                           <ul class="nav nav-sm flex-column">
                             <div v-for="node in data.children">
                               <li class="nav-item">
                                 <router-link :to="node.to" class="nav-link custom-abc" data-key="t-analytics">
-                                  {{ node.name }}
+                                  {{ $t(node.label) }}
                                 </router-link>
                               </li>
                             </div>
@@ -1160,7 +1160,7 @@
                     <div v-else>
                       <li class="nav-item">
                         <router-link :to="data.to" class="nav-link custom-abc" data-key="t-analytics">
-                          {{ data.name }}
+                          {{ $t(data.label) }}
                         </router-link>
                       </li>
                     </div>
@@ -1173,7 +1173,7 @@
             <li class="nav-item">
               <router-link class="nav-link menu-link" :to="item.to">
                 <img class="menu-iconpark" :src="item.icon" alt="" srcset="">
-                <span data-key="t-widgets">{{ item.name }}</span>
+                <span data-key="t-widgets">{{ $t(item.label) }}</span>
               </router-link>
             </li>
           </div>
@@ -1230,77 +1230,89 @@ export default {
         business: [
           {
             name: "首页",
-            label: "shouye",
+            label: "t-zgj-cg-menu-shouye",
             to: "/frontDesk/home",
             icon: require("../assets/svg/shouye-1.svg"),
           },
           {
             name: "印控管理",
             type: "part",
-            label: "yinkongguanli",
+            label: "t-zgj-cg-menu-yinkong-guanli",
           },
           {
             name: "用印管理",
-            label: "yongyinguanli",
+            label: "t-zgj-cg-menu-yongyin-guanli",
             to: "/frontDesk/home",
             icon: require("../assets/svg/yongyin-guanli-1.svg"),
             children: [{
               name: "用印申请",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/SealApplication",
+              label: "t-zgj-cg-menu-yongyin-shenqing",
             }, {
               name: "智能用印",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/IntelligentPrinting",
+              label: "t-zgj-cg-menu-zhineng-yongyin",
             }, {
               name: "文件归档",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/Archive",
+              label: "t-zgj-cg-menu-wenjian-guidang",
             }, {
               name: "用印记录",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/recordWithSeal",
+              label: "t-zgj-cg-menu-yongyin-jilu",
             }, {
               name: "用印轨迹",
               to: "/frontDesk/home",
+              label: "t-zgj-cg-menu-yongyin-guiji",
             }]
           },
           {
             name: "印章管理",
-            label: "yinzhangguanli",
+            label: "t-zgj-cg-menu-yinzhang-guanli",
             to: "/frontDesk/home",
             icon: require("../assets/svg/yinzhang-guanli-1.svg"),
             children: [{
               name: "印章库",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/LibraryOfSeals",
+              label: "t-zgj-cg-menu-yinzhang-ku",
             }, {
               name: "印章申请",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/ApplicationForSeal",
+              label: "t-zgj-cg-menu-yinzhang-shenqing",
             }, {
               name: "印章类型",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/TypeOfSeal",
+              label: "t-zgj-cg-menu-yinzhang-leixing",
             }, {
               name: "印章外借信息",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/SealloanInformation",
+              label: "t-zgj-cg-menu-yinzhang-waijie-xinxi",
             },]
           },
           {
             name: "文件防篡改",
-            label: "wenjianfangchuangai",
+            label: "t-zgj-cg-menu-wenjian-fangchuangai",
             to: "/frontDesk/home",
             icon: require("../assets/svg/yinzhang-guanli-1.svg"),
             children: [
               {
                 name: "防伪水印验证",
-                to: "/frontDesk/home",
+                to: "/PrintControlManagement/SecurityWatermark",
+                label: "t-zgj-cg-menu-fangwei-shuiyin-yanzheng",
               }, {
                 name: "文件内容核验",
-                label: "wenjianneirongheyan",
+                label: "t-zgj-cg-menu-wenjian-neirong-heyan",
                 to: "/frontDesk/home",
                 children: [
                   {
                     name: "用印前核验",
-                    to: "/frontDesk/home",
+                    to: "/PrintControlManagement/UsePrepressVerification",
+                    label: "t-zgj-cg-menu-yongyin-qian-heyan",
                   },
                   {
                     name: "用印后核验",
-                    to: "/frontDesk/home",
+                    to: "/PrintControlManagement/UsePostPressVerification",
+                    label: "t-zgj-cg-menu-yongyin-hou-heyan",
                   }
                 ]
               },
@@ -1308,54 +1320,68 @@ export default {
           },
           {
             name: "电子签章",
-            label: "dianzibiaoqian",
+            label: "t-zgj-cg-menu-dianzi-qianzhang",
             to: "/frontDesk/home",
             icon: require("../assets/svg/dianzi-qianzhang.svg"),
             children: [{
               name: "电子签章申请",
               to: "/frontDesk/home",
+              label: "t-zgj-cg-menu-dianzi-qianzhang-shenqing",
             }, {
               name: "待电子签章",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/ElectronicSignatureRequired",
+              label: "t-zgj-cg-menu-dai-dianzi-qianzhang",
             }, {
               name: "电子签章记录",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/electronicSignatureRecord",
+              label: "t-zgj-cg-menu-dianzi-qianzhang-jilu",
             }, {
               name: "电子印章库",
               to: "/frontDesk/home",
+              label: "t-zgj-cg-menu-dianzi-yinzhang-ku",
             }, {
               name: "用户认证",
               to: "/frontDesk/home",
+              label: "t-zgj-cg-menu-yonghu-renzheng",
             },]
           },
           {
             name: "设备管理",
-            label: "shebeiguanli",
+            label: "t-zgj-cg-menu-shebei-guanli",
             to: "/frontDesk/home",
             icon: require("../assets/svg/shebei-guanli.svg"),
             children: [
               {
+                name: "工作台管理",
+                label: "t-zgj-cg-menu-gongzuotai-guanli",
+                to: "/PrintControlManagement/WorkbenchManagement",
+              },
+              {
                 name: "智能印章盒管理",
-                label: "zhinengyizhangheguanli",
+                label: "t-zgj-cg-menu-zhineng-yinzhang-he-guanli",
                 to: "/frontDesk/home",
                 children: [{
                   name: "智能印章盒管理",
-                  to: "/frontDesk/home",
+                  to: "/PrintControlManagement/IntelligentSealBoxManagement",
+                  label: "t-zgj-cg-menu-zhineng-yinzhang-he-guanli",
                 }, {
                   name: "智能印章盒格口管理",
                   to: "/frontDesk/home",
+                  label: "t-zgj-cg-menu-zhineng-yinzhang-he-gekou-guanli",
                 }]
               },
               {
                 name: "智能印章柜管理",
                 to: "/frontDesk/home",
-                label: "zhinengyinzhangguiguanli",
+                label: "t-zgj-cg-menu-zhineng-yinzhang-gui-guanli",
                 children: [{
                   name: "智能印章柜管理",
-                  to: "/frontDesk/home",
+                  to: "/PrintControlManagement/IntelligentSealCabinetManagement",
+                  label: "t-zgj-cg-menu-zhineng-yinzhang-gui-guanli",
                 }, {
                   name: "智能印章柜格口管理",
                   to: "/frontDesk/home",
+                  label: "t-zgj-cg-menu-zhineng-yinzhang-gui-gekou-guanli",
                 }]
               },
             ]
@@ -1364,108 +1390,111 @@ export default {
           {
             name: "文件管理",
             type: "part",
-            label: "wenjianguanli",
+            label: "t-zgj-cg-menu-wenjian-guanli",
           },
           {
             name: "文件库",
-            label: "wenjianku",
-            to: "/frontDesk/home",
+            label: "t-zgj-cg-menu-wenjian-ku",
+            to: "/fileManagement/documentLibrary",
             icon: require("../assets/svg/wenjianku-1.svg"),
           },
           {
             name: "文件类型",
-            label: "wenjianleixing",
-            to: "/frontDesk/home",
+            label: "t-zgj-cg-menu-wenjian-leixing",
+            to: "/fileManagement/documentType",
             icon: require("../assets/svg/wenjian-leixing-1.svg"),
           },
 
           {
             name: "流程审批",
-            label: "liuchengshenpi",
+            label: "t-zgj-cg-menu-liucheng-shenpi",
             type: "part",
           },
 
           {
             name: "实时确认",
-            label: "shishiqueren",
-            to: "/frontDesk/home",
+            label: "t-zgj-cg-menu-shishi-queren",
+            to: "/approvalFlow/RealTimeConfirmation",
             icon: require("../assets/svg/shebei-guanli.svg"),
           },
           {
             name: "审批流程",
-            label: "shenpiliucheng",
-            to: "/frontDesk/home",
+            label: "t-zgj-cg-menu-shenpi-liucheng",
+            to: "/approvalFlow/approvalFlow",
             icon: require("../assets/svg/dai-shenpi-liucheng.svg"),
           },
           {
             name: "处理任务",
-            label: "chuliyewu",
-            to: "/frontDesk/home",
+            label: "t-zgj-cg-menu-chuli-renwu",
+            to: "/approvalFlow/handleTask",
             icon: require("../assets/svg/dai-chuli-renwu.svg"),
           },
           {
             name: "抄送给我",
-            label: "caosonggeiwo",
+            label: "t-zgj-cg-menu-caoshong-geiwo",
             to: "/frontDesk/home",
             icon: require("../assets/svg/chaosong-geiwode-liucheng.svg"),
           },
           {
             name: "风控预警",
-            label: "fengkongyujing",
+            label: "t-zgj-cg-menu-fengkong-yujing",
             type: "part",
           },
           {
             name: "风控提醒设置",
-            label: "fengkongtixingshezhi",
-            to: "/frontDesk/home",
+            label: "t-zgj-cg-menu-fengkong-tixing-shezhi",
+            to: "/riskControlWarning/RiskAlertSetting",
             icon: require("../assets/svg/fengxian-tixing-jilu-1.svg"),
           },
           {
             name: "风险提醒记录",
-            label: "fengxiantixingjilu",
+            label: "t-zgj-cg-menu-fengxian-tixing-jilu",
             to: "/frontDesk/home",
             icon: require("../assets/svg/fengxian-tixing-jilu-1.svg"),
             children: [
               {
                 name: "用印告警提醒",
-                to: "/frontDesk/home",
+                to: "/riskControlWarning/UseAPrintedAlarmReminder",
+                label: "t-zgj-cg-menu-yongyin-gaojing-tixing",
               },
               {
                 name: "领用印章告警提醒",
-                to: "/frontDesk/home",
+                to: "/riskControlWarning/ReceiveSealAlarmReminder",
+                label: "t-zgj-cg-menu-lingyong-yinzhang-gaojing-tixing",
               },
               {
                 name: "流程规范告警提醒",
-                to: "/frontDesk/home",
+                to: "/riskControlWarning/ProcessSpecificationAlarmNotification",
+                label: "t-zgj-cg-menu-liucheng-guifan-gaojing-tixing",
               },
             ]
           },
           {
             name: "数据报表",
-            label: "shujubaobiao",
+            label: "t-zgj-cg-menu-shuju-baobiao",
             type: "part",
           },
           {
             name: "数据看板",
-            label: "shuju-kanban",
+            label: "t-zgj-cg-menu-shuju-kanban",
             to: "/frontDesk/home",
             icon: require("../assets/svg/shuju-kanban-1.svg"),
           },
           {
             name: "用印数据分析",
-            label: "yongyin-shuju-fenxi",
+            label: "t-zgj-cg-menu-yongyin-shuju-fenxi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/yongyin-shuju-fenxi-1.svg"),
           },
           {
             name: "印章数据分析",
-            label: "yinzhang-shuju-fenxi",
+            label: "t-zgj-cg-menu-yinzhang-shuju-fenxi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/yinzhang-shuju-fenxi-1.svg"),
           },
           {
             name: "预警数据分析",
-            label: "yujing-shuju-fenxi",
+            label: "t-zgj-cg-menu-yujing-shuju-fenxi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/yujing-guanli.svg"),
           },
@@ -1474,159 +1503,168 @@ export default {
           {
             name: "企业管理",
             type: "part",
-            label: "qiyeguanli",
+            label: "t-zgj-cg-menu-qiye-guanli",
           },
           {
             name: "企业信息",
-            label: "quyexinxi",
+            label: "t-zgj-cg-menu-qiye-xinxi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/qiye-xinxi.svg"),
           },
           {
             name: "往来企业",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-wanglai-qiye",
             to: "/frontDesk/home",
             icon: require("../assets/svg/wanglai-qiye.svg"),
           },
           {
             name: "部门与员工",
-            label: "bumenyuyuangong",
+            label: "t-zgj-cg-menu-bumen-yu-yuangong",
             to: "/frontDesk/home",
             icon: require("../assets/svg/bumen-yu-yuangong.svg"),
             children: [
               {
                 name: "单位与部门管理",
                 to: "/frontDesk/home",
+                label: "t-zgj-cg-menu-danwei-yu-bumen-guanli",
               },
               {
                 name: "员工管理",
                 to: "/frontDesk/home",
+                label: "t-zgj-cg-menu-yuangong-guanli",
               },
               {
                 name: "邀请审核",
                 to: "/frontDesk/home",
+                label: "t-zgj-cg-menu-yaoqing-shenhe",
               }
             ]
           },
           {
             name: "权限管理",
-            label: "quanxianguanli",
+            label: "t-zgj-cg-menu-quanxian-guanli",
             to: "/frontDesk/home",
             icon: require("../assets/svg/quanju-canshu-peizhi.svg"),
             children: [
               {
                 name: "角色权限配置",
                 to: "/frontDesk/home",
+                label: "t-zgj-cg-menu-jueshe-quanxian-peizhi",
               },
               {
                 name: "基础权限配置",
                 to: "/frontDesk/home",
+                label: "t-zgj-cg-menu-jichu-quanxian-peizhi",
               }
             ]
           },
           {
             name: "基础设置",
             type: "part",
+            label: "t-zgj-cg-menu-jichu-shezhi",
           },
           {
             name: "全局参数设置",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-quanju-canshu-shezhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/quanju-canshu-peizhi.svg"),
           },
           {
             name: "固件版本管理",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-gujian-banben-guanli",
             to: "/frontDesk/home",
             icon: require("../assets/svg/gujian-shengji-rizhi.svg"),
           },
           {
             name: "终端版本管理",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-zongduan-banben-guanli",
             to: "/frontDesk/home",
             icon: require("../assets/svg/zongduan-banben-guanli.svg"),
           },
           {
             name: "业务管理",
             type: "part",
+            label: "t-zgj-cg-menu-yewu-guanli",
           },
           {
             name: "表单管理",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-biaodan-guanli",
             to: "/frontDesk/home",
             icon: require("../assets/svg/biaodan-guanli.svg"),
           },
           {
             name: "流程管理",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-liucheng-guanli",
             to: "/frontDesk/home",
             icon: require("../assets/svg/liucheng-guanli.svg"),
           },
           {
             name: "业务规则配置",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-yewu-guizhe-peizhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/yewu-guizhe-peizhi.svg"),
           },
           {
             name: "消息中心",
             type: "part",
+            label: "t-zgj-cg-menu-xiaoxi-zhongxin",
           },
           {
             name: "消息事件",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-xiaoxi-shijan",
             to: "/frontDesk/home",
             icon: require("../assets/svg/xiaoxi-rizhi.svg"),
           },
           {
             name: "消息模板",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-xiaoxi-muban",
             to: "/frontDesk/home",
             icon: require("../assets/svg/xiaoxi-rizhi.svg"),
           },
           {
             name: "渠道配置",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-qudao-peizhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/xiaoxi-rizhi.svg"),
           },
           {
             name: "消息日志",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-xiaoxi-rizhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/xiaoxi-rizhi.svg"),
           },
           {
             name: "日志管理",
             type: "part",
+            label: "t-zgj-cg-menu-rizhi-guanli",
           },
           {
             name: "登录日志",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-denglu-rizhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/denglu-rizi.svg"),
           },
           {
             name: "系统操作日志",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-xitong-caozuo-rizhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/xitong-caozuo-rizhi.svg"),
           },
           {
             name: "系统运行日志",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-xitong-yunxing-rizhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/xitong-caozuo-rizhi.svg"),
           },
           {
             name: "终端操作日志",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-zongduan-caozuorizhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/zongduan-caozuo-rizhi.svg"),
           },
           {
             name: "固件升级日志",
-            label: "wanglai-qiye",
+            label: "t-zgj-cg-menu-gujian-shengji-rizhi",
             to: "/frontDesk/home",
             icon: require("../assets/svg/gujian-shengji-rizhi.svg"),
           },
