@@ -26,12 +26,12 @@
 
           <!-- 菜单开关 -->
           <button type="button" class="
-                btn btn-sm
-                px-3
-                fs-16
-                header-item
-                vertical-menu-btn
-                topnav-hamburger
+btn btn-sm
+px-3
+fs-16
+header-item
+vertical-menu-btn
+topnav-hamburger
               " id="topnav-hamburger-icon">
             <span class="hamburger-icon">
               <span></span>
@@ -49,21 +49,31 @@
                   <i class="ri-arrow-down-s-line"></i>
                 </span>
                 <template #dropdown>
-                  <div class="ap-enterprise">
-                    <div class="ap-enterprise-text">
-                      <div class="ap-enterprise-text-list">
-                        企业/组织/团队
+
+                  <el-dropdown-menu>
+                    <div class="ap-enterprise">
+                      <div class="ap-enterprise-text">
+                        <div class="ap-enterprise-text-list">
+                          企业/组织/团队
+                        </div>
+                      </div>
+                      <div class="ap-enterprise-cont">
+
+                        <el-dropdown-item>
+                          <div class="ap-enterprise-cont-list">
+                            上海建业科技股份有限公司
+                            <div class="defart-selected"></div>
+                          </div>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                          <div class="ap-enterprise-cont-list">
+                            杭州好运科技股份有限公司
+                          </div>
+                        </el-dropdown-item>
                       </div>
                     </div>
-                    <div class="ap-enterprise-cont">
-                      <div class="ap-enterprise-cont-list">
-                        上海建业科技股份有限公司
-                      </div>
-                      <div class="ap-enterprise-cont-list">
-                        杭州好运科技股份有限公司
-                      </div>
-                    </div>
-                  </div>
+                  </el-dropdown-menu>
+
                 </template>
               </el-dropdown>
             </div>
@@ -75,7 +85,7 @@
           <!-- 系统 -->
           <div class="ap-sys">
             <div class="ap-sys-but" @click="changeSystemHome">
-              
+
               <div v-if="state.application.CurrentSystemType == 'business'">
                 <img class="ap-sys-but-icon" src="../assets/icon/system-setup.png" alt="" srcset="">
                 <span class="ap-sys-but-text">{{ $t('t-back-system-platform') }}</span>
@@ -90,8 +100,8 @@
 
           <!-- 帮助 -->
           <div class="ms-1 header-item d-none d-sm-flex" ref="dropdownHelpRef">
-            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary"
-              data-toggle="fullscreen" @click="showHelpPop = !showHelpPop">
+            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary" data-toggle="fullscreen"
+              @click="showHelpPop = !showHelpPop">
 
               <el-tooltip class="box-item" effect="dark" content="帮助中心" placement="bottom" :show-arrow="true">
                 <div>
@@ -103,167 +113,13 @@
           </div>
 
           <!-- 信息 -->
-          <div class="dropdown topbar-head-dropdown ms-1 header-item" ref="dropdownMailRef">
-            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary"
-              id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true"
-              aria-expanded="false" @click="showMailPop = !showMailPop">
-              <img v-show="!showMailPop" src="../assets/images/navbar/mail_icon.svg" />
-              <img v-show="showMailPop" src="../assets/images/navbar/mail_select_icon.svg" />
-              <span
-                class="position-absolute topbar-badge cartitem-badge fs-10 translate-middle badge rounded-pill bg-danger">5</span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
-              aria-labelledby="page-header-cart-dropdown" 
-              style="width: 560px;" id="close-pop">
-              
-              <div class="nav-msg">
-                <div class="msg-title">
-                  <div>{{ $t('t-zgj-message.Title') }}</div>
-                  <div @click="closeMailPop">
-                    <img src="../assets/images/navbar/Closeclose.svg" />
-                  </div>
-                </div>
+          <VMailNav></VMailNav>
 
-                <div class="msg-content" :style="{ 'max-height': maxHeight + 'px'}">
-                  <!-- 待我确认 -->
-                  <div>
-                    <div class="content-title">
-                      <div class="title">{{ $t('t-to-be-confirm') }}</div>
-                      <div class="view-more">{{ $t('t-view-more') }}<img src="../assets/images/navbar/nav_msg_more.svg" /></div>
-                    </div>
-
-                    <div class="content-list user-select">
-                      <div class="column" v-for="(item, index) in toBeConfirmedList" :key="index">
-                        <div class="msg">{{ item.content }}</div>
-                        <div class="tag">
-                          <el-tag type="warning" size="small">{{ item.label }}</el-tag>
-                          <el-tag type="info" size="small"  class="t">{{ item.depart }}</el-tag>
-                          <el-tag type="info" size="small">{{ item.person }}</el-tag>
-                        </div>
-                        <div class="date">
-                          <div class="left">{{ item.dateTime }}</div>
-                          <div class="custom-button user-select">{{ $t('t-zgj-confirm') }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- 待我审批 -->
-                  <div>
-                    <div class="content-title">
-                      <div class="title">{{ $t('t-to-be-approval') }}</div>
-                      <div class="view-more">{{ $t('t-view-more') }}<img src="../assets/images/navbar/nav_msg_more.svg" /></div>
-                    </div>
-                  
-                    <div class="content-list user-select">
-                      <div class="column" v-for="(item, index) in toBeConfirmedList" :key="index">
-                        <div class="msg">{{ item.content }}</div>
-                        <div class="tag">
-                          <el-tag size="small">{{ item.label }}</el-tag>
-                          <el-tag type="info" size="small" class="t">{{ item.depart }}</el-tag>
-                          <el-tag type="info" size="small">{{ item.person }}</el-tag>
-                        </div>
-                        <div class="date">
-                          <div class="left">{{ item.dateTime }}</div>
-                          <div class="custom-button user-select">{{ $t('t-zgj-Approval') }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- 待我处理 -->
-                  <div>
-                    <div class="content-title">
-                      <div class="title">{{ $t('t-to-be-handle') }}</div>
-                      <div class="view-more">{{ $t('t-view-more') }}<img src="../assets/images/navbar/nav_msg_more.svg" /></div>
-                    </div>
-                  
-                    <div class="content-list user-select">
-                      <div class="column" v-for="(item, index) in toBeConfirmedList" :key="index">
-                        <div class="msg">{{ item.content }}</div>
-                        <div class="tag">
-                          <el-tag type="warning" size="small">{{ item.label }}</el-tag>
-                          <el-tag type="info" size="small" class="t">{{ item.depart }}</el-tag>
-                          <el-tag type="info" size="small">{{ item.person }}</el-tag>
-                        </div>
-                        <div class="date">
-                          <div class="left">{{ item.dateTime }}</div>
-                          <div class="custom-button user-select">{{ $t('t-zgj-Handle') }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                </div>
-
-              </div>
-            </div>
-          </div>
-          
           <!-- 消息 -->
-          <div class="dropdown topbar-head-dropdown ms-1 header-item" ref="dropdownNotifyRef">
-            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary"
-              id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true"
-              aria-expanded="false" @click="showNotifyPop = !showNotifyPop" style="transform: rotateY(180deg);">
-              <img v-show="!showNotifyPop" src="../assets/images/navbar/notify_icon.svg" />
-              <img v-show="showNotifyPop" src="../assets/images/navbar/notify_select_icon.svg" />
-              <span class="position-absolute translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
-              aria-labelledby="page-header-cart-dropdown">
-
-              <!-- tabs -->
-              <div class="nav-natify-tab">
-                <VTabs :active="active" :label="tabsLabel" @update:active="active = $event"></VTabs>
-
-                <div class="natify-content">
-                  <div v-if="active === tabsLabel[0].value" class="column">
-                    <!-- content -->
-                    <div class="item" :class="item.isRead ? '' : 'diot'" v-for="(item, index) in listMsg" :key="index">
-                      <div class="item-msg">{{item.content}}</div>
-                      <div class="item-time">{{item.date}}</div>
-                    </div>
-
-                  </div>
-                  <div v-if="active === tabsLabel[1].value" class="column">
-                     
-                    <!-- content -->
-                    <div class="item" :class="item.isRead ? '' : 'diot'" v-for="(item, index) in listNoticeMsg" :key="index">
-                      <div class="item-msg">{{item.content}}</div>
-                      <div class="item-time">{{item.date}}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="natify-footer">
-                  <div>{{ $t('t-zgj-index.tab.Markread') }}</div>
-                  <div>{{ $t('t-view-all-notify') }}</div>
-                </div>
-              </div>
-
-            </div>
-          </div>
+          <VMessageNav></VMessageNav>
 
           <!-- 应用入口 -->
-          <div class="dropdown topbar-head-dropdown ms-1 header-item" ref="dropdownAppRef">
-            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary"
-              id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false" @click="showAppPop = !showAppPop">
-              <img  v-show="!showAppPop" src="../assets/images/navbar/application_icon.svg" />
-              <img v-show="showAppPop" src="../assets/images/navbar/application_select_icon.svg" />
-            </button>
-            <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
-              aria-labelledby="page-header-cart-dropdown" style="width: 340px;">
-              <div class="ap-moreDropdown">
-                <div class="dropdown-list">
-                  <div class="dropdown-list-cont" v-for="( item, index ) in state.application.more" :key="index">
-                    <img class="dropdown-list-cont-img" :src="item.icon" alt="" srcset="">
-                    <div class="dropdown-list-cont-name">{{$t(item.name)}}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <VApplicationNav></VApplicationNav>
 
           <!-- 用户信息 -->
           <div class="dropdown topbar-head-dropdown ms-1 header-item" ref="dropdownUserRef">
@@ -326,7 +182,7 @@
                     <img src="../assets/images/navbar/user_info_layout.svg" />
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-logout-user') }}</span>
                   </div>
-              
+                  
                 </div>
               </div>
             </div>
@@ -343,30 +199,13 @@ import { onMounted, reactive, ref, watch } from "vue";
 import useCurrentInstance from "@/hooks/getInstance.js"
 import i18n from "../i18n";
 import useClickQutside from "../hooks/useClickQutside.js"
-import VTabs from "./modules/tabs.vue"
+import VApplicationNav from "../components/modules/applicationNav.vue"
+import VMailNav from "../components/modules/mailNav.vue"
+import VMessageNav from "../components/modules/messageNav.vue"
 const _this = useCurrentInstance()
 const state = reactive({
   application: {
     CurrentSystemType: "business",//business / system
-    more: [{
-      icon: require("../assets/svg/more-Seal-Application.svg"),
-      name: "t-zgj-F_SEAL_APPLY",
-    }, {
-      icon: require("../assets/svg/more-my-Seal-Application.svg"),
-      name: "t-zgj-F_SEAL_APPLY_MY",
-    }, {
-      icon: require("../assets/svg/more-file-document.svg"),
-      name: "t-zgj-F_SEAL_FILE_UPLOAD",
-    }, {
-      icon: require("../assets/svg/more-Application-Seal.svg"),
-      name: "t-zgj-F_SEAL_INFO_APPLY",
-    }, {
-      icon: require("../assets/svg/more-file-document.svg"),
-      name: "t-zgj-F_DOCUMENT_INFO",
-    }, {
-      icon: require("../assets/svg/more-document-library.svg"),
-      name: "t-zgj-F_SEAL_INFO",
-    }],
   },
   language: i18n.global.locale
 })
@@ -376,7 +215,6 @@ if (CurrentSystemType) {
   state.application.CurrentSystemType = CurrentSystemType
 }
 
-let maxHeight = ref(null)
 onMounted(() => {
   // 添加监听 滚动事件
   document.addEventListener("scroll", function () {
@@ -393,10 +231,6 @@ onMounted(() => {
       .getElementById("topnav-hamburger-icon")
       .addEventListener("click", toggleHamburgerMenu);
   
-  maxHeight.value = window.innerHeight - 150
-  window.addEventListener("resize", function () {
-    maxHeight.value = window.innerHeight - 150
-  })
 })
 
 // 监听 菜单开关
@@ -458,20 +292,6 @@ watch(isClickOutsideUser, () => {
 
 })
 
-const dropdownMailRef = ref(null)
-const showMailPop = ref(false)
-const isClickOutsideMail = useClickQutside(dropdownMailRef)
-watch(isClickOutsideMail, () => {
-  // 邮件弹框
-  if (isClickOutsideMail.value && showMailPop.value) {
-    showMailPop.value = false
-  }
-})
-
-const closeMailPop = () => {
-  showMailPop.value = false
-  document.getElementById('close-pop').classList.remove("show");
-}
 const dropdownHelpRef = ref(null)
 const showHelpPop = ref(false)
 const isClickOutsideHelp = useClickQutside(dropdownHelpRef)
@@ -482,25 +302,15 @@ watch(isClickOutsideHelp, () => {
   }
 })
 
-const dropdownNotifyRef = ref(null)
-const showNotifyPop = ref(false)
-const isClickOutsideNotify = useClickQutside(dropdownNotifyRef)
-watch(isClickOutsideNotify, () => {
-  // 消息弹框
-  if (isClickOutsideNotify.value && showNotifyPop.value) {
-    showNotifyPop.value = false
-  }
- })
-
-const dropdownAppRef = ref(null)
-const showAppPop = ref(false)
-const isClickOutsideApp = useClickQutside(dropdownAppRef)
-watch(isClickOutsideApp, () => {
-  // 应用弹框
-  if (isClickOutsideApp.value && showAppPop.value) {
-    showAppPop.value = false
-  }
- })
+// const dropdownNotifyRef = ref(null)
+// const showNotifyPop = ref(false)
+// const isClickOutsideNotify = useClickQutside(dropdownNotifyRef)
+// watch(isClickOutsideNotify, () => {
+//   // 消息弹框
+//   if (isClickOutsideNotify.value && showNotifyPop.value) {
+//     showNotifyPop.value = false
+//   }
+//  })
 
 // 切换 中英文
 const setLanguage = (locale) => {
@@ -519,99 +329,13 @@ const changeSystemHome = () => {
   }
 }
 
-// 消息 tabs
-const active = ref('first')
-const tabsLabel = ref([
-  {
-    name: 't-zgj-F_WARNING',
-    value: 'first'
-  },
-  {
-    name: 't-zgj-F_NOTICE',
-    value: 'second'
-  }
-])
-
-// 预警消息列表
-const listMsg = ref([
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容',
-    date: '2022-09-11 10:21:55',
-    isRead: false
-  },
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容',
-    date: '2022-09-11 10:21:55',
-    isRead: true
-  },
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容',
-    date: '2022-09-11 10:21:55',
-    isRead: false
-  },
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容',
-    date: '2022-09-11 10:21:55',
-    isRead: false
-  }
-])
-
-const listNoticeMsg = ref([
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容',
-    date: '2022-09-11 10:21:55',
-    isRead: true
-  },
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容',
-    date: '2022-09-11 10:21:55',
-    isRead: true
-  },
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内容',
-    date: '2022-09-11 10:21:55',
-    isRead: false
-  }
-])
-
-// 消息列表 - 待我确认
-const toBeConfirmedList = ref([
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内内容消息内内容消息内',
-    label: '远程盖章',
-    depart: '产品部',
-    person: '马丽丽',
-    dateTime: '2022-09-21 10:01:00'
-  },
-  {
-    content: '消息内容消息内容消息内容消息息内内容消息内内容消息内',
-    label: '实时视频盖章',
-    depart: '产品部',
-    person: '马丽丽',
-    dateTime: '2022-09-21 10:01:00'
-  },
-  {
-    content: '消息内容消息内容消息内容消息内容消息内容消息内容消息内容消息内内容消息内内容消息内',
-    label: '远程盖章',
-    depart: '产品部',
-    person: '马丽丽',
-    dateTime: '2022-09-21 10:01:00'
-  },
-  {
-    content: '消息内容消息内容消息内容消息息内内容消息内内容消息内',
-    label: '实时视频盖章',
-    depart: '产品部',
-    person: '马丽丽',
-    dateTime: '2022-09-21 10:01:00'
-  }
-])
-
 </script>
 <style lang='scss' scoped>
 // @import "../style/index.scss";
 .header-content {
   min-width: 800px;
 }
+
 .nav-bar-iconpark {
   font-size: 22px;
 }
@@ -657,6 +381,7 @@ const toBeConfirmedList = ref([
   font-size: 14px;
   width: 88px;
   height: 42px;
+
   .ap-personalCenter-text {
     display: flex;
     align-items: center;
@@ -722,7 +447,6 @@ const toBeConfirmedList = ref([
   }
 
   .dropdown-list {
-    
     .dropdown-list-li {
       position: relative;
       padding: 0 20px;
@@ -732,9 +456,11 @@ const toBeConfirmedList = ref([
       cursor: pointer;
       color: rgba(0, 0, 0, 0.65);
       overflow: hidden;
+
       &:hover {
-        color: #D0963E!important;
-        img{
+        color: #D0963E !important;
+
+        img {
           position: relative;
           left: -80px;
           filter: drop-shadow(#D0963E 80px 0);
@@ -793,45 +519,9 @@ const toBeConfirmedList = ref([
   }
 }
 
-.ap-moreDropdown {
-  @include mixin-width(340);
-  @include mixin-height(400);
-  @include mixin-padding(20);
-
-  .dropdown-list {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-content: space-between;
-    flex-flow: wrap;
-
-    .dropdown-list-cont {
-      @include mixin-width(130);
-      @include mixin-height(100);
-      text-align: center;
-      display: flex;
-      flex-flow: wrap;
-      align-content: center;
-      justify-content: center;
-
-      .dropdown-list-cont-name {
-        width: 100%;
-        @include mixin-margin-top(11);
-      }
-    }
-
-    .dropdown-list-cont:hover {
-      background-color: var(--color-fill--2);
-      color: #D0963E;
-    }
-  }
-
-}
-
 .ap-enterprise {
-  @include mixin-width(290);
-  padding: 1rem;
+  @include mixin-width(300);
+  // padding: 1rem;
 
   .ap-enterprise-text {
     display: flex;
@@ -846,6 +536,7 @@ const toBeConfirmedList = ref([
       border-radius: var(--border-radius-4);
       font-weight: var(--font-weight-600);
       font-size: var(--font-size-body-2);
+
     }
   }
 
@@ -860,187 +551,26 @@ const toBeConfirmedList = ref([
       cursor: pointer;
       margin: 0.2rem;
       border-radius: var(--border-radius-4);
+      position: relative;
+    }
+
+    .defart-selected::after {
+      content: "";
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 8px;
+      background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat center center;
+      background-size: 100%;
     }
 
     .ap-enterprise-cont-list:hover {
-      background-color: var(--color-fill--2);
+      // background-color: var(--color-fill--2);
       color: var(--primary-6);
     }
   }
 }
 
-.nav-natify-tab {
-  padding-top: 26px;
-
-  .natify-content {
-    height: 294px;
-
-    .column {
-      padding: 5px 4px 5px 32px;
-      height: 64px;
-
-      .item {
-        position: relative;
-        padding: 10px 0;
-        .item-msg {
-          font-family: 'PingFang SC';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 22px;
-          color: #303133;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-
-        .item-time {
-          font-family: 'PingFang SC';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 20px;
-          color: #909399;
-        }
-      }
-      .diot::before {
-        content: "";
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        left: -16px;
-        top: 14px;
-        border-radius: 50%;
-        background: #D04D3E;
-      }
-    }
-  }
-
-  .natify-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px;
-    height: 50px;
-    color: rgba($color: #000000, $alpha: 0.45);
-    border-top: 1px solid rgba($color: #000000, $alpha: 0.06);
-    
-    div {
-      font-family: 'PingFang SC';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 24px;
-      cursor: pointer;
-    }
-  }
-}
-
-.nav-msg {
-  
-  .msg-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'PingFang SC';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    height: 55px;
-    padding: 0 24px;
-    border-bottom: 1px solid rgba($color: #000000, $alpha: 0.06);
-  }
-
-  .msg-content {
-    padding: 10px 24px 30px 24px;
-    overflow-y: scroll;
-    .content-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 44px;
-      padding-left: 10px;
-
-      .title {
-        position: relative;
-        color: rgba(0, 0, 0, 0.85);
-        font-family: 'PingFang SC';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-      }
-      .title::before {
-        content: "";
-        position: absolute;
-        top: 2px;
-        left: -10px;
-        height: 16px;
-        width: 2px;
-        background: #D0963E;
-      }
-
-      .view-more {
-        color: rgba(0, 0, 0, 0.45);
-        font-family: 'PingFang SC';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        cursor: pointer;
-      }
-    }
-
-    .content-list {
-      max-height: 240px;
-      overflow: hidden;
-      .msg {
-        font-family: 'PingFang SC';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 30px;
-        color: rgba(0, 0, 0, 0.85);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .tag {
-        .t {
-          margin: 0 6px;
-        }
-      }
-
-      .date {
-        display: flex;
-        justify-content: space-between;
-        font-family: 'PingFang SC';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 20px;
-        color: #909399;
-
-        .left {
-          line-height: 29px;
-        }
-      }
-
-    }
-  }
-}
-
-.custom-button {
-  padding: 0 16px;
-  height: 26px;
-  background: #FFFFFF;
-  mix-blend-mode: normal;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  color: #3E78D0;
-  font-size: 12px;
-  line-height: 24px;
-  &:hover {
-    border: 1px solid #3E78D0;
-  }
-}
 </style>
