@@ -81,7 +81,7 @@ onMounted(() => {
 .components-Layout {
     margin: 0%;
     width: 100%;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 90px);
 
     display: flex;
     // flex-flow: wrap;
@@ -89,8 +89,13 @@ onMounted(() => {
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
+    @include mixin-padding-top(10);
     @include mixin-padding-bottom(10);
+    @include mixin-padding-left(20);
+    @include mixin-padding-right(20);
     box-sizing: border-box;
+    border-radius: var(--border-radius-4);
+    background-color: var(--in-common-use-1);
 
     .ap-box-title {
         width: 100%;

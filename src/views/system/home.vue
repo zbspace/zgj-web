@@ -1,88 +1,85 @@
 <template>
-    <Layout>
-        <div class="system-home">
-            <div class="row ap-row">
-                <div class="col-xxl-3 panel-box">
-                    <div class="panel-cent">
-                        <div class="panel-box-o">
-                            <span class="panel-box-o-big">720</span>
-                            <span class="panel-box-o-text">人</span>
-                        </div>
-                        <div class="panel-box-t">
-                            员工总数
-                        </div>
-                        <div class="panel-box-th"></div>
+    <div class="system-home">
+        <div class="row ap-row">
+            <div class="col-xxl-3 panel-box">
+                <div class="panel-cent">
+                    <div class="panel-box-o">
+                        <span class="panel-box-o-big">720</span>
+                        <span class="panel-box-o-text">人</span>
                     </div>
-                </div>
-                <div class="col-xxl-3 panel-box">
-                    <div class="panel-cent">
-
-                        <div class="panel-box-o">
-                            <span class="panel-box-o-big">15</span>
-                            <span class="panel-box-o-text">人</span>
-                        </div>
-                        <div class="panel-box-t">
-                            今日员工登录数
-                        </div>
-                        <div class="panel-box-th"></div>
+                    <div class="panel-box-t">
+                        员工总数
                     </div>
-                </div>
-                <div class="col-xxl-3 panel-box">
-                    <div class="panel-cent">
-
-                        <div class="panel-box-o">
-                            <span class="panel-box-o-big">74</span>
-                            <span class="panel-box-o-num">/391</span>
-                            <span class="panel-box-o-text">枚</span>
-                        </div>
-                        <div class="panel-box-t">
-                            绑定数/印章总数
-                        </div>
-                        <div class="panel-box-th"></div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 panel-box">
-                    <div class="panel-cent">
-
-                        <div class="panel-box-o">
-                            <span class="panel-box-o-big">2979</span>
-                            <span class="panel-box-o-text">天</span>
-                        </div>
-                        <div class="panel-box-t">
-                            倒计时间
-                        </div>
-                        <div class="panel-box-th">
-                            2030-12-24（到期）
-                        </div>
-                    </div>
+                    <div class="panel-box-th"></div>
                 </div>
             </div>
-            <div class="row ap-row">
-                <div class="col-xxl-12">
-                    <div class="charts">
-                        <div class="charts-title">每日用印情况统计图</div>
-                        <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="line"
-                            :series="dashedLineChartseries" :options="dashedLineChartoptions"></apexchart> -->
-                        <vue-echarts :option="echartslineoption" style="height: 350px" />
+            <div class="col-xxl-3 panel-box">
+                <div class="panel-cent">
+
+                    <div class="panel-box-o">
+                        <span class="panel-box-o-big">15</span>
+                        <span class="panel-box-o-text">人</span>
                     </div>
+                    <div class="panel-box-t">
+                        今日员工登录数
+                    </div>
+                    <div class="panel-box-th"></div>
                 </div>
             </div>
-            <div class="row ap-row">
-                <div class="col-xxl-12">
-                    <div class="charts">
-                        <div class="charts-title">印章使用情况统计图</div>
-                        <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="bar"
-                            :series="basicColumnChartseries" :options="basicColumnChartoptions"></apexchart> -->
-                        <vue-echarts :option="echartsbaroption" style="height: 350px" />
+            <div class="col-xxl-3 panel-box">
+                <div class="panel-cent">
+
+                    <div class="panel-box-o">
+                        <span class="panel-box-o-big">74</span>
+                        <span class="panel-box-o-num">/391</span>
+                        <span class="panel-box-o-text">枚</span>
+                    </div>
+                    <div class="panel-box-t">
+                        绑定数/印章总数
+                    </div>
+                    <div class="panel-box-th"></div>
+                </div>
+            </div>
+            <div class="col-xxl-3 panel-box">
+                <div class="panel-cent">
+
+                    <div class="panel-box-o">
+                        <span class="panel-box-o-big">2979</span>
+                        <span class="panel-box-o-text">天</span>
+                    </div>
+                    <div class="panel-box-t">
+                        倒计时间
+                    </div>
+                    <div class="panel-box-th">
+                        2030-12-24（到期）
                     </div>
                 </div>
             </div>
         </div>
-    </Layout>
+        <div class="row ap-row">
+            <div class="col-xxl-12">
+                <div class="charts">
+                    <div class="charts-title">每日用印情况统计图</div>
+                    <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="line"
+                            :series="dashedLineChartseries" :options="dashedLineChartoptions"></apexchart> -->
+                    <vue-echarts :option="echartslineoption" style="height: 350px" />
+                </div>
+            </div>
+        </div>
+        <div class="row ap-row">
+            <div class="col-xxl-12">
+                <div class="charts">
+                    <div class="charts-title">印章使用情况统计图</div>
+                    <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="bar"
+                            :series="basicColumnChartseries" :options="basicColumnChartoptions"></apexchart> -->
+                    <vue-echarts :option="echartsbaroption" style="height: 350px" />
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 import { VueEcharts } from "vue3-echarts";
-import Layout from "../../layouts/main.vue";
 export default {
     name: "system-home",
     data() {
@@ -698,7 +695,6 @@ export default {
 
     },
     components: {
-        Layout,
         VueEcharts
     },
 };
