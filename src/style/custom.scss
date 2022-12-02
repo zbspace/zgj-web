@@ -59,7 +59,11 @@ $unify-primary-color: var(--primary-6);
 // }
 
 
-
+.el-popover {
+  padding: 0;
+  --el-popover-padding: 0;
+  --el-popover-padding-large: 0;
+}
 
 
 
@@ -104,7 +108,11 @@ $unify-primary-color: var(--primary-6);
 .el-icon {
     color: var(--Warning-5);
 }
-
+.user-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
 
 
 

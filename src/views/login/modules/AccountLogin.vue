@@ -141,7 +141,7 @@
 </template>
 <script setup>
 import  i18n from "../../../i18n";
-import { reactive, watch, onMounted } from "vue";
+import { reactive, watch, onMounted} from "vue";
 import router from "../../../router/index";
 import VerificationBtn from "../components/VerificationBtn.vue"
 import UpdagePasswordDialog from  "./UpdagePasswordDialog.vue"
