@@ -90,9 +90,9 @@ $unify-primary-color: var(--primary-6);
 
 
 .el-popover {
-  padding: 0;
-  --el-popover-padding: 0;
-  --el-popover-padding-large: 0;
+    padding: 0;
+    --el-popover-padding: 0;
+    --el-popover-padding-large: 0;
 }
 
 
@@ -138,10 +138,11 @@ $unify-primary-color: var(--primary-6);
 .el-icon {
     color: var(--Warning-5);
 }
+
 .user-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 
@@ -163,10 +164,28 @@ $unify-primary-color: var(--primary-6);
 [data-layout="vertical"][data-sidebar-size="sm"] .navbar-menu .navbar-nav .nav-item:hover>a.menu-link {
     background-color: var(--Secondary-3);
 }
+
 /* 
 内容
 */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color-1);
+}
+
 .page-content {
     padding-bottom: 0%;
     padding-top: 70px;
+    background-color: var(--background-color-1);
+}
+
+#page-topbar {
+    background-color: var(--background-color-1);
+}
+
+.navbar-menu {
+    background-color: var(--background-color-1);
+    border-right: none;
 }
