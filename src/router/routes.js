@@ -200,6 +200,18 @@ export default [
       ),
   },
   {
+    path: "/PrintControlManagement/ElectronicSealLibrary",
+    name: "PrintControlManagement-ElectronicSealLibrary",
+    meta: {
+      title: "ElectronicSealLibrary",
+      authRequired: true,
+    },
+    component: () =>
+      import(
+        "../views/frontDesk/PrintControlManagement/ElectronicSealLibrary.vue"
+      ),
+  },
+  {
     path: "/approvalFlow/RealTimeConfirmation",
     name: "approvalFlow-RealTimeConfirmation",
     meta: {

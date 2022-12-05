@@ -1337,7 +1337,7 @@ export default {
               label: "t-zgj-cg-menu-dianzi-qianzhang-jilu",
             }, {
               name: "电子印章库",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/ElectronicSealLibrary",
               label: "t-zgj-cg-menu-dianzi-yinzhang-ku",
             }, {
               name: "用户认证",
