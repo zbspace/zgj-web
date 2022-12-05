@@ -6,7 +6,13 @@
                 <template #title>
                     <div class="title">
                         <div>文件类型</div>
-                        <el-button type="primary">+ 增加</el-button>
+                        <div>
+                            <el-button type="primary">+ 增加</el-button>
+                            <el-button>
+                                <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                                <span>更多操作</span>
+                            </el-button>
+                        </div>
                     </div>
                 </template>
                 <template #tabs>
@@ -24,9 +30,10 @@
                 </template>
                 <template #batch>
                     <div class="batch">
-                        <div class="batch-desc">已选择 10 项</div>
                         <el-button>批量操作</el-button>
-                        <el-button>...</el-button>
+                        <el-button>批量操作</el-button>
+                        <el-button>批量操作</el-button>
+                        <el-button>批量操作</el-button>
                     </div>
                 </template>
                 <template #tree>

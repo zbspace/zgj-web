@@ -1432,7 +1432,7 @@ export default {
           {
             name: "抄送给我",
             label: "t-zgj-cg-menu-caoshong-geiwo",
-            to: "/frontDesk/home",
+            to: "/approvalFlow/carbonCopyToMe",
             icon: require("../assets/svg/chaosong-geiwode-liucheng.svg"),
           },
           {

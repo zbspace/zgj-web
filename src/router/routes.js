@@ -228,6 +228,15 @@ export default [
     component: () => import("../views/frontDesk/approvalFlow/approvalFlow.vue"),
   },
   {
+    path: "/approvalFlow/carbonCopyToMe",
+    name: "approvalFlow-carbonCopyToMe",
+    meta: {
+      title: "carbonCopyToMe",
+      authRequired: true,
+    },
+    component: () => import("../views/frontDesk/approvalFlow/carbonCopyToMe.vue"),
+  },
+  {
     path: "/riskControlWarning/RiskAlertSetting",
     name: "riskControlWarning-RiskAlertSetting",
     meta: {
