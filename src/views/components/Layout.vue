@@ -18,18 +18,20 @@
             <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
             </div>
             <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
-                <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
-                    <slot name="searchForm"></slot>
-                </div>
-                <div class="ap-box-batch" v-if="state.Layout.batch">
-                    <slot name="batch"></slot>
-                </div>
-                <div class="ap-box-table" v-if="state.Layout.table">
-                    <slot name="table"></slot>
-                </div>
-                <div class="ap-box-pagination" v-if="state.Layout.pagination">
-                    <slot name="pagination"></slot>
-                </div>
+                <a-scrollbar style="height:100%;overflow: auto;" class="ap-box-cent-scrollbar">
+                    <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
+                        <slot name="searchForm"></slot>
+                    </div>
+                    <div class="ap-box-batch" v-if="state.Layout.batch">
+                        <slot name="batch"></slot>
+                    </div>
+                    <div class="ap-box-table" v-if="state.Layout.table">
+                        <slot name="table"></slot>
+                    </div>
+                    <div class="ap-box-pagination" v-if="state.Layout.pagination">
+                        <slot name="pagination"></slot>
+                    </div>
+                </a-scrollbar>
             </div>
         </div>
     </div>
@@ -94,7 +96,7 @@ onMounted(() => {
     @include mixin-padding-top(10);
     @include mixin-padding-bottom(10);
     @include mixin-padding-left(20);
-    @include mixin-padding-right(20);
+    @include mixin-padding-right(0);
     box-sizing: border-box;
     border-radius: var(--border-radius-4);
     background-color: var(--in-common-use-1);
@@ -104,15 +106,20 @@ onMounted(() => {
         padding: 0rem 0 0.5rem 0;
         box-sizing: border-box;
         font-size: var(--font-size-title-2);
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
     }
 
     .ap-box-breadcrumb {
         width: 100%;
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
     }
 
     .ap-box-tabs {
         width: 100%;
-
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
     }
 
     .ap-box-cont {
@@ -124,12 +131,16 @@ onMounted(() => {
 
     .ap-box-searchForm {
         width: 100%;
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
 
     }
 
     .ap-box-batch {
         width: 100%;
         padding: 0.5rem 0 0.5rem 0;
+        box-sizing: border-box;
+        @include mixin-padding-right(20);
         box-sizing: border-box;
 
     }
@@ -156,6 +167,15 @@ onMounted(() => {
         overflow: auto;
         padding-left: 1em;
         box-sizing: border-box;
+
+        .arco-scrollbar {
+            height: 100%;
+        }
+    }
+
+    .ap-box-table {
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
     }
 
     .ap-box-pagination {
@@ -163,6 +183,8 @@ onMounted(() => {
         display: flex;
         justify-content: flex-end;
         padding: 1.5rem 0;
+        box-sizing: border-box;
+        @include mixin-padding-right(20);
         box-sizing: border-box;
     }
 

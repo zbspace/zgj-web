@@ -335,6 +335,7 @@ onMounted(() => {
 
         .ap-box {
             margin-left: 10px;
+            padding-right: 0%;
         }
 
         .unfold {
