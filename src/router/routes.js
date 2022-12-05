@@ -200,6 +200,18 @@ export default [
       ),
   },
   {
+    path: "/PrintControlManagement/ElectronicSealLibrary",
+    name: "PrintControlManagement-ElectronicSealLibrary",
+    meta: {
+      title: "ElectronicSealLibrary",
+      authRequired: true,
+    },
+    component: () =>
+      import(
+        "../views/frontDesk/PrintControlManagement/ElectronicSealLibrary.vue"
+      ),
+  },
+  {
     path: "/approvalFlow/RealTimeConfirmation",
     name: "approvalFlow-RealTimeConfirmation",
     meta: {
@@ -226,6 +238,15 @@ export default [
       authRequired: true,
     },
     component: () => import("../views/frontDesk/approvalFlow/approvalFlow.vue"),
+  },
+  {
+    path: "/approvalFlow/carbonCopyToMe",
+    name: "approvalFlow-carbonCopyToMe",
+    meta: {
+      title: "carbonCopyToMe",
+      authRequired: true,
+    },
+    component: () => import("../views/frontDesk/approvalFlow/carbonCopyToMe.vue"),
   },
   {
     path: "/riskControlWarning/RiskAlertSetting",

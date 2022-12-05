@@ -5,7 +5,13 @@
             <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
                 <template #title>
                     <div class="title">
-                        用印申请
+                        <div>用印申请</div>
+                        <div>
+                            <el-button>
+                                <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                                <span>更多操作</span>
+                            </el-button>
+                        </div>
                     </div>
                 </template>
                 <template #tabs>
@@ -23,9 +29,10 @@
                 </template>
                 <template #batch>
                     <div class="batch">
-                        <div class="batch-desc">已选择 10 项</div>
                         <el-button>批量操作</el-button>
-                        <el-button>...</el-button>
+                        <el-button>批量操作</el-button>
+                        <el-button>批量操作</el-button>
+                        <el-button>批量操作</el-button>
                     </div>
                 </template>
                 <template #table>
@@ -370,12 +377,19 @@ onMounted(() => {
 .PrintControlManagement-SealApplication {
     margin: 0%;
 
-.batch{
-    display: flex;
-    align-items: center;
-    .batch-desc{
-        @include mixin-margin-right(12) 
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
-}
+
+    .batch {
+        display: flex;
+        align-items: center;
+
+        .batch-desc {
+            @include mixin-margin-right(12)
+        }
+    }
 }
 </style>

@@ -1337,7 +1337,7 @@ export default {
               label: "t-zgj-cg-menu-dianzi-qianzhang-jilu",
             }, {
               name: "电子印章库",
-              to: "/frontDesk/home",
+              to: "/PrintControlManagement/ElectronicSealLibrary",
               label: "t-zgj-cg-menu-dianzi-yinzhang-ku",
             }, {
               name: "用户认证",
@@ -1432,7 +1432,7 @@ export default {
           {
             name: "抄送给我",
             label: "t-zgj-cg-menu-caoshong-geiwo",
-            to: "/frontDesk/home",
+            to: "/approvalFlow/carbonCopyToMe",
             icon: require("../assets/svg/chaosong-geiwode-liucheng.svg"),
           },
           {

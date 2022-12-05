@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <div class="frontDesk-home">
-            <div class="row dash-nft">
+            <div class="row dash-nft ap-row">
                 <div class="col-xxl-12">
                     <div class="row">
                         <div class="col-xl-12">
@@ -408,6 +408,25 @@ export default {
 </script>
 <style lang='scss' scoped>
 .frontDesk-home {
+    margin: 0%;
+    width: 100%;
+    height: calc(100vh - 90px);
+    overflow-y: auto;
+
+    .row {
+        margin: 0%;
+    }
+
+    .col-xxl-12 {
+        padding-right: 0%;
+        padding-left: 0%;
+    }
+
+    .col-xl-12 {
+        padding-right: 0%;
+        padding-left: 0%;
+    }
+
     .info {
         display: flex;
         justify-content: space-between;

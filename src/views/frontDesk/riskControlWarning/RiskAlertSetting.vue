@@ -369,7 +369,11 @@ onMounted(() => {
 <style lang='scss' scoped>
 .PrintControlManagement-RiskAlertSetting {
     margin: 0%;
-
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
 }
 </style>

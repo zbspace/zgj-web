@@ -393,7 +393,11 @@ onMounted(() => {
 <style lang='scss' scoped>
 .PrintControlManagement-SealloanInformation {
     margin: 0%;
-
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
 }
 </style>
