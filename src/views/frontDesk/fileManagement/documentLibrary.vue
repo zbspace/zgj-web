@@ -333,6 +333,226 @@ const state = reactive({
                     },
                 ],
             },
+            {
+                label: 'A层级菜单1',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单2',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'B层级菜单2',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单3',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'B层级菜单2',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单1',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单2',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'B层级菜单2',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单3',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'B层级菜单2',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单1',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单2',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'B层级菜单2',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单3',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'B层级菜单2',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单1',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单2',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'B层级菜单2',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'A层级菜单3',
+                children: [
+                    {
+                        label: 'B层级菜单1',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                    {
+                        label: 'B层级菜单2',
+                        children: [
+                            {
+                                label: 'C层级菜单1',
+                            },
+                        ],
+                    },
+                ],
+            },
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {

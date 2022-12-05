@@ -11,7 +11,9 @@
         </div>
         <div class="ap-box-cont">
             <div class="ap-box-tree" v-if="state.Layout.tree">
-                <slot name="tree"></slot>
+                <a-scrollbar style="height:100%;overflow: auto;" class="ap-box-tree-scrollbar">
+                    <slot name="tree"></slot>
+                </a-scrollbar>
             </div>
             <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
             </div>
@@ -133,20 +135,27 @@ onMounted(() => {
     }
 
     .ap-box-tree {
-        width: 12%;
+        width: 15%;
         height: 100%;
         overflow: auto;
+        padding-right: 0rem;
+        box-sizing: border-box;
+
+        .arco-scrollbar {
+            height: 100%;
+        }
     }
 
     .ap-box-cutOffRule {
-        border-left: 1px solid var(--primary-2);
-        margin: 0 1rem;
+        border-left: 1px solid var(--color-border-2);
     }
 
     .ap-box-cent {
-        width: calc(88% - 2rem - 2px);
+        width: 85%;
         height: 100%;
         overflow: auto;
+        padding-left: 1em;
+        box-sizing: border-box;
     }
 
     .ap-box-pagination {
@@ -159,5 +168,4 @@ onMounted(() => {
 
 
 }
-
 </style>
