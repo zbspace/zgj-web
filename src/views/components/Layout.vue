@@ -29,6 +29,9 @@
                     <slot name="pagination"></slot>
                 </div>
             </div>
+            <div>
+                <slot></slot>
+            </div>
         </div>
     </div>
 </template>
