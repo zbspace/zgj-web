@@ -26,12 +26,12 @@
 
           <!-- 菜单开关 -->
           <button type="button" class="
-btn btn-sm
-px-3
-fs-16
-header-item
-vertical-menu-btn
-topnav-hamburger
+              btn btn-sm
+              px-3
+              fs-16
+              header-item
+              vertical-menu-btn
+              topnav-hamburger
               " id="topnav-hamburger-icon">
             <span class="hamburger-icon">
               <span></span>
@@ -103,7 +103,7 @@ topnav-hamburger
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary" data-toggle="fullscreen"
               @click="showHelpPop = !showHelpPop">
 
-              <el-tooltip class="box-item" effect="dark" content="帮助中心" placement="bottom" :show-arrow="true">
+              <el-tooltip class="box-item" effect="dark" :content="$t('t-help-center')" placement="bottom" :show-arrow="true">
                 <div>
                   <img v-show="showHelpPop" src="../assets/images/navbar/help_select_icon.svg" />
                   <img v-show="!showHelpPop" src="../assets/images/navbar/help_icon.svg" />
