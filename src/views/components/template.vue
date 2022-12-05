@@ -4,7 +4,8 @@
         <div class="ap-box color">颜色</div>
         <!-- 表格搜索 -->
         <div class="ap-box">
-            <componentsSearchForm :data="state.componentsSearchForm.data" :butData="state.componentsSearchForm.butData"
+            <componentsSearchForm :defaultAttribute="state.componentsSearchForm.defaultAttribute"
+                :data="state.componentsSearchForm.data" :butData="state.componentsSearchForm.butData"
                 :style="state.componentsSearchForm.style" @getCurrentValue="getCurrentValue"
                 @getCurrentValueAll="getCurrentValueAll" @clickElement="clickElement">
             </componentsSearchForm>
@@ -128,8 +129,8 @@ const state = reactive({
                 width: "100px"
             },
             butLayoutStyle: {
-                width: "100%",
-                "justify-content": "center",
+                // width: "100%",
+                // "justify-content": "center", 
             },
         },
         data: [{
@@ -143,7 +144,7 @@ const state = reactive({
                 placeholder: "请输入name",
             },
             style: {
-                width: "100%",
+                width: "50%",
             }
         }, {
             id: 'select',
@@ -577,8 +578,9 @@ const state = reactive({
                 color: "var(--primary-6)"
             }
         }],
-        defaultAttribute:{
-            isUnfold:false,
+        defaultAttribute: {
+            isUnfold: false,
+            "scrollbar-max-height": 130,
         }
     },
     componentsTable: {
