@@ -35,6 +35,9 @@
                     </div>
                 </a-scrollbar>
             </div>
+            <div>
+                <slot></slot>
+            </div>
         </div>
     </div>
 </template>
