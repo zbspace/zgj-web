@@ -11,8 +11,10 @@
         </div>
         <div class="ap-box-cont">
             <div class="ap-box-tree" v-if="state.Layout.tree">
-                <a-scrollbar style="height:100%;overflow: auto;" class="ap-box-tree-scrollbar">
-                    <slot name="tree"></slot>
+                <a-scrollbar type="track" style="height:100%;overflow: auto;" class="ap-box-tree-scrollbar">
+                    <div>
+                        <slot name="tree"></slot>
+                    </div>
                 </a-scrollbar>
             </div>
             <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
