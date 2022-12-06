@@ -9,58 +9,79 @@
                         </div>
                         <div class="title-cion">
                             <img class="title-cion-img quanping" src="../../assets/svg/quanping.svg" alt=""
-                                @click="ClickOnFullScreen">
-                            <img class="title-cion-img shanchu" src="../../assets/svg/cha-kong.svg" alt="" srcset="">
+                                @click="ClickOnFullScreen" v-if="(state.drawer.FullScreenStatus == 0)">
+                            <img class="title-cion-img quanping" src="../../assets/svg/quanping-close.svg" alt=""
+                                @click="ClickCloseFullScreen" v-if="(state.drawer.FullScreenStatus == 1)">
+                            <img class="title-cion-img shanchu" src="../../assets/svg/cha-kong.svg" alt="" srcset=""
+                                @click="clickClose">
                         </div>
                     </div>
                     <div class="ap-cont-box ap-Tabs">
                         <componentsTabs activeName="dfadfa" :data="state.componentsTabs.data" @tab-change="tabChange">
                         </componentsTabs>
                     </div>
-                    <div class="ap-cont-Details">
+                    <div class="ap-cont-tabsCont sealDetails">
                         <a-scrollbar style="height:100%;overflow: auto;">
                             <div class="scrollbar-div">
-                                <div class="ap-cont-box ap-table">
-                                    <componentsTable :data="state.componentsTable.data"
-                                        :header="state.componentsTable.header"
-                                        :defaultAttribute="state.componentsTable.defaultAttribute" @row-click="rowClick"
-                                        @select="select" @custom-click="customClick">
-                                    </componentsTable>
+                                <div class="ap-cont-box sealDetails-jichu-xinxi">
+                                    <div class="ap-cont-box-title">
+                                        基础信息
+                                    </div>
+                                    <div class="ap-cont-box-details">
+                                        <componentsTable :data="state.componentsTable.data"
+                                            :header="state.componentsTable.header"
+                                            :defaultAttribute="state.componentsTable.defaultAttribute"
+                                            @row-click="rowClick" @select="select" @custom-click="customClick">
+                                        </componentsTable>
+                                    </div>
                                 </div>
-                                <div class="ap-cont-box ap-table">
-                                    <componentsTable :data="state.componentsTable.data"
-                                        :header="state.componentsTable.header"
-                                        :defaultAttribute="state.componentsTable.defaultAttribute" @row-click="rowClick"
-                                        @select="select" @custom-click="customClick">
-                                    </componentsTable>
+                                <div class="ap-cont-box sealDetails-fujian">
+                                    <div class="ap-cont-box-title">
+                                        附件
+                                    </div>
+                                    <div class="ap-cont-box-details">
+                                        <componentsTable :data="state.componentsTable.data"
+                                            :header="state.componentsTable.header"
+                                            :defaultAttribute="state.componentsTable.defaultAttribute"
+                                            @row-click="rowClick" @select="select" @custom-click="customClick">
+                                        </componentsTable>
+                                    </div>
                                 </div>
-                                <div class="ap-cont-box ap-table">
-                                    <componentsTable :data="state.componentsTable.data"
-                                        :header="state.componentsTable.header"
-                                        :defaultAttribute="state.componentsTable.defaultAttribute" @row-click="rowClick"
-                                        @select="select" @custom-click="customClick">
-                                    </componentsTable>
+                                <div class="ap-cont-box sealDetails-gaiqian-wenjian-heyan">
+                                    <div class="ap-cont-box-title">
+                                        盖前文件核验
+                                    </div>
+                                    <div class="ap-cont-box-details">
+                                        <componentsTable :data="state.componentsTable.data"
+                                            :header="state.componentsTable.header"
+                                            :defaultAttribute="state.componentsTable.defaultAttribute"
+                                            @row-click="rowClick" @select="select" @custom-click="customClick">
+                                        </componentsTable>
+                                    </div>
                                 </div>
-                                <div class="ap-cont-box ap-table">
-                                    <componentsTable :data="state.componentsTable.data"
-                                        :header="state.componentsTable.header"
-                                        :defaultAttribute="state.componentsTable.defaultAttribute" @row-click="rowClick"
-                                        @select="select" @custom-click="customClick">
-                                    </componentsTable>
+                                <div class="ap-cont-box sealDetails-zineng-yongyin">
+                                    <div class="ap-cont-box-title">
+                                        智能用印
+                                    </div>
+                                    <div class="ap-cont-box-details">
+                                        <componentsTable :data="state.componentsTable.data"
+                                            :header="state.componentsTable.header"
+                                            :defaultAttribute="state.componentsTable.defaultAttribute"
+                                            @row-click="rowClick" @select="select" @custom-click="customClick">
+                                        </componentsTable>
+                                    </div>
                                 </div>
-                                <div class="ap-cont-box ap-table">
-                                    <componentsTable :data="state.componentsTable.data"
-                                        :header="state.componentsTable.header"
-                                        :defaultAttribute="state.componentsTable.defaultAttribute" @row-click="rowClick"
-                                        @select="select" @custom-click="customClick">
-                                    </componentsTable>
-                                </div>
-                                <div class="ap-cont-box ap-table">
-                                    <componentsTable :data="state.componentsTable.data"
-                                        :header="state.componentsTable.header"
-                                        :defaultAttribute="state.componentsTable.defaultAttribute" @row-click="rowClick"
-                                        @select="select" @custom-click="customClick">
-                                    </componentsTable>
+                                <div class="ap-cont-box sealDetails-wenjian-guidang">
+                                    <div class="ap-cont-box-title">
+                                        文件归档
+                                    </div>
+                                    <div class="ap-cont-box-details">
+                                        <componentsTable :data="state.componentsTable.data"
+                                            :header="state.componentsTable.header"
+                                            :defaultAttribute="state.componentsTable.defaultAttribute"
+                                            @row-click="rowClick" @select="select" @custom-click="customClick">
+                                        </componentsTable>
+                                    </div>
                                 </div>
                             </div>
                         </a-scrollbar>
@@ -100,25 +121,34 @@ const props = defineProps({
         default: {},
     }
 })
-const emit = defineEmits([]);
+const emit = defineEmits(["clickClose"]);
 const state = reactive({
     drawer: {
         show: true,
         size: "50%",
+        FullScreenStatus: 0,
     },
     componentsTabs: {
         data: [
             {
                 label: '用印申请详情',
-                name: "dfadfa",
+                name: "Print-application-details",
             },
             {
                 label: '流程记录',
-                name: "ffff",
+                name: "Record-of-flow",
+            },
+            {
+                label: '流程记录',
+                name: "Record-of-flow",
+            },
+            {
+                label: '流程记录',
+                name: "Record-of-flow",
             },
             {
                 label: '印章领用记录',
-                name: "dfadaf",
+                name: "Seal-requisition-record",
             }
         ]
     },
@@ -194,10 +224,17 @@ function initData() {
 //点击全屏
 function ClickOnFullScreen() {
     state.drawer.size = "100%";
+    state.drawer.FullScreenStatus = 1;
+}
+//点击关闭全屏
+function ClickCloseFullScreen() {
+    state.drawer.size = "50%";
+    state.drawer.FullScreenStatus = 0;
 }
 //点击关闭
-function ClickClose() {
+function clickClose() {
     state.drawer.show = false;
+    emit("clickClose", state.drawer.show);
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -229,6 +266,7 @@ onMounted(() => {
         .title-cion-img {
             width: 1rem;
             margin-right: 1rem;
+            cursor: pointer;
         }
 
         .quanping {
@@ -236,7 +274,7 @@ onMounted(() => {
         }
     }
 
-    .ap-cont-Details {
+    .ap-cont-tabsCont {
         width: calc(100% + 18px);
         height: calc(100% - 80px);
 
