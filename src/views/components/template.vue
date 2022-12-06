@@ -56,10 +56,10 @@
             </componentsBreadcrumb>
         </div>
         <!-- 单据详情 -->
-        <!-- <div class="ap-box">
+        <div class="ap-box">
             <componentsDocumentsDetails Layout="">
             </componentsDocumentsDetails>
-        </div> -->
+        </div>
 
         <!-- 布局页面 -->
         <div class="ap-box">
