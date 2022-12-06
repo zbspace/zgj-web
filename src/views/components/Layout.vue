@@ -160,10 +160,12 @@ onMounted(() => {
         .arco-scrollbar {
             height: 100%;
         }
+
+        border-right: 1px solid var(--color-border-2);
     }
 
     .ap-box-cutOffRule {
-        border-left: 1px solid var(--color-border-2);
+        display: none;
     }
 
     .ap-box-cent {
