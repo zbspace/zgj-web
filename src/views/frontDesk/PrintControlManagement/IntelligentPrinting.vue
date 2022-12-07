@@ -49,6 +49,11 @@
                     </componentsPagination>
                 </template>
             </componentsLayout>
+            <!-- 单据详情 -->
+            <div class="ap-box">
+                <componentsDocumentsDetails Layout="">
+                </componentsDocumentsDetails>
+            </div>
         </div>
     </Layout>
 </template>
@@ -62,6 +67,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -416,6 +422,7 @@ onMounted(() => {
 <style lang='scss' scoped>
 .PrintControlManagement-IntelligentPrinting {
     margin: 0%;
+
     .title {
         display: flex;
         align-items: center;
