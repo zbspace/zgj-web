@@ -24,6 +24,9 @@ import "element-plus/dist/index.css";
 import ArcoVue from "@arco-design/web-vue";
 import "@arco-design/web-vue/dist/arco.css";
 
+// 全局自定义组件
+import components from "@/views/components/modules/index"
+
 /* 引入自定义全局变量 */
 import "./style/index.scss";
 
@@ -34,6 +37,7 @@ AOS.init({
 
 createApp(App)
   .use(store)
+  .use(components)
   .use(router)
   .use(VueApexCharts)
   .use(BootstrapVue3)
@@ -44,4 +48,4 @@ createApp(App)
   .use(vClickOutside)
   .use(ElementPlus, { locale: zhCn })
   .use(ArcoVue)
-  .mount("#app");
+  .mount("#app")

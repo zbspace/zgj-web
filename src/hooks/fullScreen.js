@@ -20,7 +20,7 @@
 //   } else {
 //     if (document.cancelFullScreen) {
 //       document.cancelFullScreen();
-//     } else if (document.mozCa ncelFullScreen) {
+//     } else if (document.mozCancelFullScreen) {
 //       document.mozCancelFullScreen();
 //     } else if (document.webkitCancelFullScreen) {
 //       document.webkitCancelFullScreen();

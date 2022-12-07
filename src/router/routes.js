@@ -18,7 +18,7 @@ export default [
     path: "/frontDesk/home",
     name: "frontDesk-home",
     meta: { title: "frontDesk-home", authRequired: true },
-    component: () => import("../views/frontDesk/home")
+    component: () => import("../views/frontDesk/home/index.vue")
   },
   {
     path: "/PrintControlManagement/IntelligentPrinting",
