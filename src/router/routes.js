@@ -292,12 +292,12 @@ export default [
     component: () =>
       import("../views/frontDesk/fileManagement/documentType.vue")
   },
-  {
-    path: "/system/home",
-    name: "system-home",
-    meta: { title: "system-home", authRequired: true },
-    component: () => import("../views/system/home")
-  },
+  // {
+  //   path: "/system/home",
+  //   name: "system-home",
+  //   meta: { title: "system-home", authRequired: true },
+  //   component: () => import("../views/system/home")
+  // },
   {
     path: "/components/template",
     name: "components-template",
