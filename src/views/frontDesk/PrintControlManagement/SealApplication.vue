@@ -29,7 +29,7 @@
                 </template>
                 <template #batch>
                     <div class="batch">
-                        <el-button>批量操作</el-button>
+                        <el-button @click="(showDialog=true)">批量操作</el-button>
                         <el-button>批量操作</el-button>
                         <el-button>批量操作</el-button>
                         <el-button>批量操作</el-button>
@@ -49,11 +49,14 @@
                     </componentsPagination>
                 </template>
             </componentsLayout>
+
+            <!-- test - dialog -->
+            <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo标题"></KDialog>
         </div>
     </Layout>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -69,6 +72,7 @@ const props = defineProps({
         default: "0",
     },
 })
+const showDialog = ref(false)
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
