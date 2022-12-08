@@ -54,7 +54,6 @@
   box-shadow: inset 0px 0px 6px rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(50px);
   border-radius: 4px;
-  margin-top: 24px;
   padding: 24px;
   display: flex;
   justify-content: space-between;

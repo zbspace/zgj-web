@@ -526,7 +526,7 @@
             width: $vertical-menu-width-sm;
             z-index: 1;
             top: 0;
-            background: $vertical-menu-bg;
+            // background: $vertical-menu-bg;
         }
 
         .logo {
@@ -950,7 +950,7 @@
             }
 
             #layout-wrapper {
-                max-width: 95%;
+                // max-width: 95%;
                 margin: 0 auto;
                 padding-left: $grid-gutter-width;
             }
@@ -960,7 +960,7 @@
             }
 
             .navbar-menu {
-                top: calc(#{$header-height} + #{$grid-gutter-width});
+                top: calc(#{$header-height} + 12px + #{$grid-gutter-width});
                 bottom: $grid-gutter-width;
                 padding: 0;
                 border-right: $vertical-menu-bg;

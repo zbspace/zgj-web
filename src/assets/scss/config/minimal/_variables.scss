@@ -19,7 +19,7 @@ $font-family-secondary:                           'Open Sans', sans-serif;
 //
 // Vertical Menu
 //
-$vertical-menu-width:                             250px;
+$vertical-menu-width:                             240px;
 $vertical-menu-width-md:                          180px;
 $vertical-menu-width-sm:                          70px;
 
@@ -612,7 +612,7 @@ $container-max-widths: (
 // Set the number of columns and specify the width of the gutters.
 
 $grid-columns:                12;
-$grid-gutter-width:           1.5rem;
+$grid-gutter-width:           12px;
 $grid-row-columns:            6;
 
 // Container padding
