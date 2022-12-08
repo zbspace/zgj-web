@@ -23,8 +23,12 @@ onMounted(() => {
 </script>
 <style lang='scss' scoped>
 .frontDesk-home {
-    height: calc(100vh - 90px);
+    height: calc(100vh - 100px);
     overflow-y: auto;
+    margin-top: 24px;
+    border-radius: 5px;
+    position: relative;
+    z-index: 0;
 
     .top-bg {
         position: absolute;
