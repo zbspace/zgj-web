@@ -39,7 +39,7 @@
                     <div>
                         <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                             :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
+                            @cellClick="cellClick">
                         </componentsTable>
                     </div>
                 </template>
@@ -51,7 +51,7 @@
             </componentsLayout>
             <!-- 单据详情 -->
             <div class="ap-box">
-                <componentsDocumentsDetails Layout="">
+                <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show" @clickClose="clickClose">
                 </componentsDocumentsDetails>
             </div>
         </div>
@@ -311,7 +311,16 @@ const state = reactive({
             stripe: true,
             "header-cell-style": {
                 background: "var(--color-fill--1)",
-            }
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (columnIndex === 2) {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
+            },
         }
     },
     componentsTree: {
@@ -408,8 +417,22 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
+    },
+    componentsDocumentsDetails: {
+        show: false,
     }
 });
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+    // console.log(row, column, cell, event);
+    if (column.property == "2") {
+        state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击关闭详情
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

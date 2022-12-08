@@ -262,9 +262,12 @@ onMounted(() => {
             position: absolute;
             top: 0%;
             right: 0%;
+            padding-right: 0.5rem;
+            box-sizing: border-box;
 
             .statusIcon-img {
                 width: 9rem;
+             
             }
         }
 

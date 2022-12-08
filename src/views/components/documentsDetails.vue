@@ -1,7 +1,8 @@
 <template>
     <div class="components-documentsDetails">
         <div class="ap-box">
-            <el-drawer v-model="state.drawer.show" :with-header="false" direction="rtl" :size="state.drawer.size">
+            <el-drawer v-model="state.drawer.show" :with-header="false" direction="rtl" :size="state.drawer.size"
+                @close="clickClose">
                 <div class="ap-cont">
                     <div class="ap-cont-box ap-title">
                         <div class="title-name">
@@ -248,7 +249,7 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, watch } from "vue"
 import componentsTabs from "./tabs.vue"
 import componentsTable from "./table"
 import componentsApprovalSteps from "./approvalSteps"
@@ -270,7 +271,7 @@ const props = defineProps({
     },
     show: {
         type: Boolean,
-        default: true,
+        default: false,
     },
     //数据
     data: {
@@ -902,6 +903,11 @@ onBeforeMount(() => {
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)
+})
+watch(() => [props.show], (newValue, oldValue) => {
+    // console.log(newValue, oldValue);
+    //初始化数据
+    initData()
 })
 </script>
 <style lang='scss' scoped>
