@@ -6,7 +6,9 @@
     "serve": "node --max_old_space_size=6144 node_modules/@vue/cli-service/bin/vue-cli-service.js serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "dev": "vite"
+    "dev": "vite",
+    "preview": "vite preview",
+    "build-vite": "vite build"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^32.0.0",
