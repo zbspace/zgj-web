@@ -90,7 +90,7 @@ onMounted(() => {
 .components-Layout {
     margin: 0%;
     width: 100%;
-    height: calc(100vh - 90px);
+    height: calc(100vh - 100px);
 
     display: flex;
     // flex-flow: wrap;
@@ -105,6 +105,7 @@ onMounted(() => {
     box-sizing: border-box;
     border-radius: var(--border-radius-4);
     background-color: var(--in-common-use-1);
+    margin-top: 20px;
 
     .ap-box-title {
         width: 100%;
