@@ -48,6 +48,7 @@
     "maska": "^1.5.0",
     "moment": "^2.29.1",
     "particles.vue3": "^1.40.2",
+    "pinia": "^2.0.23",
     "prismjs": "^1.26.0",
     "simplebar": "^5.3.6",
     "simplebar-vue3": "^0.1.5",
@@ -68,8 +69,8 @@
     "vue3-quill": "^0.2.6",
     "vuevectormap": "^1.0.8",
     "vuex": "^4.0.2",
-    "yarn": "^1.22.17",
-    "pinia": "^2.0.23"
+    "vuex-persistedstate": "^4.1.0",
+    "yarn": "^1.22.17"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.38.3",
