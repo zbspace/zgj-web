@@ -4,7 +4,6 @@ import eslintPlugin from 'vite-plugin-eslint'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import path from 'path'
 import { resolve } from 'path'
-// import ViteRequireContext from '@originjs/vite-plugin-require-context'
 const projectRootDir = resolve(__dirname);
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,20 +27,20 @@ export default defineConfig({
     vueJsx({
 
     }),
-    // ViteRequireContext({})
   ],
   resolve: {
-    // alias: {
-    //   '@': path.join(__dirname, 'src'),
-    //   '~': path.join(__dirname, 'node_modules'),
-    // },
     alias: [
       {
         find: '@',
         replacement: resolve(projectRootDir, 'src')
       },
+      //  这里主要针对的是assets文件夹中的url
       {
-        // this is required for the SCSS modules
+        find: '~@',
+        replacement: resolve(projectRootDir, 'src')
+      },
+      {
+        // 针对scss模块
         find: /^~(.*)$/,
         replacement: '$1',
       }
@@ -51,7 +50,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "@/style/index.scss";' // 注入全局样式变量
+        additionalData: '@import "@/style/index.scss";' // 注入全局样式变量（有性能问题，可优化）
       }
     }
   }
