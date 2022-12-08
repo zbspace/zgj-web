@@ -12,15 +12,12 @@ async function loadLocaleMessages() {
   const messages = {};
   for (const path in locales) {
    const matched = path.match(/([A-Za-z0-9-_]+)\./i);
-   console.log('matched--->',matched);
     if (matched && matched.length > 1) {
       const locale = matched[1];
       const a = await locales[path]()
-      console.log('locale--->',a.default);
       messages[locale] =  a.default;
     }
   }
-  console.log('messages--->',messages);
   // locales.keys().forEach((key) => {
   //   const matched = key.match(/([A-Za-z0-9-_]+)\./i);
   //   if (matched && matched.length > 1) {

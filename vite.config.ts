@@ -43,6 +43,11 @@ export default defineConfig({
         // 针对scss模块
         find: /^~(.*)$/,
         replacement: '$1',
+      },
+      // 针对esm-build构建vue-i18n需添加配置
+      {
+        find: 'vue-i18n', 
+        replacement: 'vue-i18n/dist/vue-i18n.cjs.js'
       }
     ],
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue','.scss', '.css']

@@ -10,11 +10,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
+    // "lib": ["ESNext", "DOM"],
+    "lib": [
+      "es5",
+      "es6",
+      "dom",
+      "es2015.core",
+      "es2015.promise",
+      "ScriptHost",
+      "es2019"
+    ],
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
+      "~@/*": ["src/*"],
       "~*": ["node_modules/*"]
     },
     "types": ["vite/client"] // 同vite-env第一行
@@ -26,6 +36,5 @@
     "src/**/*.vue",
     "vite.config.ts",
     ".eslintrc.cjs"
-  ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  ]
 }

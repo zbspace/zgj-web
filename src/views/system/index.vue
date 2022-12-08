@@ -1,11 +1,10 @@
 <template>
   <Layout>
-    123
     <router-view />
   </Layout>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import Layout from "@/layouts/main";
 </script>
 
