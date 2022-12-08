@@ -6,7 +6,7 @@
                 <div class="ap-cont">
                     <div class="ap-cont-box ap-title">
                         <div class="title-name">
-                            <span class="title-name-span">用印详情</span>
+                            <span class="title-name-span">详情</span>
                         </div>
                         <div class="title-cion">
                             <img class="title-cion-img quanping" src="../../assets/svg/quanping.svg" alt=""
@@ -26,7 +26,7 @@
                         <a-scrollbar style="height:100%;overflow: auto;">
                             <div class="scrollbar-div">
                                 <!-- 用印详情 -->
-                                <div class="sealDetails"
+                                <div class="Details-of-Printing"
                                     v-if="state.componentsTabs.activeName == 'Details-of-Printing'">
                                     <div class="ap-cont-box sealDetails-basic-information">
                                         <div class="ap-cont-box-title">
@@ -240,6 +240,69 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- 印章申请详情 -->
+                                <div class="Seal-Application-Details"
+                                    v-if="state.componentsTabs.activeName == 'Seal-Application-Details'">
+                                    <div class="ap-cont-box">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">基本信息</span>
+                                            <div class="ap-cont-box-title-xiazai">
+
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-accessory-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ap-cont-box">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">印章信息</span>
+                                            <div class="ap-cont-box-title-xiazai">
+
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-accessory-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ap-cont-box">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">印章办理</span>
+                                            <div class="ap-cont-box-title-xiazai">
+
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-accessory-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 文件详情 -->
+                                <div class="Details-of-Document"
+                                    v-else-if="state.componentsTabs.activeName == 'Details-of-Document'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">基本信息</span>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-basic-information-details">
+                                            <div class="sealDetails-basic-information-list"
+                                                v-for="item in state.cache.DetailsOfDocument.basicInformation.data">
+                                                <div class="sealDetails-basic-information-list-label">{{ item.label }}：
+                                                </div>
+                                                <div class="sealDetails-basic-information-list-value"
+                                                    :style="item.style">
+                                                    <img class="sealDetails-basic-information-list-value-icon"
+                                                        :src="item.iconPath" :style="item.iconStyle" alt=""
+                                                        v-if="item.iconPath">
+                                                    {{ item.value }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </a-scrollbar>
                     </div>
@@ -264,10 +327,15 @@ const props = defineProps({
         type: String,
         default: "0",
     },
-    // 布局
-    Layout: {
+    // 展示权限
+    visible: {
         type: Array,
         default: [],
+    },
+    // 默认显示
+    activeName: {
+        type: String,
+        default: "",
     },
     show: {
         type: Boolean,
@@ -762,6 +830,47 @@ const state = reactive({
                 ],
             },
         },
+        DetailsOfDocument: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                data: [
+                    {
+                        label: "文件名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "文件字号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "文件类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "来源类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联单据名称",
+                        value: "字段名称",
+                    },
+
+                ],
+            },
+        },
     },
     drawer: {
         show: true,
@@ -775,12 +884,20 @@ const state = reactive({
                 name: "Details-of-Printing",
             },
             {
-                label: '审批流程',
-                name: "approval-process",
+                label: '印章申请详情',
+                name: "Seal-Application-Details",
+            },
+            {
+                label: '文件详情',
+                name: "Details-of-Document",
             },
             {
                 label: '印章详情',
                 name: "Particulars-of-Seal",
+            },
+            {
+                label: '审批流程',
+                name: "approval-process",
             },
             {
                 label: '保管记录',
@@ -795,7 +912,7 @@ const state = reactive({
                 name: "Record-of-requisition",
             },
         ],
-        activeName: "approval-process",
+        activeName: "Details-of-Printing",
     },
     componentsTable: {
         header: [
@@ -876,6 +993,22 @@ const state = reactive({
 //初始化数据
 function initData() {
     state.drawer.show = props.show;
+    state.componentsTabs.data = props.visible;
+    if (props.activeName) {
+        state.componentsTabs.activeName = props.activeName;
+    } else if (props.visible && props.visible.length > 0) {
+        state.componentsTabs.activeName = props.visible[0].name;
+    } else {
+        state.componentsTabs.activeName = "";
+    }
+    // visible: [
+    //         {
+    //             label: '用印详情',
+    //             name: "Details-of-Printing",
+    //             // 内容权限
+    //             layout: [],
+    //         },
+    //     ]
 }
 //点击全屏
 function ClickOnFullScreen() {
@@ -986,7 +1119,7 @@ watch(() => [props.show], (newValue, oldValue) => {
             box-sizing: border-box;
         }
 
-        .sealDetails {
+        .Details-of-Printing {
             .sealDetails-basic-information {
                 .sealDetails-basic-information-details {
                     display: flex;
@@ -1017,7 +1150,39 @@ watch(() => [props.show], (newValue, oldValue) => {
             }
         }
 
+
         .Particulars-of-Seal {
+            .sealDetails-basic-information {
+                .sealDetails-basic-information-details {
+                    display: flex;
+                    flex-flow: wrap;
+                    padding: 0.5rem 0;
+                    box-sizing: border-box;
+
+                    .sealDetails-basic-information-list {
+                        display: flex;
+                        align-items: center;
+                        width: 50%;
+                        padding: 0.5rem 0;
+                        box-sizing: border-box;
+
+                        .sealDetails-basic-information-list-label {
+                            width: 7rem;
+                            display: flex;
+                            justify-content: flex-end;
+                            color: var(--color-text-3);
+                        }
+
+                        .sealDetails-basic-information-list-value {
+                            padding: 0rem 0 0rem 0.5rem;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+        }
+
+        .Details-of-Document {
             .sealDetails-basic-information {
                 .sealDetails-basic-information-details {
                     display: flex;

@@ -97,7 +97,7 @@ const state = reactive({
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-    console.log(props.data);
+    // console.log(props.data);
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)

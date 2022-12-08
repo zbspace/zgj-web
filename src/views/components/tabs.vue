@@ -40,7 +40,7 @@ const emit = defineEmits(["tab-change", "getActiveName"]);
 const state = reactive({
     activeName: "",
 });
-console.log(props.data);
+// console.log(props.data);
 function tabChange(pane, ev) {
     // console.log(pane, ev);
     emit("tab-change", state.activeName);

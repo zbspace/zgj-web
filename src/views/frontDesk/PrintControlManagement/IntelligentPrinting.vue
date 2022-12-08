@@ -51,7 +51,8 @@
             </componentsLayout>
             <!-- 单据详情 -->
             <div class="ap-box">
-                <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show" @clickClose="clickClose">
+                <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                    :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
                 </componentsDocumentsDetails>
             </div>
         </div>
@@ -314,7 +315,7 @@ const state = reactive({
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
-                if (columnIndex === 2) {
+                if (column.property == "2") {
                     return {
                         "color": "var(--Info-6)",
                         "cursor": "pointer",
@@ -420,6 +421,24 @@ const state = reactive({
     },
     componentsDocumentsDetails: {
         show: false,
+        visible: [
+            {
+                label: '用印详情',
+                name: "Details-of-Printing",
+            },
+            {
+                label: '审批流程',
+                name: "approval-process",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+            {
+                label: '领用记录',
+                name: "Record-of-requisition",
+            },
+        ],
     }
 });
 // 点击表格单元格

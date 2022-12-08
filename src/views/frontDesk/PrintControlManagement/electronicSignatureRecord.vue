@@ -39,7 +39,7 @@
                     <div>
                         <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                             :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
+                            @cellClick="cellClick">
                         </componentsTable>
                     </div>
                 </template>
@@ -49,6 +49,12 @@
                     </componentsPagination>
                 </template>
             </componentsLayout>
+              <!-- 单据详情 -->
+              <div class="ap-box">
+                <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                    :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+                </componentsDocumentsDetails>
+            </div>
         </div>
     </Layout>
 </template>
@@ -62,6 +68,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -316,7 +323,16 @@ const state = reactive({
             stripe: true,
             "header-cell-style": {
                 background: "var(--color-fill--1)",
-            }
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (column.property == "2") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
+            },
         }
     },
     componentsTree: {
@@ -413,8 +429,36 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
+    },
+    componentsDocumentsDetails: {
+        show: false,
+        visible: [
+            {
+                label: '用印详情',
+                name: "Details-of-Printing",
+            },
+            {
+                label: '审批流程',
+                name: "approval-process",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+        ],
     }
 });
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+    // console.log(row, column, cell, event);
+    if (column.property == "2") {
+        state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击关闭详情
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
