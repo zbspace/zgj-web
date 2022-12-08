@@ -337,7 +337,19 @@ const state = reactive({
             },
         },
         approvalProcess: {
-
+            data: [
+                {
+                    iconPath: "",
+                    title: "",
+                    subTitle: "",
+                    personList: [
+                        {
+                            name: "",
+                            desc: "",
+                        }
+                    ]
+                }
+            ],
         },
         operatingRecord: {
             header: [
