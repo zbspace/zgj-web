@@ -121,7 +121,7 @@
                                 <!-- 审批流程 -->
                                 <div class="approval-process"
                                     v-else-if="state.componentsTabs.activeName == 'approval-process'">
-                                    <componentsApprovalSteps :data="state.componentsApprovalSteps.data">
+                                    <componentsApprovalSteps :data="state.cache.approvalProcess.data">
                                     </componentsApprovalSteps>
                                 </div>
                                 <!-- 操作记录 -->
@@ -339,16 +339,67 @@ const state = reactive({
         approvalProcess: {
             data: [
                 {
-                    iconPath: "",
-                    title: "",
-                    subTitle: "",
+                    iconPath: require("../../assets/svg/liucheng-faqishenqing.svg"),
+                    title: "发起申请",
+                    time: "2022-10-11 02:23:00",
+                    statusIconPath: require("../../assets/svg/liucheng-bohui.svg"),
                     personList: [
                         {
-                            name: "",
-                            desc: "",
+                            name: "青青",
                         }
                     ]
-                }
+                },
+                {
+                    iconPath: require("../../assets/svg/liucheng-chaosong.svg"),
+                    title: "抄送",
+                    subTitle: "（已抄送）",
+                    time: "2022-10-11 02:23:00",
+                    personList: [
+                        {
+                            name: "王丹",
+                        },
+                        {
+                            name: "王丹",
+                        },
+                        {
+                            name: "王丹",
+                        },
+                        {
+                            name: "王丹",
+                        },
+                        {
+                            name: "王丹",
+                        },
+                    ]
+                },
+                {
+                    iconPath: require("../../assets/svg/liucheng-shenpi.svg"),
+                    title: "审批",
+                    subTitle: "（已驳回）",
+                    type: "flowing",
+                    personList: [
+                        {
+                            name: "马丽丽",
+                            time: "2022-10-11 02:23:00",
+                            iconPath: require("../../assets/svg/liucheng-tongyi.svg"),
+                        },
+                        {
+                            name: "王青青",
+                            time: "2022-10-11 02:23:00",
+                            iconPath: require("../../assets/svg/liucheng-jujue.svg"),
+                            desc: "拒绝理由说明",
+                        },
+                        {
+                            name: "陈暮时",
+                            iconPath: require("../../assets/svg/liucheng-dengdai.svg"),
+                            status: "1"
+                        }
+                    ]
+                },
+                {
+                    iconPath: require("../../assets/svg/liucheng-wancheng.svg"),
+                    title: "完成",
+                },
             ],
         },
         operatingRecord: {
