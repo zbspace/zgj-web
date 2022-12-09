@@ -18,9 +18,15 @@
                         </div>
                     </div>
                     <div class="ap-cont-box ap-Tabs">
-                        <componentsTabs :activeName="state.componentsTabs.activeName" :data="state.componentsTabs.data"
-                            @tab-change="tabChange">
-                        </componentsTabs>
+                        <div class="ap-Tabs-cont">
+                            <componentsTabs :activeName="state.componentsTabs.activeName"
+                                :data="state.componentsTabs.data" @tab-change="tabChange">
+                            </componentsTabs>
+                        </div>
+                        <div class="ap-Tabs-sub">
+                            <img class="ap-Tabs-sub-icon" src="../../assets/svg/dayin.svg" alt="">
+                            <span class="ap-Tabs-sub-text">打印</span>
+                        </div>
                     </div>
                     <div class="ap-cont-tabsCont ">
                         <a-scrollbar style="height:100%;overflow: auto;">
@@ -286,6 +292,15 @@
                                     <div class="ap-cont-box sealDetails-basic-information">
                                         <div class="ap-cont-box-title">
                                             <span class="ap-cont-box-title-label">基本信息</span>
+                                            <div class="ap-cont-box-title-but">
+                                                <el-button type="primary" size="small">
+                                                    <div class="ap-cont-box-title-but-box">
+                                                        <img class="ap-cont-box-title-but-icon"
+                                                            src="../../assets/svg/yanjing.svg" alt="">
+                                                        <span>文件预览</span>
+                                                    </div>
+                                                </el-button>
+                                            </div>
                                         </div>
                                         <div class="ap-cont-box-details sealDetails-basic-information-details">
                                             <div class="sealDetails-basic-information-list"
@@ -1072,6 +1087,31 @@ watch(() => [props.show], (newValue, oldValue) => {
         }
     }
 
+    .ap-Tabs {
+        display: flex;
+
+        .ap-Tabs-cont {
+            flex-grow: 1;
+        }
+
+        .ap-Tabs-sub {
+            width: 5rem;
+            margin-bottom: 14px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-bottom: 1px solid var(--color-border-2);
+            .ap-Tabs-sub-icon{
+                margin-right: 0.5rem;
+            }
+            .ap-Tabs-sub-text{
+                cursor: pointer;
+                color: var(-color-text-2);
+            }
+        }
+    }
+
     .ap-cont-tabsCont {
         width: calc(100% + 18px);
         height: calc(100% - 80px);
@@ -1110,6 +1150,18 @@ watch(() => [props.show], (newValue, oldValue) => {
 
                 .ap-cont-box-title-xiazai-text {
                     color: var(--color-text-2);
+                }
+            }
+
+            .ap-cont-box-title-but {
+                .ap-cont-box-title-but-box {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .ap-cont-box-title-but-icon {
+                    width: 0.8rem;
+                    margin-right: 0.2rem;
                 }
             }
         }
