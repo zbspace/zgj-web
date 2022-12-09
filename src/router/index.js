@@ -19,6 +19,12 @@ const router = createRouter({
 });
 
 router.beforeEach((routeTo, routeFrom, next) => {
+  // 更具url判断是业务前台
+  if(routeTo.fullPath.includes('/frontDesk')){
+    sessionStorage.setItem("CurrentSystemType", "business")
+  }else if(routeTo.fullPath.includes('/system')){
+    sessionStorage.setItem("CurrentSystemType", "system")
+  }
   next()
 });
 
