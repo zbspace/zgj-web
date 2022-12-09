@@ -1,62 +1,60 @@
 <!-- 电子签章记录 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-electronicSignatureRecord">
-            <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
-                <template #title>
-                    <div class="title">
-                        <div>电子签章记录</div>
-                        <div>
-                            <el-button>
-                                <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                                <span>更多操作</span>
-                            </el-button>
-                        </div>
-                    </div>
-                </template>
-                <template #tabs>
+    <div class="PrintControlManagement-electronicSignatureRecord">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
+            <template #title>
+                <div class="title">
+                    <div>电子签章记录</div>
                     <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <template #batch>
-                    <div class="batch">
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                    </div>
-                </template>
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            @cellClick="cellClick">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
-              <!-- 单据详情 -->
-              <div class="ap-box">
-                <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
-                    :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
-                </componentsDocumentsDetails>
-            </div>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+            <template #batch>
+                <div class="batch">
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header"
+                        @cellClick="cellClick">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+        <!-- 单据详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+            </componentsDocumentsDetails>
         </div>
-    </Layout>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
@@ -109,7 +107,7 @@ const state = reactive({
                 defaultAttribute: {
                     placeholder: "请输入",
                 },
-                
+
             },
             {
                 id: 'select',
@@ -471,11 +469,13 @@ onMounted(() => {
 <style lang='scss' scoped>
 .PrintControlManagement-electronicSignatureRecord {
     margin: 0%;
+
     .title {
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
+
     .batch {
         display: flex;
         align-items: center;

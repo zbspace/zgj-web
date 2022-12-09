@@ -222,16 +222,18 @@ if (CurrentSystemType) {
 }
 
 function scrollFn() {
-  var pageTopbar = document.getElementById("page-topbar");
-  if (pageTopbar) {
-    document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50 ? pageTopbar.classList.add(
-      "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
-  }
+
 }
 
 onMounted(() => {
   // 添加监听 滚动事件
-  document.addEventListener("scroll", scrollFn);
+  document.addEventListener("scroll", function () {
+    var pageTopbar = document.getElementById("page-topbar");
+    if (pageTopbar) {
+      document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50 ? pageTopbar.classList.add(
+        "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
+    }
+  });
 
   // 添加 全屏开关监听 事件
   if (document.getElementById("topnav-hamburger-icon"))
@@ -239,10 +241,6 @@ onMounted(() => {
       .getElementById("topnav-hamburger-icon")
       .addEventListener("click", toggleHamburgerMenu);
 
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', scrollFn)
 })
 
 // 监听 菜单开关

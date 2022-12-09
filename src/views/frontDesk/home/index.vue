@@ -1,21 +1,17 @@
 <template>
-    <Layout>
-        <div class="frontDesk-home">
-            <div class="top-bg"></div>
-            <div class="content">
-                <Top />
-                <Center />
-                <Bottom />
-            </div>
+    <div class="frontDesk-home">
+        <div class="top-bg"></div>
+        <div class="content">
+            <Top />
+            <Center />
+            <Bottom />
         </div>
-    </Layout>
+    </div>
 </template>
 <script setup>
-import Layout from "@/layouts/main.vue";
 import Top from './top'
 import Center from './center'
 import Bottom from './bottom'
-
 </script>
 <style lang='scss' scoped>
 .frontDesk-home {

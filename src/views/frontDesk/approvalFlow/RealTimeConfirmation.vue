@@ -1,55 +1,53 @@
 <!-- 实时确认 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-RealTimeConfirmation">
-            <componentsLayout Layout="title,tabs,searchForm,table,pagination">
-                <template #title>
-                    <div class="title">
-                        实时确认
-                    </div>
-                </template>
-                <template #tabs>
-                    <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
-                    </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <!-- <template #tree>
+    <div class="PrintControlManagement-RealTimeConfirmation">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+            <template #title>
+                <div class="title">
+                    实时确认
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+            <!-- <template #tree>
                     <div>
                         <componentsTree :data="state.componentsTree.data"
                             :defaultAttribute="state.componentsTree.defaultAttribute">
                         </componentsTree>
                     </div>
                 </template> -->
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            @cellClick="cellClick">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
-                <!-- 单据详情 -->
-                <div class="ap-box">
-                <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
-                    :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
-                </componentsDocumentsDetails>
-            </div>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header"
+                        @cellClick="cellClick">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+        <!-- 单据详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+            </componentsDocumentsDetails>
         </div>
-    </Layout>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"

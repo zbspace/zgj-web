@@ -1,64 +1,61 @@
 <!-- 智能印章柜管理 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-IntelligentSealCabinetManagement">
-            <componentsLayout Layout="title,searchForm,table,pagination">
-                <template #title>
-                    <div class="title">
-                        <div>智能印章柜管理</div>
-                        <div>
-                            <el-button type="primary">+ 增加</el-button>
-                            <el-button>
-                                <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                                <span>更多操作</span>
-                            </el-button>
-                        </div>
-                    </div>
-                </template>
-                <template #tabs>
+    <div class="PrintControlManagement-IntelligentSealCabinetManagement">
+        <componentsLayout Layout="title,searchForm,table,pagination">
+            <template #title>
+                <div class="title">
+                    <div>智能印章柜管理</div>
                     <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
+                        <el-button type="primary">+ 增加</el-button>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <template #batch>
-                    <div class="batch">
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                    </div>
-                </template>
-                <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template>
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
-        </div>
-    </Layout>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+            <template #batch>
+                <div class="batch">
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                </div>
+            </template>
+            <template #tree>
+                <div>
+                    <componentsTree :data="state.componentsTree.data"
+                        :defaultAttribute="state.componentsTree.defaultAttribute">
+                    </componentsTree>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
