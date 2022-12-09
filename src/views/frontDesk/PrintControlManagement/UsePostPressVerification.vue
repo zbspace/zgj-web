@@ -4,7 +4,7 @@
         <componentsLayout Layout="title,tabs,searchForm,table,pagination">
             <template #title>
                 <div class="title">
-                    归档后核验
+                    用印后核验
                 </div>
             </template>
             <template #tabs>

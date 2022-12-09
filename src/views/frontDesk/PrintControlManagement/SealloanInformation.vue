@@ -183,6 +183,7 @@ const state = reactive({
         {
             prop: 'caozuo',
             label: "操作",
+            width: 180,
             rankDisplayData: [
                 {
                     name: "归还"

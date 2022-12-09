@@ -1,10 +1,17 @@
 <!-- 文件归档 -->
 <template>
     <div class="PrintControlManagement-Archive">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
-                    文件归档
+                    <div>文件归档</div>
+                    <div>
+                        <el-button type="primary">导出</el-button>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
+                    </div>
                 </div>
             </template>
             <template #tabs>

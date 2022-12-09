@@ -1,11 +1,12 @@
 <!-- 智能用印 -->
 <template>
     <div class="PrintControlManagement-IntelligentPrinting">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
             <template #title>
                 <div class="title">
                     <div>智能用印</div>
                     <div>
+                        <el-button>批量操作</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -24,14 +25,6 @@
                     <componentsSearchForm :data="state.componentsSearchForm.data"
                         :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
                     </componentsSearchForm>
-                </div>
-            </template>
-            <template #batch>
-                <div class="batch">
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
                 </div>
             </template>
             <template #table>
@@ -58,11 +51,8 @@
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
-import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
-import componentsTree from "../../components/tree"
-import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
@@ -188,6 +178,7 @@ const state = reactive({
             label: "实际盖章次数",
         }, {
             prop: '7',
+            width: 100,
             label: "申请人",
         }, {
             prop: '8',
@@ -197,12 +188,14 @@ const state = reactive({
             label: "申请时间",
         }, {
             prop: '10',
+            width: 100,
             label: "用印状态",
         }, {
             prop: 'caozuo',
             label: "操作",
+            width: 180,
             rankDisplayData: [{
-                name: "转办"
+                name: "申请转办"
             }, {
                 name: "申请重置"
             },],
@@ -216,8 +209,8 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
             {
@@ -228,8 +221,8 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
             {
@@ -240,8 +233,8 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
             {
@@ -252,8 +245,8 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
             {
@@ -264,46 +257,11 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
-            {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '往往',
-                8: '2022/10/30',
-                9: '',
-                10: '',
-            },
-            {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '往往',
-                8: '2022/10/30',
-                9: '',
-                10: '',
-            },
-            {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '往往',
-                8: '2022/10/30',
-                9: '',
-                10: '',
-            },
+
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {

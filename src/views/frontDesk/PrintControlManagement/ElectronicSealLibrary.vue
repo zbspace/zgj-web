@@ -1,11 +1,12 @@
 <!-- 电子印章库 -->
 <template>
     <div class="PrintControlManagement-ElectronicSealLibrary">
-        <componentsLayout Layout="title,searchForm,table,pagination">
+        <componentsLayout Layout="title,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     <div>电子印章库</div>
                     <div>
+                        <el-button type="primary">同步电子签章</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -26,14 +27,7 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <template #batch>
-                <div class="batch">
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                </div>
-            </template>
+
             <template #tree>
                 <div>
                     <componentsTree :data="state.componentsTree.data"

@@ -1,11 +1,12 @@
 <!-- 电子签章记录 -->
 <template>
     <div class="PrintControlManagement-electronicSignatureRecord">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
             <template #title>
                 <div class="title">
                     <div>电子签章记录</div>
                     <div>
+                        <el-button>批量操作</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -26,14 +27,7 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <template #batch>
-                <div class="batch">
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                </div>
-            </template>
+
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
@@ -211,7 +205,7 @@ const state = reactive({
                 label: "操作",
                 rankDisplayData: [
                     {
-                        name: ""
+                        name: "作废"
                     },
                 ],
             }],

@@ -4,8 +4,17 @@
         <componentsLayout Layout="title,tabs,searchForm,table,pagination">
             <template #title>
                 <div class="title">
-                    实时确认
+                    <div>
+                        实时确认
+                    </div>
+                    <div>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
+                    </div>
                 </div>
+
             </template>
             <template #tabs>
                 <div>
@@ -20,13 +29,7 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
+
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"

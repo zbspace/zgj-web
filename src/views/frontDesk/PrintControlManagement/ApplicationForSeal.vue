@@ -1,12 +1,13 @@
 <!-- 印章申请 -->
 <template>
     <div class="PrintControlManagement-ApplicationForSeal">
-        <componentsLayout Layout="title,searchForm,table,pagination,batch">
+        <componentsLayout Layout="title,searchForm,table,pagination">
             <template #title>
                 <div class="title">
                     <div>印章申请</div>
                     <div>
                         <el-button type="primary">+ 增加</el-button>
+                        <el-button>批量操作</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -27,14 +28,7 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <template #batch>
-                <div class="batch">
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                </div>
-            </template>
+
             <template #tree>
                 <div>
                     <componentsTree :data="state.componentsTree.data"

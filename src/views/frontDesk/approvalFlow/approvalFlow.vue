@@ -1,13 +1,14 @@
 <!-- 审批流程 -->
 <template>
     <div class="approvalFlow-approvalFlow">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
             <template #title>
                 <div class="title">
                     <div>
                         审批流程
                     </div>
                     <div>
+                        <el-button>批量操作</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -28,19 +29,10 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <template #batch>
-                <div class="batch">
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                </div>
-            </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
                     </componentsTable>
                 </div>
             </template>
@@ -92,7 +84,7 @@ const state = reactive({
         data: [
             {
                 id: 'name',
-                label: "流程名称",
+                label: "单据名称",
                 type: "input",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
