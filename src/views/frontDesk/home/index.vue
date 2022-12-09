@@ -11,15 +11,11 @@
     </Layout>
 </template>
 <script setup>
-import { onMounted } from 'vue'
 import Layout from "@/layouts/main.vue";
 import Top from './top'
 import Center from './center'
 import Bottom from './bottom'
 
-onMounted(() => {
-    sessionStorage.setItem("CurrentSystemType", "business")
-})
 </script>
 <style lang='scss' scoped>
 .frontDesk-home {

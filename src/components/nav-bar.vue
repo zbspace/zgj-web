@@ -201,7 +201,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch, onUnmounted } from "vue";
 import useCurrentInstance from "@/hooks/getInstance.js"
 import i18n from "../i18n";
 import useClickQutside from "../hooks/useClickQutside.js"
@@ -221,15 +221,17 @@ if (CurrentSystemType) {
   state.application.CurrentSystemType = CurrentSystemType
 }
 
+function scrollFn() {
+  var pageTopbar = document.getElementById("page-topbar");
+  if (pageTopbar) {
+    document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50 ? pageTopbar.classList.add(
+      "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
+  }
+}
+
 onMounted(() => {
   // 添加监听 滚动事件
-  document.addEventListener("scroll", function () {
-    var pageTopbar = document.getElementById("page-topbar");
-    if (pageTopbar) {
-      document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50 ? pageTopbar.classList.add(
-        "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
-    }
-  });
+  document.addEventListener("scroll", scrollFn);
 
   // 添加 全屏开关监听 事件
   if (document.getElementById("topnav-hamburger-icon"))
@@ -237,6 +239,10 @@ onMounted(() => {
       .getElementById("topnav-hamburger-icon")
       .addEventListener("click", toggleHamburgerMenu);
 
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', scrollFn)
 })
 
 // 监听 菜单开关
