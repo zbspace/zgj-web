@@ -2,6 +2,8 @@
 
 ```
 ├── views
+|  ├── frontDesk                    # 业务前台
+|  |  ├── home                            # 首页
 |  ├── system                       # 系统后台
 |  |  ├── base-setting                    # 基础设置
 |  |  |  ├── global-parameter                   # 全局参数设置
@@ -32,5 +34,4 @@
 |  |  |  ├── template                           # 消息模板
 |  |  |  ├── channel                            # 渠道配置
 |  |  |  ├── log                                # 消息日志
-
 ```

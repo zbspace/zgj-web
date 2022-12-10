@@ -1,64 +1,62 @@
 <!-- 印章库 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-LibraryOfSeals">
-            <componentsLayout Layout="title,searchForm,table,pagination,batch,tree">
-                <template #title>
-                    <div class="title">
-                        印章库
-                        <div>
-                            <el-button type="primary">+ 增加</el-button>
-                            <el-button>
-                                <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                                <span>更多操作</span>
-                            </el-button>
-                        </div>
-                    </div>
-                </template>
-                <template #tabs>
+    <div class="PrintControlManagement-LibraryOfSeals">
+        <componentsLayout Layout="title,searchForm,table,pagination,tree">
+            <template #title>
+                <div class="title">
+                    印章库
                     <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
-                    </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <template #batch>
-                    <div class="batch">
+                        <el-button type="primary">+ 增加</el-button>
                         <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template>
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+
+            <template #tree>
+                <div>
+                    <componentsTree :data="state.componentsTree.data"
+                        :defaultAttribute="state.componentsTree.defaultAttribute">
+                    </componentsTree>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header"
+                        @cellClick="cellClick">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+        <!-- 单据详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+            </componentsDocumentsDetails>
         </div>
-    </Layout>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
@@ -70,6 +68,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -200,6 +199,7 @@ const state = reactive({
             {
                 prop: 'caozuo',
                 label: "操作",
+                width: '250',
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -214,7 +214,7 @@ const state = reactive({
             }],
         data: [
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -222,7 +222,7 @@ const state = reactive({
                 6: '2022/10/30',
             },
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -230,7 +230,7 @@ const state = reactive({
                 6: '2022/10/30',
             },
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -238,7 +238,7 @@ const state = reactive({
                 6: '2022/10/30',
             },
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -246,7 +246,7 @@ const state = reactive({
                 6: '2022/10/30',
             },
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -254,7 +254,7 @@ const state = reactive({
                 6: '2022/10/30',
             },
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -262,7 +262,7 @@ const state = reactive({
                 6: '2022/10/30',
             },
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -270,7 +270,7 @@ const state = reactive({
                 6: '2022/10/30',
             },
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -278,7 +278,7 @@ const state = reactive({
                 6: '2022/10/30',
             },
             {
-                1: '',
+                1: '印章',
                 2: '',
                 3: '',
                 4: '往往',
@@ -291,7 +291,16 @@ const state = reactive({
             stripe: true,
             "header-cell-style": {
                 background: "var(--color-fill--1)",
-            }
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (column.property == "1") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
+            },
         }
     },
     componentsTree: {
@@ -388,9 +397,36 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
+    },
+    componentsDocumentsDetails: {
+        show: false,
+        visible: [
+            {
+                label: '印章详情',
+                name: "Particulars-of-Seal",
+            },
+            {
+                label: '保管记录',
+                name: "Record-of-custody",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+        ],
     }
 });
-
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+    // console.log(row, column, cell, event);
+    if (column.property == "1") {
+        state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击关闭详情
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

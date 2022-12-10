@@ -1,7 +1,7 @@
 // Variables
 
 // Google Font
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
 
 //
 // custom-variables
@@ -19,7 +19,7 @@ $font-family-secondary:                           'Open Sans', sans-serif;
 //
 // Vertical Menu
 //
-$vertical-menu-width:                             250px;
+$vertical-menu-width:                             240px;
 $vertical-menu-width-md:                          180px;
 $vertical-menu-width-sm:                          70px;
 
@@ -94,7 +94,7 @@ $twocolumn-menu-item-active-bg-dark:             var(--#{$prefix}twocolumn-menu-
 $twocolumn-menu-item-color-gradient:              rgba($white, 0.6);
 
 // Topbar - (Default Light)
-$header-height:                                    70px;
+$header-height:                                    64px;
 $header-bg:                                      var(--#{$prefix}header-bg);
 $header-item-color:                              var(--#{$prefix}header-item-color);
 
@@ -612,7 +612,7 @@ $container-max-widths: (
 // Set the number of columns and specify the width of the gutters.
 
 $grid-columns:                12;
-$grid-gutter-width:           1.5rem;
+$grid-gutter-width:           12px;
 $grid-row-columns:            6;
 
 // Container padding

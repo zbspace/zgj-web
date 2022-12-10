@@ -175,7 +175,7 @@ const props = defineProps({
         }
     },
 })
-console.log(props.defaultAttribute['scrollbar-max-height']);
+// console.log(props.defaultAttribute['scrollbar-max-height']);
 const emit = defineEmits(['getCurrentValue', 'getCurrentValueAll', 'clickElement']);
 const state = reactive({
     cache: {

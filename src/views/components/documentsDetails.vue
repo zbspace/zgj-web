@@ -1,11 +1,12 @@
 <template>
     <div class="components-documentsDetails">
         <div class="ap-box">
-            <el-drawer v-model="state.drawer.show" :with-header="false" direction="rtl" :size="state.drawer.size">
+            <el-drawer v-model="state.drawer.show" :with-header="false" direction="rtl" :size="state.drawer.size"
+                @close="clickClose">
                 <div class="ap-cont">
                     <div class="ap-cont-box ap-title">
                         <div class="title-name">
-                            <span class="title-name-span">用印详情</span>
+                            <span class="title-name-span">详情</span>
                         </div>
                         <div class="title-cion">
                             <img class="title-cion-img quanping" src="../../assets/svg/quanping.svg" alt=""
@@ -17,70 +18,304 @@
                         </div>
                     </div>
                     <div class="ap-cont-box ap-Tabs">
-                        <componentsTabs activeName="dfadfa" :data="state.componentsTabs.data" @tab-change="tabChange">
-                        </componentsTabs>
+                        <div class="ap-Tabs-cont">
+                            <componentsTabs :activeName="state.componentsTabs.activeName"
+                                :data="state.componentsTabs.data" @tab-change="tabChange">
+                            </componentsTabs>
+                        </div>
+                        <div class="ap-Tabs-sub">
+                            <img class="ap-Tabs-sub-icon" src="../../assets/svg/dayin.svg" alt="">
+                            <span class="ap-Tabs-sub-text">打印</span>
+                        </div>
                     </div>
-                    <div class="ap-cont-tabsCont sealDetails">
+                    <div class="ap-cont-tabsCont ">
                         <a-scrollbar style="height:100%;overflow: auto;">
                             <div class="scrollbar-div">
-                                <div class="ap-cont-box sealDetails-jichu-xinxi">
-                                    <div class="ap-cont-box-title">
-                                        基础信息
+                                <!-- 用印详情 -->
+                                <div class="Details-of-Printing"
+                                    v-if="state.componentsTabs.activeName == 'Details-of-Printing'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">基本信息</span>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-basic-information-details">
+                                            <div class="sealDetails-basic-information-list"
+                                                v-for="item in state.cache.DetailsaOfPrinting.basicInformation.data">
+                                                <div class="sealDetails-basic-information-list-label">{{ item.label }}：
+                                                </div>
+                                                <div class="sealDetails-basic-information-list-value"
+                                                    :style="item.style">
+                                                    <img class="sealDetails-basic-information-list-value-icon"
+                                                        :src="item.iconPath" :style="item.iconStyle" alt=""
+                                                        v-if="item.iconPath">
+                                                    {{ item.value }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="ap-cont-box-details">
-                                        <componentsTable :data="state.componentsTable.data"
-                                            :header="state.componentsTable.header"
-                                            :defaultAttribute="state.componentsTable.defaultAttribute"
-                                            @row-click="rowClick" @select="select" @custom-click="customClick">
-                                        </componentsTable>
+                                    <div class="ap-cont-box sealDetails-accessory">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">附件</span>
+                                            <div class="ap-cont-box-title-xiazai">
+                                                <img class="ap-cont-box-title-xiazai-icon"
+                                                    src="../../assets/svg/xiazai.svg" alt="">
+                                                <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-accessory-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ap-cont-box sealDetails-Document-verification-before-closing">
+                                        <div class="ap-cont-box-title">
+
+                                            <span class="ap-cont-box-title-label">盖前文件核验</span>
+                                            <div class="ap-cont-box-title-xiazai">
+                                                <img class="ap-cont-box-title-xiazai-icon"
+                                                    src="../../assets/svg/xiazai.svg" alt="">
+                                                <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ap-cont-box sealDetails-Intelligent-printing">
+                                        <div class="ap-cont-box-title">
+
+                                            <span class="ap-cont-box-title-label">智能用印</span>
+                                            <div class="ap-cont-box-title-xiazai">
+                                                <img class="ap-cont-box-title-xiazai-icon"
+                                                    src="../../assets/svg/xiazai.svg" alt="">
+                                                <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ap-cont-box sealDetails-file-document">
+                                        <div class="ap-cont-box-title">
+
+                                            <span class="ap-cont-box-title-label">文件归档</span>
+                                            <div class="ap-cont-box-title-xiazai">
+                                                <img class="ap-cont-box-title-xiazai-icon"
+                                                    src="../../assets/svg/xiazai.svg" alt="">
+                                                <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ap-cont-box sealDetails-electronic-seal">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">电子签章</span>
+                                            <div class="ap-cont-box-title-xiazai">
+
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="ap-cont-box sealDetails-fujian">
-                                    <div class="ap-cont-box-title">
-                                        附件
+                                <!-- 审批流程 -->
+                                <div class="approval-process"
+                                    v-else-if="state.componentsTabs.activeName == 'approval-process'">
+                                    <componentsApprovalSteps :data="state.cache.approvalProcess.data">
+                                    </componentsApprovalSteps>
+                                </div>
+                                <!-- 操作记录 -->
+                                <div class="operating-record"
+                                    v-else-if="state.componentsTabs.activeName == 'operating-record'">
+                                    <componentsTable :data="state.cache.operatingRecord.data"
+                                        :header="state.cache.operatingRecord.header"
+                                        :defaultAttribute="state.cache.operatingRecord.defaultAttribute">
+                                    </componentsTable>
+                                </div>
+                                <!-- 领用记录 -->
+                                <div class="Record-of-requisition"
+                                    v-else-if="state.componentsTabs.activeName == 'Record-of-requisition'">
+                                    <div class="ap-cont-ma">
+                                        <span class="ap-cont-ma-text">授权码：</span>
+                                        <span class="ap-cont-ma-value">228977</span>
                                     </div>
-                                    <div class="ap-cont-box-details">
-                                        <componentsTable :data="state.componentsTable.data"
-                                            :header="state.componentsTable.header"
-                                            :defaultAttribute="state.componentsTable.defaultAttribute"
-                                            @row-click="rowClick" @select="select" @custom-click="customClick">
-                                        </componentsTable>
+                                    <div class="ap-cont-box SealInformation">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">印章信息</span>
+                                        </div>
+                                        <div class="ap-cont-box-details SealInformation-details">
+                                            <div class="SealInformation-details-list"
+                                                v-for="item in state.cache.RecordOfRequisition.SealInformation.data">
+                                                <div class="SealInformation-details-list-cont">
+                                                    <div class="SealInformation-details-list-cont-icon">
+                                                        <img class="SealInformation-details-list-cont-icon-img"
+                                                            :src="item.iconPath" alt="">
+                                                    </div>
+                                                    <div class="SealInformation-details-list-cont-label">
+                                                        {{ item.label }}：
+                                                    </div>
+                                                    <div class="SealInformation-details-list-cont-val"
+                                                        :style="item.style">
+                                                        <img v-if="item.iconPathValue" :src="item.iconPathValue" alt=""
+                                                            class="iconPathValue">
+                                                        {{ item.value }}
+                                                    </div>
+                                                </div>
+                                                <div class="SealInformation-details-list-sub">
+                                                    <div class="SealInformation-details-list-sub-Text"
+                                                        :style="item.subStyle">
+                                                        {{ item.subText }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="SealInformation-details-image">
+                                                <div class="SealInformation-details-image-title">
+                                                    <img class="SealInformation-details-image-title-icon"
+                                                        :src="state.cache.RecordOfRequisition.SealInformation.imageData.iconPath"
+                                                        alt="">
+                                                    <span class="SealInformation-details-image-title-text">
+                                                        {{
+                                                                state.cache.RecordOfRequisition.SealInformation.imageData.label
+                                                        }}
+                                                    </span>
+                                                </div>
+                                                <div class="SealInformation-details-image-cont">
+                                                    <div class="SealInformation-details-image-cont-list"
+                                                        v-for="item in state.cache.RecordOfRequisition.SealInformation.imageData.data">
+                                                        <div class="SealInformation-details-image-cont-list-img">
+                                                            <img class="SealInformation-details-image-cont-list-img-icon"
+                                                                :src="item.iconPath" alt="">
+                                                            <img class="SealInformation-details-image-cont-list-img-back"
+                                                                :src="item.imgPath" alt="">
+                                                            <div
+                                                                class="SealInformation-details-image-cont-list-img-time">
+                                                                {{ item.time }}</div>
+                                                        </div>
+                                                        <div class="SealInformation-details-image-cont-list-cont">
+                                                            <div class="SealInformation-details-image-cont-list-cont-list"
+                                                                v-for="data in item.list">
+                                                                <div
+                                                                    class="SealInformation-details-image-cont-list-cont-list-label">
+                                                                    {{ data.label }}：</div>
+                                                                <div
+                                                                    class="SealInformation-details-image-cont-list-cont-list-value">
+                                                                    {{ data.value }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="ap-cont-box sealDetails-gaiqian-wenjian-heyan">
-                                    <div class="ap-cont-box-title">
-                                        盖前文件核验
-                                    </div>
-                                    <div class="ap-cont-box-details">
-                                        <componentsTable :data="state.componentsTable.data"
-                                            :header="state.componentsTable.header"
-                                            :defaultAttribute="state.componentsTable.defaultAttribute"
-                                            @row-click="rowClick" @select="select" @custom-click="customClick">
-                                        </componentsTable>
+                                <!-- 保管记录 -->
+                                <div class="Record-of-custody"
+                                    v-else-if="state.componentsTabs.activeName == 'Record-of-custody'">
+                                    <componentsTable :data="state.cache.RecordOfCustody.data"
+                                        :header="state.cache.RecordOfCustody.header"
+                                        :defaultAttribute="state.cache.RecordOfCustody.defaultAttribute">
+                                    </componentsTable>
+                                </div>
+                                <!-- 印章详情 -->
+                                <div class="Particulars-of-Seal"
+                                    v-else-if="state.componentsTabs.activeName == 'Particulars-of-Seal'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">基本信息</span>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-basic-information-details">
+                                            <div class="sealDetails-basic-information-list"
+                                                v-for="item in state.cache.ParticularsOfSeal.basicInformation.data">
+                                                <div class="sealDetails-basic-information-list-label">{{ item.label }}：
+                                                </div>
+                                                <div class="sealDetails-basic-information-list-value"
+                                                    :style="item.style">
+                                                    <img class="sealDetails-basic-information-list-value-icon"
+                                                        :src="item.iconPath" :style="item.iconStyle" alt=""
+                                                        v-if="item.iconPath">
+                                                    {{ item.value }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="ap-cont-box sealDetails-zineng-yongyin">
-                                    <div class="ap-cont-box-title">
-                                        智能用印
+                                <!-- 印章申请详情 -->
+                                <div class="Seal-Application-Details"
+                                    v-if="state.componentsTabs.activeName == 'Seal-Application-Details'">
+                                    <div class="ap-cont-box">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">基本信息</span>
+                                            <div class="ap-cont-box-title-xiazai">
+
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-accessory-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="ap-cont-box-details">
-                                        <componentsTable :data="state.componentsTable.data"
-                                            :header="state.componentsTable.header"
-                                            :defaultAttribute="state.componentsTable.defaultAttribute"
-                                            @row-click="rowClick" @select="select" @custom-click="customClick">
-                                        </componentsTable>
+                                    <div class="ap-cont-box">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">印章信息</span>
+                                            <div class="ap-cont-box-title-xiazai">
+
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-accessory-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ap-cont-box">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">印章办理</span>
+                                            <div class="ap-cont-box-title-xiazai">
+
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-accessory-details">
+                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="ap-cont-box sealDetails-wenjian-guidang">
-                                    <div class="ap-cont-box-title">
-                                        文件归档
-                                    </div>
-                                    <div class="ap-cont-box-details">
-                                        <componentsTable :data="state.componentsTable.data"
-                                            :header="state.componentsTable.header"
-                                            :defaultAttribute="state.componentsTable.defaultAttribute"
-                                            @row-click="rowClick" @select="select" @custom-click="customClick">
-                                        </componentsTable>
+                                <!-- 文件详情 -->
+                                <div class="Details-of-Document"
+                                    v-else-if="state.componentsTabs.activeName == 'Details-of-Document'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <div class="ap-cont-box-title">
+                                            <span class="ap-cont-box-title-label">基本信息</span>
+                                            <div class="ap-cont-box-title-but">
+                                                <el-button type="primary" size="small">
+                                                    <div class="ap-cont-box-title-but-box">
+                                                        <img class="ap-cont-box-title-but-icon"
+                                                            src="../../assets/svg/yanjing.svg" alt="">
+                                                        <span>文件预览</span>
+                                                    </div>
+                                                </el-button>
+                                            </div>
+                                        </div>
+                                        <div class="ap-cont-box-details sealDetails-basic-information-details">
+                                            <div class="sealDetails-basic-information-list"
+                                                v-for="item in state.cache.DetailsOfDocument.basicInformation.data">
+                                                <div class="sealDetails-basic-information-list-label">{{ item.label }}：
+                                                </div>
+                                                <div class="sealDetails-basic-information-list-value"
+                                                    :style="item.style">
+                                                    <img class="sealDetails-basic-information-list-value-icon"
+                                                        :src="item.iconPath" :style="item.iconStyle" alt=""
+                                                        v-if="item.iconPath">
+                                                    {{ item.value }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -92,9 +327,10 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, watch } from "vue"
 import componentsTabs from "./tabs.vue"
 import componentsTable from "./table"
+import componentsApprovalSteps from "./approvalSteps"
 const props = defineProps({
     //标识
     refs: {
@@ -106,14 +342,19 @@ const props = defineProps({
         type: String,
         default: "0",
     },
-    // 布局
-    Layout: {
+    // 展示权限
+    visible: {
         type: Array,
         default: [],
     },
+    // 默认显示
+    activeName: {
+        type: String,
+        default: "",
+    },
     show: {
         type: Boolean,
-        default: true,
+        default: false,
     },
     //数据
     data: {
@@ -123,6 +364,529 @@ const props = defineProps({
 })
 const emit = defineEmits(["clickClose"]);
 const state = reactive({
+    cache: {
+        DetailsaOfPrinting: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                data: [
+                    {
+                        label: "文件名称",
+                        value: "上海建筑材料清单合同明细",
+                    },
+                    {
+                        label: "用印编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "用印类型",
+                        value: "实体章",
+                    },
+                    {
+                        label: "文件类型",
+                        value: "合同清单",
+                    },
+                    {
+                        label: "文件份数",
+                        value: "1份",
+                    },
+                    {
+                        label: "金额",
+                        value: "11088.00",
+                    },
+                    {
+                        label: "印章名称",
+                        value: "销售合同",
+                    },
+                    {
+                        label: "常规盖章",
+                        value: "20次",
+                    },
+                    {
+                        label: "印章外带",
+                        value: "是",
+                    },
+                    {
+                        label: "用印状态",
+                        value: "智能用印中",
+                        iconPath: require("../../assets/svg/yuan-lv.svg"),
+                        iconStyle: {
+
+                        },
+                        style: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                ],
+            },
+        },
+        approvalProcess: {
+            data: [
+                {
+                    iconPath: require("../../assets/svg/liucheng-faqishenqing.svg"),
+                    title: "发起申请",
+                    time: "2022-10-11 02:23:00",
+                    statusIconPath: require("../../assets/svg/liucheng-bohui.svg"),
+                    personList: [
+                        {
+                            name: "青青",
+                        }
+                    ]
+                },
+                {
+                    iconPath: require("../../assets/svg/liucheng-chaosong.svg"),
+                    title: "抄送",
+                    subTitle: "（已抄送）",
+                    time: "2022-10-11 02:23:00",
+                    personList: [
+                        {
+                            name: "王丹",
+                        },
+                        {
+                            name: "王丹",
+                        },
+                        {
+                            name: "王丹",
+                        },
+                        {
+                            name: "王丹",
+                        },
+                        {
+                            name: "王丹",
+                        },
+                    ]
+                },
+                {
+                    iconPath: require("../../assets/svg/liucheng-shenpi.svg"),
+                    title: "审批",
+                    subTitle: "（已驳回）",
+                    type: "flowing",
+                    personList: [
+                        {
+                            name: "马丽丽",
+                            time: "2022-10-11 02:23:00",
+                            iconPath: require("../../assets/svg/liucheng-tongyi.svg"),
+                        },
+                        {
+                            name: "王青青",
+                            time: "2022-10-11 02:23:00",
+                            iconPath: require("../../assets/svg/liucheng-jujue.svg"),
+                            desc: "拒绝理由说明",
+                        },
+                        {
+                            name: "陈暮时",
+                            iconPath: require("../../assets/svg/liucheng-dengdai.svg"),
+                            status: "1"
+                        }
+                    ]
+                },
+                {
+                    iconPath: require("../../assets/svg/liucheng-wancheng.svg"),
+                    title: "完成",
+                },
+            ],
+        },
+        operatingRecord: {
+            header: [
+                {
+                    prop: '0',
+                    label: "序号",
+                },
+                {
+                    prop: '1',
+                    label: "操作人",
+                },
+                {
+                    prop: '2',
+                    label: "操作时间",
+                    sortable: true,
+                },
+                {
+                    prop: '3',
+                    label: "操作记录",
+                },
+                {
+                    prop: '4',
+                    label: "操作说明",
+                },
+            ],
+            data: [
+                {
+                    0: 1,
+                    1: "马丽丽",
+                    2: "2022-11-12 19:00:12",
+                    3: "新增用印申请",
+                    4: "新增用印申请：用印申请-客户问题验证",
+                },
+                {
+                    0: 2,
+                    1: "王丹",
+                    2: "2022-11-12 19:00:12",
+                    3: "用印申请",
+                    4: "发起申请",
+                },
+                {
+                    0: 3,
+                    1: "清村",
+                    2: "2022-11-12 19:00:12",
+                    3: "审批",
+                    4: "授权码自动失效，相关印章：[智]Kevin_预发测试2【简称_9290_2.3.1】",
+                },
+                {
+                    0: 4,
+                    1: "哈士奇",
+                    2: "2022-11-12 19:00:12",
+                    3: "文件归档",
+                    4: "同意",
+                },
+            ],
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                border: true,
+                "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                    // console.log({ row, column, rowIndex, columnIndex });
+                    return {
+                        "background": "var(--color-fill--1)"
+                    }
+                },
+            }
+        },
+        RecordOfRequisition: {
+            SealInformation: {
+                data: [
+                    {
+                        iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                        label: "印章名称",
+                        value: "Kevin_预发_57420F【简称_9290_2.3.1】",
+                        subStyle: {
+                            color: "var(--Info-6)"
+                        },
+                        subText: "查看在柜状态",
+                    },
+                    {
+                        iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                        label: "绑定设备",
+                        value: "9290_2.3.1",
+                    },
+                    {
+                        iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                        label: "绑定格口",
+                        value: "印章柜_2L_SY/A-1-1",
+                    },
+                    {
+                        iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                        label: "领用状态",
+                        value: "已失效",
+                        iconPathValue: require("../../assets/svg/yuan-hui.svg"),
+                        style: {
+                            color: "var(--color-text-3)"
+                        }
+                    },
+                ],
+                imageData: {
+                    label: "领用影像",
+                    iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                    data: [
+                        {
+                            imgPath: require("../../assets/svg/Upload__background.svg"),
+                            iconPath: require("../../assets/svg/renlian-icon.svg"),
+                            time: "12-11 14:09",
+                            list: [
+                                {
+                                    label: "开锁类型",
+                                    value: "领取印章",
+                                },
+                                {
+                                    label: "开锁时间",
+                                    value: "2022-12-01 20:17:54  ",
+                                },
+                                {
+                                    label: "关门类型",
+                                    value: "2022-12-02 20:17:54  ",
+                                },
+                                {
+                                    label: "取出",
+                                    value: "【智】测试章",
+                                },
+                                {
+                                    label: "放入",
+                                    value: "无",
+                                }
+                            ]
+                        },
+                        {
+                            imgPath: require("../../assets/svg/Upload__background.svg"),
+                            iconPath: require("../../assets/svg/renlian-icon.svg"),
+                            time: "12-11 14:09",
+                            list: [
+                                {
+                                    label: "开锁类型",
+                                    value: "领取印章",
+                                },
+                                {
+                                    label: "开锁时间",
+                                    value: "2022-12-01 20:17:54  ",
+                                },
+                                {
+                                    label: "关门类型",
+                                    value: "2022-12-02 20:17:54  ",
+                                },
+                                {
+                                    label: "取出",
+                                    value: "【智】测试章",
+                                },
+                                {
+                                    label: "放入",
+                                    value: "无",
+                                }
+                            ]
+                        },
+                        {
+                            imgPath: require("../../assets/svg/Upload__background.svg"),
+                            iconPath: require("../../assets/svg/renlian-icon.svg"),
+                            time: "12-11 14:09",
+                            list: [
+                                {
+                                    label: "开锁类型",
+                                    value: "领取印章",
+                                },
+                                {
+                                    label: "开锁时间",
+                                    value: "2022-12-01 20:17:54  ",
+                                },
+                                {
+                                    label: "关门类型",
+                                    value: "2022-12-02 20:17:54  ",
+                                },
+                                {
+                                    label: "取出",
+                                    value: "【智】测试章",
+                                },
+                                {
+                                    label: "放入",
+                                    value: "无",
+                                }
+                            ]
+                        },
+                        {
+                            imgPath: require("../../assets/svg/Upload__background.svg"),
+                            iconPath: require("../../assets/svg/renlian-icon.svg"),
+                            time: "12-11 14:09",
+                            list: [
+                                {
+                                    label: "开锁类型",
+                                    value: "领取印章",
+                                },
+                                {
+                                    label: "开锁时间",
+                                    value: "2022-12-01 20:17:54  ",
+                                },
+                                {
+                                    label: "关门类型",
+                                    value: "2022-12-02 20:17:54  ",
+                                },
+                                {
+                                    label: "取出",
+                                    value: "【智】测试章",
+                                },
+                                {
+                                    label: "放入",
+                                    value: "无",
+                                }
+                            ]
+                        },
+                    ],
+                }
+            }
+        },
+        RecordOfCustody: {
+            header: [
+                {
+                    prop: '0',
+                    label: "序号",
+                },
+                {
+                    prop: '1',
+                    label: "保管人",
+                },
+                {
+                    prop: '3',
+                    label: "保管部门",
+                },
+                {
+                    prop: '2',
+                    label: "保管时间",
+                    sortable: true,
+                },
+            ],
+            data: [
+                {
+                    0: 1,
+                    1: "马丽丽",
+                    2: "2022-11-12 19:00:12",
+                    3: "研发部",
+                },
+                {
+                    0: 2,
+                    1: "王丹",
+                    2: "2022-11-12 19:00:12",
+                    3: "开发部",
+                },
+                {
+                    0: 3,
+                    1: "清村",
+                    2: "2022-11-12 19:00:12",
+                    3: "销售部",
+                },
+                {
+                    0: 4,
+                    1: "哈士奇",
+                    2: "2022-11-12 19:00:12",
+                    3: "财务部",
+                },
+            ],
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                border: true,
+                "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                    // console.log({ row, column, rowIndex, columnIndex });
+                    return {
+                        "background": "var(--color-fill--1)"
+                    }
+                },
+            }
+        },
+        ParticularsOfSeal: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                data: [
+                    {
+                        label: "印章全称",
+                        value: "上海合同销售印章全称",
+                    },
+                    {
+                        label: "印章简称",
+                        value: "合同销售",
+                    },
+                    {
+                        label: "印章编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "所属单位",
+                        value: "-",
+                    },
+                    {
+                        label: "硬件编码",
+                        value: "2299876576CGYU414",
+                    },
+                    {
+                        label: "印章类型",
+                        value: "合同章",
+                    },
+                    {
+                        label: "管理人",
+                        value: "楚基",
+                    },
+                    {
+                        label: "印章状态",
+                        value: "状态",
+                        iconPath: require("../../assets/svg/yuan-lv.svg"),
+                        iconStyle: {
+
+                        },
+                        style: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "管理部门",
+                        value: "建业科技",
+                    },
+                    {
+                        label: "保管部门",
+                        value: "建业科技",
+                    },
+                    {
+                        label: "是否外显",
+                        value: "是",
+                    },
+                    {
+                        label: "印章可见范围",
+                        value: "智能用印中",
+                    },
+                    {
+                        label: "固件版本号",
+                        value: "V2.8.0",
+                    },
+                    {
+                        label: "用印记录",
+                        value: "查看用印记录",
+                        style: {
+                            color: "var(--Info-7)"
+                        },
+                    },
+                    {
+                        label: "制度链接",
+                        value: "-",
+                    },
+                    {
+                        label: "印章操作",
+                        value: "+发起用印申请",
+                        style: {
+                            color: "var(--Info-7)"
+                        },
+                    },
+                    {
+                        label: "备注",
+                        value: "-",
+                    },
+                ],
+            },
+        },
+        DetailsOfDocument: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                data: [
+                    {
+                        label: "文件名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "文件字号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "文件类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "来源类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联单据名称",
+                        value: "字段名称",
+                    },
+
+                ],
+            },
+        },
+    },
     drawer: {
         show: true,
         size: "50%",
@@ -131,26 +895,39 @@ const state = reactive({
     componentsTabs: {
         data: [
             {
-                label: '用印申请详情',
-                name: "Print-application-details",
+                label: '用印详情',
+                name: "Details-of-Printing",
             },
             {
-                label: '流程记录',
-                name: "Record-of-flow",
+                label: '印章申请详情',
+                name: "Seal-Application-Details",
             },
             {
-                label: '流程记录',
-                name: "Record-of-flow",
+                label: '文件详情',
+                name: "Details-of-Document",
             },
             {
-                label: '流程记录',
-                name: "Record-of-flow",
+                label: '印章详情',
+                name: "Particulars-of-Seal",
             },
             {
-                label: '印章领用记录',
-                name: "Seal-requisition-record",
-            }
-        ]
+                label: '审批流程',
+                name: "approval-process",
+            },
+            {
+                label: '保管记录',
+                name: "Record-of-custody",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+            {
+                label: '领用记录',
+                name: "Record-of-requisition",
+            },
+        ],
+        activeName: "Details-of-Printing",
     },
     componentsTable: {
         header: [
@@ -216,10 +993,37 @@ const state = reactive({
             },
         }
     },
+    componentsApprovalSteps: {
+        title: "审批流程",
+        show: true,
+        data: [{
+            // 1 发起申请
+            type: "1",
+            person: [{
+                name: "春青"
+            }]
+        }]
+    }
 });
 //初始化数据
 function initData() {
     state.drawer.show = props.show;
+    state.componentsTabs.data = props.visible;
+    if (props.activeName) {
+        state.componentsTabs.activeName = props.activeName;
+    } else if (props.visible && props.visible.length > 0) {
+        state.componentsTabs.activeName = props.visible[0].name;
+    } else {
+        state.componentsTabs.activeName = "";
+    }
+    // visible: [
+    //         {
+    //             label: '用印详情',
+    //             name: "Details-of-Printing",
+    //             // 内容权限
+    //             layout: [],
+    //         },
+    //     ]
 }
 //点击全屏
 function ClickOnFullScreen() {
@@ -236,6 +1040,10 @@ function clickClose() {
     state.drawer.show = false;
     emit("clickClose", state.drawer.show);
 }
+//切换选项
+function tabChange(activeName) {
+    state.componentsTabs.activeName = activeName
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     //初始化数据
@@ -243,6 +1051,11 @@ onBeforeMount(() => {
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)
+})
+watch(() => [props.show], (newValue, oldValue) => {
+    // console.log(newValue, oldValue);
+    //初始化数据
+    initData()
 })
 </script>
 <style lang='scss' scoped>
@@ -274,6 +1087,31 @@ onMounted(() => {
         }
     }
 
+    .ap-Tabs {
+        display: flex;
+
+        .ap-Tabs-cont {
+            flex-grow: 1;
+        }
+
+        .ap-Tabs-sub {
+            width: 5rem;
+            margin-bottom: 14px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-bottom: 1px solid var(--color-border-2);
+            .ap-Tabs-sub-icon{
+                margin-right: 0.5rem;
+            }
+            .ap-Tabs-sub-text{
+                cursor: pointer;
+                color: var(-color-text-2);
+            }
+        }
+    }
+
     .ap-cont-tabsCont {
         width: calc(100% + 18px);
         height: calc(100% - 80px);
@@ -285,6 +1123,265 @@ onMounted(() => {
         .scrollbar-div {
             padding-right: 18px;
             box-sizing: border-box;
+        }
+
+        .ap-cont-box-title {
+            border-bottom: 1px solid var(--color-border-2);
+            padding: 0rem 0 0rem 0.8rem;
+            box-sizing: border-box;
+            background: url(../../assets/svg/shuxian-after.svg) no-repeat left center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 2.3rem;
+
+            .ap-cont-box-title-label {
+                font-size: var(--font-size-title-1);
+                font-weight: var(--font-weight-600);
+            }
+
+            .ap-cont-box-title-xiazai {
+                display: flex;
+                align-items: center;
+
+                .ap-cont-box-title-xiazai-icon {
+                    margin-right: 0.5rem;
+                }
+
+                .ap-cont-box-title-xiazai-text {
+                    color: var(--color-text-2);
+                }
+            }
+
+            .ap-cont-box-title-but {
+                .ap-cont-box-title-but-box {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .ap-cont-box-title-but-icon {
+                    width: 0.8rem;
+                    margin-right: 0.2rem;
+                }
+            }
+        }
+
+        .ap-cont-box-details {
+            padding: 0.5rem 0;
+            box-sizing: border-box;
+        }
+
+        .Details-of-Printing {
+            .sealDetails-basic-information {
+                .sealDetails-basic-information-details {
+                    display: flex;
+                    flex-flow: wrap;
+                    padding: 0.5rem 0;
+                    box-sizing: border-box;
+
+                    .sealDetails-basic-information-list {
+                        display: flex;
+                        align-items: center;
+                        width: 50%;
+                        padding: 0.5rem 0;
+                        box-sizing: border-box;
+
+                        .sealDetails-basic-information-list-label {
+                            width: 4.5rem;
+                            display: flex;
+                            justify-content: flex-end;
+                            color: var(--color-text-3);
+                        }
+
+                        .sealDetails-basic-information-list-value {
+                            padding: 0rem 0 0rem 0.5rem;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        .Particulars-of-Seal {
+            .sealDetails-basic-information {
+                .sealDetails-basic-information-details {
+                    display: flex;
+                    flex-flow: wrap;
+                    padding: 0.5rem 0;
+                    box-sizing: border-box;
+
+                    .sealDetails-basic-information-list {
+                        display: flex;
+                        align-items: center;
+                        width: 50%;
+                        padding: 0.5rem 0;
+                        box-sizing: border-box;
+
+                        .sealDetails-basic-information-list-label {
+                            width: 7rem;
+                            display: flex;
+                            justify-content: flex-end;
+                            color: var(--color-text-3);
+                        }
+
+                        .sealDetails-basic-information-list-value {
+                            padding: 0rem 0 0rem 0.5rem;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+        }
+
+        .Details-of-Document {
+            .sealDetails-basic-information {
+                .sealDetails-basic-information-details {
+                    display: flex;
+                    flex-flow: wrap;
+                    padding: 0.5rem 0;
+                    box-sizing: border-box;
+
+                    .sealDetails-basic-information-list {
+                        display: flex;
+                        align-items: center;
+                        width: 50%;
+                        padding: 0.5rem 0;
+                        box-sizing: border-box;
+
+                        .sealDetails-basic-information-list-label {
+                            width: 7rem;
+                            display: flex;
+                            justify-content: flex-end;
+                            color: var(--color-text-3);
+                        }
+
+                        .sealDetails-basic-information-list-value {
+                            padding: 0rem 0 0rem 0.5rem;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+        }
+
+        .Record-of-requisition {
+            .ap-cont-ma {
+                height: 3rem;
+                display: flex;
+                align-items: center;
+
+                .ap-cont-ma-text {
+                    color: var(--color-text-3);
+                }
+
+                .ap-cont-ma-value {
+                    color: var(--primary-6);
+                    font-size: var(--font-size-title-2);
+                }
+            }
+
+            .SealInformation {
+                .SealInformation-details-list {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    height: 2.5rem;
+
+                    .SealInformation-details-list-cont {
+                        display: flex;
+                        align-items: center;
+
+                        .SealInformation-details-list-cont-icon {
+                            display: flex;
+                            align-items: center;
+                            margin-right: 0.5rem;
+                        }
+
+                        .SealInformation-details-list-cont-val {
+                            display: flex;
+                            align-items: center;
+
+                            .iconPathValue {
+                                margin-right: 0.5rem;
+                            }
+                        }
+                    }
+                }
+
+                .SealInformation-details-image {
+                    .SealInformation-details-image-title {
+                        display: flex;
+                        align-items: center;
+                        height: 2.5rem;
+
+                        .SealInformation-details-image-title-icon {
+                            display: flex;
+                            align-items: center;
+                            margin-right: 0.5rem;
+                        }
+                    }
+
+                    .SealInformation-details-image-cont {
+                        display: flex;
+                        flex-flow: wrap;
+
+                        .SealInformation-details-image-cont-list {
+                            width: 50%;
+                            display: flex;
+                            min-width: 25rem;
+                            padding: 0.5rem 0;
+                            box-sizing: border-box;
+
+                            .SealInformation-details-image-cont-list-img {
+                                position: relative;
+                                width: auto;
+
+                                .SealInformation-details-image-cont-list-img-icon {
+                                    position: absolute;
+                                    right: 0%;
+                                    top: 0%;
+                                    width: 40%;
+                                }
+
+                                .SealInformation-details-image-cont-list-img-time {
+                                    position: absolute;
+                                    bottom: 0%;
+                                    text-align: center;
+                                    width: 100%;
+                                    background-color: var(--color-fill-65);
+                                    color: var(--in-common-use-1);
+                                    height: 2rem;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+                            }
+
+                            .SealInformation-details-image-cont-list-cont {
+                                flex-grow: 1;
+                                padding: 0 0.5rem;
+                                box-sizing: border-box;
+                                display: flex;
+                                align-content: space-between;
+                                flex-flow: wrap;
+
+                                .SealInformation-details-image-cont-list-cont-list {
+                                    width: 100%;
+                                    display: flex;
+
+                                    .SealInformation-details-image-cont-list-cont-list-label {
+                                        width: 4.5rem;
+                                        display: flex;
+                                        justify-content: flex-end;
+                                        color: var(--color-text-3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

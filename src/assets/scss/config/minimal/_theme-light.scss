@@ -3,7 +3,8 @@
 :root{
 
   //vertical light
---#{$prefix}vertical-menu-bg:                      #f6f8fa;
+// --#{$prefix}vertical-menu-bg:                      #f6f8fa;
+--#{$prefix}vertical-menu-bg:                      #ffffff;
 --#{$prefix}vertical-menu-item-color:              #{darken($gray-600, 10%)};
 --#{$prefix}vertical-menu-item-hover-color:        #{$primary};
 --#{$prefix}vertical-menu-item-active-color:       #{$primary};

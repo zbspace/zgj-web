@@ -222,7 +222,7 @@ const handleFullScreen = () => {
     .footer-custom {
       .default-footer-btns {
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         align-items: center;
         height: 55px;
         border-top: 1px solid rgba(0, 0, 0, 0.06);

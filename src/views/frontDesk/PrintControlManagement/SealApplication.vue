@@ -1,54 +1,52 @@
 <!-- 用印申请 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-SealApplication">
-            <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
-                <template #title>
-                    <div class="title">
-                        <div>用印申请</div>
-                        <div>
-                            <el-button>
-                                <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                                <span>更多操作</span>
-                            </el-button>
-                        </div>
-                    </div>
-                </template>
-                <template #tabs>
+    <div class="PrintControlManagement-SealApplication">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
+            <template #title>
+                <div class="title">
+                    <div>用印申请</div>
                     <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <template #batch>
-                    <div class="batch">
-                        <el-button @click="(showDialog=true)">批量操作</el-button>
-                        <el-button @click="(showDepPerDialog = true)">批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                        <el-button>批量操作</el-button>
-                    </div>
-                </template>
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+            <template #batch>
+                <div class="batch">
+                    <el-button @click="(showDialog = true)">弹框Demo</el-button>
+                    <el-button @click="(showDepPerDialog = true)">组织选择</el-button>
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
 
             <!-- test - dialog -->
             <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo标题"></KDialog>
@@ -56,7 +54,6 @@
             <!-- 人员选择  -->
             <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog"></kDepartOrPersonVue>
         </div>
-    </Layout>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
