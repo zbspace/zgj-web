@@ -228,7 +228,7 @@ const handleFullScreen = () => {
         border-top: 1px solid rgba(0, 0, 0, 0.06);
 
         .btn {
-          width: 60px;
+          min-width: 60px;
           height: 32px;
           margin: 0 8px;
           text-align: center;
