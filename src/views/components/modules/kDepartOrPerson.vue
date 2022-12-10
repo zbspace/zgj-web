@@ -37,7 +37,7 @@
 /**
  * selectedStatus 0(未选中) 1（部分） 2（全部）
  */
-import { defineProps, defineEmits, reactive, ref } from 'vue';
+import { defineProps, defineEmits, reactive, ref, watch } from 'vue';
 import { treeDataTranslate } from '@/hooks/handleTreeData.js';
 import { Search, ArrowRight } from '@element-plus/icons-vue'
 import kTree from './kTree.vue';
@@ -140,11 +140,13 @@ state.lists.forEach(item => {
   item.selectedStatus = 0
 })
 
+// 处理 成树型结构
 treeColumnData.value = treeDataTranslate(state.lists)
 
 // 搜索条件
 const searchQuery = ref('')
 
+// 监听 组织架构 props
 // watch(treeColumnData, (val, old) => {
 //   console.log(val, '变化了', old, treeColumnData)
 // }, {

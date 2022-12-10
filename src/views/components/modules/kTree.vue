@@ -74,7 +74,7 @@
           <div class="check-box">
           
             <!-- 未选 -->
-            <div v-show="(item.selectedStatus === 0)" @click="checkPart(2, item.id)">
+            <div v-show="(item.selectedStatus === 0)" @click="checkPart(2, item.id, item.parentId)">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect opacity="0.01" width="16" height="16" fill="black" />
                 <g clip-path="url(#clip0_543_108426)">
@@ -90,7 +90,7 @@
             </div>
           
             <!-- 部分 -->
-            <div v-show="(item.selectedStatus === 1)" @click="checkPart(2, item.id)">
+            <div v-show="(item.selectedStatus === 1)" @click="checkPart(2, item.id, item.parentId)">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="16" height="16" rx="2" fill="#D0963E" />
                 <path
@@ -107,7 +107,7 @@
             </div>
           
             <!-- 全选 -->
-            <div v-show="(item.selectedStatus === 2)" @click="checkPart(0, item.id)">
+            <div v-show="(item.selectedStatus === 2)" @click="checkPart(0, item.id, item.parentId)">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect opacity="0.01" width="16" height="16" fill="black" />
                 <rect width="16" height="16" rx="2" fill="#D0963E" />
@@ -124,7 +124,7 @@
         
 
         <!-- 右侧 -->
-        <div class="k-tree-right user-select" @click="openInner(item.id)">下级</div>
+        <div class="k-tree-right user-select" @click="openInner(item.id)" v-if="(item.children && item.children.length > 0)">下级</div>
 
       </div>
     </div>
@@ -135,13 +135,11 @@
 /**
  * props:
  * --- lists: [ { 
- *  label: 名称、 
- *  selected: 0(未选中) 1（部分） 2（全部）,
- *  dataType: 类型 - 部门、员工
+ *  labelName: 名称、 
+ *  selectedStatus: 0(未选中) 1（部分） 2（全部）,
  *  id: 标识
+ *  parentId： 父id
  *  }]
- * --- @changed 复选框切换事件
- * --- @changedAll 全部
  */
 
 import { defineEmits, defineProps, ref, defineExpose, watch } from 'vue';
@@ -156,12 +154,14 @@ const props = defineProps({
     }
   },
 })
+// 当前层级的父id
 const parentId = ref('outer')
 // 全选状态
 const allSelected = ref(0)
 let cacheShowList = ref(JSON.parse(JSON.stringify(props.lists)))
 let cacheList = ref(JSON.parse(JSON.stringify(props.lists)))
 
+// 判断 当前层级 全部选择状态
 const initAllSelectedStatus = (data) => {
   const str = data.filter(item => item.selectedStatus === 0)
 
@@ -179,41 +179,66 @@ const initAllSelectedStatus = (data) => {
   }
 }
 
+// 监听 显示数据列 动态展示 每层级全选状态
 watch(() => cacheShowList.value, (newVal) => {
   initAllSelectedStatus(newVal)
 }, {
   deep: true,
-  immediate: true
 })
 
 // 初始化全选状态
 initAllSelectedStatus(cacheShowList.value)
 
 // 递归处理内部状态
-const cycleList = (data, val) => {
+const cycleList = (data, val, attrId) => {
   if (!Array.isArray(data) || data.length === 0) return
 
+  // data.forEach(item => {
+  //   item.selectedStatus = val
+  //   if (item.children && item.children.length > 0) {
+  //     return cycleList(item.children, val)
+  //   }
+  // })
   data.forEach(item => {
-    item.selectedStatus = val
-    if (item.children && item.children.length > 0) {
-      return cycleList(item.children, val)
+    if (item.id === attrId || !attrId) {
+      item.selectedStatus = val
+      if (item.children && item.children.length > 0) {
+        return cycleList(item.children, val)
+      }
     }
   })
 }
-const cycleAllDemo = (data, attrId) => {
+
+// 替换 cacheShowList -> cacheList 选择状态 - part
+const replacePartChildNode = (data, attrId) => {
   if (Array.isArray(data)) {
 
     data.forEach(item => {
       if (item.id === attrId) {
-        item = cacheShowList.value
+        item.children = cacheShowList.value
       }
+
       if (item.children && item.children.length > 0) {
-        return cycleAllDemo(item.children, attrId)
+        return replacePartChildNode(item.children, attrId)
       }
     })
   }
 }
+// 替换 cacheShowList -> cacheList 选择状态 - all
+const replaceAllChildNode = (data, attrId) => {
+  if (Array.isArray(data)) {
 
+    data.forEach(item => {
+      if (item.id === attrId) {
+        item.children = cacheShowList.value
+      }
+
+      if (item.children && item.children.length > 0) {
+        return replaceAllChildNode(item.children, attrId)
+      }
+    })
+  }
+}
 
 // 子切换 处理 父状态 callback 0、 1 、2
 const handleParentStatus = (data) => {
@@ -251,38 +276,10 @@ const handleParentStatus = (data) => {
   }
 }
 
-// 递归处理child内部状态
-const cycleChildList = (data, val, attrId) => {
-  if (!Array.isArray(data) || data.length === 0) return
-
-  data.forEach(item => {
-    if (item.id === attrId || !attrId) {
-      item.selectedStatus = val
-      if (item.children && item.children.length > 0) {
-        return cycleChildList(item.children, val)
-      }
-    }
-  })
-
-}
-
-const cyclePartDemo = (data, attrId) =>{
-  if (Array.isArray(data)) {
-
-    data.forEach(item => {
-      if (item.id === attrId) {
-        item = cacheShowList.value
-      }
-
-      if (item.children && item.children.length > 0) {
-        return cyclePartDemo(item.children, attrId)
-      }
-    })
-  }
-}
-
+// 修改父级选中状态
 const handle_all_status = (val, valId) => {
   val.forEach(item => {
+
     if (item.id === valId) {
 
       item.selectedStatus = handleParentStatus(item)
@@ -297,65 +294,46 @@ const handle_all_status = (val, valId) => {
   })
 }
 
-// 监听 全选
+// 监听 全选 切换
 const checkAll = (val) => {
 
-  // 递归
+  // 处理树型数据下所有状态
   cycleList(cacheShowList.value, val)
 
   if (parentId.value === 'outer') {
     cacheList.value = cacheShowList.value
   } else {
-    cacheList.value.forEach(item => {
-      if (item.id === parentId.value) {
-        item.children = cacheShowList.value
-      }
-    })
-    cycleAllDemo(cacheList.value, parentId.value)
+
+    replaceAllChildNode(cacheList.value, parentId.value)
   }
   
+  // 递归处理上级节点状态
   handle_all_status(cacheList.value, parentId.value)
 
+  // 更新 props
   emits('update:lists', cacheList.value)
+
   allSelected.value = val
 }
-// 部分 切换
-const checkPart = (val, attrId) => {
-  cycleChildList(cacheShowList.value, val, attrId)
-  
-  cacheList.value.forEach(item => {
-    if (item.id === attrId) {
-      item = cacheShowList.value
-    }
-  })
+// 监听 部分 切换
+const checkPart = (val, attrId, pId) => {
 
-  // function handle_all_status(val, valId) {
-  //   val.forEach(item => {
-  //     if (item.id === valId) {
+  // 处理指定节点下所有状态
+  cycleList(cacheShowList.value, val, attrId)
 
-  //       item.selectedStatus = handleParentStatus(item)
-  //       if (item.children && item.children.length > 0) {
-
-  //         return handle_all_status(cacheList.value, item.parentId)
-  //       }
-  //     }
-  //     if (item.children && item.children.length > 0) {
-  //       return handle_all_status(item.children, valId)
-  //     }
-  //   })
-  // }
+  replacePartChildNode(cacheList.value, pId)
   handle_all_status(cacheList.value, parentId.value)
-
-  cyclePartDemo(cacheList.value, attrId)
-
   emits('update:lists', cacheList.value)
 
 }
 
-// 打开 内部
+// 打开 下级
 const openInner = (attrId) => {
-  // children
+
+  // 更新面包屑
   emits('open', attrId)
+
+  // 更新 父id
   parentId.value = attrId
 
   let res = cacheShowList.value
@@ -370,8 +348,9 @@ const openInner = (attrId) => {
   }
 }
 
-// 处理递归面包屑
+// 处理 切换面包屑 展示数据
 const cycleCurmbsList = (data, attrId) => {
+
   parentId.value = attrId === 'all' ? 'outer' : attrId
   if (attrId === 'all') {
     cacheShowList.value = data
@@ -392,8 +371,8 @@ const cycleCurmbsList = (data, attrId) => {
 // eslint-disable-next-line no-unused-vars
 const updateSonFun = (val) => {
   let res = props.lists
-
-  // console.log(props.lists, '发豆腐脑', cacheShowList.value)
+  // let res = cacheList.value
+  console.log('切换面包屑第一次', res)
   if (res && res.length > 0) {
     cycleCurmbsList(res, val)
   }

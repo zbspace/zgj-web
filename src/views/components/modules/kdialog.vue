@@ -164,7 +164,7 @@ const handleFullScreen = () => {
 
 <style lang="scss">
 .custom-dialog {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
