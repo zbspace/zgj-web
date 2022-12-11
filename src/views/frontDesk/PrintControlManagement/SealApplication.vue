@@ -30,7 +30,7 @@
                 <div class="batch">
                     <el-button @click="(showDialog = true)">弹框Demo</el-button>
                     <el-button @click="(showDepPerDialog = true)">组织选择</el-button>
-                    <el-button>批量操作</el-button>
+                    <el-button @click="goInnerPage">二级页面</el-button>
                     <el-button>批量操作</el-button>
                 </div>
             </template>
@@ -49,7 +49,7 @@
         </componentsLayout>
 
             <!-- test - dialog -->
-            <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo标题"></KDialog>
+            <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo Dialog" :oneBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"></KDialog>
 
             <!-- 人员选择  -->
             <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog"></kDepartOrPersonVue>
@@ -66,6 +66,7 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
+import router from '../../../router'
 const props = defineProps({
     // 处理类型
     type: {
@@ -75,6 +76,11 @@ const props = defineProps({
 })
 const showDialog = ref(false)
 const showDepPerDialog = ref(false)
+const goInnerPage = () => {
+  router.push({
+    path: '/frontDesk/innerPage'
+  })
+}
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {

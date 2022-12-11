@@ -11,7 +11,7 @@ export default [
     path: "/login/account",
     name: "login-account",
     meta: { title: "login-account", authRequired: true },
-    component: () => import("../views/login/account"),
+    component: () => import("../views/login/account")
     // component: () => import("../views/login/accountDemo")
   },
   {
@@ -21,10 +21,17 @@ export default [
     component: () => import("@/views/frontDesk/index.vue"),
     children: [
       {
+        path: "innerPage",
+        name: "innerPage",
+        meta: { title: "二级页面", authRequired: true },
+        component: () =>
+          import("../views/frontDesk/PrintControlManagement/InnerPage.vue")
+      },
+      {
         path: "home",
         name: "frontDesk-home",
         meta: { title: "frontDesk-home", authRequired: true },
-        component: () => import("../views/frontDesk/home/index.vue"),
+        component: () => import("../views/frontDesk/home/index.vue")
       },
       {
         path: "PrintControlManagement/IntelligentPrinting",
@@ -56,7 +63,9 @@ export default [
           authRequired: true
         },
         component: () =>
-          import("../views/frontDesk/PrintControlManagement/SecurityWatermark.vue")
+          import(
+            "../views/frontDesk/PrintControlManagement/SecurityWatermark.vue"
+          )
       },
       {
         path: "PrintControlManagement/UsePrepressVerification",
@@ -102,7 +111,9 @@ export default [
           authRequired: true
         },
         component: () =>
-          import("../views/frontDesk/PrintControlManagement/SealApplication.vue")
+          import(
+            "../views/frontDesk/PrintControlManagement/SealApplication.vue"
+          )
       },
       {
         path: "PrintControlManagement/recordWithSeal",
@@ -144,7 +155,9 @@ export default [
           authRequired: true
         },
         component: () =>
-          import("../views/frontDesk/PrintControlManagement/ApplicationForSeal.vue")
+          import(
+            "../views/frontDesk/PrintControlManagement/ApplicationForSeal.vue"
+          )
       },
       {
         path: "PrintControlManagement/TypeOfSeal",
@@ -209,12 +222,12 @@ export default [
         name: "PrintControlManagement-ElectronicSealLibrary",
         meta: {
           title: "ElectronicSealLibrary",
-          authRequired: true,
+          authRequired: true
         },
         component: () =>
           import(
             "../views/frontDesk/PrintControlManagement/ElectronicSealLibrary.vue"
-          ),
+          )
       },
       {
         path: "approvalFlow/RealTimeConfirmation",
@@ -233,7 +246,8 @@ export default [
           title: "handleTask",
           authRequired: true
         },
-        component: () => import("../views/frontDesk/approvalFlow/handleTask.vue")
+        component: () =>
+          import("../views/frontDesk/approvalFlow/handleTask.vue")
       },
       {
         path: "approvalFlow/approvalFlow",
@@ -242,16 +256,18 @@ export default [
           title: "approvalFlow",
           authRequired: true
         },
-        component: () => import("../views/frontDesk/approvalFlow/approvalFlow.vue")
+        component: () =>
+          import("../views/frontDesk/approvalFlow/approvalFlow.vue")
       },
       {
         path: "approvalFlow/carbonCopyToMe",
         name: "approvalFlow-carbonCopyToMe",
         meta: {
           title: "carbonCopyToMe",
-          authRequired: true,
+          authRequired: true
         },
-        component: () => import("../views/frontDesk/approvalFlow/carbonCopyToMe.vue"),
+        component: () =>
+          import("../views/frontDesk/approvalFlow/carbonCopyToMe.vue")
       },
       {
         path: "riskControlWarning/RiskAlertSetting",
@@ -318,7 +334,7 @@ export default [
         },
         component: () =>
           import("../views/frontDesk/fileManagement/documentType.vue")
-      },
+      }
     ]
   },
   {
