@@ -2,7 +2,7 @@
   <div class="k-custom-tree">
 
     <!-- 全部 -->
-    <div class="k-select-all">
+    <div class="k-select-all user-select">
       <div class="k-column">
       
         <div class="k-tree-left">
@@ -193,12 +193,6 @@ initAllSelectedStatus(cacheShowList.value)
 const cycleList = (data, val, attrId) => {
   if (!Array.isArray(data) || data.length === 0) return
 
-  // data.forEach(item => {
-  //   item.selectedStatus = val
-  //   if (item.children && item.children.length > 0) {
-  //     return cycleList(item.children, val)
-  //   }
-  // })
   data.forEach(item => {
     if (item.id === attrId || !attrId) {
       item.selectedStatus = val
@@ -209,32 +203,16 @@ const cycleList = (data, val, attrId) => {
   })
 }
 
-// 替换 cacheShowList -> cacheList 选择状态 - part
-const replacePartChildNode = (data, attrId) => {
+// 替换 cacheShowList -> cacheList 选择状态
+const replaceChildNode = (data, attrId) => {
   if (Array.isArray(data)) {
-
     data.forEach(item => {
       if (item.id === attrId) {
         item.children = cacheShowList.value
       }
 
       if (item.children && item.children.length > 0) {
-        return replacePartChildNode(item.children, attrId)
-      }
-    })
-  }
-}
-// 替换 cacheShowList -> cacheList 选择状态 - all
-const replaceAllChildNode = (data, attrId) => {
-  if (Array.isArray(data)) {
-
-    data.forEach(item => {
-      if (item.id === attrId) {
-        item.children = cacheShowList.value
-      }
-
-      if (item.children && item.children.length > 0) {
-        return replaceAllChildNode(item.children, attrId)
+        return replaceChildNode(item.children, attrId)
       }
     })
   }
@@ -294,37 +272,48 @@ const handle_all_status = (val, valId) => {
   })
 }
 
-// 监听 全选 切换
-const checkAll = (val) => {
+const commonCheckFn = (val, attrId, pId) => {
 
   // 处理树型数据下所有状态
-  cycleList(cacheShowList.value, val)
+  cycleList(cacheShowList.value, val, attrId)
 
   if (parentId.value === 'outer') {
     cacheList.value = cacheShowList.value
   } else {
-
-    replaceAllChildNode(cacheList.value, parentId.value)
+    replaceChildNode(cacheList.value, pId ? pId : parentId.value)
   }
-  
+
   // 递归处理上级节点状态
   handle_all_status(cacheList.value, parentId.value)
 
   // 更新 props
   emits('update:lists', cacheList.value)
+}
+
+// 监听 全选 切换
+const checkAll = (val) => {
+  commonCheckFn(val)
+  // // 处理树型数据下所有状态
+  // cycleList(cacheShowList.value, val)
+
+  // if (parentId.value === 'outer') {
+  //   cacheList.value = cacheShowList.value
+  // } else {
+  //   replaceChildNode(cacheList.value, parentId.value)
+  // }
+  
+  // // 递归处理上级节点状态
+  // handle_all_status(cacheList.value, parentId.value)
+
+  // // 更新 props
+  // emits('update:lists', cacheList.value)
 
   allSelected.value = val
 }
+
 // 监听 部分 切换
 const checkPart = (val, attrId, pId) => {
-
-  // 处理指定节点下所有状态
-  cycleList(cacheShowList.value, val, attrId)
-
-  replacePartChildNode(cacheList.value, pId)
-  handle_all_status(cacheList.value, parentId.value)
-  emits('update:lists', cacheList.value)
-
+  commonCheckFn(val, attrId, pId)
 }
 
 // 打开 下级
@@ -368,7 +357,6 @@ const cycleCurmbsList = (data, attrId) => {
 }
 
 // 监听 面包屑 切换
-// eslint-disable-next-line no-unused-vars
 const updateSonFun = (val) => {
   let res = props.lists
   // let res = cacheList.value
@@ -378,18 +366,23 @@ const updateSonFun = (val) => {
   }
 }
 defineExpose({
-  updateSonFun
+  updateSonFun,
 })
 </script>
 
 <style lang="scss" scoped>
 .k-custom-tree {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .k-select-all {
+    height: 35px;
+  }
 
-  // .k-select-all {}
-
-  // .k-select-list {
-
-  // }
+  .k-select-list {
+    flex: 1;
+    overflow-y: auto;
+  }
   .k-column {
     display: flex;
     justify-content: space-between;
