@@ -45,11 +45,17 @@
       </div>
       <!-- footer -->
       <div class="footer-custom">
-        <div v-if="true" class="default-footer-btns">
+        <!-- 两个按钮 -->
+        <div v-if="!oneBtn" class="default-footer-btns two-btn">
           <div class="confirm btn" @click.stop="handleShow(false, true)">{{ props.confirmText }}</div>
           <div class="concel btn" @click.stop="handleShow(false, true)">{{ props.concelText }}</div>
         </div>
-        <slot name="footer" v-else></slot>
+
+        <!-- 一个按钮 -->
+        <div class="default-footer-btns one-btn" v-if="oneBtn">
+          <div class="confirm btn" @click.stop="handleShow(false, true)">{{ props.confirmText }}</div>
+        </div>
+        <!-- <slot name="footer" v-else></slot> -->
       </div>
     </div>
     
@@ -68,6 +74,7 @@
  * confrimText 确定按钮 文字
  * concelText 取消按钮 文字
  * closeOnClickModal 点击蒙层是否 关闭 true
+ * oneBtn 是否是一个按钮 - 同 确认按钮 交互
  * @close 关闭回调
  */
 // <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo标题"></KDialog>
@@ -111,6 +118,10 @@ const props = defineProps({
     default: '取消'
   },
   closeOnClickModal: {
+    type: Boolean,
+    default: false
+  },
+  oneBtn: {
     type: Boolean,
     default: false
   }
@@ -164,7 +175,7 @@ const handleFullScreen = () => {
 
 <style lang="scss">
 .custom-dialog {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
@@ -222,13 +233,13 @@ const handleFullScreen = () => {
     .footer-custom {
       .default-footer-btns {
         display: flex;
-        justify-content: flex-end;
+        // justify-content: flex-end;
         align-items: center;
         height: 55px;
         border-top: 1px solid rgba(0, 0, 0, 0.06);
 
         .btn {
-          width: 60px;
+          min-width: 60px;
           height: 32px;
           margin: 0 8px;
           text-align: center;
@@ -261,6 +272,14 @@ const handleFullScreen = () => {
           border: 1px solid rgba(#D9AB5B, 0.15);
         }
 
+      }
+
+      .two-btn {
+        justify-content: flex-end;
+      }
+
+      .one-btn {
+        justify-content: center;
       }
     }
   }
