@@ -1,12 +1,11 @@
 <!-- 电子签章记录 -->
 <template>
     <div class="PrintControlManagement-electronicSignatureRecord">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     <div>电子签章记录</div>
                     <div>
-                        <el-button>批量操作</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -25,6 +24,12 @@
                     <componentsSearchForm :data="state.componentsSearchForm.data"
                         :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
                     </componentsSearchForm>
+                </div>
+            </template>
+
+            <template #batch>
+                <div class="batch">
+                    <el-button>批量操作</el-button>
                 </div>
             </template>
 

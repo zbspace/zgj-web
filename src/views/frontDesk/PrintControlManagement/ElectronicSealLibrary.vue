@@ -6,7 +6,6 @@
                 <div class="title">
                     <div>电子印章库</div>
                     <div>
-                        <el-button type="primary">同步电子签章</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -28,13 +27,12 @@
                 </div>
             </template>
 
-            <template #tree>
-                <div>
-                    <componentsTree :data="state.componentsTree.data"
-                        :defaultAttribute="state.componentsTree.defaultAttribute">
-                    </componentsTree>
+            <template #batch>
+                <div class="batch">
+                    <el-button type="primary">同步电子签章</el-button>
                 </div>
             </template>
+
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"

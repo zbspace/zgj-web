@@ -1,13 +1,11 @@
 <!-- 印章库 -->
 <template>
     <div class="PrintControlManagement-LibraryOfSeals">
-        <componentsLayout Layout="title,searchForm,table,pagination,tree">
+        <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
             <template #title>
                 <div class="title">
                     印章库
                     <div>
-                        <el-button type="primary">+ 增加</el-button>
-                        <el-button>批量操作</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -28,7 +26,12 @@
                     </componentsSearchForm>
                 </div>
             </template>
-
+            <template #batch>
+                <div class="batch">
+                    <el-button type="primary">+ 增加</el-button>
+                    <el-button>批量操作</el-button>
+                </div>
+            </template>
             <template #tree>
                 <div>
                     <componentsTree :data="state.componentsTree.data"

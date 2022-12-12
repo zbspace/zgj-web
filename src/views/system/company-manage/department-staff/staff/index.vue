@@ -2,7 +2,15 @@
   <div>
     <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
       <template #title>
-        <div class="title">员工管理</div>
+        <div class="title">
+          <div>员工管理</div>
+          <div>
+            <el-button>
+              <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+              <span>更多操作</span>
+            </el-button>
+          </div>
+        </div>
       </template>
 
       <template #searchForm>
@@ -334,5 +342,9 @@ const state = reactive({
 </script>
 
 <style lang="scss" scoped>
-
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 </style>

@@ -6,7 +6,6 @@
                 <div class="title">
                     <div>用印记录</div>
                     <div>
-                        <el-button>批量操作</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -27,7 +26,11 @@
                     </componentsSearchForm>
                 </div>
             </template>
-
+            <template #batch>
+                <div class="batch">
+                    <el-button>批量操作</el-button>
+                </div>
+            </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"

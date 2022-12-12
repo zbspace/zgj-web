@@ -2,7 +2,15 @@
   <div>
     <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
       <template #title>
-        <div class="title">流程管理</div>
+        <div class="title">
+          <div>流程管理</div>
+          <div>
+            <el-button>
+              <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+              <span>更多操作</span>
+            </el-button>
+          </div>
+        </div>
       </template>
 
       <template #searchForm>
@@ -18,7 +26,6 @@
         <div class="batch">
           <el-button type="primary">+ 新建</el-button>
           <el-button>批量操作</el-button>
-          <el-button>...</el-button>
         </div>
       </template>
 
@@ -229,7 +236,7 @@ const state = reactive({
         6: "xxx",
         7: "2022/10/30  15:00:00",
       },
-     
+
     ],
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
@@ -327,5 +334,9 @@ const state = reactive({
 </script>
 
 <style lang="scss" scoped>
-
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 </style>
