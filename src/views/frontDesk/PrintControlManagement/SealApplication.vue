@@ -31,7 +31,9 @@
                     <el-button @click="(showDialog = true)">弹框Demo</el-button>
                     <el-button @click="(showDepPerDialog = true)">组织选择</el-button>
                     <el-button @click="goInnerPage">二级页面</el-button>
-                    <el-button>批量操作</el-button>
+                    <el-button :plain="true" @click="open2">成功消息</el-button>
+                    <el-button :plain="true" @click="open3">询问消息</el-button>
+                    <el-button :plain="true" @click="open4">异常消息</el-button>
                 </div>
             </template>
             <template #table>
@@ -67,6 +69,7 @@ import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
 import router from '../../../router'
+import { ElMessage } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -80,6 +83,23 @@ const goInnerPage = () => {
   router.push({
     path: '/frontDesk/innerPage'
   })
+}
+
+
+const open2 = () => {
+  ElMessage({
+    message: '这是一条成功消息，会自动消失。',
+    type: 'success',
+  })
+} 
+const open3 = () => {
+  ElMessage({
+    message: '这是一条询问消息，会自动消失。',
+    type: 'warning',
+  })
+}
+const open4 = () => {
+  ElMessage.error('这是一条异常消息，会自动消失。')
 }
 const emit = defineEmits([]);
 const state = reactive({
