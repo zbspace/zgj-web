@@ -103,7 +103,8 @@
             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary" data-toggle="fullscreen"
               @click="showHelpPop = !showHelpPop">
 
-              <el-tooltip class="box-item" effect="dark" :content="$t('t-help-center')" placement="bottom" :show-arrow="true">
+              <el-tooltip class="box-item" effect="dark" :content="$t('t-help-center')" placement="bottom"
+                :show-arrow="true">
                 <div>
                   <img v-show="showHelpPop" src="../assets/images/navbar/help_select_icon.svg" />
                   <img v-show="!showHelpPop" src="../assets/images/navbar/help_icon.svg" />
@@ -159,30 +160,35 @@
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-DownloadApp.Download') }}</span>
                   </div>
 
-                  <el-popover trigger="hover" placement="left-start" :show-arrow="false" :close-delay="80" :visible="showChanglanPop">
+                  <el-popover trigger="hover" placement="left-start" :show-arrow="false" :close-delay="80"
+                    :visible="showChanglanPop">
                     <template #reference>
-                      <div class="dropdown-list-li" :style="{ color: showChanglanPop ? '#D0963E' : 'rgba(0, 0, 0, 0.65)'}" @click="showChanglanPop = true">
+                      <div class="dropdown-list-li"
+                        :style="{ color: showChanglanPop ? '#D0963E' : 'rgba(0, 0, 0, 0.65)' }"
+                        @click="showChanglanPop = true">
                         <img src="../assets/images/navbar/user_info_lan.svg" />
                         <span class="dropdown-list-li-text">{{ $t('t-zgj-changeLang') }}</span>
                         <i class="ri-arrow-right-s-line"></i>
                       </div>
                     </template>
                     <div class="popover-cont ap-personalCenterPopover">
-                      <div class="popover-cont-list" @click="setLanguage('ch')" :class="state.language === 'ch' ? 'popover-selected' : ''">简体中文</div>
-                      <div class="popover-cont-list" @click="setLanguage('en')" :class="state.language === 'en' ? 'popover-selected' : ''">English</div>
+                      <div class="popover-cont-list" @click="setLanguage('ch')"
+                        :class="state.language === 'ch' ? 'popover-selected' : ''">简体中文</div>
+                      <div class="popover-cont-list" @click="setLanguage('en')"
+                        :class="state.language === 'en' ? 'popover-selected' : ''">English</div>
                     </div>
                   </el-popover>
 
                   <div class="dropdown-list-li">
                     <img src="../assets/images/navbar/user_info_iphone.svg" />
-                    <span class="dropdown-list-li-text">{{ $t('t-zgj-mobile-app')}}</span>
+                    <span class="dropdown-list-li-text">{{ $t('t-zgj-mobile-app') }}</span>
                   </div>
 
                   <div class="dropdown-list-li">
                     <img src="../assets/images/navbar/user_info_layout.svg" />
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-logout-user') }}</span>
                   </div>
-                  
+
                 </div>
               </div>
             </div>
@@ -195,7 +201,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch, onUnmounted } from "vue";
 import useCurrentInstance from "@/hooks/getInstance.js"
 import i18n from "../i18n";
 import useClickQutside from "../hooks/useClickQutside.js"
@@ -215,6 +221,10 @@ if (CurrentSystemType) {
   state.application.CurrentSystemType = CurrentSystemType
 }
 
+function scrollFn() {
+
+}
+
 onMounted(() => {
   // 添加监听 滚动事件
   document.addEventListener("scroll", function () {
@@ -224,13 +234,13 @@ onMounted(() => {
         "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
     }
   });
-  
+
   // 添加 全屏开关监听 事件
   if (document.getElementById("topnav-hamburger-icon"))
     document
       .getElementById("topnav-hamburger-icon")
       .addEventListener("click", toggleHamburgerMenu);
-  
+
 })
 
 // 监听 菜单开关
@@ -572,5 +582,4 @@ const changeSystemHome = () => {
     }
   }
 }
-
 </style>

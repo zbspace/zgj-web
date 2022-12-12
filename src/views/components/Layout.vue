@@ -11,23 +11,32 @@
         </div>
         <div class="ap-box-cont">
             <div class="ap-box-tree" v-if="state.Layout.tree">
-                <slot name="tree"></slot>
+                <a-scrollbar type="track" style="height:100%;overflow: auto;" class="ap-box-tree-scrollbar">
+                    <div>
+                        <slot name="tree"></slot>
+                    </div>
+                </a-scrollbar>
             </div>
             <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
             </div>
             <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
-                <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
-                    <slot name="searchForm"></slot>
-                </div>
-                <div class="ap-box-batch" v-if="state.Layout.batch">
-                    <slot name="batch"></slot>
-                </div>
-                <div class="ap-box-table" v-if="state.Layout.table">
-                    <slot name="table"></slot>
-                </div>
-                <div class="ap-box-pagination" v-if="state.Layout.pagination">
-                    <slot name="pagination"></slot>
-                </div>
+                <a-scrollbar style="height:100%;overflow: auto;" class="ap-box-cent-scrollbar">
+                    <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
+                        <slot name="searchForm"></slot>
+                    </div>
+                    <div class="ap-box-batch" v-if="state.Layout.batch">
+                        <slot name="batch"></slot>
+                    </div>
+                    <div class="ap-box-table" v-if="state.Layout.table">
+                        <slot name="table"></slot>
+                    </div>
+                    <div class="ap-box-pagination" v-if="state.Layout.pagination">
+                        <slot name="pagination"></slot>
+                    </div>
+                </a-scrollbar>
+            </div>
+            <div>
+                <slot></slot>
             </div>
         </div>
     </div>
@@ -81,7 +90,7 @@ onMounted(() => {
 .components-Layout {
     margin: 0%;
     width: 100%;
-    height: calc(100vh - 90px);
+    height: calc(100vh - 100px);
 
     display: flex;
     // flex-flow: wrap;
@@ -92,25 +101,31 @@ onMounted(() => {
     @include mixin-padding-top(10);
     @include mixin-padding-bottom(10);
     @include mixin-padding-left(20);
-    @include mixin-padding-right(20);
+    @include mixin-padding-right(0);
     box-sizing: border-box;
     border-radius: var(--border-radius-4);
     background-color: var(--in-common-use-1);
+    margin-top: 20px;
 
     .ap-box-title {
         width: 100%;
         padding: 0rem 0 0.5rem 0;
         box-sizing: border-box;
         font-size: var(--font-size-title-2);
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
     }
 
     .ap-box-breadcrumb {
         width: 100%;
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
     }
 
     .ap-box-tabs {
         width: 100%;
-
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
     }
 
     .ap-box-cont {
@@ -122,6 +137,8 @@ onMounted(() => {
 
     .ap-box-searchForm {
         width: 100%;
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
 
     }
 
@@ -129,24 +146,44 @@ onMounted(() => {
         width: 100%;
         padding: 0.5rem 0 0.5rem 0;
         box-sizing: border-box;
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
 
     }
 
     .ap-box-tree {
-        width: 12%;
+        width: 15%;
         height: 100%;
         overflow: auto;
+        padding-right: 0rem;
+        box-sizing: border-box;
+
+        .arco-scrollbar {
+            height: 100%;
+        }
+
+        border-right: 1px solid var(--color-border-2);
     }
 
     .ap-box-cutOffRule {
-        border-left: 1px solid var(--primary-2);
-        margin: 0 1rem;
+        display: none;
     }
 
     .ap-box-cent {
-        width: calc(88% - 2rem - 2px);
+        width: 85%;
         height: 100%;
         overflow: auto;
+        padding-left: 1em;
+        box-sizing: border-box;
+
+        .arco-scrollbar {
+            height: 100%;
+        }
+    }
+
+    .ap-box-table {
+        @include mixin-padding-right(20);
+        box-sizing: border-box;
     }
 
     .ap-box-pagination {
@@ -154,6 +191,8 @@ onMounted(() => {
         display: flex;
         justify-content: flex-end;
         padding: 1.5rem 0;
+        box-sizing: border-box;
+        @include mixin-padding-right(20);
         box-sizing: border-box;
     }
 

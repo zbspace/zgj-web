@@ -1,49 +1,48 @@
 <!-- 审批流程 -->
 <template>
-    <Layout>
-        <div class="approvalFlow-approvalFlow">
-            <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
-                <template #title>
-                    <div class="title">
+    <div class="approvalFlow-approvalFlow">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+            <template #title>
+                <div class="title">
+                    <div>
                         审批流程
                     </div>
-                </template>
-                <template #tabs>
                     <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
-                    </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <template #batch>
-                    <div class="batch">
-                        <div class="batch-desc">已选择 10 项</div>
                         <el-button>批量操作</el-button>
-                        <el-button>...</el-button>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
-        </div>
-    </Layout>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
@@ -76,7 +75,7 @@ const state = reactive({
     componentsSearchForm: {
         style: {
             lineStyle: {
-                width: "30%",
+                width: "calc(100% / 3)",
             },
             labelStyle: {
                 width: "100px"
@@ -90,7 +89,25 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入单据名称",
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'select',
+                label: "流程类型",
+                type: "select",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'shenqingr',
+                label: "申请人",
+                type: "input",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
                 },
             },
         ],
@@ -347,6 +364,12 @@ onMounted(() => {
 <style lang='scss' scoped>
 .approvalFlow-approvalFlow {
     margin: 0%;
+
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
     .batch {
         display: flex;

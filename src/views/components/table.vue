@@ -64,7 +64,7 @@ const emit = defineEmits(['select', 'select-all', 'selection-change', 'cell-clic
 const state = reactive({
 
 });
-console.log(props.defaultAttribute);
+// console.log(props.defaultAttribute);
 // 	当用户手动勾选数据行的 Checkbox 时触发的事件
 function select(selection, row) {
     emit("select", selection, row);

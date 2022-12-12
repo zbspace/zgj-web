@@ -1,60 +1,62 @@
 <!-- 智能用印 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-IntelligentPrinting">
-            <componentsLayout Layout="title,tabs,searchForm,table,pagination">
-                <template #title>
-                    <div class="title">
-                        智能用印
-                    </div>
-                </template>
-                <template #tabs>
+    <div class="PrintControlManagement-IntelligentPrinting">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+            <template #title>
+                <div class="title">
+                    <div>智能用印</div>
                     <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
+                        <el-button>批量操作</el-button>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header"
+                        @cellClick="cellClick">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+        <!-- 单据详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+            </componentsDocumentsDetails>
         </div>
-    </Layout>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
-import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
-import componentsTree from "../../components/tree"
-import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -79,7 +81,7 @@ const state = reactive({
     componentsSearchForm: {
         style: {
             lineStyle: {
-                width: "30%",
+                width: "calc(100% / 3)",
             },
             labelStyle: {
                 width: "100px"
@@ -93,7 +95,25 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入单据名称",
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'select',
+                label: "使用印章",
+                type: "select",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'shenqingr',
+                label: "盖章码",
+                type: "input",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
                 },
             },
         ],
@@ -158,6 +178,7 @@ const state = reactive({
             label: "实际盖章次数",
         }, {
             prop: '7',
+            width: 100,
             label: "申请人",
         }, {
             prop: '8',
@@ -167,12 +188,14 @@ const state = reactive({
             label: "申请时间",
         }, {
             prop: '10',
+            width: 100,
             label: "用印状态",
         }, {
             prop: 'caozuo',
             label: "操作",
+            width: 180,
             rankDisplayData: [{
-                name: "转办"
+                name: "申请转办"
             }, {
                 name: "申请重置"
             },],
@@ -186,8 +209,8 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
             {
@@ -198,8 +221,8 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
             {
@@ -210,8 +233,8 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
             {
@@ -222,8 +245,8 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
             {
@@ -234,53 +257,27 @@ const state = reactive({
                 5: '',
                 6: '',
                 7: '往往',
-                8: '2022/10/30',
-                9: '',
+                8: '',
+                9: '2022/10/30',
                 10: '',
             },
-            {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '往往',
-                8: '2022/10/30',
-                9: '',
-                10: '',
-            },
-            {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '往往',
-                8: '2022/10/30',
-                9: '',
-                10: '',
-            },
-            {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '往往',
-                8: '2022/10/30',
-                9: '',
-                10: '',
-            },
+
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
                 background: "var(--color-fill--1)",
-            }
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (column.property == "2") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
+            },
         }
     },
     componentsTree: {
@@ -377,8 +374,40 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
+    },
+    componentsDocumentsDetails: {
+        show: false,
+        visible: [
+            {
+                label: '用印详情',
+                name: "Details-of-Printing",
+            },
+            {
+                label: '审批流程',
+                name: "approval-process",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+            {
+                label: '领用记录',
+                name: "Record-of-requisition",
+            },
+        ],
     }
 });
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+    // console.log(row, column, cell, event);
+    if (column.property == "2") {
+        state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击关闭详情
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -392,6 +421,11 @@ onMounted(() => {
 .PrintControlManagement-IntelligentPrinting {
     margin: 0%;
 
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
 }
 </style>

@@ -1,57 +1,61 @@
 <!-- 工作台管理 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-WorkbenchManagement">
-            <componentsLayout Layout="title,searchForm,table,pagination">
-                <template #title>
-                    <div class="title">
-                        <div>工作台管理</div>
+    <div class="PrintControlManagement-WorkbenchManagement">
+        <componentsLayout Layout="title,searchForm,table,pagination">
+            <template #title>
+                <div class="title">
+                    <div>工作台管理</div>
+                    <div>
                         <el-button type="primary">+ 增加</el-button>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #tabs>
-                    <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
-                    </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <template #batch>
-                    <div class="batch">
-                        <div class="batch-desc">已选择 10 项</div>
-                        <el-button>批量操作</el-button>
-                        <el-button>...</el-button>
-                    </div>
-                </template>
-                <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template>
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
-        </div>
-    </Layout>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+            <template #batch>
+                <div class="batch">
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                    <el-button>批量操作</el-button>
+                </div>
+            </template>
+            <template #tree>
+                <div>
+                    <componentsTree :data="state.componentsTree.data"
+                        :defaultAttribute="state.componentsTree.defaultAttribute">
+                    </componentsTree>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
@@ -87,7 +91,7 @@ const state = reactive({
     componentsSearchForm: {
         style: {
             lineStyle: {
-                width: "30%",
+                width: "calc(100% / 3)",
             },
             labelStyle: {
                 width: "100px"
@@ -96,12 +100,30 @@ const state = reactive({
         data: [
             {
                 id: 'name',
-                label: "单据名称",
+                label: "设备串号",
                 type: "input",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入单据名称",
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'select',
+                label: "工作台名称",
+                type: "input",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'shenqingr',
+                label: "工作台编码",
+                type: "input",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
                 },
             },
         ],

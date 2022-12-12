@@ -146,15 +146,10 @@ $unify-primary-color: var(--primary-6);
 }
 
 
-
 .el-dropdown__popper {
   --el-dropdown-menuItem-hover-fill: rgba(0, 0, 0, 0.04);
   --el-dropdown-menuItem-hover-color:  #D0963E;
 }
-
-
-
-
 
 /* 
 左侧菜单 字体大小
@@ -181,28 +176,29 @@ body {
 
 .page-content {
     padding-bottom: 0%;
-    padding-top: 70px;
+    padding-top: 68px;
     padding-left: 0%;
     background-color: var(--background-color-1);
+    padding-right: 0;
 }
 
 .container-fluid {
-    padding-left: 0%;
+    padding:0 24px;
 }
 
-#page-topbar {
-    background-color: var(--background-color-1);
-}
+// #page-topbar {
+//     background-color: var(--background-color-1);
+// }
 
-.navbar-menu {
-    background-color: var(--background-color-1);
-    border-right: none;
-}
+// .navbar-menu {
+//     background-color: var(--background-color-1);
+//     border-right: none;
+// }
 
-.navbar-brand-box {
-    background-color: var(--background-color-1);
-}
+// .navbar-brand-box {
+//     background-color: var(--background-color-1);
+// }
 
-[data-layout="vertical"][data-sidebar-size="sm"] .navbar-brand-box {
-    background-color: var(--background-color-1);
-}
+// [data-layout="vertical"][data-sidebar-size="sm"] .navbar-brand-box {
+//     background-color: var(--background-color-1);
+// }

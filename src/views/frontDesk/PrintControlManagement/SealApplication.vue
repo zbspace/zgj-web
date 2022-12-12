@@ -1,52 +1,62 @@
 <!-- 用印申请 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-SealApplication">
-            <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
-                <template #title>
-                    <div class="title">
-                        用印申请
-                    </div>
-                </template>
-                <template #tabs>
+    <div class="PrintControlManagement-SealApplication">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
+            <template #title>
+                <div class="title">
+                    <div>用印申请</div>
                     <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <template #batch>
-                    <div class="batch">
-                        <div class="batch-desc">已选择 10 项</div>
-                        <el-button>批量操作</el-button>
-                        <el-button>...</el-button>
-                    </div>
-                </template>
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+            <template #batch>
+                <div class="batch">
+                    <el-button @click="(showDialog = true)">弹框Demo</el-button>
+                    <el-button @click="(showDepPerDialog = true)">组织选择</el-button>
+                    <el-button @click="goInnerPage">二级页面</el-button>
+                    <el-button>批量操作</el-button>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+
+            <!-- test - dialog -->
+            <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo Dialog" :oneBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"></KDialog>
+
+            <!-- 人员选择  -->
+            <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog"></kDepartOrPersonVue>
         </div>
-    </Layout>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -55,6 +65,8 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
+import router from '../../../router'
 const props = defineProps({
     // 处理类型
     type: {
@@ -62,6 +74,13 @@ const props = defineProps({
         default: "0",
     },
 })
+const showDialog = ref(false)
+const showDepPerDialog = ref(false)
+const goInnerPage = () => {
+  router.push({
+    path: '/frontDesk/innerPage'
+  })
+}
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
@@ -79,7 +98,7 @@ const state = reactive({
     componentsSearchForm: {
         style: {
             lineStyle: {
-                width: "30%",
+                width: "calc(100% / 3)",
             },
             labelStyle: {
                 width: "100px"
@@ -88,12 +107,30 @@ const state = reactive({
         data: [
             {
                 id: 'name',
-                label: "单据名称",
+                label: "风险分类",
                 type: "input",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入单据名称",
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'select',
+                label: "风险项",
+                type: "select",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'shenqingr',
+                label: "风险项描述",
+                type: "input",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
                 },
             },
         ],
@@ -352,12 +389,19 @@ onMounted(() => {
 .PrintControlManagement-SealApplication {
     margin: 0%;
 
-.batch{
-    display: flex;
-    align-items: center;
-    .batch-desc{
-        @include mixin-margin-right(12) 
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
-}
+
+    .batch {
+        display: flex;
+        align-items: center;
+
+        .batch-desc {
+            @include mixin-margin-right(12)
+        }
+    }
 }
 </style>

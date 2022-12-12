@@ -141,7 +141,7 @@
                     <h5 class="fs-13 text-center mt-2">浅色</h5>
                   </div>
 
-                  <div class="col-4">
+                  <!-- <div class="col-4">
                     <div class="form-check card-radio dark">
                       <input class="form-check-input" v-model="mode" type="radio" name="data-layout-mode"
                         id="layout-mode-dark" value="dark" />
@@ -172,7 +172,7 @@
                       </label>
                     </div>
                     <h5 class="fs-13 text-center mt-2">深色</h5>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -370,7 +370,7 @@
                   <h5 class="fs-13 text-center mt-2">默认</h5>
                 </div>
 
-                <div class="col-4">
+                <!-- <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
                     <input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-compact"
                       v-model="sidebarSize" value="md" />
@@ -394,7 +394,7 @@
                     </label>
                   </div>
                   <h5 class="fs-13 text-center mt-2">紧凑的</h5>
-                </div>
+                </div> -->
 
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">

@@ -1,57 +1,62 @@
 <!-- 印章申请 -->
 <template>
-    <Layout>
-        <div class="PrintControlManagement-ApplicationForSeal">
-            <componentsLayout Layout="title,searchForm,table,pagination,batch">
-                <template #title>
-                    <div class="title">
-                        <div>印章申请</div>
+    <div class="PrintControlManagement-ApplicationForSeal">
+        <componentsLayout Layout="title,searchForm,table,pagination">
+            <template #title>
+                <div class="title">
+                    <div>印章申请</div>
+                    <div>
                         <el-button type="primary">+ 增加</el-button>
-                    </div>
-                </template>
-                <template #tabs>
-                    <div>
-                        <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                        </componentsTabs>
-                    </div>
-                </template>
-                <template #searchForm>
-                    <div>
-                        <componentsSearchForm :data="state.componentsSearchForm.data"
-                            :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                        </componentsSearchForm>
-                    </div>
-                </template>
-                <template #batch>
-                    <div class="batch">
-                        <div class="batch-desc">已选择 10 项</div>
                         <el-button>批量操作</el-button>
-                        <el-button>...</el-button>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
                     </div>
-                </template>
-                <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template>
-                <template #table>
-                    <div>
-                        <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                            :data="state.componentsTable.data" :header="state.componentsTable.header"
-                            :isSelection="true">
-                        </componentsTable>
-                    </div>
-                </template>
-                <template #pagination>
-                    <componentsPagination :data="state.componentsPagination.data"
-                        :defaultAttribute="state.componentsPagination.defaultAttribute">
-                    </componentsPagination>
-                </template>
-            </componentsLayout>
+                </div>
+            </template>
+            <template #tabs>
+                <div>
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    </componentsTabs>
+                </div>
+            </template>
+            <template #searchForm>
+                <div>
+                    <componentsSearchForm :data="state.componentsSearchForm.data"
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                    </componentsSearchForm>
+                </div>
+            </template>
+
+            <template #tree>
+                <div>
+                    <componentsTree :data="state.componentsTree.data"
+                        :defaultAttribute="state.componentsTree.defaultAttribute">
+                    </componentsTree>
+                </div>
+            </template>
+            <template #table>
+                <div>
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                        :data="state.componentsTable.data" :header="state.componentsTable.header"
+                        @cellClick="cellClick">
+                    </componentsTable>
+                </div>
+            </template>
+            <template #pagination>
+                <componentsPagination :data="state.componentsPagination.data"
+                    :defaultAttribute="state.componentsPagination.defaultAttribute">
+                </componentsPagination>
+            </template>
+        </componentsLayout>
+        <!-- 单据详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+            </componentsDocumentsDetails>
         </div>
-    </Layout>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
@@ -63,6 +68,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -87,7 +93,7 @@ const state = reactive({
     componentsSearchForm: {
         style: {
             lineStyle: {
-                width: "30%",
+                width: "calc(100% / 3)",
             },
             labelStyle: {
                 width: "100px"
@@ -96,12 +102,39 @@ const state = reactive({
         data: [
             {
                 id: 'name',
-                label: "单据名称",
+                label: "单据编码",
                 type: "input",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入单据名称",
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'select',
+                label: "单据类型",
+                type: "select",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'shenqingr',
+                label: "印章名称",
+                type: "input",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
+                },
+            },
+            {
+                id: 'select',
+                label: "印章类型",
+                type: "select",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "请输入",
                 },
             },
         ],
@@ -195,7 +228,7 @@ const state = reactive({
             {
                 1: '',
                 2: '',
-                3: '',
+                3: '印章',
                 4: '',
                 5: '审批中',
                 6: '往往',
@@ -205,7 +238,7 @@ const state = reactive({
             {
                 1: '',
                 2: '',
-                3: '',
+                3: '印章',
                 4: '',
                 5: '审批中',
                 6: '往往',
@@ -218,7 +251,16 @@ const state = reactive({
             stripe: true,
             "header-cell-style": {
                 background: "var(--color-fill--1)",
-            }
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (column.property == "3") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
+            },
         }
     },
     componentsTree: {
@@ -315,9 +357,36 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
+    },
+    componentsDocumentsDetails: {
+        show: false,
+        visible: [
+            {
+                label: '印章申请详情',
+                name: "Seal-Application-Details",
+            },
+            {
+                label: '审批流程',
+                name: "approval-process",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+        ],
     }
 });
-
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+    // console.log(row, column, cell, event);
+    if (column.property == "3") {
+        state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击关闭详情
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 
