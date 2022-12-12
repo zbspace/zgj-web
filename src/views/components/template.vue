@@ -120,7 +120,7 @@ const state = reactive({
     componentsSearchForm: {
         style: {
             lineStyle: {
-                width: "50%",
+                // width: "50%",
             },
             cutOffRuleStyle: {
                 width: "100%",
@@ -144,7 +144,7 @@ const state = reactive({
                 placeholder: "请输入name",
             },
             style: {
-                width: "50%",
+                // width: "50%",
             }
         }, {
             id: 'select',

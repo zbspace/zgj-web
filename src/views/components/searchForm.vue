@@ -1,6 +1,6 @@
 <template>
     <div class="components-searchForm">
-        <div class="ap-dis" :class="{ lineShow: state.cache.isUnfold == 0 }">
+        <div class="ap-dis">
             <el-scrollbar :max-height="props.defaultAttribute['scrollbar-max-height']" class="fromData-scrollbar">
                 <div class="fromData">
                     <div class="ap-box" v-for="(item, index) in state.cache.formData"
@@ -81,9 +81,10 @@
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
                             </div>
-                            <div class="ap-box-contBox" v-for="data in item.data">
-                                <el-button v-bind="data.defaultAttribute" v-model="data.value">{{ data.name
-                                }}</el-button>
+                            <div class="ap-box-contBox button-contBox" v-for="data in item.data">
+                                <div class="custom-button" :style="item.style">
+                                    {{ data.name }}
+                                </div>
                             </div>
                         </div>
                         <div class="ap-box-cont" v-else-if="item.type == 'checkButton'">
@@ -92,8 +93,9 @@
                                 {{ item.label }}
                             </div>
                             <div class="ap-box-contBox" v-for="data in item.data">
-                                <el-button v-bind="data.defaultAttribute" v-model="data.value">{{ data.name
-                                }}</el-button>
+                                <div class="custom-button" :style="item.style">
+                                    {{ data.name }}
+                                </div>
                             </div>
                         </div>
                         <div class="ap-box-cont" v-else-if="item.type == 'custom'">
@@ -106,31 +108,29 @@
                             </div>
                         </div>
                     </div>
+                    <div class="butData" :style="props.style.butLayoutStyle">
+                        <div class="ap-box" v-for="(item, index) in props.butData" @click="clickElement(item, index)"
+                            :style="item.style">
+                            <div class="ap-box-cont" v-if="item.type == 'click'">
+                                <el-button v-bind="item.defaultAttribute">{{ item.name }}</el-button>
+                            </div>
+                            <div class="ap-box-cont unfold" v-if="item.type == 'unfold'" @click="clickCutUnfoldstatus">
+                                <div class="unfold-" v-if="state.cache.isUnfold == 0">
+                                    展开
+                                    <img class="unfold-icon" src="../../assets/svg/xiangxia-lan.svg" alt="" srcset="">
+                                </div>
+                                <div v-else-if="state.cache.isUnfold == 1">
+                                    收起
+                                    <img class="unfold-icon" src="../../assets/svg/xiangshang-lan.svg" alt="" srcset="">
+                                </div>
+                            </div>
+                            <div class="ap-box-cont" v-if="item.type == 'text'">
+                                {{ item.name }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </el-scrollbar>
-            <!-- 分割 -->
-            <div class="ap-division" :style="props.style.cutOffRuleStyle" v-if="state.cache.isUnfold == 1"></div>
-            <div class="butData" :style="props.style.butLayoutStyle">
-                <div class="ap-box" v-for="(item, index) in props.butData" @click="clickElement(item, index)"
-                    :style="item.style">
-                    <div class="ap-box-cont" v-if="item.type == 'click'">
-                        <el-button v-bind="item.defaultAttribute">{{ item.name }}</el-button>
-                    </div>
-                    <div class="ap-box-cont unfold" v-if="item.type == 'unfold'" @click="clickCutUnfoldstatus">
-                        <div class="unfold-" v-if="state.cache.isUnfold == 0">
-                            展开
-                            <img class="unfold-icon" src="../../assets/svg/xiangxia-lan.svg" alt="" srcset="">
-                        </div>
-                        <div v-else-if="state.cache.isUnfold == 1">
-                            收起
-                            <img class="unfold-icon" src="../../assets/svg/xiangshang-lan.svg" alt="" srcset="">
-                        </div>
-                    </div>
-                    <div class="ap-box-cont" v-if="item.type == 'text'">
-                        {{ item.name }}
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -284,9 +284,21 @@ onMounted(() => {
         display: flex;
         flex-flow: wrap;
         box-sizing: border-box;
+
+        .button-contBox {
+            display: flex;
+            justify-content: flex-start;
+            cursor: pointer;
+        }
+
+        .button-contBox :hover {
+            background-color: var(--primary-2);
+        }
     }
 
     .ap-box {
+        width: calc(100% / 3);
+        min-width: calc(100% / 3);
         display: flex;
         align-items: center;
         @include mixin-padding-top(10);
@@ -295,8 +307,10 @@ onMounted(() => {
         box-sizing: border-box;
 
         .ap-box-label {
-
+            text-align: right;
             position: relative;
+            @include mixin-padding-right(10);
+            box-sizing: border-box;
 
             .ap-box-label-necessary {
                 color: red;
@@ -326,10 +340,6 @@ onMounted(() => {
             }
         }
 
-        .ap-box-label {
-            @include mixin-padding-right(10);
-            box-sizing: border-box;
-        }
 
     }
 
@@ -338,12 +348,15 @@ onMounted(() => {
     }
 
     .butData {
+        width: calc(100% / 3);
         display: flex;
-        flex-flow: wrap;
+        // flex-flow: wrap;
         justify-content: flex-end;
         flex-grow: 1;
 
         .ap-box {
+            width: auto;
+            min-width: auto;
             margin-left: 10px;
             padding-right: 0%;
         }
@@ -363,6 +376,19 @@ onMounted(() => {
 
     .width-100 {
         width: 100% !important;
+    }
+
+    .custom-button {
+        border: 1px dashed var(--color-border-1);
+        border-radius: var(--border-radius-2);
+        width: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include mixin-padding-top(5);
+        @include mixin-padding-bottom(5);
+        @include mixin-padding-right(16);
+        @include mixin-padding-left(16);
     }
 
     :deep {
