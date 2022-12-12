@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "node --max_old_space_size=6144 node_modules/@vue/cli-service/bin/vue-cli-service.js serve",
-    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "dev": "vite",
     "preview": "vite preview",
-    "build-vite": "vite build"
+    "build": "vite build"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^32.0.0",
@@ -77,18 +76,15 @@
   "devDependencies": {
     "@arco-design/web-vue": "^2.38.3",
     "@originjs/vite-plugin-require-context": "^1.0.9",
-    "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@vitejs/plugin-vue": "^3.1.0",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
     "eslint": "^8.25.0",
-    "eslint-config-standard-with-typescript": "^23.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.3.0",
     "eslint-plugin-promise": "^6.1.0",
     "eslint-plugin-vue": "^9.6.0",
     "postcss": "^8.4.16",
     "sass": "~1.26.5",
-    "typescript": "^4.8.4",
     "vite": "^3.1.0",
     "vite-plugin-eslint": "^1.8.1",
     "vue-tsc": "^0.40.4"

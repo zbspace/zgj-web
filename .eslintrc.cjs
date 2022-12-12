@@ -9,12 +9,12 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 12,
-    parser: '@typescript-eslint/parser',
+    // parser: '@typescript-eslint/parser',
     sourceType: 'module'
   },
   plugins: [
     'vue',
-    '@typescript-eslint'
+    // '@typescript-eslint'
   ],
   // 单独校验规则
   overrides: [
@@ -27,10 +27,10 @@ module.exports = {
   ],
   // 全局验证规则
   rules: {
-    '@typescript-eslint/triple-slash-reference': 'off',
-    'vue/multi-word-component-names': 'off', // 关闭名称校验
-    '@typescript-eslint/strict-boolean-expressions': 'off',
-    'dot-notation': 'off'
+    // '@typescript-eslint/triple-slash-reference': 'off',
+    // 'vue/multi-word-component-names': 'off', // 关闭名称校验
+    // '@typescript-eslint/strict-boolean-expressions': 'off',
+    // 'dot-notation': 'off'
   },
   // vue的全局api，添加之后就不在校验
   globals: {

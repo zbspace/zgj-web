@@ -23,26 +23,30 @@
 <script setup>
 import { ref, watch, reactive } from 'vue';
 import useClickQutside from "../../hooks/useClickQutside.js"
-
+import icon1 from '@/assets/svg/more-Seal-Application.svg'
+import icon2 from '@/assets/svg/more-my-Seal-Application.svg'
+import icon3 from '@/assets/svg/more-file-document.svg'
+import icon4 from '@/assets/svg/more-Application-Seal.svg'
+import icon5 from '@/assets/svg/more-document-library.svg'
 const state = reactive({
   appEntrance: [
     {
-      icon: import("../../assets/svg/more-Seal-Application.svg"),
+      icon: icon1,
       name: "t-zgj-F_SEAL_APPLY",
     }, {
-      icon: import("../../assets/svg/more-my-Seal-Application.svg"),
+      icon: icon2,
       name: "t-zgj-F_SEAL_APPLY_MY",
     }, {
-      icon: import("../../assets/svg/more-file-document.svg"),
+      icon: icon3,
       name: "t-zgj-F_SEAL_FILE_UPLOAD",
     }, {
-      icon: import("../../assets/svg/more-Application-Seal.svg"),
+      icon: icon4,
       name: "t-zgj-F_SEAL_INFO_APPLY",
     }, {
-      icon: import("../../assets/svg/more-file-document.svg"),
+      icon: icon3,
       name: "t-zgj-F_DOCUMENT_INFO",
     }, {
-      icon: import("../../assets/svg/more-document-library.svg"),
+      icon: icon5,
       name: "t-zgj-F_SEAL_INFO",
     }
   ]
