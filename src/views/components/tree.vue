@@ -67,8 +67,10 @@ onMounted(() => {
 .components-tree {
     margin: 0%;
 
-    /deep/ label {
-        margin-bottom: 0%;
-    }
+    :deep{
+        label {
+            margin-bottom: 0%;
+        }
+    } 
 }
 </style>
