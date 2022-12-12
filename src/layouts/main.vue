@@ -38,6 +38,7 @@ export default {
     },
     mounted() {
         // document.querySelector("html").setAttribute('dir', 'rtl');
+        // console.log('layoutType--->',layoutType);
     }
 };
 </script>

@@ -1186,6 +1186,39 @@
 <script>
 import { layoutComputed } from "@/state/helpers";
 import { SimpleBar } from "simplebar-vue3";
+import icon1 from '@/assets/svg/shouye-1.svg'
+import icon2 from '@/assets/svg/yongyin-guanli-1.svg'
+import icon3 from '@/assets/svg/yinzhang-guanli-1.svg'
+import icon4 from '@/assets/svg/yinzhang-guanli-1.svg'
+import icon5 from '@/assets/svg/dianzi-qianzhang.svg'
+import icon6 from '@/assets/svg/shebei-guanli.svg'
+import icon7 from '@/assets/svg/wenjianku-1.svg'
+import icon8 from '@/assets/svg/wenjian-leixing-1.svg'
+import icon9 from '@/assets/svg/shebei-guanli.svg'
+import icon10 from '@/assets/svg/dai-shenpi-liucheng.svg'
+import icon11 from '@/assets/svg/dai-chuli-renwu.svg'
+import icon12 from '@/assets/svg/chaosong-geiwode-liucheng.svg'
+import icon13 from '@/assets/svg/fengxian-tixing-jilu-1.svg'
+import icon14 from '@/assets/svg/fengxian-tixing-jilu-1.svg'
+import icon15 from '@/assets/svg/shuju-kanban-1.svg'
+import icon16 from '@/assets/svg/yongyin-shuju-fenxi-1.svg'
+import icon17 from '@/assets/svg/yinzhang-shuju-fenxi-1.svg'
+import icon18 from '@/assets/svg/yujing-guanli.svg'
+import icon19 from '@/assets/svg/qiye-xinxi.svg'
+import icon20 from '@/assets/svg/wanglai-qiye.svg'
+import icon21 from '@/assets/svg/bumen-yu-yuangong.svg'
+import icon22 from '@/assets/svg/quanju-canshu-peizhi.svg'
+import icon23 from '@/assets/svg/quanju-canshu-peizhi.svg'
+import icon24 from '@/assets/svg/gujian-shengji-rizhi.svg'
+import icon25 from '@/assets/svg/zongduan-banben-guanli.svg'
+import icon26 from '@/assets/svg/biaodan-guanli.svg'
+import icon27 from '@/assets/svg/liucheng-guanli.svg'
+import icon28 from '@/assets/svg/yewu-guizhe-peizhi.svg'
+import icon29 from '@/assets/svg/xiaoxi-rizhi.svg'
+import icon30 from '@/assets/svg/denglu-rizi.svg'
+import icon31 from '@/assets/svg/xitong-caozuo-rizhi.svg'
+import icon32 from '@/assets/svg/zongduan-caozuo-rizhi.svg'
+import icon33 from '@/assets/svg/gujian-shengji-rizhi.svg'
 import "../unit/SvgIconPack"
 import {
   HomeIcon,
@@ -1232,7 +1265,7 @@ export default {
             name: "首页",
             label: "t-zgj-cg-menu-shouye",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/shouye-1.svg"),
+            icon: icon1,
           },
           {
             name: "印控管理",
@@ -1243,7 +1276,7 @@ export default {
             name: "用印管理",
             label: "t-zgj-cg-menu-yongyin-guanli",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/yongyin-guanli-1.svg"),
+            icon: icon2,
             children: [{
               name: "用印申请",
               to: "/frontDesk/PrintControlManagement/SealApplication",
@@ -1270,7 +1303,7 @@ export default {
             name: "印章管理",
             label: "t-zgj-cg-menu-yinzhang-guanli",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/yinzhang-guanli-1.svg"),
+            icon: icon3,
             children: [{
               name: "印章库",
               to: "/frontDesk/PrintControlManagement/LibraryOfSeals",
@@ -1293,7 +1326,7 @@ export default {
             name: "文件防篡改",
             label: "t-zgj-cg-menu-wenjian-fangchuangai",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/yinzhang-guanli-1.svg"),
+            icon: icon4,
             children: [
               {
                 name: "防伪水印验证",
@@ -1322,7 +1355,7 @@ export default {
             name: "电子签章",
             label: "t-zgj-cg-menu-dianzi-qianzhang",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/dianzi-qianzhang.svg"),
+            icon: icon5,
             children: [{
               name: "电子签章申请",
               to: "/frontDesk/home",
@@ -1349,7 +1382,7 @@ export default {
             name: "设备管理",
             label: "t-zgj-cg-menu-shebei-guanli",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/shebei-guanli.svg"),
+            icon: icon6,
             children: [
               {
                 name: "工作台管理",
@@ -1396,13 +1429,13 @@ export default {
             name: "文件库",
             label: "t-zgj-cg-menu-wenjian-ku",
             to: "/frontDesk/fileManagement/documentLibrary",
-            icon: require("../assets/svg/wenjianku-1.svg"),
+            icon: icon7,
           },
           {
             name: "文件类型",
             label: "t-zgj-cg-menu-wenjian-leixing",
             to: "/frontDesk/fileManagement/documentType",
-            icon: require("../assets/svg/wenjian-leixing-1.svg"),
+            icon: icon8,
           },
 
           {
@@ -1415,25 +1448,25 @@ export default {
             name: "实时确认",
             label: "t-zgj-cg-menu-shishi-queren",
             to: "/frontDesk/approvalFlow/RealTimeConfirmation",
-            icon: require("../assets/svg/shebei-guanli.svg"),
+            icon: icon9,
           },
           {
             name: "审批流程",
             label: "t-zgj-cg-menu-shenpi-liucheng",
             to: "/frontDesk/approvalFlow/approvalFlow",
-            icon: require("../assets/svg/dai-shenpi-liucheng.svg"),
+            icon: icon10,
           },
           {
             name: "处理任务",
             label: "t-zgj-cg-menu-chuli-renwu",
             to: "/frontDesk/approvalFlow/handleTask",
-            icon: require("../assets/svg/dai-chuli-renwu.svg"),
+            icon: icon11,
           },
           {
             name: "抄送给我",
             label: "t-zgj-cg-menu-caoshong-geiwo",
-            to: "/frontDesk/approvalFlow/carbonCopyToMe",
-            icon: require("../assets/svg/chaosong-geiwode-liucheng.svg"),
+            to: "/frontDesk/home",
+            icon: icon12,
           },
           {
             name: "风控预警",
@@ -1444,13 +1477,13 @@ export default {
             name: "风控提醒设置",
             label: "t-zgj-cg-menu-fengkong-tixing-shezhi",
             to: "/frontDesk/riskControlWarning/RiskAlertSetting",
-            icon: require("../assets/svg/fengxian-tixing-jilu-1.svg"),
+            icon: icon13,
           },
           {
             name: "风险提醒记录",
             label: "t-zgj-cg-menu-fengxian-tixing-jilu",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/fengxian-tixing-jilu-1.svg"),
+            icon: icon14,
             children: [
               {
                 name: "用印告警提醒",
@@ -1478,25 +1511,25 @@ export default {
             name: "数据看板",
             label: "t-zgj-cg-menu-shuju-kanban",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/shuju-kanban-1.svg"),
+            icon: icon15,
           },
           {
             name: "用印数据分析",
             label: "t-zgj-cg-menu-yongyin-shuju-fenxi",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/yongyin-shuju-fenxi-1.svg"),
+            icon: icon16,
           },
           {
             name: "印章数据分析",
             label: "t-zgj-cg-menu-yinzhang-shuju-fenxi",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/yinzhang-shuju-fenxi-1.svg"),
+            icon: icon17,
           },
           {
             name: "预警数据分析",
             label: "t-zgj-cg-menu-yujing-shuju-fenxi",
             to: "/frontDesk/home",
-            icon: require("../assets/svg/yujing-guanli.svg"),
+            icon: icon18,
           },
         ],
         system: [
@@ -1509,19 +1542,19 @@ export default {
             name: "企业信息",
             label: "t-zgj-cg-menu-qiye-xinxi",
             to: "/system/company/info",
-            icon: require("../assets/svg/qiye-xinxi.svg"),
+            icon: icon19,
           },
           {
             name: "往来企业",
             label: "t-zgj-cg-menu-wanglai-qiye",
             to: "/system/company/company_dealing",
-            icon: require("../assets/svg/wanglai-qiye.svg"),
+            icon: icon20,
           },
           {
             name: "部门与员工",
             label: "t-zgj-cg-menu-bumen-yu-yuangong",
             to: "/system/company/department_staff/",
-            icon: require("../assets/svg/bumen-yu-yuangong.svg"),
+            icon: icon21,
             children: [
               {
                 name: "单位与部门管理",
@@ -1544,7 +1577,7 @@ export default {
             name: "权限管理",
             label: "t-zgj-cg-menu-quanxian-guanli",
             to: "/system/company",
-            icon: require("../assets/svg/quanju-canshu-peizhi.svg"),
+            icon: icon22,
             children: [
               {
                 name: "角色权限配置",
@@ -1567,19 +1600,19 @@ export default {
             name: "全局参数设置",
             label: "t-zgj-cg-menu-quanju-canshu-shezhi",
             to: "/system/base_setting/global_parameter",
-            icon: require("../assets/svg/quanju-canshu-peizhi.svg"),
+            icon: icon23,
           },
           {
             name: "固件版本管理",
             label: "t-zgj-cg-menu-gujian-banben-guanli",
             to: "/system/base_setting/firmware_version",
-            icon: require("../assets/svg/gujian-shengji-rizhi.svg"),
+            icon: icon24,
           },
           {
             name: "终端版本管理",
             label: "t-zgj-cg-menu-zongduan-banben-guanli",
             to: "/system/base_setting/terminal_version",
-            icon: require("../assets/svg/zongduan-banben-guanli.svg"),
+            icon: icon25,
           },
           {
             name: "业务管理",
@@ -1590,19 +1623,19 @@ export default {
             name: "表单管理",
             label: "t-zgj-cg-menu-biaodan-guanli",
             to: "/system/business_manage/form_manage",
-            icon: require("../assets/svg/biaodan-guanli.svg"),
+            icon: icon26,
           },
           {
             name: "流程管理",
             label: "t-zgj-cg-menu-liucheng-guanli",
             to: "/system/business_manage/flow_manage",
-            icon: require("../assets/svg/liucheng-guanli.svg"),
+            icon: icon27,
           },
           {
             name: "业务规则配置",
             label: "t-zgj-cg-menu-yewu-guizhe-peizhi",
             to: "/system/business_manage/business_rule",
-            icon: require("../assets/svg/yewu-guizhe-peizhi.svg"),
+            icon: icon28,
           },
           {
             name: "消息中心",
@@ -1613,25 +1646,25 @@ export default {
             name: "消息事件",
             label: "t-zgj-cg-menu-xiaoxi-shijan",
             to: "/system/message_center/event",
-            icon: require("../assets/svg/xiaoxi-rizhi.svg"),
+            icon: icon29,
           },
           {
             name: "消息模板",
             label: "t-zgj-cg-menu-xiaoxi-muban",
             to: "/system/message_center/template",
-            icon: require("../assets/svg/xiaoxi-rizhi.svg"),
+            icon: icon29,
           },
           {
             name: "渠道配置",
             label: "t-zgj-cg-menu-qudao-peizhi",
             to: "/system/message_center/channel",
-            icon: require("../assets/svg/xiaoxi-rizhi.svg"),
+            icon: icon29,
           },
           {
             name: "消息日志",
             label: "t-zgj-cg-menu-xiaoxi-rizhi",
             to: "/system/message_center/log",
-            icon: require("../assets/svg/xiaoxi-rizhi.svg"),
+            icon: icon29,
           },
           {
             name: "日志管理",
@@ -1642,31 +1675,31 @@ export default {
             name: "登录日志",
             label: "t-zgj-cg-menu-denglu-rizhi",
             to: "/system/log_mamage/login",
-            icon: require("../assets/svg/denglu-rizi.svg"),
+            icon: icon30,
           },
           {
             name: "系统操作日志",
             label: "t-zgj-cg-menu-xitong-caozuo-rizhi",
             to: "/system/log_mamage/system_operation",
-            icon: require("../assets/svg/xitong-caozuo-rizhi.svg"),
+            icon: icon31,
           },
           {
             name: "系统运行日志",
             label: "t-zgj-cg-menu-xitong-yunxing-rizhi",
             to: "/system/log_mamage/system_running",
-            icon: require("../assets/svg/xitong-caozuo-rizhi.svg"),
+            icon: icon31,
           },
           {
             name: "终端操作日志",
             label: "t-zgj-cg-menu-zongduan-caozuorizhi",
             to: "/system/log_mamage/terminal_operation",
-            icon: require("../assets/svg/zongduan-caozuo-rizhi.svg"),
+            icon: icon32,
           },
           {
             name: "固件升级日志",
             label: "t-zgj-cg-menu-gujian-shengji-rizhi",
             to: "/system/log_mamage/firmware_upgrade",
-            icon: require("../assets/svg/gujian-shengji-rizhi.svg"),
+            icon: icon33,
           },
         ],
         CurrentSystemType: "business" //business / system
@@ -1825,6 +1858,8 @@ export default {
         }
       }, 0);
     },
+
+
   },
 };
 </script>

@@ -13,7 +13,7 @@ const routes = {
       path: "home",
       name: "system-home",
       meta: { title: "system-home", authRequired: true },
-      component: () => import("@/views/system/home.vue"),
+      component:async () => await import("@/views/system/home.vue"),
     },
     companyRoutes,
     baseSetttingRoutes,
