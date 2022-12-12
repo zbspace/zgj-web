@@ -409,7 +409,7 @@ const state = reactive({
                     {
                         label: "用印状态",
                         value: "智能用印中",
-                        iconPath: require("../../assets/svg/yuan-lv.svg"),
+                        iconPath: import("../../assets/svg/yuan-lv.svg"),
                         iconStyle: {
 
                         },
@@ -423,10 +423,10 @@ const state = reactive({
         approvalProcess: {
             data: [
                 {
-                    iconPath: require("../../assets/svg/liucheng-faqishenqing.svg"),
+                    iconPath: import("../../assets/svg/liucheng-faqishenqing.svg"),
                     title: "发起申请",
                     time: "2022-10-11 02:23:00",
-                    statusIconPath: require("../../assets/svg/liucheng-bohui.svg"),
+                    statusIconPath: import("../../assets/svg/liucheng-bohui.svg"),
                     personList: [
                         {
                             name: "青青",
@@ -434,7 +434,7 @@ const state = reactive({
                     ]
                 },
                 {
-                    iconPath: require("../../assets/svg/liucheng-chaosong.svg"),
+                    iconPath: import("../../assets/svg/liucheng-chaosong.svg"),
                     title: "抄送",
                     subTitle: "（已抄送）",
                     time: "2022-10-11 02:23:00",
@@ -457,7 +457,7 @@ const state = reactive({
                     ]
                 },
                 {
-                    iconPath: require("../../assets/svg/liucheng-shenpi.svg"),
+                    iconPath: import("../../assets/svg/liucheng-shenpi.svg"),
                     title: "审批",
                     subTitle: "（已驳回）",
                     type: "flowing",
@@ -465,23 +465,23 @@ const state = reactive({
                         {
                             name: "马丽丽",
                             time: "2022-10-11 02:23:00",
-                            iconPath: require("../../assets/svg/liucheng-tongyi.svg"),
+                            iconPath: import("../../assets/svg/liucheng-tongyi.svg"),
                         },
                         {
                             name: "王青青",
                             time: "2022-10-11 02:23:00",
-                            iconPath: require("../../assets/svg/liucheng-jujue.svg"),
+                            iconPath: import("../../assets/svg/liucheng-jujue.svg"),
                             desc: "拒绝理由说明",
                         },
                         {
                             name: "陈暮时",
-                            iconPath: require("../../assets/svg/liucheng-dengdai.svg"),
+                            iconPath: import("../../assets/svg/liucheng-dengdai.svg"),
                             status: "1"
                         }
                     ]
                 },
                 {
-                    iconPath: require("../../assets/svg/liucheng-wancheng.svg"),
+                    iconPath: import("../../assets/svg/liucheng-wancheng.svg"),
                     title: "完成",
                 },
             ],
@@ -555,7 +555,7 @@ const state = reactive({
             SealInformation: {
                 data: [
                     {
-                        iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                        iconPath: import("../../assets/svg/rili-xingzhuang.svg"),
                         label: "印章名称",
                         value: "Kevin_预发_57420F【简称_9290_2.3.1】",
                         subStyle: {
@@ -564,20 +564,20 @@ const state = reactive({
                         subText: "查看在柜状态",
                     },
                     {
-                        iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                        iconPath: import("../../assets/svg/rili-xingzhuang.svg"),
                         label: "绑定设备",
                         value: "9290_2.3.1",
                     },
                     {
-                        iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                        iconPath: import("../../assets/svg/rili-xingzhuang.svg"),
                         label: "绑定格口",
                         value: "印章柜_2L_SY/A-1-1",
                     },
                     {
-                        iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                        iconPath: import("../../assets/svg/rili-xingzhuang.svg"),
                         label: "领用状态",
                         value: "已失效",
-                        iconPathValue: require("../../assets/svg/yuan-hui.svg"),
+                        iconPathValue: import("../../assets/svg/yuan-hui.svg"),
                         style: {
                             color: "var(--color-text-3)"
                         }
@@ -585,11 +585,11 @@ const state = reactive({
                 ],
                 imageData: {
                     label: "领用影像",
-                    iconPath: require("../../assets/svg/rili-xingzhuang.svg"),
+                    iconPath: import("../../assets/svg/rili-xingzhuang.svg"),
                     data: [
                         {
-                            imgPath: require("../../assets/svg/Upload__background.svg"),
-                            iconPath: require("../../assets/svg/renlian-icon.svg"),
+                            imgPath: import("../../assets/svg/Upload__background.svg"),
+                            iconPath: import("../../assets/svg/renlian-icon.svg"),
                             time: "12-11 14:09",
                             list: [
                                 {
@@ -615,8 +615,8 @@ const state = reactive({
                             ]
                         },
                         {
-                            imgPath: require("../../assets/svg/Upload__background.svg"),
-                            iconPath: require("../../assets/svg/renlian-icon.svg"),
+                            imgPath: import("../../assets/svg/Upload__background.svg"),
+                            iconPath: import("../../assets/svg/renlian-icon.svg"),
                             time: "12-11 14:09",
                             list: [
                                 {
@@ -642,8 +642,8 @@ const state = reactive({
                             ]
                         },
                         {
-                            imgPath: require("../../assets/svg/Upload__background.svg"),
-                            iconPath: require("../../assets/svg/renlian-icon.svg"),
+                            imgPath: import("../../assets/svg/Upload__background.svg"),
+                            iconPath: import("../../assets/svg/renlian-icon.svg"),
                             time: "12-11 14:09",
                             list: [
                                 {
@@ -669,8 +669,8 @@ const state = reactive({
                             ]
                         },
                         {
-                            imgPath: require("../../assets/svg/Upload__background.svg"),
-                            iconPath: require("../../assets/svg/renlian-icon.svg"),
+                            imgPath: import("../../assets/svg/Upload__background.svg"),
+                            iconPath: import("../../assets/svg/renlian-icon.svg"),
                             time: "12-11 14:09",
                             list: [
                                 {
@@ -792,7 +792,7 @@ const state = reactive({
                     {
                         label: "印章状态",
                         value: "状态",
-                        iconPath: require("../../assets/svg/yuan-lv.svg"),
+                        iconPath: import("../../assets/svg/yuan-lv.svg"),
                         iconStyle: {
 
                         },
@@ -1102,10 +1102,12 @@ watch(() => [props.show], (newValue, oldValue) => {
             align-items: center;
             justify-content: flex-end;
             border-bottom: 1px solid var(--color-border-2);
-            .ap-Tabs-sub-icon{
+
+            .ap-Tabs-sub-icon {
                 margin-right: 0.5rem;
             }
-            .ap-Tabs-sub-text{
+
+            .ap-Tabs-sub-text {
                 cursor: pointer;
                 color: var(-color-text-2);
             }
