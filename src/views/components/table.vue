@@ -1,7 +1,8 @@
 <template>
     <div class="components-table">
         <el-table v-bind="props.defaultAttribute" :refs="refs" :data="props.data" style="width: 100%" @select="select"
-            @select-all="selectAll" @selection-change="selectionChange" @cell-click="cellClick" @row-click="rowClick">
+            @select-all="selectAll" @selection-change="selectionChange" @cell-click="cellClick" @row-click="rowClick"
+            class="ap-table">
             <!-- 列表内容 -->
             <el-table-column v-bind="item" v-for="(item, index) in  props.header">
                 <!-- 自定义内容显示 -->
@@ -112,5 +113,18 @@ onMounted(() => {
             margin-right: 0.5rem;
         }
     }
+
+    :deep {
+        .el-table thead {
+            color: var(--color-text-1);
+            font-size: var(--font-size-body-2);
+            font-weight: var(--font-weight-400);
+        }
+
+        th {
+            font-weight: var(--font-weight-400);
+        }
+    }
+
 }
 </style>
