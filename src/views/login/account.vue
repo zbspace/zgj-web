@@ -131,7 +131,6 @@ const updateScanCode = () => {
 }
 
 onMounted(() => {
-  console.log('layoutType--->',layoutType);
 })
 
 </script>
