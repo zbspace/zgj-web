@@ -151,6 +151,19 @@ $unify-primary-color: var(--primary-6);
   --el-dropdown-menuItem-hover-color:  #D0963E;
 }
 
+.el-message--info,
+.el-message--success,
+.el-message--warning,
+.el-message--error {
+  --el-message-bg-color: #FFFFFF;
+  --el-message-message-border-color: #FFFFFF;
+  box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+  .el-message__content {
+      --el-message-text-color: rgba(0, 0, 0, 0.85);
+  }
+}
+
 /* 
 左侧菜单 字体大小
 */
