@@ -1,6 +1,5 @@
 <template>
   <div class="container-login">
-    
     <!-- header -->
     <div class="header-login">
       <img class="logo" src="../../assets/images/login/logo.png" />
@@ -96,7 +95,7 @@
 
 <script setup>
 import  I18n from "../../i18n";
-import { reactive } from "vue";
+import { reactive,onMounted } from "vue";
 import VAccountLogin from "./modules/AccountLogin.vue"
 const state = reactive({
   showDownToop: false, // 下载弹窗
@@ -130,6 +129,10 @@ const changeLogin = () => {
 const updateScanCode = () => {
   state.scanCodeError = false
 }
+
+onMounted(() => {
+  console.log('layoutType--->',layoutType);
+})
 
 </script>
 

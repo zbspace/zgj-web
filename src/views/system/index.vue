@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import Layout from "../../layouts/main.vue";
+import Layout from "@/layouts/main";
 </script>
 
 <style lang="scss" scoped>

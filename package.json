@@ -5,7 +5,10 @@
   "scripts": {
     "serve": "node --max_old_space_size=6144 node_modules/@vue/cli-service/bin/vue-cli-service.js serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "vite",
+    "preview": "vite preview",
+    "build-vite": "vite build"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^32.0.0",
@@ -36,7 +39,6 @@
     "bootstrap-vue-3": "^0.3.3",
     "chart.js": "^3.7.0",
     "click-outside-vue3": "^4.0.1",
-    "core-js": "^3.6.5",
     "echarts": "^5.3.0",
     "element-plus": "^2.2.19",
     "feather-icons": "^4.28.0",
@@ -47,11 +49,9 @@
     "lottie-web": "^5.8.1",
     "maska": "^1.5.0",
     "moment": "^2.29.1",
-    "node-sass": "^4.14.1",
     "particles.vue3": "^1.40.2",
+    "pinia": "^2.0.23",
     "prismjs": "^1.26.0",
-    "sass-loader": "^8.0.0",
-    "sass-resources-loader": "^2.2.5",
     "simplebar": "^5.3.6",
     "simplebar-vue3": "^0.1.5",
     "sweetalert2": "^11.4.32",
@@ -71,35 +71,26 @@
     "vue3-quill": "^0.2.6",
     "vuevectormap": "^1.0.8",
     "vuex": "^4.0.2",
+    "vuex-persistedstate": "^4.1.0",
     "yarn": "^1.22.17"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.38.3",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "@originjs/vite-plugin-require-context": "^1.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@vitejs/plugin-vue": "^3.1.0",
+    "@vitejs/plugin-vue-jsx": "^2.0.1",
+    "eslint": "^8.25.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-promise": "^6.1.0",
+    "eslint-plugin-vue": "^9.6.0",
+    "postcss": "^8.4.16",
+    "sass": "~1.26.5",
+    "typescript": "^4.8.4",
+    "vite": "^3.1.0",
+    "vite-plugin-eslint": "^1.8.1",
+    "vue-tsc": "^0.40.4"
+  }
 }
