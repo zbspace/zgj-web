@@ -580,7 +580,7 @@ const state = reactive({
         }],
         defaultAttribute: {
             isUnfold: false,
-            "scrollbar-max-height": 130,
+            // "scrollbar-max-height": 130,
         }
     },
     componentsTable: {
@@ -842,6 +842,8 @@ onMounted(() => {
 <style lang='scss' scoped>
 .components-template {
     margin: 0%;
+    height: 100vh;
+    overflow: auto;
 
     .color {
         color: var(--primary-6);

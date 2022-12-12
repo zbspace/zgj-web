@@ -86,6 +86,16 @@
                                 }}</el-button>
                             </div>
                         </div>
+                        <div class="ap-box-cont" v-else-if="item.type == 'checkButton'">
+                            <div class="ap-box-label" :style="props.style.labelStyle">
+                                <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                                {{ item.label }}
+                            </div>
+                            <div class="ap-box-contBox" v-for="data in item.data">
+                                <el-button v-bind="data.defaultAttribute" v-model="data.value">{{ data.name
+                                }}</el-button>
+                            </div>
+                        </div>
                         <div class="ap-box-cont" v-else-if="item.type == 'custom'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
@@ -355,6 +365,11 @@ onMounted(() => {
         width: 100% !important;
     }
 
+    :deep {
+        .el-button {
+            border-style: dashed;
+        }
+    }
 
 }
 </style>
