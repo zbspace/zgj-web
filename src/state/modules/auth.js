@@ -1,24 +1,24 @@
 import { getFirebaseBackend } from '../../authUtils.js'
 
- const state = {
+const state = {
     currentUser: sessionStorage.getItem('authUser'),
 }
 
- const mutations = {
+const mutations = {
     SET_CURRENT_USER(state, newValue) {
         state.currentUser = newValue
         saveState('auth.currentUser', newValue)
     }
 }
 
- const getters = {
+const getters = {
     // Whether the user is currently logged in.
     loggedIn(state) {
         return !!state.currentUser
     }
 }
 
- const actions = {
+const actions = {
     // This is automatically run in `src/state/store.js` when the app
     // starts, along with any other actions named `init` in other modules.
     // eslint-disable-next-line no-unused-vars

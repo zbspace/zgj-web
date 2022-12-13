@@ -2,14 +2,13 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import eslintPlugin from 'vite-plugin-eslint'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import path from 'path'
 import { resolve } from 'path'
 const projectRootDir = resolve(__dirname);
 // https://vitejs.dev/config/
 export default defineConfig({
   envDir: './config', // 环境变量路径
   server: {
-    host: '0.0.0.0',
+    host: '0.0.0.0'
   },
   plugins: [
     vue({
@@ -29,7 +28,15 @@ export default defineConfig({
     }),
   ],
   build:{
-    target:['edge90','chrome90','firefox90','safari15']
+    target:['edge90','chrome90','firefox90','safari15'],
+    sourcemap: false,
+    brotliSize: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+      },
+    },
+    chunkSizeWarningLimit: 2000,
   },
   resolve: {
     alias: [
