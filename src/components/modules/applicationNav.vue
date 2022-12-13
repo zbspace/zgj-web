@@ -63,7 +63,7 @@ watch(isClickOutsideApp, () => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ap-moreDropdown {
   @include mixin-width(340);
   @include mixin-height(400);

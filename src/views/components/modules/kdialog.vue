@@ -173,7 +173,7 @@ const handleFullScreen = () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .custom-dialog {
   position: fixed;
   top: 0;
