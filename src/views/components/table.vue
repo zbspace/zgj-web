@@ -114,8 +114,8 @@ onMounted(() => {
         }
     }
 
-    :deep {
-        .el-table thead {
+     
+    :deep(.el-table thead) {
             color: var(--color-text-1);
             font-size: var(--font-size-body-2);
             font-weight: var(--font-weight-400);
@@ -124,7 +124,5 @@ onMounted(() => {
         th {
             font-weight: var(--font-weight-400);
         }
-    }
-
 }
 </style>
