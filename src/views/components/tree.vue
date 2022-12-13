@@ -66,8 +66,7 @@ onMounted(() => {
 <style lang='scss' scoped>
 .components-tree {
     margin: 0%;
-
-    :deep label {
+    :deep(label) {
         margin-bottom: 0%;
     }
 }

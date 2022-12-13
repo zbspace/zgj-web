@@ -6,6 +6,7 @@
                 <div class="title">
                     <div>文件库</div>
                     <div>
+                        <el-button type="primary">+ 增加</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -31,11 +32,6 @@
                     <componentsTree :data="state.componentsTree.data"
                         :defaultAttribute="state.componentsTree.defaultAttribute">
                     </componentsTree>
-                </div>
-            </template>
-            <template #batch>
-                <div class="batch">
-                    <el-button type="primary">+ 增加</el-button>
                 </div>
             </template>
             <template #table>
@@ -104,13 +100,28 @@ const state = reactive({
         data: [
             {
                 id: 'name',
-                label: "文件名称",
+                label: "关键词",
                 type: "input",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     placeholder: "请输入",
                 },
+            },
+            {
+                id: 'picker',
+                label: "选择时间",
+                type: "picker",
+                inCommonUse: true,
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    type: "daterange",
+                    "start-placeholder": "Start date",
+                    "end-placeholder": "End date"
+                },
+                style: {
+
+                }
             },
             {
                 id: 'select',

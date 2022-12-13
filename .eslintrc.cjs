@@ -1,29 +1,29 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
   },
   extends: [
-    'plugin:vue/vue3-strongly-recommended' // vue3严格模式
+    "plugin:vue/vue3-strongly-recommended", // vue3严格模式
     // 'standard'
   ],
   parserOptions: {
     ecmaVersion: 12,
     // parser: '@typescript-eslint/parser',
-    sourceType: 'module'
+    sourceType: "module",
   },
   plugins: [
-    'vue',
+    "vue",
     // '@typescript-eslint'
   ],
   // 单独校验规则
   overrides: [
     {
-      files: ['src/api/**/*.ts'],
+      files: ["src/api/**/*.ts"],
       rules: {
-        camelcase: 'off' // 文件名驼峰限制
-      }
-    }
+        camelcase: "off", // 文件名驼峰限制
+      },
+    },
   ],
   // 全局验证规则
   rules: {
@@ -34,9 +34,9 @@ module.exports = {
   },
   // vue的全局api，添加之后就不在校验
   globals: {
-    defineProps: 'readonly',
-    defineEmits: 'readonly',
-    defineExpose: 'readonly',
-    withDefaults: 'readonly'
-  }
-}
+    defineProps: "readonly",
+    defineEmits: "readonly",
+    defineExpose: "readonly",
+    withDefaults: "readonly",
+  },
+};
