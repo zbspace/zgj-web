@@ -62,8 +62,12 @@
                                                 </div>
                                             </template>
                                             <template #content>
-                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                <div class="sealDetails-accessory-list">
+                                                    <documentsDetailsAccessory
+                                                        :printedData="state.cache.DetailsaOfPrinting.accessory.printedData"
+                                                        :additionalData="state.cache.DetailsaOfPrinting.accessory.additionalData">
 
+                                                    </documentsDetailsAccessory>
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -99,7 +103,11 @@
                                                 </div>
                                             </template>
                                             <template #content>
-                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                <div class="sealDetails-accessory-list">
+                                                    <documentsDetailsIntelligentPrinting
+                                                        :more="state.cache.DetailsaOfPrinting.IntelligentPrinting.more"
+                                                        :data="state.cache.DetailsaOfPrinting.IntelligentPrinting.data">
+                                                    </documentsDetailsIntelligentPrinting>
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -349,6 +357,8 @@ import componentsTable from "./table"
 import componentsApprovalSteps from "./approvalSteps"
 import documentsDetailsPortion from "./documentsDetails/portion.vue"
 import documentsDetailsInformationList from "./documentsDetails/informationList.vue"
+import documentsDetailsAccessory from "./documentsDetails/accessory.vue"
+import documentsDetailsIntelligentPrinting from "./documentsDetails/IntelligentPrinting.vue"
 
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
@@ -363,6 +373,8 @@ import liuchengJujueSvg from '@/assets/svg/liucheng-jujue.svg'
 import liuchengWanchengSvg from '@/assets/svg/liucheng-wancheng.svg'
 import yuanHuiSvg from '@/assets/svg/yuan-hui.svg'
 import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
+import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
+
 
 
 const props = defineProps({
@@ -453,7 +465,84 @@ const state = reactive({
                     },
                 ],
             },
-
+            accessory: {
+                title: "附件",
+                show: true,
+                //用印文件
+                printedData: [
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                ],
+                //补充文件
+                additionalData: [
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                ],
+            },
+            IntelligentPrinting: {
+                title: "基本信息",
+                show: true,
+                more: true,
+                data: [
+                    {
+                        sealName: "详情内容详情内容详情内容详情内容",
+                        personName: "详情内容详情内容详情内容详情内容",
+                        time: "2022-11-30  16:00:00",
+                        adress: "详情内容详情内容详情内容详情内容",
+                        imageNum:8,
+                        imageData: [
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                        ]
+                    }
+                ],
+            },
         },
         approvalProcess: {
             data: [
