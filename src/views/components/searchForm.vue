@@ -4,7 +4,8 @@
             <el-scrollbar :max-height="props.defaultAttribute['scrollbar-max-height']" class="fromData-scrollbar">
                 <div class="fromData">
                     <div class="ap-box" v-for="(item, index) in state.cache.formData"
-                        :style="[props.style.lineStyle, item.style]" @click="clickElement(item, index)">
+                        :style="[props.style.lineStyle, item.style, computed_fill(item, index)]"
+                        @click="clickElement(item, index)">
                         <div class="ap-box-cont" v-if="item.type == 'input'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
@@ -38,7 +39,7 @@
                                     @change="getCurrentValue(item, index)" />
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'checkbox'">
+                        <div class="ap-box-cont " v-else-if="item.type == 'checkbox'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
@@ -135,7 +136,7 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, computed } from "vue"
 const props = defineProps({
     //标识
     refs: {
@@ -199,6 +200,25 @@ const state = reactive({
         formData: [],
     }
 });
+//计算 占满一行
+const computed_fill = computed(() => {
+    return (item, index) => {
+        // console.log(item, index);
+        let fixed = [""]
+        let alterable = ["checkbox", "radio", "switch", "button", "checkButton", "custom"]
+        if (fixed.indexOf(item.type) > -1) {
+            return {
+                width: "100%"
+            };
+        } else if (alterable.indexOf(item.type) > -1 && index < state.cache.formData.length - 1) {
+            return {
+                width: "100%"
+            };
+        } else {
+            return {};
+        }
+    }
+})
 //初始化表单单数据
 function initFormData() {
     if (props.defaultAttribute.isUnfold) {
@@ -391,10 +411,8 @@ onMounted(() => {
         @include mixin-padding-left(16);
     }
 
-    :deep {
-        .el-button {
-            border-style: dashed;
-        }
+    .fill {
+        width: 100%;
     }
 
 }

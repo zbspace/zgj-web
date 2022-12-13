@@ -81,7 +81,11 @@ $unify-primary-color: var(--primary-6);
     --el-button-disabled-border-color: #F0F0F0;
 }
 
-
+.el-button {
+    --el-button-hover-bg-color: #F3F6F9;
+    --el-button-hover-border-color: #d4dbeb;
+    --el-button-hover-text-color:rgba(0,0,0,0.65);
+}
 
 /* 下拉菜单 */
 // .el-popper__arrow {

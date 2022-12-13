@@ -158,7 +158,7 @@ const toBeConfirmedList = ref([
 ])
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .nav-msg {
 
   .msg-title {

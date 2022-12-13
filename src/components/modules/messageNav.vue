@@ -114,7 +114,7 @@ const listNoticeMsg = ref([
 ])
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .nav-natify-tab {
   padding-top: 26px;
 

@@ -27,7 +27,7 @@ const handleTab = (val) => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .custom-tabs {
   display: flex;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
