@@ -6,6 +6,7 @@
                 <div class="title">
                     <div>工作台管理</div>
                     <div>
+                        <el-button type="primary">+ 增加</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -24,11 +25,6 @@
                     <componentsSearchForm :data="state.componentsSearchForm.data"
                         :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
                     </componentsSearchForm>
-                </div>
-            </template>
-            <template #batch>
-                <div class="batch">
-                    <el-button type="primary">+ 增加</el-button>
                 </div>
             </template>
 

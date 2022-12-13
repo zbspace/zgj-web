@@ -82,23 +82,21 @@ const handleClick = (tab, event) => {
     }
   }
 
-  :deep {
-    .el-tabs {
-      .el-tabs__nav-scroll {
-        .el-tabs__nav {
-          .el-tabs__item {
-            &:hover {
-              color: var(--primary-6);
-            }
-          }
-
-          .is-active {
+  :deep(.el-tabs) {
+    .el-tabs__nav-scroll {
+      .el-tabs__nav {
+        .el-tabs__item {
+          &:hover {
             color: var(--primary-6);
           }
+        }
 
-          .el-tabs__active-bar {
-            background-color: var(--primary-6);
-          }
+        .is-active {
+          color: var(--primary-6);
+        }
+
+        .el-tabs__active-bar {
+          background-color: var(--primary-6);
         }
       }
     }
