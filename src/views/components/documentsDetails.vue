@@ -64,6 +64,7 @@
                                         </div>
                                         <div class="ap-cont-box-details sealDetails-accessory-details">
                                             <div class="sealDetails-accessory-list" style="height:100px">
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -435,6 +436,7 @@ const state = reactive({
                     },
                 ],
             },
+
         },
         approvalProcess: {
             data: [

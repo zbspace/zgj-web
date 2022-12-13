@@ -544,12 +544,13 @@ const state = reactive({
             style: {
 
             }
-        }, {
+        },
+        {
             id: 'button',
             label: "button",
             type: "button",
             data: [{
-                name: "but",
+                name: "单选按钮",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     style: {
@@ -557,7 +558,22 @@ const state = reactive({
                     }
                 },
             }]
-        },],
+        },
+        {
+            id: 'button',
+            label: "checkButton",
+            type: "button",
+            data: [{
+                name: "多选按钮",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    style: {
+
+                    }
+                },
+            }]
+        },
+        ],
         butData: [{
             id: "submit",
             name: "提交",
