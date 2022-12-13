@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, shallowRef } from "vue";
 import componentsLayout from "@/views/components/Layout.vue";
 import componentsTabs from "@/views/components/tabs.vue"
 import ExportTemplate from './export-template'
@@ -29,7 +29,7 @@ import File from './file'
 import SmartTerminal from './smart-terminal'
 import SmartUse from './smart-use'
 import System from './system'
-const current = ref(SmartUse)
+const current = shallowRef(SmartUse)
 const state = reactive({
   componentsTabs: {
     data: [

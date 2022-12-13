@@ -1,9 +1,9 @@
-export const state = {
+const state = {
     type: null,
     message: null
 };
 
-export const mutations = {
+const mutations = {
     success(state, message) {
         state.type = 'alert-success';
         state.message = message;
@@ -18,7 +18,7 @@ export const mutations = {
     }
 };
 
-export const actions = {
+const actions = {
     success({ commit }, message) {
         commit('success', message);
     },
@@ -29,3 +29,10 @@ export const actions = {
         commit('clear');
     }
 };
+
+export default {
+    state,
+    mutations,
+    actions,
+    namespaced: true,
+}
