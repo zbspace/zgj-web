@@ -120,7 +120,7 @@ const state = reactive({
     componentsSearchForm: {
         style: {
             lineStyle: {
-                width: "50%",
+                // width: "50%",
             },
             cutOffRuleStyle: {
                 width: "100%",
@@ -135,7 +135,7 @@ const state = reactive({
         },
         data: [{
             id: 'name',
-            label: "name",
+            label: "关键词",
             type: "input",
             isNecessary: true,
             inCommonUse: true,
@@ -144,7 +144,21 @@ const state = reactive({
                 placeholder: "请输入name",
             },
             style: {
-                width: "50%",
+                // width: "50%",
+            }
+        }, {
+            id: 'picker',
+            label: "选择时间",
+            type: "picker",
+            inCommonUse: true,
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                type: "daterange",
+                "start-placeholder": "Start date",
+                "end-placeholder": "End date"
+            },
+            style: {
+
             }
         }, {
             id: 'select',

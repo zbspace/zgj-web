@@ -67,7 +67,7 @@ const state = reactive({
         label: '智能印章盒',
         name: "5",
       },
-     {
+      {
         label: '智能印章柜',
         name: "4",
       }
@@ -87,13 +87,28 @@ const state = reactive({
     data: [
       {
         id: "name",
-        label: "xx",
+        label: "关键词",
         type: "input",
         inCommonUse: true,
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
           placeholder: "请输入",
         },
+      },
+      {
+        id: 'picker',
+        label: "选择时间",
+        type: "picker",
+        inCommonUse: true,
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+          type: "daterange",
+          "start-placeholder": "Start date",
+          "end-placeholder": "End date"
+        },
+        style: {
+
+        }
       },
       {
         id: "name",
