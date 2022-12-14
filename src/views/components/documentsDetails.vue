@@ -143,7 +143,12 @@
                                                 </div>
                                             </template>
                                             <template #content>
-                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                <div class="sealDetails-accessory-list">
+                                                    <documentsDetailSdigitalSeal
+                                                        :printedData="state.cache.DetailsaOfPrinting.accessory.printedData"
+                                                        :additionalData="state.cache.DetailsaOfPrinting.accessory.additionalData">
+
+                                                    </documentsDetailSdigitalSeal>
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -359,6 +364,7 @@ import documentsDetailsPortion from "./documentsDetails/portion.vue"
 import documentsDetailsInformationList from "./documentsDetails/informationList.vue"
 import documentsDetailsAccessory from "./documentsDetails/accessory.vue"
 import documentsDetailsIntelligentPrinting from "./documentsDetails/IntelligentPrinting.vue"
+import documentsDetailSdigitalSeal from "./documentsDetails/digital-seal.vue"
 
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
