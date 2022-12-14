@@ -384,6 +384,45 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- 工作台详情 -->
+                                <div class="Workbench-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Workbench-Details'">
+
+                                </div>
+                                <!-- 智能印章盒详情 -->
+                                <div class="SmartSeal-Box-Detail"
+                                    v-else-if="state.componentsTabs.activeName == 'SmartSeal-Box-Detail'">
+
+                                </div>
+                                <!-- 智能印章柜详情 -->
+                                <div class="SmartSeal-Cabinet-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'SmartSeal-Cabinet-Details'">
+
+                                </div>
+                                <!-- 转办申请详情 -->
+                                <div class="transfer-Application-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'transfer-Application-Details'">
+
+                                </div>
+                                <!-- 重置申请详情 -->
+                                <div class="Reset-Application-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Reset-Application-Details'">
+
+                                </div>
+                                <!-- 流程详情 -->
+                                <div class="Process-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Process-Details'">
+
+                                </div>
+                                <!-- 流程版本 -->
+                                <div class="Process-Version"
+                                    v-else-if="state.componentsTabs.activeName == 'Process-Version'">
+
+                                </div>
+                                <!-- 表单详情 -->
+                                <div class="Form-Details" v-else-if="state.componentsTabs.activeName == 'Form-Details'">
+
+                                </div>
                             </div>
                         </a-scrollbar>
                     </div>
@@ -455,6 +494,7 @@ const props = defineProps({
 const emit = defineEmits(["clickClose"]);
 const state = reactive({
     cache: {
+        // 用印详情
         DetailsaOfPrinting: {
             basicInformation: {
                 title: "基本信息",
@@ -832,6 +872,7 @@ const state = reactive({
                 ],
             }
         },
+        // 审批流程
         approvalProcess: {
             data: [
                 {
@@ -898,6 +939,7 @@ const state = reactive({
                 },
             ],
         },
+        // 操作记录
         operatingRecord: {
             header: [
                 {
@@ -973,6 +1015,7 @@ const state = reactive({
                 },
             }
         },
+        // 领用记录
         RecordOfRequisition: {
             SealInformation: {
                 data: [
@@ -1121,6 +1164,7 @@ const state = reactive({
                 }
             }
         },
+        // 保管记录
         RecordOfCustody: {
             header: [
                 {
@@ -1186,6 +1230,7 @@ const state = reactive({
                 },
             }
         },
+        // 印章详情
         ParticularsOfSeal: {
             basicInformation: {
                 title: "基本信息",
@@ -1279,6 +1324,7 @@ const state = reactive({
                 }
             },
         },
+        // 文件详情
         DetailsOfDocument: {
             basicInformation: {
                 title: "基本信息",
@@ -1320,6 +1366,7 @@ const state = reactive({
                 ],
             },
         },
+        // 印章申请详情
         SealApplicationDetails: {
             basicInformation: {
                 title: "基本信息",
@@ -1431,6 +1478,577 @@ const state = reactive({
                 ],
             },
         },
+        //工作台详情
+        WorkbenchDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "工作台名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "工作台编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "设备串号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "设备状态",
+                        value: "启用",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "保管人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "保管部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "软件版本号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "固件版本号",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+            configuration: {
+                title: "配置",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "盖章码盖章",
+                        value: "开",
+                    },
+                    {
+                        label: "人脸快捷盖章",
+                        value: "开",
+                    },
+                    {
+                        label: "语音交互",
+                        value: "开",
+                    },
+                    {
+                        label: "红外电子围栏",
+                        value: "开",
+                    },
+                    {
+                        label: "人脸识别登录",
+                        value: "开",
+                    },
+                    {
+                        label: "自动锁屏",
+                        value: "开",
+                    },
+                ],
+            },
+        },
+        //智能印章盒详情
+        SmartSealBoxDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "智能印章盒名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "智能印章盒编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "设备串号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "设备状态",
+                        value: "启用",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "保管人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "保管部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "软件版本号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+            configuration: {
+                title: "配置",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "盖章码盖章",
+                        value: "开",
+                    },
+                    {
+                        label: "人脸快捷盖章",
+                        value: "开",
+                    },
+                    {
+                        label: "语音交互",
+                        value: "开",
+                    },
+                    {
+                        label: "红外电子围栏",
+                        value: "开",
+                    },
+                    {
+                        label: "人脸识别登录",
+                        value: "开",
+                    },
+                    {
+                        label: "自动锁屏",
+                        value: "开",
+                    },
+                    {
+                        label: "休眠",
+                        value: "开",
+                        subValue: "静默3分钟后休眠",
+                        subValueStyle: {
+                            color: "var(--color-text-3)",
+                            fontSize: "var(--font-size-caption)"
+                        }
+                    },
+                ],
+            },
+        },
+        //智能印章柜详情
+        SmartSealCabinetDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "智能印章柜名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "智能印章柜编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "设备串号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "设备状态",
+                        value: "启用",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "保管人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "保管部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "软件版本号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+        },
+        //转办申请详情
+        transferApplicationDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "发起人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "所在部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "代办人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "所在部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "发起时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "转办说明",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+        },
+        //重置申请详情
+        ResetApplicationDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "发起人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "所在部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "发起时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置理由",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "重置抄送人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置印章名称",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "重置前剩余盖章次数",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置后剩余盖章次数",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置印章名称",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "重置前剩余盖章次数",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置后剩余盖章次数",
+                        value: "字段名称",
+                    },
+                ],
+            },
+        },
+        //流程详情
+        ProcessDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "流程名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "流程编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "文件类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "流程状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "流程适用范围",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "流程类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联表单",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "流程说明",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "超时提醒",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "审批人自动去重",
+                        value: "字段名称",
+                    },
+                ],
+            },
+        },
+        //流程版本
+        ProcessVersion: {
+            header: [
+                {
+                    prop: '0',
+                    label: "序号",
+                },
+                {
+                    prop: '1',
+                    label: "版本号",
+                    sortable: true,
+                },
+                {
+                    prop: '3',
+                    label: "版本时间",
+                    sortable: true,
+                },
+            ],
+            data: [
+                {
+                    0: 1,
+                    1: "V20221110-01",
+                    2: "2022-12-04 11:55:12",
+                },
+                {
+                    0: 2,
+                    1: "V20221110-01",
+                    2: "2022-11-11 05:09:12",
+                },
+                {
+                    0: 3,
+                    1: "V20221110-01",
+                    2: "2022-11-17 22:29:12",
+                },
+                {
+                    0: 4,
+                    1: "V20221110-01",
+                    2: "2022-11-27 12:33:12",
+                },
+                {
+                    0: 5,
+                    1: "V20221110-01",
+                    2: "2022-12-04 06:47:12",
+                },
+            ],
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                border: true,
+                "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                    // console.log({ row, column, rowIndex, columnIndex });
+                    return {
+                        "background": "var(--color-fill--1)"
+                    }
+                },
+            }
+        },
+        //表单详情
+        FormDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "表单名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "表单编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联文件类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "表单状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "用印类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "表单说明",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
     },
     drawer: {
         show: true,
@@ -1470,6 +2088,38 @@ const state = reactive({
             {
                 label: '操作记录',
                 name: "operating-record",
+            },
+            {
+                label: '工作台详情',
+                name: "Workbench-Details",
+            },
+            {
+                label: '智能印章盒详情',
+                name: "SmartSeal-Box-Detail",
+            },
+            {
+                label: '智能印章柜详情',
+                name: "SmartSeal-Cabinet-Details",
+            },
+            {
+                label: '转办申请详情',
+                name: "transfer-Application-Details",
+            },
+            {
+                label: '重置申请详情',
+                name: "Reset-Application-Details",
+            },
+            {
+                label: '流程详情',
+                name: "Process-Details",
+            },
+            {
+                label: '流程版本',
+                name: "Process-Version",
+            },
+            {
+                label: '表单详情',
+                name: "Form-Details",
             },
         ],
         activeName: "Details-of-Printing",
