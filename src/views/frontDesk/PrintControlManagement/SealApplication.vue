@@ -95,6 +95,7 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
+import KDialog from "@/views/components/modules/kdialog.vue"
 import router from '../../../router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Json from './common.json'

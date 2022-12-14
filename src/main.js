@@ -24,14 +24,13 @@ import ElementPlus from 'element-plus'
 import VFormRender from "vform3-builds/dist/render.umd.js"
 
 import "vform3-builds/dist/render.style.css"
-import ElementPlus from "element-plus";
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import "element-plus/dist/index.css";
 
 import ArcoVue from "@arco-design/web-vue";
 import "@arco-design/web-vue/dist/arco.css";
 // 全局自定义组件
-import components from "@/views/components/modules/index";
+// import components from "@/views/components/modules/index";
 import commonComponents from '@/components/index'
 
 /* 引入自定义全局变量 */
@@ -44,7 +43,7 @@ import commonComponents from '@/components/index'
 
 createApp(App)
   .use(store)
-  .use(components)
+  // .use(components)
   .use(commonComponents)
   .use(router)
   // .use(VueApexCharts)
