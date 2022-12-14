@@ -34,6 +34,9 @@
                     <el-button :plain="true" @click="open2">成功消息</el-button>
                     <el-button :plain="true" @click="open3">询问消息</el-button>
                     <el-button :plain="true" @click="open4">异常消息</el-button>
+                    <el-button :plain="true" @click="openMess">信息弹窗</el-button>
+                    <el-button @click="showFormDialog = true">动态表单</el-button>
+                    <el-button @click="dialogVisible = true">动态表单-el</el-button>
                 </div>
             </template>
             <template #table>
@@ -55,6 +58,30 @@
 
             <!-- 人员选择  -->
             <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog"></kDepartOrPersonVue>
+
+            <!-- 动态表单 -->
+            <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="动态表单" :centerBtn="true"  :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600">
+              <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+              </v-form-render>
+              <!-- <el-button type="primary" @click="submitForm">Submit</el-button> -->
+            </KDialog>
+
+            <el-dialog v-model="dialogVisible" title="Tips" width="800" :before-close="handleClose" :append-to-body="true">
+              <span>This is a message</span>
+              <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+              </v-form-render>
+              <el-select v-model="value" class="m-2" placeholder="Select" size="large" :popper-append-to-body="false">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="dialogVisible = false">Cancel</el-button>
+                  <el-button type="primary" @click="dialogVisible = false">
+                    Confirm
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog>
         </div>
 </template>
 <script setup>
@@ -69,7 +96,8 @@ import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
 import router from '../../../router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import Json from './common.json'
 const props = defineProps({
     // 处理类型
     type: {
@@ -79,6 +107,55 @@ const props = defineProps({
 })
 const showDialog = ref(false)
 const showDepPerDialog = ref(false)
+const showFormDialog = ref(false)
+const formJson = reactive(Json)
+const formData = reactive({})
+const optionData = reactive({})
+const vFormRef = ref(null)
+const submitForm = () => {
+  vFormRef.value.getFormData().then(formData => {
+    // Form Validation OK
+    alert(JSON.stringify(formData))
+  }).catch(error => {
+    // Form Validation failed
+    ElMessage.error(error)
+  })
+}
+const dialogVisible = ref(false)
+
+const handleClose = (done) => {
+  ElMessageBox.confirm('Are you sure to close this dialog?')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
+}
+const value = ref('')
+
+const options = [
+  {
+    value: 'Option1',
+    label: 'Option1',
+  },
+  {
+    value: 'Option2',
+    label: 'Option2',
+  },
+  {
+    value: 'Option3',
+    label: 'Option3',
+  },
+  {
+    value: 'Option4',
+    label: 'Option4',
+  },
+  {
+    value: 'Option5',
+    label: 'Option5',
+  },
+]
 const goInnerPage = () => {
   router.push({
     path: '/frontDesk/innerPage'
@@ -96,10 +173,34 @@ const open3 = () => {
   ElMessage({
     message: '这是一条询问消息，会自动消失。',
     type: 'warning',
+    duration: 9999999
   })
 }
 const open4 = () => {
   ElMessage.error('这是一条异常消息，会自动消失。')
+}
+const openMess = () => {
+  ElMessageBox.confirm(
+    '一系列的信息描述，可能会很长。也可以是很短同样也可以带标点。',
+    '提示？',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      ElMessage({
+        type: 'success',
+        message: '操作成功！',
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消操作！',
+      })
+    })
 }
 const emit = defineEmits([]);
 const state = reactive({

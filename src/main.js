@@ -21,11 +21,15 @@ import '@/assets/scss/config/minimal/app.scss'
 // import '@vueform/slider/themes/default.css'
 
 import ElementPlus from 'element-plus'
+import VFormRender from "vform3-builds/dist/render.umd.js"
+
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 
 // import ArcoVue from '@arco-design/web-vue'
 // import '@arco-design/web-vue/dist/arco.css'
+
+import "vform3-builds/dist/render.style.css"
 // 全局自定义组件
 import components from "@/views/components/modules/index"
 
@@ -50,4 +54,5 @@ createApp(App)
   // .use(vClickOutside)
   .use(ElementPlus, { locale: zhCn })
   // .use(ArcoVue)
+  .use(VFormRender)
   .mount("#app")

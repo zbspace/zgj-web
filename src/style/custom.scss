@@ -82,10 +82,31 @@ $unify-primary-color: var(--primary-6);
 }
 
 .el-button {
+  --el-button-hover-bg-color: #F3F6F9;
+  --el-button-hover-border-color: #d4dbeb;
+  --el-button-hover-text-color:rgba(0,0,0,0.65);
+}
+.el-message-box {
+  .el-button {
     --el-button-hover-bg-color: #F3F6F9;
     --el-button-hover-border-color: #d4dbeb;
     --el-button-hover-text-color:rgba(0,0,0,0.65);
+  }
+  .el-button--primary {
+    --el-button-text-color: #FFFFFF;
+    --el-button-bg-color: #D0963E;
+    --el-button-border-color: #D0963E;
+    --el-button-outline-color: #D0963E;
+    --el-button-active-color: #D0963E;
+    --el-button-hover-text-color: #FFFFFF;
+    --el-button-hover-bg-color: #D9AB5B;
+    --el-button-hover-border-color: #D9AB5B;
+    --el-button-active-bg-color: #AF7427;
+    --el-button-active-border-color: #AF7427;
+    --el-button-disabled-border-color: #F0F0F0;
+  }
 }
+
 
 /* 下拉菜单 */
 // .el-popper__arrow {
@@ -159,8 +180,8 @@ $unify-primary-color: var(--primary-6);
 .el-message--success,
 .el-message--warning,
 .el-message--error {
-  --el-message-bg-color: #FFFFFF;
-  --el-message-border-color: #FFFFFF;
+  --el-message-bg-color: #FFFFFF!important;
+  --el-message-border-color: #FFFFFF!important;
   box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
 
   .el-message__content {
@@ -219,3 +240,19 @@ body {
 // [data-layout="vertical"][data-sidebar-size="sm"] .navbar-brand-box {
 //     background-color: var(--background-color-1);
 // }
+
+.static-content-item {
+  margin-left: 12px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #D0963E;
+  }
+}
