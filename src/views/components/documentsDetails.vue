@@ -145,8 +145,9 @@
                                             <template #content>
                                                 <div class="sealDetails-accessory-list">
                                                     <documentsDetailSdigitalSeal
-                                                        :printedData="state.cache.DetailsaOfPrinting.accessory.printedData"
-                                                        :additionalData="state.cache.DetailsaOfPrinting.accessory.additionalData">
+                                                        :signatoryData="state.cache.DetailsaOfPrinting.sdigitalSeal.signatoryData"
+                                                        :signatoryFileData="state.cache.DetailsaOfPrinting.sdigitalSeal.signatoryFileData"
+                                                        :alreadySignatoryFileData="state.cache.DetailsaOfPrinting.sdigitalSeal.alreadySignatoryFileData">
 
                                                     </documentsDetailSdigitalSeal>
                                                 </div>
@@ -561,6 +562,117 @@ const state = reactive({
                     }
                 ],
             },
+            sdigitalSeal: {
+                signatoryData: {
+                    header: [
+                        {
+                            prop: '0',
+                            label: "签署顺序",
+                        },
+                        {
+                            prop: '1',
+                            label: "签署方代表",
+                        },
+                        {
+                            prop: '2',
+                            label: "签署人",
+                        },
+                        {
+                            prop: '3',
+                            label: "签署人账号",
+                        },
+                        {
+                            prop: '4',
+                            label: "签署人主体信息",
+                        },
+                        {
+                            prop: '5',
+                            label: "使用印章",
+                        },
+                        {
+                            prop: '6',
+                            label: "签署时间",
+                        },
+                    ],
+                    data: [
+                        {
+                            0: 1,
+                            1: "个人",
+                            2: "吴彦琛",
+                            3: "137 8651 5262",
+                            4: "内容",
+                            5:"吴彦琛",
+                            6:"待签署",
+                        },
+                        {
+                            0: 1,
+                            1: "企业",
+                            2: "冯启彬",
+                            3: "132 9399 2217",
+                            4: "内容",
+                            5:"冯启彬",
+                            6:"待签署",
+                        },
+                        {
+                            0: 1,
+                            1: "个人",
+                            2: "钱若霖",
+                            3: "189 2860 9388",
+                            4: "内容",
+                            5:"钱若霖",
+                            6:"待签署",
+                        },
+                        {
+                            0: 1,
+                            1: "个人",
+                            2: "郑盈盈",
+                            3: "155 5866 1691",
+                            4: "内容",
+                            5:"郑盈盈",
+                            6:"待签署",
+                        },
+                        {
+                            0: 1,
+                            1: "企业",
+                            2: "李琳颖",
+                            3: "158 5666 9874",
+                            4: "内容",
+                            5:"李琳颖",
+                            6:"待签署",
+                        },
+                    ],
+                    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                    defaultAttribute: {
+                        border: false,
+                        "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                            // console.log({ row, column, rowIndex, columnIndex });
+                            return {
+                                "background": "var(--color-fill--1)"
+                            }
+                        },
+                    }
+                },
+                signatoryFileData: [
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                ],
+                alreadySignatoryFileData: [
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                ],
+            }
         },
         approvalProcess: {
             data: [
