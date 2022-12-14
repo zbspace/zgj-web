@@ -85,7 +85,9 @@
                                                 </div>
                                             </template>
                                             <template #content>
-                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                <div class="sealDetails-accessory-list">
+                                                    <componentsFileverification
+                                                        :data="state.cache.DetailsaOfPrinting.fileocrInformation.data" />
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -125,7 +127,9 @@
                                                 </div>
                                             </template>
                                             <template #content>
-                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                <div class="sealDetails-accessory-list">
+                                                    <componentsArchive
+                                                        :data="state.cache.DetailsaOfPrinting.archiveInformation.data" />
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -143,7 +147,13 @@
                                                 </div>
                                             </template>
                                             <template #content>
-                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                <div class="sealDetails-accessory-list">
+                                                    <documentsDetailSdigitalSeal
+                                                        :signatoryData="state.cache.DetailsaOfPrinting.sdigitalSeal.signatoryData"
+                                                        :signatoryFileData="state.cache.DetailsaOfPrinting.sdigitalSeal.signatoryFileData"
+                                                        :alreadySignatoryFileData="state.cache.DetailsaOfPrinting.sdigitalSeal.alreadySignatoryFileData">
+
+                                                    </documentsDetailSdigitalSeal>
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -154,14 +164,6 @@
                                     v-else-if="state.componentsTabs.activeName == 'approval-process'">
                                     <componentsApprovalSteps :data="state.cache.approvalProcess.data">
                                     </componentsApprovalSteps>
-                                </div>
-                                <!-- 操作记录 -->
-                                <div class="operating-record"
-                                    v-else-if="state.componentsTabs.activeName == 'operating-record'">
-                                    <componentsTable :data="state.cache.operatingRecord.data"
-                                        :header="state.cache.operatingRecord.header"
-                                        :defaultAttribute="state.cache.operatingRecord.defaultAttribute">
-                                    </componentsTable>
                                 </div>
                                 <!-- 领用记录 -->
                                 <div class="Record-of-requisition"
@@ -239,6 +241,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- 操作记录 -->
+                                <div class="operating-record"
+                                    v-else-if="state.componentsTabs.activeName == 'operating-record'">
+                                    <componentsTable :data="state.cache.operatingRecord.data"
+                                        :header="state.cache.operatingRecord.header"
+                                        :defaultAttribute="state.cache.operatingRecord.defaultAttribute">
+                                    </componentsTable>
+                                </div>
                                 <!-- 保管记录 -->
                                 <div class="Record-of-custody"
                                     v-else-if="state.componentsTabs.activeName == 'Record-of-custody'">
@@ -251,63 +261,95 @@
                                 <div class="Particulars-of-Seal"
                                     v-else-if="state.componentsTabs.activeName == 'Particulars-of-Seal'">
                                     <div class="ap-cont-box sealDetails-basic-information">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">基本信息</span>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-basic-information-details">
-                                            <div class="sealDetails-basic-information-list"
-                                                v-for="item in state.cache.ParticularsOfSeal.basicInformation.data">
-                                                <div class="sealDetails-basic-information-list-label">{{ item.label }}：
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.ParticularsOfSeal.basicInformation.data"
+                                                        :labelStyle="state.cache.ParticularsOfSeal.basicInformation.labelStyle">
+
+                                                    </documentsDetailsInformationList>
                                                 </div>
-                                                <div class="sealDetails-basic-information-list-value"
-                                                    :style="item.style">
-                                                    <img class="sealDetails-basic-information-list-value-icon"
-                                                        :src="item.iconPath" :style="item.iconStyle" alt=""
-                                                        v-if="item.iconPath">
-                                                    {{ item.value }}
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                    <div class="ap-cont-box accessory">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">附件</div>
+                                            </template>
+                                            <template #subTitle>
+                                                <div class="ap-cont-box-title-xiazai">
+                                                    <img class="ap-cont-box-title-xiazai-icon"
+                                                        src="../../assets/svg/xiazai.svg" alt="">
+                                                    <span class="ap-cont-box-title-xiazai-text">打包下载</span>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </template>
+                                            <template #content>
+                                                <div class="sealDetails-accessory-list">
+                                                    <documentsDetailsAccessory
+                                                        :printedData="state.cache.DetailsaOfPrinting.accessory.printedData"
+                                                        :additionalData="state.cache.DetailsaOfPrinting.accessory.additionalData">
+
+                                                    </documentsDetailsAccessory>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                 </div>
                                 <!-- 印章申请详情 -->
                                 <div class="Seal-Application-Details"
                                     v-if="state.componentsTabs.activeName == 'Seal-Application-Details'">
                                     <div class="ap-cont-box">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">基本信息</span>
-                                            <div class="ap-cont-box-title-xiazai">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SealApplicationDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.SealApplicationDetails.basicInformation.labelStyle">
 
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-accessory-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">印章信息</span>
-                                            <div class="ap-cont-box-title-xiazai">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">印章信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SealApplicationDetails.SealInformation.data"
+                                                        :labelStyle="state.cache.SealApplicationDetails.SealInformation.labelStyle">
 
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-accessory-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">印章办理</span>
-                                            <div class="ap-cont-box-title-xiazai">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">办理信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SealApplicationDetails.ManagementInformation.data"
+                                                        :labelStyle="state.cache.SealApplicationDetails.ManagementInformation.labelStyle">
 
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-accessory-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                 </div>
                                 <!-- 文件详情 -->
@@ -342,6 +384,45 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- 工作台详情 -->
+                                <div class="Workbench-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Workbench-Details'">
+
+                                </div>
+                                <!-- 智能印章盒详情 -->
+                                <div class="SmartSeal-Box-Detail"
+                                    v-else-if="state.componentsTabs.activeName == 'SmartSeal-Box-Detail'">
+
+                                </div>
+                                <!-- 智能印章柜详情 -->
+                                <div class="SmartSeal-Cabinet-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'SmartSeal-Cabinet-Details'">
+
+                                </div>
+                                <!-- 转办申请详情 -->
+                                <div class="transfer-Application-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'transfer-Application-Details'">
+
+                                </div>
+                                <!-- 重置申请详情 -->
+                                <div class="Reset-Application-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Reset-Application-Details'">
+
+                                </div>
+                                <!-- 流程详情 -->
+                                <div class="Process-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Process-Details'">
+
+                                </div>
+                                <!-- 流程版本 -->
+                                <div class="Process-Version"
+                                    v-else-if="state.componentsTabs.activeName == 'Process-Version'">
+
+                                </div>
+                                <!-- 表单详情 -->
+                                <div class="Form-Details" v-else-if="state.componentsTabs.activeName == 'Form-Details'">
+
+                                </div>
                             </div>
                         </a-scrollbar>
                     </div>
@@ -359,7 +440,9 @@ import documentsDetailsPortion from "./documentsDetails/portion.vue"
 import documentsDetailsInformationList from "./documentsDetails/informationList.vue"
 import documentsDetailsAccessory from "./documentsDetails/accessory.vue"
 import documentsDetailsIntelligentPrinting from "./documentsDetails/IntelligentPrinting.vue"
-
+import documentsDetailSdigitalSeal from "./documentsDetails/digital-seal.vue"
+import componentsArchive from './documentsDetails/Archive.vue'
+import componentsFileverification from './documentsDetails/Fileverification.vue'
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
 import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
@@ -411,6 +494,7 @@ const props = defineProps({
 const emit = defineEmits(["clickClose"]);
 const state = reactive({
     cache: {
+        // 用印详情
         DetailsaOfPrinting: {
             basicInformation: {
                 title: "基本信息",
@@ -421,12 +505,8 @@ const state = reactive({
                         value: "上海建筑材料清单合同明细",
                     },
                     {
-                        label: "用印编码",
+                        label: "单据编码",
                         value: "229987657667888",
-                    },
-                    {
-                        label: "用印类型",
-                        value: "实体章",
                     },
                     {
                         label: "文件类型",
@@ -441,6 +521,10 @@ const state = reactive({
                         value: "11088.00",
                     },
                     {
+                        label: "申请事由",
+                        value: "20次",
+                    },
+                    {
                         label: "印章名称",
                         value: "销售合同",
                     },
@@ -449,17 +533,29 @@ const state = reactive({
                         value: "20次",
                     },
                     {
-                        label: "印章外带",
-                        value: "是",
+                        label: "盖章码",
+                        value: "554778",
                     },
                     {
-                        label: "用印状态",
+                        label: "申请人员",
+                        value: "20次",
+                    },
+                    {
+                        label: "申请时间",
+                        value: "2022-2-12 12:44:58",
+                    },
+                    {
+                        label: "所属部门",
+                        value: "技术部",
+                    },
+                    {
+                        label: "单据状态",
                         value: "智能用印中",
                         iconPath: yuanLvSvg,
                         iconStyle: {
 
                         },
-                        style: {
+                        valStyle: {
                             color: "var(--success-6)"
                         },
                     },
@@ -501,7 +597,7 @@ const state = reactive({
                         personName: "详情内容详情内容详情内容详情内容",
                         time: "2022-11-30  16:00:00",
                         adress: "详情内容详情内容详情内容详情内容",
-                        imageNum:8,
+                        imageNum: 8,
                         imageData: [
                             {
                                 personName: "马丽丽",
@@ -543,7 +639,240 @@ const state = reactive({
                     }
                 ],
             },
+            archiveInformation: {
+                title: "文件归档",
+                show: true,
+                data: {
+                    currentResult: [//重置后列表
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区江场路1228号',
+                            5: '高架招投标合同20220014.pdf',
+                            6: '5',
+                            7: true,
+                            8: '2',
+                            9: '3',
+                            10: '2'
+                        },
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        }
+
+                    ],
+                    historyResult: [
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        },
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        }
+                    ],//重置前列表
+                }
+            },
+            fileocrInformation: {
+                title: "文件核验",
+                show: true,
+                data: {
+                    successResult: [//核验通过
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    errorResult: [//核验异常
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '有异常',
+                            3: '15',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    normalResult: [//未核验
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '未核验',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    historyResult: [//历史文件核验列表
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '有异常',
+                            3: '15',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ]
+                }
+            },
+            sdigitalSeal: {
+                signatoryData: {
+                    header: [
+                        {
+                            prop: '0',
+                            label: "签署顺序",
+                        },
+                        {
+                            prop: '1',
+                            label: "签署方代表",
+                        },
+                        {
+                            prop: '2',
+                            label: "签署人",
+                        },
+                        {
+                            prop: '3',
+                            label: "签署人账号",
+                        },
+                        {
+                            prop: '4',
+                            label: "签署人主体信息",
+                        },
+                        {
+                            prop: '5',
+                            label: "使用印章",
+                        },
+                        {
+                            prop: '6',
+                            label: "签署时间",
+                        },
+                    ],
+                    data: [
+                        {
+                            0: 1,
+                            1: "个人",
+                            2: "吴彦琛",
+                            3: "137 8651 5262",
+                            4: "内容",
+                            5: "吴彦琛",
+                            6: "待签署",
+                        },
+                        {
+                            0: 1,
+                            1: "企业",
+                            2: "冯启彬",
+                            3: "132 9399 2217",
+                            4: "内容",
+                            5: "冯启彬",
+                            6: "待签署",
+                        },
+                        {
+                            0: 1,
+                            1: "个人",
+                            2: "钱若霖",
+                            3: "189 2860 9388",
+                            4: "内容",
+                            5: "钱若霖",
+                            6: "待签署",
+                        },
+                        {
+                            0: 1,
+                            1: "个人",
+                            2: "郑盈盈",
+                            3: "155 5866 1691",
+                            4: "内容",
+                            5: "郑盈盈",
+                            6: "待签署",
+                        },
+                        {
+                            0: 1,
+                            1: "企业",
+                            2: "李琳颖",
+                            3: "158 5666 9874",
+                            4: "内容",
+                            5: "李琳颖",
+                            6: "待签署",
+                        },
+                    ],
+                    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                    defaultAttribute: {
+                        border: false,
+                        "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                            // console.log({ row, column, rowIndex, columnIndex });
+                            return {
+                                "background": "var(--color-fill--1)"
+                            }
+                        },
+                    }
+                },
+                signatoryFileData: [
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                ],
+                alreadySignatoryFileData: [
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                ],
+            }
         },
+        // 审批流程
         approvalProcess: {
             data: [
                 {
@@ -610,6 +939,7 @@ const state = reactive({
                 },
             ],
         },
+        // 操作记录
         operatingRecord: {
             header: [
                 {
@@ -619,6 +949,7 @@ const state = reactive({
                 {
                     prop: '1',
                     label: "操作人",
+                    sortable: true,
                 },
                 {
                     prop: '2',
@@ -628,37 +959,46 @@ const state = reactive({
                 {
                     prop: '3',
                     label: "操作记录",
+                    sortable: true,
                 },
                 {
                     prop: '4',
                     label: "操作说明",
+                    sortable: true,
                 },
             ],
             data: [
                 {
                     0: 1,
-                    1: "马丽丽",
+                    1: "周俊毅",
                     2: "2022-11-12 19:00:12",
                     3: "新增用印申请",
                     4: "新增用印申请：用印申请-客户问题验证",
                 },
                 {
                     0: 2,
-                    1: "王丹",
+                    1: "王凡玄",
                     2: "2022-11-12 19:00:12",
                     3: "用印申请",
                     4: "发起申请",
                 },
                 {
                     0: 3,
-                    1: "清村",
+                    1: "李豫卓",
                     2: "2022-11-12 19:00:12",
                     3: "审批",
                     4: "授权码自动失效，相关印章：[智]Kevin_预发测试2【简称_9290_2.3.1】",
                 },
                 {
                     0: 4,
-                    1: "哈士奇",
+                    1: "孙思达",
+                    2: "2022-11-12 19:00:12",
+                    3: "文件归档",
+                    4: "同意",
+                },
+                {
+                    0: 5,
+                    1: "李梓发",
                     2: "2022-11-12 19:00:12",
                     3: "文件归档",
                     4: "同意",
@@ -675,6 +1015,7 @@ const state = reactive({
                 },
             }
         },
+        // 领用记录
         RecordOfRequisition: {
             SealInformation: {
                 data: [
@@ -823,6 +1164,7 @@ const state = reactive({
                 }
             }
         },
+        // 保管记录
         RecordOfCustody: {
             header: [
                 {
@@ -832,10 +1174,12 @@ const state = reactive({
                 {
                     prop: '1',
                     label: "保管人",
+                    sortable: true,
                 },
                 {
                     prop: '3',
                     label: "保管部门",
+                    sortable: true,
                 },
                 {
                     prop: '2',
@@ -846,26 +1190,32 @@ const state = reactive({
             data: [
                 {
                     0: 1,
-                    1: "马丽丽",
-                    2: "2022-11-12 19:00:12",
+                    1: "周俊毅",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
                     3: "研发部",
                 },
                 {
                     0: 2,
-                    1: "王丹",
-                    2: "2022-11-12 19:00:12",
+                    1: "王凡玄",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
                     3: "开发部",
                 },
                 {
                     0: 3,
-                    1: "清村",
-                    2: "2022-11-12 19:00:12",
+                    1: "李豫卓",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
                     3: "销售部",
                 },
                 {
                     0: 4,
-                    1: "哈士奇",
-                    2: "2022-11-12 19:00:12",
+                    1: "孙思达",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
+                    3: "财务部",
+                },
+                {
+                    0: 5,
+                    1: "李梓发",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
                     3: "财务部",
                 },
             ],
@@ -880,6 +1230,7 @@ const state = reactive({
                 },
             }
         },
+        // 印章详情
         ParticularsOfSeal: {
             basicInformation: {
                 title: "基本信息",
@@ -898,20 +1249,8 @@ const state = reactive({
                         value: "229987657667888",
                     },
                     {
-                        label: "所属单位",
-                        value: "-",
-                    },
-                    {
-                        label: "硬件编码",
-                        value: "2299876576CGYU414",
-                    },
-                    {
                         label: "印章类型",
                         value: "合同章",
-                    },
-                    {
-                        label: "管理人",
-                        value: "楚基",
                     },
                     {
                         label: "印章状态",
@@ -920,55 +1259,72 @@ const state = reactive({
                         iconStyle: {
 
                         },
-                        style: {
+                        valStyle: {
                             color: "var(--success-6)"
                         },
                     },
                     {
-                        label: "管理部门",
-                        value: "建业科技",
+                        label: "印模",
+                        value: "查看",
+                        valStyle: {
+                            color: "var(--Info-7)"
+                        },
+                    },
+                    {
+                        label: "保管人",
+                        value: "楚基",
                     },
                     {
                         label: "保管部门",
                         value: "建业科技",
                     },
                     {
-                        label: "是否外显",
-                        value: "是",
+                        label: "创建时间",
+                        value: "2022-11-12 19:00:12",
                     },
                     {
-                        label: "印章可见范围",
-                        value: "智能用印中",
+                        label: "更新时间",
+                        value: "2022-11-12 19:00:12",
                     },
                     {
-                        label: "固件版本号",
-                        value: "V2.8.0",
-                    },
-                    {
-                        label: "用印记录",
-                        value: "查看用印记录",
-                        style: {
-                            color: "var(--Info-7)"
-                        },
-                    },
-                    {
-                        label: "制度链接",
+                        label: "制度链接：",
                         value: "-",
-                    },
-                    {
-                        label: "印章操作",
-                        value: "+发起用印申请",
-                        style: {
-                            color: "var(--Info-7)"
+
+                        lineStyle: {
+                            width: "100%"
                         },
                     },
                     {
                         label: "备注",
                         value: "-",
+
+                        lineStyle: {
+                            width: "100%"
+                        },
+                    },
+                    {
+                        label: "印章维护范围",
+                        value: "-",
+
+                        lineStyle: {
+                            width: "100%"
+                        },
+                    },
+                    {
+                        label: "印章使用范围",
+                        value: "-",
+
+                        lineStyle: {
+                            width: "100%"
+                        },
                     },
                 ],
+                labelStyle: {
+                    width: "8rem"
+                }
             },
         },
+        // 文件详情
         DetailsOfDocument: {
             basicInformation: {
                 title: "基本信息",
@@ -1010,6 +1366,689 @@ const state = reactive({
                 ],
             },
         },
+        // 印章申请详情
+        SealApplicationDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "单据类型",
+                        value: "上海建筑材料清单合同明细",
+                    },
+                    {
+                        label: "单据编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "申请人",
+                        value: "马丽丽",
+                    },
+                    {
+                        label: "原保管人",
+                        value: "研发部",
+                    },
+                    {
+                        label: "申请时间",
+                        value: "2022-11-12  12:22:12",
+                    },
+                    {
+                        label: "原保管部门",
+                        value: "研发部",
+                    },
+                    {
+                        label: "申请保管人",
+                        value: "王丹丹",
+                    },
+                    {
+                        label: "申请保管部门",
+                        value: "-",
+                    },
+                    {
+                        label: "申请事由",
+                        value: "-",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "备注",
+                        value: "销售合同",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+            SealInformation: {
+                title: "印章信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "印章全称",
+                        value: "上海建筑材料清单合同章",
+                    },
+                    {
+                        label: "印章编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "印章简称",
+                        value: "合同章",
+                    },
+                    {
+                        label: "印章状态",
+                        value: "状态",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "印章类型",
+                        value: "公章",
+                    },
+                ],
+            },
+            ManagementInformation: {
+                title: "办理信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "办理人",
+                        value: "成效",
+                    },
+                    {
+                        label: "办理时间",
+                        value: "2022-11-12  12:22:12",
+                    },
+                    {
+                        label: "办理备注",
+                        value: "-",
+                    },
+                ],
+            },
+        },
+        //工作台详情
+        WorkbenchDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "工作台名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "工作台编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "设备串号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "设备状态",
+                        value: "启用",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "保管人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "保管部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "软件版本号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "固件版本号",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+            configuration: {
+                title: "配置",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "盖章码盖章",
+                        value: "开",
+                    },
+                    {
+                        label: "人脸快捷盖章",
+                        value: "开",
+                    },
+                    {
+                        label: "语音交互",
+                        value: "开",
+                    },
+                    {
+                        label: "红外电子围栏",
+                        value: "开",
+                    },
+                    {
+                        label: "人脸识别登录",
+                        value: "开",
+                    },
+                    {
+                        label: "自动锁屏",
+                        value: "开",
+                    },
+                ],
+            },
+        },
+        //智能印章盒详情
+        SmartSealBoxDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "智能印章盒名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "智能印章盒编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "设备串号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "设备状态",
+                        value: "启用",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "保管人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "保管部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "软件版本号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+            configuration: {
+                title: "配置",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "盖章码盖章",
+                        value: "开",
+                    },
+                    {
+                        label: "人脸快捷盖章",
+                        value: "开",
+                    },
+                    {
+                        label: "语音交互",
+                        value: "开",
+                    },
+                    {
+                        label: "红外电子围栏",
+                        value: "开",
+                    },
+                    {
+                        label: "人脸识别登录",
+                        value: "开",
+                    },
+                    {
+                        label: "自动锁屏",
+                        value: "开",
+                    },
+                    {
+                        label: "休眠",
+                        value: "开",
+                        subValue: "静默3分钟后休眠",
+                        subValueStyle: {
+                            color: "var(--color-text-3)",
+                            fontSize: "var(--font-size-caption)"
+                        }
+                    },
+                ],
+            },
+        },
+        //智能印章柜详情
+        SmartSealCabinetDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "智能印章柜名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "智能印章柜编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "设备串号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "设备状态",
+                        value: "启用",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "保管人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "保管部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "软件版本号",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+        },
+        //转办申请详情
+        transferApplicationDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "发起人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "所在部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "代办人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "所在部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "发起时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "转办说明",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+        },
+        //重置申请详情
+        ResetApplicationDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "发起人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "所在部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "发起时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置理由",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "重置抄送人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置印章名称",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "重置前剩余盖章次数",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置后剩余盖章次数",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置印章名称",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "重置前剩余盖章次数",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "重置后剩余盖章次数",
+                        value: "字段名称",
+                    },
+                ],
+            },
+        },
+        //流程详情
+        ProcessDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "流程名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "流程编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "文件类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "流程状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "流程适用范围",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "流程类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联表单",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "流程说明",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "超时提醒",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "审批人自动去重",
+                        value: "字段名称",
+                    },
+                ],
+            },
+        },
+        //流程版本
+        ProcessVersion: {
+            header: [
+                {
+                    prop: '0',
+                    label: "序号",
+                },
+                {
+                    prop: '1',
+                    label: "版本号",
+                    sortable: true,
+                },
+                {
+                    prop: '3',
+                    label: "版本时间",
+                    sortable: true,
+                },
+            ],
+            data: [
+                {
+                    0: 1,
+                    1: "V20221110-01",
+                    2: "2022-12-04 11:55:12",
+                },
+                {
+                    0: 2,
+                    1: "V20221110-01",
+                    2: "2022-11-11 05:09:12",
+                },
+                {
+                    0: 3,
+                    1: "V20221110-01",
+                    2: "2022-11-17 22:29:12",
+                },
+                {
+                    0: 4,
+                    1: "V20221110-01",
+                    2: "2022-11-27 12:33:12",
+                },
+                {
+                    0: 5,
+                    1: "V20221110-01",
+                    2: "2022-12-04 06:47:12",
+                },
+            ],
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                border: true,
+                "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                    // console.log({ row, column, rowIndex, columnIndex });
+                    return {
+                        "background": "var(--color-fill--1)"
+                    }
+                },
+            }
+        },
+        //表单详情
+        FormDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    // width: "8rem",
+                },
+                data: [
+                    {
+                        label: "表单名称",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "表单编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联文件类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "表单状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "用印类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "表单说明",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
     },
     drawer: {
         show: true,
@@ -1043,12 +2082,44 @@ const state = reactive({
                 name: "Record-of-custody",
             },
             {
+                label: '领用记录',
+                name: "Record-of-requisition",
+            },
+            {
                 label: '操作记录',
                 name: "operating-record",
             },
             {
-                label: '领用记录',
-                name: "Record-of-requisition",
+                label: '工作台详情',
+                name: "Workbench-Details",
+            },
+            {
+                label: '智能印章盒详情',
+                name: "SmartSeal-Box-Detail",
+            },
+            {
+                label: '智能印章柜详情',
+                name: "SmartSeal-Cabinet-Details",
+            },
+            {
+                label: '转办申请详情',
+                name: "transfer-Application-Details",
+            },
+            {
+                label: '重置申请详情',
+                name: "Reset-Application-Details",
+            },
+            {
+                label: '流程详情',
+                name: "Process-Details",
+            },
+            {
+                label: '流程版本',
+                name: "Process-Version",
+            },
+            {
+                label: '表单详情',
+                name: "Form-Details",
             },
         ],
         activeName: "Details-of-Printing",

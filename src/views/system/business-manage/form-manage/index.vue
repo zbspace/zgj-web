@@ -24,7 +24,7 @@
 
       <template #batch>
         <div class="batch">
-          <el-button type="primary">+ 新建</el-button>
+          <el-button type="primary" @click="showAddForm">+ 新建</el-button>
           <el-button>批量操作</el-button>
         </div>
       </template>
@@ -50,17 +50,21 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+
+    <!-- 新增表单 -->
+    <AddFrom v-model="dialogVisible" />
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import componentsTable from "@/views/components/table";
 import componentsSearchForm from "@/views/components/searchForm";
 import componentsPagination from "@/views/components/pagination.vue";
 import componentsLayout from "@/views/components/Layout.vue";
 import componentsTree from "@/views/components/tree"
-
+import AddFrom from './AddForm'
+const dialogVisible = ref(false)
 const state = reactive({
 
   componentsSearchForm: {
@@ -350,6 +354,10 @@ const state = reactive({
     }
   },
 });
+
+function showAddForm() {
+  dialogVisible.value = true
+}
 
 </script>
 
