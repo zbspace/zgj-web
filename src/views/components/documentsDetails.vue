@@ -64,7 +64,7 @@
                                         </div>
                                         <div class="ap-cont-box-details sealDetails-accessory-details">
                                             <div class="sealDetails-accessory-list" style="height:100px">
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -79,7 +79,9 @@
                                             </div>
                                         </div>
                                         <div class="ap-cont-box-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            <div class="sealDetails-accessory-list">
+                                                <componentsFileverification
+                                                    :data="state.cache.DetailsaOfPrinting.fileocrInformation.data" />
                                             </div>
                                         </div>
                                     </div>
@@ -109,7 +111,9 @@
                                             </div>
                                         </div>
                                         <div class="ap-cont-box-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
+                                            <div class="sealDetails-accessory-list">
+                                                <componentsArchive
+                                                    :data="state.cache.DetailsaOfPrinting.archiveInformation.data" />
                                             </div>
                                         </div>
                                     </div>
@@ -332,7 +336,8 @@ import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, watch } f
 import componentsTabs from "./tabs.vue"
 import componentsTable from "./table"
 import componentsApprovalSteps from "./approvalSteps"
-
+import componentsArchive from './documentsDetails/Archive.vue'
+import componentsFileverification from './documentsDetails/Fileverification.vue'
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
 import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
@@ -436,474 +441,594 @@ const state = reactive({
                     },
                 ],
             },
+            archiveInformation: {
+                title: "文件归档",
+                show: true,
+                data: {
+                    currentResult: [//重置后列表
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区江场路1228号',
+                            5: '高架招投标合同20220014.pdf',
+                            6: '5',
+                            7: true,
+                            8: '2',
+                            9: '3',
+                            10: '2'
+                        },
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        }
 
-        },
-        approvalProcess: {
-            data: [
-                {
-                    iconPath: liuchengFaqishenqingSvg,
-                    title: "发起申请",
-                    time: "2022-10-11 02:23:00",
-                    statusIconPath: liuchengBohuiSvg,
-                    personList: [
+                    ],
+                    historyResult: [
                         {
-                            name: "青青",
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        },
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        }
+                    ],//重置前列表
+                }
+            },
+            fileocrInformation: {
+                title: "文件核验",
+                show: true,
+                data: {
+                    successResult: [//核验通过
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    errorResult: [//核验异常
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '有异常',
+                            3: '15',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    normalResult: [//未核验
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '未核验',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    historyResult: [//历史文件核验列表
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '有异常',
+                            3: '15',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
                         }
                     ]
-                },
-                {
-                    iconPath: liuchengChaosongSvg,
-                    title: "抄送",
-                    subTitle: "（已抄送）",
-                    time: "2022-10-11 02:23:00",
-                    personList: [
-                        {
-                            name: "王丹",
-                        },
-                        {
-                            name: "王丹",
-                        },
-                        {
-                            name: "王丹",
-                        },
-                        {
-                            name: "王丹",
-                        },
-                        {
-                            name: "王丹",
-                        },
-                    ]
-                },
-                {
-                    iconPath: liuchengShenpiSvg,
-                    title: "审批",
-                    subTitle: "（已驳回）",
-                    type: "flowing",
-                    personList: [
-                        {
-                            name: "马丽丽",
-                            time: "2022-10-11 02:23:00",
-                            iconPath: liuchengTongyiSvg,
-                        },
-                        {
-                            name: "王青青",
-                            time: "2022-10-11 02:23:00",
-                            iconPath: liuchengJujueSvg,
-                            desc: "拒绝理由说明",
-                        },
-                        {
-                            name: "陈暮时",
-                            iconPath: liuchengDengdaiSvg,
-                            status: "1"
-                        }
-                    ]
-                },
-                {
-                    iconPath: liuchengWanchengSvg,
-                    title: "完成",
-                },
-            ],
-        },
-        operatingRecord: {
-            header: [
-                {
-                    prop: '0',
-                    label: "序号",
-                },
-                {
-                    prop: '1',
-                    label: "操作人",
-                },
-                {
-                    prop: '2',
-                    label: "操作时间",
-                    sortable: true,
-                },
-                {
-                    prop: '3',
-                    label: "操作记录",
-                },
-                {
-                    prop: '4',
-                    label: "操作说明",
-                },
-            ],
-            data: [
-                {
-                    0: 1,
-                    1: "马丽丽",
-                    2: "2022-11-12 19:00:12",
-                    3: "新增用印申请",
-                    4: "新增用印申请：用印申请-客户问题验证",
-                },
-                {
-                    0: 2,
-                    1: "王丹",
-                    2: "2022-11-12 19:00:12",
-                    3: "用印申请",
-                    4: "发起申请",
-                },
-                {
-                    0: 3,
-                    1: "清村",
-                    2: "2022-11-12 19:00:12",
-                    3: "审批",
-                    4: "授权码自动失效，相关印章：[智]Kevin_预发测试2【简称_9290_2.3.1】",
-                },
-                {
-                    0: 4,
-                    1: "哈士奇",
-                    2: "2022-11-12 19:00:12",
-                    3: "文件归档",
-                    4: "同意",
-                },
-            ],
-            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-            defaultAttribute: {
-                border: true,
-                "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
-                    // console.log({ row, column, rowIndex, columnIndex });
-                    return {
-                        "background": "var(--color-fill--1)"
-                    }
-                },
-            }
-        },
-        RecordOfRequisition: {
-            SealInformation: {
+                }
+            },
+            approvalProcess: {
                 data: [
                     {
-                        iconPath: riliXingzhuangSvg,
-                        label: "印章名称",
-                        value: "Kevin_预发_57420F【简称_9290_2.3.1】",
-                        subStyle: {
-                            color: "var(--Info-6)"
-                        },
-                        subText: "查看在柜状态",
+                        iconPath: liuchengFaqishenqingSvg,
+                        title: "发起申请",
+                        time: "2022-10-11 02:23:00",
+                        statusIconPath: liuchengBohuiSvg,
+                        personList: [
+                            {
+                                name: "青青",
+                            }
+                        ]
                     },
                     {
-                        iconPath: riliXingzhuangSvg,
-                        label: "绑定设备",
-                        value: "9290_2.3.1",
+                        iconPath: liuchengChaosongSvg,
+                        title: "抄送",
+                        subTitle: "（已抄送）",
+                        time: "2022-10-11 02:23:00",
+                        personList: [
+                            {
+                                name: "王丹",
+                            },
+                            {
+                                name: "王丹",
+                            },
+                            {
+                                name: "王丹",
+                            },
+                            {
+                                name: "王丹",
+                            },
+                            {
+                                name: "王丹",
+                            },
+                        ]
                     },
                     {
-                        iconPath: riliXingzhuangSvg,
-                        label: "绑定格口",
-                        value: "印章柜_2L_SY/A-1-1",
+                        iconPath: liuchengShenpiSvg,
+                        title: "审批",
+                        subTitle: "（已驳回）",
+                        type: "flowing",
+                        personList: [
+                            {
+                                name: "马丽丽",
+                                time: "2022-10-11 02:23:00",
+                                iconPath: liuchengTongyiSvg,
+                            },
+                            {
+                                name: "王青青",
+                                time: "2022-10-11 02:23:00",
+                                iconPath: liuchengJujueSvg,
+                                desc: "拒绝理由说明",
+                            },
+                            {
+                                name: "陈暮时",
+                                iconPath: liuchengDengdaiSvg,
+                                status: "1"
+                            }
+                        ]
                     },
                     {
-                        iconPath: riliXingzhuangSvg,
-                        label: "领用状态",
-                        value: "已失效",
-                        iconPathValue: yuanHuiSvg,
-                        style: {
-                            color: "var(--color-text-3)"
-                        }
+                        iconPath: liuchengWanchengSvg,
+                        title: "完成",
                     },
                 ],
-                imageData: {
-                    label: "领用影像",
-                    iconPath: riliXingzhuangSvg,
+            },
+            operatingRecord: {
+                header: [
+                    {
+                        prop: '0',
+                        label: "序号",
+                    },
+                    {
+                        prop: '1',
+                        label: "操作人",
+                    },
+                    {
+                        prop: '2',
+                        label: "操作时间",
+                        sortable: true,
+                    },
+                    {
+                        prop: '3',
+                        label: "操作记录",
+                    },
+                    {
+                        prop: '4',
+                        label: "操作说明",
+                    },
+                ],
+                data: [
+                    {
+                        0: 1,
+                        1: "马丽丽",
+                        2: "2022-11-12 19:00:12",
+                        3: "新增用印申请",
+                        4: "新增用印申请：用印申请-客户问题验证",
+                    },
+                    {
+                        0: 2,
+                        1: "王丹",
+                        2: "2022-11-12 19:00:12",
+                        3: "用印申请",
+                        4: "发起申请",
+                    },
+                    {
+                        0: 3,
+                        1: "清村",
+                        2: "2022-11-12 19:00:12",
+                        3: "审批",
+                        4: "授权码自动失效，相关印章：[智]Kevin_预发测试2【简称_9290_2.3.1】",
+                    },
+                    {
+                        0: 4,
+                        1: "哈士奇",
+                        2: "2022-11-12 19:00:12",
+                        3: "文件归档",
+                        4: "同意",
+                    },
+                ],
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    border: true,
+                    "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                        // console.log({ row, column, rowIndex, columnIndex });
+                        return {
+                            "background": "var(--color-fill--1)"
+                        }
+                    },
+                }
+            },
+            RecordOfRequisition: {
+                SealInformation: {
                     data: [
                         {
-                            imgPath: UploadBackgroundSvg,
-                            iconPath: renlianIconSvg,
-                            time: "12-11 14:09",
-                            list: [
-                                {
-                                    label: "开锁类型",
-                                    value: "领取印章",
-                                },
-                                {
-                                    label: "开锁时间",
-                                    value: "2022-12-01 20:17:54  ",
-                                },
-                                {
-                                    label: "关门类型",
-                                    value: "2022-12-02 20:17:54  ",
-                                },
-                                {
-                                    label: "取出",
-                                    value: "【智】测试章",
-                                },
-                                {
-                                    label: "放入",
-                                    value: "无",
-                                }
-                            ]
+                            iconPath: riliXingzhuangSvg,
+                            label: "印章名称",
+                            value: "Kevin_预发_57420F【简称_9290_2.3.1】",
+                            subStyle: {
+                                color: "var(--Info-6)"
+                            },
+                            subText: "查看在柜状态",
                         },
                         {
-                            imgPath: UploadBackgroundSvg,
-                            iconPath: renlianIconSvg,
-                            time: "12-11 14:09",
-                            list: [
-                                {
-                                    label: "开锁类型",
-                                    value: "领取印章",
-                                },
-                                {
-                                    label: "开锁时间",
-                                    value: "2022-12-01 20:17:54  ",
-                                },
-                                {
-                                    label: "关门类型",
-                                    value: "2022-12-02 20:17:54  ",
-                                },
-                                {
-                                    label: "取出",
-                                    value: "【智】测试章",
-                                },
-                                {
-                                    label: "放入",
-                                    value: "无",
-                                }
-                            ]
+                            iconPath: riliXingzhuangSvg,
+                            label: "绑定设备",
+                            value: "9290_2.3.1",
                         },
                         {
-                            imgPath: UploadBackgroundSvg,
-                            iconPath: renlianIconSvg,
-                            time: "12-11 14:09",
-                            list: [
-                                {
-                                    label: "开锁类型",
-                                    value: "领取印章",
-                                },
-                                {
-                                    label: "开锁时间",
-                                    value: "2022-12-01 20:17:54  ",
-                                },
-                                {
-                                    label: "关门类型",
-                                    value: "2022-12-02 20:17:54  ",
-                                },
-                                {
-                                    label: "取出",
-                                    value: "【智】测试章",
-                                },
-                                {
-                                    label: "放入",
-                                    value: "无",
-                                }
-                            ]
+                            iconPath: riliXingzhuangSvg,
+                            label: "绑定格口",
+                            value: "印章柜_2L_SY/A-1-1",
                         },
                         {
-                            imgPath: UploadBackgroundSvg,
-                            iconPath: renlianIconSvg,
-                            time: "12-11 14:09",
-                            list: [
-                                {
-                                    label: "开锁类型",
-                                    value: "领取印章",
-                                },
-                                {
-                                    label: "开锁时间",
-                                    value: "2022-12-01 20:17:54  ",
-                                },
-                                {
-                                    label: "关门类型",
-                                    value: "2022-12-02 20:17:54  ",
-                                },
-                                {
-                                    label: "取出",
-                                    value: "【智】测试章",
-                                },
-                                {
-                                    label: "放入",
-                                    value: "无",
-                                }
-                            ]
+                            iconPath: riliXingzhuangSvg,
+                            label: "领用状态",
+                            value: "已失效",
+                            iconPathValue: yuanHuiSvg,
+                            style: {
+                                color: "var(--color-text-3)"
+                            }
                         },
                     ],
-                }
-            }
-        },
-        RecordOfCustody: {
-            header: [
-                {
-                    prop: '0',
-                    label: "序号",
-                },
-                {
-                    prop: '1',
-                    label: "保管人",
-                },
-                {
-                    prop: '3',
-                    label: "保管部门",
-                },
-                {
-                    prop: '2',
-                    label: "保管时间",
-                    sortable: true,
-                },
-            ],
-            data: [
-                {
-                    0: 1,
-                    1: "马丽丽",
-                    2: "2022-11-12 19:00:12",
-                    3: "研发部",
-                },
-                {
-                    0: 2,
-                    1: "王丹",
-                    2: "2022-11-12 19:00:12",
-                    3: "开发部",
-                },
-                {
-                    0: 3,
-                    1: "清村",
-                    2: "2022-11-12 19:00:12",
-                    3: "销售部",
-                },
-                {
-                    0: 4,
-                    1: "哈士奇",
-                    2: "2022-11-12 19:00:12",
-                    3: "财务部",
-                },
-            ],
-            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-            defaultAttribute: {
-                border: true,
-                "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
-                    // console.log({ row, column, rowIndex, columnIndex });
-                    return {
-                        "background": "var(--color-fill--1)"
+                    imageData: {
+                        label: "领用影像",
+                        iconPath: riliXingzhuangSvg,
+                        data: [
+                            {
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: renlianIconSvg,
+                                time: "12-11 14:09",
+                                list: [
+                                    {
+                                        label: "开锁类型",
+                                        value: "领取印章",
+                                    },
+                                    {
+                                        label: "开锁时间",
+                                        value: "2022-12-01 20:17:54  ",
+                                    },
+                                    {
+                                        label: "关门类型",
+                                        value: "2022-12-02 20:17:54  ",
+                                    },
+                                    {
+                                        label: "取出",
+                                        value: "【智】测试章",
+                                    },
+                                    {
+                                        label: "放入",
+                                        value: "无",
+                                    }
+                                ]
+                            },
+                            {
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: renlianIconSvg,
+                                time: "12-11 14:09",
+                                list: [
+                                    {
+                                        label: "开锁类型",
+                                        value: "领取印章",
+                                    },
+                                    {
+                                        label: "开锁时间",
+                                        value: "2022-12-01 20:17:54  ",
+                                    },
+                                    {
+                                        label: "关门类型",
+                                        value: "2022-12-02 20:17:54  ",
+                                    },
+                                    {
+                                        label: "取出",
+                                        value: "【智】测试章",
+                                    },
+                                    {
+                                        label: "放入",
+                                        value: "无",
+                                    }
+                                ]
+                            },
+                            {
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: renlianIconSvg,
+                                time: "12-11 14:09",
+                                list: [
+                                    {
+                                        label: "开锁类型",
+                                        value: "领取印章",
+                                    },
+                                    {
+                                        label: "开锁时间",
+                                        value: "2022-12-01 20:17:54  ",
+                                    },
+                                    {
+                                        label: "关门类型",
+                                        value: "2022-12-02 20:17:54  ",
+                                    },
+                                    {
+                                        label: "取出",
+                                        value: "【智】测试章",
+                                    },
+                                    {
+                                        label: "放入",
+                                        value: "无",
+                                    }
+                                ]
+                            },
+                            {
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: renlianIconSvg,
+                                time: "12-11 14:09",
+                                list: [
+                                    {
+                                        label: "开锁类型",
+                                        value: "领取印章",
+                                    },
+                                    {
+                                        label: "开锁时间",
+                                        value: "2022-12-01 20:17:54  ",
+                                    },
+                                    {
+                                        label: "关门类型",
+                                        value: "2022-12-02 20:17:54  ",
+                                    },
+                                    {
+                                        label: "取出",
+                                        value: "【智】测试章",
+                                    },
+                                    {
+                                        label: "放入",
+                                        value: "无",
+                                    }
+                                ]
+                            },
+                        ],
                     }
-                },
-            }
-        },
-        ParticularsOfSeal: {
-            basicInformation: {
-                title: "基本信息",
-                show: true,
-                data: [
+                }
+            },
+            RecordOfCustody: {
+                header: [
                     {
-                        label: "印章全称",
-                        value: "上海合同销售印章全称",
+                        prop: '0',
+                        label: "序号",
                     },
                     {
-                        label: "印章简称",
-                        value: "合同销售",
+                        prop: '1',
+                        label: "保管人",
                     },
                     {
-                        label: "印章编码",
-                        value: "229987657667888",
-                    },
-                    {
-                        label: "所属单位",
-                        value: "-",
-                    },
-                    {
-                        label: "硬件编码",
-                        value: "2299876576CGYU414",
-                    },
-                    {
-                        label: "印章类型",
-                        value: "合同章",
-                    },
-                    {
-                        label: "管理人",
-                        value: "楚基",
-                    },
-                    {
-                        label: "印章状态",
-                        value: "状态",
-                        iconPath: yuanLvSvg,
-                        iconStyle: {
-
-                        },
-                        style: {
-                            color: "var(--success-6)"
-                        },
-                    },
-                    {
-                        label: "管理部门",
-                        value: "建业科技",
-                    },
-                    {
+                        prop: '3',
                         label: "保管部门",
-                        value: "建业科技",
                     },
                     {
-                        label: "是否外显",
-                        value: "是",
-                    },
-                    {
-                        label: "印章可见范围",
-                        value: "智能用印中",
-                    },
-                    {
-                        label: "固件版本号",
-                        value: "V2.8.0",
-                    },
-                    {
-                        label: "用印记录",
-                        value: "查看用印记录",
-                        style: {
-                            color: "var(--Info-7)"
-                        },
-                    },
-                    {
-                        label: "制度链接",
-                        value: "-",
-                    },
-                    {
-                        label: "印章操作",
-                        value: "+发起用印申请",
-                        style: {
-                            color: "var(--Info-7)"
-                        },
-                    },
-                    {
-                        label: "备注",
-                        value: "-",
+                        prop: '2',
+                        label: "保管时间",
+                        sortable: true,
                     },
                 ],
-            },
-        },
-        DetailsOfDocument: {
-            basicInformation: {
-                title: "基本信息",
-                show: true,
                 data: [
                     {
-                        label: "文件名称",
-                        value: "字段名称",
+                        0: 1,
+                        1: "马丽丽",
+                        2: "2022-11-12 19:00:12",
+                        3: "研发部",
                     },
                     {
-                        label: "文件字号",
-                        value: "字段名称",
+                        0: 2,
+                        1: "王丹",
+                        2: "2022-11-12 19:00:12",
+                        3: "开发部",
                     },
                     {
-                        label: "文件类型",
-                        value: "字段名称",
+                        0: 3,
+                        1: "清村",
+                        2: "2022-11-12 19:00:12",
+                        3: "销售部",
                     },
                     {
-                        label: "创建人",
-                        value: "字段名称",
+                        0: 4,
+                        1: "哈士奇",
+                        2: "2022-11-12 19:00:12",
+                        3: "财务部",
                     },
-                    {
-                        label: "创建部门",
-                        value: "字段名称",
-                    },
-                    {
-                        label: "创建时间",
-                        value: "字段名称",
-                    },
-                    {
-                        label: "来源类型",
-                        value: "字段名称",
-                    },
-                    {
-                        label: "关联单据名称",
-                        value: "字段名称",
-                    },
-
                 ],
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    border: true,
+                    "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                        // console.log({ row, column, rowIndex, columnIndex });
+                        return {
+                            "background": "var(--color-fill--1)"
+                        }
+                    },
+                }
             },
-        },
+            ParticularsOfSeal: {
+                basicInformation: {
+                    title: "基本信息",
+                    show: true,
+                    data: [
+                        {
+                            label: "印章全称",
+                            value: "上海合同销售印章全称",
+                        },
+                        {
+                            label: "印章简称",
+                            value: "合同销售",
+                        },
+                        {
+                            label: "印章编码",
+                            value: "229987657667888",
+                        },
+                        {
+                            label: "所属单位",
+                            value: "-",
+                        },
+                        {
+                            label: "硬件编码",
+                            value: "2299876576CGYU414",
+                        },
+                        {
+                            label: "印章类型",
+                            value: "合同章",
+                        },
+                        {
+                            label: "管理人",
+                            value: "楚基",
+                        },
+                        {
+                            label: "印章状态",
+                            value: "状态",
+                            iconPath: yuanLvSvg,
+                            iconStyle: {
+
+                            },
+                            style: {
+                                color: "var(--success-6)"
+                            },
+                        },
+                        {
+                            label: "管理部门",
+                            value: "建业科技",
+                        },
+                        {
+                            label: "保管部门",
+                            value: "建业科技",
+                        },
+                        {
+                            label: "是否外显",
+                            value: "是",
+                        },
+                        {
+                            label: "印章可见范围",
+                            value: "智能用印中",
+                        },
+                        {
+                            label: "固件版本号",
+                            value: "V2.8.0",
+                        },
+                        {
+                            label: "用印记录",
+                            value: "查看用印记录",
+                            style: {
+                                color: "var(--Info-7)"
+                            },
+                        },
+                        {
+                            label: "制度链接",
+                            value: "-",
+                        },
+                        {
+                            label: "印章操作",
+                            value: "+发起用印申请",
+                            style: {
+                                color: "var(--Info-7)"
+                            },
+                        },
+                        {
+                            label: "备注",
+                            value: "-",
+                        },
+                    ],
+                },
+            },
+            DetailsOfDocument: {
+                basicInformation: {
+                    title: "基本信息",
+                    show: true,
+                    data: [
+                        {
+                            label: "文件名称",
+                            value: "字段名称",
+                        },
+                        {
+                            label: "文件字号",
+                            value: "字段名称",
+                        },
+                        {
+                            label: "文件类型",
+                            value: "字段名称",
+                        },
+                        {
+                            label: "创建人",
+                            value: "字段名称",
+                        },
+                        {
+                            label: "创建部门",
+                            value: "字段名称",
+                        },
+                        {
+                            label: "创建时间",
+                            value: "字段名称",
+                        },
+                        {
+                            label: "来源类型",
+                            value: "字段名称",
+                        },
+                        {
+                            label: "关联单据名称",
+                            value: "字段名称",
+                        },
+
+                    ],
+                },
+            },
+        }
     },
     drawer: {
         show: true,
@@ -1022,6 +1147,7 @@ const state = reactive({
             }]
         }]
     }
+
 });
 //初始化数据
 function initData() {
