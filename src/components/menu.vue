@@ -1502,35 +1502,35 @@ export default {
               },
             ]
           },
-          {
-            name: "数据报表",
-            label: "t-zgj-cg-menu-shuju-baobiao",
-            type: "part",
-          },
-          {
-            name: "数据看板",
-            label: "t-zgj-cg-menu-shuju-kanban",
-            to: "/frontDesk/home",
-            icon: icon15,
-          },
-          {
-            name: "用印数据分析",
-            label: "t-zgj-cg-menu-yongyin-shuju-fenxi",
-            to: "/frontDesk/home",
-            icon: icon16,
-          },
-          {
-            name: "印章数据分析",
-            label: "t-zgj-cg-menu-yinzhang-shuju-fenxi",
-            to: "/frontDesk/home",
-            icon: icon17,
-          },
-          {
-            name: "预警数据分析",
-            label: "t-zgj-cg-menu-yujing-shuju-fenxi",
-            to: "/frontDesk/home",
-            icon: icon18,
-          },
+          // {
+          //   name: "数据报表",
+          //   label: "t-zgj-cg-menu-shuju-baobiao",
+          //   type: "part",
+          // },
+          // {
+          //   name: "数据看板",
+          //   label: "t-zgj-cg-menu-shuju-kanban",
+          //   to: "/frontDesk/home",
+          //   icon: icon15,
+          // },
+          // {
+          //   name: "用印数据分析",
+          //   label: "t-zgj-cg-menu-yongyin-shuju-fenxi",
+          //   to: "/frontDesk/home",
+          //   icon: icon16,
+          // },
+          // {
+          //   name: "印章数据分析",
+          //   label: "t-zgj-cg-menu-yinzhang-shuju-fenxi",
+          //   to: "/frontDesk/home",
+          //   icon: icon17,
+          // },
+          // {
+          //   name: "预警数据分析",
+          //   label: "t-zgj-cg-menu-yujing-shuju-fenxi",
+          //   to: "/frontDesk/home",
+          //   icon: icon18,
+          // },
         ],
         system: [
           {
