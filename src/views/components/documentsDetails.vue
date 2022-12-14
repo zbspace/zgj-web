@@ -87,7 +87,7 @@
                                             <template #content>
                                                 <div class="sealDetails-accessory-list">
                                                     <componentsFileverification
-                                                    :data="state.cache.DetailsaOfPrinting.fileocrInformation.data" />
+                                                        :data="state.cache.DetailsaOfPrinting.fileocrInformation.data" />
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -129,7 +129,7 @@
                                             <template #content>
                                                 <div class="sealDetails-accessory-list">
                                                     <componentsArchive
-                                                    :data="state.cache.DetailsaOfPrinting.archiveInformation.data" />
+                                                        :data="state.cache.DetailsaOfPrinting.archiveInformation.data" />
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -1231,7 +1231,7 @@ const state = reactive({
                     },
                 ],
                 labelStyle: {
-                    width: "6rem"
+                    width: "8rem"
                 }
             },
         },
