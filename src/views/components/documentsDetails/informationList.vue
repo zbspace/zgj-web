@@ -3,10 +3,10 @@
     <div class="documentsDetails-informationList">
         <div class="ap-cont">
             <div class=" ap-cont-details">
-                <div class="ap-cont-list" v-for="item in props.data">
-                    <div class="ap-cont-list-label">{{ item.label }}：
+                <div class="ap-cont-list" v-for="item in props.data" :style="item.lineStyle">
+                    <div class="ap-cont-list-label" :style="[labelStyle, item.labelStyle]">{{ item.label }}：
                     </div>
-                    <div class="ap-cont-list-value" :style="item.style">
+                    <div class="ap-cont-list-value" :style="item.valStyle">
                         <img class="ap-cont-list-value-icon" :src="item.iconPath" :style="item.iconStyle" alt=""
                             v-if="item.iconPath">
                         {{ item.value }}
@@ -33,6 +33,10 @@ const props = defineProps({
     data: {
         type: Array,
         default: []
+    },
+    labelStyle: {
+        type: Object,
+        default: {}
     },
     // 默认属性
     defaultAttribute: {
