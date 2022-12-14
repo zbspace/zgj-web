@@ -55,11 +55,7 @@ createApp(App)
   .use(i18n)
   // .use(vClickOutside)
   .use(ElementPlus, { locale: zhCn })
-<<<<<<< HEAD
   // .use(ArcoVue)
   .use(VFormRender)
-  .mount("#app")
-=======
   .use(ArcoVue)
   .mount("#app");
->>>>>>> 3d48d7c2934adee8dd222d3d2d4af8055a2d5452
