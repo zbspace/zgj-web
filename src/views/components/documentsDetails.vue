@@ -35,94 +35,118 @@
                                 <div class="Details-of-Printing"
                                     v-if="state.componentsTabs.activeName == 'Details-of-Printing'">
                                     <div class="ap-cont-box sealDetails-basic-information">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">基本信息</span>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-basic-information-details">
-                                            <div class="sealDetails-basic-information-list"
-                                                v-for="item in state.cache.DetailsaOfPrinting.basicInformation.data">
-                                                <div class="sealDetails-basic-information-list-label">{{ item.label }}：
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.DetailsaOfPrinting.basicInformation.data">
+
+                                                    </documentsDetailsInformationList>
                                                 </div>
-                                                <div class="sealDetails-basic-information-list-value"
-                                                    :style="item.style">
-                                                    <img class="sealDetails-basic-information-list-value-icon"
-                                                        :src="item.iconPath" :style="item.iconStyle" alt=""
-                                                        v-if="item.iconPath">
-                                                    {{ item.value }}
-                                                </div>
-                                            </div>
-                                        </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box sealDetails-accessory">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">附件</span>
-                                            <div class="ap-cont-box-title-xiazai">
-                                                <img class="ap-cont-box-title-xiazai-icon"
-                                                    src="../../assets/svg/xiazai.svg" alt="">
-                                                <span class="ap-cont-box-title-xiazai-text">打包下载</span>
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-accessory-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">附件</div>
+                                            </template>
+                                            <template #subTitle>
+                                                <div class="ap-cont-box-title-xiazai">
+                                                    <img class="ap-cont-box-title-xiazai-icon"
+                                                        src="../../assets/svg/xiazai.svg" alt="">
+                                                    <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                                </div>
+                                            </template>
+                                            <template #content>
+                                                <div class="sealDetails-accessory-list">
+                                                    <documentsDetailsAccessory
+                                                        :printedData="state.cache.DetailsaOfPrinting.accessory.printedData"
+                                                        :additionalData="state.cache.DetailsaOfPrinting.accessory.additionalData">
+
+                                                    </documentsDetailsAccessory>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box sealDetails-Document-verification-before-closing">
-                                        <div class="ap-cont-box-title">
-
-                                            <span class="ap-cont-box-title-label">盖前文件核验</span>
-                                            <div class="ap-cont-box-title-xiazai">
-                                                <img class="ap-cont-box-title-xiazai-icon"
-                                                    src="../../assets/svg/xiazai.svg" alt="">
-                                                <span class="ap-cont-box-title-xiazai-text">打包下载</span>
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">盖前文件核验</div>
+                                            </template>
+                                            <template #subTitle>
+                                                <div class="ap-cont-box-title-xiazai">
+                                                    <img class="ap-cont-box-title-xiazai-icon"
+                                                        src="../../assets/svg/xiazai.svg" alt="">
+                                                    <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                                </div>
+                                            </template>
+                                            <template #content>
+                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box sealDetails-Intelligent-printing">
-                                        <div class="ap-cont-box-title">
-
-                                            <span class="ap-cont-box-title-label">智能用印</span>
-                                            <div class="ap-cont-box-title-xiazai">
-                                                <img class="ap-cont-box-title-xiazai-icon"
-                                                    src="../../assets/svg/xiazai.svg" alt="">
-                                                <span class="ap-cont-box-title-xiazai-text">打包下载</span>
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">智能用印</div>
+                                            </template>
+                                            <template #subTitle>
+                                                <div class="ap-cont-box-title-xiazai">
+                                                    <img class="ap-cont-box-title-xiazai-icon"
+                                                        src="../../assets/svg/xiazai.svg" alt="">
+                                                    <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                                </div>
+                                            </template>
+                                            <template #content>
+                                                <div class="sealDetails-accessory-list">
+                                                    <documentsDetailsIntelligentPrinting
+                                                        :more="state.cache.DetailsaOfPrinting.IntelligentPrinting.more"
+                                                        :data="state.cache.DetailsaOfPrinting.IntelligentPrinting.data">
+                                                    </documentsDetailsIntelligentPrinting>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box sealDetails-file-document">
-                                        <div class="ap-cont-box-title">
-
-                                            <span class="ap-cont-box-title-label">文件归档</span>
-                                            <div class="ap-cont-box-title-xiazai">
-                                                <img class="ap-cont-box-title-xiazai-icon"
-                                                    src="../../assets/svg/xiazai.svg" alt="">
-                                                <span class="ap-cont-box-title-xiazai-text">打包下载</span>
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">文件归档</div>
+                                            </template>
+                                            <template #subTitle>
+                                                <div class="ap-cont-box-title-xiazai">
+                                                    <img class="ap-cont-box-title-xiazai-icon"
+                                                        src="../../assets/svg/xiazai.svg" alt="">
+                                                    <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                                </div>
+                                            </template>
+                                            <template #content>
+                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box sealDetails-electronic-seal">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">电子签章</span>
-                                            <div class="ap-cont-box-title-xiazai">
-
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">电子签章</div>
+                                            </template>
+                                            <template #subTitle>
+                                                <div class="ap-cont-box-title-xiazai">
+                                                    <img class="ap-cont-box-title-xiazai-icon"
+                                                        src="../../assets/svg/xiazai.svg" alt="">
+                                                    <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                                </div>
+                                            </template>
+                                            <template #content>
+                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                 </div>
                                 <!-- 审批流程 -->
@@ -331,6 +355,10 @@ import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, watch } f
 import componentsTabs from "./tabs.vue"
 import componentsTable from "./table"
 import componentsApprovalSteps from "./approvalSteps"
+import documentsDetailsPortion from "./documentsDetails/portion.vue"
+import documentsDetailsInformationList from "./documentsDetails/informationList.vue"
+import documentsDetailsAccessory from "./documentsDetails/accessory.vue"
+import documentsDetailsIntelligentPrinting from "./documentsDetails/IntelligentPrinting.vue"
 
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
@@ -345,6 +373,8 @@ import liuchengJujueSvg from '@/assets/svg/liucheng-jujue.svg'
 import liuchengWanchengSvg from '@/assets/svg/liucheng-wancheng.svg'
 import yuanHuiSvg from '@/assets/svg/yuan-hui.svg'
 import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
+import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
+
 
 
 const props = defineProps({
@@ -433,6 +463,84 @@ const state = reactive({
                             color: "var(--success-6)"
                         },
                     },
+                ],
+            },
+            accessory: {
+                title: "附件",
+                show: true,
+                //用印文件
+                printedData: [
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                ],
+                //补充文件
+                additionalData: [
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                    {
+                        name: "文件名称文件名称文件名称文件名称文件名称文件名称.pdf",
+                        size: "1.4M",
+                    },
+                ],
+            },
+            IntelligentPrinting: {
+                title: "基本信息",
+                show: true,
+                more: true,
+                data: [
+                    {
+                        sealName: "详情内容详情内容详情内容详情内容",
+                        personName: "详情内容详情内容详情内容详情内容",
+                        time: "2022-11-30  16:00:00",
+                        adress: "详情内容详情内容详情内容详情内容",
+                        imageNum:8,
+                        imageData: [
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                            {
+                                personName: "马丽丽",
+                                time: "14:09",
+                                imgPath: UploadBackgroundSvg,
+                                iconPath: gaizhangIcon,
+                            },
+                        ]
+                    }
                 ],
             },
         },
@@ -1155,7 +1263,7 @@ watch(() => [props.show], (newValue, oldValue) => {
 
             .ap-cont-box-title-label {
                 font-size: var(--font-size-title-1);
-                font-weight: var(--font-weight-600);
+                font-weight: var(--font-weight-400);
             }
 
             .ap-cont-box-title-xiazai {

@@ -21,17 +21,17 @@
         </div>
       </template>
 
-      <template #batch>
-        <div class="batch">
-          <el-button type="primary">+ 新建</el-button>
-          <el-button>批量操作</el-button>
-        </div>
-      </template>
-
       <template #tree>
         <div>
           <componentsTree :data="state.componentsTree.data" :defaultAttribute="state.componentsTree.defaultAttribute">
           </componentsTree>
+        </div>
+      </template>
+
+      <template #batch>
+        <div class="batch">
+          <el-button type="primary">+ 新建</el-button>
+          <el-button>批量操作</el-button>
         </div>
       </template>
 

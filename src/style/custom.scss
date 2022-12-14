@@ -218,10 +218,10 @@ body {
     padding-left: 0%;
     background-color: var(--background-color-1);
     padding-right: 0;
-}
-
-.container-fluid {
-    padding:0 24px;
+    .container-fluid {
+        padding:0 24px;
+        --vz-gutter-x: 0
+    }
 }
 
 // #page-topbar {

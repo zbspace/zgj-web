@@ -276,10 +276,11 @@ onMounted(() => {
 <style lang='scss' scoped>
 .components-searchForm {
     .ap-dis {
-        padding: 0rem 0% 0rem 0%;
+        padding: 0rem 0% 0.5rem 0%;
         display: flex;
         flex-flow: wrap;
         box-sizing: border-box;
+        border-bottom: 1px solid var(--color-border-2);
     }
 
     .lineShow {
@@ -415,5 +416,10 @@ onMounted(() => {
         width: 100%;
     }
 
+    :deep {
+        .width-100 {
+            width: 100% !important;
+        }
+    }
 }
 </style>

@@ -21,7 +21,8 @@
 }
 
 .page-content {
-    padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.5) $footer-height calc(#{$grid-gutter-width} * 0.5);
+    padding: 64px 0 0 0;
+    // padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.5) $footer-height calc(#{$grid-gutter-width} * 0.5);
 }
 
 .navbar-menu {
@@ -942,6 +943,7 @@
         #layout-wrapper,
         .main-content {
             min-height: 100vh;
+            background-color: var(--background-color-1);
         }
 
         @media (min-width: 1024.1px) {

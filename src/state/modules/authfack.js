@@ -2,11 +2,11 @@ import { userService } from '../../helpers/authservice/user.service';
 import router from '../../router/index'
 
 const user = JSON.parse(localStorage.getItem('user'));
-export const state = user
+const state = user
     ? { status: { loggeduser: true }, user }
     : { status: {}, user: null };
 
-export const actions = {
+const actions = {
     // Logs in the user.
     // eslint-disable-next-line no-unused-vars
     login({ dispatch, commit }, { email, password }) {
@@ -47,7 +47,7 @@ export const actions = {
     }
 };
 
-export const mutations = {
+const mutations = {
     loginRequest(state, user) {
         state.status = { loggingIn: true };
         state.user = user;
@@ -75,3 +75,9 @@ export const mutations = {
     }
 };
 
+export default {
+    state,
+    mutations,
+    actions,
+    namespaced: true,
+}
