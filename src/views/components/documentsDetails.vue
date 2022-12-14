@@ -155,14 +155,6 @@
                                     <componentsApprovalSteps :data="state.cache.approvalProcess.data">
                                     </componentsApprovalSteps>
                                 </div>
-                                <!-- 操作记录 -->
-                                <div class="operating-record"
-                                    v-else-if="state.componentsTabs.activeName == 'operating-record'">
-                                    <componentsTable :data="state.cache.operatingRecord.data"
-                                        :header="state.cache.operatingRecord.header"
-                                        :defaultAttribute="state.cache.operatingRecord.defaultAttribute">
-                                    </componentsTable>
-                                </div>
                                 <!-- 领用记录 -->
                                 <div class="Record-of-requisition"
                                     v-else-if="state.componentsTabs.activeName == 'Record-of-requisition'">
@@ -238,6 +230,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <!-- 操作记录 -->
+                                <div class="operating-record"
+                                    v-else-if="state.componentsTabs.activeName == 'operating-record'">
+                                    <componentsTable :data="state.cache.operatingRecord.data"
+                                        :header="state.cache.operatingRecord.header"
+                                        :defaultAttribute="state.cache.operatingRecord.defaultAttribute">
+                                    </componentsTable>
                                 </div>
                                 <!-- 保管记录 -->
                                 <div class="Record-of-custody"
@@ -421,12 +421,8 @@ const state = reactive({
                         value: "上海建筑材料清单合同明细",
                     },
                     {
-                        label: "用印编码",
+                        label: "单据编码",
                         value: "229987657667888",
-                    },
-                    {
-                        label: "用印类型",
-                        value: "实体章",
                     },
                     {
                         label: "文件类型",
@@ -441,6 +437,10 @@ const state = reactive({
                         value: "11088.00",
                     },
                     {
+                        label: "申请事由",
+                        value: "20次",
+                    },
+                    {
                         label: "印章名称",
                         value: "销售合同",
                     },
@@ -449,11 +449,23 @@ const state = reactive({
                         value: "20次",
                     },
                     {
-                        label: "印章外带",
-                        value: "是",
+                        label: "盖章码",
+                        value: "554778",
                     },
                     {
-                        label: "用印状态",
+                        label: "申请人员",
+                        value: "20次",
+                    },
+                    {
+                        label: "申请时间",
+                        value: "2022-2-12 12:44:58",
+                    },
+                    {
+                        label: "所属部门",
+                        value: "技术部",
+                    },
+                    {
+                        label: "单据状态",
                         value: "智能用印中",
                         iconPath: yuanLvSvg,
                         iconStyle: {
@@ -501,7 +513,7 @@ const state = reactive({
                         personName: "详情内容详情内容详情内容详情内容",
                         time: "2022-11-30  16:00:00",
                         adress: "详情内容详情内容详情内容详情内容",
-                        imageNum:8,
+                        imageNum: 8,
                         imageData: [
                             {
                                 personName: "马丽丽",
@@ -637,28 +649,35 @@ const state = reactive({
             data: [
                 {
                     0: 1,
-                    1: "马丽丽",
+                    1: "周俊毅",
                     2: "2022-11-12 19:00:12",
                     3: "新增用印申请",
                     4: "新增用印申请：用印申请-客户问题验证",
                 },
                 {
                     0: 2,
-                    1: "王丹",
+                    1: "王凡玄",
                     2: "2022-11-12 19:00:12",
                     3: "用印申请",
                     4: "发起申请",
                 },
                 {
                     0: 3,
-                    1: "清村",
+                    1: "李豫卓",
                     2: "2022-11-12 19:00:12",
                     3: "审批",
                     4: "授权码自动失效，相关印章：[智]Kevin_预发测试2【简称_9290_2.3.1】",
                 },
                 {
                     0: 4,
-                    1: "哈士奇",
+                    1: "孙思达",
+                    2: "2022-11-12 19:00:12",
+                    3: "文件归档",
+                    4: "同意",
+                },
+                {
+                    0: 5,
+                    1: "李梓发",
                     2: "2022-11-12 19:00:12",
                     3: "文件归档",
                     4: "同意",
@@ -1043,12 +1062,12 @@ const state = reactive({
                 name: "Record-of-custody",
             },
             {
-                label: '操作记录',
-                name: "operating-record",
-            },
-            {
                 label: '领用记录',
                 name: "Record-of-requisition",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
             },
         ],
         activeName: "Details-of-Printing",

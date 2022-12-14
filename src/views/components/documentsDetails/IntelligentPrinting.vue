@@ -1,7 +1,7 @@
 <!-- 智能用印 -->
 <template>
     <div class="documentsDetails-IntelligentPrinting">
-        <div class="ap-seal" v-for="(item, index) in props.data" :key="index">
+        <div class="ap-seal" v-for="(item, index) in state.cache.data" :key="index">
             <div class="ap-seal-box">
                 <div class="ap-seal-box-icon">
                     <img class="ap-seal-box-icon-img" src="../../../assets/svg/yongyin-mingcheng.svg" alt="">
@@ -43,7 +43,7 @@
                     <img class="ap-seal-box-icon-img" src="../../../assets/svg/gaizhang-yingxiang.svg" alt="">
                 </div>
                 <div class="ap-seal-box-desc">
-                    <span class="ap-seal-box-desc-name">盖章影像（{{ item.imageNum }}）：</span>
+                    <span class="ap-seal-box-desc-name">盖章影像（{{ item.imageNum }}）</span>
                     <span class="ap-seal-box-desc-desc"></span>
                 </div>
             </div>
@@ -57,11 +57,19 @@
                     </div>
                 </div>
             </div>
+            <div class="ap-seal-more" v-if="state.cache.more">
+                <div class="ap-seal-more-line"></div>
+                <div class="ap-seal-more-desc" @click="viewMore">
+                    查看更多
+                    <img class="ap-seal-more-desc-img" src="../../../assets/svg/chakan-gengduo-xia.svg" alt="">
+                </div>
+                <div class="ap-seal-more-line"></div>
+            </div>
         </div>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, watch } from "vue"
 const props = defineProps({
     //标识
     refs: {
@@ -83,14 +91,31 @@ const props = defineProps({
         default: false,
     },
 })
-const emit = defineEmits([]);
+const emit = defineEmits(["view-more"]);
 const state = reactive({
-
+    cache: {
+        data: [],
+        more: false,
+    }
 });
-
+// 初始化数据
+function initData() {
+    state.cache.data = props.data;
+    state.cache.more = props.more;
+    console.log(state.cache.more);
+}
+function viewMore() {
+    emit("view-more")
+}
+watch(() => [props.data, props.more], (newValue, oldValue) => {
+    // console.log(newValue, oldValue);
+    //初始化数据
+    initData()
+})
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-
+    //初始化数据
+    initData()
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -123,6 +148,30 @@ onMounted(() => {
                 }
             }
         }
+
+        .ap-seal-more {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            box-sizing: border-box;
+
+            .ap-seal-more-line {
+                width: calc(50% - 5rem);
+                border-bottom: 1px solid var(--color-border-2);
+            }
+
+            .ap-seal-more-desc {
+                display: flex;
+                align-items: center;
+                color: var(--color-text-3);
+                cursor: pointer;
+
+                .ap-seal-more-desc-img {
+                    margin-left: 0.5rem;
+                }
+            }
+        }
     }
 
     .imageData {
@@ -130,11 +179,14 @@ onMounted(() => {
         justify-content: flex-start;
         align-items: flex-start;
         align-content: flex-start;
+        flex-flow: wrap;
 
         .imageData-list {
-            padding: 0.2rem;
+            margin: 0.2rem;
             box-sizing: border-box;
             position: relative;
+            width: 8rem;
+            height: 8rem;
 
             .imageData-list-imgPath {
                 width: 100%;
@@ -144,11 +196,12 @@ onMounted(() => {
             .imageData-list-iconPath {
                 position: absolute;
                 z-index: 1;
-                right: 0.2rem;
-                top: 0.2rem;
+                right: 0rem;
+                top: 0rem;
                 width: 40%;
             }
-            .imageData-list-desc{
+
+            .imageData-list-desc {
                 position: absolute;
                 bottom: 0%;
                 left: 0%;
@@ -156,7 +209,8 @@ onMounted(() => {
                 width: 100%;
                 padding: 0.2rem 0;
                 box-sizing: border-box;
-                background-color: var();
+                background-color: var(--color-fill-65);
+                color: var(--in-common-use-1);
             }
         }
     }
