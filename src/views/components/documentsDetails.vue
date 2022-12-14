@@ -276,45 +276,80 @@
                                             </template>
                                         </documentsDetailsPortion>
                                     </div>
+                                    <div class="ap-cont-box accessory">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">附件</div>
+                                            </template>
+                                            <template #subTitle>
+                                                <div class="ap-cont-box-title-xiazai">
+                                                    <img class="ap-cont-box-title-xiazai-icon"
+                                                        src="../../assets/svg/xiazai.svg" alt="">
+                                                    <span class="ap-cont-box-title-xiazai-text">打包下载</span>
+                                                </div>
+                                            </template>
+                                            <template #content>
+                                                <div class="sealDetails-accessory-list">
+                                                    <documentsDetailsAccessory
+                                                        :printedData="state.cache.DetailsaOfPrinting.accessory.printedData"
+                                                        :additionalData="state.cache.DetailsaOfPrinting.accessory.additionalData">
+
+                                                    </documentsDetailsAccessory>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 印章申请详情 -->
                                 <div class="Seal-Application-Details"
                                     v-if="state.componentsTabs.activeName == 'Seal-Application-Details'">
                                     <div class="ap-cont-box">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">基本信息</span>
-                                            <div class="ap-cont-box-title-xiazai">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SealApplicationDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.SealApplicationDetails.basicInformation.labelStyle">
 
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-accessory-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">印章信息</span>
-                                            <div class="ap-cont-box-title-xiazai">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">印章信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SealApplicationDetails.SealInformation.data"
+                                                        :labelStyle="state.cache.SealApplicationDetails.SealInformation.labelStyle">
 
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-accessory-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                     <div class="ap-cont-box">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">印章办理</span>
-                                            <div class="ap-cont-box-title-xiazai">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">办理信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SealApplicationDetails.ManagementInformation.data"
+                                                        :labelStyle="state.cache.SealApplicationDetails.ManagementInformation.labelStyle">
 
-                                            </div>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-accessory-details">
-                                            <div class="sealDetails-accessory-list" style="height:100px">
-                                            </div>
-                                        </div>
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                 </div>
                                 <!-- 文件详情 -->
@@ -872,6 +907,7 @@ const state = reactive({
                 {
                     prop: '1',
                     label: "操作人",
+                    sortable: true,
                 },
                 {
                     prop: '2',
@@ -881,10 +917,12 @@ const state = reactive({
                 {
                     prop: '3',
                     label: "操作记录",
+                    sortable: true,
                 },
                 {
                     prop: '4',
                     label: "操作说明",
+                    sortable: true,
                 },
             ],
             data: [
@@ -1092,10 +1130,12 @@ const state = reactive({
                 {
                     prop: '1',
                     label: "保管人",
+                    sortable: true,
                 },
                 {
                     prop: '3',
                     label: "保管部门",
+                    sortable: true,
                 },
                 {
                     prop: '2',
@@ -1106,26 +1146,32 @@ const state = reactive({
             data: [
                 {
                     0: 1,
-                    1: "马丽丽",
-                    2: "2022-11-12 19:00:12",
+                    1: "周俊毅",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
                     3: "研发部",
                 },
                 {
                     0: 2,
-                    1: "王丹",
-                    2: "2022-11-12 19:00:12",
+                    1: "王凡玄",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
                     3: "开发部",
                 },
                 {
                     0: 3,
-                    1: "清村",
-                    2: "2022-11-12 19:00:12",
+                    1: "李豫卓",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
                     3: "销售部",
                 },
                 {
                     0: 4,
-                    1: "哈士奇",
-                    2: "2022-11-12 19:00:12",
+                    1: "孙思达",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
+                    3: "财务部",
+                },
+                {
+                    0: 5,
+                    1: "李梓发",
+                    2: "2022-12-04 11:55:12 - 2022-12-04 11:55:12",
                     3: "财务部",
                 },
             ],
@@ -1158,20 +1204,8 @@ const state = reactive({
                         value: "229987657667888",
                     },
                     {
-                        label: "所属单位",
-                        value: "-",
-                    },
-                    {
-                        label: "硬件编码",
-                        value: "2299876576CGYU414",
-                    },
-                    {
                         label: "印章类型",
                         value: "合同章",
-                    },
-                    {
-                        label: "管理人",
-                        value: "楚基",
                     },
                     {
                         label: "印章状态",
@@ -1183,51 +1217,61 @@ const state = reactive({
                         valStyle: {
                             color: "var(--success-6)"
                         },
-                        lineStyle: {
-                            width: "100%"
+                    },
+                    {
+                        label: "印模",
+                        value: "查看",
+                        valStyle: {
+                            color: "var(--Info-7)"
                         },
                     },
                     {
-                        label: "管理部门",
-                        value: "建业科技",
+                        label: "保管人",
+                        value: "楚基",
                     },
                     {
                         label: "保管部门",
                         value: "建业科技",
                     },
                     {
-                        label: "是否外显",
-                        value: "是",
+                        label: "创建时间",
+                        value: "2022-11-12 19:00:12",
                     },
                     {
-                        label: "印章可见范围",
-                        value: "智能用印中",
+                        label: "更新时间",
+                        value: "2022-11-12 19:00:12",
                     },
                     {
-                        label: "固件版本号",
-                        value: "V2.8.0",
-                    },
-                    {
-                        label: "用印记录",
-                        value: "查看用印记录",
-                        valStyle: {
-                            color: "var(--Info-7)"
-                        },
-                    },
-                    {
-                        label: "制度链接",
+                        label: "制度链接：",
                         value: "-",
-                    },
-                    {
-                        label: "印章操作",
-                        value: "+发起用印申请",
-                        valStyle: {
-                            color: "var(--Info-7)"
+
+                        lineStyle: {
+                            width: "100%"
                         },
                     },
                     {
                         label: "备注",
                         value: "-",
+
+                        lineStyle: {
+                            width: "100%"
+                        },
+                    },
+                    {
+                        label: "印章维护范围",
+                        value: "-",
+
+                        lineStyle: {
+                            width: "100%"
+                        },
+                    },
+                    {
+                        label: "印章使用范围",
+                        value: "-",
+
+                        lineStyle: {
+                            width: "100%"
+                        },
                     },
                 ],
                 labelStyle: {
@@ -1273,6 +1317,117 @@ const state = reactive({
                         value: "字段名称",
                     },
 
+                ],
+            },
+        },
+        SealApplicationDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "单据类型",
+                        value: "上海建筑材料清单合同明细",
+                    },
+                    {
+                        label: "单据编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "申请人",
+                        value: "马丽丽",
+                    },
+                    {
+                        label: "原保管人",
+                        value: "研发部",
+                    },
+                    {
+                        label: "申请时间",
+                        value: "2022-11-12  12:22:12",
+                    },
+                    {
+                        label: "原保管部门",
+                        value: "研发部",
+                    },
+                    {
+                        label: "申请保管人",
+                        value: "王丹丹",
+                    },
+                    {
+                        label: "申请保管部门",
+                        value: "-",
+                    },
+                    {
+                        label: "申请事由",
+                        value: "-",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "备注",
+                        value: "销售合同",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+            SealInformation: {
+                title: "印章信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "印章全称",
+                        value: "上海建筑材料清单合同章",
+                    },
+                    {
+                        label: "印章编码",
+                        value: "229987657667888",
+                    },
+                    {
+                        label: "印章简称",
+                        value: "合同章",
+                    },
+                    {
+                        label: "印章状态",
+                        value: "状态",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "印章类型",
+                        value: "公章",
+                    },
+                ],
+            },
+            ManagementInformation: {
+                title: "办理信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "办理人",
+                        value: "成效",
+                    },
+                    {
+                        label: "办理时间",
+                        value: "2022-11-12  12:22:12",
+                    },
+                    {
+                        label: "办理备注",
+                        value: "-",
+                    },
                 ],
             },
         },
