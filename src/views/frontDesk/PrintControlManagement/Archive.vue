@@ -35,7 +35,7 @@
                 </template> -->
             <template #batch>
                 <div class="batch">
-                    <el-button type="primary">导出</el-button>
+
                 </div>
             </template>
             <template #table>
