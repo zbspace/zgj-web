@@ -8,12 +8,12 @@
                         class="error-icon"></span>核验异常</div>
                 <div class="verification-title-item verification-title-item-normal" v-if="id === 'normalResult'"><span
                         class="normal-icon"></span>未核验</div>
-                <div class="verification-title-item verification-title-item-history" v-if="id === 'historyResult'"><span
-                        class="history-icon"></span>历史盖前文件核验<el-icon><ArrowDown /></el-icon></div>
+                <div class="verification-title-item verification-title-item-history" v-if="id === 'historyResult'" @click.stop="historyHide"><span
+                        class="history-icon"></span>历史盖前文件核验<div class="hide-icon" :class="{'show-icon':state.historyShow}"></div></div>
                 <button v-if="id === 'errorResult'">人工核验</button>
                 
             </div>
-            <div class="verification-list">
+            <div class="verification-list" :class="{'verification-list-hide':id === 'historyResult' && !state.historyShow}">
                 <div class="verification-list-item" v-for="(item, index) in it">
                     <div class="file-name-result">
                         <div class="name"><span v-if="id != 'historyResult'" :class="id + '-span'"></span>{{ item[1] }}</div>
@@ -50,6 +50,12 @@ const props = defineProps({
         },
     }
 })
+const state = reactive({
+    historyShow:true
+})
+function historyHide(){
+    state.historyShow = !state.historyShow
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 })
@@ -103,6 +109,18 @@ border:none;
             >.history-icon {
                 background-image: url('../../../assets/svg/verification/verification-history.svg');
             }
+            .hide-icon{
+                width:12px;
+                height:8px;
+                background-image: url('../../../assets/svg/xiangxia-hui.svg');
+                background-size: 100% auto;
+                background-repeat: no-repeat;
+                transform: rotate(-90deg);
+                margin-left:12px;
+            }
+            .show-icon{
+                transform: rotate(0);
+            }
         }
 
     }
@@ -155,6 +173,10 @@ border:none;
             }
         }
 
+    }
+    .verification-list-hide{
+        height:0;
+        overflow:hidden;
     }
 }
 </style>
