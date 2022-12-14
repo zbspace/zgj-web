@@ -46,13 +46,13 @@
       <!-- footer -->
       <div class="footer-custom">
         <!-- 两个按钮 -->
-        <div v-if="!oneBtn" class="default-footer-btns two-btn">
+        <div v-if="!oneBtn" class="default-footer-btns" :class="props.centerBtn ? 'one-btn' : 'two-btn'">
           <div class="confirm btn" @click.stop="handleShow(false, true)">{{ props.confirmText }}</div>
           <div class="concel btn" @click.stop="handleShow(false, true)">{{ props.concelText }}</div>
         </div>
 
         <!-- 一个按钮 -->
-        <div class="default-footer-btns one-btn" v-if="oneBtn">
+        <div class="default-footer-btns" v-if="oneBtn" :class="!props.centerBtn ? 'one-btn' : 'two-btn'">
           <div class="confirm btn" @click.stop="handleShow(false, true)">{{ props.confirmText }}</div>
         </div>
         <!-- <slot name="footer" v-else></slot> -->
@@ -124,6 +124,10 @@ const props = defineProps({
   oneBtn: {
     type: Boolean,
     default: false
+  },
+  centerBtn: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -180,8 +184,7 @@ const handleFullScreen = () => {
   left: 0;
   height: 100vh;
   width: 100vw;
-  z-index:9996;
-
+  z-index: 1003;
   .mask {
     position: absolute;
     top: 0;
@@ -189,7 +192,7 @@ const handleFullScreen = () => {
     height: 100vh;
     width: 100vw;
     background: rgba(0, 0, 0, 0.25);
-    z-index: 9998;
+    z-index: 9996;
   }
   
   .dialog {
@@ -206,6 +209,7 @@ const handleFullScreen = () => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
     .header-custom {
       // cursor: move;
 
@@ -228,6 +232,8 @@ const handleFullScreen = () => {
 
     .content-custom {
       flex: 1;
+      padding: 20px;
+      overflow: auto;
     }
 
     .footer-custom {

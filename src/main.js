@@ -20,14 +20,18 @@ import BootstrapVue3 from "bootstrap-vue-3";
 import "@/assets/scss/config/minimal/app.scss";
 // import '@vueform/slider/themes/default.css'
 
-import ElementPlus from "element-plus";
+import ElementPlus from 'element-plus'
+import VFormRender from "vform3-builds/dist/render.umd.js"
+
+import "vform3-builds/dist/render.style.css"
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import "element-plus/dist/index.css";
 
 import ArcoVue from "@arco-design/web-vue";
 import "@arco-design/web-vue/dist/arco.css";
 // 全局自定义组件
-import components from "@/views/components/modules/index";
+// import components from "@/views/components/modules/index";
+import commonComponents from '@/components/index'
 
 /* 引入自定义全局变量 */
 // import "./style/index.scss";
@@ -39,7 +43,8 @@ import components from "@/views/components/modules/index";
 
 createApp(App)
   .use(store)
-  .use(components)
+  // .use(components)
+  .use(commonComponents)
   .use(router)
   // .use(VueApexCharts)
   .use(BootstrapVue3)
@@ -49,5 +54,7 @@ createApp(App)
   .use(i18n)
   // .use(vClickOutside)
   .use(ElementPlus, { locale: zhCn })
+  // .use(ArcoVue)
+  .use(VFormRender)
   .use(ArcoVue)
   .mount("#app");
