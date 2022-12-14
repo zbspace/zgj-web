@@ -17,7 +17,7 @@
                 <div class="verification-list-item" v-for="(item, index) in it">
                     <div class="file-name-result">
                         <div class="name"><span v-if="id != 'historyResult'" :class="id + '-span'"></span>{{ item[1] }}</div>
-                        <div class="result">{{ item[2] }}<i v-if="item[3] > 0">（{{ item[3] }}）</i></div>
+                        <div class="result" :class="{'result-history':id == 'historyResult'}">{{ item[2] }}<i v-if="item[3] > 0">（{{ item[3] }}）</i></div>
                     </div>
                     <div class="file-basic">
                         <div class="person">核验人：{{ item[4] }}</div>
@@ -165,6 +165,9 @@ border:none;
                     >i {
                         font-style: normal;
                     }
+                }
+                >.result-history{
+                    color: rgba(0, 0, 0, 0.45);
                 }
             }
 
