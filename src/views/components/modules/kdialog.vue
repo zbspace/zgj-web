@@ -47,7 +47,7 @@
       <div class="footer-custom">
         <!-- 两个按钮 -->
         <div v-if="!oneBtn" class="default-footer-btns" :class="props.centerBtn ? 'one-btn' : 'two-btn'">
-          <div class="confirm btn" @click.stop="handleShow(false, true)">{{ props.confirmText }}</div>
+          <div class="confirm btn" @click.stop="handleShow(false, true, 'confrim')">{{ props.confirmText }}</div>
           <div class="concel btn" @click.stop="handleShow(false, true)">{{ props.concelText }}</div>
         </div>
 
@@ -79,6 +79,10 @@
  */
 // <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo标题"></KDialog>
 import { defineProps, defineEmits, ref } from 'vue';
+import { fackClickOutSide } from '@/hooks/fackClickOutSide.js'
+
+fackClickOutSide()
+
 const emit = defineEmits(['update:show', 'close'])
 const props = defineProps({
   show: {
@@ -157,8 +161,12 @@ const vMove = {
 
 // 开启动画自定义类名
 let showDialog = ref(true)
-const handleShow = (val, modal) => {
+const handleShow = (val, modal, type) => {
   if (!modal) {
+    return
+  }
+  if (type === 'confrim') {
+    emit('close', true)
     return
   }
   showDialog.value = val
@@ -233,7 +241,7 @@ const handleFullScreen = () => {
     .content-custom {
       flex: 1;
       padding: 20px;
-      overflow: auto;
+      overflow-y: auto;
     }
 
     .footer-custom {
