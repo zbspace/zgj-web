@@ -73,6 +73,6 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['@/../lib/vform/designer.umd.js','@/../lib/vform/render.umd.js']
+    include: ['@/../lib/vform/designer.umd.js']
   },
 })
