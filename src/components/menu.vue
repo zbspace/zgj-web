@@ -1465,7 +1465,7 @@ export default {
           {
             name: "抄送给我",
             label: "t-zgj-cg-menu-caoshong-geiwo",
-            to: "/frontDesk/home",
+            to: "/frontDesk/approvalFlow/carbonCopyToMe",
             icon: icon12,
           },
           {
