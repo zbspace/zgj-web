@@ -1,20 +1,20 @@
 import axios from "axios";
 
- const state = {
+const state = {
     todos: [],
 };
 
- const getters = {
+const getters = {
     todos: state => state.todos,
 };
 
- const mutations = {
+const mutations = {
     setTodos(state, newValue) {
         state.todos = newValue
     },
 };
 
- const actions = {
+const actions = {
     fetchTodos({ commit }) {
         axios.get('https://jsonplaceholder.typicode.com/todos').then(res => {
             commit('setTodos', res.data)

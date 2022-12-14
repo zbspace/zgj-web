@@ -406,12 +406,12 @@ const state = reactive({
                 name: "approval-process",
             },
             {
-                label: '操作记录',
-                name: "operating-record",
-            },
-            {
                 label: '领用记录',
                 name: "Record-of-requisition",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
             },
         ],
     }
