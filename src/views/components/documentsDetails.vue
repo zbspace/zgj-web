@@ -257,23 +257,20 @@
                                 <div class="Particulars-of-Seal"
                                     v-else-if="state.componentsTabs.activeName == 'Particulars-of-Seal'">
                                     <div class="ap-cont-box sealDetails-basic-information">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">基本信息</span>
-                                        </div>
-                                        <div class="ap-cont-box-details sealDetails-basic-information-details">
-                                            <div class="sealDetails-basic-information-list"
-                                                v-for="item in state.cache.ParticularsOfSeal.basicInformation.data">
-                                                <div class="sealDetails-basic-information-list-label">{{ item.label }}：
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.ParticularsOfSeal.basicInformation.data"
+                                                        :labelStyle="state.cache.ParticularsOfSeal.basicInformation.labelStyle">
+
+                                                    </documentsDetailsInformationList>
                                                 </div>
-                                                <div class="sealDetails-basic-information-list-value"
-                                                    :style="item.style">
-                                                    <img class="sealDetails-basic-information-list-value-icon"
-                                                        :src="item.iconPath" :style="item.iconStyle" alt=""
-                                                        v-if="item.iconPath">
-                                                    {{ item.value }}
-                                                </div>
-                                            </div>
-                                        </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                 </div>
                                 <!-- 印章申请详情 -->
@@ -478,7 +475,7 @@ const state = reactive({
                         iconStyle: {
 
                         },
-                        style: {
+                        valStyle: {
                             color: "var(--success-6)"
                         },
                     },
@@ -601,8 +598,8 @@ const state = reactive({
                             2: "吴彦琛",
                             3: "137 8651 5262",
                             4: "内容",
-                            5:"吴彦琛",
-                            6:"待签署",
+                            5: "吴彦琛",
+                            6: "待签署",
                         },
                         {
                             0: 1,
@@ -610,8 +607,8 @@ const state = reactive({
                             2: "冯启彬",
                             3: "132 9399 2217",
                             4: "内容",
-                            5:"冯启彬",
-                            6:"待签署",
+                            5: "冯启彬",
+                            6: "待签署",
                         },
                         {
                             0: 1,
@@ -619,8 +616,8 @@ const state = reactive({
                             2: "钱若霖",
                             3: "189 2860 9388",
                             4: "内容",
-                            5:"钱若霖",
-                            6:"待签署",
+                            5: "钱若霖",
+                            6: "待签署",
                         },
                         {
                             0: 1,
@@ -628,8 +625,8 @@ const state = reactive({
                             2: "郑盈盈",
                             3: "155 5866 1691",
                             4: "内容",
-                            5:"郑盈盈",
-                            6:"待签署",
+                            5: "郑盈盈",
+                            6: "待签署",
                         },
                         {
                             0: 1,
@@ -637,8 +634,8 @@ const state = reactive({
                             2: "李琳颖",
                             3: "158 5666 9874",
                             4: "内容",
-                            5:"李琳颖",
-                            6:"待签署",
+                            5: "李琳颖",
+                            6: "待签署",
                         },
                     ],
                     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1057,8 +1054,11 @@ const state = reactive({
                         iconStyle: {
 
                         },
-                        style: {
+                        valStyle: {
                             color: "var(--success-6)"
+                        },
+                        lineStyle: {
+                            width: "100%"
                         },
                     },
                     {
@@ -1084,7 +1084,7 @@ const state = reactive({
                     {
                         label: "用印记录",
                         value: "查看用印记录",
-                        style: {
+                        valStyle: {
                             color: "var(--Info-7)"
                         },
                     },
@@ -1095,7 +1095,7 @@ const state = reactive({
                     {
                         label: "印章操作",
                         value: "+发起用印申请",
-                        style: {
+                        valStyle: {
                             color: "var(--Info-7)"
                         },
                     },
@@ -1104,6 +1104,9 @@ const state = reactive({
                         value: "-",
                     },
                 ],
+                labelStyle: {
+                    width: "6rem"
+                }
             },
         },
         DetailsOfDocument: {
