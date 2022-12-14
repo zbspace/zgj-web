@@ -85,7 +85,9 @@
                                                 </div>
                                             </template>
                                             <template #content>
-                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                <div class="sealDetails-accessory-list">
+                                                    <componentsFileverification
+                                                    :data="state.cache.DetailsaOfPrinting.fileocrInformation.data" />
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -125,7 +127,9 @@
                                                 </div>
                                             </template>
                                             <template #content>
-                                                <div class="sealDetails-accessory-list" style="height:100px">
+                                                <div class="sealDetails-accessory-list">
+                                                    <componentsArchive
+                                                    :data="state.cache.DetailsaOfPrinting.archiveInformation.data" />
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
@@ -363,7 +367,8 @@ import documentsDetailsInformationList from "./documentsDetails/informationList.
 import documentsDetailsAccessory from "./documentsDetails/accessory.vue"
 import documentsDetailsIntelligentPrinting from "./documentsDetails/IntelligentPrinting.vue"
 import documentsDetailSdigitalSeal from "./documentsDetails/digital-seal.vue"
-
+import componentsArchive from './documentsDetails/Archive.vue'
+import componentsFileverification from './documentsDetails/Fileverification.vue'
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
 import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
@@ -558,6 +563,127 @@ const state = reactive({
                         ]
                     }
                 ],
+            },
+            archiveInformation: {
+                title: "文件归档",
+                show: true,
+                data: {
+                    currentResult: [//重置后列表
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区江场路1228号',
+                            5: '高架招投标合同20220014.pdf',
+                            6: '5',
+                            7: true,
+                            8: '2',
+                            9: '3',
+                            10: '2'
+                        },
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        }
+
+                    ],
+                    historyResult: [
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        },
+                        {
+                            1: '马丽丽',
+                            2: '2022-12-13 11:40:50',
+                            3: '15',
+                            4: '上海市静安区',
+                            5: '高架招投标合同20220014.pdf',
+                        }
+                    ],//重置前列表
+                }
+            },
+            fileocrInformation: {
+                title: "文件核验",
+                show: true,
+                data: {
+                    successResult: [//核验通过
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    errorResult: [//核验异常
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '有异常',
+                            3: '15',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    normalResult: [//未核验
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '未核验',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ],
+                    historyResult: [//历史文件核验列表
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无差异点',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '有异常',
+                            3: '15',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        },
+                        {
+                            1: '高架招投标合同20220014',
+                            2: '无核验结果',
+                            3: '0',
+                            4: '马丽丽',
+                            5: '2022-02-12 12:44:58',
+                        }
+                    ]
+                }
             },
             sdigitalSeal: {
                 signatoryData: {
