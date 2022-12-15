@@ -2102,7 +2102,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "7rem",
                 },
                 data: [
                     {
