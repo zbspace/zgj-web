@@ -37,9 +37,6 @@ export default defineConfig({
       },
     },
     chunkSizeWarningLimit: 2000,
-    commonjsOptions: {
-      include: /node_modules|lib/
-    }
   },
   resolve: {
     alias: [
@@ -72,7 +69,7 @@ export default defineConfig({
       }
     }
   },
-  optimizeDeps: {
-    include: ['@/../lib/vform/designer.umd.js']
-  },
+  // optimizeDeps: {
+  //   include: ['@/../lib/vform/designer.umd.js']
+  // },
 })
