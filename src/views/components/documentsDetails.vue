@@ -233,6 +233,14 @@
                                                                 <div
                                                                     class="SealInformation-details-image-cont-list-cont-list-value">
                                                                     {{ data.value }}</div>
+                                                                <div
+                                                                    class="SealInformation-details-image-cont-list-cont-list-subValue">
+                                                                    <img class="SealInformation-details-image-cont-list-cont-list-subValue-icon"
+                                                                        :src="data.subValueIconPath" alt="">
+                                                                    <span
+                                                                        class="SealInformation-details-image-cont-list-cont-list-subValue-text">
+                                                                        {{ data.subValue }}</span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -509,7 +517,8 @@
                                 <!-- 流程版本 -->
                                 <div class="Process-Version"
                                     v-else-if="state.componentsTabs.activeName == 'Process-Version'">
-                                    <componentsTable :defaultAttribute="state.cache.ProcessVersion.defaultAttribute" :data="state.cache.ProcessVersion.data"
+                                    <componentsTable :defaultAttribute="state.cache.ProcessVersion.defaultAttribute"
+                                        :data="state.cache.ProcessVersion.data"
                                         :header="state.cache.ProcessVersion.header">
                                     </componentsTable>
                                 </div>
@@ -636,7 +645,8 @@
                                 <!-- 组织人员 -->
                                 <div class="organization-Person"
                                     v-else-if="state.componentsTabs.activeName == 'organization-Person'">
-                                    <componentsTable :defaultAttribute="state.cache.organizationPerson.defaultAttribute" :data="state.cache.organizationPerson.data"
+                                    <componentsTable :defaultAttribute="state.cache.organizationPerson.defaultAttribute"
+                                        :data="state.cache.organizationPerson.data"
                                         :header="state.cache.organizationPerson.header">
                                     </componentsTable>
                                 </div>
@@ -696,6 +706,7 @@ import yuanHuiSvg from '@/assets/svg/yuan-hui.svg'
 import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
 import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
 import renlianTupian from '@/assets/svg/renlian-tupian.svg'
+import jinggao from '@/assets/svg/jinggao.svg'
 
 
 const props = defineProps({
@@ -1352,6 +1363,8 @@ const state = reactive({
                                 {
                                     label: "开锁类型",
                                     value: "领取印章",
+                                    subValue: "疑似异常",
+                                    subValueIconPath: jinggao,
                                 },
                                 {
                                     label: "开锁时间",
@@ -3191,6 +3204,18 @@ watch(() => [props.show], (newValue, oldValue) => {
                                         display: flex;
                                         justify-content: flex-end;
                                         color: var(--color-text-3);
+                                    }
+                                    .SealInformation-details-image-cont-list-cont-list-subValue{
+                                        display: flex;
+                                        align-items: center;
+                                        padding-left: 0.5rem;
+                                        box-sizing: border-box;
+                                        .SealInformation-details-image-cont-list-cont-list-subValue-icon{
+                                            margin-right: 0.2rem;
+                                        }
+                                        .SealInformation-details-image-cont-list-cont-list-subValue-text{
+                                            color: var(--danger-6);
+                                        }
                                     }
                                 }
                             }
