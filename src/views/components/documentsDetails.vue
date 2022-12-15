@@ -387,17 +387,104 @@
                                 <!-- 工作台详情 -->
                                 <div class="Workbench-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Workbench-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.WorkbenchDetails.basicInformation.data" :labelStyle="state.cache.WorkbenchDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">配置</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.WorkbenchDetails.configuration.data" :labelStyle="state.cache.WorkbenchDetails.configuration.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 智能印章盒详情 -->
                                 <div class="SmartSeal-Box-Detail"
                                     v-else-if="state.componentsTabs.activeName == 'SmartSeal-Box-Detail'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealBoxDetails.basicInformation.data" :labelStyle="state.cache.SmartSealBoxDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">配置</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealBoxDetails.configuration.data" :labelStyle="state.cache.SmartSealBoxDetails.configuration.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 智能印章柜详情 -->
                                 <div class="SmartSeal-Cabinet-Details"
                                     v-else-if="state.componentsTabs.activeName == 'SmartSeal-Cabinet-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealCabinetDetails.basicInformation.data" :labelStyle="state.cache.SmartSealCabinetDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                    <!-- <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">配置</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealCabinetDetails.configuration.data" :labelStyle="state.cache.SmartSealCabinetDetails.configuration.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div> -->
                                 </div>
                                 <!-- 转办申请详情 -->
                                 <div class="transfer-Application-Details"
@@ -1484,7 +1571,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1551,7 +1638,7 @@ const state = reactive({
                 title: "配置",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1587,7 +1674,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1647,7 +1734,7 @@ const state = reactive({
                 title: "配置",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1692,7 +1779,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
