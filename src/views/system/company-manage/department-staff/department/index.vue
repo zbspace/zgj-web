@@ -364,7 +364,11 @@ const state = reactive({
         name: "Unit-Department-Details",
       },
       {
-        label: '操作记录',
+        label: '组织人员',
+        name: "organization-Person",
+      },
+      {
+        label: '流程记录',
         name: "operating-record",
       },
     ],

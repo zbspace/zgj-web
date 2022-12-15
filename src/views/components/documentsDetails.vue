@@ -475,21 +475,6 @@
                                             </template>
                                         </documentsDetailsPortion>
                                     </div>
-                                    <!-- <div class="ap-cont-box sealDetails-basic-information">
-                                        <documentsDetailsPortion>
-                                            <template #title>
-                                                <div class="ap-cont-box-title-label">配置</div>
-                                            </template>
-                                            <template #content>
-                                                <div>
-                                                    <documentsDetailsInformationList
-                                                        :data="state.cache.SmartSealCabinetDetails.configuration.data" :labelStyle="state.cache.SmartSealCabinetDetails.configuration.labelStyle">
-
-                                                    </documentsDetailsInformationList>
-                                                </div>
-                                            </template>
-                                        </documentsDetailsPortion>
-                                    </div> -->
                                 </div>
                                 <!-- 转办申请详情 -->
                                 <div class="transfer-Application-Details"
@@ -504,47 +489,156 @@
                                 <!-- 流程详情 -->
                                 <div class="Process-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Process-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.ProcessDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.ProcessDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 流程版本 -->
                                 <div class="Process-Version"
                                     v-else-if="state.componentsTabs.activeName == 'Process-Version'">
-
+                                    <componentsTable :defaultAttribute="state.cache.ProcessVersion.defaultAttribute" :data="state.cache.ProcessVersion.data"
+                                        :header="state.cache.ProcessVersion.header">
+                                    </componentsTable>
                                 </div>
                                 <!-- 表单详情 -->
                                 <div class="Form-Details" v-else-if="state.componentsTabs.activeName == 'Form-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.FormDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.FormDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
 
                                 <!-- 业务规则详情 -->
                                 <div class="Business-Rule-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Business-Rule-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.BusinessRuleDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.BusinessRuleDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 通知事件详情 -->
                                 <div class="Notification-Event-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Notification-Event-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.NotificationEventDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.NotificationEventDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 模板详情 -->
                                 <div class="Template-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Template-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.TemplateDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.TemplateDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 往来企业详情 -->
                                 <div class="Current-Business-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Current-Business-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.CurrentBusinessDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.CurrentBusinessDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 单位与部门详情 -->
                                 <div class="Unit-Department-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Unit-Department-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.UnitDepartmentDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.UnitDepartmentDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 组织人员 -->
                                 <div class="organization-Person"
                                     v-else-if="state.componentsTabs.activeName == 'organization-Person'">
-
+                                    <componentsTable :defaultAttribute="state.cache.organizationPerson.defaultAttribute" :data="state.cache.organizationPerson.data"
+                                        :header="state.cache.organizationPerson.header">
+                                    </componentsTable>
                                 </div>
                                 <!-- 员工详情 -->
                                 <div class="Staff-Details"
@@ -2088,7 +2182,7 @@ const state = reactive({
                     sortable: true,
                 },
                 {
-                    prop: '3',
+                    prop: '2',
                     label: "版本时间",
                     sortable: true,
                 },
@@ -2137,7 +2231,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "7rem",
                 },
                 data: [
                     {
@@ -2256,7 +2350,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    width: "8rem",
+                    width: "5rem",
                 },
                 data: [
                     {
@@ -2311,7 +2405,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    width: "8rem",
+                    width: "6rem",
                 },
                 data: [
                     {
@@ -2374,7 +2468,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    width: "8rem",
+                    width: "7rem",
                 },
                 data: [
                     {
@@ -2418,7 +2512,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    width: "8rem",
+                    width: "4.5rem",
                 },
                 data: [
                     {
@@ -2470,7 +2564,7 @@ const state = reactive({
                     label: "人员列表",
                 },
                 {
-                    prop: '3',
+                    prop: '2',
                     label: "账号",
                 },
             ],
