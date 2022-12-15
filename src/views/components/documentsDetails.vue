@@ -549,7 +549,22 @@
                                 <!-- 员工详情 -->
                                 <div class="Staff-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Staff-Details'">
+                                    <div class="ap-cont-box">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealCabinetDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.SmartSealCabinetDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                             </div>
                         </a-scrollbar>
@@ -568,9 +583,11 @@ import documentsDetailsPortion from "./documentsDetails/portion.vue"
 import documentsDetailsInformationList from "./documentsDetails/informationList.vue"
 import documentsDetailsAccessory from "./documentsDetails/accessory.vue"
 import documentsDetailsIntelligentPrinting from "./documentsDetails/IntelligentPrinting.vue"
+import documentsDetailsStaffDetails from "./documentsDetails/Staff-Details.vue"
 import documentsDetailSdigitalSeal from "./documentsDetails/digital-seal.vue"
 import componentsArchive from './documentsDetails/Archive.vue'
 import componentsFileverification from './documentsDetails/Fileverification.vue'
+
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
 import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
@@ -585,7 +602,7 @@ import liuchengWanchengSvg from '@/assets/svg/liucheng-wancheng.svg'
 import yuanHuiSvg from '@/assets/svg/yuan-hui.svg'
 import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
 import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
-
+import renlianTupian from '@/assets/svg/renlian-tupian.svg'
 
 
 const props = defineProps({
@@ -2504,7 +2521,27 @@ const state = reactive({
                     name: "邓家佳",
                     cellPhone: "13789995478",
                     account: "Zhangsan",
-
+                    departmentList: [
+                        {
+                            name: "德国威能 - 威能（无锡）供热设备有限公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司北京分公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司杭州分公司",
+                        },
+                    ],
+                    role: "系统管理员、印章管理员、模板管理员、流程管理员、审计员",
+                    jobTitle: "开发",
+                    mailbox: "test@qq.com",
+                    EnterpriseWechatID: "NFHUF744665212",
+                    NailID: "11548798778",
+                    remark: "-",
+                    FacePicturePath: renlianTupian,
                 }
             },
         },
