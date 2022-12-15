@@ -50,6 +50,7 @@
 import { defineProps, defineEmits, reactive, ref, watch } from 'vue';
 import { treeDataTranslate } from '@/hooks/handleTreeData.js';
 import { Search, ArrowRight } from '@element-plus/icons-vue'
+import KDialog from "@/views/components/modules/kdialog.vue"
 import kTree from './kTree.vue';
 
 const emits = defineEmits(['update:show']);

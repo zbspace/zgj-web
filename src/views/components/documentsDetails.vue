@@ -890,7 +890,7 @@ const state = reactive({
                             6: "待签署",
                         },
                         {
-                            0: 1,
+                            0: 2,
                             1: "企业",
                             2: "冯启彬",
                             3: "132 9399 2217",
@@ -899,7 +899,7 @@ const state = reactive({
                             6: "待签署",
                         },
                         {
-                            0: 1,
+                            0: 3,
                             1: "个人",
                             2: "钱若霖",
                             3: "189 2860 9388",
@@ -908,7 +908,7 @@ const state = reactive({
                             6: "待签署",
                         },
                         {
-                            0: 1,
+                            0: 4,
                             1: "个人",
                             2: "郑盈盈",
                             3: "155 5866 1691",
@@ -917,7 +917,7 @@ const state = reactive({
                             6: "待签署",
                         },
                         {
-                            0: 1,
+                            0: 5,
                             1: "企业",
                             2: "李琳颖",
                             3: "158 5666 9874",
@@ -2298,6 +2298,7 @@ function initData() {
     } else {
         state.componentsTabs.activeName = "";
     }
+    console.log(state.componentsTabs.activeName);
     // visible: [
     //         {
     //             label: '用印详情',
