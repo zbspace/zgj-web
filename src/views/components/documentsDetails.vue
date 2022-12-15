@@ -2211,6 +2211,7 @@ function initData() {
     } else {
         state.componentsTabs.activeName = "";
     }
+    console.log(state.componentsTabs.activeName);
     // visible: [
     //         {
     //             label: '用印详情',
