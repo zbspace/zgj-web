@@ -5,6 +5,7 @@
         <div class="title">
           <div>业务规则管理</div>
           <div>
+            <el-button type="primary">+ 新建</el-button>
             <el-button>
               <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
               <span>更多操作</span>
@@ -24,7 +25,6 @@
 
       <template #batch>
         <div class="batch">
-          <el-button type="primary">+ 新建</el-button>
           <el-button>批量操作</el-button>
         </div>
       </template>
@@ -32,7 +32,7 @@
       <template #table>
         <div>
           <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" :data="state.componentsTable.data"
-            :header="state.componentsTable.header" :isSelection="true">
+            :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick">
           </componentsTable>
         </div>
       </template>
@@ -43,6 +43,12 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+    <!-- 业务规则详情 -->
+    <div class="ap-box">
+      <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+        :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+      </componentsDocumentsDetails>
+    </div>
   </div>
 </template>
 
@@ -52,7 +58,7 @@ import componentsTable from "@/views/components/table";
 import componentsSearchForm from "@/views/components/searchForm";
 import componentsPagination from "@/views/components/pagination.vue";
 import componentsLayout from "@/views/components/Layout.vue";
-
+import componentsDocumentsDetails from "@/views/components/documentsDetails.vue"
 const state = reactive({
   componentsSearchForm: {
     style: {
@@ -157,6 +163,11 @@ const state = reactive({
       {
         prop: "1",
         width: 200,
+        label: "名称",
+      },
+      {
+        prop: "2",
+        width: 200,
         label: "创建时间",
       },
       {
@@ -180,32 +191,32 @@ const state = reactive({
     ],
     data: [
       {
-        1: "2022/10/30  15:00:00",
-        2: "",
+        1: "名称",
+        2: "2022/10/30  15:00:00",
         3: "往往",
         4: "",
         5: "2022/10/30",
         6: "",
       },
       {
-        1: "2022/10/30  15:00:00",
-        2: "",
+        1: "名称",
+        2: "2022/10/30  15:00:00",
         3: "往往",
         4: "",
         5: "2022/10/30",
         6: "",
       },
       {
-        1: "2022/10/30  15:00:00",
-        2: "",
+        1: "名称",
+        2: "2022/10/30  15:00:00",
         3: "往往",
         4: "",
         5: "2022/10/30",
         6: "",
       },
       {
-        1: "2022/10/30  15:00:00",
-        2: "",
+        1: "名称",
+        2: "2022/10/30  15:00:00",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -219,6 +230,15 @@ const state = reactive({
       "header-cell-style": {
         background: "var(--color-fill--1)",
       },
+      "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+        // console.log({ row, column, rowIndex, columnIndex });
+        if (column.property == "1") {
+          return {
+            "color": "var(--Info-6)",
+            "cursor": "pointer",
+          }
+        }
+      }
     },
   },
 
@@ -236,9 +256,32 @@ const state = reactive({
       background: true,
     },
   },
+  componentsDocumentsDetails: {
+    show: false,
+    visible: [
+      {
+        label: '业务规则详情',
+        name: "Business-Rule-Details",
+      },
+      {
+        label: '流程记录',
+        name: "operating-record",
+      },
+    ],
+  }
 
 });
-
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+  console.log(row, column, cell, event);
+  if (column.property == "1") {
+    state.componentsDocumentsDetails.show = true;
+  }
+}
+//点击关闭
+function clickClose() {
+  state.componentsDocumentsDetails.show = false;
+}
 </script>
 
 <style lang="scss" scoped>

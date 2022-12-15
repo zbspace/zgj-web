@@ -41,7 +41,7 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
-        <!-- 单据详情 -->
+        <!-- 工作台详情 -->
         <div class="ap-box">
             <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
@@ -425,16 +425,8 @@ const state = reactive({
         show: false,
         visible: [
             {
-                label: '用印详情',
-                name: "Details-of-Printing",
-            },
-            {
-                label: '审批流程',
-                name: "approval-process",
-            },
-            {
-                label: '领用记录',
-                name: "Record-of-requisition",
+                label: '工作台详情',
+                name: "Workbench-Details",
             },
             {
                 label: '操作记录',
@@ -449,6 +441,10 @@ function cellClick(row, column, cell, event) {
     if (column.property == "3") {
         state.componentsDocumentsDetails.show = true;
     }
+}
+//点击关闭
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

@@ -5,6 +5,7 @@
         <div class="title">
           <div>往来企业</div>
           <div>
+            <el-button type="primary">+ 新建</el-button>
             <el-button>
               <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
               <span>更多操作</span>
@@ -23,7 +24,6 @@
 
       <template #batch>
         <div class="batch">
-          <el-button type="primary">+ 新建</el-button>
           <el-button>批量操作</el-button>
         </div>
       </template>
@@ -31,7 +31,7 @@
       <template #table>
         <div>
           <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" :data="state.componentsTable.data"
-            :header="state.componentsTable.header" :isSelection="true">
+            :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick">
           </componentsTable>
         </div>
       </template>
@@ -42,6 +42,12 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+    <!-- 往来详情 -->
+    <div class="ap-box">
+      <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+        :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+      </componentsDocumentsDetails>
+    </div>
   </div>
 </template>
 
@@ -52,6 +58,7 @@ import componentsSearchForm from "@/views/components/searchForm";
 import componentsPagination from "@/views/components/pagination";
 import componentsLayout from "@/views/components/Layout";
 import componentsTree from "@/views/components/tree"
+import componentsDocumentsDetails from "@/views/components/documentsDetails.vue"
 
 const state = reactive({
 
@@ -202,6 +209,15 @@ const state = reactive({
       "header-cell-style": {
         background: "var(--color-fill--1)",
       },
+      "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+        // console.log({ row, column, rowIndex, columnIndex });
+        if (column.property == "2") {
+          return {
+            "color": "var(--Info-6)",
+            "cursor": "pointer",
+          }
+        }
+      }
     },
   },
 
@@ -287,8 +303,31 @@ const state = reactive({
       "check-strictly": true,
     }
   },
+  componentsDocumentsDetails: {
+    show: false,
+    visible: [
+      {
+        label: '往来企业详情',
+        name: "Current-Business-Details",
+      },
+      {
+        label: '流程记录',
+        name: "operating-record",
+      },
+    ],
+  }
 });
-
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+  console.log(row, column, cell, event);
+  if (column.property == "2") {
+    state.componentsDocumentsDetails.show = true;
+  }
+}
+//点击关闭
+function clickClose() {
+  state.componentsDocumentsDetails.show = false;
+}
 </script>
 
 <style lang="scss" scoped>

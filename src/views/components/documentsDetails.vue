@@ -387,17 +387,94 @@
                                 <!-- 工作台详情 -->
                                 <div class="Workbench-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Workbench-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.WorkbenchDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.WorkbenchDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">配置</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.WorkbenchDetails.configuration.data"
+                                                        :labelStyle="state.cache.WorkbenchDetails.configuration.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 智能印章盒详情 -->
                                 <div class="SmartSeal-Box-Detail"
                                     v-else-if="state.componentsTabs.activeName == 'SmartSeal-Box-Detail'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealBoxDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.SmartSealBoxDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">配置</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealBoxDetails.configuration.data"
+                                                        :labelStyle="state.cache.SmartSealBoxDetails.configuration.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 智能印章柜详情 -->
                                 <div class="SmartSeal-Cabinet-Details"
                                     v-else-if="state.componentsTabs.activeName == 'SmartSeal-Cabinet-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealCabinetDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.SmartSealCabinetDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 转办申请详情 -->
                                 <div class="transfer-Application-Details"
@@ -412,16 +489,175 @@
                                 <!-- 流程详情 -->
                                 <div class="Process-Details"
                                     v-else-if="state.componentsTabs.activeName == 'Process-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.ProcessDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.ProcessDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                                 <!-- 流程版本 -->
                                 <div class="Process-Version"
                                     v-else-if="state.componentsTabs.activeName == 'Process-Version'">
-
+                                    <componentsTable :defaultAttribute="state.cache.ProcessVersion.defaultAttribute" :data="state.cache.ProcessVersion.data"
+                                        :header="state.cache.ProcessVersion.header">
+                                    </componentsTable>
                                 </div>
                                 <!-- 表单详情 -->
                                 <div class="Form-Details" v-else-if="state.componentsTabs.activeName == 'Form-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.FormDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.FormDetails.basicInformation.labelStyle">
 
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                </div>
+
+                                <!-- 业务规则详情 -->
+                                <div class="Business-Rule-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Business-Rule-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.BusinessRuleDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.BusinessRuleDetails.basicInformation.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                </div>
+                                <!-- 通知事件详情 -->
+                                <div class="Notification-Event-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Notification-Event-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.NotificationEventDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.NotificationEventDetails.basicInformation.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                </div>
+                                <!-- 模板详情 -->
+                                <div class="Template-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Template-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.TemplateDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.TemplateDetails.basicInformation.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                </div>
+                                <!-- 往来企业详情 -->
+                                <div class="Current-Business-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Current-Business-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.CurrentBusinessDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.CurrentBusinessDetails.basicInformation.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                </div>
+                                <!-- 单位与部门详情 -->
+                                <div class="Unit-Department-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Unit-Department-Details'">
+                                    <div class="ap-cont-box sealDetails-basic-information">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.UnitDepartmentDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.UnitDepartmentDetails.basicInformation.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                </div>
+                                <!-- 组织人员 -->
+                                <div class="organization-Person"
+                                    v-else-if="state.componentsTabs.activeName == 'organization-Person'">
+                                    <componentsTable :defaultAttribute="state.cache.organizationPerson.defaultAttribute" :data="state.cache.organizationPerson.data"
+                                        :header="state.cache.organizationPerson.header">
+                                    </componentsTable>
+                                </div>
+                                <!-- 员工详情 -->
+                                <div class="Staff-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Staff-Details'">
+                                    <div class="ap-cont-box">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsStaffDetails
+                                                        :data="state.cache.StaffDetails.basicInformation.data">
+
+                                                    </documentsDetailsStaffDetails>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
                                 </div>
                             </div>
                         </a-scrollbar>
@@ -440,9 +676,11 @@ import documentsDetailsPortion from "./documentsDetails/portion.vue"
 import documentsDetailsInformationList from "./documentsDetails/informationList.vue"
 import documentsDetailsAccessory from "./documentsDetails/accessory.vue"
 import documentsDetailsIntelligentPrinting from "./documentsDetails/IntelligentPrinting.vue"
+import documentsDetailsStaffDetails from "./documentsDetails/Staff-Details.vue"
 import documentsDetailSdigitalSeal from "./documentsDetails/digital-seal.vue"
 import componentsArchive from './documentsDetails/Archive.vue'
 import componentsFileverification from './documentsDetails/Fileverification.vue'
+
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
 import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
@@ -457,7 +695,7 @@ import liuchengWanchengSvg from '@/assets/svg/liucheng-wancheng.svg'
 import yuanHuiSvg from '@/assets/svg/yuan-hui.svg'
 import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
 import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
-
+import renlianTupian from '@/assets/svg/renlian-tupian.svg'
 
 
 const props = defineProps({
@@ -803,7 +1041,7 @@ const state = reactive({
                             6: "待签署",
                         },
                         {
-                            0: 1,
+                            0: 2,
                             1: "企业",
                             2: "冯启彬",
                             3: "132 9399 2217",
@@ -812,7 +1050,7 @@ const state = reactive({
                             6: "待签署",
                         },
                         {
-                            0: 1,
+                            0: 3,
                             1: "个人",
                             2: "钱若霖",
                             3: "189 2860 9388",
@@ -821,7 +1059,7 @@ const state = reactive({
                             6: "待签署",
                         },
                         {
-                            0: 1,
+                            0: 4,
                             1: "个人",
                             2: "郑盈盈",
                             3: "155 5866 1691",
@@ -830,7 +1068,7 @@ const state = reactive({
                             6: "待签署",
                         },
                         {
-                            0: 1,
+                            0: 5,
                             1: "企业",
                             2: "李琳颖",
                             3: "158 5666 9874",
@@ -1484,7 +1722,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1551,7 +1789,7 @@ const state = reactive({
                 title: "配置",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1587,7 +1825,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1647,7 +1885,7 @@ const state = reactive({
                 title: "配置",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1692,7 +1930,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "8rem",
                 },
                 data: [
                     {
@@ -1864,7 +2102,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "7rem",
                 },
                 data: [
                     {
@@ -1943,7 +2181,7 @@ const state = reactive({
                     sortable: true,
                 },
                 {
-                    prop: '3',
+                    prop: '2',
                     label: "版本时间",
                     sortable: true,
                 },
@@ -1992,7 +2230,7 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 labelStyle: {
-                    // width: "8rem",
+                    width: "7rem",
                 },
                 data: [
                     {
@@ -2047,6 +2285,357 @@ const state = reactive({
                     },
 
                 ],
+            },
+        },
+        // 业务规则详情
+        BusinessRuleDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "业务规则名称",
+                        value: "业务规则名称",
+                    },
+                    {
+                        label: "业务规则编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联文件类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务规则状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务规则说明",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
+        // 通知事件详情
+        NotificationEventDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "5rem",
+                },
+                data: [
+                    {
+                        label: "事件名称",
+                        value: "名称",
+                    },
+                    {
+                        label: "事件编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "事件类别",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "触发渠道",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "事件状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "事件描述",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "通知人",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
+        // 模板详情
+        TemplateDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "6rem",
+                },
+                data: [
+                    {
+                        label: "模板名称",
+                        value: "名称",
+                    },
+                    {
+                        label: "模板编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联风险项",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "风险分类",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "事件状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "触发渠道",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "模板标题",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "模板内容",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
+        // 往来企业详情
+        CurrentBusinessDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "7rem",
+                },
+                data: [
+                    {
+                        label: "企业名称",
+                        value: "名称",
+                    },
+                    {
+                        label: "企业编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "企业所属部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "联系人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "联系方式",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "备注：",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
+        // 单位与部门详情
+        UnitDepartmentDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "4.5rem",
+                },
+                data: [
+                    {
+                        label: "组织名称",
+                        value: "名称",
+                    },
+                    {
+                        label: "组织编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "组织类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "组织人数",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "组织主管",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "上级组织",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+        },
+        // 组织人员
+        organizationPerson: {
+            header: [
+                {
+                    prop: '1',
+                    label: "人员列表",
+                },
+                {
+                    prop: '2',
+                    label: "账号",
+                },
+            ],
+            data: [
+                {
+                    0: 1,
+                    1: "周俊毅",
+                    2: "181 0834 1643",
+                },
+                {
+                    0: 2,
+                    1: "王凡玄",
+                    2: "184 5857 8572",
+                },
+                {
+                    0: 3,
+                    1: "李豫卓",
+                    2: "158 5666 9874",
+                },
+                {
+                    0: 4,
+                    1: "孙思达",
+                    2: "137 8216 9138",
+                },
+                {
+                    0: 5,
+                    1: "李梓发",
+                    2: "136 3348 4128",
+                },
+            ],
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                border: true,
+                "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                    // console.log({ row, column, rowIndex, columnIndex });
+                    return {
+                        "background": "var(--color-fill--1)"
+                    }
+                },
+            }
+        },
+        // 员工详情
+        StaffDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                data: {
+                    name: "邓家佳",
+                    cellPhone: "13789995478",
+                    account: "Zhangsan",
+                    departmentList: [
+                        {
+                            name: "德国威能 - 威能（无锡）供热设备有限公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司北京分公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司杭州分公司",
+                        },
+                    ],
+                    role: "系统管理员、印章管理员、模板管理员、流程管理员、审计员",
+                    jobTitle: "开发",
+                    mailbox: "test@qq.com",
+                    EnterpriseWechatID: "NFHUF744665212",
+                    NailID: "11548798778",
+                    remark: "-",
+                    FacePicturePath: renlianTupian,
+                }
             },
         },
     },
@@ -2120,6 +2709,35 @@ const state = reactive({
             {
                 label: '表单详情',
                 name: "Form-Details",
+            },
+
+            {
+                label: '业务规则详情',
+                name: "Business-Rule-Details",
+            },
+            {
+                label: '通知事件详情',
+                name: "Notification-Event-Details",
+            },
+            {
+                label: '模板详情',
+                name: "Template-Details",
+            },
+            {
+                label: '往来企业详情',
+                name: "Current-Business-Details",
+            },
+            {
+                label: '单位与部门详情',
+                name: "Unit-Department-Details",
+            },
+            {
+                label: '组织人员',
+                name: "organization-Person",
+            },
+            {
+                label: '员工详情',
+                name: "Staff-Details",
             },
         ],
         activeName: "Details-of-Printing",
@@ -2211,6 +2829,7 @@ function initData() {
     } else {
         state.componentsTabs.activeName = "";
     }
+    console.log(state.componentsTabs.activeName);
     // visible: [
     //         {
     //             label: '用印详情',

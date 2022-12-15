@@ -5,6 +5,7 @@
         <div class="title">
           <div>部门管理</div>
           <div>
+            <el-button type="primary">+ 新建</el-button>
             <el-button>
               <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
               <span>更多操作</span>
@@ -23,7 +24,6 @@
 
       <template #batch>
         <div class="batch">
-          <el-button type="primary">+ 新建</el-button>
           <el-button>批量操作</el-button>
         </div>
       </template>
@@ -38,7 +38,7 @@
       <template #table>
         <div>
           <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" :data="state.componentsTable.data"
-            :header="state.componentsTable.header" :isSelection="true">
+            :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick">
           </componentsTable>
         </div>
       </template>
@@ -49,6 +49,12 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+    <!-- 部门与单位详情 -->
+    <div class="ap-box">
+      <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+        :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+      </componentsDocumentsDetails>
+    </div>
   </div>
 </template>
 
@@ -59,6 +65,7 @@ import componentsSearchForm from "@/views/components/searchForm";
 import componentsPagination from "@/views/components/pagination.vue";
 import componentsLayout from "@/views/components/Layout.vue";
 import componentsTree from "@/views/components/tree"
+import componentsDocumentsDetails from "@/views/components/documentsDetails.vue"
 
 const state = reactive({
 
@@ -186,7 +193,7 @@ const state = reactive({
     data: [
       {
         1: "TradeCode21",
-        2: "",
+        2: "建业科技",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -194,7 +201,7 @@ const state = reactive({
       },
       {
         1: "TradeCode21",
-        2: "",
+        2: "建业科技",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -202,7 +209,7 @@ const state = reactive({
       },
       {
         1: "TradeCode21",
-        2: "",
+        2: "建业科技",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -210,7 +217,7 @@ const state = reactive({
       },
       {
         1: "TradeCode21",
-        2: "",
+        2: "建业科技",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -218,7 +225,7 @@ const state = reactive({
       },
       {
         1: "TradeCode21",
-        2: "",
+        2: "建业科技",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -226,7 +233,7 @@ const state = reactive({
       },
       {
         1: "TradeCode21",
-        2: "",
+        2: "建业科技",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -234,7 +241,7 @@ const state = reactive({
       },
       {
         1: "TradeCode21",
-        2: "",
+        2: "建业科技",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -242,7 +249,7 @@ const state = reactive({
       },
       {
         1: "TradeCode21",
-        2: "",
+        2: "建业科技",
         3: "往往",
         4: "",
         5: "2022/10/30",
@@ -255,6 +262,15 @@ const state = reactive({
       "header-cell-style": {
         background: "var(--color-fill--1)",
       },
+      "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+        // console.log({ row, column, rowIndex, columnIndex });
+        if (column.property == "2") {
+          return {
+            "color": "var(--Info-6)",
+            "cursor": "pointer",
+          }
+        }
+      }
     },
   },
 
@@ -279,55 +295,23 @@ const state = reactive({
         label: '企业名称',
         children: [
           {
-            label: 'B层级菜单1',
+            label: '单位名称',
             children: [
               {
-                label: 'C层级菜单1',
+                label: '部门名称',
               },
-            ],
-          },
-        ],
-      },
-      {
-        label: 'A层级菜单2',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
               {
-                label: 'C层级菜单1',
+                label: '部门名称',
               },
-            ],
-          },
-          {
-            label: 'B层级菜单2',
-            children: [
               {
-                label: 'C层级菜单1',
+                label: '部门名称',
               },
-            ],
-          },
-        ],
-      },
-      {
-        label: 'A层级菜单3',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
               {
-                label: 'C层级菜单1',
+                label: '部门名称',
               },
-            ],
+            ]
           },
-          {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
+
         ],
       },
     ],
@@ -340,7 +324,35 @@ const state = reactive({
       "check-strictly": true,
     }
   },
+  componentsDocumentsDetails: {
+    show: false,
+    visible: [
+      {
+        label: '单位与部门详情',
+        name: "Unit-Department-Details",
+      },
+      {
+        label: '组织人员',
+        name: "organization-Person",
+      },
+      {
+        label: '流程记录',
+        name: "operating-record",
+      },
+    ],
+  }
 });
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+  console.log(row, column, cell, event);
+  if (column.property == "2") {
+    state.componentsDocumentsDetails.show = true;
+  }
+}
+//点击关闭
+function clickClose() {
+  state.componentsDocumentsDetails.show = false;
+}
 
 </script>
 

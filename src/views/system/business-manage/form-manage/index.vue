@@ -5,6 +5,7 @@
         <div class="title">
           <div>表单管理</div>
           <div>
+            <el-button type="primary" @click="showAddForm">+ 新建</el-button>
             <el-button>
               <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
               <span>更多操作</span>
@@ -24,7 +25,6 @@
 
       <template #batch>
         <div class="batch">
-          <el-button type="primary" @click="showAddForm">+ 新建</el-button>
           <el-button>批量操作</el-button>
         </div>
       </template>
@@ -39,7 +39,7 @@
       <template #table>
         <div>
           <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" :data="state.componentsTable.data"
-            :header="state.componentsTable.header" :isSelection="true">
+            :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick">
           </componentsTable>
         </div>
       </template>
@@ -50,7 +50,12 @@
         </componentsPagination>
       </template>
     </componentsLayout>
-
+    <!-- 表单管理详情 -->
+    <div class="ap-box">
+      <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+        :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+      </componentsDocumentsDetails>
+    </div>
     <!-- 新增表单 -->
     <AddFrom v-model="dialogVisible" />
   </div>
@@ -63,6 +68,7 @@ import componentsSearchForm from "@/views/components/searchForm";
 import componentsPagination from "@/views/components/pagination.vue";
 import componentsLayout from "@/views/components/Layout.vue";
 import componentsTree from "@/views/components/tree"
+import componentsDocumentsDetails from "@/views/components/documentsDetails.vue"
 import AddFrom from './AddForm'
 const dialogVisible = ref(false)
 const state = reactive({
@@ -268,6 +274,15 @@ const state = reactive({
       "header-cell-style": {
         background: "var(--color-fill--1)",
       },
+      "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+        // console.log({ row, column, rowIndex, columnIndex });
+        if (column.property == "2") {
+          return {
+            "color": "var(--Info-6)",
+            "cursor": "pointer",
+          }
+        }
+      }
     },
   },
 
@@ -289,60 +304,42 @@ const state = reactive({
   componentsTree: {
     data: [
       {
-        label: 'A层级菜单1',
+        label: '用印申请',
         children: [
           {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '用印申请',
+          },
+          {
+            label: '转办申请',
+          },
+          {
+            label: '重置用印申请',
           },
         ],
       },
       {
-        label: 'A层级菜单2',
+        label: '印章申请',
         children: [
           {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '刻章申请',
           },
           {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '停用申请',
+          },
+          {
+            label: '启用申请',
+          },
+          {
+            label: '销毁申请',
+          },
+          {
+            label: '变更申请',
+          },
+          {
+            label: '换章申请',
           },
         ],
-      },
-      {
-        label: 'A层级菜单3',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-          {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-        ],
-      },
+      }
     ],
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
@@ -353,8 +350,31 @@ const state = reactive({
       "check-strictly": true,
     }
   },
+  componentsDocumentsDetails: {
+    show: false,
+    visible: [
+      {
+        label: '表单详情',
+        name: "Form-Details",
+      },
+      {
+        label: '流程记录',
+        name: "operating-record",
+      },
+    ],
+  }
 });
-
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+  console.log(row, column, cell, event);
+  if (column.property == "2") {
+    state.componentsDocumentsDetails.show = true;
+  }
+}
+//点击关闭
+function clickClose() {
+  state.componentsDocumentsDetails.show = false;
+}
 function showAddForm() {
   dialogVisible.value = true
 }

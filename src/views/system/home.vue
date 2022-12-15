@@ -1,6 +1,6 @@
 <template>
     <div class="system-home">
-        <div class="row ap-row">
+        <div class="top">
             <div class="col-xxl-3 panel-box">
                 <div class="panel-cent">
                     <div class="panel-box-o">
@@ -56,30 +56,23 @@
                 </div>
             </div>
         </div>
-        <div class="row ap-row">
-            <div class="col-xxl-12">
-                <div class="charts">
-                    <div class="charts-title">每日用印情况统计图</div>
-                    <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="line"
-                            :series="dashedLineChartseries" :options="dashedLineChartoptions"></apexchart> -->
-                    <vue-echarts :option="echartslineoption" style="height: 350px" />
-                </div>
+        <div class="">
+            <div class="charts">
+                <div class="charts-title">每日用印情况统计图</div>
+                <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="line" :series="dashedLineChartseries"
+                    :options="dashedLineChartoptions"></apexchart> -->
+                <jy-echarts :options="echartslineoption" />
             </div>
         </div>
-        <div class="row ap-row">
-            <div class="col-xxl-12">
-                <div class="charts">
-                    <div class="charts-title">印章使用情况统计图</div>
-                    <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="bar"
+        <div class="charts">
+            <div class="charts-title">印章使用情况统计图</div>
+            <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="bar"
                             :series="basicColumnChartseries" :options="basicColumnChartoptions"></apexchart> -->
-                    <vue-echarts :option="echartsbaroption" style="height: 350px" />
-                </div>
-            </div>
+            <jy-echarts :options="echartsbaroption" />
         </div>
     </div>
 </template>
 <script>
-import { VueEcharts } from "vue3-echarts";
 export default {
     name: "system-home",
     data() {
@@ -689,20 +682,30 @@ export default {
         }
     },
     created() {
-        sessionStorage.setItem("CurrentSystemType", "system")
     },
     computed: {
 
-    },
-    components: {
-        VueEcharts
     },
 };
 </script>
 <style lang='scss' scoped>
 .system-home {
-    .ap-row {
-        margin: 1rem 0 0 0;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+    margin-top: 24px;
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+
+        .panel-box {
+            margin-right: 20px;
+            flex: 1;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
     }
 
     .panel-box {
@@ -745,7 +748,7 @@ export default {
         border-radius: 4px;
         box-shadow: 0 0 2px 2px rgba(224, 227, 234, 0.7);
         box-sizing: border-box;
-        margin-bottom: 15px;
+        margin-top: 15px;
         transition: all 0.3s ease 0s;
 
         .charts-title {

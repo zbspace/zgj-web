@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div id="main" :style="style"></div>
+    <div ref="echart" :style="style" :options="options"></div>
   </div>
 </template>
 
 <script setup>
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core';
-import { LineChart } from 'echarts/charts';
+import { LineChart, BarChart } from 'echarts/charts';
 // 引入提示框，标题，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
 import {
   TitleComponent,
@@ -20,7 +20,7 @@ import {
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from 'echarts/renderers';
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 // 注册必须的组件
 echarts.use([
   LabelLayout,
@@ -31,11 +31,12 @@ echarts.use([
   LegendComponent,
   LineChart,
   CanvasRenderer,
-  UniversalTransition
+  UniversalTransition,
+  BarChart
 ]);
-
+const echart = ref(null)
 const props = defineProps({
-  echartsOption: {
+  options: {
     type: Object,
     default: () => {
       return {
@@ -84,16 +85,15 @@ const props = defineProps({
     default: () => {
       return {
         height: '350px',
-        width: '480px',
+        width: 'auto',
       }
     }
   }
 })
 
 onMounted(() => {
-  var chartDom = document.getElementById('main');
-  var myChart = echarts.init(chartDom)
-  myChart.setOption(props.echartsOption)
+  var myChart = echarts.init(echart.value)
+  myChart.setOption(props.options)
 })
 </script>
 

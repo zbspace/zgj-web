@@ -1,14 +1,14 @@
 <template>
     <div class="components-tabs">
-        <div class="ap-box" :class="{ cancelBottomLine: props.cancelBottomLine }">
+        <div class="ap-box" :class="{ cancelBottomLine: state.cancelBottomLine }">
             <el-tabs v-model="state.activeName" class="demo-tabs" @tab-change="tabChange">
-                <el-tab-pane :label="item.label" :name="item.name" v-for="item in props.data"> </el-tab-pane>
+                <el-tab-pane :label="item.label" :name="item.name" v-for="item in state.data"> </el-tab-pane>
             </el-tabs>
         </div>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, watch } from "vue"
 const props = defineProps({
     //标识
     refs: {
@@ -39,6 +39,8 @@ const props = defineProps({
 const emit = defineEmits(["tab-change", "getActiveName"]);
 const state = reactive({
     activeName: "",
+    data: [],
+    cancelBottomLine: false,
 });
 // console.log(props.data);
 function tabChange(pane, ev) {
@@ -48,12 +50,21 @@ function tabChange(pane, ev) {
 function getActiveName() {
     emit("getActiveName", state.activeName);
 }
-function initActiveName() {
-    state.activeName = props.activeName
+//初始化数据
+function initData() {
+    state.activeName = props.activeName;
+    state.data = props.data;
+    state.cancelBottomLine = props.cancelBottomLine;
 }
+watch(props, (newValue, oldValue) => {
+    // console.log(newValue, oldValue);
+    //初始化数据
+    initData()
+})
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-    initActiveName();
+    //初始化数据
+    initData()
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)

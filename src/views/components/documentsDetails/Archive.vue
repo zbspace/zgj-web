@@ -81,18 +81,21 @@ onMounted(() => {
     margin-bottom: 12px;
     padding: 12px;
     box-sizing: border-box;
-
+    min-width:750px;
     .archive-item-base {
         display: flex;
         justify-content: flex-start;
+        flex-flow:wrap;
+        // justify-content: space-between;
         margin-bottom:12px;
         >div {
             margin-right: 26px;
             display: flex;
             align-items: center;
-
+            flex-wrap:nowrap;
             >text {
                 width: calc(100% - 22px);
+                // white-space: nowrap;
                 >a{
                     color: #3E78D0;
                     text-decoration-line: underline;
