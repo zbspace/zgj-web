@@ -2049,6 +2049,335 @@ const state = reactive({
                 ],
             },
         },
+        // 业务规则详情
+        BusinessRuleDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "业务规则名称",
+                        value: "业务规则名称",
+                    },
+                    {
+                        label: "业务规则编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联文件类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务规则状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "创建人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "创建时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "业务规则说明",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
+        // 通知事件详情
+        NotificationEventDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "事件名称",
+                        value: "名称",
+                    },
+                    {
+                        label: "事件编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "事件类别",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "触发渠道",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "事件状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "事件描述",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "通知人",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
+        // 模板详情
+        TemplateDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "模板名称",
+                        value: "名称",
+                    },
+                    {
+                        label: "模板编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "关联风险项",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "风险分类",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "事件状态",
+                        value: "状态字段",
+                        iconPath: yuanLvSvg,
+                        valStyle: {
+                            color: "var(--success-6)"
+                        },
+                    },
+                    {
+                        label: "触发渠道",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "模板标题",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "模板内容",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
+        // 往来企业详情
+        CurrentBusinessDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "企业名称",
+                        value: "名称",
+                    },
+                    {
+                        label: "企业编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "企业所属部门",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "联系人",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "联系方式",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "备注：",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+
+                ],
+            },
+        },
+        // 单位与部门详情
+        UnitDepartmentDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                labelStyle: {
+                    width: "8rem",
+                },
+                data: [
+                    {
+                        label: "组织名称",
+                        value: "名称",
+                    },
+                    {
+                        label: "组织编码",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "组织类型",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "组织人数",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "组织主管",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "上级组织",
+                        value: "字段名称",
+                    },
+                    {
+                        label: "更新时间",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                    {
+                        label: "备注",
+                        value: "字段名称",
+                        lineStyle: {
+                            width: "100%",
+                        }
+                    },
+                ],
+            },
+        },
+        // 组织人员
+        organizationPerson: {
+            header: [
+                {
+                    prop: '1',
+                    label: "人员列表",
+                },
+                {
+                    prop: '3',
+                    label: "账号",
+                },
+            ],
+            data: [
+                {
+                    0: 1,
+                    1: "周俊毅",
+                    2: "181 0834 1643",
+                },
+                {
+                    0: 2,
+                    1: "王凡玄",
+                    2: "184 5857 8572",
+                },
+                {
+                    0: 3,
+                    1: "李豫卓",
+                    2: "158 5666 9874",
+                },
+                {
+                    0: 4,
+                    1: "孙思达",
+                    2: "137 8216 9138",
+                },
+                {
+                    0: 5,
+                    1: "李梓发",
+                    2: "136 3348 4128",
+                },
+            ],
+            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            defaultAttribute: {
+                border: true,
+                "header-cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                    // console.log({ row, column, rowIndex, columnIndex });
+                    return {
+                        "background": "var(--color-fill--1)"
+                    }
+                },
+            }
+        },
+        // 员工详情
+        StaffDetails: {
+            basicInformation: {
+                title: "基本信息",
+                show: true,
+                data: {
+                    name:"邓家佳",
+
+                }
+            },
+        },
     },
     drawer: {
         show: true,
