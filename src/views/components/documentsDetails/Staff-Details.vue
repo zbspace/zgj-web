@@ -2,12 +2,20 @@
 <template>
     <div class="documentsDetails-informationList">
         <div class="ap-desc">
-            <div class="ap-desc-jianc">{{ state.props.data.name.slice(-2) }}</div>
-            <div class="ap-desc-name">
-                <div class="ap-desc-name-text">{{ state.props.data.name }}</div>
-                <div class="ap-desc-name-xinxi">
-                    <div class="ap-desc-name-xinxi-cellPhone">手机号：{{ state.props.data.cellPhone }}</div>
-                    <div class="ap-desc-name-xinxi-account">账号：{{ state.props.data.account }}</div>
+            <div class="ap-desc-img">
+                <img class="ap-desc-img-back" src="../../../assets/svg/yuangong-xingqing-back.svg" alt="">
+            </div>
+            <div class="ap-desc-cont">
+                <div class="ap-desc-jianc">
+                    <div class="ap-desc-jianc-text">{{ state.props.data.name.slice(-2) }}</div>
+                </div>
+                <div class="ap-desc-name">
+                    <div class="ap-desc-name-text">{{ state.props.data.name }}</div>
+                    <div class="ap-desc-name-xinxi">
+                        <div class="ap-desc-name-xinxi-cellPhone">手机号：{{ state.props.data.cellPhone }}</div>
+                        <div class="ap-desc-name-xinxi-fenge"></div>
+                        <div class="ap-desc-name-xinxi-account">账号：{{ state.props.data.account }}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,6 +132,91 @@ onMounted(() => {
 .documentsDetails-informationList {
     margin: 0%;
 
+    .ap-desc {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin: 1rem 0;
 
+        .ap-desc-img {
+            width: 100%;
+            height: 8rem;
+            display: flex;
+            justify-content: flex-end;
+            background-color: #F2F2F2;
+            padding-right: 1rem;
+
+            .ap-desc-img-back {
+                height: 100%;
+            }
+        }
+
+        .ap-desc-cont {
+            position: absolute;
+            left: 0%;
+            top: 0%;
+            width: 100%;
+            height: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+        }
+
+        .ap-desc-jianc {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0rem 2rem;
+            box-sizing: border-box;
+
+            .ap-desc-jianc-text {
+                width: 4rem;
+                height: 4rem;
+                border-radius: 50%;
+                background-color: var(--primary-6);
+                color: var(--in-common-use-1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1;
+            }
+        }
+
+        .ap-desc-name {
+            .ap-desc-name-text {
+                font-size: var(--font-size-title-2);
+                margin-bottom: 1rem;
+            }
+
+            .ap-desc-name-xinxi {
+                display: flex;
+                align-items: center;
+                width: 20rem;
+                justify-content: space-between;
+
+                .ap-desc-name-xinxi-fenge {
+                    height: 1rem;
+                    border-left: 1px solid var(--color-border-2);
+                }
+            }
+        }
+    }
+
+    .ap-detail {
+        margin: 1rem 0;
+        display: flex;
+        .ap-detail-label{
+            color: var(--color-text-3);
+            display: flex;
+            justify-content: flex-end;
+            width: 6rem;
+            margin-right: 0.5rem;
+        }
+.ap-detail-cont-val{
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+}
+    }
 }
 </style>
