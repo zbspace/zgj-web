@@ -281,57 +281,47 @@ const state = reactive({
   componentsTree: {
     data: [
       {
-        label: 'A层级菜单1',
+        label: '用印申请',
         children: [
           {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '用印申请',
+          },
+          {
+            label: '转办申请',
+          },
+          {
+            label: '重置用印申请',
           },
         ],
       },
       {
-        label: 'A层级菜单2',
+        label: '印章申请',
         children: [
           {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '刻章申请',
           },
           {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '停用申请',
+          },
+          {
+            label: '启用申请',
+          },
+          {
+            label: '销毁申请',
+          },
+          {
+            label: '变更申请',
+          },
+          {
+            label: '换章申请',
           },
         ],
       },
       {
-        label: 'A层级菜单3',
+        label: '文件申请',
         children: [
           {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-          {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '借阅申请',
           },
         ],
       },

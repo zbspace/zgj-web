@@ -5,6 +5,7 @@
         <div class="title">
           <div>部门管理</div>
           <div>
+            <el-button type="primary">+ 新建</el-button>
             <el-button>
               <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
               <span>更多操作</span>
@@ -23,7 +24,6 @@
 
       <template #batch>
         <div class="batch">
-          <el-button type="primary">+ 新建</el-button>
           <el-button>批量操作</el-button>
         </div>
       </template>
@@ -295,55 +295,23 @@ const state = reactive({
         label: '企业名称',
         children: [
           {
-            label: 'B层级菜单1',
+            label: '单位名称',
             children: [
               {
-                label: 'C层级菜单1',
+                label: '部门名称',
               },
-            ],
-          },
-        ],
-      },
-      {
-        label: 'A层级菜单2',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
               {
-                label: 'C层级菜单1',
+                label: '部门名称',
               },
-            ],
-          },
-          {
-            label: 'B层级菜单2',
-            children: [
               {
-                label: 'C层级菜单1',
+                label: '部门名称',
               },
-            ],
-          },
-        ],
-      },
-      {
-        label: 'A层级菜单3',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
               {
-                label: 'C层级菜单1',
+                label: '部门名称',
               },
-            ],
+            ]
           },
-          {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
+
         ],
       },
     ],

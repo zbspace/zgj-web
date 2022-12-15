@@ -63,7 +63,6 @@
     "vue-router": "4",
     "vue3-apexcharts": "^1.4.1",
     "vue3-count-to": "^1.1.2",
-    "vue3-echarts": "^1.0.4",
     "vue3-google-map": "^0.8.3",
     "vue3-quill": "^0.2.6",
     "vuevectormap": "^1.0.8",

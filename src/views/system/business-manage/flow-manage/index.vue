@@ -5,6 +5,7 @@
         <div class="title">
           <div>流程管理</div>
           <div>
+            <el-button type="primary">+ 新建</el-button>
             <el-button>
               <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
               <span>更多操作</span>
@@ -24,7 +25,6 @@
 
       <template #batch>
         <div class="batch">
-          <el-button type="primary">+ 新建</el-button>
           <el-button>批量操作</el-button>
         </div>
       </template>
@@ -295,60 +295,42 @@ const state = reactive({
   componentsTree: {
     data: [
       {
-        label: 'A层级菜单1',
+        label: '用印申请',
         children: [
           {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '用印申请',
+          },
+          {
+            label: '转办申请',
+          },
+          {
+            label: '重置用印申请',
           },
         ],
       },
       {
-        label: 'A层级菜单2',
+        label: '印章申请',
         children: [
           {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '刻章申请',
           },
           {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
+            label: '停用申请',
+          },
+          {
+            label: '启用申请',
+          },
+          {
+            label: '销毁申请',
+          },
+          {
+            label: '变更申请',
+          },
+          {
+            label: '换章申请',
           },
         ],
-      },
-      {
-        label: 'A层级菜单3',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-          {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-        ],
-      },
+      }
     ],
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
