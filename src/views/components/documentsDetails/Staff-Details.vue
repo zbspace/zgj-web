@@ -12,9 +12,15 @@
                 <div class="ap-desc-name">
                     <div class="ap-desc-name-text">{{ state.props.data.name }}</div>
                     <div class="ap-desc-name-xinxi">
-                        <div class="ap-desc-name-xinxi-cellPhone">手机号：{{ state.props.data.cellPhone }}</div>
+                        <div class="ap-desc-name-xinxi-cellPhone">
+                            <span class="ap-desc-name-xinxi-cellPhone-label">手机号：</span>
+                            {{ state.props.data.cellPhone }}
+                        </div>
                         <div class="ap-desc-name-xinxi-fenge"></div>
-                        <div class="ap-desc-name-xinxi-account">账号：{{ state.props.data.account }}</div>
+                        <div class="ap-desc-name-xinxi-account">
+                            <span class="ap-desc-name-xinxi-account-label"> 账号：</span>
+                            {{ state.props.data.account }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -195,6 +201,12 @@ onMounted(() => {
                 width: 20rem;
                 justify-content: space-between;
 
+                .ap-desc-name-xinxi-cellPhone-label {
+                    color: var(--color-text-3);
+                }
+                .ap-desc-name-xinxi-account-label {
+                    color: var(--color-text-3);
+                }
                 .ap-desc-name-xinxi-fenge {
                     height: 1rem;
                     border-left: 1px solid var(--color-border-2);
@@ -206,17 +218,19 @@ onMounted(() => {
     .ap-detail {
         margin: 1rem 0;
         display: flex;
-        .ap-detail-label{
+
+        .ap-detail-label {
             color: var(--color-text-3);
             display: flex;
             justify-content: flex-end;
             width: 6rem;
             margin-right: 0.5rem;
         }
-.ap-detail-cont-val{
-    margin-bottom: 0.5rem;
-    box-sizing: border-box;
-}
+
+        .ap-detail-cont-val {
+            margin-bottom: 0.5rem;
+            box-sizing: border-box;
+        }
     }
 }
 </style>

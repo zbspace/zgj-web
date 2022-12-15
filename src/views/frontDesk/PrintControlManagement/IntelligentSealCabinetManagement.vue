@@ -6,6 +6,7 @@
                 <div class="title">
                     <div>智能印章柜管理</div>
                     <div>
+                        <el-button type="primary">+ 增加</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -28,7 +29,7 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button type="primary">+ 增加</el-button>
+             
                 </div>
             </template>
 
