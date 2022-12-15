@@ -6,7 +6,7 @@
                 <div class="title">
                     印章库
                     <div>
-                        <el-button type="primary">+ 增加</el-button>
+                        <el-button type="primary" @click="showLibraryDialog = true">+ 增加</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -59,10 +59,19 @@
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
             </componentsDocumentsDetails>
         </div>
+
+        <!-- 动态表单 - 印章库 -->
+        <KDialog @update:show="showLibraryDialog = $event" :show="showLibraryDialog" title="新增" :centerBtn="true"
+          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600"
+          @close="submitLibraryForm">
+          <v-form-render :form-json="formLibraryJson" :form-data="formLibraryData" :option-data="optionLibraryData"
+            ref="vFormLibraryRef">
+          </v-form-render>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -72,6 +81,9 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import LibraryJson from '@/views/addDynamicFormJson/LibraryOfSeals.json'
+import KDialog from "@/views/components/modules/kdialog.vue"
+import { ElMessage } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -79,6 +91,27 @@ const props = defineProps({
         default: "0",
     },
 })
+// 印章库 新增弹框
+const formLibraryJson = reactive(LibraryJson)
+const formLibraryData = reactive({})
+const optionLibraryData = reactive({})
+const vFormLibraryRef = ref(null)
+const showLibraryDialog = ref(false)
+
+const submitLibraryForm = (type) => {
+  if (!type) {
+    vFormLibraryRef.value.resetForm()
+    return
+  }
+  vFormLibraryRef.value.getFormData().then(formData => {
+    // Form Validation OK
+    alert(JSON.stringify(formData))
+    showLibraryDialog.value = false
+  }).catch(error => {
+    // Form Validation failed
+    ElMessage.error(error)
+  })
+}
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {

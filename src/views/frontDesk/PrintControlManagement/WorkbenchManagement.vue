@@ -6,7 +6,7 @@
                 <div class="title">
                     <div>工作台管理</div>
                     <div>
-                        <el-button type="primary">+ 增加</el-button>
+                        <el-button type="primary" @click="showFormDialog = true">+ 增加</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -47,10 +47,18 @@
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
             </componentsDocumentsDetails>
         </div>
+
+        <!-- 动态表单 -->
+        <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增工作台" :centerBtn="true"
+          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600"
+          @close="submitForm">
+          <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+          </v-form-render>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -60,6 +68,9 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import KDialog from "@/views/components/modules/kdialog.vue"
+import FormJson from '@/views/addDynamicFormJson/WorkbenchManagement.json'
+import { ElMessage } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -67,6 +78,27 @@ const props = defineProps({
         default: "0",
     },
 })
+const showFormDialog = ref(false)
+const formJson = reactive(FormJson)
+const formData = reactive({})
+const optionData = reactive({})
+const dialogVisible = ref(false)
+const vFormRef = ref(null)
+const submitForm = (type) => {
+  if (!type) {
+    vFormRef.value.resetForm()
+    return
+  }
+  vFormRef.value.getFormData().then(formData => {
+    // Form Validation OK
+    alert(JSON.stringify(formData))
+    showFormDialog.value = false
+  }).catch(error => {
+    // Form Validation failed
+
+    ElMessage.error(error)
+  })
+}
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {

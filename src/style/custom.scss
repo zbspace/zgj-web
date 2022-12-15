@@ -84,12 +84,14 @@ $unify-primary-color: var(--primary-6);
 .el-button {
   --el-button-hover-bg-color: #F3F6F9;
   --el-button-hover-border-color: #d4dbeb;
+  --el-button-active-border-color: #d4dbeb;
   --el-button-hover-text-color:rgba(0,0,0,0.65);
 }
 .el-message-box {
   .el-button {
     --el-button-hover-bg-color: #F3F6F9;
     --el-button-hover-border-color: #d4dbeb;
+    --el-button-active-border-color: #d4dbeb;
     --el-button-hover-text-color:rgba(0,0,0,0.65);
   }
   .el-button--primary {

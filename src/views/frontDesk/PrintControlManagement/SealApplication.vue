@@ -35,7 +35,7 @@
                     <el-button :plain="true" @click="open3">询问消息</el-button>
                     <el-button :plain="true" @click="open4">异常消息</el-button>
                     <el-button :plain="true" @click="openMess">信息弹窗</el-button>
-                    <el-button @click="showFormDialog = true">动态表单</el-button>
+                    <el-button @click="showFormDialog = true">新增（用印申请）</el-button>
                 </div>
             </template>
             <template #table>
@@ -58,11 +58,10 @@
             <!-- 人员选择  -->
             <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog"></kDepartOrPersonVue>
 
-            <!-- 动态表单 -->
-            <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="动态表单" :centerBtn="true"  :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600" @close="submitForm">
+            <!-- 动态表单 - 用印申请 -->
+            <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增（用印申请）" :centerBtn="true"  :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600" @close="submitForm">
                 <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
                 </v-form-render>
-              <!-- <el-button type="primary" @click="submitForm">Submit</el-button> -->
             </KDialog>
 
         </div>
@@ -78,10 +77,10 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
-import KDialog from "@/views/components/modules/kdialog.vue"
 import router from '../../../router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import Json from '../../addDynamicFormJson/sealApplication.json'
+import KDialog from "@/views/components/modules/kdialog.vue"
+import FormJson from '@/views/addDynamicFormJson/sealApplication.json'
 const props = defineProps({
     // 处理类型
     type: {
@@ -91,10 +90,13 @@ const props = defineProps({
 })
 const showDialog = ref(false)
 const showDepPerDialog = ref(false)
+
+// 用印申请 弹框
 const showFormDialog = ref(false)
-const formJson = reactive(Json)
+const formJson = reactive(FormJson)
 const formData = reactive({})
 const optionData = reactive({})
+const dialogVisible = ref(false)
 const vFormRef = ref(null)
 const submitForm = (type) => {
   if (!type) {
@@ -111,7 +113,6 @@ const submitForm = (type) => {
     ElMessage.error(error)
   })
 }
-const dialogVisible = ref(false)
 
 const goInnerPage = () => {
   router.push({
