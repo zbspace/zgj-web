@@ -220,7 +220,7 @@ const handleFullScreen = () => {
     overflow: hidden;
     .header-custom {
       // cursor: move;
-
+      height: 55px;
       .h-title {
         display: flex;
         justify-content: space-between;
@@ -228,7 +228,7 @@ const handleFullScreen = () => {
         height: 55px;
         font-size: 16px;
         color: rgba(0, 0, 0, 0.85);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        // border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         padding: 0 12px 0 24px;
       }
 
@@ -240,17 +240,21 @@ const handleFullScreen = () => {
 
     .content-custom {
       flex: 1;
-      padding: 20px;
+      flex-shrink: 0;
+      padding: 12px 16px;
       overflow-y: auto;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     .footer-custom {
+      height: 55px;
       .default-footer-btns {
         display: flex;
         // justify-content: flex-end;
         align-items: center;
         height: 55px;
-        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        // border-top: 1px solid rgba(0, 0, 0, 0.06);
 
         .btn {
           min-width: 60px;

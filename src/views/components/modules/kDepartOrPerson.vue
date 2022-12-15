@@ -317,15 +317,15 @@ const concelSelected = (attr) => {
     display: flex;
     flex-direction: column;
     .select-search {
-      padding: 10px 20px;
+      padding: 10px 10px;
     }
 
     .select-crumbs {
-      padding: 6px 20px;
+      padding: 6px 10px;
     }
 
     .select-list {
-      padding: 4px 24px;
+      padding: 4px 8px;
       flex: 1;
     }
 
@@ -342,7 +342,7 @@ const concelSelected = (attr) => {
 
   .selection-right {
     flex: 1;
-    height: 380px;
+    // height: 380px;
     overflow-y: auto;
 
     .select-right-column {
