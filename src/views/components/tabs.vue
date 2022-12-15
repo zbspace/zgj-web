@@ -57,7 +57,7 @@ function initData() {
     state.cancelBottomLine = props.cancelBottomLine;
 }
 watch(props, (newValue, oldValue) => {
-    console.log(newValue, oldValue);
+    // console.log(newValue, oldValue);
     //初始化数据
     initData()
 })
