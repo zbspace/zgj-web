@@ -61,7 +61,6 @@
                 <div class="charts-title">每日用印情况统计图</div>
                 <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="line" :series="dashedLineChartseries"
                     :options="dashedLineChartoptions"></apexchart> -->
-                <!-- <vue-echarts :option="echartslineoption" style="height: 350px" /> -->
                 <jy-echarts :options="echartslineoption" />
             </div>
         </div>
@@ -69,13 +68,11 @@
             <div class="charts-title">印章使用情况统计图</div>
             <!-- <apexchart class="apex-charts" height="350" dir="ltr" type="bar"
                             :series="basicColumnChartseries" :options="basicColumnChartoptions"></apexchart> -->
-            <!-- <vue-echarts :option="echartsbaroption" style="height: 350px" /> -->
             <jy-echarts :options="echartsbaroption" />
         </div>
     </div>
 </template>
 <script>
-import { VueEcharts } from "vue3-echarts";
 export default {
     name: "system-home",
     data() {
@@ -688,9 +685,6 @@ export default {
     },
     computed: {
 
-    },
-    components: {
-        VueEcharts
     },
 };
 </script>
