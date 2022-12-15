@@ -2,7 +2,16 @@
   <div>
     <componentsLayout Layout="title,searchForm,table,pagination,tabs,batch">
       <template #title>
-        <div class="title">终端版本管理</div>
+        <div class="title">
+          <div>终端版本管理</div>
+          <div>
+            <el-button type="primary">+ 新建</el-button>
+            <el-button>
+              <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+              <span>更多操作</span>
+            </el-button>
+          </div>
+        </div>
       </template>
 
       <template #tabs>
@@ -22,7 +31,6 @@
 
       <template #batch>
         <div class="batch">
-          <el-button type="primary">+ 新建</el-button>
           <el-button>批量操作</el-button>
         </div>
       </template>
@@ -345,5 +353,9 @@ const state = reactive({
 </script>
 
 <style lang="scss" scoped>
-
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 </style>

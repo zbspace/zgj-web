@@ -1189,17 +1189,17 @@ import { SimpleBar } from "simplebar-vue3";
 import icon1 from '@/assets/svg/shouye-1.svg'
 import icon2 from '@/assets/svg/yongyin-guanli-1.svg'
 import icon3 from '@/assets/svg/yinzhang-guanli-1.svg'
-import icon4 from '@/assets/svg/yinzhang-guanli-1.svg'
+import icon4 from '@/assets/svg/yinzhang-guanli-2.svg'
 import icon5 from '@/assets/svg/dianzi-qianzhang.svg'
 import icon6 from '@/assets/svg/shebei-guanli.svg'
 import icon7 from '@/assets/svg/wenjianku-1.svg'
 import icon8 from '@/assets/svg/wenjian-leixing-1.svg'
-import icon9 from '@/assets/svg/shebei-guanli.svg'
+import icon9 from '@/assets/svg/liuchengshenpi-ssqr.svg'
 import icon10 from '@/assets/svg/dai-shenpi-liucheng.svg'
 import icon11 from '@/assets/svg/dai-chuli-renwu.svg'
 import icon12 from '@/assets/svg/chaosong-geiwode-liucheng.svg'
 import icon13 from '@/assets/svg/fengxian-tixing-jilu-1.svg'
-import icon14 from '@/assets/svg/fengxian-tixing-jilu-1.svg'
+import icon14 from '@/assets/svg/fengxian-tixing-jilu-2.svg'
 import icon15 from '@/assets/svg/shuju-kanban-1.svg'
 import icon16 from '@/assets/svg/yongyin-shuju-fenxi-1.svg'
 import icon17 from '@/assets/svg/yinzhang-shuju-fenxi-1.svg'
@@ -1207,18 +1207,22 @@ import icon18 from '@/assets/svg/yujing-guanli.svg'
 import icon19 from '@/assets/svg/qiye-xinxi.svg'
 import icon20 from '@/assets/svg/wanglai-qiye.svg'
 import icon21 from '@/assets/svg/bumen-yu-yuangong.svg'
-import icon22 from '@/assets/svg/quanju-canshu-peizhi.svg'
+import icon22 from '@/assets/svg/qxgl-icon.svg'
 import icon23 from '@/assets/svg/quanju-canshu-peizhi.svg'
 import icon24 from '@/assets/svg/gujian-shengji-rizhi.svg'
 import icon25 from '@/assets/svg/zongduan-banben-guanli.svg'
 import icon26 from '@/assets/svg/biaodan-guanli.svg'
 import icon27 from '@/assets/svg/liucheng-guanli.svg'
 import icon28 from '@/assets/svg/yewu-guizhe-peizhi.svg'
-import icon29 from '@/assets/svg/xiaoxi-rizhi.svg'
+import icon29 from '@/assets/svg/xiaoxi-shijian.svg'
+import icon34 from '@/assets/svg/xiaoxi-muban.svg'
+import icon35 from '@/assets/svg/xiaoxi-qdpz.svg'
+import icon36 from '@/assets/svg/xiaoxi-xxrz.svg'
 import icon30 from '@/assets/svg/denglu-rizi.svg'
 import icon31 from '@/assets/svg/xitong-caozuo-rizhi.svg'
 import icon32 from '@/assets/svg/zongduan-caozuo-rizhi.svg'
 import icon33 from '@/assets/svg/gujian-shengji-rizhi.svg'
+import icon37 from '@/assets/svg/xitong-yunxing-rizhi.svg'
 import "../unit/SvgIconPack"
 import {
   HomeIcon,
@@ -1477,13 +1481,13 @@ export default {
             name: "风控提醒设置",
             label: "t-zgj-cg-menu-fengkong-tixing-shezhi",
             to: "/frontDesk/riskControlWarning/RiskAlertSetting",
-            icon: icon13,
+            icon: icon14,
           },
           {
             name: "风险提醒记录",
             label: "t-zgj-cg-menu-fengxian-tixing-jilu",
             to: "/frontDesk/home",
-            icon: icon14,
+            icon: icon13,
             children: [
               {
                 name: "用印告警提醒",
@@ -1652,19 +1656,19 @@ export default {
             name: "消息模板",
             label: "t-zgj-cg-menu-xiaoxi-muban",
             to: "/system/message_center/template",
-            icon: icon29,
+            icon: icon34,
           },
           {
             name: "渠道配置",
             label: "t-zgj-cg-menu-qudao-peizhi",
             to: "/system/message_center/channel",
-            icon: icon29,
+            icon: icon35,
           },
           {
             name: "消息日志",
             label: "t-zgj-cg-menu-xiaoxi-rizhi",
             to: "/system/message_center/log",
-            icon: icon29,
+            icon: icon36,
           },
           {
             name: "日志管理",
@@ -1687,7 +1691,7 @@ export default {
             name: "系统运行日志",
             label: "t-zgj-cg-menu-xitong-yunxing-rizhi",
             to: "/system/log_mamage/system_running",
-            icon: icon31,
+            icon: icon37,
           },
           {
             name: "终端操作日志",
