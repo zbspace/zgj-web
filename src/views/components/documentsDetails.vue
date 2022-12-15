@@ -556,11 +556,10 @@
                                             </template>
                                             <template #content>
                                                 <div>
-                                                    <documentsDetailsInformationList
-                                                        :data="state.cache.SmartSealCabinetDetails.basicInformation.data"
-                                                        :labelStyle="state.cache.SmartSealCabinetDetails.basicInformation.labelStyle">
+                                                    <documentsDetailsStaffDetails
+                                                        :data="state.cache.StaffDetails.basicInformation.data">
 
-                                                    </documentsDetailsInformationList>
+                                                    </documentsDetailsStaffDetails>
                                                 </div>
                                             </template>
                                         </documentsDetailsPortion>
