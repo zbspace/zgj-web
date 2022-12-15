@@ -395,7 +395,8 @@
                                             <template #content>
                                                 <div>
                                                     <documentsDetailsInformationList
-                                                        :data="state.cache.WorkbenchDetails.basicInformation.data" :labelStyle="state.cache.WorkbenchDetails.basicInformation.labelStyle">
+                                                        :data="state.cache.WorkbenchDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.WorkbenchDetails.basicInformation.labelStyle">
 
                                                     </documentsDetailsInformationList>
                                                 </div>
@@ -410,7 +411,8 @@
                                             <template #content>
                                                 <div>
                                                     <documentsDetailsInformationList
-                                                        :data="state.cache.WorkbenchDetails.configuration.data" :labelStyle="state.cache.WorkbenchDetails.configuration.labelStyle">
+                                                        :data="state.cache.WorkbenchDetails.configuration.data"
+                                                        :labelStyle="state.cache.WorkbenchDetails.configuration.labelStyle">
 
                                                     </documentsDetailsInformationList>
                                                 </div>
@@ -429,7 +431,8 @@
                                             <template #content>
                                                 <div>
                                                     <documentsDetailsInformationList
-                                                        :data="state.cache.SmartSealBoxDetails.basicInformation.data" :labelStyle="state.cache.SmartSealBoxDetails.basicInformation.labelStyle">
+                                                        :data="state.cache.SmartSealBoxDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.SmartSealBoxDetails.basicInformation.labelStyle">
 
                                                     </documentsDetailsInformationList>
                                                 </div>
@@ -444,7 +447,8 @@
                                             <template #content>
                                                 <div>
                                                     <documentsDetailsInformationList
-                                                        :data="state.cache.SmartSealBoxDetails.configuration.data" :labelStyle="state.cache.SmartSealBoxDetails.configuration.labelStyle">
+                                                        :data="state.cache.SmartSealBoxDetails.configuration.data"
+                                                        :labelStyle="state.cache.SmartSealBoxDetails.configuration.labelStyle">
 
                                                     </documentsDetailsInformationList>
                                                 </div>
@@ -463,7 +467,8 @@
                                             <template #content>
                                                 <div>
                                                     <documentsDetailsInformationList
-                                                        :data="state.cache.SmartSealCabinetDetails.basicInformation.data" :labelStyle="state.cache.SmartSealCabinetDetails.basicInformation.labelStyle">
+                                                        :data="state.cache.SmartSealCabinetDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.SmartSealCabinetDetails.basicInformation.labelStyle">
 
                                                     </documentsDetailsInformationList>
                                                 </div>
@@ -510,6 +515,57 @@
                                 <div class="Form-Details" v-else-if="state.componentsTabs.activeName == 'Form-Details'">
 
                                 </div>
+
+                                <!-- 业务规则详情 -->
+                                <div class="Business-Rule-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Business-Rule-Details'">
+
+                                </div>
+                                <!-- 通知事件详情 -->
+                                <div class="Notification-Event-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Notification-Event-Details'">
+
+                                </div>
+                                <!-- 模板详情 -->
+                                <div class="Template-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Template-Details'">
+
+                                </div>
+                                <!-- 往来企业详情 -->
+                                <div class="Current-Business-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Current-Business-Details'">
+
+                                </div>
+                                <!-- 单位与部门详情 -->
+                                <div class="Unit-Department-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Unit-Department-Details'">
+
+                                </div>
+                                <!-- 组织人员 -->
+                                <div class="organization-Person"
+                                    v-else-if="state.componentsTabs.activeName == 'organization-Person'">
+
+                                </div>
+                                <!-- 员工详情 -->
+                                <div class="Staff-Details"
+                                    v-else-if="state.componentsTabs.activeName == 'Staff-Details'">
+                                    <div class="ap-cont-box">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">基本信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsInformationList
+                                                        :data="state.cache.SmartSealCabinetDetails.basicInformation.data"
+                                                        :labelStyle="state.cache.SmartSealCabinetDetails.basicInformation.labelStyle">
+
+                                                    </documentsDetailsInformationList>
+                                                </div>
+                                            </template>
+                                        </documentsDetailsPortion>
+                                    </div>
+                                </div>
                             </div>
                         </a-scrollbar>
                     </div>
@@ -527,9 +583,11 @@ import documentsDetailsPortion from "./documentsDetails/portion.vue"
 import documentsDetailsInformationList from "./documentsDetails/informationList.vue"
 import documentsDetailsAccessory from "./documentsDetails/accessory.vue"
 import documentsDetailsIntelligentPrinting from "./documentsDetails/IntelligentPrinting.vue"
+import documentsDetailsStaffDetails from "./documentsDetails/Staff-Details.vue"
 import documentsDetailSdigitalSeal from "./documentsDetails/digital-seal.vue"
 import componentsArchive from './documentsDetails/Archive.vue'
 import componentsFileverification from './documentsDetails/Fileverification.vue'
+
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
 import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
@@ -544,7 +602,7 @@ import liuchengWanchengSvg from '@/assets/svg/liucheng-wancheng.svg'
 import yuanHuiSvg from '@/assets/svg/yuan-hui.svg'
 import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
 import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
-
+import renlianTupian from '@/assets/svg/renlian-tupian.svg'
 
 
 const props = defineProps({
@@ -2460,8 +2518,30 @@ const state = reactive({
                 title: "基本信息",
                 show: true,
                 data: {
-                    name:"邓家佳",
-
+                    name: "邓家佳",
+                    cellPhone: "13789995478",
+                    account: "Zhangsan",
+                    departmentList: [
+                        {
+                            name: "德国威能 - 威能（无锡）供热设备有限公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司北京分公司",
+                        },
+                        {
+                            name: "德国威能 - 威能（中国）供热制冷环境技术有限公司杭州分公司",
+                        },
+                    ],
+                    role: "系统管理员、印章管理员、模板管理员、流程管理员、审计员",
+                    jobTitle: "开发",
+                    mailbox: "test@qq.com",
+                    EnterpriseWechatID: "NFHUF744665212",
+                    NailID: "11548798778",
+                    remark: "-",
+                    FacePicturePath: renlianTupian,
                 }
             },
         },
@@ -2536,6 +2616,35 @@ const state = reactive({
             {
                 label: '表单详情',
                 name: "Form-Details",
+            },
+
+            {
+                label: '业务规则详情',
+                name: "Business-Rule-Details",
+            },
+            {
+                label: '通知事件详情',
+                name: "Notification-Event-Details",
+            },
+            {
+                label: '模板详情',
+                name: "Template-Details",
+            },
+            {
+                label: '往来企业详情',
+                name: "Current-Business-Details",
+            },
+            {
+                label: '单位与部门详情',
+                name: "Unit-Department-Details",
+            },
+            {
+                label: '组织人员',
+                name: "organization-Person",
+            },
+            {
+                label: '员工详情',
+                name: "Staff-Details",
             },
         ],
         activeName: "Details-of-Printing",

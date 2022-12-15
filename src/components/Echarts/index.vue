@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="main" :style="style"></div>
+    <div ref="echart" :style="style" :options="options"></div>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ import {
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from 'echarts/renderers';
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 // 注册必须的组件
 echarts.use([
   LabelLayout,
@@ -33,9 +33,9 @@ echarts.use([
   CanvasRenderer,
   UniversalTransition
 ]);
-
+const echart = ref(null)
 const props = defineProps({
-  echartsOption: {
+  options: {
     type: Object,
     default: () => {
       return {
@@ -84,16 +84,15 @@ const props = defineProps({
     default: () => {
       return {
         height: '350px',
-        width: '480px',
+        width: 'auto',
       }
     }
   }
 })
 
 onMounted(() => {
-  var chartDom = document.getElementById('main');
-  var myChart = echarts.init(chartDom)
-  myChart.setOption(props.echartsOption)
+  var myChart = echarts.init(echart.value)
+  myChart.setOption(props.options)
 })
 </script>
 
