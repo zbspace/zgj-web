@@ -30,7 +30,7 @@
 
             <template #table>
                 <div>
-                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" @cellClick="cellClick"
+                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" @cellClick="cellClick" @custom-click="customClick"
                         :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
                     </componentsTable>
                 </div>
@@ -445,6 +445,16 @@ function cellClick(row, column, cell, event) {
 //点击关闭
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+//点击表格按钮
+function customClick(row, column, cell, event){
+    console.log(cell.name);
+    if(cell.name === '修改'){
+        showFormDialog.value = true;
+    }
+    if(cell.name === '删除'){
+        
+    }
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
