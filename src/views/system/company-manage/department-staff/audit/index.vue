@@ -1,6 +1,6 @@
 <template>
   <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
+    <componentsLayout Layout="title,searchForm,table,pagination,batch">
       <template #title>
         <div class="title">邀请审核</div>
       </template>
@@ -16,13 +16,6 @@
       <template #batch>
         <div class="batch">
           <el-button type="primary">邀请注册</el-button>
-        </div>
-      </template>
-
-      <template #tree>
-        <div>
-          <componentsTree :data="state.componentsTree.data" :defaultAttribute="state.componentsTree.defaultAttribute">
-          </componentsTree>
         </div>
       </template>
 
@@ -49,7 +42,6 @@ import componentsTable from "@/views/components/table";
 import componentsSearchForm from "@/views/components/searchForm";
 import componentsPagination from "@/views/components/pagination.vue";
 import componentsLayout from "@/views/components/Layout.vue";
-import componentsTree from "@/views/components/tree"
 
 const state = reactive({
 
@@ -254,73 +246,6 @@ const state = reactive({
     },
   },
 
-  componentsTree: {
-    data: [
-      {
-        label: '企业名称',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        label: 'A层级菜单2',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-          {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        label: 'A层级菜单3',
-        children: [
-          {
-            label: 'B层级菜单1',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-          {
-            label: 'B层级菜单2',
-            children: [
-              {
-                label: 'C层级菜单1',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-    defaultAttribute: {
-      "check-on-click-node": true,
-      "show-checkbox": false,
-      "default-expand-all": true,
-      "expand-on-click-node": false,
-      "check-strictly": true,
-    }
-  },
 });
 
 </script>
