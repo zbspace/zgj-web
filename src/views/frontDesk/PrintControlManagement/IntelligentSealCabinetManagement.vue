@@ -6,7 +6,7 @@
                 <div class="title">
                     <div>智能印章柜管理</div>
                     <div>
-                        <el-button type="primary">+ 增加</el-button>
+                        <el-button type="primary" @click="showFormDialog = true">+ 增加</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -29,14 +29,15 @@
             </template>
             <template #batch>
                 <div class="batch">
-             
+
                 </div>
             </template>
 
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true"
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -46,6 +47,13 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
+        <!-- 动态表单 -->
+        <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增" :centerBtn="true"
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000"
+            :height="600" @close="submitForm">
+            <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+            </v-form-render>
+        </KDialog>
         <!-- 印章柜详情 -->
         <div class="ap-box">
             <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
@@ -55,7 +63,7 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref, reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -65,6 +73,8 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
+import { ElMessage, ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -72,6 +82,27 @@ const props = defineProps({
         default: "0",
     },
 })
+const showFormDialog = ref(false)
+const formJson = reactive(FormJson)
+const formData = reactive({})
+const optionData = reactive({})
+const dialogVisible = ref(false)
+const vFormRef = ref(null)
+const submitForm = (type) => {
+    if (!type) {
+        vFormRef.value.resetForm()
+        return
+    }
+    vFormRef.value.getFormData().then(formData => {
+        // Form Validation OK
+        alert(JSON.stringify(formData))
+        showFormDialog.value = false
+    }).catch(error => {
+        // Form Validation failed
+
+        ElMessage.error(error)
+    })
+}
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
@@ -92,7 +123,7 @@ const state = reactive({
                 width: "calc(100% / 3)",
             },
             labelStyle: {
-                width: "100px"
+                width: "120px"
             },
         },
         data: [
@@ -216,7 +247,7 @@ const state = reactive({
                         name: "修改"
                     },
                     {
-                        name: " 删除 "
+                        name: "删除"
                     },
                 ],
             }],
@@ -418,6 +449,26 @@ function cellClick(row, column, cell, event) {
 //点击关闭
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    console.log(cell.name);
+    if (cell.name === '修改') {
+        showFormDialog.value = true;
+    }
+    if (cell.name == '删除') {
+        ElMessageBox.confirm(
+            '您确定要删除该记录吗？',
+            {
+                confirmButtonText: '确认',
+                cancelButtonText: '关闭',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
