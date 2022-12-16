@@ -99,7 +99,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "盖章码/申请人员/文件名称",
                 },
             },
             {
@@ -118,22 +118,26 @@ const state = reactive({
                 }
             },
             {
-                id: 'select',
-                label: "使用印章",
-                type: "select",
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
             },
             {
                 id: 'shenqingr',
-                label: "盖章码",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                label: "用印状态",
+                type: "radioButton",
+                data:[
+                    {
+                        name:"审批已完成",
+                    },
+                    {
+                        name:"智能用印中",
+                    }
+                ]
             },
         ],
         butData: [{

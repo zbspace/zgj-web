@@ -6,7 +6,8 @@
                     <div class="ap-box" v-for="(item, index) in state.cache.formData"
                         :style="[props.style.lineStyle, item.style, computed_fill(item, index)]"
                         @click="clickElement(item, index)">
-                        <div class="ap-box-cont" v-if="item.type == 'input'">
+                        <!-- input -->
+                        <div class="ap-box-cont input" v-if="item.type == 'input'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
@@ -16,7 +17,22 @@
                                     @input="getCurrentValue(item, index)" />
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'select'">
+                        <!-- derivable -->
+                        <div class="ap-box-cont derivable" v-if="item.type == 'derivable'">
+                            <div class="ap-box-label" :style="props.style.labelStyle">
+                                <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
+                                {{ item.label }}
+                            </div>
+                            <div class="ap-box-contBox">
+                                <el-input class="ap-box-contBox-input width-100" v-bind="item.defaultAttribute"
+                                    readonly />
+                                <div class="ap-box-contBox-icon">
+                                    <img class="ap-box-contBox-icon-img" src="../../assets/svg/ketanchude.svg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- select -->
+                        <div class="ap-box-cont select" v-else-if="item.type == 'select'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
@@ -29,7 +45,8 @@
                                 </el-select>
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'picker'">
+                        <!-- picker -->
+                        <div class="ap-box-cont picker" v-else-if="item.type == 'picker'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
@@ -39,7 +56,8 @@
                                     @change="getCurrentValue(item, index)" />
                             </div>
                         </div>
-                        <div class="ap-box-cont " v-else-if="item.type == 'checkbox'">
+                        <!-- checkbox -->
+                        <div class="ap-box-cont checkbox" v-else-if="item.type == 'checkbox'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
@@ -49,7 +67,8 @@
                                     @change="getCurrentValue(item, index)" />
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'radio'">
+                        <!-- radio -->
+                        <div class="ap-box-cont radio" v-else-if="item.type == 'radio'">
                             <div class="ap-box-label" :style="props.style.labelStyle">{{ item.label }}</div>
                             <div class="ap-box-autoBox">
                                 <el-radio-group v-bind="item.defaultAttribute" v-model="item.value"
@@ -58,7 +77,8 @@
                                 </el-radio-group>
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'cascader'">
+                        <!-- cascader -->
+                        <div class="ap-box-cont cascader" v-else-if="item.type == 'cascader'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
@@ -68,7 +88,8 @@
                                     v-model="item.value" @change="getCurrentValue(item, index)" />
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'switch'">
+                        <!-- switch -->
+                        <div class="ap-box-cont switch" v-else-if="item.type == 'switch'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
@@ -77,29 +98,36 @@
                                 <el-switch v-bind="item.defaultAttribute" v-model="item.value" />
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'button'">
+                        <!-- radioButton -->
+                        <div class="ap-box-cont radioButton" v-else-if="item.type == 'radioButton'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
                             </div>
-                            <div class="ap-box-contBox button-contBox" v-for="data in item.data">
-                                <div class="custom-button" :style="item.style">
-                                    {{ data.name }}
+                            <div class="ap-box-contBox">
+                                <div class="button-contBox" v-for="data in item.data">
+                                    <div class="custom-button" :style="item.style">
+                                        {{ data.name }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'checkButton'">
+                        <!-- checkButton -->
+                        <div class="ap-box-cont checkButton" v-else-if="item.type == 'checkButton'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
                             </div>
-                            <div class="ap-box-contBox" v-for="data in item.data">
-                                <div class="custom-button" :style="item.style">
-                                    {{ data.name }}
+                            <div class="ap-box-contBox">
+                                <div class="button-contBox" v-for="data in item.data">
+                                    <div class="custom-button" :style="item.style">
+                                        {{ data.name }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="ap-box-cont" v-else-if="item.type == 'custom'">
+                        <!-- custom -->
+                        <div class="ap-box-cont custom" v-else-if="item.type == 'custom'">
                             <div class="ap-box-label" :style="props.style.labelStyle">
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
@@ -207,15 +235,15 @@ const state = reactive({
 const computed_fill = computed(() => {
     return (item, index) => {
         // console.log(item, index);
-        let fixed = [""]
-        let alterable = ["checkbox", "radio", "switch", "button", "checkButton", "custom"]
+        let fixed = ["custom"]
+        let alterable = ["checkbox", "radio", "switch", "radioButton", "checkButton"]
         if (fixed.indexOf(item.type) > -1) {
             return {
                 width: "100%"
             };
         } else if (alterable.indexOf(item.type) > -1 && index < state.cache.formData.length - 1) {
             return {
-                width: "100%"
+                width: "auto"
             };
         } else {
             return {};
@@ -316,16 +344,6 @@ onMounted(() => {
         display: flex;
         flex-flow: wrap;
         box-sizing: border-box;
-
-        .button-contBox {
-            display: flex;
-            justify-content: flex-start;
-            cursor: pointer;
-        }
-
-        .button-contBox :hover {
-            background-color: var(--primary-2);
-        }
     }
 
     .ap-box {
@@ -426,6 +444,96 @@ onMounted(() => {
     .fill {
         width: 100%;
     }
+
+    .derivable {
+        .ap-box-contBox {
+            position: relative;
+            display: flex;
+            align-items: center;
+
+            .ap-box-contBox-icon {
+                position: absolute;
+                right: 0.8rem;
+                cursor: pointer;
+                height: 50%;
+                display: flex;
+                align-items: center;
+
+                .ap-box-contBox-icon-img {
+                    height: 100%;
+                }
+            }
+
+            :deep {
+                .el-input__inner {
+                    padding-right: 1.5rem;
+                    box-sizing: border-box;
+                }
+            }
+        }
+    }
+
+    .radioButton {
+        align-items: flex-start !important;
+        margin-bottom: -0.5rem;
+
+        .ap-box-label {
+            @include mixin-padding-top(5);
+            @include mixin-padding-bottom(5);
+        }
+
+        .ap-box-contBox {
+            display: flex;
+            justify-content: flex-start;
+            flex-flow: wrap;
+        }
+
+        .button-contBox {
+            cursor: pointer;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .button-contBox :hover {
+            background-color: var(--primary-2);
+        }
+
+        .button-contBox {
+            flex-grow: 0 !important;
+        }
+    }
+
+    .checkButton {
+        align-items: flex-start !important;
+        margin-bottom: -0.5rem;
+
+        .ap-box-label {
+            @include mixin-padding-top(5);
+            @include mixin-padding-bottom(5);
+        }
+
+        .ap-box-contBox {
+            display: flex;
+            justify-content: flex-start;
+            flex-flow: wrap;
+        }
+
+        .button-contBox {
+            cursor: pointer;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .button-contBox :hover {
+            background-color: var(--primary-2);
+        }
+
+        .button-contBox {
+            flex-grow: 0 !important;
+        }
+    }
+
+  
 
     :deep {
         .width-100 {
