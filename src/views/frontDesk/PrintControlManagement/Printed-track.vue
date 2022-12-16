@@ -1,7 +1,7 @@
 <!-- 用印轨迹 -->
 <template>
     <div class="PrintControlManagement-Printed-track">
-        <componentsLayout Layout="title,searchForm,table,pagination,batch">
+        <componentsLayout Layout="title,searchForm,custom">
             <template #title>
                 <div class="title">
                     <div>用印轨迹</div>
@@ -26,38 +26,28 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
-            <template #batch>
-                <div class="batch">
-
-                </div>
-            </template>
-            <template #table>
+            <template #custom>
                 <div>
-                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
-                    </componentsTable>
+                    <div>
+                        <div>
+                            <div>
+                                <img src="" alt="">
+                            </div>
+                            <div>
+                                <span></span>
+                                <span>
+                                    <span>保管人：</span>
+                                    <span></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="../../../assets/svg/yongyin-guiji-ditu.svg" alt="">
+                    </div>
                 </div>
-            </template>
-            <template #pagination>
-                <componentsPagination :data="state.componentsPagination.data"
-                    :defaultAttribute="state.componentsPagination.defaultAttribute">
-                </componentsPagination>
             </template>
         </componentsLayout>
-        <!-- 单据详情 -->
-        <div class="ap-box">
-            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
-                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
-            </componentsDocumentsDetails>
-        </div>
     </div>
 </template>
 <script setup>
