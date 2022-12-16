@@ -120,7 +120,7 @@ const state = reactive({
                 width: "calc(100% / 3)",
             },
             labelStyle: {
-                width: "100px"
+                width: "120px"
             },
         },
         data: [
