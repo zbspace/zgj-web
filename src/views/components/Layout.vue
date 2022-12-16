@@ -33,6 +33,9 @@
                     <div class="ap-box-pagination" v-if="state.Layout.pagination">
                         <slot name="pagination"></slot>
                     </div>
+                    <div class="ap-box-custom" v-if="state.Layout.custom">
+                        <slot name="custom"></slot>
+                    </div>
                 </a-scrollbar>
             </div>
             <div>
