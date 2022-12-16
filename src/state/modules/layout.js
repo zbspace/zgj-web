@@ -1,17 +1,17 @@
-export const state = {
+ const state = {
   layoutType: 'vertical',
   layoutWidth: 'fluid',
   sidebarSize: 'lg',
   topbar: 'light',
   mode: 'light',
   position: 'fixed',
-  sidebarView: 'default',
+  sidebarView: 'detached',
   sidebarColor: 'light',
   sidebarImage: 'none',
   preloader: 'disable'
 }
 
-export const mutations = {
+ const mutations = {
   CHANGE_LAYOUT(state, layoutType) {
     state.layoutType = layoutType;
   },
@@ -44,7 +44,7 @@ export const mutations = {
   },
 }
 
-export const actions = {
+ const actions = {
   changeLayoutType({ commit }, { layoutType }) {
     commit('CHANGE_LAYOUT', layoutType);
     document.body.removeAttribute("style");
@@ -86,3 +86,10 @@ export const actions = {
     commit('CHANGE_PRELOADER', preloader)
   }
 }
+
+export default {
+  state,
+  mutations,
+  actions,
+  namespaced: true,
+};

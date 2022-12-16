@@ -1,8 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import AOS from "aos";
-import "aos/dist/aos.css";
+// import AOS from 'aos'
+// import 'aos/dist/aos.css'
 import i18n from "./i18n";
 import store from "./state/store";
 
@@ -11,43 +11,41 @@ import vClickOutside from "click-outside-vue3";
 import VueApexCharts from "vue3-apexcharts";
 import Maska from "maska";
 
-import VueFeather from "vue-feather"; 
+import VueFeather from "vue-feather";
 import Particles from "particles.vue3";
 
 import "@/assets/scss/config/minimal/app.scss";
-import "@vueform/slider/themes/default.css";
+// import '@vueform/slider/themes/default.css'
 
-// FakeBackend authentication
-// import { configureFakeBackend } from './helpers/fake-backend';
-// configureFakeBackend();
+import ElementPlus from 'element-plus'
+import zhCn from "element-plus/dist/locale/zh-cn.mjs";
+import "element-plus/dist/index.css";
 
-// Firebase authentication
-// import { initFirebaseBackend } from './authUtils';
+import VForm3 from 'vform-jy'
+import 'vform-jy/dist/designer.style.css'
 
-// const firebaseConfig = {
-//     apiKey: process.env.VUE_APP_APIKEY,
-//     authDomain: process.env.VUE_APP_AUTHDOMAIN,
-//     databaseURL: process.env.VUE_APP_VUE_APP_DATABASEURL,
-//     projectId: process.env.VUE_APP_PROJECTId,
-//     storageBucket: process.env.VUE_APP_STORAGEBUCKET,
-//     messagingSenderId: process.env.VUE_APP_MEASUREMENTID
-// };
+import ArcoVue from "@arco-design/web-vue";
+import "@arco-design/web-vue/dist/arco.css";
+// 全局自定义组件
+// import components from "@/views/components/modules/index";
+import { requireComp } from "@/components/index";
 
-// initFirebaseBackend(firebaseConfig);
-
-AOS.init({
-  easing: "ease-out-back",
-  duration: 1000,
-});
-
-createApp(App)
-  .use(store)
-  .use(router)
-  .use(VueApexCharts)
-  .use(BootstrapVue3)
-  .component(VueFeather.type, VueFeather)
-  .use(Maska)
-  .use(Particles)
-  .use(i18n)
-  .use(vClickOutside)
-  .mount("#app");
+(async () => {
+  const app = createApp(App);
+  app.use(store)
+    // .use(components)
+    .use(router)
+    // .use(VueApexCharts)
+    .use(BootstrapVue3)
+    // .component(VueFeather.type, VueFeather)
+    // .use(Maska)
+    // .use(Particles)
+    .use(i18n)
+    // .use(vClickOutside)
+    .use(ElementPlus, { locale: zhCn })
+    .use(VForm3)
+    // .use(ArcoVue)
+    .use(ArcoVue)
+    .mount("#app")
+  requireComp(app)
+})()

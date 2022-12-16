@@ -1,0 +1,120 @@
+$html-font-size : 16;
+
+@mixin mixin-font-size($px) {
+    font-size: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-width($px) {
+    width: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-width-full($px) {
+    $width-full: $px / $html-font-size * 1rem;
+    width: calc(100% - $width-full);
+}
+
+@mixin mixin-height($px) {
+    height: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-height-full($px) {
+    $height-full: $px / $html-font-size * 1rem;
+    height: calc(100% - $height-full);
+}
+
+@mixin mixin-margin($px) {
+    margin: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-margin-left($px) {
+    margin-left: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-margin-right($px) {
+    margin-right: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-margin-top($px) {
+    margin-top: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-margin-bottom($px) {
+    margin-bottom: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-padding($px) {
+    padding: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-padding-full($pxt, $pxr, $pxb, $pxl, ) {
+    padding: $pxt / $html-font-size * 1rem, $pxr / $html-font-size * 1rem, $pxb / $html-font-size * 1rem, $pxl / $html-font-size * 1rem;
+}
+
+@mixin mixin-padding-left($px) {
+    padding-left: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-padding-leftSp($px) {
+    $padding: $px / $html-font-size * 1rem;
+    padding-left: calc(constant(safe-area-inset-left) + $padding); //如果未竖屏时为0
+    padding-left: calc(env(safe-area-inset-left) + $padding); //如果未竖屏时为0
+    box-sizing: border-box;
+}
+
+@mixin mixin-padding-right($px) {
+    padding-right: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-padding-rightSp($px) {
+    $padding: $px / $html-font-size * 1rem;
+    padding-right: calc(constant(safe-area-inset-right) + $padding); //如果未竖屏时为0
+    padding-right: calc(env(safe-area-inset-right) + $padding); //如果未竖屏时为0
+    box-sizing: border-box;
+}
+
+@mixin mixin-padding-top($px) {
+    padding-top: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-padding-topSp($px) {
+    $padding: $px / $html-font-size * 1rem;
+    padding-top: calc(constant(safe-area-inset-top) + $padding); //为导航栏+状态栏的高度 88px
+    padding-top: calc(env(safe-area-inset-top) + $padding); //为导航栏+状态栏的高度 88px
+    box-sizing: border-box;
+}
+
+@mixin mixin-padding-bottom($px) {
+    padding-bottom: $px / $html-font-size * 1rem;
+}
+
+@mixin mixin-padding-bottomSp($px) {
+    $padding: $px / $html-font-size * 1rem;
+    padding-bottom: calc(constant(safe-area-inset-bottom) + $padding); //为导航栏+状态栏的高度 88px
+    padding-bottom: calc(env(safe-area-inset-bottom) + $padding); //为导航栏+状态栏的高度 88px
+    box-sizing: border-box;
+}
+
+@mixin mixin-border-radius($px) {
+    border-radius: $px / $html-font-size * 1rem;
+}
+
+// 标签样式
+@mixin mixin-button-orange {
+    background: linear-gradient(90deg, #e2a952 0%, #d0963e 100%);
+    box-shadow: -7px -9px 16px 0px #ffffff, 2px 11px 18px 0px rgba(0, 0, 0, 0.09), 2px 3px 4px 0px rgba(255, 255, 255, 0.36), -2px -3px 4px 0px rgba(0, 0, 0, 0.03);
+}
+
+@mixin mixin-button-grey {
+    background: #CCCCCC;
+    box-shadow: -2px -6px 11px 0px #FFFFFF, 2px 6px 11px 0px rgba(0, 0, 0, 0.18), 2px 3px 4px 0px rgba(255, 255, 255, 0.36), -2px -3px 4px 0px rgba(0, 0, 0, 0.09);
+}
+
+@mixin mixin-button-white {
+    background: #FFFFFF;
+    box-shadow: -7px -9px 16px 0px #FFFFFF, 2px 11px 18px 0px rgba(0, 0, 0, 0.09), 2px 3px 4px 0px rgba(255, 255, 255, 0.36), -2px -3px 4px 0px rgba(0, 0, 0, 0.03);
+}
+
+@mixin mixin-buttonGz-orange {
+    background: linear-gradient(90deg, #E2A952 0%, #D0963E 100%);
+    box-shadow: 0px -1px 3px 0px rgba(0, 0, 0, 0.26) inset, 0px 1px 3px 0px rgba(255, 255, 255, 0.9) inset;
+}

@@ -1,23 +1,31 @@
 import axios from "axios";
 
-export const state = {
+const state = {
     todos: [],
 };
 
-export const getters = {
+const getters = {
     todos: state => state.todos,
 };
 
-export const mutations = {
+const mutations = {
     setTodos(state, newValue) {
         state.todos = newValue
     },
 };
 
-export const actions = {
+const actions = {
     fetchTodos({ commit }) {
         axios.get('https://jsonplaceholder.typicode.com/todos').then(res => {
             commit('setTodos', res.data)
         })
     },
 };
+
+export default {
+    state,
+    mutations,
+    getters,
+    actions,
+    namespaced: true,
+}

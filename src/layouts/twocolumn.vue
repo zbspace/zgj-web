@@ -1,232 +1,3 @@
-<script>
-import router from "@/router";
-import {
-  SimpleBar
-} from "simplebar-vue3";
-import {
-  layoutComputed
-} from "@/state/helpers";
-import Menu from "@/components/menu.vue";
-import NavBar from "@/components/nav-bar";
-import RightBar from "@/components/right-bar";
-import Footer from "@/components/footer";
-import {
-  HomeIcon,
-  GridIcon,
-  UsersIcon,
-  CommandIcon,
-  PackageIcon,
-  LayersIcon,
-  CopyIcon,
-  FileTextIcon,
-  DatabaseIcon,
-  PieChartIcon,
-  ArchiveIcon,
-  MapPinIcon,
-  Share2Icon
-} from "@zhuowenli/vue-feather-icons";
-
-/**
- * Vertical layout
- */
-export default {
-  components: {
-    NavBar,
-    RightBar,
-    Footer,
-    SimpleBar,
-    Menu,
-    HomeIcon,
-    GridIcon,
-    UsersIcon,
-    CommandIcon,
-    PackageIcon,
-    LayersIcon,
-    CopyIcon,
-    FileTextIcon,
-    DatabaseIcon,
-    PieChartIcon,
-    ArchiveIcon,
-    MapPinIcon,
-    Share2Icon
-  },
-  data() {
-    return {
-      isMenuCondensed: false,
-      rmenu: localStorage.getItem('rmenu') ? localStorage.getItem('rmenu') : 'twocolumn',
-    };
-  },
-
-  computed: {
-    ...layoutComputed,
-  },
-  created: () => {
-    document.body.removeAttribute("data-layout", "horizontal");
-    document.body.removeAttribute("data-topbar", "dark");
-    document.body.removeAttribute("data-layout-size", "boxed");
-  },
-  methods: {
-    initActiveMenu() {
-      const pathName = window.location.pathname;
-      const ul = document.getElementById("navbar-nav");
-      if (ul) {
-        const items = Array.from(ul.querySelectorAll("a.nav-link"));
-        let activeItems = items.filter((x) => x.classList.contains("active"));
-        this.removeActivation(activeItems);
-        let matchingMenuItem = items.find((x) => {
-          return x.getAttribute("href") === pathName;
-        });
-        if (matchingMenuItem) {
-          this.activateParentDropdown(matchingMenuItem);
-        } else {
-          var id = pathName.replace("/", "");
-          if (id) document.body.classList.add("twocolumn-panel");
-          this.activateIconSidebarActive(pathName);
-        }
-      }
-    },
-
-    updateMenu(e) {
-      document.body.classList.remove("twocolumn-panel");
-      const ul = document.getElementById("navbar-nav");
-      if (ul) {
-        const items = Array.from(ul.querySelectorAll(".show"));
-        items.forEach((item) => {
-          item.classList.remove("show");
-        });
-      }
-      const icons = document.getElementById("two-column-menu");
-      if (icons) {
-        const activeIcons = Array.from(
-          icons.querySelectorAll(".nav-icon.active")
-        );
-        activeIcons.forEach((item) => {
-          item.classList.remove("active");
-        });
-      }
-      document.getElementById(e).classList.add("show");
-      this.activateIconSidebarActive("#" + e);
-    },
-
-    removeActivation(items) {
-      items.forEach((item) => {
-        if (item.classList.contains("menu-link")) {
-          if (!item.classList.contains("active")) {
-            item.setAttribute("aria-expanded", false);
-          }
-          item.nextElementSibling.classList.remove("show");
-        }
-        if (item.classList.contains("nav-link")) {
-          if (item.nextElementSibling) {
-            item.nextElementSibling.classList.remove("show");
-          }
-          item.setAttribute("aria-expanded", false);
-        }
-        item.classList.remove("active");
-      });
-    },
-
-    activateIconSidebarActive(id) {
-      var menu = document.querySelector(
-        "#two-column-menu .simplebar-content-wrapper a[href='" +
-        id +
-        "'].nav-icon"
-      );
-      if (menu !== null) {
-        menu.classList.add("active");
-      }
-    },
-
-    activateParentDropdown(item) {
-      // navbar-nav menu add active
-      item.classList.add("active");
-      let parentCollapseDiv = item.closest(".collapse.menu-dropdown");
-      if (parentCollapseDiv) {
-        // to set aria expand true remaining
-        parentCollapseDiv.classList.add("show");
-        parentCollapseDiv.parentElement.children[0].classList.add("active");
-        parentCollapseDiv.parentElement.children[0].setAttribute("aria-expanded", "true");
-        if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
-          if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown").previousElementSibling) {
-            if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown").previousElementSibling.parentElement.closest(".collapse.menu-dropdown")) {
-              const grandparent = parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown").previousElementSibling.parentElement.closest(".collapse.menu-dropdown");
-              this.activateIconSidebarActive("#" + grandparent.getAttribute("id"));
-              grandparent.classList.add("show");
-            }
-          }
-          this.activateIconSidebarActive("#" + parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")
-            .getAttribute("id"));
-
-          parentCollapseDiv.parentElement.closest(".collapse").classList.add("show");
-          if (parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling)
-            parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling.classList.add("active");
-          return false;
-        }
-        this.activateIconSidebarActive("#" + parentCollapseDiv.getAttribute("id"));
-        return false;
-      }
-      return false;
-    },
-
-    toggleMenu() {
-      document.body.classList.toggle("sidebar-enable");
-
-      if (window.screen.width >= 992) {
-        // eslint-disable-next-line no-unused-vars
-        router.afterEach((routeTo, routeFrom) => {
-          document.body.classList.remove("sidebar-enable");
-          document.body.classList.remove("vertical-collpsed");
-        });
-        document.body.classList.toggle("vertical-collpsed");
-      } else {
-        // eslint-disable-next-line no-unused-vars
-        router.afterEach((routeTo, routeFrom) => {
-          document.body.classList.remove("sidebar-enable");
-        });
-        document.body.classList.remove("vertical-collpsed");
-      }
-      this.isMenuCondensed = !this.isMenuCondensed;
-    },
-
-    toggleRightSidebar() {
-      document.body.classList.toggle("right-bar-enabled");
-    },
-
-    hideRightSidebar() {
-      document.body.classList.remove("right-bar-enabled");
-    },
-  },
-
-  mounted() {
-    this.initActiveMenu();
-    if (this.rmenu == 'vertical' && this.layoutType == 'twocolumn') {
-      document.documentElement.setAttribute("data-layout", "vertical");
-    }
-    document.getElementById('overlay').addEventListener('click', () => {
-      document.body.classList.remove('vertical-sidebar-enable')
-    })
-
-    window.addEventListener("resize", () => {
-      if (this.layoutType == 'twocolumn') {
-        var windowSize = document.documentElement.clientWidth;
-        if (windowSize < 767) {
-          document.documentElement.setAttribute("data-layout", "vertical");
-          this.rmenu = 'vertical';
-          localStorage.setItem('rmenu', 'vertical')
-        } else {
-          document.documentElement.setAttribute("data-layout", "twocolumn");
-          this.rmenu = 'twocolumn';
-          localStorage.setItem('rmenu', 'twocolumn')
-          setTimeout(() => {
-            this.initActiveMenu();
-          }, 50);
-
-        }
-      }
-    });
-  },
-};
-</script>
 
 <template>
   <div id="layout-wrapper">
@@ -1475,8 +1246,238 @@ export default {
           <slot />
         </div>
       </div>
-      <Footer />
+      <!-- <Footer /> -->
     </div>
     <RightBar />
   </div>
 </template>
+
+<script>
+import router from "@/router";
+import {
+  SimpleBar
+} from "simplebar-vue3";
+import {
+  layoutComputed
+} from "@/state/helpers";
+import Menu from "@/components/menu.vue";
+import NavBar from "@/components/nav-bar";
+import RightBar from "@/components/right-bar";
+import Footer from "@/components/footer";
+import {
+  HomeIcon,
+  GridIcon,
+  UsersIcon,
+  CommandIcon,
+  PackageIcon,
+  LayersIcon,
+  CopyIcon,
+  FileTextIcon,
+  DatabaseIcon,
+  PieChartIcon,
+  ArchiveIcon,
+  MapPinIcon,
+  Share2Icon
+} from "@zhuowenli/vue-feather-icons";
+
+/**
+ * Vertical layout
+ */
+export default {
+  components: {
+    NavBar,
+    RightBar,
+    Footer,
+    SimpleBar,
+    Menu,
+    HomeIcon,
+    GridIcon,
+    UsersIcon,
+    CommandIcon,
+    PackageIcon,
+    LayersIcon,
+    CopyIcon,
+    FileTextIcon,
+    DatabaseIcon,
+    PieChartIcon,
+    ArchiveIcon,
+    MapPinIcon,
+    Share2Icon
+  },
+  data() {
+    return {
+      isMenuCondensed: false,
+      rmenu: localStorage.getItem('rmenu') ? localStorage.getItem('rmenu') : 'twocolumn',
+    };
+  },
+
+  computed: {
+    ...layoutComputed,
+  },
+  created: () => {
+    document.body.removeAttribute("data-layout", "horizontal");
+    document.body.removeAttribute("data-topbar", "dark");
+    document.body.removeAttribute("data-layout-size", "boxed");
+  },
+  methods: {
+    initActiveMenu() {
+      const pathName = window.location.pathname;
+      const ul = document.getElementById("navbar-nav");
+      if (ul) {
+        const items = Array.from(ul.querySelectorAll("a.nav-link"));
+        let activeItems = items.filter((x) => x.classList.contains("active"));
+        this.removeActivation(activeItems);
+        let matchingMenuItem = items.find((x) => {
+          return x.getAttribute("href") === pathName;
+        });
+        if (matchingMenuItem) {
+          this.activateParentDropdown(matchingMenuItem);
+        } else {
+          var id = pathName.replace("/", "");
+          if (id) document.body.classList.add("twocolumn-panel");
+          this.activateIconSidebarActive(pathName);
+        }
+      }
+    },
+
+    updateMenu(e) {
+      document.body.classList.remove("twocolumn-panel");
+      const ul = document.getElementById("navbar-nav");
+      if (ul) {
+        const items = Array.from(ul.querySelectorAll(".show"));
+        items.forEach((item) => {
+          item.classList.remove("show");
+        });
+      }
+      const icons = document.getElementById("two-column-menu");
+      if (icons) {
+        const activeIcons = Array.from(
+          icons.querySelectorAll(".nav-icon.active")
+        );
+        activeIcons.forEach((item) => {
+          item.classList.remove("active");
+        });
+      }
+      document.getElementById(e).classList.add("show");
+      this.activateIconSidebarActive("#" + e);
+    },
+
+    removeActivation(items) {
+      items.forEach((item) => {
+        if (item.classList.contains("menu-link")) {
+          if (!item.classList.contains("active")) {
+            item.setAttribute("aria-expanded", false);
+          }
+          item.nextElementSibling.classList.remove("show");
+        }
+        if (item.classList.contains("nav-link")) {
+          if (item.nextElementSibling) {
+            item.nextElementSibling.classList.remove("show");
+          }
+          item.setAttribute("aria-expanded", false);
+        }
+        item.classList.remove("active");
+      });
+    },
+
+    activateIconSidebarActive(id) {
+      var menu = document.querySelector(
+        "#two-column-menu .simplebar-content-wrapper a[href='" +
+        id +
+        "'].nav-icon"
+      );
+      if (menu !== null) {
+        menu.classList.add("active");
+      }
+    },
+
+    activateParentDropdown(item) {
+      // navbar-nav menu add active
+      item.classList.add("active");
+      let parentCollapseDiv = item.closest(".collapse.menu-dropdown");
+      if (parentCollapseDiv) {
+        // to set aria expand true remaining
+        parentCollapseDiv.classList.add("show");
+        parentCollapseDiv.parentElement.children[0].classList.add("active");
+        parentCollapseDiv.parentElement.children[0].setAttribute("aria-expanded", "true");
+        if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
+          if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown").previousElementSibling) {
+            if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown").previousElementSibling.parentElement.closest(".collapse.menu-dropdown")) {
+              const grandparent = parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown").previousElementSibling.parentElement.closest(".collapse.menu-dropdown");
+              this.activateIconSidebarActive("#" + grandparent.getAttribute("id"));
+              grandparent.classList.add("show");
+            }
+          }
+          this.activateIconSidebarActive("#" + parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")
+            .getAttribute("id"));
+
+          parentCollapseDiv.parentElement.closest(".collapse").classList.add("show");
+          if (parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling)
+            parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling.classList.add("active");
+          return false;
+        }
+        this.activateIconSidebarActive("#" + parentCollapseDiv.getAttribute("id"));
+        return false;
+      }
+      return false;
+    },
+
+    toggleMenu() {
+      document.body.classList.toggle("sidebar-enable");
+
+      if (window.screen.width >= 992) {
+        // eslint-disable-next-line no-unused-vars
+        router.afterEach((routeTo, routeFrom) => {
+          document.body.classList.remove("sidebar-enable");
+          document.body.classList.remove("vertical-collpsed");
+        });
+        document.body.classList.toggle("vertical-collpsed");
+      } else {
+        // eslint-disable-next-line no-unused-vars
+        router.afterEach((routeTo, routeFrom) => {
+          document.body.classList.remove("sidebar-enable");
+        });
+        document.body.classList.remove("vertical-collpsed");
+      }
+      this.isMenuCondensed = !this.isMenuCondensed;
+    },
+
+    toggleRightSidebar() {
+      document.body.classList.toggle("right-bar-enabled");
+    },
+
+    hideRightSidebar() {
+      document.body.classList.remove("right-bar-enabled");
+    },
+  },
+
+  mounted() {
+    this.initActiveMenu();
+    if (this.rmenu == 'vertical' && this.layoutType == 'twocolumn') {
+      document.documentElement.setAttribute("data-layout", "vertical");
+    }
+    document.getElementById('overlay').addEventListener('click', () => {
+      document.body.classList.remove('vertical-sidebar-enable')
+    })
+
+    window.addEventListener("resize", () => {
+      if (this.layoutType == 'twocolumn') {
+        var windowSize = document.documentElement.clientWidth;
+        if (windowSize < 767) {
+          document.documentElement.setAttribute("data-layout", "vertical");
+          this.rmenu = 'vertical';
+          localStorage.setItem('rmenu', 'vertical')
+        } else {
+          document.documentElement.setAttribute("data-layout", "twocolumn");
+          this.rmenu = 'twocolumn';
+          localStorage.setItem('rmenu', 'twocolumn')
+          setTimeout(() => {
+            this.initActiveMenu();
+          }, 50);
+
+        }
+      }
+    });
+  },
+};
+</script>
