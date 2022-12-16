@@ -1299,7 +1299,7 @@ export default {
               label: "t-zgj-cg-menu-yongyin-jilu",
             }, {
               name: "用印轨迹",
-              to: "/frontDesk/home",
+              to: "/frontDesk/PrintControlManagement/Printed-track",
               label: "t-zgj-cg-menu-yongyin-guiji",
             }]
           },

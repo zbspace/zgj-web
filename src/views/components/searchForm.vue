@@ -115,7 +115,8 @@
                             <div class="ap-box-cont" v-if="item.type == 'click'">
                                 <el-button v-bind="item.defaultAttribute">{{ item.name }}</el-button>
                             </div>
-                            <div class="ap-box-cont unfold" v-if="item.type == 'unfold'" @click="clickCutUnfoldstatus">
+                            <div class="ap-box-cont unfold" v-if="item.type == 'unfold' && state.cache.showUnfold"
+                                @click="clickCutUnfoldstatus">
                                 <div class="unfold-" v-if="state.cache.isUnfold == 0">
                                     展开
                                     <img class="unfold-icon" src="../../assets/svg/xiangxia-lan.svg" alt="" srcset="">
@@ -198,6 +199,8 @@ const state = reactive({
         isUnfold: 0,
         //表单数据
         formData: [],
+        //是否显示咱开
+        showUnfold: false,
     }
 });
 //计算 占满一行
@@ -221,9 +224,17 @@ const computed_fill = computed(() => {
 })
 //初始化表单单数据
 function initFormData() {
+    let showUnfold = false;
     if (props.defaultAttribute.isUnfold) {
         state.cache.isUnfold = props.defaultAttribute.isUnfold
     }
+    props.data.map((item) => {
+        if (item.inCommonUse) {
+        } else {
+            showUnfold = true;
+        }
+    });
+    state.cache.showUnfold = showUnfold;
     // 设置表单显示数据
     setFormData()
 }
