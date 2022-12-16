@@ -172,81 +172,21 @@
                                         <span class="ap-cont-ma-text">授权码：</span>
                                         <span class="ap-cont-ma-value">228977</span>
                                     </div>
-                                    <div class="ap-cont-box SealInformation">
-                                        <div class="ap-cont-box-title">
-                                            <span class="ap-cont-box-title-label">印章信息</span>
-                                        </div>
-                                        <div class="ap-cont-box-details SealInformation-details">
-                                            <div class="SealInformation-details-list"
-                                                v-for="item in state.cache.RecordOfRequisition.SealInformation.data">
-                                                <div class="SealInformation-details-list-cont">
-                                                    <div class="SealInformation-details-list-cont-icon">
-                                                        <img class="SealInformation-details-list-cont-icon-img"
-                                                            :src="item.iconPath" alt="">
-                                                    </div>
-                                                    <div class="SealInformation-details-list-cont-label">
-                                                        {{ item.label }}：
-                                                    </div>
-                                                    <div class="SealInformation-details-list-cont-val"
-                                                        :style="item.style">
-                                                        <img v-if="item.iconPathValue" :src="item.iconPathValue" alt=""
-                                                            class="iconPathValue">
-                                                        {{ item.value }}
-                                                    </div>
+                                    <div class="ap-cont-box">
+                                        <documentsDetailsPortion>
+                                            <template #title>
+                                                <div class="ap-cont-box-title-label">印章信息</div>
+                                            </template>
+                                            <template #content>
+                                                <div>
+                                                    <documentsDetailsSealInformation
+                                                        :data="state.cache.RecordOfRequisition.SealInformation.data"
+                                                        :imageData="state.cache.RecordOfRequisition.SealInformation.imageData">
+
+                                                    </documentsDetailsSealInformation>
                                                 </div>
-                                                <div class="SealInformation-details-list-sub">
-                                                    <div class="SealInformation-details-list-sub-Text"
-                                                        :style="item.subStyle">
-                                                        {{ item.subText }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="SealInformation-details-image">
-                                                <div class="SealInformation-details-image-title">
-                                                    <img class="SealInformation-details-image-title-icon"
-                                                        :src="state.cache.RecordOfRequisition.SealInformation.imageData.iconPath"
-                                                        alt="">
-                                                    <span class="SealInformation-details-image-title-text">
-                                                        {{
-                                                                state.cache.RecordOfRequisition.SealInformation.imageData.label
-                                                        }}
-                                                    </span>
-                                                </div>
-                                                <div class="SealInformation-details-image-cont">
-                                                    <div class="SealInformation-details-image-cont-list"
-                                                        v-for="item in state.cache.RecordOfRequisition.SealInformation.imageData.data">
-                                                        <div class="SealInformation-details-image-cont-list-img">
-                                                            <img class="SealInformation-details-image-cont-list-img-icon"
-                                                                :src="item.iconPath" alt="">
-                                                            <img class="SealInformation-details-image-cont-list-img-back"
-                                                                :src="item.imgPath" alt="">
-                                                            <div
-                                                                class="SealInformation-details-image-cont-list-img-time">
-                                                                {{ item.time }}</div>
-                                                        </div>
-                                                        <div class="SealInformation-details-image-cont-list-cont">
-                                                            <div class="SealInformation-details-image-cont-list-cont-list"
-                                                                v-for="data in item.list">
-                                                                <div
-                                                                    class="SealInformation-details-image-cont-list-cont-list-label">
-                                                                    {{ data.label }}：</div>
-                                                                <div
-                                                                    class="SealInformation-details-image-cont-list-cont-list-value">
-                                                                    {{ data.value }}</div>
-                                                                <div
-                                                                    class="SealInformation-details-image-cont-list-cont-list-subValue">
-                                                                    <img class="SealInformation-details-image-cont-list-cont-list-subValue-icon"
-                                                                        :src="data.subValueIconPath" alt="">
-                                                                    <span
-                                                                        class="SealInformation-details-image-cont-list-cont-list-subValue-text">
-                                                                        {{ data.subValue }}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            </template>
+                                        </documentsDetailsPortion>
                                     </div>
                                 </div>
                                 <!-- 操作记录 -->
@@ -690,6 +630,9 @@ import documentsDetailsStaffDetails from "./documentsDetails/Staff-Details.vue"
 import documentsDetailSdigitalSeal from "./documentsDetails/digital-seal.vue"
 import componentsArchive from './documentsDetails/Archive.vue'
 import componentsFileverification from './documentsDetails/Fileverification.vue'
+import documentsDetailsSealInformation from './documentsDetails/Record-of-requisition/Seal-Information.vue'
+
+
 
 import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
 import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
@@ -3205,15 +3148,18 @@ watch(() => [props.show], (newValue, oldValue) => {
                                         justify-content: flex-end;
                                         color: var(--color-text-3);
                                     }
-                                    .SealInformation-details-image-cont-list-cont-list-subValue{
+
+                                    .SealInformation-details-image-cont-list-cont-list-subValue {
                                         display: flex;
                                         align-items: center;
                                         padding-left: 0.5rem;
                                         box-sizing: border-box;
-                                        .SealInformation-details-image-cont-list-cont-list-subValue-icon{
+
+                                        .SealInformation-details-image-cont-list-cont-list-subValue-icon {
                                             margin-right: 0.2rem;
                                         }
-                                        .SealInformation-details-image-cont-list-cont-list-subValue-text{
+
+                                        .SealInformation-details-image-cont-list-cont-list-subValue-text {
                                             color: var(--danger-6);
                                         }
                                     }
