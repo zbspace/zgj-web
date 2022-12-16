@@ -304,7 +304,7 @@ const handleFullScreen = () => {
     .content-custom {
       flex: 1;
       flex-shrink: 0;
-      padding: 12px 16px;
+      padding: 12px 24px;
       overflow-y: auto;
       border-top: 1px solid rgba(0, 0, 0, 0.06);
       border-bottom: 1px solid rgba(0, 0, 0, 0.06);
