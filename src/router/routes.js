@@ -21,13 +21,6 @@ export default [
     component: () => import("@/views/frontDesk/index.vue"),
     children: [
       {
-        path: "innerPage",
-        name: "innerPage",
-        meta: { title: "二级页面", authRequired: true },
-        component: () =>
-          import("../views/frontDesk/PrintControlManagement/InnerPage.vue")
-      },
-      {
         path: "home",
         name: "frontDesk-home",
         meta: { title: "frontDesk-home", authRequired: true },
@@ -104,16 +97,37 @@ export default [
           )
       },
       {
-        path: "PrintControlManagement/SealApplication",
+        path: "PrintControlManagement",
         name: "PrintControlManagement-SealApplication",
-        meta: {
-          title: "SealApplication",
-          authRequired: true
-        },
         component: () =>
-          import(
-            "../views/frontDesk/PrintControlManagement/SealApplication.vue"
-          )
+          import("../views/frontDesk/PrintControlManagement/index.vue"),
+        children: [
+          {
+            path: "SealApplication",
+            name: "SealApplication",
+            meta: { title: "SealApplication", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/SealApplication.vue"
+              )
+          },
+          {
+            path: "innerPage",
+            name: "innerPage",
+            meta: { title: "二级页面", authRequired: true },
+            component: () =>
+              import("../views/frontDesk/PrintControlManagement/innerPage.vue")
+          },
+          {
+            path: "innerTablePage",
+            name: "innerTablePage",
+            meta: { title: "二级页面", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/InnerTablePage.vue"
+              )
+          }
+        ]
       },
       {
         path: "PrintControlManagement/recordWithSeal",

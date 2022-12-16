@@ -31,6 +31,7 @@
                     <el-button @click="(showDialog = true)">弹框Demo</el-button>
                     <el-button @click="(showDepPerDialog = true)">组织选择</el-button>
                     <el-button @click="goInnerPage">二级页面</el-button>
+                    <el-button @click="goInnerTablePage">二级表格页面</el-button>
                     <el-button :plain="true" @click="open2">成功消息</el-button>
                     <el-button :plain="true" @click="open3">询问消息</el-button>
                     <el-button :plain="true" @click="open4">异常消息</el-button>
@@ -77,7 +78,7 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
-import router from '../../../router'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import KDialog from "@/views/components/modules/kdialog.vue"
 import FormJson from '@/views/addDynamicFormJson/sealApplication.json'
@@ -114,12 +115,18 @@ const submitForm = (type) => {
   })
 }
 
+const router = useRouter()
 const goInnerPage = () => {
   router.push({
-    path: '/frontDesk/innerPage'
+    path: '/frontDesk/PrintControlManagement/innerPage'
   })
 }
 
+const goInnerTablePage = () => {
+  router.push({
+    path: '/frontDesk/PrintControlManagement/innerTablePage'
+  })
+}
 
 const open2 = () => {
   ElMessage({

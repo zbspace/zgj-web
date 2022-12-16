@@ -560,7 +560,7 @@
 
 "@element-plus/icons-vue@^0.2.4":
   "integrity" "sha512-S8kDbfVaWkQvbUYQE1ui448tzaHfUvyESCep9J6uPRlViyQPXjdIfwLBhV6AmQSOfFS8rL+xehJGhvzPXLrSBg=="
-  "resolved" "https://registry.npmjs.org/@element-plus/icons-vue/-/icons-vue-0.2.7.tgz"
+  "resolved" "https://registry.npmmirror.com/@element-plus/icons-vue/-/icons-vue-0.2.7.tgz"
   "version" "0.2.7"
 
 "@element-plus/icons-vue@^2.0.6":
@@ -1686,7 +1686,7 @@
 
 "axios@^0.24.0":
   "integrity" "sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA=="
-  "resolved" "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz"
+  "resolved" "https://registry.npmmirror.com/axios/-/axios-0.24.0.tgz"
   "version" "0.24.0"
   dependencies:
     "follow-redirects" "^1.14.4"
@@ -1865,7 +1865,7 @@
 
 "clipboard@^2.0.8":
   "integrity" "sha512-C+0bbOqkezLIsmWSvlsXS0Q0bmkugu7jcfMIACB+RDEntIzQIkdr148we28AfSloQLRdZlYL/QYyrq05j/3Faw=="
-  "resolved" "https://registry.npmjs.org/clipboard/-/clipboard-2.0.11.tgz"
+  "resolved" "https://registry.npmmirror.com/clipboard/-/clipboard-2.0.11.tgz"
   "version" "2.0.11"
   dependencies:
     "good-listener" "^1.2.2"
@@ -2035,7 +2035,7 @@
 
 "delegate@^3.1.2":
   "integrity" "sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw=="
-  "resolved" "https://registry.npmjs.org/delegate/-/delegate-3.2.0.tgz"
+  "resolved" "https://registry.npmmirror.com/delegate/-/delegate-3.2.0.tgz"
   "version" "3.2.0"
 
 "diff-sequences@^26.6.2":
@@ -2458,7 +2458,7 @@
 
 "file-saver@^2.0.5":
   "integrity" "sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA=="
-  "resolved" "https://registry.npmjs.org/file-saver/-/file-saver-2.0.5.tgz"
+  "resolved" "https://registry.npmmirror.com/file-saver/-/file-saver-2.0.5.tgz"
   "version" "2.0.5"
 
 "fill-range@^7.0.1":
@@ -2628,7 +2628,7 @@
 
 "good-listener@^1.2.2":
   "integrity" "sha512-goW1b+d9q/HIwbVYZzZ6SsTr4IgE+WA44A0GmPIQstuOrgsFcT7VEJ48nmr9GaRtNu0XTKacFLGnBPAM6Afouw=="
-  "resolved" "https://registry.npmjs.org/good-listener/-/good-listener-1.2.2.tgz"
+  "resolved" "https://registry.npmmirror.com/good-listener/-/good-listener-1.2.2.tgz"
   "version" "1.2.2"
   dependencies:
     "delegate" "^3.1.2"
@@ -3057,7 +3057,7 @@
 
 "mitt@^3.0.0":
   "integrity" "sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ=="
-  "resolved" "https://registry.npmjs.org/mitt/-/mitt-3.0.0.tgz"
+  "resolved" "https://registry.npmmirror.com/mitt/-/mitt-3.0.0.tgz"
   "version" "3.0.0"
 
 "moment@^2.29.1":
@@ -3476,7 +3476,7 @@
 
 "select@^1.1.2":
   "integrity" "sha512-OwpTSOfy6xSs1+pwcNrv0RBMOzI39Lp3qQKUTPVVPRjCdNa5JH/oPRiqsesIskK8TVgmRiHwO4KXlV2Li9dANA=="
-  "resolved" "https://registry.npmjs.org/select/-/select-1.1.2.tgz"
+  "resolved" "https://registry.npmmirror.com/select/-/select-1.1.2.tgz"
   "version" "1.1.2"
 
 "semver@^6.3.0":
@@ -3564,7 +3564,7 @@
 
 "sortablejs@^1.14.0", "sortablejs@1.14.0":
   "integrity" "sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w=="
-  "resolved" "https://registry.npmjs.org/sortablejs/-/sortablejs-1.14.0.tgz"
+  "resolved" "https://registry.npmmirror.com/sortablejs/-/sortablejs-1.14.0.tgz"
   "version" "1.14.0"
 
 "source-map-js@^1.0.2":
@@ -3730,7 +3730,7 @@
 
 "tiny-emitter@^2.0.0":
   "integrity" "sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q=="
-  "resolved" "https://registry.npmjs.org/tiny-emitter/-/tiny-emitter-2.1.0.tgz"
+  "resolved" "https://registry.npmmirror.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz"
   "version" "2.1.0"
 
 "to-fast-properties@^2.0.0":
@@ -3819,7 +3819,7 @@
 
 "vform-jy@^1.0.1":
   "integrity" "sha512-UggNhbJOSoxLV9G7MkDS5PtL8RNAry3HHktT+qUzCu/oF/PweuLcPXsfF0bJruF+ATLOuUaKGXD3rMCECp4mkg=="
-  "resolved" "https://registry.npmjs.org/vform-jy/-/vform-jy-1.0.1.tgz"
+  "resolved" "https://registry.npmmirror.com/vform-jy/-/vform-jy-1.0.1.tgz"
   "version" "1.0.1"
   dependencies:
     "@element-plus/icons-vue" "^0.2.4"
