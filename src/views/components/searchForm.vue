@@ -237,7 +237,7 @@ const computed_fill = computed(() => {
         // console.log(item, index);
         let fixed = ["custom", "checkbox", "radio", "switch", "radioButton", "checkButton"]
         let alterable = [];
-        console.log(alterable.indexOf(item.type) > -1, index < state.cache.formData.length - 1);
+        // console.log(alterable.indexOf(item.type) > -1, index < state.cache.formData.length - 1);
         if (fixed.indexOf(item.type) > -1 && index < state.cache.formData.length - 1) {
             return {
                 width: "100%"
