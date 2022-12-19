@@ -27,22 +27,21 @@
                 </div>
             </template>
             <template #custom>
-                <div>
-                    <div>
-                        <div>
-                            <div>
-                                <img src="" alt="">
-                            </div>
-                            <div>
+                <div class="content">
+                    <div class="seal-list">
+                        <div class="seal-item" v-for="(item, index) in state.componentsSealList.data">
+                            <div class="seal-item-wrap"
+                                :class="{ 'seal-item-wrap-select': state.componentsSealList.curIndex === index }"
+                                @click="clickSeal(item, index)">
                                 <span></span>
-                                <span>
-                                    <span>保管人：</span>
-                                    <span></span>
-                                </span>
+                                <div>
+                                    <h3>{{ item[1] }}</h3>
+                                    <p>{{ item[2] }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div class="seal-map">
                         <img src="../../../assets/svg/yongyin-guiji-ditu.svg" alt="">
                     </div>
                 </div>
@@ -150,257 +149,43 @@ const state = reactive({
             }
         },],
     },
-    componentsTable: {
-        header: [{
-            width: 50,
-            type: "selection"
-        }, {
-            prop: '0',
-            label: "序号",
-            width: 100,
-        }, {
-            prop: '1',
-            label: "单据编号",
-            sortable: true,
-                "min-width":150,
-        }, {
-            prop: '2',
-            label: "单据名称",
-            sortable: true,
-                "min-width":150,
-        }, {
-            prop: '3',
-            label: "用印文件类型",
-            sortable: true,
-                "min-width":150,
-        }, {
-            prop: '4',
-            label: "申请人",
-            sortable: true,
-                "min-width":150,
-        }, {
-            prop: '5',
-            label: "申请部门",
-            sortable: true,
-                "min-width":150,
-        }, {
-            prop: '6',
-            label: "申请时间",
-            sortable: true,
-                "min-width":150,
-        }, {
-            prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
-            rankDisplayData: [{
-                name: "文件归档"
-            },],
-        }],
+    componentsSealList: {
+        curIndex: 0,
         data: [
             {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '往往',
-                5: '',
-                6: '2022/10/30',
+                1: '印章名称1',
+                2: '马丽丽',
             },
             {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '往往',
-                5: '',
-                6: '2022/10/30',
+                1: '印章名称2',
+                2: '马丽丽',
             },
             {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '往往',
-                5: '',
-                6: '2022/10/30',
+                1: '印章名称3',
+                2: '马丽丽',
             },
             {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '往往',
-                5: '',
-                6: '2022/10/30',
+                1: '印章名称4',
+                2: '马丽丽',
             },
             {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '往往',
-                5: '',
-                6: '2022/10/30',
+                1: '印章名称4',
+                2: '马丽丽',
             },
             {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '往往',
-                5: '',
-                6: '2022/10/30',
+                1: '印章名称4',
+                2: '马丽丽',
             },
-            {
-                1: 'XXXXXXX',
-                2: '用印申请',
-                3: '',
-                4: '往往',
-                5: '',
-                6: '2022/10/30',
-            },
-        ],
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            stripe: true,
-            "header-cell-style": {
-                background: "var(--color-fill--3)",
-            },
-            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
-                // console.log({ row, column, rowIndex, columnIndex });
-                if (column.property == "2") {
-                    return {
-                        "color": "var(--Info-6)",
-                        "cursor": "pointer",
-                    }
-                }
-            },
-        }
-    },
-    componentsTree: {
-        data: [
-            {
-                label: 'Level one 1',
-                children: [
-                    {
-                        label: 'Level two 1-1',
-                        children: [
-                            {
-                                label: 'Level three 1-1-1',
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                label: 'Level one 2',
-                children: [
-                    {
-                        label: 'Level two 2-1',
-                        children: [
-                            {
-                                label: 'Level three 2-1-1',
-                            },
-                        ],
-                    },
-                    {
-                        label: 'Level two 2-2',
-                        children: [
-                            {
-                                label: 'Level three 2-2-1',
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                label: 'Level one 3',
-                children: [
-                    {
-                        label: 'Level two 3-1',
-                        children: [
-                            {
-                                label: 'Level three 3-1-1',
-                            },
-                        ],
-                    },
-                    {
-                        label: 'Level two 3-2',
-                        children: [
-                            {
-                                label: 'Level three 3-2-1',
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            "check-on-click-node": true,
-            "show-checkbox": true,
-            "default-expand-all": true,
-            "expand-on-click-node": false,
-            "check-strictly": true,
-        }
-    },
-    componentsPagination: {
-        data: {
-            amount: 400,
-            index: 1,
-            pageNumber: 80,
-        },
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            layout: "sizes, prev, pager, next, jumper",
-            total: 500,
-            'page-sizes': [10, 100, 200, 300, 400],
-            background: true,
-        }
-    },
-    componentsBreadcrumb: {
-        data: [
-            {
-                name: "ceshi",
-            },
-            {
-                name: "ceshi",
-            }
-        ],
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            separator: "/",
-        }
-    },
-    componentsDocumentsDetails: {
-        show: false,
-        visible: [
-            {
-                label: '用印详情',
-                name: "Details-of-Printing",
-            },
-            {
-                label: '审批流程',
-                name: "approval-process",
-            },
-            {
-                label: '领用记录',
-                name: "Record-of-requisition",
-            },
-            {
-                label: '操作记录',
-                name: "operating-record",
-            },
-        ],
-    }
-});
-// 点击表格单元格
-function cellClick(row, column, cell, event) {
-    // console.log(row, column, cell, event);
-    if (column.property == "2") {
-        state.componentsDocumentsDetails.show = true;
-    }
-}
-//点击关闭详情
-function clickClose() {
-    state.componentsDocumentsDetails.show = false;
-}
 
+        ],
+
+    }
+
+});
+// 点击印章列表
+function clickSeal(item, index) {
+    state.componentsSealList.curIndex = index;
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 
@@ -417,6 +202,83 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+
+    .content {
+        display: flex;
+        justify-content: space-between;
+        padding-right: 20px;
+        box-sizing: border-box;
+
+        .seal-list {
+            width: 260px;
+
+            .seal-item {
+                height: 96px;
+                background: #FFFFFF;
+                border: 1px solid rgba(0, 0, 0, 0.15);
+                border-radius: 4px;
+                margin-bottom: 12px;
+
+                .seal-item-wrap {
+                    display: flex;
+                    height: 96px;
+                    padding: 22px 0 0 22px;
+                    box-sizing: border-box;
+                    cursor: pointer;
+
+                    >span {
+                        width: 24px;
+                        height: 24px;
+                        background-image: url('../../../assets/svg/map-pin-fillweizhi.svg');
+                        background-repeat: no-repeat;
+                        background-size: 100% auto;
+                        background-position: center;
+                        margin-right: 15px;
+                    }
+
+                    >div {
+                        font-size: 14px;
+                        color: rgba(0, 0, 0, 0.65);
+
+                        >h3 {
+                            font-size: 16px;
+                            color: rgba(0, 0, 0, 0.85);
+                            font-style: normal;
+                        }
+                    }
+                }
+
+                .seal-item-wrap-select {
+                    background: rgba(0, 0, 0, 0.04);
+
+                    >span {
+                        background-image: url('../../../assets/svg/map-pin-fillweizhi-select.svg');
+                    }
+
+                    >div {
+                        >h3 {
+                            color: #D0963E;
+                        }
+                    }
+                }
+            }
+        }
+
+        .seal-map {
+            width: calc(100% - 276px);
+            height: 626px;
+            border: 1px solid #E9EBEC;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+
+            >img {
+                width: 70%;
+            }
+        }
     }
 }
 </style>

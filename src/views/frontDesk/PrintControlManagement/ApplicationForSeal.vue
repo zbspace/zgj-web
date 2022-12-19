@@ -5,8 +5,21 @@
             <template #title>
                 <div class="title">
                     <div>印章申请</div>
-                    <div>
-                        <el-button type="primary">+ 增加</el-button>
+                    <div class="operate-menu">
+                        <el-dropdown @command="handleCommand">
+                            <el-button type="primary">+ 增加</el-button>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item command="刻章申请">刻章申请</el-dropdown-item>
+                                    <el-dropdown-item command="变更申请">变更申请</el-dropdown-item>
+                                    <el-dropdown-item command="停用申请">停用申请</el-dropdown-item>
+                                    <el-dropdown-item command="启用申请">启用申请</el-dropdown-item>
+                                    <el-dropdown-item command="销毁申请">销毁申请</el-dropdown-item>
+                                    <el-dropdown-item command="换章申请">换章申请</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -30,14 +43,15 @@
 
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <el-button>批量撤销</el-button>
+                    <el-button>批量催办</el-button>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -53,10 +67,18 @@
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
             </componentsDocumentsDetails>
         </div>
+        <!-- 动态表单 - 印章申请 -->
+        <KDialog @update:show="fromState.showDialog = $event" :show="fromState.showDialog" :title="fromState.title"
+            :centerBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"
+            :width="1000" :height="600" @close="submitLibraryForm" :key="fromState.title">
+            <v-form-render :form-json="fromState.formJson" :form-data="fromState.formJson"
+                :option-data="fromState.optionData" :ref="fromState.vFormLibraryRef">
+            </v-form-render>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref, reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -66,6 +88,11 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { ElMessage, ElMessageBox } from 'element-plus'
+import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
+import StampChangeJson from '@/views/addDynamicFormJson/StampChange.json'
+
+import KDialog from "@/views/components/modules/kdialog.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -73,6 +100,29 @@ const props = defineProps({
         default: "0",
     },
 })
+// 印章申请 新增弹框
+const fromState = reactive({
+    title: '',
+    formJson: StampApplicationJson,//动态表单内容
+    optionData: null,
+    vFormLibraryRef: "vFormLibraryRef",
+    showDialog: false,
+})
+const vFormLibraryRef = ref(null)
+
+const submitLibraryForm = (type) => {
+    if (!type) {
+        vFormLibraryRef.value.resetForm();
+        return
+    }
+    vFormLibraryRef.value.getFormData().then(formData => {
+        alert(JSON.stringify(formData))
+        fromState.showDialog = false
+    }).catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+    })
+}
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
@@ -283,6 +333,9 @@ const state = reactive({
                     {
                         name: "办理"
                     },
+                    {
+                        name: "修改"
+                    },
                 ],
             }],
         data: [
@@ -448,6 +501,59 @@ function cellClick(row, column, cell, event) {
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '撤销') {
+        ElMessageBox.confirm(
+            '撤销后本次申请送审将被取消，请问确定要撤销吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+    if (cell.name == '催办') {
+        ElMessageBox.confirm(
+            '请问确定要催办吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+}
+function handleCommand(command) {
+    console.log(command);
+    fromState.title = command;
+    fromState.showDialog = true;
+    switch (command) {
+        case '刻章申请':
+            fromState.formJson = StampApplicationJson;
+            break;
+        case '变更申请':
+            fromState.formJson = StampChangeJson;
+            break;
+        // case '停用申请':
+        //     break;
+        // case '启用申请':
+        //     break;
+        // case '销毁申请':
+        //     break;
+        // case '换章申请':
+        //     break;
+        default:
+            fromState.formJson = StampApplicationJson;
+            break;
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 
@@ -464,6 +570,15 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .operate-menu {
+            display: flex;
+            align-items: center;
+
+            .el-dropdown {
+                margin-right: 10px;
+            }
+        }
     }
 
     .batch {
