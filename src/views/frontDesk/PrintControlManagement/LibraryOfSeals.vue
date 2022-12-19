@@ -43,7 +43,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -557,6 +557,12 @@ function cellClick(row, column, cell, event) {
 //点击关闭详情
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '修改') {
+        showLibraryDialog.value = true;
+    }
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

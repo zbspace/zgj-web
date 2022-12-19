@@ -35,7 +35,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -64,6 +64,8 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { ElMessage,ElMessageBox } from 'element-plus'
+// import { ConsoleWriter } from "istanbul-lib-report";
 const props = defineProps({
     // 处理类型
     type: {
@@ -638,6 +640,35 @@ function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
     if (column.property == "2") {
         state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '撤销') {
+        ElMessageBox.confirm(
+            '撤销后本次申请送审将被取消，请问确定要撤销吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+                
+            })
+    }
+    if (cell.name == '作废') {
+        ElMessageBox.confirm(
+            '作废后当前记录将从当前表格中消失，请问确定要作废吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+                
+            })
     }
 }
 //点击关闭详情
