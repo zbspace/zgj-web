@@ -182,60 +182,59 @@ const state = reactive({
         }, {
             prop: '1',
             label: "单据编号",
-            width: 100,
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
-            sortable: true
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "使用印章",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "盖章码",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "实际盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '7',
             width: 100,
             label: "申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '8',
             label: "申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '9',
             label: "申请时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '10',
-            width: 100,
             label: "用印状态",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
             width: 180,
             rankDisplayData: [{
                 name: "申请转办"
@@ -462,60 +461,59 @@ function tabChange(activeName) {
         }, {
             prop: '1',
             label: "单据编号",
-            width: 100,
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
-            sortable: true
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "使用印章",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "盖章码",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "实际盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '7',
             width: 100,
             label: "申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '8',
             label: "申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '9',
             label: "申请时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '10',
-            width: 100,
             label: "用印状态",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
             width: 180,
             rankDisplayData: [{
                 name: "申请转办"
@@ -593,60 +591,59 @@ function tabChange(activeName) {
         }, {
             prop: '1',
             label: "单据编号",
-            width: 100,
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
-            sortable: true
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "印章名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "盖章码",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "实际盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '7',
             width: 100,
             label: "申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '8',
             label: "申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '9',
             label: "申请时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '10',
-            width: 100,
             label: "用印状态",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
             width: 180,
             rankDisplayData: [{
                 name: "结束用印"
@@ -724,60 +721,59 @@ function tabChange(activeName) {
         }, {
             prop: '1',
             label: "单据编号",
-            width: 100,
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
-            sortable: true
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "印章名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "盖章码",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "实际盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '7',
             width: 100,
             label: "申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '8',
             label: "申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '9',
             label: "申请时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '10',
-            width: 100,
             label: "用印状态",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
             width: 180,
             rankDisplayData: [
                 {

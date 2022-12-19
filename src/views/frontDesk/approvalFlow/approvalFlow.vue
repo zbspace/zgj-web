@@ -205,6 +205,7 @@ const state = reactive({
                 prop: 'caozuo',
                 label: "操作",
                 fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "审批"
@@ -425,6 +426,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "审批"

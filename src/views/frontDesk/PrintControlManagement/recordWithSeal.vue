@@ -873,7 +873,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
-                "min-width":150,
+                "min-width":250,
                 rankDisplayData: [
                     {
                         name: "流程终止"
@@ -1027,7 +1027,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
-                "min-width":150,
+                "min-width":250,
                 rankDisplayData: [
                     {
                         name: "流程终止"
@@ -1346,7 +1346,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
-                "min-width":150,
+                "min-width":200,
                 rankDisplayData: [
                     {
                         name: "流程终止"

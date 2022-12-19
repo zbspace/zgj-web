@@ -164,37 +164,37 @@ const state = reactive({
             prop: '1',
             label: "单据编号",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
             rankDisplayData: [{
                 name: "上传文件核验"
             },],
@@ -425,37 +425,37 @@ function tabChange(activeName) {
             prop: '1',
             label: "单据编号",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
             rankDisplayData: [{
                 name: "上传文件核验"
             },],
@@ -537,59 +537,59 @@ function tabChange(activeName) {
             prop: '1',
             label: "单据编号",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
-                "min-width":150,
-        }, 
+            "min-width": 150,
+        },
         {
             prop: '7',
             label: "用印文件份数",
             sortable: true,
-                "min-width":150,
-        }, 
+            "min-width": 150,
+        },
         {
             prop: '8',
             label: "已核验文件数",
             sortable: true,
-                "min-width":150,
-        }, 
+            "min-width": 150,
+        },
         {
             prop: '9',
             label: "最新一次核验时间",
             sortable: true,
-                "min-width":150,
-        }, 
+            "min-width": 200,
+        },
         {
             prop: '4',
             label: "申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
+            label: "操作",
+            fixed: "right",
+            "min-width": 250,
             rankDisplayData: [{
                 name: "上传文件核验"
-            },{
+            }, {
                 name: "查看核验记录"
             },],
         }]
@@ -672,53 +672,53 @@ function tabChange(activeName) {
             prop: '1',
             label: "单据编号",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         },
         {
             prop: '7',
             label: "最新一次核验时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 200,
         },
         {
             prop: '8',
             label: "核验结果",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         },
         {
             prop: '4',
             label: "申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
-                label: "操作",
-                fixed:"right",
-                "min-width":150,
+            label: "操作",
+            fixed: "right",
+            "min-width": 250,
             rankDisplayData: [{
                 name: "重传文件核验"
-            },{
+            }, {
                 name: "查看核验记录"
             },],
         }]
