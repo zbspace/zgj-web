@@ -9,7 +9,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -255,7 +255,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -264,7 +264,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -273,7 +273,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -282,7 +282,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -291,7 +291,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -300,7 +300,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -309,7 +309,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
         ],
@@ -458,6 +458,261 @@ function cellClick(row, column, cell, event) {
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+        }, {
+            prop: '7',
+            label: "用印状态",
+            sortable: true,
+        }, {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            rankDisplayData: [{
+                name: "取消水印验证"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+        ];
+    } else if (activeName == "2") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+        }, 
+        {
+            prop: '7',
+            label: "用印状态",
+            sortable: true,
+        }, 
+        {
+            prop: '8',
+            label: "水印验证节点",
+            sortable: true,
+        }, 
+        {
+            prop: '9',
+            label: "验证状态",
+            sortable: true,
+        }, 
+        {
+            prop: '10',
+            label: "验证次数",
+            sortable: true,
+        }, 
+        {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            rankDisplayData: [{
+                name: "查看验证记录"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "盖前验证",
+                9: "正常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "盖中验证",
+                9: "有异常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "盖后验证",
+                9: "正常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "归档验证",
+                9: "有异常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "盖前验证",
+                9: "有异常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+        ];
+    } 
+}
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

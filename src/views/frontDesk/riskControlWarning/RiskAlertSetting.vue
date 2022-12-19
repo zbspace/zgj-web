@@ -9,7 +9,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -373,6 +373,223 @@ const state = reactive({
         }
     }
 });
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "风险分类",
+                sortable: true,
+            }, {
+                prop: '2',
+                label: "风险项",
+                sortable: true,
+            }, {
+                prop: '3',
+                label: "风险项描述",
+                sortable: true,
+            }, {
+                prop: '4',
+                label: "开启状态",
+                customDisplayType: "switch"
+            }, {
+                prop: '5',
+                label: "提醒时间",
+                sortable: true,
+            },
+            {
+                prop: '6',
+                label: "提醒人",
+                sortable: true,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                rankDisplayData: [
+                    {
+                        name: "设置提醒人"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+        ];
+    } else if (activeName == "2" || activeName == "3") {
+        state.componentsTable.header = [
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            },
+            {
+                prop: '2',
+                label: "风险项",
+                sortable: true,
+            }, {
+                prop: '3',
+                label: "风险项描述",
+                sortable: true,
+            }, {
+                prop: '4',
+                label: "开启状态",
+                customDisplayType: "switch"
+            }, {
+                prop: '5',
+                label: "提醒时间",
+                sortable: true,
+            },
+            {
+                prop: '6',
+                label: "提醒人",
+                sortable: true,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                rankDisplayData: [
+                    {
+                        name: "设置提醒人"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+        ];
+    }
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
