@@ -1,6 +1,7 @@
 <template>
     <div class="components-searchForm">
-        <div class="ap-dis">
+        <div class="ap-dis"
+            :class="{ 'border-bottom': props.defaultAttribute['border-bottom'] === false ? false : true }">
             <el-scrollbar :max-height="props.defaultAttribute['scrollbar-max-height']" class="fromData-scrollbar">
                 <div class="fromData">
                     <div class="ap-box" v-for="(item, index) in state.cache.formData"
@@ -212,6 +213,7 @@ const props = defineProps({
         default: {
             isUnfold: false,
             "scrollbar-max-height": "auto",
+            "border-bottom": true,
         }
     },
 })
@@ -328,7 +330,6 @@ onMounted(() => {
         display: flex;
         flex-flow: wrap;
         box-sizing: border-box;
-        border-bottom: 1px solid var(--color-border-2);
     }
 
     .lineShow {
@@ -440,6 +441,10 @@ onMounted(() => {
 
     .width-0 {
         width: 0% !important;
+    }
+
+    .border-bottom {
+        border-bottom: 1px solid var(--color-border-2);
     }
 
     .custom-button {
