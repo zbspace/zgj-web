@@ -31,7 +31,8 @@
                     <div class="seal-list">
                         <div class="seal-item" v-for="(item, index) in state.componentsSealList.data">
                             <div class="seal-item-wrap"
-                                :class="{ 'seal-item-wrap-select': state.componentsSealList.curIndex === index }" @click="clickSeal(item,index)">
+                                :class="{ 'seal-item-wrap-select': state.componentsSealList.curIndex === index }"
+                                @click="clickSeal(item, index)">
                                 <span></span>
                                 <div>
                                     <h3>{{ item[1] }}</h3>
@@ -105,8 +106,8 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
@@ -168,19 +169,21 @@ const state = reactive({
                 2: '马丽丽',
             },
             {
-                1: '印章名称5',
+                1: '印章名称4',
                 2: '马丽丽',
             },
             {
-                1: '印章名称6',
+                1: '印章名称4',
                 2: '马丽丽',
-            }
-        ]
-    },
+            },
+
+        ],
+
+    }
 
 });
 // 点击印章列表
-function clickSeal(item,index){
+function clickSeal(item, index) {
     state.componentsSealList.curIndex = index;
 }
 onBeforeMount(() => {
@@ -204,8 +207,9 @@ onMounted(() => {
     .content {
         display: flex;
         justify-content: space-between;
-        padding-right:20px;
+        padding-right: 20px;
         box-sizing: border-box;
+
         .seal-list {
             width: 260px;
 
@@ -214,13 +218,15 @@ onMounted(() => {
                 background: #FFFFFF;
                 border: 1px solid rgba(0, 0, 0, 0.15);
                 border-radius: 4px;
-                margin-bottom:12px;
+                margin-bottom: 12px;
+
                 .seal-item-wrap {
                     display: flex;
-                    height:96px;
+                    height: 96px;
                     padding: 22px 0 0 22px;
                     box-sizing: border-box;
                     cursor: pointer;
+
                     >span {
                         width: 24px;
                         height: 24px;
@@ -228,12 +234,13 @@ onMounted(() => {
                         background-repeat: no-repeat;
                         background-size: 100% auto;
                         background-position: center;
-                        margin-right:15px;
+                        margin-right: 15px;
                     }
 
                     >div {
                         font-size: 14px;
                         color: rgba(0, 0, 0, 0.65);
+
                         >h3 {
                             font-size: 16px;
                             color: rgba(0, 0, 0, 0.85);
@@ -241,11 +248,14 @@ onMounted(() => {
                         }
                     }
                 }
-                .seal-item-wrap-select{
+
+                .seal-item-wrap-select {
                     background: rgba(0, 0, 0, 0.04);
+
                     >span {
                         background-image: url('../../../assets/svg/map-pin-fillweizhi-select.svg');
                     }
+
                     >div {
                         >h3 {
                             color: #D0963E;
@@ -256,16 +266,17 @@ onMounted(() => {
         }
 
         .seal-map {
-            width:calc(100% - 276px);
-            height:626px;
+            width: calc(100% - 276px);
+            height: 626px;
             border: 1px solid #E9EBEC;
             border-radius: 4px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-sizing: border-box;
-            >img{
-                width:70%;
+
+            >img {
+                width: 70%;
             }
         }
     }

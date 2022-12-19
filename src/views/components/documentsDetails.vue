@@ -1142,21 +1142,25 @@ const state = reactive({
                     prop: '1',
                     label: "操作人",
                     sortable: true,
+                "min-width":150,
                 },
                 {
                     prop: '2',
                     label: "操作时间",
                     sortable: true,
+                "min-width":150,
                 },
                 {
                     prop: '3',
                     label: "操作记录",
                     sortable: true,
+                "min-width":150,
                 },
                 {
                     prop: '4',
                     label: "操作说明",
                     sortable: true,
+                "min-width":150,
                 },
             ],
             data: [
@@ -1369,16 +1373,19 @@ const state = reactive({
                     prop: '1',
                     label: "保管人",
                     sortable: true,
+                "min-width":150,
                 },
                 {
                     prop: '3',
                     label: "保管部门",
                     sortable: true,
+                "min-width":150,
                 },
                 {
                     prop: '2',
                     label: "保管时间",
                     sortable: true,
+                "min-width":150,
                 },
             ],
             data: [
@@ -2135,11 +2142,13 @@ const state = reactive({
                     prop: '1',
                     label: "版本号",
                     sortable: true,
+                "min-width":150,
                 },
                 {
                     prop: '2',
                     label: "版本时间",
                     sortable: true,
+                "min-width":150,
                 },
             ],
             data: [

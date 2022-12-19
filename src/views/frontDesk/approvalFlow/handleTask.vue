@@ -15,7 +15,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -104,8 +104,8 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
@@ -175,26 +175,33 @@ const state = reactive({
                 prop: '1',
                 label: "任务单据名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "任务类型",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "单据申请人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "单据申请部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "任务生成时间",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "处理"
@@ -255,7 +262,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },
@@ -355,6 +362,188 @@ const state = reactive({
         }
     }
 });
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "任务单据名称",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '2',
+                label: "任务类型",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '3',
+                label: "单据申请人",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '4',
+                label: "单据申请部门",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '5',
+                label: "任务生成时间",
+                sortable: true,
+                "min-width":150,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
+                rankDisplayData: [
+                    {
+                        name: "处理"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: 'TradeCode21',
+                2: '用印复核',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+        ];
+    } else if (activeName == "2") {
+        state.componentsTable.header = [
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "任务单据名称",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '2',
+                label: "任务类型",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '3',
+                label: "单据申请人",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '4',
+                label: "单据申请部门",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '5',
+                label: "任务生成时间",
+                sortable: true,
+                "min-width":150,
+            },
+        ]
+        state.componentsTable.data = [
+            {
+                1: 'TradeCode21',
+                2: '用印复核',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '远程盖章',
+                3: '往往',
+                4: '',
+                5: '2022/10/30',
+                6: '',
+            },
+        ];
+    }
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

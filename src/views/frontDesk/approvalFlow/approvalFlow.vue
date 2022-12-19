@@ -17,7 +17,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -104,8 +104,8 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
@@ -179,26 +179,33 @@ const state = reactive({
                 prop: '1',
                 label: "流程名称",
                 sortable: true,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "流程类型",
                 sortable: true,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "申请人",
                 sortable: true,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "申请部门",
                 sortable: true,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请时间",
                 sortable: true,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "审批"
@@ -211,7 +218,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -219,7 +226,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -227,7 +234,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -235,7 +242,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -243,7 +250,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -251,7 +258,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -259,7 +266,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -267,7 +274,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
         ],
@@ -275,7 +282,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },
@@ -375,6 +382,251 @@ const state = reactive({
         }
     }
 });
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [
+            {
+                width: 50,
+                type: "selection"
+            },
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "流程名称",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '2',
+                label: "流程类型",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '3',
+                label: "申请人",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '4',
+                label: "申请部门",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '5',
+                label: "申请时间",
+                sortable: true,
+                "min-width": 150,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                fixed: "right",
+                "min-width": 150,
+                rankDisplayData: [
+                    {
+                        name: "审批"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+        ];
+    } else if (activeName == "2") {
+        state.componentsTable.header = [
+            {
+                width: 50,
+                type: "selection"
+            },
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "流程名称",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '2',
+                label: "流程类型",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '3',
+                label: "申请人",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '4',
+                label: "申请部门",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '5',
+                label: "申请时间",
+                sortable: true,
+                "min-width": 150,
+            },
+            {
+                prop: '6',
+                label: "审批时间",
+                sortable: true,
+                "min-width": 150,
+            },
+            {
+                prop: '7',
+                label: "审批状态",
+                sortable: true,
+                "min-width": 150,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                fixed: "right",
+                "min-width": 150,
+                rankDisplayData: [
+                    {
+                        name: "重批"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+        ];
+    }
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

@@ -87,40 +87,40 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "印章名称",
                 },
             },
             {
                 id: 'picker',
-                label: "选择时间",
+                label: "外带时间",
                 type: "picker",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
-                label: "印章类型",
-                type: "select",
+                id: 'name',
+                label: "外借人",
+                type: "input",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "外借人",
                 },
             },
             {
-                id: 'shenqingr',
+                id: 'name',
                 label: "保管人",
                 type: "input",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "保管人",
                 },
             },
         ],
@@ -171,40 +171,50 @@ const state = reactive({
             prop: '1',
             label: "印章名称",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '2',
             label: "印章类型",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '3',
             label: "保管人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '4',
             label: "保管部门",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '5',
             label: "外借人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '6',
             label: "外借部门",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: '7',
             label: "外借时间",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: '8',
             label: "外借地点",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             width: 180,
             rankDisplayData: [
                 {
@@ -301,7 +311,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },

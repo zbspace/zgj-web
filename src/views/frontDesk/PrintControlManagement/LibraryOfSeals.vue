@@ -154,8 +154,8 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
@@ -304,32 +304,40 @@ const state = reactive({
                 prop: '1',
                 label: "印章名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "印章类型",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "印章状态",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "保管人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "保管部门",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: '6',
                 label: "创建时间",
                 sortable: true,
+                "min-width":150,
             },
 
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
+                "min-width":150,
                 width: '250',
                 rankDisplayData: [
                     {
@@ -421,7 +429,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });

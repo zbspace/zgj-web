@@ -116,8 +116,8 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
@@ -187,34 +187,42 @@ const state = reactive({
                 prop: '1',
                 label: "流程主题",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "流程类型",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "所属部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "申请人员",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "申请时间",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '6',
                 label: "抄送人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '7',
                 label: "抄送时间",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '8',
                 label: "审批状态",
                 sortable: true,
+                "min-width":150,
             },
         ],
         data: [
@@ -245,7 +253,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },

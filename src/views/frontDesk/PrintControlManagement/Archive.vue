@@ -15,7 +15,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -117,8 +117,8 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
@@ -181,29 +181,37 @@ const state = reactive({
             prop: '1',
             label: "单据编号",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '4',
             label: "申请人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
+                "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             rankDisplayData: [{
                 name: "文件归档"
             },],
@@ -215,7 +223,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -223,7 +231,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -231,7 +239,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -239,7 +247,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -247,7 +255,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -255,7 +263,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -263,14 +271,14 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -410,6 +418,235 @@ function cellClick(row, column, cell, event) {
 //点击关闭详情
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: 'caozuo',
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
+            rankDisplayData: [{
+                name: "文件归档"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+        ]
+    } else if (activeName == "2") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '6',
+            label: "归档时间",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '7',
+            label: "文件下载",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: 'caozuo',
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
+            rankDisplayData: [
+                {
+                    name: "补传"
+                },
+                {
+                    name: "申请重置"
+                },
+            ],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "用印前",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "用印中",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "用印后",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+        ]
+    }
 }
 
 onBeforeMount(() => {

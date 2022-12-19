@@ -142,8 +142,8 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
@@ -217,34 +217,43 @@ const state = reactive({
                 prop: '1',
                 label: "设备串号",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "工作台名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "工作台编码",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "设备状态",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "保管人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '6',
                 label: "保管部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '7',
                 label: "更新时间",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -320,7 +329,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });

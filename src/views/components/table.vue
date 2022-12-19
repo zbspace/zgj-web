@@ -102,6 +102,7 @@ onMounted(() => {
 .components-table {
     margin: 0%;
     width: 100%;
+
     .rankDisplayData {
         display: flex;
         // justify-content: space-around;
@@ -114,15 +115,15 @@ onMounted(() => {
         }
     }
 
-     
-    :deep(.el-table thead) {
-            color: var(--color-text-1);
-            font-size: var(--font-size-body-2);
-            font-weight: var(--font-weight-400);
-        }
 
-        th {
-            font-weight: var(--font-weight-400);
-        }
+    :deep(.el-table thead) {
+        color: var(--color-text-1);
+        font-size: var(--font-size-body-2);
+        font-weight: var(--font-weight-400);
+    }
+
+    th {
+        font-weight: var(--font-weight-400);
+    }
 }
 </style>
