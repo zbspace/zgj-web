@@ -27,7 +27,7 @@
     <div class="inner-page-content">
       <!-- 进度条 -->
       <div class="process" style="display:flex;">
-        <div>1</div>
+        <div >1</div>
         <div class="jiantou-right"></div>
         <div>2</div>
         <div class="jiantou-right"></div>
