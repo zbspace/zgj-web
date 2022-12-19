@@ -506,7 +506,7 @@ const changeSystemHome = () => {
 
   .popover-cont-list {
     position: relative;
-    width: 150px;
+    // width: 150px;
     padding: 16px 24px;
     cursor: pointer;
   }

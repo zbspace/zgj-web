@@ -114,24 +114,6 @@ const state = reactive({
 
                 }
             },
-            {
-                id: 'select',
-                label: "印章类型名称",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "描述",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
         ],
         butData: [{
             id: "more",
@@ -178,28 +160,34 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "印章类型编码",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "印章类型名称",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "描述",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "智能印章",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "普通印章",
+                sortable: true,
             }, {
                 prop: '6',
                 label: "创建人",
+                sortable: true,
             }, {
                 prop: '7',
                 label: "创建时间",
+                sortable: true,
             },
             {
                 prop: 'caozuo',

@@ -1,10 +1,16 @@
-<!-- 防伪水印验证 -->
+<!-- 用印轨迹 -->
 <template>
-    <div class="PrintControlManagement-SecurityWatermark">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+    <div class="PrintControlManagement-Printed-track">
+        <componentsLayout Layout="title,searchForm,custom">
             <template #title>
                 <div class="title">
-                    防伪水印验证
+                    <div>用印轨迹</div>
+                    <div>
+                        <el-button>
+                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                            <span>更多操作</span>
+                        </el-button>
+                    </div>
                 </div>
             </template>
             <template #tabs>
@@ -20,33 +26,28 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
-            <template #table>
+            <template #custom>
                 <div>
-                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
-                    </componentsTable>
+                    <div>
+                        <div>
+                            <div>
+                                <img src="" alt="">
+                            </div>
+                            <div>
+                                <span></span>
+                                <span>
+                                    <span>保管人：</span>
+                                    <span></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="../../../assets/svg/yongyin-guiji-ditu.svg" alt="">
+                    </div>
                 </div>
             </template>
-            <template #pagination>
-                <componentsPagination :data="state.componentsPagination.data"
-                    :defaultAttribute="state.componentsPagination.defaultAttribute">
-                </componentsPagination>
-            </template>
         </componentsLayout>
-        <!-- 单据详情 -->
-        <div class="ap-box">
-            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
-                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
-            </componentsDocumentsDetails>
-        </div>
     </div>
 </template>
 <script setup>
@@ -71,10 +72,10 @@ const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
         data: [{
-            label: '未验证',
+            label: '待归档',
             name: "1",
         }, {
-            label: '已验证',
+            label: '已归档',
             name: "2",
         }]
     },
@@ -112,24 +113,6 @@ const state = reactive({
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "用印文件类型",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "用印状态",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -188,10 +171,6 @@ const state = reactive({
             label: "用印文件类型",
             sortable: true,
         }, {
-            prop: '7',
-            label: "用印状态",
-            sortable: true,
-        }, {
             prop: '4',
             label: "申请人",
             sortable: true,
@@ -207,7 +186,7 @@ const state = reactive({
             prop: 'caozuo',
             label: "操作",
             rankDisplayData: [{
-                name: "取消水印验证"
+                name: "文件归档"
             },],
         }],
         data: [
@@ -218,7 +197,6 @@ const state = reactive({
                 4: '往往',
                 5: '',
                 6: '2022/10/30',
-                7: "",
             },
             {
                 1: 'XXXXXXX',
@@ -227,7 +205,6 @@ const state = reactive({
                 4: '往往',
                 5: '',
                 6: '2022/10/30',
-                7: "",
             },
             {
                 1: 'XXXXXXX',
@@ -236,7 +213,6 @@ const state = reactive({
                 4: '往往',
                 5: '',
                 6: '2022/10/30',
-                7: "",
             },
             {
                 1: 'XXXXXXX',
@@ -245,7 +221,6 @@ const state = reactive({
                 4: '往往',
                 5: '',
                 6: '2022/10/30',
-                7: "",
             },
             {
                 1: 'XXXXXXX',
@@ -254,7 +229,6 @@ const state = reactive({
                 4: '往往',
                 5: '',
                 6: '2022/10/30',
-                7: "",
             },
             {
                 1: 'XXXXXXX',
@@ -263,7 +237,6 @@ const state = reactive({
                 4: '往往',
                 5: '',
                 6: '2022/10/30',
-                7: "",
             },
             {
                 1: 'XXXXXXX',
@@ -272,7 +245,6 @@ const state = reactive({
                 4: '往往',
                 5: '',
                 6: '2022/10/30',
-                7: "",
             },
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -399,12 +371,12 @@ const state = reactive({
                 name: "approval-process",
             },
             {
-                label: '操作记录',
-                name: "operating-record",
-            },
-            {
                 label: '领用记录',
                 name: "Record-of-requisition",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
             },
         ],
     }
@@ -420,6 +392,7 @@ function cellClick(row, column, cell, event) {
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 
@@ -429,7 +402,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.PrintControlManagement-SecurityWatermark {
+.PrintControlManagement-Printed-track {
     margin: 0%;
 
     .title {
@@ -437,6 +410,5 @@ onMounted(() => {
         align-items: center;
         justify-content: space-between;
     }
-
 }
 </style>

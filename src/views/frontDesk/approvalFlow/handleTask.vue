@@ -171,22 +171,26 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "任务单据名称",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "任务类型",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "单据申请人",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "单据申请部门",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "任务生成时间",
+                sortable: true,
             },
             {
                 prop: 'caozuo',

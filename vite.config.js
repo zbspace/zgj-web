@@ -20,8 +20,14 @@ export default defineConfig({
       }
     }),
     eslintPlugin({
-    // 配置项
-      cache: false // 只校验改动的文件，所以不建议使用eslint缓存
+      // /** 将用于 linting 的 ESLint 实例的路径 */
+      // /** 在项目启动时检查所有匹配的文件 */
+      // lintOnStart: false,
+      // /** 如果有任何警告，将导致模块构建失败，基于 emitWarning */
+      // failOnWarning: false,
+      // /** 如果有任何错误，将导致模块构建失败，基于 emitError */
+      // failOnError:false,
+      // include: ['src/**/*.js', 'src/**/*.vue', 'src/*.js', 'src/*.vue']
     }),
     vueJsx({
 

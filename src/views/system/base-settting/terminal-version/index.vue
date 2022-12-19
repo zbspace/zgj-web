@@ -184,11 +184,11 @@ const state = reactive({
         prop: "0",
         label: "序号",
         width: 100,
-        sortable: true,
       },
       {
         prop: "1",
         label: "xxx",
+        sortable: true,
       },
     ],
     data: [

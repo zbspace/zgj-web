@@ -151,36 +151,41 @@ const state = reactive({
         prop: "0",
         label: "序号",
         width: 100,
-        sortable: true,
       },
       {
         prop: "1",
         label: "企业编码",
         width: 120,
+        sortable: true,
       },
       {
         prop: "2",
         label: "企业名称",
         width: 120,
+        sortable: true,
       },
       {
         prop: "3",
         label: "所属部门",
         width: 120,
+        sortable: true,
       },
       {
         prop: "4",
         label: "联系人",
         width: 100,
+        sortable: true,
       },
       {
         prop: "5",
         label: "联系方式",
         width: 160,
+        sortable: true,
       },
       {
         prop: "6",
         label: "备注",
+        sortable: true,
       },
       {
         prop: "7",

@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-tabs">
+  <div class="custom-tabs" :class="border ? 'tabs-border' : ''">
     <div v-for="(item, index) in props.label" :key="index">
       <div :class="props.active === item.value ? 'actived' : ''" class="item" @click="handleTab(item.value)">{{ $t(item.name) }}</div>
     </div>
@@ -19,7 +19,11 @@ const props = defineProps({
     default() {
       return [] 
     }
-  }
+  },
+  border: {
+    type: Boolean,
+    default: true
+  },
 })
 
 const handleTab = (val) => {
@@ -30,7 +34,8 @@ const handleTab = (val) => {
 <style lang="scss" scoped>
 .custom-tabs {
   display: flex;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  // border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  
   .item {
     font-family: 'PingFang SC';
     font-style: normal;
@@ -39,7 +44,7 @@ const handleTab = (val) => {
     color: rgba(0, 0, 0, 0.45);
     height: 30px;
     line-height: 24px;
-    margin: 0 22px;
+    margin: 0 14px;
     cursor: pointer;
   }
 
@@ -47,5 +52,8 @@ const handleTab = (val) => {
     color: #D0963E;
     border-bottom: 2px solid #D0963E;
   }
+}
+.tabs-border {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 </style>

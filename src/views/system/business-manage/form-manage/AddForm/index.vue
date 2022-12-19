@@ -14,13 +14,13 @@
 <script setup>
 import { ref } from 'vue'
 const vformRef = ref(null)
-const props = defineProps({
+defineProps({
   modelValue: {
     type: Boolean,
     default: false
   },
 })
-const emit = defineEmits(['getFromJson', 'update: modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
 const cancel = () => {
   emit('update:modelValue', false)

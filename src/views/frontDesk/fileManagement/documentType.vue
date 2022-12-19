@@ -226,22 +226,26 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "文件类型名称",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "文件类型说明",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "文件数",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "创建人",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "创建时间",
+                sortable: true,
             },
             {
                 prop: 'caozuo',

@@ -104,7 +104,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "编码/印章名称/申请人员",
                 },
             },
             {
@@ -123,31 +123,63 @@ const state = reactive({
                 }
             },
             {
-                id: 'select',
-                label: "单据类型",
-                type: "select",
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
             },
             {
                 id: 'shenqingr',
-                label: "印章名称",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                label: "审批状态",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "未送审",
+                    },
+                    {
+                        name: "审批中",
+                    },
+                    {
+                        name: "已退回",
+                    },
+                    {
+                        name: "已撤销",
+                    },
+                    {
+                        name: "已通过",
+                    },
+                    {
+                        name: "已办理",
+                    }
+                ]
             },
             {
-                id: 'select',
-                label: "印章类型",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                id: 'shenqingr',
+                label: "单据类型",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "刻章申请",
+                    },
+                    {
+                        name: "停用申请",
+                    },
+                    {
+                        name: "销毁申请",
+                    },
+                    {
+                        name: "启用申请",
+                    },
+                    {
+                        name: "变更申请",
+                    },
+                    {
+                        name: "换章申请",
+                    }
+                ]
             },
         ],
         butData: [{
@@ -195,31 +227,38 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "单据编码",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "单据类型",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "印章名称",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "印章类型",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "审批状态",
+                sortable: true,
             }, {
                 prop: '6',
                 label: "申请人",
+                sortable: true,
             }, {
                 prop: '7',
                 label: "申请部门",
+                sortable: true,
             }, {
                 prop: '8',
                 label: "申请时间",
+                sortable: true,
             },
             {
                 prop: 'caozuo',

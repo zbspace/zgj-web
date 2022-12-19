@@ -29,14 +29,15 @@
             </template>
             <template #batch>
                 <div class="batch">
-             
+
                 </div>
             </template>
 
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick" @custom-click="customClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true"
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -48,10 +49,10 @@
         </componentsLayout>
         <!-- 动态表单 -->
         <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增" :centerBtn="true"
-          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600"
-          @close="submitForm">
-          <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
-          </v-form-render>
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000"
+            :height="600" @close="submitForm">
+            <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+            </v-form-render>
         </KDialog>
         <!-- 印章柜详情 -->
         <div class="ap-box">
@@ -62,7 +63,7 @@
     </div>
 </template>
 <script setup>
-import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref, reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -74,7 +75,7 @@ import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import KDialog from "@/views/components/modules/kdialog.vue"
 import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -89,19 +90,19 @@ const optionData = reactive({})
 const dialogVisible = ref(false)
 const vFormRef = ref(null)
 const submitForm = (type) => {
-  if (!type) {
-    vFormRef.value.resetForm()
-    return
-  }
-  vFormRef.value.getFormData().then(formData => {
-    // Form Validation OK
-    alert(JSON.stringify(formData))
-    showFormDialog.value = false
-  }).catch(error => {
-    // Form Validation failed
+    if (!type) {
+        vFormRef.value.resetForm()
+        return
+    }
+    vFormRef.value.getFormData().then(formData => {
+        // Form Validation OK
+        alert(JSON.stringify(formData))
+        showFormDialog.value = false
+    }).catch(error => {
+        // Form Validation failed
 
-    ElMessage.error(error)
-  })
+        ElMessage.error(error)
+    })
 }
 const emit = defineEmits([]);
 const state = reactive({
@@ -123,7 +124,7 @@ const state = reactive({
                 width: "calc(100% / 3)",
             },
             labelStyle: {
-                width: "100px"
+                width: "120px"
             },
         },
         data: [
@@ -216,28 +217,34 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "设备串号",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "智能印章柜名称",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "智能印章柜编码",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "设备状态",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "保管人",
+                sortable: true,
             }, {
                 prop: '6',
                 label: "保管部门",
+                sortable: true,
             }, {
                 prop: '7',
                 label: "更新时间",
+                sortable: true,
             },
             {
                 prop: 'caozuo',
@@ -466,7 +473,7 @@ function customClick(row, column, cell, event) {
             }
         )
             .then(() => {
-                
+
             })
     }
 }

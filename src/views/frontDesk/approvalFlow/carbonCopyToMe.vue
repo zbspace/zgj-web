@@ -183,31 +183,38 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "流程主题",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "流程类型",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "所属部门",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "申请人员",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "申请时间",
+                sortable: true,
             }, {
                 prop: '6',
                 label: "抄送人",
+                sortable: true,
             }, {
                 prop: '7',
                 label: "抄送时间",
+                sortable: true,
             }, {
                 prop: '8',
                 label: "审批状态",
+                sortable: true,
             },
         ],
         data: [

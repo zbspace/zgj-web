@@ -175,22 +175,26 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "流程名称",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "流程类型",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "申请人",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "申请部门",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "申请时间",
+                sortable: true,
             },
             {
                 prop: 'caozuo',

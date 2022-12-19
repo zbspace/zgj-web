@@ -157,27 +157,31 @@ const state = reactive({
         prop: "0",
         label: "序号",
         width: 100,
-        sortable: true,
       },
       {
         prop: "1",
         label: "姓名",
+        sortable: true,
       },
       {
         prop: "2",
         label: "账号",
+        sortable: true,
       },
       {
         prop: "3",
         label: "所属部门",
+        sortable: true,
       },
       {
         prop: "4",
         label: "职位",
+        sortable: true,
       },
       {
         prop: "5",
         label: "人脸状态",
+        sortable: true,
       },
       {
         prop: "6",

@@ -101,7 +101,7 @@ onMounted(() => {
 <style lang='scss' scoped>
 .components-table {
     margin: 0%;
-
+    width: 100%;
     .rankDisplayData {
         display: flex;
         // justify-content: space-around;
