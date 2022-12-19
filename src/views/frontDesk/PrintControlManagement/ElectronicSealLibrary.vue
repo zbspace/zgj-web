@@ -173,19 +173,22 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "印章名称",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "印膜",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "有效期",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "更新时间",
+                sortable: true,
             },
         ],
         data: [

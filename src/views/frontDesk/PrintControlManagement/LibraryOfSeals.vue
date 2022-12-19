@@ -62,11 +62,11 @@
 
         <!-- 动态表单 - 印章库 -->
         <KDialog @update:show="showLibraryDialog = $event" :show="showLibraryDialog" title="新增" :centerBtn="true"
-          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600"
-          @close="submitLibraryForm">
-          <v-form-render :form-json="formLibraryJson" :form-data="formLibraryData" :option-data="optionLibraryData"
-            ref="vFormLibraryRef">
-          </v-form-render>
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000"
+            :height="600" @close="submitLibraryForm">
+            <v-form-render :form-json="formLibraryJson" :form-data="formLibraryData" :option-data="optionLibraryData"
+                ref="vFormLibraryRef">
+            </v-form-render>
         </KDialog>
     </div>
 </template>
@@ -99,18 +99,18 @@ const vFormLibraryRef = ref(null)
 const showLibraryDialog = ref(false)
 
 const submitLibraryForm = (type) => {
-  if (!type) {
-    vFormLibraryRef.value.resetForm()
-    return
-  }
-  vFormLibraryRef.value.getFormData().then(formData => {
-    // Form Validation OK
-    alert(JSON.stringify(formData))
-    showLibraryDialog.value = false
-  }).catch(error => {
-    // Form Validation failed
-    ElMessage.error(error)
-  })
+    if (!type) {
+        vFormLibraryRef.value.resetForm()
+        return
+    }
+    vFormLibraryRef.value.getFormData().then(formData => {
+        // Form Validation OK
+        alert(JSON.stringify(formData))
+        showLibraryDialog.value = false
+    }).catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+    })
 }
 const emit = defineEmits([]);
 const state = reactive({
@@ -143,7 +143,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "印章名称/保管部门/保管人/印章编码",
                 },
             },
             {
@@ -162,22 +162,97 @@ const state = reactive({
                 }
             },
             {
-                id: 'select',
-                label: "印章类型",
-                type: "select",
+                id: 'derivable',
+                label: "保管部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
+                },
+            },
+            {
+                id: 'derivable',
+                label: "管理部门",
+                type: "derivable",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "+选择部门",
                 },
             },
             {
                 id: 'shenqingr',
                 label: "印章状态",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                type: "radioButton",
+                data: [
+                    {
+                        name: "正常  ",
+                    },
+                    {
+                        name: "停用",
+                    },
+                    {
+                        name: "已销毁",
+                    }
+                ]
+            },
+            {
+                id: 'shenqingr',
+                label: "外带状态",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "外带",
+                    },
+                    {
+                        name: "在库",
+                    },
+                ]
+            },
+            {
+                id: 'shenqingr',
+                label: "印章种类",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "普通印章",
+                    },
+                    {
+                        name: "智能印章",
+                    },
+                ]
+            },
+            {
+                id: 'shenqingr',
+                label: "印章可见范围",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "全部人员可见",
+                    },
+                    {
+                        name: "本部门及下级部门可见",
+                    },
+                    {
+                        name: "本部门可见",
+                    },
+                    {
+                        name: "指定人员可见",
+                    },
+                ]
+            },
+            {
+                id: 'wdyy',
+                label: "我保管的印章",
+                type: "checkbox",
+                checkbox: [{
+                    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                    defaultAttribute: {
+                        label: "只显示我保管的印章"
+                    },
+                    style: {
+
+                    }
+                }]
             },
         ],
         butData: [{
@@ -225,26 +300,31 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "印章名称",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "印章类型",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "印章状态",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "保管人",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "保管部门",
+                sortable: true,
             },
             {
                 prop: '6',
                 label: "创建时间",
+                sortable: true,
             },
 
             {

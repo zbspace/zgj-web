@@ -92,6 +92,7 @@ const state = reactive({
                 {
                     prop: '1',
                     label: "操作人",
+                    sortable: true,
                 },
                 {
                     prop: '2',
@@ -101,10 +102,12 @@ const state = reactive({
                 {
                     prop: '3',
                     label: "操作记录",
+                    sortable: true,
                 },
                 {
                     prop: '4',
                     label: "操作说明",
+                    sortable: true,
                 },
             ],
             data: [

@@ -216,28 +216,34 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "设备串号",
+                sortable: true,
             }, {
                 prop: '2',
                 label: "智能印章柜名称",
+                sortable: true,
             }, {
                 prop: '3',
                 label: "智能印章柜编码",
+                sortable: true,
             }, {
                 prop: '4',
                 label: "设备状态",
+                sortable: true,
             }, {
                 prop: '5',
                 label: "保管人",
+                sortable: true,
             }, {
                 prop: '6',
                 label: "保管部门",
+                sortable: true,
             }, {
                 prop: '7',
                 label: "更新时间",
+                sortable: true,
             },
             {
                 prop: 'caozuo',

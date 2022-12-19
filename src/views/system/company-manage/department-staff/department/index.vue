@@ -148,31 +148,36 @@ const state = reactive({
         prop: "0",
         label: "序号",
         width: 100,
-        sortable: true,
       },
       {
         prop: "1",
         label: "部门编码",
+        sortable: true,
       },
       {
         prop: "2",
         label: "部门名称",
+        sortable: true,
       },
       {
         prop: "3",
         label: "组织类型",
+        sortable: true,
       },
       {
         prop: "4",
         label: "部门人数",
+        sortable: true,
       },
       {
         prop: "5",
         label: "部门主管",
+        sortable: true,
       },
       {
         prop: "6",
         label: "上级组织",
+        sortable: true,
       },
       {
         prop: "7",

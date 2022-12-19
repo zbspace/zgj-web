@@ -49,27 +49,31 @@ const state = reactive({
         prop: '0',
         label: "序号",
         width: 100,
-        sortable: true
       }, {
         prop: '1',
         label: "风险分类",
+        sortable: true,
       }, {
         prop: '2',
         label: "风险项",
+        sortable: true,
       }, {
         prop: '3',
         label: "风险项描述",
+        sortable: true,
       }, {
         prop: '4',
         label: "开启状态",
-        customDisplayType: "switch"
+        customDisplayType: "switch",
       }, {
         prop: '5',
         label: "提醒时间",
+        sortable: true,
       },
       {
         prop: '6',
         label: "提醒人",
+        sortable: true,
       },
       {
         prop: 'caozuo',

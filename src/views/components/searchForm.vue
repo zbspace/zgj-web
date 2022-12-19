@@ -23,7 +23,7 @@
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
                             </div>
-                            <div class="ap-box-contBox">
+                            <div class="ap-box-contBox width-0">
                                 <el-input class="ap-box-contBox-input width-100" v-bind="item.defaultAttribute"
                                     readonly />
                                 <div class="ap-box-contBox-icon">
@@ -51,7 +51,7 @@
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
                             </div>
-                            <div class="ap-box-contBox">
+                            <div class="ap-box-contBox width-0">
                                 <el-date-picker class="width-100" v-bind="item.defaultAttribute" v-model="item.value"
                                     @change="getCurrentValue(item, index)" />
                             </div>
@@ -235,13 +235,22 @@ const state = reactive({
 const computed_fill = computed(() => {
     return (item, index) => {
         // console.log(item, index);
-        let fixed = ["custom"]
-        let alterable = ["checkbox", "radio", "switch", "radioButton", "checkButton"]
-        if (fixed.indexOf(item.type) > -1) {
+        let fixed = ["custom", "checkbox", "radio", "switch", "radioButton", "checkButton"]
+        let alterable = [];
+        console.log(alterable.indexOf(item.type) > -1, index < state.cache.formData.length - 1);
+        if (fixed.indexOf(item.type) > -1 && index < state.cache.formData.length - 1) {
             return {
                 width: "100%"
             };
+        } else if (fixed.indexOf(item.type) > -1 && index == state.cache.formData.length - 1) {
+            return {
+                width: "auto"
+            };
         } else if (alterable.indexOf(item.type) > -1 && index < state.cache.formData.length - 1) {
+            return {
+                width: "auto"
+            };
+        } else if (alterable.indexOf(item.type) > -1 && index == state.cache.formData.length - 1) {
             return {
                 width: "auto"
             };
@@ -344,6 +353,7 @@ onMounted(() => {
         display: flex;
         flex-flow: wrap;
         box-sizing: border-box;
+        // justify-content: space-between;
     }
 
     .ap-box {
@@ -428,6 +438,10 @@ onMounted(() => {
         width: 100% !important;
     }
 
+    .width-0 {
+        width: 0% !important;
+    }
+
     .custom-button {
         border: 1px dashed var(--color-border-1);
         border-radius: var(--border-radius-2);
@@ -472,6 +486,7 @@ onMounted(() => {
             }
         }
     }
+
 
     .radioButton {
         align-items: flex-start !important;
@@ -533,7 +548,7 @@ onMounted(() => {
         }
     }
 
-  
+
 
     :deep {
         .width-100 {

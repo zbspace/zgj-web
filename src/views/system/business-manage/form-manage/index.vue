@@ -172,42 +172,48 @@ const state = reactive({
         prop: "0",
         label: "序号",
         width: 80,
-        sortable: true,
       },
       {
         prop: "1",
         width: 100,
         label: "表单名称",
+        sortable: true,
       },
       {
         prop: "2",
         width: 100,
         label: "业务类型",
+        sortable: true,
       },
       {
         prop: "3",
         width: 100,
         label: "用印类型",
+        sortable: true,
       },
       {
         prop: "4",
         width: 100,
         label: "文件类型",
+        sortable: true,
       },
       {
         prop: "5",
         width: 100,
         label: "状态",
+        sortable: true,
       },
       {
         prop: "6",
         width: 100,
         label: "创建人",
+        sortable: true,
       },
       {
         prop: "7",
         width: 200,
         label: "更新时间",
+        sortable: true,
       },
 
       {

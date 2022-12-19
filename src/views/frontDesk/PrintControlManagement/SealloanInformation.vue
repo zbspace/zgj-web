@@ -167,33 +167,40 @@ const state = reactive({
             prop: '0',
             label: "序号",
             width: 100,
-            sortable: true
         }, {
             prop: '1',
             label: "印章名称",
+            sortable: true,
         }, {
             prop: '2',
             label: "印章类型",
+            sortable: true,
         }, {
             prop: '3',
             label: "保管人",
+            sortable: true,
         }, {
             prop: '4',
             label: "保管部门",
+            sortable: true,
         }, {
             prop: '5',
             label: "外借人",
+            sortable: true,
         }, {
             prop: '6',
             label: "外借部门",
+            sortable: true,
         },
         {
             prop: '7',
             label: "外借时间",
+            sortable: true,
         },
         {
             prop: '8',
             label: "外借地点",
+            sortable: true,
         },
         {
             prop: 'caozuo',
