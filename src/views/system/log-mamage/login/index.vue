@@ -163,6 +163,7 @@ const state = reactive({
         prop: "1",
         label: "xxx",
         sortable: true,
+        "min-width": 150,
       },
     ],
     data: [

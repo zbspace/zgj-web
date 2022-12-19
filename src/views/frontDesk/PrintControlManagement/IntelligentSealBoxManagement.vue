@@ -217,34 +217,42 @@ const state = reactive({
                 prop: '1',
                 label: "设备串号",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "智能印章盒名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "智能印章盒编码",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "设备状态",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "保管人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '6',
                 label: "保管部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '7',
                 label: "更新时间",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -320,7 +328,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });

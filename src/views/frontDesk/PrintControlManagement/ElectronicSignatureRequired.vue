@@ -171,34 +171,42 @@ const state = reactive({
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "印章名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "申请人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "申请部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '6',
                 label: "申请时间",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '7',
                 label: "签章情况",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
                 rankDisplayData: [
                     {
                         name: "签署"
@@ -271,7 +279,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });

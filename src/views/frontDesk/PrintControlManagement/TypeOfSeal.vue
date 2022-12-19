@@ -164,34 +164,42 @@ const state = reactive({
                 prop: '1',
                 label: "印章类型编码",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "印章类型名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "描述",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "智能印章",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "普通印章",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '6',
                 label: "创建人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '7',
                 label: "创建时间",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -270,7 +278,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },

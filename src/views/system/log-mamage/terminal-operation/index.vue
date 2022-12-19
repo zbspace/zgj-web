@@ -141,10 +141,12 @@ const state = reactive({
         prop: "1",
         label: "xxx",
         sortable: true,
+        "min-width": 150,
       },
       {
         prop: 'caozuo',
         label: "操作",
+        fixed: "right",
         rankDisplayData: [
           {
             name: "下载"

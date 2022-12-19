@@ -164,26 +164,32 @@ const state = reactive({
             prop: '1',
             label: "单据编号",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '4',
             label: "申请人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
+                "min-width":150,
         }, {
             prop: 'caozuo',
             label: "操作",
@@ -260,7 +266,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -417,26 +423,32 @@ function tabChange(activeName) {
             prop: '1',
             label: "单据编号",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '4',
             label: "申请人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
+                "min-width":150,
         }, {
             prop: 'caozuo',
             label: "操作",
@@ -521,42 +533,51 @@ function tabChange(activeName) {
             prop: '1',
             label: "单据编号",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
+                "min-width":150,
         }, 
         {
             prop: '7',
             label: "用印文件份数",
             sortable: true,
+                "min-width":150,
         }, 
         {
             prop: '8',
             label: "已核验文件数",
             sortable: true,
+                "min-width":150,
         }, 
         {
             prop: '9',
             label: "最新一次核验时间",
             sortable: true,
+                "min-width":150,
         }, 
         {
             prop: '4',
             label: "申请人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
+                "min-width":150,
         }, {
             prop: 'caozuo',
             label: "操作",
@@ -645,37 +666,45 @@ function tabChange(activeName) {
             prop: '1',
             label: "单据编号",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '2',
             label: "单据名称",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '3',
             label: "用印文件类型",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: '7',
             label: "最新一次核验时间",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: '8',
             label: "核验结果",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: '4',
             label: "申请人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '5',
             label: "申请部门",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '6',
             label: "申请时间",
             sortable: true,
+                "min-width":150,
         }, {
             prop: 'caozuo',
             label: "操作",

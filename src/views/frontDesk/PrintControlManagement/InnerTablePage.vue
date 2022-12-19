@@ -53,14 +53,17 @@ const state = reactive({
         prop: '1',
         label: "风险分类",
         sortable: true,
+                "min-width":150,
       }, {
         prop: '2',
         label: "风险项",
         sortable: true,
+                "min-width":150,
       }, {
         prop: '3',
         label: "风险项描述",
         sortable: true,
+                "min-width":150,
       }, {
         prop: '4',
         label: "开启状态",
@@ -69,15 +72,18 @@ const state = reactive({
         prop: '5',
         label: "提醒时间",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: '6',
         label: "提醒人",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: 'caozuo',
-        label: "操作",
+                label: "操作",
+                fixed:"right",
         rankDisplayData: [
           {
             name: "设置提醒人"

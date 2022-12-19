@@ -190,38 +190,47 @@ const state = reactive({
                 prop: '1',
                 label: "用印单据名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "文件类型",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "申请人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "申请部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "申请时间",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '6',
                 label: "操作时间",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '7',
                 label: "未用印时长",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '8',
                 label: "处理状态",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
                 rankDisplayData: [
                     {
                         name: "处理"
@@ -295,7 +304,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },

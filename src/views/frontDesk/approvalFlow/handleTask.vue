@@ -175,26 +175,32 @@ const state = reactive({
                 prop: '1',
                 label: "任务单据名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "任务类型",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "单据申请人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "单据申请部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "任务生成时间",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
                 rankDisplayData: [
                     {
                         name: "处理"
@@ -255,7 +261,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },
@@ -369,26 +375,32 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "任务单据名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "任务类型",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "单据申请人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "单据申请部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "任务生成时间",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
                 rankDisplayData: [
                     {
                         name: "处理"
@@ -455,22 +467,27 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "任务单据名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "任务类型",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "单据申请人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "单据申请部门",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "任务生成时间",
                 sortable: true,
+                "min-width":150,
             },
         ]
         state.componentsTable.data = [

@@ -230,26 +230,32 @@ const state = reactive({
                 prop: '1',
                 label: "文件类型名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "文件类型说明",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "文件数",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "创建人",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "创建时间",
                 sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -343,7 +349,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });

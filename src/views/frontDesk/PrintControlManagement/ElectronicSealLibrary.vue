@@ -177,18 +177,22 @@ const state = reactive({
                 prop: '1',
                 label: "印章名称",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "印膜",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "有效期",
                 sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "更新时间",
                 sortable: true,
+                "min-width":150,
             },
         ],
         data: [
@@ -225,7 +229,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });

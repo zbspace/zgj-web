@@ -174,36 +174,42 @@ const state = reactive({
         width: 100,
         label: "流程名称",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "2",
         width: 100,
         label: "业务类型",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "4",
         width: 100,
         label: "文件类型",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "5",
         width: 100,
         label: "状态",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "6",
         width: 100,
         label: "创建人",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "7",
         width: 200,
         label: "更新时间",
         sortable: true,
+                "min-width":150,
       },
 
       {

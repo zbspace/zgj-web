@@ -171,36 +171,44 @@ const state = reactive({
             prop: '1',
             label: "印章名称",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '2',
             label: "印章类型",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '3',
             label: "保管人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '4',
             label: "保管部门",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '5',
             label: "外借人",
             sortable: true,
+                "min-width":150,
         }, {
             prop: '6',
             label: "外借部门",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: '7',
             label: "外借时间",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: '8',
             label: "外借地点",
             sortable: true,
+                "min-width":150,
         },
         {
             prop: 'caozuo',
@@ -301,7 +309,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },

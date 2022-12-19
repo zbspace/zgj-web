@@ -129,26 +129,31 @@ const state = reactive({
         prop: "1",
         label: "姓名",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "2",
         label: "账号",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "3",
         label: "部门",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "4",
         label: "邀请人",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "5",
         label: "审核状态",
         sortable: true,
+                "min-width":150,
       },
       {
         prop: "6",
