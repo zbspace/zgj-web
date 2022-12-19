@@ -250,7 +250,9 @@ const state = reactive({
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             rankDisplayData: [{
                 name: "取消水印验证"
             },],
@@ -514,7 +516,9 @@ function tabChange(activeName) {
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             rankDisplayData: [{
                 name: "取消水印验证"
             },],
@@ -649,7 +653,9 @@ function tabChange(activeName) {
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             rankDisplayData: [{
                 name: "查看验证记录"
             },],

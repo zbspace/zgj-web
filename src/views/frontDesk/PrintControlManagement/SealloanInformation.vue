@@ -212,7 +212,9 @@ const state = reactive({
         },
         {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             width: 180,
             rankDisplayData: [
                 {

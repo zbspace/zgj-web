@@ -417,6 +417,7 @@ const state = reactive({
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "撤销"
@@ -715,6 +716,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "撤销"
@@ -871,6 +873,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "流程终止"
@@ -1024,6 +1027,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "流程终止"
@@ -1183,6 +1187,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "复核"
@@ -1341,6 +1346,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "流程终止"
@@ -1502,6 +1508,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "复核"
@@ -1660,6 +1667,7 @@ function tabChange(activeName) {
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "去送审"

@@ -182,36 +182,37 @@ const state = reactive({
             prop: '1',
             label: "单据名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "发起类型",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "单据申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "单据申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "发起确认时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "当前盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         },
         {
             prop: 'caozuo',
             label: "操作",
+            fixed: "right",
             rankDisplayData: [
                 {
                     name: "处理"
@@ -429,36 +430,37 @@ function tabChange(activeName) {
             prop: '1',
             label: "单据名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "发起类型",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "单据申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "单据申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "发起确认时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "当前盖章次数",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         },
         {
             prop: 'caozuo',
             label: "操作",
+            fixed: "right",
             rankDisplayData: [
                 {
                     name: "处理"
@@ -527,38 +529,38 @@ function tabChange(activeName) {
             prop: '1',
             label: "单据名称",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "发起类型",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "单据申请人",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "单据申请部门",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "发起确认时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "确认时间",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         },
         {
             prop: '7',
             label: "确认状态",
             sortable: true,
-                "min-width":150,
+            "min-width": 150,
         },
         ]
         state.componentsTable.data = [

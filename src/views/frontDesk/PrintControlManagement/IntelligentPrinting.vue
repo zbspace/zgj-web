@@ -233,7 +233,9 @@ const state = reactive({
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             width: 180,
             rankDisplayData: [{
                 name: "申请转办"
@@ -511,7 +513,9 @@ function tabChange(activeName) {
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             width: 180,
             rankDisplayData: [{
                 name: "申请转办"
@@ -640,7 +644,9 @@ function tabChange(activeName) {
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             width: 180,
             rankDisplayData: [{
                 name: "结束用印"
@@ -769,7 +775,9 @@ function tabChange(activeName) {
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             width: 180,
             rankDisplayData: [
                 {

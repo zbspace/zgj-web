@@ -200,6 +200,7 @@ const state = reactive({
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "修改"

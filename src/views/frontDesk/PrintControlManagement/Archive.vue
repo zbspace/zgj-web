@@ -209,7 +209,9 @@ const state = reactive({
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             rankDisplayData: [{
                 name: "文件归档"
             },],
@@ -461,7 +463,9 @@ function tabChange(activeName) {
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             rankDisplayData: [{
                 name: "文件归档"
             },],
@@ -569,7 +573,9 @@ function tabChange(activeName) {
                 "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             rankDisplayData: [
                 {
                     name: "补传"
