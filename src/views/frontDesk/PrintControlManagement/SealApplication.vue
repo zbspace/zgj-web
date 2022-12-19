@@ -30,12 +30,13 @@
                 <div class="batch">
                     <el-button @click="(showDialog = true)">弹框Demo</el-button>
                     <el-button @click="(showDepPerDialog = true)">组织选择</el-button>
-                    <el-button @click="goInnerPage">二级页面</el-button>
+                    <el-button @click="goInnerPage('/frontDesk/innerPage')">二级页面</el-button>
                     <el-button :plain="true" @click="open2">成功消息</el-button>
                     <el-button :plain="true" @click="open3">询问消息</el-button>
                     <el-button :plain="true" @click="open4">异常消息</el-button>
                     <el-button :plain="true" @click="openMess">信息弹窗</el-button>
-                    <el-button @click="showFormDialog = true">新增（用印申请）</el-button>
+                    <el-button @click="goInnerPage('/frontDesk/InnerPageApplication')">新增（用印申请）</el-button>
+                    <!-- showFormDialog = true -->
                 </div>
             </template>
             <template #table>
@@ -114,9 +115,9 @@ const submitForm = (type) => {
   })
 }
 
-const goInnerPage = () => {
+const goInnerPage = (path) => {
   router.push({
-    path: '/frontDesk/innerPage'
+    path: path
   })
 }
 

@@ -28,6 +28,13 @@ export default [
           import("../views/frontDesk/PrintControlManagement/InnerPage.vue")
       },
       {
+        path: "InnerPageApplication",
+        name: "InnerPageApplication",
+        meta: { title: "用印申请", authRequired: true },
+        component: () =>
+          import("../views/frontDesk/PrintControlManagement/InnerPageApplication.vue")
+      },
+      {
         path: "home",
         name: "frontDesk-home",
         meta: { title: "frontDesk-home", authRequired: true },
