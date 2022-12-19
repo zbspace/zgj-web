@@ -95,7 +95,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "盖章码/申请人员/文件名称",
                 },
             },
             {
@@ -114,22 +114,60 @@ const state = reactive({
                 }
             },
             {
-                id: 'select',
-                label: "用印文件类型",
-                type: "select",
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
+            },
+            {
+                id: 'picker',
+                label: "申请时间",
+                type: "picker",
+                inCommonUse: true,
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    type: "daterange",
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
+                },
+                style: {
+
+                }
             },
             {
                 id: 'shenqingr',
                 label: "用印状态",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                type: "radioButton",
+                data: [
+                    {
+                        name: "审批已完成",
+                    },
+                    {
+                        name: "智能用印中",
+                    },
+                    {
+                        name: "待上传文件归档",
+                    },
+                    {
+                        name: "已完成",
+                    }
+                ]
+            },
+            {
+                id: 'shenqingr',
+                label: "用印模式",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "智能用印",
+                    },
+                    {
+                        name: "远程盖章",
+                    },
+                ]
             },
         ],
         butData: [{
