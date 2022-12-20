@@ -104,7 +104,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "文件名称/申请人/报警信息",
                 },
             },
             {
@@ -123,22 +123,45 @@ const state = reactive({
                 }
             },
             {
-                id: 'select',
-                label: "印章类型",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                id: 'shenqingr',
+                label: "报警类型",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "非法使用",
+                    },
+                    {
+                        name: "移动侦测",
+                    },
+                    {
+                        name: "用印异常",
+                    },
+                    {
+                        name: "盖章时间超时",
+                    },
+                    {
+                        name: "印章超时未使用",
+                    },
+                    {
+                        name: "审批通过未用印",
+                    },
+                    {
+                        name: "异常结束",
+                    }
+                ]
             },
             {
                 id: 'shenqingr',
-                label: "保管人",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                label: "处理状态",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "未处理",
+                    },
+                    {
+                        name: "已处理",
+                    }
+                ]
             },
         ],
         butData: [{
@@ -190,58 +213,58 @@ const state = reactive({
                 prop: '1',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "印章类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "保管人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "保管部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "告警风险项",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '6',
                 label: "告警内容",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '7',
                 label: "操作人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '8',
                 label: "操作地点",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '9',
                 label: "操作时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '10',
                 label: "处理状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "处理"

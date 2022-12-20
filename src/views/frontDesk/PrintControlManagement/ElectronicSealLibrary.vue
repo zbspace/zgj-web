@@ -104,7 +104,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "印章名称",
                 },
             },
             {
@@ -121,15 +121,6 @@ const state = reactive({
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "印膜",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{

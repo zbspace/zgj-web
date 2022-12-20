@@ -44,8 +44,7 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
                     </componentsTable>
                 </div>
             </template>
@@ -105,7 +104,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "流程主题/申请人/抄送人",
                 },
             },
             {
@@ -124,21 +123,62 @@ const state = reactive({
                 }
             },
             {
-                id: 'select',
+                id: 'wjlx',
                 label: "流程类型",
                 type: "select",
+                options: [
+                    {
+                        label: "用印申请",
+                        value: "1",
+                    },
+                    {
+                        label: "刻章申请",
+                        value: "2",
+                    },
+                    {
+                        label: "销毁申请",
+                        value: "3",
+                    },
+                    {
+                        label: "停用申请",
+                        value: "4",
+                    },
+                    {
+                        label: "变更申请",
+                        value: "5",
+                    },
+                    {
+                        label: "启用申请",
+                        value: "6",
+                    },
+
+                ]
+            },
+            {
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
             },
             {
-                id: 'shenqingr',
-                label: "所属部门",
-                type: "input",
+                id: 'derivable',
+                label: "往来单位",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+往来单位",
+                },
+            },
+            {
+                id: 'derivable',
+                label: "选择印章",
+                type: "derivable",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "+选择印章",
                 },
             },
         ],
@@ -187,42 +227,42 @@ const state = reactive({
                 prop: '1',
                 label: "流程主题",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "流程类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "所属部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "申请人员",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '6',
                 label: "抄送人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '7',
                 label: "抄送时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '8',
                 label: "审批状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
         ],
         data: [
