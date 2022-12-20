@@ -91,7 +91,6 @@ import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'
 import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
 import StampChangeJson from '@/views/addDynamicFormJson/StampChange.json'
-
 import KDialog from "@/views/components/modules/kdialog.vue"
 const props = defineProps({
     // 处理类型
