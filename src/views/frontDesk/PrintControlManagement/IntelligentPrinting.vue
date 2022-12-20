@@ -234,15 +234,14 @@ const state = reactive({
             prop: 'caozuo',
             label: "操作",
             fixed: "right",
-            "min-width": 150,
-            width: 180,
+            "min-width": 300,
             rankDisplayData: [{
                 name: "申请转办"
             }, {
                 name: "申请重置"
-            },{
+            }, {
                 name: "撤销转办"
-            },{
+            }, {
                 name: "撤销重置"
             },],
         }],
@@ -517,8 +516,7 @@ function tabChange(activeName) {
             prop: 'caozuo',
             label: "操作",
             fixed: "right",
-            "min-width": 150,
-            width: 180,
+            "min-width": 300,
             rankDisplayData: [{
                 name: "申请转办"
             }, {
@@ -647,8 +645,7 @@ function tabChange(activeName) {
             prop: 'caozuo',
             label: "操作",
             fixed: "right",
-            "min-width": 150,
-            width: 180,
+            "min-width": 250,
             rankDisplayData: [{
                 name: "结束用印"
             }, {
@@ -777,8 +774,7 @@ function tabChange(activeName) {
             prop: 'caozuo',
             label: "操作",
             fixed: "right",
-            "min-width": 150,
-            width: 180,
+            "min-width": 300,
             rankDisplayData: [
                 {
                     name: "申请重置"
@@ -853,7 +849,8 @@ function tabChange(activeName) {
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-
+    // 切换分页
+    tabChange("1");
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)
