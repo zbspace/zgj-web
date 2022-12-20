@@ -135,7 +135,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "设备串号/使用地点/工作台编码",
                 },
             },
             {
@@ -152,24 +152,6 @@ const state = reactive({
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "智能印章柜名称",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "智能印章柜编码",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -457,7 +439,7 @@ const state = reactive({
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event);
+    // console.log(row, column, cell, event);
     if (column.property == "3") {
         state.componentsDocumentsDetails.show = true;
     }
