@@ -6,7 +6,7 @@
                 <div class="title">
                     <div>印章类型</div>
                     <div>
-                        <el-button type="primary">+ 增加</el-button>
+                        <el-button type="primary" @click="clickEditor('新增')">+ 增加</el-button>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
@@ -36,7 +36,7 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -46,10 +46,18 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
+        <!-- 动态表单 - 印章类型新增/修改 -->
+        <KDialog @update:show="fromState.showDialog = $event" :show="fromState.showDialog" :title="fromState.title"
+            :centerBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"
+            :width="1000" :height="600" @close="submitLibraryForm" :key="fromState.title">
+            <v-form-render :form-json="fromState.formJson" :form-data="fromState.formJson"
+                :option-data="fromState.optionData" :ref="fromState.vFormLibraryRef">
+            </v-form-render>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -58,6 +66,9 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
+import KDialog from "@/views/components/modules/kdialog.vue"
+import { ElMessage, ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -65,6 +76,17 @@ const props = defineProps({
         default: "0",
     },
 })
+
+// 印章类型 新增弹框
+const fromState = reactive({
+    title: '',
+    formJson: StampTypeApplicationJson,//动态表单内容
+    optionData: null,
+    vFormLibraryRef: "vFormLibraryRef",
+    showDialog: false,
+})
+const vFormLibraryRef = ref(null)
+
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
@@ -212,68 +234,50 @@ const state = reactive({
             }],
         data: [
             {
-                1: '',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '',
+                1: '2022122023212245645',
+                2: '1',
+                3: '公章',
+                4: '是',
+                5: '否',
+                6: '邱伟',
+                7: '2022-12-20',
             },
             {
-                1: '',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '',
+                1: '2022122023212245645',
+                2: '1',
+                3: '公章',
+                4: '是',
+                5: '否',
+                6: '邱伟',
+                7: '2022-12-20',
             },
             {
-                1: '',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '',
+                1: '2022122023212245645',
+                2: '1',
+                3: '公章',
+                4: '是',
+                5: '否',
+                6: '邱伟',
+                7: '2022-12-20',
             },
             {
-                1: '',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '',
+                1: '2022122023212245645',
+                2: '1',
+                3: '公章',
+                4: '是',
+                5: '否',
+                6: '邱伟',
+                7: '2022-12-20',
             },
             {
-                1: '',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '',
-            },
-            {
-                1: '',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '',
-            },
-            {
-                1: '',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: '',
-                7: '',
-            },
+                1: '2022122023212245645',
+                2: '1',
+                3: '公章',
+                4: '是',
+                5: '否',
+                6: '邱伟',
+                7: '2022-12-20',
+            }
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
@@ -379,7 +383,29 @@ const state = reactive({
         }
     }
 });
+function clickEditor(editor){
+    fromState.title = editor;
+    fromState.showDialog = true;
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '修改') {
+        clickEditor(cell.name);
+    }
+    if (cell.name == '删除') {
+        ElMessageBox.confirm(
+            '请问确定要删除吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
 
+            })
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 
