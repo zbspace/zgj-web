@@ -18,9 +18,21 @@
                             @click="customClick(scope.$index, scope.row, data)">
                             <span>{{ data.name }}</span>
                         </div>
-                        <img class="rankDisplayData-node" src="../../assets/svg/sangedian.svg" alt=""
-                            v-if="item.rankDisplayData.length > 3"
-                            @click="customClick(scope.$index, scope.row, { type: 'more' })">
+                        <div class="rankDisplayData-more" v-if="item.rankDisplayData.length > 3">
+                            <el-dropdown>
+                                <span class="el-dropdown-link">
+                                    <img class="rankDisplayData-node" src="../../assets/svg/sangedian.svg" alt="">
+                                </span>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item v-for="(data, num) in item.rankDisplayData.slice(3)"
+                                            @click="customClick(scope.$index, scope.row, data)">
+                                            {{ data.name }}
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </div>
                     </div>
                 </template>
             </el-table-column>
@@ -112,6 +124,12 @@ onMounted(() => {
         .rankDisplayData-node {
             cursor: pointer;
             margin-right: 0.5rem;
+        }
+
+        .rankDisplayData-more {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 
