@@ -22,7 +22,8 @@
             <template #searchForm>
                 <div>
                     <componentsSearchForm :data="state.componentsSearchForm.data"
-                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style"
+                        :defaultAttribute="state.componentsSearchForm.defaultAttribute">
                     </componentsSearchForm>
                 </div>
             </template>
@@ -148,6 +149,12 @@ const state = reactive({
 
             }
         },],
+        // 默认属性
+        defaultAttribute: {
+            isUnfold: false,
+            "scrollbar-max-height": "auto",
+            "border-bottom": false,
+        },
     },
     componentsSealList: {
         curIndex: 0,

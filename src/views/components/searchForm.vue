@@ -1,7 +1,8 @@
 <template>
     <div class="components-searchForm">
-        <div class="ap-dis">
-            <el-scrollbar :max-height="props.defaultAttribute['scrollbar-max-height']" class="fromData-scrollbar">
+        <div class="ap-dis"
+            :class="{ 'border-bottom': state.props.defaultAttribute['border-bottom'] === false ? false : true }">
+            <el-scrollbar :max-height="state.props.defaultAttribute['scrollbar-max-height']" class="fromData-scrollbar">
                 <div class="fromData">
                     <div class="ap-box" v-for="(item, index) in state.cache.formData"
                         :style="[props.style.lineStyle, item.style, computed_fill(item, index)]"
@@ -165,7 +166,7 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, computed } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, computed, watch } from "vue"
 const props = defineProps({
     //标识
     refs: {
@@ -212,12 +213,21 @@ const props = defineProps({
         default: {
             isUnfold: false,
             "scrollbar-max-height": "auto",
+            "border-bottom": true,
         }
     },
 })
 // console.log(props.defaultAttribute['scrollbar-max-height']);
 const emit = defineEmits(['getCurrentValue', 'getCurrentValueAll', 'clickElement']);
 const state = reactive({
+    props: {
+        // 默认属性
+        defaultAttribute: {
+            isUnfold: false,
+            "scrollbar-max-height": "auto",
+            "border-bottom": true,
+        },
+    },
     cache: {
         //分割线样式
         cutOffRuleStyle: {
@@ -259,6 +269,15 @@ const computed_fill = computed(() => {
         }
     }
 })
+//初始化Props数据
+function initPropsData() {
+    if (props.defaultAttribute) {
+        for (const key in props.defaultAttribute) {
+            state.props.defaultAttribute[key] = props.defaultAttribute[key];
+        }
+    }
+    // console.log(props.defaultAttribute, state.props.defaultAttribute);
+}
 //初始化表单单数据
 function initFormData() {
     let showUnfold = false;
@@ -312,8 +331,16 @@ function clickCutUnfoldstatus() {
     // 设置表单显示数据
     setFormData()
 }
+
+watch(props, (newValue, oldValue) => {
+    // console.log(newValue, oldValue);
+    //初始化Props数据
+    initPropsData();
+})
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    //初始化Props数据
+    initPropsData();
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -328,7 +355,6 @@ onMounted(() => {
         display: flex;
         flex-flow: wrap;
         box-sizing: border-box;
-        border-bottom: 1px solid var(--color-border-2);
     }
 
     .lineShow {
@@ -440,6 +466,10 @@ onMounted(() => {
 
     .width-0 {
         width: 0% !important;
+    }
+
+    .border-bottom {
+        border-bottom: 1px solid var(--color-border-2);
     }
 
     .custom-button {
