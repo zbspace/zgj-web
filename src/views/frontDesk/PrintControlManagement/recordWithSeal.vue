@@ -28,14 +28,15 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <el-button :disabled="state.componentsTable.selectionData.length == 0"
+                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick" @custom-click="customClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -64,7 +65,7 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 // import { ConsoleWriter } from "istanbul-lib-report";
 const props = defineProps({
     // 处理类型
@@ -375,51 +376,51 @@ const state = reactive({
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "审批状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "撤销"
@@ -526,7 +527,8 @@ const state = reactive({
                     }
                 }
             },
-        }
+        },
+        selectionData: [],
     },
     componentsTree: {
         data: [
@@ -643,7 +645,14 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -664,7 +673,7 @@ function customClick(row, column, cell, event) {
             }
         )
             .then(() => {
-                
+
             })
     }
     if (cell.name == '作废') {
@@ -677,7 +686,7 @@ function customClick(row, column, cell, event) {
             }
         )
             .then(() => {
-                
+
             })
     }
 }
@@ -703,51 +712,51 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "审批状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "撤销"
@@ -854,57 +863,57 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "审批状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '8',
                 label: "用印状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":250,
+                fixed: "right",
+                "min-width": 250,
                 rankDisplayData: [
                     {
                         name: "流程终止"
@@ -1014,51 +1023,51 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '8',
                 label: "用印状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":250,
+                fixed: "right",
+                "min-width": 250,
                 rankDisplayData: [
                     {
                         name: "流程终止"
@@ -1168,57 +1177,57 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '8',
                 label: "用印状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '9',
                 label: "用印情况",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "复核"
@@ -1327,57 +1336,57 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '8',
                 label: "用印状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '9',
                 label: "用印情况",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":200,
+                fixed: "right",
+                "min-width": 200,
                 rankDisplayData: [
                     {
                         name: "流程终止"
@@ -1489,57 +1498,57 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '8',
                 label: "用印状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '9',
                 label: "用印情况",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "复核"
@@ -1634,7 +1643,7 @@ function tabChange(activeName) {
                 8: "",
             },
         ];
-    }  else if (activeName == "8") {
+    } else if (activeName == "8") {
         state.componentsTable.header = [
             {
                 width: 50,
@@ -1648,57 +1657,57 @@ function tabChange(activeName) {
                 prop: '1',
                 label: "单据编号",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '8',
                 label: "审批状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '9',
                 label: "用印状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "去送审"
@@ -1794,7 +1803,13 @@ function tabChange(activeName) {
                 8: "",
             },
         ];
-    } 
+    }
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsTable.selectionData = selection;
 }
 
 onBeforeMount(() => {
