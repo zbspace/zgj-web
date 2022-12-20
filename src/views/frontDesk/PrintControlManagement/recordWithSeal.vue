@@ -28,7 +28,7 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button :disabled="state.componentsTable.selectionData.length == 0"
+                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
                         v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
                 </div>
             </template>
@@ -528,7 +528,6 @@ const state = reactive({
                 }
             },
         },
-        selectionData: [],
     },
     componentsTree: {
         data: [
@@ -647,6 +646,7 @@ const state = reactive({
         ],
     },
     componentsBatch: {
+        selectionData: [],
         data: [
             {
                 name: "批量操作"
@@ -1809,7 +1809,7 @@ function tabChange(activeName) {
 //当选择项发生变化时会触发该事件
 function selectionChange(selection) {
     //    console.log(selection);
-    state.componentsTable.selectionData = selection;
+    state.componentsBatch.selectionData = selection;
 }
 
 onBeforeMount(() => {

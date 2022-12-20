@@ -30,13 +30,15 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header"
+                        @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -421,7 +423,15 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
+    },
 });
 
 // 切换分页
@@ -667,6 +677,12 @@ function tabChange(activeName) {
             },
         ];
     }
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
 }
 
 onBeforeMount(() => {
