@@ -53,6 +53,13 @@ export default [
           ),
       },
       {
+        path: "transferApplication",
+        name: "transferApplication",
+        meta: { title: "转办申请", authRequired: true },
+        component: () =>
+          import("../views/frontDesk/PrintControlManagement/transferApplication.vue"),
+      },
+      {
         path: "PrintControlManagement/Archive",
         name: "PrintControlManagement-Archive",
         meta: {

@@ -93,6 +93,7 @@ const props = defineProps({
         default: "0",
     },
 })
+const router = useRouter()
 const showDialog = ref(false)
 const showDepPerDialog = ref(false)
 
@@ -119,9 +120,9 @@ const submitForm = (type) => {
     })
 }
 
-const goInnerPage = () => {
+const goInnerPage = (path) => {
   router.push({
-    path: '/frontDesk/innerPage'
+    path: path
   })
 }
 

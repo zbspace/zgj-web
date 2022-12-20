@@ -35,7 +35,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -61,6 +61,8 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -443,6 +445,11 @@ const state = reactive({
         ],
     }
 });
+const goInnerPage = (path) => {
+  router.push({
+    path: path
+  })
+}
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -453,6 +460,27 @@ function cellClick(row, column, cell, event) {
 //点击关闭详情
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    console.log(cell);
+    if (cell.name === '申请转办') {
+        goInnerPage('/frontDesk/transferApplication')
+    }
+    if (cell.name == '查看历史记录') {
+        ElMessageBox.confirm(
+            '请问确定要催办吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
 }
 
 // 切换分页
