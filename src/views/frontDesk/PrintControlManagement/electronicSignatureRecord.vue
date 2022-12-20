@@ -37,7 +37,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -66,6 +66,7 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { ElMessage,ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -1015,7 +1016,23 @@ function tabChange(activeName) {
         ];
     }
 }
-
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '作废') {
+        ElMessageBox.confirm(
+            '作废后当前记录将从当前表格中消失，请问确定要作废吗？',
+            '作废',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+                
+            })
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

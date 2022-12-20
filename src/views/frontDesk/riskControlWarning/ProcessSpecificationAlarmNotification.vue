@@ -44,7 +44,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick"
+                        @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -54,10 +55,24 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
+        <!-- 单据详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+            </componentsDocumentsDetails>
+        </div>
+        <!-- 动态表单 - 处理 -->
+        <KDialog @update:show="fromState.show = $event" :show="fromState.show" :title="fromState.title"
+            :centerBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"
+            :width="1000" :height="600" @close="submitLibraryForm" :key="fromState.title">
+            <v-form-render :form-json="fromState.formJson" :form-data="fromState.formJson"
+                :option-data="fromState.optionData" ref="vFormLibraryRef">
+            </v-form-render>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -66,6 +81,9 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import WarningOperateJson from '@/views/addDynamicFormJson/WarningOperate.json'
+import KDialog from "@/views/components/modules/kdialog.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -74,6 +92,28 @@ const props = defineProps({
     },
 })
 const emit = defineEmits([]);
+
+
+const fromState = reactive({
+    show:false,
+    title:'处理',
+    formJson:WarningOperateJson
+})
+const vFormLibraryRef = ref(null)
+
+const submitLibraryForm = (type) => {
+    if (!type) {
+        vFormLibraryRef.value.resetForm();
+        return
+    }
+    vFormLibraryRef.value.getFormData().then(formData => {
+        alert(JSON.stringify(formData))
+        fromState.showDialog = false
+    }).catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+    })
+}
 const state = reactive({
     componentsTabs: {
         data: [{
@@ -264,7 +304,7 @@ const state = reactive({
             }],
         data: [
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -274,7 +314,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称2',
                 2: '',
                 3: '往往',
                 4: '',
@@ -284,7 +324,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -294,7 +334,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -304,7 +344,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -314,7 +354,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -329,6 +369,15 @@ const state = reactive({
             stripe: true,
             "header-cell-style": {
                 background: "var(--color-fill--3)",
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (column.property == "1") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
             }
         }
     },
@@ -426,9 +475,46 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
+    },
+    componentsDocumentsDetails: {
+        show: false,
+        visible: [
+            {
+                label: '用印详情',
+                name: "Details-of-Printing",
+            },
+            {
+                label: '审批流程',
+                name: "approval-process",
+            },
+            {
+                label: '领用记录',
+                name: "Record-of-requisition",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+        ],
     }
 });
-
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+    // console.log(row, column, cell, event);
+    if (column.property == "1") {
+        state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击关闭详情
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '处理') {
+        fromState.show = true;
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

@@ -61,6 +61,7 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const props = defineProps({
@@ -467,6 +468,48 @@ function customClick(row, column, cell, event) {
     if (cell.name === '申请转办') {
         goInnerPage('/frontDesk/transferApplication')
     }
+    if (cell.name === '申请重置') {
+        goInnerPage('/frontDesk/transferApplication')
+    }
+    if (cell.name === '撤销转办') {
+        ElMessageBox.confirm(
+            '请问确定要撤销转办申请吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+    if (cell.name === '撤销重置') {
+        ElMessageBox.confirm(
+            '请问确定要撤销重置用印申请吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+    if (cell.name === '结束用印') {
+        ElMessageBox.confirm(
+            '请问确定要结束用印吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
     if (cell.name == '查看历史记录') {
         ElMessageBox.confirm(
             '请问确定要催办吗？',
@@ -549,7 +592,11 @@ function tabChange(activeName) {
                 name: "申请转办"
             }, {
                 name: "申请重置"
-            },],
+            },{
+                name: "撤销转办"
+            }, {
+                name: "撤销重置"
+            }],
         }]
         state.componentsTable.data = [
             {

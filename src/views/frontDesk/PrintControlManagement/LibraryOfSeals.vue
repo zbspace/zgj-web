@@ -68,6 +68,9 @@
                 ref="vFormLibraryRef">
             </v-form-render>
         </KDialog>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
     </div>
 </template>
 <script setup>
@@ -83,6 +86,7 @@ import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import LibraryJson from '@/views/addDynamicFormJson/LibraryOfSeals.json'
 import KDialog from "@/views/components/modules/kdialog.vue"
+import kDepartOrPersonVue from "@/views/components/modules/kDepartOrPerson.vue"
 import { ElMessage } from 'element-plus'
 const props = defineProps({
     // 处理类型
@@ -112,6 +116,8 @@ const submitLibraryForm = (type) => {
         ElMessage.error(error)
     })
 }
+const showDepPerDialog = ref(false)
+
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
@@ -560,7 +566,7 @@ function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
     if (column.property == "1") {
         state.componentsDocumentsDetails.show = true;
-    }
+    } 
 }
 //点击关闭详情
 function clickClose() {

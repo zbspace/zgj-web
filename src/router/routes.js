@@ -118,6 +118,13 @@ export default [
           ),
       },
       {
+        path: "SealloanInnerPage",
+        name: "SealloanInnerPage",
+        meta: { title: "查看历史记录", authRequired: true },
+        component: () =>
+          import("../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue")
+      },
+      {
         path: "PrintControlManagement",
         name: "PrintControlManagement-SealApplication",
         component: () =>

@@ -30,7 +30,7 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -40,10 +40,13 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -52,6 +55,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import kDepartOrPersonVue from "@/views/components/modules/kDepartOrPerson.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -60,6 +64,7 @@ const props = defineProps({
     },
 })
 const emit = defineEmits([]);
+const showDepPerDialog = ref(false)
 const state = reactive({
     componentsTabs: {
         data: [{
@@ -592,7 +597,12 @@ function tabChange(activeName) {
         ];
     }
 }
-
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if(cell.name === '设置提醒人'){
+        showDepPerDialog.value = true;
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

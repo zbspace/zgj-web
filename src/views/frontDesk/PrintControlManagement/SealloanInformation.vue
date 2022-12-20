@@ -71,6 +71,8 @@ import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'
 import SealLendingJson from '@/views/addDynamicFormJson/SealLending.json'
 import KDialog from "@/views/components/modules/kdialog.vue"
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -468,17 +470,9 @@ function customClick(row, column, cell, event) {
         fromState.formJson = SealLendingJson;
     }
     if (cell.name == '查看历史记录') {
-        ElMessageBox.confirm(
-            '请问确定要催办吗？',
-            {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning',
-            }
-        )
-            .then(() => {
-
-            })
+        router.push({
+            path:'/frontDesk/SealloanInnerPage'
+        })
     }
 }
 onBeforeMount(() => {

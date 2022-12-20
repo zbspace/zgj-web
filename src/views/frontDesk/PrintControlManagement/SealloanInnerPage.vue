@@ -3,8 +3,8 @@
       <!-- 面包屑 -->
       <div class="inner-crumbs">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item>智能用印</el-breadcrumb-item>
-          <el-breadcrumb-item>转办申请</el-breadcrumb-item>
+          <el-breadcrumb-item>印章外借信息</el-breadcrumb-item>
+          <el-breadcrumb-item>查看历史记录</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
   
@@ -18,7 +18,7 @@
               d="M0.313093 8.72017C-0.104364 8.32243 -0.104364 7.67757 0.313093 7.27983L7.11595 0.798304C7.5334 0.400565 8.21024 0.400565 8.62769 0.798304C9.04515 1.19604 9.04515 1.8409 8.62769 2.23864L3.64968 6.98153H18V9.01847H3.64968L8.62769 13.7614C9.04515 14.1591 9.04515 14.804 8.62769 15.2017C8.21024 15.5994 7.5334 15.5994 7.11595 15.2017L0.313093 8.72017Z"
               fill="black" fill-opacity="0.85" />
           </svg>
-          <div style="margin-left: 6px">智能用印</div>
+          <div style="margin-left: 6px">二级页面</div>
         </div>
         <div class="confirm btn">提交</div>
       </div>
@@ -26,11 +26,9 @@
       <!-- content -->
       <div class="inner-page-content">
   
-        <div class="l-title">基本信息</div>
-        <div class="base-info">
-            <div><span></span>代办人</div>
-        </div>
-        <div class="l-title">审批流程</div>
+        <div class="l-title">标题名称</div>
+  
+        <div class="l-title">标题名称</div>
       </div>
     </div>
   </template>

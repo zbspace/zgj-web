@@ -42,7 +42,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -58,10 +58,15 @@
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
             </componentsDocumentsDetails>
         </div>
+        <!-- 文件归档弹窗 -->
+        <KDialog @update:show="dialogData.show = $event" :show="dialogData.show" title="文件归档"
+            :oneBtn="false" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')">
+            <div>文件归档内容todo</div>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -71,6 +76,7 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import KDialog from "@/views/components/modules/kdialog.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -79,6 +85,25 @@ const props = defineProps({
     },
 })
 const emit = defineEmits([]);
+
+const dialogData = reactive({
+    show:false,
+    title:'文件归档',
+})
+const vFormLibraryRef = ref(null)
+// const submitLibraryForm = (type) => {
+//     if (!type) {
+//         vFormLibraryRef.value.resetForm();
+//         return
+//     }
+//     vFormLibraryRef.value.getFormData().then(formData => {
+//         alert(JSON.stringify(formData))
+//         fromState.showDialog = false
+//     }).catch(error => {
+//         // Form Validation failed
+//         ElMessage.error(error)
+//     })
+// }
 const state = reactive({
     componentsTabs: {
         data: [{
@@ -648,7 +673,13 @@ function tabChange(activeName) {
         ]
     }
 }
-
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    console.log(222)
+    if (cell.name === '文件归档') {
+        dialogData.show = true;
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

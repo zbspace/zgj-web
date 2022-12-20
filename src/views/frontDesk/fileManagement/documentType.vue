@@ -67,6 +67,9 @@
           <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
           </v-form-render>
         </KDialog>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
     </div>
 </template>
 <script setup>
@@ -82,6 +85,7 @@ import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import KDialog from "@/views/components/modules/kdialog.vue"
 import FormJson from '@/views/addDynamicFormJson/documentType.json'
+import kDepartOrPersonVue from "@/views/components/modules/kDepartOrPerson.vue"
 import { ElMessage,ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
@@ -90,7 +94,7 @@ const props = defineProps({
         default: "0",
     },
 })
-
+const showDepPerDialog = ref(false)
 const showFormDialog = ref(false)
 const formJson = reactive(FormJson)
 const formData = reactive({})
@@ -483,6 +487,12 @@ function customClick(row, column, cell, event) {
             .then(() => {
                 
             })
+    }
+    if(cell.name === '设置维护范围'){
+        showDepPerDialog.value = true;
+    }
+    if(cell.name === '设置可用范围'){
+        showDepPerDialog.value = true;
     }
 }
 onBeforeMount(() => {
