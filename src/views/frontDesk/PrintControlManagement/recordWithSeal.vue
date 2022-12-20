@@ -649,8 +649,14 @@ const state = reactive({
         selectionData: [],
         data: [
             {
-                name: "批量操作"
-            }
+                name: "批量作废"
+            },
+            {
+                name: "查看已作废的单据"
+            },
+            {
+                name: "导出台账"
+            },
         ]
     },
 });

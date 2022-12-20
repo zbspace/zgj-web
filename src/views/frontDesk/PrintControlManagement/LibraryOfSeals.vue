@@ -559,8 +559,26 @@ const state = reactive({
         selectionData: [],
         data: [
             {
-                name: "批量操作"
-            }
+                name: "批量设置可见范围"
+            },
+            {
+                name: "批量设置可用范围"
+            },
+            {
+                name: "批量删除"
+            },
+            {
+                name: "印章解绑"
+            },
+            {
+                name: "导入"
+            },
+            {
+                name: "导出台账"
+            },
+            {
+                name: "查看已删除的印章"
+            },
         ]
     },
 });

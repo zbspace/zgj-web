@@ -35,14 +35,15 @@
                 </template> -->
             <template #batch>
                 <div class="batch">
-
+                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick"  @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -406,7 +407,15 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量文件归档"
+            }
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -647,6 +656,12 @@ function tabChange(activeName) {
             },
         ]
     }
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
 }
 
 onBeforeMount(() => {
