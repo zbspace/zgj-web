@@ -240,6 +240,10 @@ const state = reactive({
                 name: "申请转办"
             }, {
                 name: "申请重置"
+            },{
+                name: "撤销转办"
+            },{
+                name: "撤销重置"
             },],
         }],
         data: [
