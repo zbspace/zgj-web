@@ -19,7 +19,7 @@
             </div>
             <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
             </div>
-            <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
+            <div class="ap-box-cent" :style="state.centStyle">
                 <a-scrollbar style="height:100%;overflow: auto;" class="ap-box-cent-scrollbar">
                     <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
                         <slot name="searchForm"></slot>
@@ -78,7 +78,7 @@ function initLayout() {
     if (!state.Layout.tree) {
         state.centStyle.width = "100%"
     }
-    // console.log(state.Layout);
+    console.log(state.Layout);
 };
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
