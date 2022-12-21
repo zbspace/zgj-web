@@ -33,8 +33,8 @@
                             </div>
                             <div class="ap-cont-liuc-buzou-text">填写表单信息</div>
                         </div>
-                        <div class="ap-cont-liuc-buzou-tubiao">
-                            <img class="ap-cont-liuc-buzou-tubiao-img"
+                        <div class="ap-cont-liuc-tubiao">
+                            <img class="ap-cont-liuc-tubiao-img"
                                 src="../../../../assets/svg/yongyin-shenqing-xiayibu.svg" alt="">
                         </div>
                         <div class="ap-cont-liuc-buzou">
@@ -44,8 +44,8 @@
                             </div>
                             <div class="ap-cont-liuc-buzou-text">确认审批流程</div>
                         </div>
-                        <div class="ap-cont-liuc-buzou-tubiao">
-                            <img class="ap-cont-liuc-buzou-tubiao-img"
+                        <div class="ap-cont-liuc-tubiao">
+                            <img class="ap-cont-liuc-tubiao-img"
                                 src="../../../../assets/svg/yongyin-shenqing-xiayibu.svg" alt="">
                         </div>
                         <div class="ap-cont-liuc-buzou">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="ap-cont-liebiao">
-                        <div class="ap-cont-liebiao-list">
+                        <div class="ap-cont-liebiao-list" v-for="n in 5" :key="n">
                             <div class="ap-cont-liebiao-list-back">
                                 <img class="ap-cont-liebiao-list-back-img"
                                     src="../../../../assets/svg/yongyin-shenqing-biaodan-back.svg" alt="">
@@ -109,5 +109,105 @@ onMounted(() => {
         justify-content: space-between;
     }
 
+    .custom {
+        padding-right: 1.25rem;
+        box-sizing: border-box;
+        text-align: center;
+
+        .ap-cont-info {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0.5rem;
+            box-sizing: border-box;
+            background-color: var(--Info-1);
+            border: 1px solid var(--Info-3);
+            border-radius: var(--border-radius-2);
+            position: relative;
+            margin-bottom: 1rem;
+
+            .ap-cont-info-icon {
+                margin-right: 0.5rem;
+            }
+
+            .ap-cont-info-caozuo {
+                position: absolute;
+                right: 0.5rem;
+                color: var(--Info-6);
+            }
+        }
+
+        .ap-cont-title {
+            display: flex;
+            justify-content: center;
+            font-size: var(--font-size-title-1);
+            font-weight: var(--font-weight-600);
+            margin-bottom: 1rem;
+        }
+
+        .ap-cont-desc {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: var(--color-text-2);
+        }
+
+        .ap-cont-liuc {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+
+            .ap-cont-liuc-buzou {
+                padding: 1rem;
+                box-sizing: border-box;
+
+                .ap-cont-liuc-buzou-icon {
+                    margin-bottom: 0.5rem;
+                }
+            }
+
+            .ap-cont-liuc-tubiao {
+                padding: 1rem;
+                box-sizing: border-box;
+            }
+        }
+
+        .ap-cont-liebiao {
+            display: flex;
+            flex-flow: wrap;
+
+            .ap-cont-liebiao-list {
+                width: 20rem;
+                margin: 0rem 1rem 1rem 0rem;
+                padding: 0.5rem;
+                box-sizing: border-box;
+                display: flex;
+                flex-flow: wrap;
+                justify-content: center;
+                border: 1px solid var(--color-border-1);
+                border-radius: var(--border-radius-4);
+                background-color: var(--color-fill--1);
+
+                .ap-cont-liebiao-list-back {
+                    width: 10rem;
+                    height: 10rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .ap-cont-liebiao-list-desc {
+                    width: 100%;
+                    margin-bottom: 0.5rem;
+                    color: var(--color-text-1);
+                }
+
+                .ap-cont-liebiao-list-but {
+                    margin-bottom: 0.5rem;
+                }
+            }
+        }
+    }
 }
 </style>

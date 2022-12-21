@@ -38,9 +38,6 @@
                     </div>
                 </a-scrollbar>
             </div>
-            <div>
-                <slot></slot>
-            </div>
         </div>
     </div>
 </template>
@@ -75,8 +72,10 @@ function initLayout() {
             state.Layout[item] = true;
         })
     };
-    if (!state.Layout.tree) {
-        state.centStyle.width = "100%"
+    if (state.Layout.tree) {
+        state.centStyle["padding-left"] = "1rem";
+    } else {
+        state.centStyle.width = "100%";
     }
     console.log(state.Layout);
 };
@@ -176,7 +175,6 @@ onMounted(() => {
         width: 85%;
         height: 100%;
         overflow: auto;
-        padding-left: 1em;
         box-sizing: border-box;
 
         .arco-scrollbar {
