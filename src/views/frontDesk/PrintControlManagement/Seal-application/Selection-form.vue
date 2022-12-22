@@ -66,7 +66,7 @@
                                 上海科创招投标建筑制材专属项目合同
                             </div>
                             <div class="ap-cont-liebiao-list-but">
-                                <el-button type="primary" @click="clickButList">去申请</el-button>
+                                <el-button type="primary" @click="clickListBut">去申请</el-button>
                             </div>
                         </div>
                     </div>
@@ -76,9 +76,8 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
-import { useRouter } from 'vue-router'
-import { number } from "yargs";
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, inject } from "vue"
+import { useRouter } from 'vue-router';
 import componentsLayout from "../../../components/Layout.vue"
 const props = defineProps({
     // 处理类型
@@ -88,23 +87,17 @@ const props = defineProps({
     },
 })
 const router = useRouter();
+const commonFun = inject("commonFun");
 const emit = defineEmits([]);
 const state = reactive({
 
 });
 
-//跳转页面
-function routerPage(path) {
-    if (typeof path === "number") {
-        router.go(path)
-    } else {
-        router.push(path);
-    }
-}
-
-// 点击按钮列表
-function clickButList(item) {
-    routerPage("/frontDesk/PrintControlManagement/Seal-application/fill-form")
+//点击列表按钮
+function clickListBut() {
+    commonFun.routerPage(router, {
+        path: "/frontDesk/PrintControlManagement/Seal-application/fill-form"
+    })
 }
 
 onBeforeMount(() => {

@@ -126,9 +126,7 @@ export default [
         name: "SealloanInnerPage",
         meta: { title: "查看历史记录", authRequired: true },
         component: () =>
-          import(
-            "../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue"
-          ),
+          import("../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue")
       },
       {
         path: "PrintControlManagement",

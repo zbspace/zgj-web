@@ -1,6 +1,6 @@
 class common {
   //跳转页面
-  routerPage(path) {
+  routerPage(router, path) {
     if (typeof path === "number") {
       router.go(path);
     } else {

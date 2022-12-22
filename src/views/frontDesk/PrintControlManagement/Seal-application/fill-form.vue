@@ -12,8 +12,9 @@
             </template>
             <template #title>
                 <div class="title">
-                    <div>
-                        <img src="../../../../assets/svg/jiantou-zuo.svg" alt="">
+                    <div class="title-desc">
+                        <img class="title-desc-img" src="../../../../assets/svg/jiantou-zuo.svg" alt=""
+                            @click="clickBackPage">
                         新建用印申请
                     </div>
                     <div>
@@ -87,7 +88,8 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, inject } from "vue"
+import { useRouter } from 'vue-router';
 import componentsLayout from "../../../components/Layout.vue"
 const props = defineProps({
     // 处理类型
@@ -96,11 +98,17 @@ const props = defineProps({
         default: "0",
     },
 })
-
+const router = useRouter();
+const commonFun = inject("commonFun");
 const emit = defineEmits([]);
 const state = reactive({
 
 });
+
+//点击返回上一页
+function clickBackPage() {
+    commonFun.routerPage(router, -1)
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -118,6 +126,13 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        .title-desc{
+            display: flex;
+            align-items: center;
+            .title-desc-img{
+                margin-right: 0.5rem;
+            }
+        }
     }
 
     .custom {
