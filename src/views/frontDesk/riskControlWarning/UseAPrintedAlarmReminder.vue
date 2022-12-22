@@ -28,10 +28,8 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
+                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
                 </div>
             </template>
             <template #tree>
@@ -45,7 +43,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick" @custom-click="customClick">
+                        @cellClick="cellClick" @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -496,7 +494,15 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -509,12 +515,22 @@ function cellClick(row, column, cell, event) {
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
+
 //点击表格按钮
 function customClick(row, column, cell, event) {
     if (cell.name === '处理') {
         fromState.show = true;
     }
 }
+
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

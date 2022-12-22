@@ -29,7 +29,8 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
                 </div>
             </template>
             <template #tree>
@@ -43,7 +44,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick" @custom-click="customClick">
+                        @cellClick="cellClick" @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -559,7 +560,33 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量设置可见范围"
+            },
+            {
+                name: "批量设置可用范围"
+            },
+            {
+                name: "批量删除"
+            },
+            {
+                name: "印章解绑"
+            },
+            {
+                name: "导入"
+            },
+            {
+                name: "导出台账"
+            },
+            {
+                name: "查看已删除的印章"
+            },
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -578,6 +605,13 @@ function customClick(row, column, cell, event) {
         showLibraryDialog.value = true;
     }
 }
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

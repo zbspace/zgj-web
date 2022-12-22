@@ -34,7 +34,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick"  @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -50,10 +50,25 @@
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
             </componentsDocumentsDetails>
         </div>
+        <!-- 处理弹窗 -->
+        <KDialog @update:show="dialogProcess.show = $event" :show="dialogProcess.show" :title="dialogProcess.title"
+            :oneBtn="false" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"
+            @close="submitLibraryForm">
+            <v-form-render :form-json="dialogProcess.formJson" :form-data="dialogProcess.formJson"
+                :option-data="dialogProcess.optionData" ref="vFormLibraryRef" :key="dialogProcess.title">
+            </v-form-render>
+            <div class="realTimeBtn">
+                <button>进入盖章</button>
+                <p>目前PC端不支持进入视频盖章，请至移动端操作</p>
+            </div>
+        </KDialog>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -63,6 +78,10 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import KDialog from "@/views/components/modules/kdialog.vue"
+import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
+import RealTimeConfirmlJson from '@/views/addDynamicFormJson/RealTimeConfirm.json'
+import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
 const props = defineProps({
     // 处理类型
     type: {
@@ -71,6 +90,29 @@ const props = defineProps({
     },
 })
 const emit = defineEmits([]);
+
+const showDepPerDialog = ref(false)
+const dialogProcess = reactive({
+    show: false,
+    title: '实时确认',
+    formJson: RealTimeConfirmlJson
+    
+})
+const vFormLibraryRef = ref(null)
+const submitLibraryForm = (type) => {
+    if (!type) {
+        vFormLibraryRef.value.resetForm();
+        return
+    }
+    vFormLibraryRef.value.getFormData().then(formData => {
+        alert(JSON.stringify(formData))
+        fromState.showDialog = false
+    }).catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+    })
+}
+
 const state = reactive({
     componentsTabs: {
         data: [{
@@ -398,6 +440,18 @@ function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
 
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    dialogProcess.show = true;
+    dialogProcess.title = cell.name;
+    if (cell.name === '处理') {
+        dialogProcess.formJson = RealTimeConfirmlJson;
+    }
+    if(cell.name === '审批'){
+        dialogProcess.formJson = ApprovalJson;
+    }
+}
+
 // 切换分页
 function tabChange(activeName) {
     // console.log(activeName);
@@ -616,6 +670,19 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+}
+.realTimeBtn{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    >button{
+        color:#fff;
+        background:#ccc;
+        border:none;
+        padding:10px;
+        border-radius:4px;
+        margin:10px;
     }
 }
 </style>
