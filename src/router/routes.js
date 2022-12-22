@@ -126,7 +126,9 @@ export default [
         name: "SealloanInnerPage",
         meta: { title: "查看历史记录", authRequired: true },
         component: () =>
-          import("../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue")
+          import(
+            "../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue"
+          ),
       },
       {
         path: "PrintControlManagement",
@@ -150,6 +152,15 @@ export default [
             component: () =>
               import(
                 "../views/frontDesk/PrintControlManagement/Seal-application/Selection-form.vue"
+              ),
+          },
+          {
+            path: "Seal-application/fill-form",
+            name: "fill-form",
+            meta: { title: "fill-form", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Seal-application/fill-form.vue"
               ),
           },
           {

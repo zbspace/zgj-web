@@ -1,10 +1,21 @@
 <!-- 用印申请 选中表单 -->
 <template>
-    <div class="Seal-application-Selection-form">
-        <componentsLayout Layout="title,custom">
+    <div class="Seal-application-fill-form">
+        <componentsLayout Layout="breadcrumb,title,custom">
+            <template #breadcrumb>
+                <div class="breadcrumb">
+                    <el-breadcrumb separator="/">
+                        <el-breadcrumb-item>用印申请 </el-breadcrumb-item>
+                        <el-breadcrumb-item>新建用印申请</el-breadcrumb-item>
+                    </el-breadcrumb>
+                </div>
+            </template>
             <template #title>
                 <div class="title">
-                    <div>用印申请</div>
+                    <div>
+                        <img src="../../../../assets/svg/jiantou-zuo.svg" alt="">
+                        新建用印申请
+                    </div>
                     <div>
 
                     </div>
@@ -66,7 +77,7 @@
                                 上海科创招投标建筑制材专属项目合同
                             </div>
                             <div class="ap-cont-liebiao-list-but">
-                                <el-button type="primary" @click="clickButList">去申请</el-button>
+                                <el-button type="primary">去申请</el-button>
                             </div>
                         </div>
                     </div>
@@ -77,8 +88,6 @@
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
-import { useRouter } from 'vue-router'
-import { number } from "yargs";
 import componentsLayout from "../../../components/Layout.vue"
 const props = defineProps({
     // 处理类型
@@ -87,25 +96,11 @@ const props = defineProps({
         default: "0",
     },
 })
-const router = useRouter();
+
 const emit = defineEmits([]);
 const state = reactive({
 
 });
-
-//跳转页面
-function routerPage(path) {
-    if (typeof path === "number") {
-        router.go(path)
-    } else {
-        router.push(path);
-    }
-}
-
-// 点击按钮列表
-function clickButList(item) {
-    routerPage("/frontDesk/PrintControlManagement/Seal-application/fill-form")
-}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -116,7 +111,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.Seal-application-Selection-form {
+.Seal-application-fill-form {
     margin: 0%;
 
     .title {

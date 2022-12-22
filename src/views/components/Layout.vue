@@ -1,10 +1,10 @@
 <template>
     <div class="components-Layout Custom-button">
-        <div class="ap-box-title" v-if="state.Layout.title">
-            <slot name="title"></slot>
-        </div>
         <div class="ap-box-breadcrumb" v-if="state.Layout.breadcrumb">
             <slot name="breadcrumb"></slot>
+        </div>
+        <div class="ap-box-title" v-if="state.Layout.title">
+            <slot name="title"></slot>
         </div>
         <div class="ap-box-tabs" v-if="state.Layout.tabs">
             <slot name="tabs"></slot>
@@ -122,6 +122,7 @@ onMounted(() => {
         width: 100%;
         @include mixin-padding-right(20);
         box-sizing: border-box;
+        padding-top: 1rem;
     }
 
     .ap-box-tabs {
