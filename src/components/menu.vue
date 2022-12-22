@@ -1286,6 +1286,10 @@ export default {
               to: "/frontDesk/PrintControlManagement/SealApplication",
               label: "t-zgj-cg-menu-yongyin-shenqing",
             }, {
+              name: "用印申请",
+              to: "/frontDesk/PrintControlManagement/Seal-application/Selection-form",
+              label: "t-zgj-cg-menu-yongyin-shenqing",
+            }, {
               name: "智能用印",
               to: "/frontDesk/PrintControlManagement/IntelligentPrinting",
               label: "t-zgj-cg-menu-zhineng-yongyin",

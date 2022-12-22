@@ -32,7 +32,9 @@ export default [
         name: "InnerPageApplication",
         meta: { title: "用印申请", authRequired: true },
         component: () =>
-          import("../views/frontDesk/PrintControlManagement/InnerPageApplication.vue")
+          import(
+            "../views/frontDesk/PrintControlManagement/InnerPageApplication.vue"
+          ),
       },
       {
         path: "home",
@@ -57,7 +59,9 @@ export default [
         name: "transferApplication",
         meta: { title: "转办申请", authRequired: true },
         component: () =>
-          import("../views/frontDesk/PrintControlManagement/transferApplication.vue"),
+          import(
+            "../views/frontDesk/PrintControlManagement/transferApplication.vue"
+          ),
       },
       {
         path: "PrintControlManagement/Archive",
@@ -137,14 +141,23 @@ export default [
             component: () =>
               import(
                 "../views/frontDesk/PrintControlManagement/SealApplication.vue"
-              )
+              ),
+          },
+          {
+            path: "Seal-application/Selection-form",
+            name: "Selection-form",
+            meta: { title: "Selection-form", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Seal-application/Selection-form.vue"
+              ),
           },
           {
             path: "innerPage",
             name: "innerPage",
             meta: { title: "二级页面", authRequired: true },
             component: () =>
-              import("../views/frontDesk/PrintControlManagement/innerPage.vue")
+              import("../views/frontDesk/PrintControlManagement/innerPage.vue"),
           },
           {
             path: "innerTablePage",
@@ -153,9 +166,9 @@ export default [
             component: () =>
               import(
                 "../views/frontDesk/PrintControlManagement/InnerTablePage.vue"
-              )
-          }
-        ]
+              ),
+          },
+        ],
       },
       {
         path: "PrintControlManagement/recordWithSeal",

@@ -19,7 +19,7 @@
             </div>
             <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
             </div>
-            <div class="ap-box-cent" :style="state.centStyle" v-if="state.Layout.searchForm || state.Layout.table">
+            <div class="ap-box-cent" :style="state.centStyle">
                 <a-scrollbar style="height:100%;overflow: auto;" class="ap-box-cent-scrollbar">
                     <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
                         <slot name="searchForm"></slot>
@@ -37,9 +37,6 @@
                         <slot name="custom"></slot>
                     </div>
                 </a-scrollbar>
-            </div>
-            <div>
-                <slot></slot>
             </div>
         </div>
     </div>
@@ -75,10 +72,12 @@ function initLayout() {
             state.Layout[item] = true;
         })
     };
-    if (!state.Layout.tree) {
-        state.centStyle.width = "100%"
+    if (state.Layout.tree) {
+        state.centStyle["padding-left"] = "1rem";
+    } else {
+        state.centStyle.width = "100%";
     }
-    // console.log(state.Layout);
+    console.log(state.Layout);
 };
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -176,7 +175,6 @@ onMounted(() => {
         width: 85%;
         height: 100%;
         overflow: auto;
-        padding-left: 1em;
         box-sizing: border-box;
 
         .arco-scrollbar {
