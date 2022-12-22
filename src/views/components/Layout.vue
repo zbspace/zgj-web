@@ -39,6 +39,9 @@
                 </a-scrollbar>
             </div>
         </div>
+        <div class="ap-box-unexpected" v-if="state.Layout.unexpected">
+            <slot name="unexpected"></slot>
+        </div>
     </div>
 </template>
 <script setup>
@@ -77,7 +80,7 @@ function initLayout() {
     } else {
         state.centStyle.width = "100%";
     }
-    console.log(state.Layout);
+    // console.log(state.Layout);
 };
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -108,6 +111,7 @@ onMounted(() => {
     border-radius: var(--border-radius-4);
     background-color: var(--in-common-use-1);
     margin-top: 24px;
+    position: relative;
 
     .ap-box-title {
         width: 100%;
@@ -198,6 +202,9 @@ onMounted(() => {
         box-sizing: border-box;
     }
 
+    .ap-box-unexpected {
+        width: 100%;
+    }
 
 }
 </style>

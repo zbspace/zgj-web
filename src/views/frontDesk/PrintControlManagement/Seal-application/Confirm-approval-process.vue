@@ -1,6 +1,6 @@
 <!-- 用印申请 选中表单 -->
 <template>
-    <div class="Seal-application-fill-form">
+    <div class="Seal-application-Confirm-approval-process">
         <componentsLayout Layout="breadcrumb,title,custom,unexpected">
             <template #breadcrumb>
                 <div class="breadcrumb">
@@ -143,7 +143,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.Seal-application-fill-form {
+.Seal-application-Confirm-approval-process {
     margin: 0%;
     position: relative;
 
