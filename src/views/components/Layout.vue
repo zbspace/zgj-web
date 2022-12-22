@@ -39,8 +39,8 @@
                 </a-scrollbar>
             </div>
         </div>
-        <div class="ap-box-unexpected" v-if="state.Layout.unexpected">
-            <slot name="unexpected"></slot>
+        <div class="ap-box-fixed" v-if="state.Layout.fixed">
+            <slot name="fixed"></slot>
         </div>
     </div>
 </template>
@@ -202,8 +202,9 @@ onMounted(() => {
         box-sizing: border-box;
     }
 
-    .ap-box-unexpected {
+    .ap-box-fixed {
         width: 100%;
+        margin-left: -1.25rem;
     }
 
 }

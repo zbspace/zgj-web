@@ -1,7 +1,7 @@
 <!-- 用印申请 选中表单 -->
 <template>
     <div class="Seal-application-fill-form">
-        <componentsLayout Layout="breadcrumb,title,custom,unexpected">
+        <componentsLayout Layout="breadcrumb,title,custom,fixed">
             <template #breadcrumb>
                 <div class="breadcrumb">
                     <el-breadcrumb separator="/">
@@ -68,11 +68,59 @@
                         </documentsDetailsPortion>
 
                     </div>
+                    <div>
+                        <documentsDetailsPortion>
+                            <template #title>
+                                <div>用印信息</div>
+                            </template>
+                            <template #content>
+                                <div>
+                                    <v-form-render :form-json="FillFormInformationSeal"
+                                        :form-data="state.cache.SealformData" :option-data="state.cache.SealoptionData"
+                                        ref="refFillFormInformation">
+                                    </v-form-render>
+                                </div>
+                            </template>
+                        </documentsDetailsPortion>
+
+                    </div>
+                    <div>
+                        <documentsDetailsPortion>
+                            <template #title>
+                                <div>用印信息</div>
+                            </template>
+                            <template #content>
+                                <div>
+                                    <v-form-render :form-json="FillFormInformationSeal"
+                                        :form-data="state.cache.SealformData" :option-data="state.cache.SealoptionData"
+                                        ref="refFillFormInformation">
+                                    </v-form-render>
+                                </div>
+                            </template>
+                        </documentsDetailsPortion>
+
+                    </div>
+                    <div>
+                        <documentsDetailsPortion>
+                            <template #title>
+                                <div>用印信息</div>
+                            </template>
+                            <template #content>
+                                <div>
+                                    <v-form-render :form-json="FillFormInformationSeal"
+                                        :form-data="state.cache.SealformData" :option-data="state.cache.SealoptionData"
+                                        ref="refFillFormInformation">
+                                    </v-form-render>
+                                </div>
+                            </template>
+                        </documentsDetailsPortion>
+
+                    </div>
                 </div>
             </template>
-            <template #unexpected>
-                <div class="unexpected">
-                    <div class="unexpected-fixed">
+            <template #fixed>
+                <div class="fixed">
+                    <div class="ap-fixed">
                         <el-button type="primary">下一步</el-button>
                     </div>
                 </div>
@@ -230,8 +278,8 @@ onMounted(() => {
 
     }
 
-    .unexpected-fixed {
-        width: calc(100% - 2rem);
+    .ap-fixed {
+        width: calc(100%);
         position: absolute;
         bottom: 0%;
         height: 4rem;
@@ -239,6 +287,8 @@ onMounted(() => {
         justify-content: center;
         align-items: center;
         border-top: 1px solid var(--color-border-2);
+        background-color: var(--in-common-use-1);
+        z-index: 999;
     }
 }
 </style>
