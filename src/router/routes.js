@@ -200,6 +200,24 @@ export default [
               ),
           },
           {
+            path: "electronic-seal-apply/Confirm-approval-process",
+            name: "electronic-seal-apply-Confirm-approval-process",
+            meta: { title: "Confirm-approval-process", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/electronic-seal-apply/Confirm-approval-process.vue"
+              ),
+          },
+          {
+            path: "electronic-seal-apply/accomplish",
+            name: "electronic-seal-apply-accomplish",
+            meta: { title: "accomplish", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/electronic-seal-apply/accomplish.vue"
+              ),
+          },
+          {
             path: "innerPage",
             name: "innerPage",
             meta: { title: "二级页面", authRequired: true },

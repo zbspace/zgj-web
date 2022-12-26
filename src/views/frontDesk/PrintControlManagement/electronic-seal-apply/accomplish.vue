@@ -1,6 +1,6 @@
 <!-- 用印申请 选中表单 -->
 <template>
-    <div class="electronic-seal-apply-fill-form">
+    <div class="electronic-seal-apply-accomplish">
         <componentsLayout Layout="breadcrumb,title,custom,fixed">
             <template #breadcrumb>
                 <div class="breadcrumb">
@@ -13,8 +13,7 @@
             <template #title>
                 <div class="title">
                     <div class="title-desc">
-                        <img class="title-desc-img" src="../../../../assets/svg/jiantou-zuo.svg" alt=""
-                            @click="clickBackPage">
+                        <img class="title-desc-img" src="@/assets/svg/jiantou-zuo.svg" alt="" @click="clickBackPage">
                         新建用印申请
                     </div>
                     <div>
@@ -27,27 +26,27 @@
                     <div class="custom-buzhou">
                         <SealApplicationStep :data="state.cache.flowList"></SealApplicationStep>
                     </div>
-                    <div style="height:200px">
-
-                    </div>
-                    <div>
-                        <documentsDetailsPortion>
-                            <template #title>
-                                <div>签署信息</div>
-                            </template>
-                            <template #content>
-                                <div>
-                                  
-                                </div>
-                            </template>
-                        </documentsDetailsPortion>
-                    </div>
-                </div>
-            </template>
-            <template #fixed>
-                <div class="fixed">
-                    <div class="ap-fixed">
-                        <el-button type="primary" @click="clickNextStep">下一步</el-button>
+                    <div class="custom-cont">
+                        <div class="custom-cont-icon">
+                            <img class="custom-cont-icon-img" src="@/assets/svg/yongyin-shenqing-wancheng-lv.svg"
+                                alt="">
+                        </div>
+                        <div class="custom-cont-title">
+                            操作成功
+                        </div>
+                        <div class="custom-cont-p">
+                            请等待单据审批完成
+                        </div>
+                        <div class="custom-cont-p">
+                            单据编号：KNCH554879994000
+                        </div>
+                        <div class="custom-cont-p">
+                            用印文件名称：单据名称单据名称单据名称单据名称
+                        </div>
+                        <div class="custom-cont-but">
+                            <el-button type="primary">查看单据详情</el-button>
+                            <el-button @click="clickBackPage">返回</el-button>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -77,15 +76,82 @@ const state = reactive({
         flowList: [
             {
                 name: "填写表单信息",
-                active: true,
             },
             {
                 name: "确认审批流程",
             },
             {
                 name: "完成",
+                active: true,
             },
         ],
+        formData: {},
+        optionData: {},
+        SealformData: {},
+        SealoptionData: {},
+        PrintingProcess: {
+            list: [
+                {
+                    title: "盖前",
+                    list: [
+                        {
+                            name: "说明详情后续补上",
+                        }
+                    ]
+                },
+                {
+                    title: "实时视频盖章",
+                    list: [
+                        {
+                            name: "说明详情后续补上",
+                        },
+                        {
+                            name: "说明详情后续补上",
+                        },
+                        {
+                            name: "说明详情后续补上",
+                        },
+                    ]
+                },
+                {
+                    title: "盖中",
+                    list: [
+                        {
+                            name: "说明详情后续补上",
+                        },
+                        {
+                            name: "说明详情后续补上",
+                        },
+                        {
+                            name: "说明详情后续补上",
+                        },
+                        {
+                            name: "说明详情后续补上",
+                        },
+                        {
+                            name: "说明详情后续补上",
+                        },
+                    ]
+                },
+                {
+                    title: "盖后",
+                    list: [
+                        {
+                            name: "说明详情后续补上",
+                        }
+                    ]
+                },
+                {
+                    title: "归档",
+                    list: [
+                        {
+                            name: "说明详情后续补上",
+                        }
+                    ]
+                },
+
+            ]
+        }
     }
 });
 const refFillFormInformation = ref(null);
@@ -96,10 +162,10 @@ function clickBackPage() {
     commonFun.routerPage(router, -1)
 }
 
-//点击下一步
-function clickNextStep() {
+//点击提交
+function clickSubmit() {
     commonFun.routerPage(router, {
-        path: "/frontDesk/PrintControlManagement/electronic-seal-apply/Confirm-approval-process"
+        path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
     })
 }
 
@@ -114,7 +180,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.electronic-seal-apply-fill-form {
+.electronic-seal-apply-accomplish {
     margin: 0%;
     position: relative;
 
@@ -198,6 +264,27 @@ onMounted(() => {
             }
         }
 
+        .custom-cont {
+            .custom-cont-icon {
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            .custom-cont-title {
+                font-size: var(--font-size-title-3);
+                color: var(--color-text-1);
+                margin-bottom: 1rem;
+            }
+
+            .custom-cont-p {
+                color: var(--color-text-3);
+                margin-bottom: 0.5rem;
+            }
+
+            .custom-cont-but {
+                margin-top: 3rem;
+            }
+        }
 
     }
 

@@ -64,7 +64,7 @@ function initData() {
         }
     });
     state.cache.data = props.data;
-    console.log(state.cache.data);
+    // console.log(state.cache.data);
 }
 
 onBeforeMount(() => {
