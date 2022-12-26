@@ -32,7 +32,6 @@ import inputIcon from '@/assets/svg/system/comp-info/input.svg'
   width: 100%;
   border-radius: 4px;
   padding:  24px 16px;
-  margin-top: 24px;
   .bg{
       background: rgba(105, 70, 70, 0.04);
       border-radius: 4px;

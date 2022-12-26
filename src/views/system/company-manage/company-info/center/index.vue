@@ -2,10 +2,7 @@
   <div class="comp-info-center">
     <div class="left">
       <div class="base">
-        <div class="header">
-          <span />
-          基础信息
-        </div>
+        <JyLabel label="基础信息" />
         <div>
           <div class="rows">
             <span class="label">单位负责人</span>
@@ -26,16 +23,11 @@
         </div>
       </div>
       <div class="base">
-        <div class="header">
-          <span />
-          超级管理员
-          <el-button
-            type="primary"
-            size="small"
-          >
-            变更
-          </el-button>
-        </div>
+        <JyLabel
+          label="超级管理员"
+          btn="变更"
+          @on-click="onClick"
+        />
         <div>
           <div class="rows">
             <span class="label">超级管理员</span>
@@ -57,16 +49,11 @@
       </div>
     </div>
     <div class="right">
-      <div class="header">
-        <span />
-        超级管理员
-        <el-button
-          type="primary"
-          size="small"
-        >
-          修改
-        </el-button>
-      </div>
+      <JyLabel
+        label="密码设置"
+        btn="修改"
+        @on-click="onClick"
+      />
       <div>
         <div class="rows">
           <span class="label w-140">首次登录必须修改密码</span>
@@ -99,7 +86,9 @@
 
 <script setup>
 import inputIcon from '@/assets/svg/system/comp-info/input.svg'
-
+const onClick = () => {
+  console.log(123)
+}
 </script>
 
 <style lang="scss" scoped>
