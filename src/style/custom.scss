@@ -172,7 +172,9 @@ $unify-primary-color: var(--primary-6);
     user-select: none;
 }
 
-
+.el-switch {
+  --el-switch-on-color: #D0963E;
+}
 .el-dropdown__popper {
   --el-dropdown-menuItem-hover-fill: rgba(0, 0, 0, 0.04);
   --el-dropdown-menuItem-hover-color:  #D0963E;
