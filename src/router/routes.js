@@ -126,7 +126,9 @@ export default [
         name: "SealloanInnerPage",
         meta: { title: "查看历史记录", authRequired: true },
         component: () =>
-          import("../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue")
+          import(
+            "../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue"
+          ),
       },
       {
         path: "PrintControlManagement",
@@ -168,6 +170,15 @@ export default [
             component: () =>
               import(
                 "../views/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process.vue"
+              ),
+          },
+          {
+            path: "Seal-application/accomplish",
+            name: "accomplish",
+            meta: { title: "accomplish", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Seal-application/accomplish.vue"
               ),
           },
           {
