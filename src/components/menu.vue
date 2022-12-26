@@ -1366,7 +1366,7 @@ export default {
             icon: icon5,
             children: [{
               name: "电子签章申请",
-              to: "/frontDesk/home",
+              to: "/frontDesk/PrintControlManagement/electronic-seal-apply/Selection-form",
               label: "t-zgj-cg-menu-dianzi-qianzhang-shenqing",
             }, {
               name: "待电子签章",

@@ -12,6 +12,12 @@
                     </div>
                 </template>
                 <!-- 自定义内容显示 -->
+                <template #default="scope" v-if="item.customDisplayType == 'custom'">
+                    <div class="custom">
+                        <slot name="custom"></slot>
+                    </div>
+                </template>
+                <!-- 自定义内容显示 -->
                 <template #default="scope" v-else-if="item.rankDisplayData && item.rankDisplayData.length > 0">
                     <div class="rankDisplayData">
                         <div class="rankDisplayData-node" v-for="(data, num) in item.rankDisplayData.slice(0, 3)"
