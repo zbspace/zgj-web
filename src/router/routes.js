@@ -162,6 +162,15 @@ export default [
               ),
           },
           {
+            path: "Seal-application/Confirm-approval-process",
+            name: "Confirm-approval-process",
+            meta: { title: "Confirm-approval-process", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process.vue"
+              ),
+          },
+          {
             path: "innerPage",
             name: "innerPage",
             meta: { title: "二级页面", authRequired: true },

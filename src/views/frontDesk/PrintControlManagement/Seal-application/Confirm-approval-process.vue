@@ -1,7 +1,7 @@
 <!-- 用印申请 选中表单 -->
 <template>
     <div class="Seal-application-Confirm-approval-process">
-        <componentsLayout Layout="breadcrumb,title,custom,unexpected">
+        <componentsLayout Layout="breadcrumb,title,custom">
             <template #breadcrumb>
                 <div class="breadcrumb">
                     <el-breadcrumb separator="/">
@@ -25,28 +25,16 @@
             <template #custom>
                 <div class="custom">
                     <div class="custom-buzhou">
-                        <div class="custom-buzhou-list" v-for="(item, index) in state.cache.flowList">
-                            <div class="custom-buzhou-list-desc">
-                                <div class="custom-buzhou-list-desc-index"
-                                    :class="{ 'indexActive': item.active ? true : false }">{{ index + 1 }}</div>
-                                <div class="custom-buzhou-list-desc-text"
-                                    :class="{ 'textActive': item.active ? true : false }">{{ item.name }}</div>
-                            </div>
-                            <div class="custom-buzhou-list-jiantou" v-if="index < state.cache.flowList.length - 1">
-                                <img src="../../../../assets/svg/buzhou-jiantou-you.svg" alt="">
-                            </div>
-                        </div>
+                        <SealApplicationStep :data="state.cache.flowList"></SealApplicationStep>
                     </div>
                     <div>
                         <documentsDetailsPortion>
                             <template #title>
-                                <div>基本信息</div>
+                                <div>审批流程</div>
                             </template>
                             <template #content>
-                                <div>
-                                    <v-form-render :form-json="FillFormInformation" :form-data="state.cache.formData"
-                                        :option-data="state.cache.optionData" ref="refFillFormInformation">
-                                    </v-form-render>
+                                <div style="height:100px">
+
                                 </div>
                             </template>
                         </documentsDetailsPortion>
@@ -55,7 +43,7 @@
                     <div>
                         <documentsDetailsPortion>
                             <template #title>
-                                <div>用印信息</div>
+                                <div>用印流程</div>
                             </template>
                             <template #content>
                                 <div>
@@ -70,13 +58,6 @@
                     </div>
                 </div>
             </template>
-            <template #unexpected>
-                <div class="unexpected">
-                    <div class="unexpected-fixed">
-                        <el-button type="primary">下一步</el-button>
-                    </div>
-                </div>
-            </template>
         </componentsLayout>
     </div>
 </template>
@@ -85,6 +66,7 @@ import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, inject, r
 import { useRouter } from 'vue-router';
 import componentsLayout from "../../../components/Layout.vue"
 import documentsDetailsPortion from "../../../components/documentsDetails/portion.vue"
+import SealApplicationStep from "@/views/components/Seal-application/step.vue"
 import FillFormInformation from "@/views/addDynamicFormJson/Fill-form-information.json"
 import FillFormInformationSeal from "@/views/addDynamicFormJson/Fill-form-information-seal.json"
 const props = defineProps({
@@ -102,10 +84,10 @@ const state = reactive({
         flowList: [
             {
                 name: "填写表单信息",
-                active: true,
             },
             {
                 name: "确认审批流程",
+                active: true,
             },
             {
                 name: "完成",

@@ -25,17 +25,7 @@
             <template #custom>
                 <div class="custom">
                     <div class="custom-buzhou">
-                        <div class="custom-buzhou-list" v-for="(item, index) in state.cache.flowList">
-                            <div class="custom-buzhou-list-desc">
-                                <div class="custom-buzhou-list-desc-index"
-                                    :class="{ 'indexActive': item.active ? true : false }">{{ index + 1 }}</div>
-                                <div class="custom-buzhou-list-desc-text"
-                                    :class="{ 'textActive': item.active ? true : false }">{{ item.name }}</div>
-                            </div>
-                            <div class="custom-buzhou-list-jiantou" v-if="index < state.cache.flowList.length - 1">
-                                <img src="../../../../assets/svg/buzhou-jiantou-you.svg" alt="">
-                            </div>
-                        </div>
+                        <SealApplicationStep :data="state.cache.flowList"></SealApplicationStep>
                     </div>
                     <div>
                         <documentsDetailsPortion>
@@ -68,60 +58,12 @@
                         </documentsDetailsPortion>
 
                     </div>
-                    <div>
-                        <documentsDetailsPortion>
-                            <template #title>
-                                <div>用印信息</div>
-                            </template>
-                            <template #content>
-                                <div>
-                                    <v-form-render :form-json="FillFormInformationSeal"
-                                        :form-data="state.cache.SealformData" :option-data="state.cache.SealoptionData"
-                                        ref="refFillFormInformation">
-                                    </v-form-render>
-                                </div>
-                            </template>
-                        </documentsDetailsPortion>
-
-                    </div>
-                    <div>
-                        <documentsDetailsPortion>
-                            <template #title>
-                                <div>用印信息</div>
-                            </template>
-                            <template #content>
-                                <div>
-                                    <v-form-render :form-json="FillFormInformationSeal"
-                                        :form-data="state.cache.SealformData" :option-data="state.cache.SealoptionData"
-                                        ref="refFillFormInformation">
-                                    </v-form-render>
-                                </div>
-                            </template>
-                        </documentsDetailsPortion>
-
-                    </div>
-                    <div>
-                        <documentsDetailsPortion>
-                            <template #title>
-                                <div>用印信息</div>
-                            </template>
-                            <template #content>
-                                <div>
-                                    <v-form-render :form-json="FillFormInformationSeal"
-                                        :form-data="state.cache.SealformData" :option-data="state.cache.SealoptionData"
-                                        ref="refFillFormInformation">
-                                    </v-form-render>
-                                </div>
-                            </template>
-                        </documentsDetailsPortion>
-
-                    </div>
                 </div>
             </template>
             <template #fixed>
                 <div class="fixed">
                     <div class="ap-fixed">
-                        <el-button type="primary">下一步</el-button>
+                        <el-button type="primary" @click="clickNextStep">下一步</el-button>
                     </div>
                 </div>
             </template>
@@ -133,6 +75,7 @@ import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, inject, r
 import { useRouter } from 'vue-router';
 import componentsLayout from "../../../components/Layout.vue"
 import documentsDetailsPortion from "../../../components/documentsDetails/portion.vue"
+import SealApplicationStep from "@/views/components/Seal-application/step.vue"
 import FillFormInformation from "@/views/addDynamicFormJson/Fill-form-information.json"
 import FillFormInformationSeal from "@/views/addDynamicFormJson/Fill-form-information-seal.json"
 const props = defineProps({
@@ -176,7 +119,7 @@ function clickBackPage() {
 //点击下一步
 function clickNextStep() {
     commonFun.routerPage(router, {
-        path: "/frontDesk/PrintControlManagement/Seal-application/fill-form"
+        path: "/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process"
     })
 }
 
