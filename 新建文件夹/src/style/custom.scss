@@ -1,0 +1,260 @@
+// 变量
+@import "./variable.scss";
+
+$unify-primary-color: var(--primary-6);
+
+/* 多选框 */
+.el-checkbox {
+    --el-checkbox-checked-text-color: #{$unify-primary-color};
+    --el-checkbox-checked-input-border-color: #{$unify-primary-color};
+    --el-checkbox-checked-bg-color: #{$unify-primary-color};
+    --el-checkbox-input-border-color-hover: #{$unify-primary-color};
+    height: auto;
+    margin-bottom: 0%;
+}
+
+/* 单选框 */
+.el-radio {
+    --el-radio-input-border-color-hover: #{$unify-primary-color};
+    height: auto;
+    margin-bottom: 0%;
+
+    .el-radio__input.is-checked .el-radio__inner {
+        border-color: #{$unify-primary-color};
+        background: #{$unify-primary-color};
+    }
+
+    .el-radio__input.is-checked+.el-radio__label {
+        color:#{$unify-primary-color};
+    }
+}
+
+
+// 自定义按钮
+:deep(.Custom-button) {
+    .el-button:hover {
+        color: var(--primary-6);
+        border-color: var(--primary-6);
+        background-color: var(--primary-1);
+    }
+
+    .el-button--primary:hover {
+        color: var(--in-common-use-1);
+        border-color: var(--primary-6);
+        background-color: var(--primary-6);
+    }
+
+    .el-button--primary {
+        --el-button-text-color: var(--in-common-use-1);
+        --el-button-bg-color: var(--primary-6);
+        --el-button-border-color: var(--primary-6);
+        --el-button-outline-color: var(--primary-6);
+        --el-button-active-color: var(--primary-6);
+        --el-button-hover-text-color: var(--in-common-use-1);
+        --el-button-hover-bg-color: var(--primary-5);
+        --el-button-hover-border-color: var(--primary-5);
+        --el-button-active-bg-color: var(--primary-7);
+        --el-button-active-border-color: var(--primary-7);
+        --el-button-disabled-border-color: var(--in-common-use-1);
+    }
+}
+
+
+/* 日期选择器 */
+.el-date-editor.el-input,
+.el-date-editor.el-input__wrapper {
+    width: 100%;
+}
+
+// 
+.el-button--primary {
+    --el-button-text-color: #FFFFFF;
+    --el-button-bg-color: #D0963E;
+    --el-button-border-color: #D0963E;
+    --el-button-outline-color: #D0963E;
+    --el-button-active-color: #D0963E;
+    --el-button-hover-text-color: #FFFFFF;
+    --el-button-hover-bg-color: #D9AB5B;
+    --el-button-hover-border-color: #D9AB5B;
+    --el-button-active-bg-color: #AF7427;
+    --el-button-active-border-color: #AF7427;
+    --el-button-disabled-border-color: #F0F0F0;
+}
+
+.el-button {
+  --el-button-hover-bg-color: #F3F6F9;
+  --el-button-hover-border-color: #d4dbeb;
+  --el-button-active-border-color: #d4dbeb;
+  --el-button-hover-text-color:rgba(0,0,0,0.65);
+}
+.el-message-box {
+  .el-button {
+    --el-button-hover-bg-color: #F3F6F9;
+    --el-button-hover-border-color: #d4dbeb;
+    --el-button-active-border-color: #d4dbeb;
+    --el-button-hover-text-color:rgba(0,0,0,0.65);
+  }
+  .el-button--primary {
+    --el-button-text-color: #FFFFFF;
+    --el-button-bg-color: #D0963E;
+    --el-button-border-color: #D0963E;
+    --el-button-outline-color: #D0963E;
+    --el-button-active-color: #D0963E;
+    --el-button-hover-text-color: #FFFFFF;
+    --el-button-hover-bg-color: #D9AB5B;
+    --el-button-hover-border-color: #D9AB5B;
+    --el-button-active-bg-color: #AF7427;
+    --el-button-active-border-color: #AF7427;
+    --el-button-disabled-border-color: #F0F0F0;
+  }
+}
+
+
+/* 下拉菜单 */
+// .el-popper__arrow {
+//     display: none;
+// }
+
+
+.el-popover {
+    padding: 0;
+    --el-popover-padding: 0;
+    --el-popover-padding-large: 0;
+}
+
+
+
+.el-input {
+    --el-input-text-color: rgba(0, 0, 0, 0.85);
+    --el-input-border: #D0963E;
+    --el-input-hover-border: #D0963E;
+    --el-input-focus-border: #D0963E;
+    --el-input-transparent-border: 0 0 0 1px transparent inset;
+    --el-input-border-color: #dcdfe6;
+    --el-input-border-radius: 4px;
+    --el-input-bg-color: #FFFFFF;
+    --el-input-icon-color: #606266;
+    --el-input-placeholder-color: #606266;
+    --el-input-hover-border-color: #D0963E;
+    --el-input-clear-hover-color: #D0963E;
+    --el-input-focus-border-color: #D0963E;
+}
+
+.el-select {
+    --el-select-border-color-hover: #D0963E;
+    --el-select-disabled-border: #D0963E;
+    --el-select-font-size: 14px;
+    --el-select-close-hover-color: #D0963E;
+    --el-select-input-focus-border-color: #D0963E;
+    --el-select-input-font-size: 14px;
+}
+
+
+.login-input {
+    --el-component-size-large: 50px;
+}
+
+.el-select-dropdown__item.selected {
+    color: #D0963E;
+}
+
+.el-pagination.is-background .el-pager li:not(.is-disabled):hover {
+    color: var(--color-text-1);
+}
+
+.el-icon {
+    color: var(--Warning-5);
+}
+
+.user-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+
+.el-dropdown__popper {
+  --el-dropdown-menuItem-hover-fill: rgba(0, 0, 0, 0.04);
+  --el-dropdown-menuItem-hover-color:  #D0963E;
+}
+
+.el-message--info,
+.el-message--success,
+.el-message--warning,
+.el-message--error {
+  --el-message-bg-color: #FFFFFF!important;
+  --el-message-border-color: #FFFFFF!important;
+  box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+  .el-message__content {
+      --el-message-text-color: rgba(0, 0, 0, 0.85);
+  }
+} 
+
+/* 
+左侧菜单 字体大小
+*/
+.navbar-menu .navbar-nav .nav-link {
+    font-size: var(--font-size-body-2);
+}
+
+/* 左侧菜单 */
+[data-layout="vertical"][data-sidebar-size="sm"] .navbar-menu .navbar-nav .nav-item:hover>a.menu-link {
+    background-color: var(--Secondary-3);
+}
+
+/* 
+内容
+*/
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color-1);
+    overflow: hidden;
+}
+
+.page-content {
+    padding-bottom: 0%;
+    padding-top: 68px;
+    padding-left: 0%;
+    background-color: var(--background-color-1);
+    padding-right: 0;
+    .container-fluid {
+        padding:0 24px;
+        --vz-gutter-x: 0
+    }
+}
+
+// #page-topbar {
+//     background-color: var(--background-color-1);
+// }
+
+// .navbar-menu {
+//     background-color: var(--background-color-1);
+//     border-right: none;
+// }
+
+// .navbar-brand-box {
+//     background-color: var(--background-color-1);
+// }
+
+// [data-layout="vertical"][data-sidebar-size="sm"] .navbar-brand-box {
+//     background-color: var(--background-color-1);
+// }
+
+.static-content-item {
+  margin-left: 12px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #D0963E;
+  }
+}

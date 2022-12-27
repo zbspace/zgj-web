@@ -1,0 +1,23 @@
+/* 
+引用全局样式
+
+使用方法  变量详情看  variable.scss
+    .color {
+        color: var(--primary-6);
+    }
+
+*/
+
+
+// 变量
+@import "./variable.scss";
+
+
+// 计算
+@import "./mixin.scss";
+
+// 全局 class 样式
+@import "./overallClass.scss";
+
+// 自定义全局
+@import "./custom.scss";

@@ -171,6 +171,60 @@ export default [
               ),
           },
           {
+            path: "Grid-management/SealBoxGrid",
+            name: "SealBoxGrid",
+            meta: { title: "SealBoxGrid", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Grid-management/SealBoxGrid.vue"
+              ),
+          },
+          {
+            path: "Grid-management/SealBoxGridInfo",
+            name: "SealBoxGridInfo",
+            meta: { title: "SealBoxGridInfo", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Grid-management/SealBoxGridInfo.vue"
+              ),
+          },
+          {
+            path: "Grid-management/CabinetGrid",
+            name: "CabinetGrid",
+            meta: { title: "CabinetGrid", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Grid-management/CabinetGrid.vue"
+              ),
+          },
+          {
+            path: "Grid-management/CabinetGridInfo",
+            name: "CabinetGridInfo",
+            meta: { title: "CabinetGridInfo", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Grid-management/CabinetGridInfo.vue"
+              ),
+          },
+          {
+            path: "Grid-management/ViewCheckInfo",
+            name: "ViewCheckInfo",
+            meta: { title: "ViewCheckInfo", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Grid-management/ViewCheckInfo.vue"
+              ),
+          },
+          {
+            path: "Grid-management/ViewOutSeal",
+            name: "ViewOutSeal",
+            meta: { title: "ViewOutSeal", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Grid-management/ViewOutSeal.vue"
+              ),
+          },
+          {
             path: "innerPage",
             name: "innerPage",
             meta: { title: "二级页面", authRequired: true },
@@ -282,6 +336,7 @@ export default [
             "../views/frontDesk/PrintControlManagement/IntelligentSealCabinetManagement.vue"
           ),
       },
+      
       {
         path: "PrintControlManagement/ElectronicSignatureRequired",
         name: "PrintControlManagement-ElectronicSignatureRequired",
