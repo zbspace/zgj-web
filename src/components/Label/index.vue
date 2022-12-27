@@ -3,14 +3,23 @@
     <div class="header">
       <span />
       {{ props.label }}
-      <el-button
-        type="primary"
-        size="small"
-        v-if="props.btn"
-        @click="emit('onClick')"
-      >
-        {{ props.btn }}
-      </el-button>
+      <div class="button">
+        <el-button
+          type="primary"
+          size="small"
+          v-if="props.btn"
+          @click="emit('onClick')"
+        >
+          {{ props.btn }}
+        </el-button>
+        <el-button
+          size="small"
+          v-if="props.btn1"
+          @click="emit('onClickCancel')"
+        >
+          {{ props.btn1 }}
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -24,9 +33,13 @@ const props = defineProps({
   btn: {
     type: String,
     default: ''
+  },
+  btn1: {
+    type: String,
+    default: ''
   }
 })
-const emit = defineEmits(['on-click'])
+const emit = defineEmits(['on-click', 'on-click-cancel'])
 </script>
 
 <style lang="scss" scoped>
@@ -48,7 +61,7 @@ const emit = defineEmits(['on-click'])
     display: inline-block;
     margin-right: 7px;
   }
-  button {
+  .button {
     position: absolute;
     right: 0;
   }

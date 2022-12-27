@@ -6,13 +6,20 @@
   </div>
 </template>
 
+<script>
+import { defineComponent } from 'vue'
+export default defineComponent({
+  name: 'CompanyName'
+})
+</script>
+
 <script setup>
 import Top from './top'
 import Center from './center'
 import Bottom from './bottom'
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped >
 .comp-info {
   height: calc(100vh - 100px);
   overflow-y: auto;
