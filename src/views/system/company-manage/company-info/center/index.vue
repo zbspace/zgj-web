@@ -220,35 +220,43 @@
             </el-form-item>
           </div>
           <div class="rows">
-            <span class="label w-140">限制密码长度至少为</span>
-            <span
-              class="content tab"
-              v-if="!edit3"
-            >8</span>
-            <el-input-number
-              v-else
-              v-model="data1"
-              :min="1"
-              :max="31"
-              @change="handleChange"
-            />
-            <span class="color-black-045">&ensp;&ensp;位</span>
+            <el-form-item
+              label="限制密码长度至少为"
+              prop="data1"
+            >
+              <span
+                class="content tab"
+                v-if="!edit3"
+              >8</span>
+              <el-input-number
+                v-else
+                v-model="data1"
+                :min="1"
+                :max="31"
+                @change="handleChange"
+              />
+              <span class="color-black-045">&ensp;&ensp;位</span>
+            </el-form-item>
           </div>
           <div class="rows">
-            <span class="label w-140">初始密码</span>
-            <span
-              class="content tab"
-              v-if="!edit3"
-            >13780094578</span>
-            <div v-else>
-              <el-input
-                v-model="data1"
-                type="password"
-                style="width: 126px;"
-                placeholder="请输入"
-                show-password
-              />
-            </div>
+            <el-form-item
+              label="初始密码"
+              prop="data1"
+            >
+              <span
+                class="content tab"
+                v-if="!edit3"
+              >13780094578</span>
+              <div v-else>
+                <el-input
+                  v-model="data1"
+                  type="password"
+                  style="width: 126px;"
+                  placeholder="请输入"
+                  show-password
+                />
+              </div>
+            </el-form-item>
           </div>
         </div>
       </el-form>
