@@ -126,7 +126,9 @@ export default [
         name: "SealloanInnerPage",
         meta: { title: "查看历史记录", authRequired: true },
         component: () =>
-          import("../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue")
+          import(
+            "../views/frontDesk/PrintControlManagement/SealloanInnerPage.vue"
+          ),
       },
       {
         path: "PrintControlManagement",
@@ -145,7 +147,7 @@ export default [
           },
           {
             path: "Seal-application/Selection-form",
-            name: "Selection-form",
+            name: "Seal-application-Selection-form",
             meta: { title: "Selection-form", authRequired: true },
             component: () =>
               import(
@@ -154,7 +156,7 @@ export default [
           },
           {
             path: "Seal-application/fill-form",
-            name: "fill-form",
+            name: "Seal-application-fill-form",
             meta: { title: "fill-form", authRequired: true },
             component: () =>
               import(
@@ -163,7 +165,7 @@ export default [
           },
           {
             path: "Seal-application/Confirm-approval-process",
-            name: "Confirm-approval-process",
+            name: "Seal-application-Confirm-approval-process",
             meta: { title: "Confirm-approval-process", authRequired: true },
             component: () =>
               import(
@@ -222,6 +224,51 @@ export default [
             component: () =>
               import(
                 "../views/frontDesk/PrintControlManagement/Grid-management/ViewOutSeal.vue"
+              )
+          },
+          {
+            path: "Seal-application/accomplish",
+            name: "Seal-application-accomplish",
+            meta: { title: "accomplish", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/Seal-application/accomplish.vue"
+              ),
+          },
+          {
+            path: "electronic-seal-apply/Selection-form",
+            name: "electronic-seal-apply-Selection-form",
+            meta: { title: "Selection-form", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/electronic-seal-apply/Selection-form.vue"
+              ),
+          },
+          {
+            path: "electronic-seal-apply/fill-form",
+            name: "electronic-seal-apply-fill-form",
+            meta: { title: "fill-form", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form.vue"
+              ),
+          },
+          {
+            path: "electronic-seal-apply/Confirm-approval-process",
+            name: "electronic-seal-apply-Confirm-approval-process",
+            meta: { title: "Confirm-approval-process", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/electronic-seal-apply/Confirm-approval-process.vue"
+              ),
+          },
+          {
+            path: "electronic-seal-apply/accomplish",
+            name: "electronic-seal-apply-accomplish",
+            meta: { title: "accomplish", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/electronic-seal-apply/accomplish.vue"
               ),
           },
           {

@@ -66,21 +66,6 @@ $unify-primary-color: var(--primary-6);
     width: 100%;
 }
 
-// 
-.el-button--primary {
-    --el-button-text-color: #FFFFFF;
-    --el-button-bg-color: #D0963E;
-    --el-button-border-color: #D0963E;
-    --el-button-outline-color: #D0963E;
-    --el-button-active-color: #D0963E;
-    --el-button-hover-text-color: #FFFFFF;
-    --el-button-hover-bg-color: #D9AB5B;
-    --el-button-hover-border-color: #D9AB5B;
-    --el-button-active-bg-color: #AF7427;
-    --el-button-active-border-color: #AF7427;
-    --el-button-disabled-border-color: #F0F0F0;
-}
-
 .el-button {
   --el-button-hover-bg-color: #F3F6F9;
   --el-button-hover-border-color: #d4dbeb;
@@ -109,6 +94,19 @@ $unify-primary-color: var(--primary-6);
   }
 }
 
+.el-button--primary {
+    --el-button-text-color: #FFFFFF;
+    --el-button-bg-color: #D0963E;
+    --el-button-border-color: #D0963E;
+    --el-button-outline-color: #D0963E;
+    --el-button-active-color: #D0963E;
+    --el-button-hover-text-color: #FFFFFF;
+    --el-button-hover-bg-color: #D9AB5B;
+    --el-button-hover-border-color: #D9AB5B;
+    --el-button-active-bg-color: #AF7427;
+    --el-button-active-border-color: #AF7427;
+    --el-button-disabled-border-color: #F0F0F0;
+}
 
 /* 下拉菜单 */
 // .el-popper__arrow {
@@ -121,8 +119,6 @@ $unify-primary-color: var(--primary-6);
     --el-popover-padding: 0;
     --el-popover-padding-large: 0;
 }
-
-
 
 .el-input {
     --el-input-text-color: rgba(0, 0, 0, 0.85);
@@ -172,10 +168,12 @@ $unify-primary-color: var(--primary-6);
     user-select: none;
 }
 
-
+.el-switch {
+  --el-switch-on-color: #D0963E;
+}
 .el-dropdown__popper {
-  --el-dropdown-menuItem-hover-fill: rgba(0, 0, 0, 0.04);
-  --el-dropdown-menuItem-hover-color:  #D0963E;
+  --el-dropdown-menuItem-hover-fill: rgba(0, 0, 0, 0.04)!important;
+  --el-dropdown-menuItem-hover-color:  #D0963E!important;
 }
 
 .el-message--info,
@@ -225,7 +223,9 @@ body {
         --vz-gutter-x: 0
     }
 }
-
+.logo-p-t {
+  padding-top: 10px!important;
+}
 // #page-topbar {
 //     background-color: var(--background-color-1);
 // }

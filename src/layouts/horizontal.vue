@@ -7,7 +7,7 @@
       <!-- ========== App Menu ========== -->
       <div class="app-menu navbar-menu">
         <!-- LOGO -->
-        <div class="navbar-brand-box">
+        <div class="navbar-brand-box logo-p-t">
           <!-- Dark Logo-->
           <router-link to="/" class="logo logo-dark">
             <span class="logo-sm">

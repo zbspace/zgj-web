@@ -4,39 +4,63 @@
       <div class="navbar-header header-content">
         <div class="d-flex">
           <!-- LOGO -->
-          <div class="navbar-brand-box horizontal-logo">
-            <router-link to="/" class="logo logo-dark">
+          <div class="navbar-brand-box horizontal-logo logo-p-t">
+            <router-link
+              to="/"
+              class="logo logo-dark"
+            >
               <span class="logo-sm">
-                <img src="@/assets/icon/logo.png" alt="" height="22" />
+                <img
+                  src="@/assets/icon/logo.png"
+                  alt=""
+                  height="22"
+                >
               </span>
               <span class="logo-lg">
-                <img src="@/assets/icon/logo.png" alt="" height="17" />
+                <img
+                  src="@/assets/icon/logo.png"
+                  alt=""
+                  height="37"
+                >
               </span>
             </router-link>
 
-            <router-link to="/" class="logo logo-light">
+            <router-link
+              to="/"
+              class="logo logo-light"
+            >
               <span class="logo-sm">
-                <img src="@/assets/icon/logo.png" alt="" height="22" />
+                <img
+                  src="@/assets/icon/logo.png"
+                  alt=""
+                  height="22"
+                >
               </span>
               <span class="logo-lg">
-                <img src="@/assets/icon/logo.png" alt="" height="17" />
+                <img
+                  src="@/assets/icon/logo.png"
+                  alt=""
+                  height="17"
+                >
               </span>
             </router-link>
           </div>
 
           <!-- 菜单开关 -->
-          <button type="button" class="
+          <button
+            type="button"
+            class="
               btn btn-sm
               px-3
               fs-16
               header-item
               vertical-menu-btn
-              topnav-hamburger
-              " id="topnav-hamburger-icon">
+              " id="topnav-hamburger-icon" @click="toggleHamburgerMenu">
+              <!-- topnav-hamburger -->
             <span class="hamburger-icon">
-              <span></span>
-              <span></span>
-              <span></span>
+              <span />
+              <span />
+              <span />
             </span>
           </button>
 
@@ -46,10 +70,9 @@
               <el-dropdown trigger="click">
                 <span class="ap-dropdown-text">
                   <span>上海建业科技股份有限公司</span>&nbsp;&nbsp;
-                  <i class="ri-arrow-down-s-line"></i>
+                  <i class="ri-arrow-down-s-line" />
                 </span>
                 <template #dropdown>
-
                   <el-dropdown-menu>
                     <div class="ap-enterprise">
                       <div class="ap-enterprise-text">
@@ -58,11 +81,10 @@
                         </div>
                       </div>
                       <div class="ap-enterprise-cont">
-
                         <el-dropdown-item>
                           <div class="ap-enterprise-cont-list">
                             上海建业科技股份有限公司
-                            <div class="defart-selected"></div>
+                            <div class="defart-selected" />
                           </div>
                         </el-dropdown-item>
                         <el-dropdown-item>
@@ -73,7 +95,6 @@
                       </div>
                     </div>
                   </el-dropdown-menu>
-
                 </template>
               </el-dropdown>
             </div>
@@ -81,119 +102,184 @@
         </div>
 
         <div class="d-flex align-items-center">
-
           <!-- 系统 -->
           <div class="ap-sys">
-            <div class="ap-sys-but" @click="changeSystemHome">
-
+            <div
+              class="ap-sys-but"
+              @click="changeSystemHome"
+            >
               <div v-if="state.application.CurrentSystemType == 'business'">
-                <img class="ap-sys-but-icon" src="../assets/icon/system-setup.png" alt="" srcset="">
+                <img
+                  class="ap-sys-but-icon"
+                  src="../assets/icon/system-setup.png"
+                  alt=""
+                  srcset=""
+                >
                 <span class="ap-sys-but-text">{{ $t('t-back-system-platform') }}</span>
               </div>
 
               <div v-if="state.application.CurrentSystemType == 'system'">
-                <img class="ap-sys-but-icon" src="../assets/images/navbar/nav_front_home.svg" alt="" srcset="">
+                <img
+                  class="ap-sys-but-icon"
+                  src="../assets/images/navbar/nav_front_home.svg"
+                  alt=""
+                  srcset=""
+                >
                 <span class="ap-sys-but-text">{{ $t('t-front-platform') }}</span>
               </div>
             </div>
           </div>
 
           <!-- 帮助 -->
-          <div class="ms-1 header-item d-none d-sm-flex" ref="dropdownHelpRef">
-            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary" data-toggle="fullscreen"
-              @click="showHelpPop = !showHelpPop">
-
-              <el-tooltip class="box-item" effect="dark" :content="$t('t-help-center')" placement="bottom"
-                :show-arrow="true">
+          <div
+            class="ms-1 header-item d-none d-sm-flex"
+            ref="dropdownHelpRef"
+          >
+            <button
+              type="button"
+              class="btn btn-icon btn-topbar btn-ghost-secondary"
+              data-toggle="fullscreen"
+              @click="showHelpPop = !showHelpPop"
+            >
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                :content="$t('t-help-center')"
+                placement="bottom"
+                :show-arrow="true"
+              >
                 <div>
-                  <img v-show="showHelpPop" src="../assets/images/navbar/help_select_icon.svg" />
-                  <img v-show="!showHelpPop" src="../assets/images/navbar/help_icon.svg" />
+                  <img
+                    v-show="showHelpPop"
+                    src="../assets/images/navbar/help_select_icon.svg"
+                  >
+                  <img
+                    v-show="!showHelpPop"
+                    src="../assets/images/navbar/help_icon.svg"
+                  >
                 </div>
               </el-tooltip>
             </button>
           </div>
 
           <!-- 信息 -->
-          <VMailNav></VMailNav>
+          <VMailNav />
 
           <!-- 消息 -->
-          <VMessageNav></VMessageNav>
+          <VMessageNav />
 
           <!-- 应用入口 -->
-          <VApplicationNav></VApplicationNav>
+          <VApplicationNav />
 
           <!-- 用户信息 -->
-          <div class="dropdown topbar-head-dropdown ms-1 header-item" ref="dropdownUserRef">
-            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary ap-personalCenter"
-              id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true"
-              aria-expanded="false" @click="showUserInfoPop = !showUserInfoPop">
+          <div
+            class="dropdown topbar-head-dropdown ms-1 header-item"
+            ref="dropdownUserRef"
+          >
+            <button
+              type="button"
+              class="btn btn-icon btn-topbar btn-ghost-secondary ap-personalCenter"
+              id="page-header-cart-dropdown"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
+              aria-haspopup="true"
+              aria-expanded="false"
+              @click="showUserInfoPop = !showUserInfoPop"
+            >
               <div class="ap-personalCenter-text">
                 <span class="ap-personalCenter-name">春青</span>
-                <img v-show="showUserInfoPop" src="../assets/images/navbar/user_info_close.svg" />
-                <img v-show="!showUserInfoPop" src="../assets/images/navbar/user_info_open.svg" />
+                <img
+                  v-show="showUserInfoPop"
+                  src="../assets/images/navbar/user_info_close.svg"
+                >
+                <img
+                  v-show="!showUserInfoPop"
+                  src="../assets/images/navbar/user_info_open.svg"
+                >
               </div>
             </button>
-            <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
-              aria-labelledby="page-header-cart-dropdown" style="width: 240px;">
+            <div
+              class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
+              aria-labelledby="page-header-cart-dropdown"
+              style="width: 240px;"
+            >
               <div class="ap-personalCenterDropdown">
                 <div class="dropdown-box">
                   <div class="dropdown-name">
-                    <div class="dropdown-name-icon">春青</div>
-                    <div class="dropdown-name-text">曹春青</div>
+                    <div class="dropdown-name-icon">
+                      春青
+                    </div>
+                    <div class="dropdown-name-text">
+                      曹春青
+                    </div>
                   </div>
                 </div>
 
                 <div class="dropdown-list">
-
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_logo.svg" />
+                    <img src="../assets/images/navbar/user_info_logo.svg">
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-person.center') }}</span>
                   </div>
 
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_lock.svg" />
+                    <img src="../assets/images/navbar/user_info_lock.svg">
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-index.updatePwd') }}</span>
                   </div>
 
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_down.svg" />
+                    <img src="../assets/images/navbar/user_info_down.svg">
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-DownloadApp.Download') }}</span>
                   </div>
 
-                  <el-popover trigger="hover" placement="left-start" :show-arrow="false" :close-delay="80"
-                    :visible="showChanglanPop">
+                  <el-popover
+                    trigger="hover"
+                    placement="left-start"
+                    :show-arrow="false"
+                    :close-delay="80"
+                    :visible="showChanglanPop"
+                  >
                     <template #reference>
-                      <div class="dropdown-list-li"
+                      <div
+                        class="dropdown-list-li"
                         :style="{ color: showChanglanPop ? '#D0963E' : 'rgba(0, 0, 0, 0.65)' }"
-                        @click="showChanglanPop = true">
-                        <img src="../assets/images/navbar/user_info_lan.svg" />
+                        @click="showChanglanPop = true"
+                      >
+                        <img src="../assets/images/navbar/user_info_lan.svg">
                         <span class="dropdown-list-li-text">{{ $t('t-zgj-changeLang') }}</span>
-                        <i class="ri-arrow-right-s-line"></i>
+                        <i class="ri-arrow-right-s-line" />
                       </div>
                     </template>
                     <div class="popover-cont ap-personalCenterPopover">
-                      <div class="popover-cont-list" @click="setLanguage('ch')"
-                        :class="state.language === 'ch' ? 'popover-selected' : ''">简体中文</div>
-                      <div class="popover-cont-list" @click="setLanguage('en')"
-                        :class="state.language === 'en' ? 'popover-selected' : ''">English</div>
+                      <div
+                        class="popover-cont-list"
+                        @click="setLanguage('ch')"
+                        :class="state.language === 'ch' ? 'popover-selected' : ''"
+                      >
+                        简体中文
+                      </div>
+                      <div
+                        class="popover-cont-list"
+                        @click="setLanguage('en')"
+                        :class="state.language === 'en' ? 'popover-selected' : ''"
+                      >
+                        English
+                      </div>
                     </div>
                   </el-popover>
 
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_iphone.svg" />
+                    <img src="../assets/images/navbar/user_info_iphone.svg">
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-mobile-app') }}</span>
                   </div>
 
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_layout.svg" />
+                    <img src="../assets/images/navbar/user_info_layout.svg">
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-logout-user') }}</span>
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -201,87 +287,88 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch, onUnmounted } from "vue";
-import useCurrentInstance from "@/hooks/getInstance.js"
-import i18n from "../i18n";
-import useClickQutside from "../hooks/useClickQutside.js"
-import VApplicationNav from "../components/modules/applicationNav.vue"
-import VMailNav from "../components/modules/mailNav.vue"
-import VMessageNav from "../components/modules/messageNav.vue"
+import { onMounted, reactive, ref, watch, onUnmounted } from 'vue'
+import useCurrentInstance from '@/hooks/getInstance.js'
+import i18n from '../i18n'
+import useClickQutside from '../hooks/useClickQutside.js'
+import VApplicationNav from '../components/modules/applicationNav.vue'
+import VMailNav from '../components/modules/mailNav.vue'
+import VMessageNav from '../components/modules/messageNav.vue'
 const _this = useCurrentInstance()
 const state = reactive({
   application: {
-    CurrentSystemType: "business",//business / system
+    CurrentSystemType: 'business' // business / system
   },
   language: i18n.global.locale
 })
 
-let CurrentSystemType = sessionStorage.getItem("CurrentSystemType");
+const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
 if (CurrentSystemType) {
   state.application.CurrentSystemType = CurrentSystemType
 }
 
-function scrollFn() {
+function scrollFn () {
 
 }
 
 onMounted(() => {
   // 添加监听 滚动事件
-  document.addEventListener("scroll", function () {
-    var pageTopbar = document.getElementById("page-topbar");
+  document.addEventListener('scroll', function () {
+    const pageTopbar = document.getElementById('page-topbar')
     if (pageTopbar) {
-      document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50 ? pageTopbar.classList.add(
-        "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
+      document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50
+        ? pageTopbar.classList.add(
+          'topbar-shadow')
+        : pageTopbar.classList.remove('topbar-shadow')
     }
-  });
+  })
 
   // 添加 全屏开关监听 事件
-  if (document.getElementById("topnav-hamburger-icon"))
-    document
-      .getElementById("topnav-hamburger-icon")
-      .addEventListener("click", toggleHamburgerMenu);
+  // if (document.getElementById("topnav-hamburger-icon"))
+  //   document
+  //     .getElementById("topnav-hamburger-icon")
+  //     .addEventListener("click", toggleHamburgerMenu);
 
 })
 
 // 监听 菜单开关
 const toggleHamburgerMenu = () => {
-  var windowSize = document.documentElement.clientWidth;
+  const windowSize = document.documentElement.clientWidth
 
-  if (windowSize > 767)
-    document.querySelector(".hamburger-icon").classList.toggle("open");
+  if (windowSize > 767) { document.querySelector('.hamburger-icon').classList.toggle('open') }
 
-  //For collapse horizontal menu
+  // For collapse horizontal menu
   if (
-    document.documentElement.getAttribute("data-layout") === "horizontal"
+    document.documentElement.getAttribute('data-layout') === 'horizontal'
   ) {
-    document.body.classList.contains("menu") ?
-      document.body.classList.remove("menu") :
-      document.body.classList.add("menu");
+    document.body.classList.contains('menu')
+      ? document.body.classList.remove('menu')
+      : document.body.classList.add('menu')
   }
 
-  //For collapse vertical menu
-  if (document.documentElement.getAttribute("data-layout") === "vertical") {
+  // For collapse vertical menu
+  if (document.documentElement.getAttribute('data-layout') === 'vertical') {
     if (windowSize < 1025 && windowSize > 767) {
-      document.body.classList.remove("vertical-sidebar-enable");
-      document.documentElement.getAttribute("data-sidebar-size") == "sm" ?
-        document.documentElement.setAttribute("data-sidebar-size", "") :
-        document.documentElement.setAttribute("data-sidebar-size", "sm");
+      document.body.classList.remove('vertical-sidebar-enable')
+      document.documentElement.getAttribute('data-sidebar-size') == 'sm'
+        ? document.documentElement.setAttribute('data-sidebar-size', '')
+        : document.documentElement.setAttribute('data-sidebar-size', 'sm')
     } else if (windowSize > 1025) {
-      document.body.classList.remove("vertical-sidebar-enable");
-      document.documentElement.getAttribute("data-sidebar-size") == "lg" ?
-        document.documentElement.setAttribute("data-sidebar-size", "sm") :
-        document.documentElement.setAttribute("data-sidebar-size", "lg");
+      document.body.classList.remove('vertical-sidebar-enable')
+      document.documentElement.getAttribute('data-sidebar-size') == 'lg'
+        ? document.documentElement.setAttribute('data-sidebar-size', 'sm')
+        : document.documentElement.setAttribute('data-sidebar-size', 'lg')
     } else if (windowSize <= 767) {
-      document.body.classList.add("vertical-sidebar-enable");
-      document.documentElement.setAttribute("data-sidebar-size", "lg");
+      document.body.classList.add('vertical-sidebar-enable')
+      document.documentElement.setAttribute('data-sidebar-size', 'lg')
     }
   }
 
-  //Two column menu
-  if (document.documentElement.getAttribute("data-layout") == "twocolumn") {
-    document.body.classList.contains("twocolumn-panel") ?
-      document.body.classList.remove("twocolumn-panel") :
-      document.body.classList.add("twocolumn-panel");
+  // Two column menu
+  if (document.documentElement.getAttribute('data-layout') == 'twocolumn') {
+    document.body.classList.contains('twocolumn-panel')
+      ? document.body.classList.remove('twocolumn-panel')
+      : document.body.classList.add('twocolumn-panel')
   }
 }
 
@@ -299,7 +386,6 @@ watch(isClickOutsideUser, () => {
   if (isClickOutsideUser.value && showUserInfoPop.value) {
     showUserInfoPop.value = false
   }
-
 })
 
 const dropdownHelpRef = ref(null)
@@ -324,18 +410,18 @@ watch(isClickOutsideHelp, () => {
 
 // 切换 中英文
 const setLanguage = (locale) => {
-  i18n.global.locale = locale;
-  state.language = locale;
+  i18n.global.locale = locale
+  state.language = locale
   showChanglanPop.value = false
 }
 
 // 跳转业务首页或者系统首页
 const changeSystemHome = () => {
   // 跳转业务首页或者系统首页
-  if (state.application.CurrentSystemType == "business") {
-    _this.$router.push("/system/home")
-  } else if (state.application.CurrentSystemType == "system") {
-    _this.$router.push("/frontDesk/home")
+  if (state.application.CurrentSystemType == 'business') {
+    _this.$router.push('/system/home')
+  } else if (state.application.CurrentSystemType == 'system') {
+    _this.$router.push('/frontDesk/home')
   }
 }
 

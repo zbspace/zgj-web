@@ -1,11 +1,11 @@
 <!-- 用印申请 选中表单 -->
 <template>
-    <div class="Seal-application-Confirm-approval-process">
+    <div class="electronic-seal-apply-Confirm-approval-process">
         <componentsLayout Layout="breadcrumb,title,custom,fixed">
             <template #breadcrumb>
                 <div class="breadcrumb">
                     <el-breadcrumb separator="/">
-                        <el-breadcrumb-item>用印申请 </el-breadcrumb-item>
+                        <el-breadcrumb-item>电子签章申请 </el-breadcrumb-item>
                         <el-breadcrumb-item>新建用印申请</el-breadcrumb-item>
                     </el-breadcrumb>
                 </div>
@@ -43,35 +43,13 @@
                     <div class="PrintingProcess">
                         <documentsDetailsPortion>
                             <template #title>
-                                <div>用印流程</div>
+                                <div>签署流程</div>
                             </template>
                             <template #content>
                                 <div class="PrintingProcess-content">
-                                    <div class="PrintingProcess-content-list"
-                                        v-for="(item, index) in state.cache.PrintingProcess.list">
-                                        <div class="PrintingProcess-content-list-cont">
-                                            <div class="PrintingProcess-content-list-cont-title">
-                                                <img class="PrintingProcess-content-list-cont-title-img"
-                                                    src="@/assets/svg/yongyin-shenqing-rili-lan.svg" alt="">
-                                                <span class="PrintingProcess-content-list-cont-title-span">{{ item.title
-                                                }}</span>
-                                            </div>
-                                            <div class="PrintingProcess-content-list-cont-list"
-                                                v-for="node in item.list">
-                                                <div class="PrintingProcess-content-list-cont-list-name">{{ node.name }}
-                                                </div>
-                                                <div class="PrintingProcess-content-list-cont-list-icon">
-                                                    <img class="PrintingProcess-content-list-cont-list-icon-img"
-                                                        src="@/assets/svg/yongyin-shenqing-wenhao-hui.svg" alt="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="PrintingProcess-content-list-iocn">
-                                            <img class="PrintingProcess-content-list-iocn-img"
-                                                src="@/assets/svg/yongyin-shenqing-xiayibu.svg" alt=""
-                                                v-if="index < state.cache.PrintingProcess.list.length - 1">
-                                        </div>
-                                    </div>
+                                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
+                                        :data="state.componentsTable.data" :header="state.componentsTable.header">
+                                    </componentsTable>
                                 </div>
                             </template>
                         </documentsDetailsPortion>
@@ -92,8 +70,9 @@
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, inject, ref } from "vue"
 import { useRouter } from 'vue-router';
-import componentsLayout from "../../../components/Layout.vue"
-import documentsDetailsPortion from "../../../components/documentsDetails/portion.vue"
+import componentsLayout from "@/views/components/Layout.vue"
+import componentsTable from "@/views/components/table.vue"
+import documentsDetailsPortion from "@/views/components/documentsDetails/portion.vue"
 import SealApplicationStep from "@/views/components/Seal-application/step.vue"
 import FillFormInformation from "@/views/addDynamicFormJson/Fill-form-information.json"
 import FillFormInformationSeal from "@/views/addDynamicFormJson/Fill-form-information-seal.json"
@@ -121,10 +100,6 @@ const state = reactive({
                 name: "完成",
             },
         ],
-        formData: {},
-        optionData: {},
-        SealformData: {},
-        SealoptionData: {},
         PrintingProcess: {
             list: [
                 {
@@ -188,7 +163,91 @@ const state = reactive({
 
             ]
         }
-    }
+    },
+    componentsTable: {
+        header: [
+            {
+                prop: '0',
+                label: "签署顺序",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "签署方类型",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '2',
+                label: "签署方代表",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '3',
+                label: "签署人",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '4',
+                label: "签署人账号",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '5',
+                label: "签署人主体信息",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '6',
+                label: "使用印章",
+                sortable: true,
+                "min-width": 150,
+            },
+        ],
+        data: [
+            {
+                0: 1,
+                1: '内部联系人',
+                2: '个人',
+                3: '吴彦琛',
+                4: '137 8651 5262',
+                5: '-',
+                6: '-',
+            },
+            {
+                0: 1,
+                1: '内部联系人',
+                2: '公司',
+                3: '冯启彬',
+                4: '132 9399 2217',
+                5: '上海建业科技股份有限公司',
+                6: '法人章',
+            },
+            {
+                0: 1,
+                1: '内部联系人',
+                2: '个人',
+                3: '钱若霖',
+                4: '189 2860 9388',
+                5: '-',
+                6: '-',
+            },
+            {
+                0: 1,
+                1: '内部联系人',
+                2: '公司',
+                3: '郑盈盈',
+                4: '155 5866 1691',
+                5: '杭州么康医药有限公司',
+                6: '-',
+            },
+        ],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            stripe: true,
+            "header-cell-style": {
+                background: "var(--color-fill--3)",
+            }
+        }
+    },
 });
 const refFillFormInformation = ref(null);
 
@@ -201,7 +260,7 @@ function clickBackPage() {
 //点击提交
 function clickSubmit() {
     commonFun.routerPage(router, {
-        path: "/frontDesk/PrintControlManagement/Seal-application/accomplish"
+        path: "/frontDesk/PrintControlManagement/electronic-seal-apply/accomplish"
     })
 }
 
@@ -216,7 +275,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.Seal-application-Confirm-approval-process {
+.electronic-seal-apply-Confirm-approval-process {
     margin: 0%;
     position: relative;
 

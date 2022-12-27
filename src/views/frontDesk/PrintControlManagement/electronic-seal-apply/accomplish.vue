@@ -1,11 +1,11 @@
 <!-- 用印申请 选中表单 -->
 <template>
-    <div class="Seal-application-Confirm-approval-process">
+    <div class="electronic-seal-apply-accomplish">
         <componentsLayout Layout="breadcrumb,title,custom,fixed">
             <template #breadcrumb>
                 <div class="breadcrumb">
                     <el-breadcrumb separator="/">
-                        <el-breadcrumb-item>用印申请 </el-breadcrumb-item>
+                        <el-breadcrumb-item>电子签章申请 </el-breadcrumb-item>
                         <el-breadcrumb-item>新建用印申请</el-breadcrumb-item>
                     </el-breadcrumb>
                 </div>
@@ -13,8 +13,7 @@
             <template #title>
                 <div class="title">
                     <div class="title-desc">
-                        <img class="title-desc-img" src="../../../../assets/svg/jiantou-zuo.svg" alt=""
-                            @click="clickBackPage">
+                        <img class="title-desc-img" src="@/assets/svg/jiantou-zuo.svg" alt="" @click="clickBackPage">
                         新建用印申请
                     </div>
                     <div>
@@ -27,62 +26,27 @@
                     <div class="custom-buzhou">
                         <SealApplicationStep :data="state.cache.flowList"></SealApplicationStep>
                     </div>
-                    <div>
-                        <documentsDetailsPortion>
-                            <template #title>
-                                <div>审批流程</div>
-                            </template>
-                            <template #content>
-                                <div style="height:100px">
-
-                                </div>
-                            </template>
-                        </documentsDetailsPortion>
-
-                    </div>
-                    <div class="PrintingProcess">
-                        <documentsDetailsPortion>
-                            <template #title>
-                                <div>用印流程</div>
-                            </template>
-                            <template #content>
-                                <div class="PrintingProcess-content">
-                                    <div class="PrintingProcess-content-list"
-                                        v-for="(item, index) in state.cache.PrintingProcess.list">
-                                        <div class="PrintingProcess-content-list-cont">
-                                            <div class="PrintingProcess-content-list-cont-title">
-                                                <img class="PrintingProcess-content-list-cont-title-img"
-                                                    src="@/assets/svg/yongyin-shenqing-rili-lan.svg" alt="">
-                                                <span class="PrintingProcess-content-list-cont-title-span">{{ item.title
-                                                }}</span>
-                                            </div>
-                                            <div class="PrintingProcess-content-list-cont-list"
-                                                v-for="node in item.list">
-                                                <div class="PrintingProcess-content-list-cont-list-name">{{ node.name }}
-                                                </div>
-                                                <div class="PrintingProcess-content-list-cont-list-icon">
-                                                    <img class="PrintingProcess-content-list-cont-list-icon-img"
-                                                        src="@/assets/svg/yongyin-shenqing-wenhao-hui.svg" alt="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="PrintingProcess-content-list-iocn">
-                                            <img class="PrintingProcess-content-list-iocn-img"
-                                                src="@/assets/svg/yongyin-shenqing-xiayibu.svg" alt=""
-                                                v-if="index < state.cache.PrintingProcess.list.length - 1">
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </documentsDetailsPortion>
-                    </div>
-                </div>
-            </template>
-            <template #fixed>
-                <div class="fixed">
-                    <div class="ap-fixed">
-                        <el-button type="primary" @click="clickSubmit">提交</el-button>
-                        <el-button @click="clickBackPage">上一步</el-button>
+                    <div class="custom-cont">
+                        <div class="custom-cont-icon">
+                            <img class="custom-cont-icon-img" src="@/assets/svg/yongyin-shenqing-wancheng-lv.svg"
+                                alt="">
+                        </div>
+                        <div class="custom-cont-title">
+                            操作成功
+                        </div>
+                        <div class="custom-cont-p">
+                            请等待单据审批完成
+                        </div>
+                        <div class="custom-cont-p">
+                            单据编号：KNCH554879994000
+                        </div>
+                        <div class="custom-cont-p">
+                            用印文件名称：单据名称单据名称单据名称单据名称
+                        </div>
+                        <div class="custom-cont-but">
+                            <el-button type="primary">查看单据详情</el-button>
+                            <el-button @click="clickBackPage">返回</el-button>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -115,10 +79,10 @@ const state = reactive({
             },
             {
                 name: "确认审批流程",
-                active: true,
             },
             {
                 name: "完成",
+                active: true,
             },
         ],
         formData: {},
@@ -201,7 +165,7 @@ function clickBackPage() {
 //点击提交
 function clickSubmit() {
     commonFun.routerPage(router, {
-        path: "/frontDesk/PrintControlManagement/Seal-application/accomplish"
+        path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
     })
 }
 
@@ -216,7 +180,7 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
-.Seal-application-Confirm-approval-process {
+.electronic-seal-apply-accomplish {
     margin: 0%;
     position: relative;
 
@@ -300,57 +264,25 @@ onMounted(() => {
             }
         }
 
-        .PrintingProcess {
-            .PrintingProcess-content {
-                display: flex;
-                flex-flow: wrap;
+        .custom-cont {
+            .custom-cont-icon {
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+            }
 
-                // align-items: flex-start;
-                .PrintingProcess-content-list {
-                    // margin-right: 1rem;
-                    margin-bottom: 1rem;
-                    display: flex;
-                    align-items: center;
+            .custom-cont-title {
+                font-size: var(--font-size-title-3);
+                color: var(--color-text-1);
+                margin-bottom: 1rem;
+            }
 
-                    .PrintingProcess-content-list-cont {
-                        height: 15rem;
-                        align-self: flex-start;
-                        width: 13rem;
-                        border: 1px solid var(--color-border-1);
-                        background-color: var(--color-fill--1);
-                        padding: 1rem;
-                        box-sizing: border-box;
+            .custom-cont-p {
+                color: var(--color-text-3);
+                margin-bottom: 0.5rem;
+            }
 
-                        .PrintingProcess-content-list-cont-title {
-                            display: flex;
-                            justify-content: center;
-                            height: 2rem;
-                            align-items: center;
-                            font-size: var(--font-size-title-1);
-
-                            .PrintingProcess-content-list-cont-title-img {
-                                margin-right: 0.5rem;
-                            }
-                        }
-
-                        .PrintingProcess-content-list-cont-list {
-                            display: flex;
-                            align-items: center;
-                            justify-content: space-between;
-                            padding: 0.5rem 1rem;
-                            box-sizing: border-box;
-                        }
-                    }
-
-                    .PrintingProcess-content-list-iocn {
-                        margin-left: 1rem;
-                        margin-right: 1rem;
-                        width: 3rem;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    }
-                }
+            .custom-cont-but {
+                margin-top: 3rem;
             }
         }
 

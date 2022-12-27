@@ -16,7 +16,7 @@ import BootstrapVue3 from "bootstrap-vue-3";
 
 // import VueFeather from 'vue-feather'
 // import Particles from 'particles.vue3'
-
+import "@/assets/fonts/font.css";
 import "@/assets/scss/config/minimal/app.scss";
 // import '@vueform/slider/themes/default.css'
 
