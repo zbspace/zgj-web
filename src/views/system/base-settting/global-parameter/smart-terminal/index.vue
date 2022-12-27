@@ -63,5 +63,12 @@ const form = reactive({
 .smart-terminal-container {
   width: 100%;
   padding-top: 20px;
+
+  .label-t {
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 40px;
+    font-size: 14px;
+    margin-right: 12px;
+  }
 }
 </style>

@@ -31,8 +31,8 @@
               fs-16
               header-item
               vertical-menu-btn
-              topnav-hamburger
-              " id="topnav-hamburger-icon">
+              " id="topnav-hamburger-icon" @click="toggleHamburgerMenu">
+              <!-- topnav-hamburger -->
             <span class="hamburger-icon">
               <span></span>
               <span></span>
@@ -236,10 +236,10 @@ onMounted(() => {
   });
 
   // 添加 全屏开关监听 事件
-  if (document.getElementById("topnav-hamburger-icon"))
-    document
-      .getElementById("topnav-hamburger-icon")
-      .addEventListener("click", toggleHamburgerMenu);
+  // if (document.getElementById("topnav-hamburger-icon"))
+  //   document
+  //     .getElementById("topnav-hamburger-icon")
+  //     .addEventListener("click", toggleHamburgerMenu);
 
 })
 

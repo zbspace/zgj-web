@@ -1174,6 +1174,21 @@
               <router-link class="nav-link menu-link" :to="item.to">
                 <img class="menu-iconpark" :src="item.icon" alt="" srcset="">
                 <span data-key="t-widgets">{{ $t(item.label) }}</span>
+                <div v-show="false" class="collapse-btn" @click="toggleHamburgerMenu">
+                  <button type="button" class="
+                    btn btn-sm
+                    px-3
+                    fs-16
+                    header-item
+                    vertical-menu-btn
+                    " id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </span>
+                  </button>
+                </div>
               </router-link>
             </li>
           </div>
@@ -1807,7 +1822,47 @@ export default {
       }, 0);
     },
 
+    // 监听 菜单开关
+    toggleHamburgerMenu (){
+      var windowSize = document.documentElement.clientWidth;
 
+      if (windowSize > 767)
+        document.querySelector(".hamburger-icon").classList.toggle("open");
+
+      //For collapse horizontal menu
+      if (
+        document.documentElement.getAttribute("data-layout") === "horizontal"
+      ) {
+        document.body.classList.contains("menu") ?
+          document.body.classList.remove("menu") :
+          document.body.classList.add("menu");
+      }
+
+      //For collapse vertical menu
+      if (document.documentElement.getAttribute("data-layout") === "vertical") {
+        if (windowSize < 1025 && windowSize > 767) {
+          document.body.classList.remove("vertical-sidebar-enable");
+          document.documentElement.getAttribute("data-sidebar-size") == "sm" ?
+            document.documentElement.setAttribute("data-sidebar-size", "") :
+            document.documentElement.setAttribute("data-sidebar-size", "sm");
+        } else if (windowSize > 1025) {
+          document.body.classList.remove("vertical-sidebar-enable");
+          document.documentElement.getAttribute("data-sidebar-size") == "lg" ?
+            document.documentElement.setAttribute("data-sidebar-size", "sm") :
+            document.documentElement.setAttribute("data-sidebar-size", "lg");
+        } else if (windowSize <= 767) {
+          document.body.classList.add("vertical-sidebar-enable");
+          document.documentElement.setAttribute("data-sidebar-size", "lg");
+        }
+      }
+
+      //Two column menu
+      if (document.documentElement.getAttribute("data-layout") == "twocolumn") {
+        document.body.classList.contains("twocolumn-panel") ?
+          document.body.classList.remove("twocolumn-panel") :
+          document.body.classList.add("twocolumn-panel");
+      }
+    }
   },
 };
 </script>
@@ -1830,5 +1885,11 @@ export default {
   top: 16.5px;
   transition: all .4s ease-in-out;
   opacity: 0.5;
+}
+.collapse-btn {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>
