@@ -216,77 +216,51 @@ const state = reactive({
                     }
                 ]
             },
-        ],
-        bindData: [
-            {
-                name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
-                mac: 'E28554700000',
-                state: 0,
-                inBoxState: 1,
-                operateName: '马丽丽',
-                operateTime: '2022-12-26 18:00:00',
-                isbind: false,
-                position: 1,
-                bindState: 1,
-            },
-            {
-                name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
-                mac: 'E28554700000',
-                state: 0,
-                inBoxState: 0,
-                operateName: '马丽丽',
-                operateTime: '2022-12-26 18:00:00',
-                isbind: false,
-                position: 2,
-                bindState: 0
-
-            },
-            {
-                name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
-                mac: 'E28554700000',
-                state: 0,
-                inBoxState: 0,
-                operateName: '马丽丽',
-                operateTime: '2022-12-26 18:00:00',
-                isbind: false,
-                position: 3,
-                bindState: 1
-            },
-            {
-                name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
-                mac: 'E28554700000',
-                state: -2,
-                inBoxState: 0,
-                operateName: '马丽丽',
-                operateTime: '2022-12-26 18:00:00',
-                isbind: false,
-                position: 4,
-                bindState: 1,
-                yBoxCode: 'A-1-2',
-                yPosition: '5'
-            },
-            {
-                name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
-                mac: 'E28554700000',
-                state: -1,
-                inBoxState: 0,
-                operateName: '马丽丽',
-                operateTime: '2022-12-26 18:00:00',
-                isbind: false,
-                position: 5,
-                bindState: 1
-            },
-            {
-                name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
-                mac: 'E28554700000',
-                state: 0,
-                inBoxState: 1,
-                operateName: '马丽丽',
-                operateTime: '2022-12-26 18:00:00',
-                isbind: false,
-                position: 6,
-                bindState: 1
-            }
+            // {
+            //     position: 7,
+            //     bindState: 1,
+            //     productList: [
+            //         {
+            //             name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
+            //             mac: 'E28554700000',
+            //             state: 0,
+            //             inBoxState: 1,
+            //             operateName: '马丽丽',
+            //             operateTime: '2022-12-26 18:00:00',
+            //             isbind: false,
+            //         }
+            //     ]
+            // },
+            // {
+            //     position: 8,
+            //     bindState: 1,
+            //     productList: [
+            //         {
+            //             name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
+            //             mac: 'E28554700000',
+            //             state: 0,
+            //             inBoxState: 1,
+            //             operateName: '马丽丽',
+            //             operateTime: '2022-12-26 18:00:00',
+            //             isbind: false,
+            //         }
+            //     ]
+            // },
+            // {
+            //     position: 9,
+            //     bindState: 1,
+            //     productList: [
+            //         {
+            //             name: '普通印章(锁)普通印章(锁) 普通印章(锁) 普通印章(锁)  ',
+            //             mac: 'E28554700000',
+            //             state: 0,
+            //             inBoxState: 1,
+            //             operateName: '马丽丽',
+            //             operateTime: '2022-12-26 18:00:00',
+            //             isbind: false,
+            //         }
+            //     ]
+            // },
         ],
         processData: {
             header: [{
@@ -414,7 +388,17 @@ function handleGrid() {
             gridData2.push(item);
         }
     })
-    return [gridData1, gridData2]
+    let newArr = [];
+    gridData1.map((item,index) => {
+        let curArr = [];
+        curArr.push(item)
+        if(gridData2[index]){
+            curArr.push(gridData2[index])
+        }
+        newArr.push(curArr);
+    })
+    // [gridData1, gridData2]
+    return newArr;
 }
 
 onBeforeMount(() => {
@@ -518,15 +502,18 @@ onMounted(() => {
         }
 
         .seal-column-wrap {
-            display: flex;
-            justify-content: space-between;
+            // display: flex;
+            // justify-content: space-between;
 
             .seal-column-item {
-                width: 49%;
+                width: 100%;
+                display:flex;
+                justify-content: space-between;
             }
         }
 
         .seal-item {
+            width:49%;
             background: #FFFFFF;
             padding: 16px;
             padding-bottom:50px;

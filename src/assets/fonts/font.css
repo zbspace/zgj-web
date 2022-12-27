@@ -2,7 +2,7 @@
     /* 重命名字体名 */
     font-family: 'DIN';
     /* 引入字体 */
-    src: url('./DIN-BoldItalic.otf');
+    src: url('./DIN-Medium.otf');
     font-weight: normal;
     font-style: normal;
 }
