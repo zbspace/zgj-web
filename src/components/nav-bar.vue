@@ -4,7 +4,7 @@
       <div class="navbar-header header-content">
         <div class="d-flex">
           <!-- LOGO -->
-          <div class="navbar-brand-box horizontal-logo">
+          <div class="navbar-brand-box horizontal-logo logo-p-t">
             <router-link
               to="/"
               class="logo logo-dark"
