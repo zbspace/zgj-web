@@ -12,6 +12,13 @@ import Center from './center'
 import Bottom from './bottom'
 </script>
 
+<script>
+import { defineComponent } from 'vue'
+export default defineComponent({
+  name: 'CompanyName'
+})
+</script>
+
 <style lang="scss" scoped>
 .comp-info {
   height: calc(100vh - 100px);
