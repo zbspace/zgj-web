@@ -32,7 +32,8 @@ module.exports = {
   ],
   rules: {
     'eol-last': 0,
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    'vue/attribute-hyphenation': 'off'
   },
   // vue的全局api，添加之后就不在校验
   globals: {

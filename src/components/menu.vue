@@ -1422,7 +1422,7 @@ export default {
                   label: "t-zgj-cg-menu-zhineng-yinzhang-he-guanli",
                 }, {
                   name: "智能印章盒格口管理",
-                  to: "/frontDesk/home",
+                  to: "/frontDesk/PrintControlManagement/Grid-management/SealBoxGrid",
                   label: "t-zgj-cg-menu-zhineng-yinzhang-he-gekou-guanli",
                 }]
               },
@@ -1436,7 +1436,7 @@ export default {
                   label: "t-zgj-cg-menu-zhineng-yinzhang-gui-guanli",
                 }, {
                   name: "智能印章柜格口管理",
-                  to: "/frontDesk/home",
+                  to: "/frontDesk/PrintControlManagement/Grid-management/CabinetGrid",
                   label: "t-zgj-cg-menu-zhineng-yinzhang-gui-gekou-guanli",
                 }]
               },

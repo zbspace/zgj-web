@@ -10,6 +10,7 @@ import store from "./state/store";
 
 import BootstrapVue3 from "bootstrap-vue-3";
 
+import "@/assets/fonts/font.css";
 import "@/assets/scss/config/minimal/app.scss";
 
 import ElementPlus from "element-plus";
