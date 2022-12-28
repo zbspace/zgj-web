@@ -760,6 +760,7 @@
     "t-zgj-colum.waterFileMust": "开启防伪水印，附件需强制必传",
     "t-zgj-operation.submit": "提交",
     "t-zgj-operation.cancel": "取消",
+    "t-zgj-operation.ocrsubmit":"开始核验",
     "t-zgj-alert.notAllowedModifyConfirmer": "不允许修改盖章确认人",
     "t-zgj-text.SelectUser": "选择用户",
     "t-zgj-text.SelectProcess": "选择流程",

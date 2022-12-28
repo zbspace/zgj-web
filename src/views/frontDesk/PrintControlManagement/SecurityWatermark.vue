@@ -61,6 +61,8 @@ import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import { ElMessage,ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -758,6 +760,11 @@ function customClick(row, column, cell, event) {
             .then(() => {
                 
             })
+    }
+    if(cell.name === '查看验证记录'){
+        router.push({
+            path: "/frontDesk/PrintControlManagement/File-checkRecord/WaterCheckRecord"
+        })
     }
 }
 onBeforeMount(() => {

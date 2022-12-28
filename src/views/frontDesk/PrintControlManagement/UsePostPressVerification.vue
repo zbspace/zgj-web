@@ -30,8 +30,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -47,6 +47,34 @@
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
             </componentsDocumentsDetails>
         </div>
+        <!-- test - dialog -->
+        <KDialog @update:show="state.showDialog = $event" :show="state.showDialog" title="上传文件核验" :oneBtn="true"
+            :confirmText="$t('t-zgj-operation.ocrsubmit')" :concelText="$t('t-zgj-operation.cancel')">
+            <div>单据名称</div>
+            <div class="files-base">
+                <div class="files-radio">
+                    <el-radio-group v-model="state.filesRadio">
+                        <div class="files-item" v-for="(item, index) in state.files">
+                            <el-radio :label="item.label">{{ item.fileName }}</el-radio>
+                        </div>
+                    </el-radio-group>
+                </div>
+                <div class="upload-file">
+                    <el-upload class="upload-demo" drag
+                        action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" multiple>
+                        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+                        <div class="el-upload__text">
+                            Drop file here or <em>click to upload</em>
+                        </div>
+                        <template #tip>
+                            <div class="el-upload__tip">
+                                jpg/png files with a size less than 500kb
+                            </div>
+                        </template>
+                    </el-upload>
+                </div>
+            </div>
+        </KDialog>
     </div>
 </template>
 <script setup>
@@ -60,6 +88,10 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import KDialog from "@/views/components/modules/kdialog.vue"
+import { useRouter } from 'vue-router'
+import { UploadFilled } from '@element-plus/icons-vue'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -69,6 +101,7 @@ const props = defineProps({
 })
 const emit = defineEmits([]);
 const state = reactive({
+    showDialog: false,
     componentsTabs: {
         data: [{
             label: '未核验',
@@ -396,7 +429,26 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    filesRadio: 1,
+    files: [
+        {
+            fileName: '附件名称1',
+            id: '',
+            label: 1,
+        },
+        {
+            fileName: '附件名称2',
+            id: '',
+            label: 2,
+        },
+        {
+            fileName: '附件名称3',
+            id: '',
+            label: 3,
+        }
+    ],
+    activeName: 1,
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -413,6 +465,7 @@ function clickClose() {
 // 切换分页
 function tabChange(activeName) {
     // console.log(activeName);
+    state.activeName = activeName;
     if (activeName == "1") {
         state.componentsTable.header = [{
             width: 50,
@@ -790,6 +843,19 @@ function tabChange(activeName) {
         ];
     }
 }
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '查看核验记录') {
+        router.push({
+            path: "/frontDesk/PrintControlManagement/File-checkRecord/OcrCheckRecord",
+            query: {
+                record: `post${state.activeName}`
+            }
+        })
+    } else {//上传文件核验
+        state.showDialog = true;
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 
@@ -808,5 +874,8 @@ onMounted(() => {
         justify-content: space-between;
     }
 
+    .el-radio-group {
+        flex-direction: column;
+    }
 }
 </style>

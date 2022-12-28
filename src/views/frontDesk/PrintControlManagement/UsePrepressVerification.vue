@@ -31,7 +31,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -60,6 +60,8 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -396,7 +398,8 @@ const state = reactive({
                 name: "Record-of-requisition",
             },
         ],
-    }
+    },
+    activeName:1,
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -412,6 +415,7 @@ function clickClose() {
 
 // 切换分页
 function tabChange(activeName) {
+    state.activeName = activeName;
     // console.log(activeName);
     if (activeName == "1") {
         state.componentsTable.header = [{
@@ -795,7 +799,31 @@ function tabChange(activeName) {
         ];
     }
 }
-
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '上传文件核验') {
+        // ElMessageBox.confirm(
+        //     '请问确认要取消水印验证吗？',
+        //     '取消水印验证',
+        //     {
+        //         confirmButtonText: '确定',
+        //         cancelButtonText: '取消',
+        //         type: 'warning',
+        //     }
+        // )
+        //     .then(() => {
+                
+        //     })
+    }
+    if(cell.name === '查看核验记录'){
+        router.push({
+            path: "/frontDesk/PrintControlManagement/File-checkRecord/OcrCheckRecord",
+            query:{
+                record:`pre${state.activeName}`
+            }
+        })
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

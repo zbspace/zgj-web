@@ -173,6 +173,24 @@ export default [
               ),
           },
           {
+            path: "File-checkRecord/WaterCheckRecord",
+            name: "WaterCheckRecord",
+            meta: { title: "WaterCheckRecord", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/File-checkRecord/WaterCheckRecord.vue"
+              ),
+          },
+          {
+            path: "File-checkRecord/OcrCheckRecord",
+            name: "OcrCheckRecord",
+            meta: { title: "OcrCheckRecord", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/File-checkRecord/OcrCheckRecord.vue"
+              ),
+          },
+          {
             path: "Grid-management/SealBoxGrid",
             name: "SealBoxGrid",
             meta: { title: "SealBoxGrid", authRequired: true },
@@ -383,7 +401,7 @@ export default [
             "../views/frontDesk/PrintControlManagement/IntelligentSealCabinetManagement.vue"
           ),
       },
-      
+
       {
         path: "PrintControlManagement/ElectronicSignatureRequired",
         name: "PrintControlManagement-ElectronicSignatureRequired",
