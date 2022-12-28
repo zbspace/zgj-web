@@ -12,9 +12,9 @@
                     </div>
                 </template>
                 <!-- 自定义内容显示 -->
-                <template #default="scope" v-if="item.customDisplayType == 'custom'">
+                <template #default="scope" v-else-if="item.customDisplayType == 'custom'">
                     <div class="custom">
-                        <slot name="custom"></slot>
+                        <slot :name="'custom_' + item.prop"></slot>
                     </div>
                 </template>
                 <!-- 自定义内容显示 -->

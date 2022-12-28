@@ -36,8 +36,46 @@
                                 <div>签署信息</div>
                             </template>
                             <template #content>
-                                <div>
-                                  
+                                <div class="Signature-content">
+                                    <el-table :data="state.componentsTable.data" style="width: 100%">
+                                        <el-table-column prop="1" label="Date" width="180"></el-table-column>
+                                        <el-table-column prop="2" label="Name" width="180"></el-table-column>
+                                        <el-table-column prop="3" label="Address">
+                                            <template #default="scope">
+                                                <div v-if="scope.row.showType == 'input'">
+                                                    <div v-if="scope.row.disable == true">
+                                                        <el-input class="ap-box-contBox-input width-100" readonly
+                                                            disabled v-model="scope.row[3]" />
+                                                    </div>
+                                                    <div v-else>
+                                                        <el-input class="ap-box-contBox-input width-100" />
+                                                    </div>
+                                                </div>
+                                                <div v-else-if="scope.row.showType == 'select'">
+                                                    <div>
+                                                        <el-select class="width-100" v-model="scope.row.value">
+                                                            <el-option v-for="data in scope.row.options"
+                                                                :key="data.value" :label="data.label"
+                                                                :value="data.value" />
+                                                        </el-select>
+                                                    </div>
+                                                </div>
+                                                <div class="derivable" v-else-if="scope.row.showType == 'derivable'">
+                                                    <div class="derivable-input">
+                                                        <el-input class="ap-box-contBox-input width-100" readonly
+                                                            v-model="scope.row[3]" />
+                                                    </div>
+                                                    <div class="ap-box-contBox derivable-click">
+                                                        <el-input class="ap-box-contBox-input width-100" readonly />
+                                                        <div class="ap-box-contBox-icon">
+                                                            <img class="ap-box-contBox-icon-img"
+                                                                src="@/assets/svg/ketanchude.svg" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
                                 </div>
                             </template>
                         </documentsDetailsPortion>
@@ -86,7 +124,102 @@ const state = reactive({
                 name: "完成",
             },
         ],
-    }
+    },
+    componentsTable: {
+        header: [
+            {
+                prop: '0',
+                label: "签署顺序",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "签署方类型",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '2',
+                label: "签署方代表",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '3',
+                label: "签署人",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '4',
+                label: "签署人账号",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '5',
+                label: "签署人主体信息",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '6',
+                label: "使用印章",
+                sortable: true,
+                "min-width": 150,
+            },
+        ],
+        data: [
+            {
+                0: 1,
+                1: '内部联系人',
+                2: '个人',
+                3: '吴彦琛',
+                4: '137 8651 5262',
+                5: '-',
+                6: '-',
+                showType: "input",
+            },
+            {
+                0: 1,
+                1: '内部联系人',
+                2: '公司',
+                3: '冯启彬',
+                4: '132 9399 2217',
+                5: '上海建业科技股份有限公司',
+                6: '法人章',
+                showType: "select",
+                options: [
+                    {
+                        label: "1",
+                        value: "个人"
+                    }
+                ]
+            },
+            {
+                0: 1,
+                1: '内部联系人',
+                2: '个人',
+                3: '钱若霖',
+                4: '189 2860 9388',
+                5: '-',
+                6: '-',
+                showType: "derivable",
+            },
+            {
+                0: 1,
+                1: '内部联系人',
+                2: '公司',
+                3: '郑盈盈',
+                4: '155 5866 1691',
+                5: '杭州么康医药有限公司',
+                6: '-',
+                showType: "input",
+                disable: true,
+            },
+        ],
+        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        defaultAttribute: {
+            stripe: true,
+            "header-cell-style": {
+                background: "var(--color-fill--3)",
+            }
+        }
+    },
 });
 const refFillFormInformation = ref(null);
 
@@ -198,7 +331,49 @@ onMounted(() => {
             }
         }
 
+        .Signature-content {
+            .derivable {
+                display: flex;
 
+                .derivable-input {
+                    width: 50%;
+                    padding-right: 0.5rem;
+                    box-sizing: border-box;
+                }
+
+                .derivable-click {
+                    width: 50%;
+                    padding-left: 0.5rem;
+                    box-sizing: border-box;
+                }
+
+                .ap-box-contBox {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+
+                    .ap-box-contBox-icon {
+                        position: absolute;
+                        right: 0.8rem;
+                        cursor: pointer;
+                        height: 50%;
+                        display: flex;
+                        align-items: center;
+
+                        .ap-box-contBox-icon-img {
+                            height: 100%;
+                        }
+                    }
+
+                    :deep {
+                        .el-input__inner {
+                            padding-right: 1.5rem;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .ap-fixed {
@@ -212,6 +387,10 @@ onMounted(() => {
         border-top: 1px solid var(--color-border-2);
         background-color: var(--in-common-use-1);
         z-index: 999;
+    }
+
+    .width-100 {
+        width: 100%;
     }
 }
 </style>
