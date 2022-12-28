@@ -208,7 +208,7 @@ const state = reactive({
       {
         prop: '0',
         label: '序号',
-        width: 100
+        width: 80
       },
       {
         prop: '1',
@@ -255,11 +255,20 @@ const state = reactive({
       {
         prop: '8',
         label: '操作',
-        'min-width': 100,
+        'min-width': 200,
         fixed: 'right',
         rankDisplayData: [
           {
-            name: '修改'
+            name: '编辑'
+          },
+          {
+            name: '复制'
+          },
+          {
+            name: '删除'
+          },
+          {
+            name: '其他操作'
           }
         ]
       }
