@@ -24,7 +24,7 @@
     </div>
 
     <!-- content -->
-    <div class="inner-page-content">
+    <div class="inner-page-content1">
 
       <div class="l-title">标题名称</div>
 
@@ -77,7 +77,7 @@ const router = useRouter()
       }
     }
     
-    .inner-page-content {
+    .inner-page-content1 {
 
       .l-title {
         position: relative;

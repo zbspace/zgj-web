@@ -30,7 +30,8 @@
                 <div class="batch">
                     <el-button @click="(showDialog = true)">弹框Demo</el-button>
                     <el-button @click="(showDepPerDialog = true)">组织选择</el-button>
-                    <el-button @click="goInnerPage">二级页面</el-button>
+                    <el-button @click="goInnerTablePage">二级表格页面</el-button>
+                    <el-button @click="goInnerPage('/frontDesk/PrintControlManagement/innerPage')">二级页面</el-button>
                     <el-button :plain="true" @click="open2">成功消息</el-button>
                     <el-button :plain="true" @click="open3">询问消息</el-button>
                     <el-button :plain="true" @click="open4">异常消息</el-button>

@@ -43,7 +43,7 @@
         </componentsLayout>
         <!-- 动态表单 -->
         <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增" :centerBtn="true"
-          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600"
+          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="800"
           @close="submitForm">
           <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
           </v-form-render>
@@ -67,7 +67,7 @@ import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
 import KDialog from "@/views/components/modules/kdialog.vue"
-import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
+import FormJson from '@/views/addDynamicFormJson/editorSealBox.json'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 const props = defineProps({

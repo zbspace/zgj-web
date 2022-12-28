@@ -8,12 +8,33 @@
         <div class="name">
           上海建业信息科技股份有限公司
         </div>
-        <div class="label">
-          <span>上海测试专属</span>
+        <div
+          class="label"
+          v-if="!edit"
+        >
+          <span>{{ input }}</span>
           <img
             :src="inputIcon"
             alt=""
+            @click="edit = !edit"
           >
+        </div>
+        <div
+          v-if="edit"
+          class="input"
+        >
+          <el-input
+            v-model="input"
+            placeholder="请输入新的头部系统显示名称"
+          />
+          <span
+            class="save"
+            @click="save"
+          >保存</span>
+          <span
+            class="cancel"
+            @click="cancel"
+          >取消</span>
         </div>
       </div>
     </div>
@@ -22,7 +43,11 @@
 
 <script setup>
 import inputIcon from '@/assets/svg/system/comp-info/input.svg'
-
+import { ref } from 'vue'
+const input = ref('上海测试专属')
+const edit = ref(false)
+const save = () => { edit.value = !edit.value }
+const cancel = () => { edit.value = !edit.value }
 </script>
 
 <style lang="scss" scoped>
@@ -32,7 +57,6 @@ import inputIcon from '@/assets/svg/system/comp-info/input.svg'
   width: 100%;
   border-radius: 4px;
   padding:  24px 16px;
-  margin-top: 24px;
   .bg{
       background: rgba(105, 70, 70, 0.04);
       border-radius: 4px;
@@ -61,13 +85,40 @@ import inputIcon from '@/assets/svg/system/comp-info/input.svg'
           color: #212529;
         }
         .label {
+          display: flex;
           span {
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
             line-height: 22px;
             color: #212529;
-            margin-right: 14px;
+          }
+          img {
+            cursor: pointer;
+            margin-left: 14px;
+          }
+        }
+        .input {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          .save {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+            color: #3E78D0;
+            margin-right: 12px;
+            margin-left: 18px;
+            cursor: pointer;
+            width: 42px;
+          }
+          .cancel {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+            color: rgba(0, 0, 0, 0.45);
+            cursor: pointer;
+            width: 42px;
           }
         }
       }

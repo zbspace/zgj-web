@@ -44,7 +44,8 @@ const handleTab = (val) => {
     color: rgba(0, 0, 0, 0.45);
     height: 30px;
     line-height: 24px;
-    margin: 0 14px;
+    // margin: 0 14px;
+    margin-right: 24px;
     cursor: pointer;
   }
 
