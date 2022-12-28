@@ -1,74 +1,111 @@
 <template>
-  <div>
+  <div class="message-center-event">
     <componentsLayout Layout="title,searchForm,table,pagination,tabs,tree">
       <template #title>
-        <div class="title">消息事件</div>
+        <div class="title">
+          消息事件
+        </div>
       </template>
 
       <template #tabs>
         <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
+          <componentsTabs
+            active-name="1"
+            @tab-change="tabChange"
+            :data="state.componentsTabs.data"
+          />
         </div>
       </template>
 
       <template #searchForm>
         <div>
-          <componentsSearchForm :data="state.componentsSearchForm.data" :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style">
-          </componentsSearchForm>
+          <componentsSearchForm
+            :data="state.componentsSearchForm.data"
+            :but-data="state.componentsSearchForm.butData"
+            :style="state.componentsSearchForm.style"
+          />
         </div>
       </template>
 
       <template #tree>
         <div>
-          <componentsTree :data="state.componentsTree.data" :defaultAttribute="state.componentsTree.defaultAttribute">
-          </componentsTree>
+          <template
+            v-for="item,index in state.componentsTree.filter(v => { return v.type === activeName})"
+            :key="index"
+          >
+            <div
+              class="type"
+              v-if="item.children && item.children.length"
+            >
+              <img
+                :src="icon"
+                alt=""
+              >
+              <span>{{ item.label }}</span>
+            </div>
+
+            <template
+              v-for="item1,index1 in item.children"
+              :key="index1"
+            >
+              <div class="item">
+                {{ item1.label }}
+              </div>
+            </template>
+          </template>
         </div>
       </template>
 
       <template #table>
         <div>
-          <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" :data="state.componentsTable.data"
-            :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick">
-          </componentsTable>
+          <componentsTable
+            :default-attribute="state.componentsTable.defaultAttribute"
+            :data="state.componentsTable.data"
+            :header="state.componentsTable.header"
+            :is-selection="true"
+            @cell-click="cellClick"
+          />
         </div>
       </template>
 
       <template #pagination>
-        <componentsPagination :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute">
-        </componentsPagination>
+        <componentsPagination
+          :data="state.componentsPagination.data"
+          :default-attribute="state.componentsPagination.defaultAttribute"
+        />
       </template>
     </componentsLayout>
     <!-- 消息时间详情 -->
     <div class="ap-box">
-      <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
-        :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
-      </componentsDocumentsDetails>
+      <componentsDocumentsDetails
+        :show="state.componentsDocumentsDetails.show"
+        :visible="state.componentsDocumentsDetails.visible"
+        @click-close="clickClose"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
-import componentsTable from "@/views/components/table";
-import componentsSearchForm from "@/views/components/searchForm";
-import componentsPagination from "@/views/components/pagination.vue";
-import componentsLayout from "@/views/components/Layout.vue";
-import componentsTabs from "@/views/components/tabs.vue"
-import componentsTree from "@/views/components/tree"
-import componentsDocumentsDetails from "@/views/components/documentsDetails.vue"
+import { reactive, ref } from 'vue'
+import componentsTable from '@/views/components/table'
+import componentsSearchForm from '@/views/components/searchForm'
+import componentsPagination from '@/views/components/pagination.vue'
+import componentsLayout from '@/views/components/Layout.vue'
+import componentsTabs from '@/views/components/tabs.vue'
+import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
+import icon from '@/assets/svg/system/message-center/icon.svg'
+const activeName = ref('1')
 const state = reactive({
 
   componentsTabs: {
     data: [
       {
-        label: '正常登录日志',
-        name: "1",
+        label: '通知事件',
+        name: '1'
       }, {
-        label: '异常登录日志',
-        name: "2",
+        label: '预警事件',
+        name: '2'
       }
     ]
   },
@@ -76,293 +113,406 @@ const state = reactive({
   componentsSearchForm: {
     style: {
       lineStyle: {
-        width: "30%",
+        width: '30%'
       },
       labelStyle: {
-        width: "100px",
-      },
+        width: '100px'
+      }
     },
 
     data: [
       {
-        id: "name",
-        label: "关键词",
-        type: "input",
+        id: 'name',
+        label: '关键词',
+        type: 'input',
         inCommonUse: true,
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
-          placeholder: "请输入",
-        },
-      },
-      {
-        id: 'picker',
-        label: "选择时间",
-        type: "picker",
-        inCommonUse: true,
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-          type: "daterange",
-          "start-placeholder": "开始时间",
-          "end-placeholder": "结束时间"
-        },
-        style: {
-
+          placeholder: '请输入'
         }
       },
+      // {
+      //   id: 'picker',
+      //   label: '选择时间',
+      //   type: 'picker',
+      //   inCommonUse: true,
+      //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      //   defaultAttribute: {
+      //     type: 'daterange',
+      //     'start-placeholder': '开始时间',
+      //     'end-placeholder': '结束时间'
+      //   },
+      //   style: {
+
+      //   }
+      // },
       {
-        id: "name",
-        label: "xx",
-        type: "select",
+        id: 'name',
+        label: '状态',
+        type: 'select',
         inCommonUse: true,
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
-          placeholder: "请选择",
+          placeholder: '请选择'
         },
         options: [
           {
-            value: "Option1",
-            label: "Option1",
+            value: 'Option1',
+            label: 'Option1'
           },
           {
-            value: "Option2",
-            label: "Option2",
-          },
-        ],
-      },
+            value: 'Option2',
+            label: 'Option2'
+          }
+        ]
+      }
     ],
     butData: [
       {
-        id: "more",
-        name: "展开",
-        type: "unfold",
+        id: 'more',
+        name: '展开',
+        type: 'unfold',
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
-          type: "primary",
+          type: 'primary'
         },
-        style: {},
+        style: {}
       },
       {
-        id: "inquire",
-        name: "查询",
-        type: "click",
+        id: 'inquire',
+        name: '查询',
+        type: 'click',
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
-          type: "primary",
+          type: 'primary'
         },
-        style: {},
+        style: {}
       },
       {
-        id: "reset",
-        name: "重置",
-        type: "click",
+        id: 'reset',
+        name: '重置',
+        type: 'click',
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {},
-        style: {},
-      },
-    ],
+        style: {}
+      }
+    ]
   },
 
   componentsTable: {
     header: [
       {
         width: 50,
-        type: "selection",
+        type: 'selection'
       },
       {
-        prop: "0",
-        label: "序号",
-        width: 100,
+        prop: '0',
+        label: '序号',
+        width: 100
       },
       {
-        prop: "1",
-        label: "xxx",
+        prop: '1',
+        label: '事件类别',
         sortable: true,
-        "min-width": 150,
+        'min-width': 150
       },
+      {
+        prop: '2',
+        label: '事件名称',
+        sortable: true,
+        'min-width': 150
+      },
+      {
+        prop: '3',
+        label: '事件描述',
+        sortable: true,
+        'min-width': 150
+      },
+      {
+        prop: '4',
+        label: '更新时间',
+        sortable: true,
+        'min-width': 150
+      },
+      {
+        prop: '5',
+        label: '开启状态',
+        sortable: true,
+        'min-width': 150
+      },
+      {
+        prop: '6',
+        label: '通知人',
+        sortable: true,
+        'min-width': 150
+      },
+      {
+        prop: '7',
+        label: '触发渠道',
+        sortable: true,
+        'min-width': 150
+      },
+      {
+        prop: '8',
+        label: '操作',
+        'min-width': 100,
+        fixed: 'right',
+        rankDisplayData: [
+          {
+            name: '修改'
+          }
+        ]
+      }
     ],
     data: [
       {
-        1: "TradeCode21",
-        2: "",
-        3: "往往",
-        4: "",
-        5: "2022/10/30",
-        6: "",
+        1: '用印申请',
+        2: '用印申请',
+        3: '事件描述',
+        4: '2022/10/30',
+        5: '启用',
+        6: '小张',
+        7: '钉钉'
       },
       {
-        1: "TradeCode21",
-        2: "",
-        3: "往往",
-        4: "",
-        5: "2022/10/30",
-        6: "",
+        1: '用印申请',
+        2: '用印申请',
+        3: '事件描述',
+        4: '2022/10/30',
+        5: '启用',
+        6: '小张',
+        7: '钉钉'
       },
       {
-        1: "TradeCode21",
-        2: "",
-        3: "往往",
-        4: "",
-        5: "2022/10/30",
-        6: "",
+        1: '用印申请',
+        2: '用印申请',
+        3: '事件描述',
+        4: '2022/10/30',
+        5: '启用',
+        6: '小张',
+        7: '钉钉'
       },
       {
-        1: "TradeCode21",
-        2: "",
-        3: "往往",
-        4: "",
-        5: "2022/10/30",
-        6: "",
+        1: '用印申请',
+        2: '用印申请',
+        3: '事件描述',
+        4: '2022/10/30',
+        5: '启用',
+        6: '小张',
+        7: '钉钉'
       },
       {
-        1: "TradeCode21",
-        2: "",
-        3: "往往",
-        4: "",
-        5: "2022/10/30",
-        6: "",
+        1: '用印申请',
+        2: '用印申请',
+        3: '事件描述',
+        4: '2022/10/30',
+        5: '启用',
+        6: '小张',
+        7: '钉钉'
       },
       {
-        1: "TradeCode21",
-        2: "",
-        3: "往往",
-        4: "",
-        5: "2022/10/30",
-        6: "",
+        1: '用印申请',
+        2: '用印申请',
+        3: '事件描述',
+        4: '2022/10/30',
+        5: '启用',
+        6: '小张',
+        7: '钉钉'
       },
       {
-        1: "TradeCode21",
-        2: "",
-        3: "往往",
-        4: "",
-        5: "2022/10/30",
-        6: "",
-      },
-      {
-        1: "TradeCode21",
-        2: "",
-        3: "往往",
-        4: "",
-        5: "2022/10/30",
-        6: "",
-      },
+        1: '用印申请',
+        2: '用印申请',
+        3: '事件描述',
+        4: '2022/10/30',
+        5: '启用',
+        6: '小张',
+        7: '钉钉'
+      }
     ],
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
       stripe: true,
-      "header-cell-style": {
-        background: "var(--color-fill--1)",
+      'header-cell-style': {
+        background: 'var(--color-fill--1)'
       },
-      "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+      'cell-style': ({ row, column, rowIndex, columnIndex }) => {
         // console.log({ row, column, rowIndex, columnIndex });
-        if (column.property == "1") {
+        if (column.property === '1') {
           return {
-            "color": "var(--Info-6)",
-            "cursor": "pointer",
+            color: 'var(--Info-6)',
+            cursor: 'pointer'
           }
         }
       }
-    },
+    }
   },
 
   componentsPagination: {
     data: {
       amount: 400,
       index: 1,
-      pageNumber: 80,
+      pageNumber: 80
     },
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
-      layout: "sizes, prev, pager, next, jumper",
+      layout: 'sizes, prev, pager, next, jumper',
       total: 500,
-      "page-sizes": [10, 100, 200, 300, 400],
-      background: true,
-    },
-  },
-
-  componentsTree: {
-    data: [
-      {
-        label: '用印申请',
-        children: [
-          {
-            label: '用印申请',
-          },
-          {
-            label: '转办申请',
-          },
-          {
-            label: '重置用印申请',
-          },
-        ],
-      },
-      {
-        label: '印章申请',
-        children: [
-          {
-            label: '刻章申请',
-          },
-          {
-            label: '停用申请',
-          },
-          {
-            label: '启用申请',
-          },
-          {
-            label: '销毁申请',
-          },
-          {
-            label: '变更申请',
-          },
-          {
-            label: '换章申请',
-          },
-        ],
-      },
-      {
-        label: '文件申请',
-        children: [
-          {
-            label: '借阅申请',
-          },
-        ],
-      },
-    ],
-    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-    defaultAttribute: {
-      "check-on-click-node": true,
-      "show-checkbox": false,
-      "default-expand-all": true,
-      "expand-on-click-node": false,
-      "check-strictly": true,
+      'page-sizes': [10, 100, 200, 300, 400],
+      background: true
     }
   },
+
+  componentsTree:
+   [
+     {
+       label: '用印申请',
+       type: '1',
+       children: [
+         {
+           label: '用印申请'
+         },
+         {
+           label: '转办申请'
+         },
+         {
+           label: '重置用印申请'
+         }
+       ]
+     },
+     {
+       label: '印章申请',
+       type: '1',
+       children: [
+         {
+           label: '刻章申请'
+         },
+         {
+           label: '停用申请'
+         },
+         {
+           label: '启用申请'
+         },
+         {
+           label: '销毁申请'
+         },
+         {
+           label: '变更申请'
+         },
+         {
+           label: '换章申请'
+         }
+       ]
+     },
+     {
+       label: '智能用印',
+       type: '2',
+       children: [
+         {
+           label: 'xxx'
+         },
+         {
+           label: 'xxx'
+         },
+         {
+           label: 'xxx'
+         }
+       ]
+     },
+     {
+       label: '智能印章盒',
+       type: '2',
+       children: [
+         {
+           label: 'xxx'
+         },
+         {
+           label: 'xxx'
+         },
+         {
+           label: 'xxx'
+         }
+       ]
+     },
+     {
+       label: '智能印章柜',
+       type: '2',
+       children: [
+         {
+           label: 'xxx'
+         },
+         {
+           label: 'xxx'
+         },
+         {
+           label: 'xxx'
+         }
+       ]
+     }
+
+   ],
+
   componentsDocumentsDetails: {
     show: false,
     visible: [
       {
         label: '通知事件详情',
-        name: "Notification-Event-Details",
+        name: 'Notification-Event-Details'
       },
       {
         label: '流程记录',
-        name: "operating-record",
-      },
-    ],
+        name: 'operating-record'
+      }
+    ]
   }
-});
+})
 // 点击表格单元格
-function cellClick(row, column, cell, event) {
-  console.log(row, column, cell, event);
-  if (column.property == "1") {
-    state.componentsDocumentsDetails.show = true;
+function cellClick (row, column, cell, event) {
+  console.log(row, column, cell, event)
+  if (column.property === '1') {
+    state.componentsDocumentsDetails.show = true
   }
 }
-//点击关闭
-function clickClose() {
-  state.componentsDocumentsDetails.show = false;
+// 点击关闭
+function clickClose () {
+  state.componentsDocumentsDetails.show = false
+}
+
+function tabChange (active) {
+  activeName.value = active
 }
 </script>
 
 <style lang="scss" scoped>
-
+.message-center-event {
+  .type {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    margin-right: 24px;
+    margin-bottom: 8px;
+    margin-top: 24px;
+    img {
+      margin-right: 14px;
+    }
+    span {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      color: rgba(0, 0, 0, 0.85);
+    }
+  }
+  .item {
+    padding: 7px 24px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+    margin-right: 24px;
+    border-radius: 2px;
+    & .active, &:hover {
+      background: #D0963E;
+      color: #fff;
+    }
+  }
+}
 </style>

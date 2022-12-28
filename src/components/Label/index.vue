@@ -8,14 +8,14 @@
           type="primary"
           size="small"
           v-if="props.btn"
-          @click="emit('onClick')"
+          @click="emit('on-click')"
         >
           {{ props.btn }}
         </el-button>
         <el-button
           size="small"
           v-if="props.btn1"
-          @click="emit('onClickCancel')"
+          @click="emit('on-click-cancel')"
         >
           {{ props.btn1 }}
         </el-button>
