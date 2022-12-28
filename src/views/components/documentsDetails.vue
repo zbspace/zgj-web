@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="ap-cont-tabsCont ">
-                        <a-scrollbar style="height:100%;overflow: auto;">
+                        <el-scrollbar style="height:100%;overflow: auto;">
                             <div class="scrollbar-div">
                                 <!-- 用印详情 -->
                                 <div class="Details-of-Printing"
@@ -610,7 +610,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </a-scrollbar>
+                        </el-scrollbar>
                     </div>
                 </div>
             </el-drawer>

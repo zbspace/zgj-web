@@ -11,16 +11,16 @@
         </div>
         <div class="ap-box-cont">
             <div class="ap-box-tree" v-if="state.Layout.tree">
-                <a-scrollbar type="track" style="height:100%;overflow: auto;" class="ap-box-tree-scrollbar">
+                <el-scrollbar type="track" style="height:100%;overflow: auto;" class="ap-box-tree-scrollbar">
                     <div>
                         <slot name="tree"></slot>
                     </div>
-                </a-scrollbar>
+                </el-scrollbar>
             </div>
             <div class="ap-box-cutOffRule" v-if="state.Layout.tree && (state.Layout.searchForm || state.Layout.table)">
             </div>
             <div class="ap-box-cent" :style="state.centStyle">
-                <a-scrollbar style="height:100%;overflow: auto;" class="ap-box-cent-scrollbar">
+                <el-scrollbar style="height:100%;overflow: auto;" class="ap-box-cent-scrollbar">
                     <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
                         <slot name="searchForm"></slot>
                     </div>
@@ -36,7 +36,7 @@
                     <div class="ap-box-custom" v-if="state.Layout.custom">
                         <slot name="custom"></slot>
                     </div>
-                </a-scrollbar>
+                </el-scrollbar>
             </div>
         </div>
         <div class="ap-box-fixed" v-if="state.Layout.fixed">
