@@ -60,7 +60,9 @@
                                             <div class="Signature-content-box-desc">
                                                 支持扩展名：doc .docx .pdf 格式文件、单文件大小不能超过 20M
                                             </div>
-                                            <div class="fengexian"></div>
+                                            <div class="fengexian">
+                                                <div class="fengexian-zw"></div>
+                                            </div>
                                             <div class="Signature-content-box-list">
                                                 <div class="Signature-content-box-list-file">
                                                     <img class="Signature-content-box-list-file-icon"
@@ -595,6 +597,38 @@ onMounted(() => {
                         margin-bottom: 0.5rem;
                         color: var(--color-text-3);
                     }
+                }
+
+                .Signature-content-box-list {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+
+                    .Signature-content-box-list-file {
+                        min-width: 50%;
+                        padding: 1rem;
+                        box-sizing: border-box;
+                        background-color: var(--color-fill--2);
+                        color: var(--Info-6);
+                        margin-right: 1rem;
+
+                        .Signature-content-box-list-file-icon {
+                            margin-right: 0.5rem;
+                        }
+                    }
+                }
+            }
+
+            .fengexian {
+                width: 100%;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                box-sizing: border-box;
+
+                .fengexian-zw {
+                    width: 100%;
+                    height: 1px;
+                    background-color: var(--color-border-2);
                 }
             }
 
