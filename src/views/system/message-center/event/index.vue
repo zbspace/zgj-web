@@ -489,7 +489,7 @@ function tabChange (active) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     margin-right: 24px;
     margin-bottom: 8px;
-    margin-top: 24px;
+    margin-top: 8px;
     img {
       margin-right: 14px;
     }
