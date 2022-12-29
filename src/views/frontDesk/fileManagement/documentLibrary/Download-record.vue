@@ -1,13 +1,24 @@
 <!-- 文件库 下载记录 -->
 <template>
     <div class="documentLibrary-Download-record">
-        <componentsLayout Layout="breadcrumb,searchForm,table,pagination">
+        <componentsLayout Layout="breadcrumb,searchForm,table,pagination,title">
             <template #breadcrumb>
                 <div class="breadcrumb">
                     <el-breadcrumb separator="/">
                         <el-breadcrumb-item>文件库 </el-breadcrumb-item>
                         <el-breadcrumb-item>下载记录</el-breadcrumb-item>
                     </el-breadcrumb>
+                </div>
+            </template>
+            <template #title>
+                <div class="title">
+                    <div class="title-desc">
+                        <img class="title-desc-img" src="@/assets/svg/jiantou-zuo.svg" alt="" @click="clickBackPage">
+                        下载记录
+                    </div>
+                    <div>
+
+                    </div>
                 </div>
             </template>
             <template #searchForm>
@@ -570,7 +581,7 @@ function clickSubmit() {
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-  
+
 }
 
 
