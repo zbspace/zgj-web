@@ -55,8 +55,11 @@
               fs-16
               header-item
               vertical-menu-btn
-              " id="topnav-hamburger-icon" @click="toggleHamburgerMenu">
-              <!-- topnav-hamburger -->
+              "
+            id="topnav-hamburger-icon"
+            @click="toggleHamburgerMenu"
+          >
+            <!-- topnav-hamburger -->
             <span class="hamburger-icon">
               <span />
               <span />
@@ -210,7 +213,7 @@
                       春青
                     </div>
                     <div class="dropdown-name-text">
-                      曹春青
+                      {{ accountInfoStore.name }}
                     </div>
                   </div>
                 </div>
@@ -272,7 +275,10 @@
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-mobile-app') }}</span>
                   </div>
 
-                  <div class="dropdown-list-li">
+                  <div
+                    class="dropdown-list-li"
+                    @click="handleLogout"
+                  >
                     <img src="../assets/images/navbar/user_info_layout.svg">
                     <span class="dropdown-list-li-text">{{ $t('t-zgj-logout-user') }}</span>
                   </div>
@@ -287,14 +293,18 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch, onUnmounted } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import useCurrentInstance from '@/hooks/getInstance.js'
 import i18n from '../i18n'
 import useClickQutside from '../hooks/useClickQutside.js'
 import VApplicationNav from '../components/modules/applicationNav.vue'
 import VMailNav from '../components/modules/mailNav.vue'
 import VMessageNav from '../components/modules/messageNav.vue'
+import router from '@/router'
+import { useAccountInfoStore } from '@/store/accountInfo'
+const accountInfoStore = useAccountInfoStore()
 const _this = useCurrentInstance()
+
 const state = reactive({
   application: {
     CurrentSystemType: 'business' // business / system
@@ -305,10 +315,6 @@ const state = reactive({
 const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
 if (CurrentSystemType) {
   state.application.CurrentSystemType = CurrentSystemType
-}
-
-function scrollFn () {
-
 }
 
 onMounted(() => {
@@ -328,7 +334,6 @@ onMounted(() => {
   //   document
   //     .getElementById("topnav-hamburger-icon")
   //     .addEventListener("click", toggleHamburgerMenu);
-
 })
 
 // 监听 菜单开关
@@ -418,16 +423,21 @@ const setLanguage = (locale) => {
 // 跳转业务首页或者系统首页
 const changeSystemHome = () => {
   // 跳转业务首页或者系统首页
-  if (state.application.CurrentSystemType == 'business') {
+  if (state.application.CurrentSystemType === 'business') {
     _this.$router.push('/system/home')
-  } else if (state.application.CurrentSystemType == 'system') {
+  } else if (state.application.CurrentSystemType === 'system') {
     _this.$router.push('/frontDesk/home')
   }
 }
 
+const handleLogout = () => {
+  accountInfoStore.setAccountInfo(null)
+  // 跳转到登录页
+  router.push({ name: 'login-account' })
+}
+
 </script>
 <style lang='scss' scoped>
-// @import "../style/index.scss";
 .header-content {
   min-width: 800px;
 }
