@@ -273,9 +273,9 @@ const closeUpdateDialog = () => {
 const login = () => {
   // 存储登录用户信息
   accountInfo.setAccountInfo({ name: 'xxx', token: 'xxx' })
-  let redirect = route.query.redirect || '/'
+  let redirect = route.query.redirect || '/frontDesk/home'
   if (typeof redirect !== 'string') {
-    redirect = '/'
+    redirect = '/frontDesk/home'
   }
   router.replace(redirect)
 }
