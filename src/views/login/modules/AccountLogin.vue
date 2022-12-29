@@ -220,7 +220,9 @@ import VerificationBtn from '../components/VerificationBtn.vue'
 import UpdagePasswordDialog from './UpdagePasswordDialog.vue'
 import ImmediateRegister from './Register.vue'
 import { useAccountInfoStore } from '@/store/accountInfo'
+import { useRoute } from 'vue-router'
 const accountInfo = useAccountInfoStore()
+const route = useRoute()
 const state = reactive({
   activeCodeLogin: false, // 验证码登录
   protocal: false, // 协议
@@ -271,7 +273,11 @@ const closeUpdateDialog = () => {
 const login = () => {
   // 存储登录用户信息
   accountInfo.setAccountInfo({ name: 'xxx', token: 'xxx' })
-  router.push('/frontDesk/home')
+  let redirect = route.query.redirect || '/'
+  if (typeof redirect !== 'string') {
+    redirect = '/'
+  }
+  router.replace(redirect)
 }
 </script>
 
