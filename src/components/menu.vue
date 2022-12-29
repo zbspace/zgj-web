@@ -1238,7 +1238,7 @@ import icon31 from '@/assets/svg/xitong-caozuo-rizhi.svg'
 import icon32 from '@/assets/svg/zongduan-caozuo-rizhi.svg'
 import icon33 from '@/assets/svg/gujian-shengji-rizhi.svg'
 import icon37 from '@/assets/svg/xitong-yunxing-rizhi.svg'
-import "../unit/SvgIconPack"
+// import "../unit/SvgIconPack"
 import {
   HomeIcon,
   GridIcon,
