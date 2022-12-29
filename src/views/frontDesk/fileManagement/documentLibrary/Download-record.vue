@@ -1,38 +1,13 @@
-<!-- 文件库 -->
+<!-- 文件库 下载记录 -->
 <template>
-    <div class="fileManagement-documentLibrary">
-        <componentsLayout Layout="title,searchForm,table,pagination,batch,tree">
-            <template #title>
-                <div class="title">
-                    <div>文件库</div>
-                    <div class="title-more">
-                        <div class="title-more-add">
-                            <el-button type="primary" @click="showFormDialog = true">+ 增加</el-button>
-                        </div>
-                        <div class="title-more-down">
-                            <el-dropdown>
-                                <el-button>
-                                    <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt=""
-                                        srcset="">
-                                    <span>更多操作</span>
-                                </el-button>
-                                <template #dropdown>
-                                    <el-dropdown-menu>
-                                        <el-dropdown-item>导入</el-dropdown-item>
-                                        <el-dropdown-item>文件打包下载</el-dropdown-item>
-                                        <el-dropdown-item @click="clickDownloadRecord">下载记录</el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </template>
-                            </el-dropdown>
-                        </div>
-
-                    </div>
-                </div>
-            </template>
-            <template #tabs>
-                <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                    </componentsTabs>
+    <div class="documentLibrary-Download-record">
+        <componentsLayout Layout="breadcrumb,searchForm,table,pagination">
+            <template #breadcrumb>
+                <div class="breadcrumb">
+                    <el-breadcrumb separator="/">
+                        <el-breadcrumb-item>文件库 </el-breadcrumb-item>
+                        <el-breadcrumb-item>下载记录</el-breadcrumb-item>
+                    </el-breadcrumb>
                 </div>
             </template>
             <template #searchForm>
@@ -42,24 +17,11 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <template #batch>
-                <div class="batch">
-                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
-                </div>
-            </template>
-            <template #tree>
-                <div>
-                    <componentsTree :data="state.componentsTree.data"
-                        :defaultAttribute="state.componentsTree.defaultAttribute">
-                    </componentsTree>
-                </div>
-            </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
-                        @custom-click="customClick" @selection-change="selectionChange">
+                        @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -69,37 +31,19 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
-        <!-- 单据详情 -->
-        <div class="ap-box">
-            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
-                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
-            </componentsDocumentsDetails>
-        </div>
-
-        <!-- 动态表单 -->
-        <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增工作台" :centerBtn="true"
-            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000"
-            :height="600" @close="submitForm">
-            <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
-            </v-form-render>
-        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref,inject } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, inject, ref } from "vue"
 import { useRouter } from 'vue-router';
-import Layout from "../../../layouts/main.vue";
-import componentsTable from "../../components/table"
-import componentsSearchForm from "../../components/searchForm"
-import componentsTree from "../../components/tree"
-import componentsBreadcrumb from "../../components/breadcrumb"
-import componentsPagination from "../../components/pagination.vue"
-import componentsTabs from "../../components/tabs.vue"
-import componentsLayout from "../../components/Layout.vue"
-import componentsDocumentsDetails from "../../components/documentsDetails.vue"
-import KDialog from "@/views/components/modules/kdialog.vue"
-import FormJson from '@/views/addDynamicFormJson/documentLibrary.json'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import componentsLayout from "../../../components/Layout.vue"
+import componentsTable from "../../../components/table"
+import componentsSearchForm from "../../../components/searchForm"
+import componentsTree from "../../../components/tree"
+import componentsBreadcrumb from "../../../components/breadcrumb"
+import componentsPagination from "../../../components/pagination.vue"
+import componentsTabs from "../../../components/tabs.vue"
+import componentsDocumentsDetails from "../../../components/documentsDetails.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -109,42 +53,9 @@ const props = defineProps({
 })
 const router = useRouter();
 const commonFun = inject("commonFun");
-const showFormDialog = ref(false)
-const formJson = reactive(FormJson)
-const formData = reactive({})
-const optionData = reactive({})
-const dialogVisible = ref(false)
-const vFormRef = ref(null)
-const submitForm = (type) => {
-    if (!type) {
-        vFormRef.value.resetForm()
-        return
-    }
-    vFormRef.value.getFormData().then(formData => {
-        // Form Validation OK
-        alert(JSON.stringify(formData))
-        showFormDialog.value = false
-    }).catch(error => {
-        // Form Validation failed
-
-        ElMessage.error(error)
-    })
-}
-
 const emit = defineEmits([]);
 const state = reactive({
-    componentsTabs: {
-        data: [{
-            label: '待签章',
-            name: "1",
-        }, {
-            label: '已签章',
-            name: "2",
-        }, {
-            label: '不可用',
-            name: "3",
-        },]
-    },
+    cache: {},
     componentsSearchForm: {
         style: {
             lineStyle: {
@@ -162,7 +73,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "文件名称/文件字号",
+                    placeholder: "文件名称",
                 },
             },
             {
@@ -228,39 +139,29 @@ const state = reactive({
                 width: 100,
             }, {
                 prop: '1',
-                label: "文件名称",
+                label: "任务名称",
                 sortable: true,
                 "min-width": 150,
             }, {
                 prop: '2',
-                label: "文件字号",
+                label: "任务包大小",
                 sortable: true,
                 "min-width": 150,
             }, {
                 prop: '3',
-                label: "关联单据名称",
-                sortable: true,
-                "min-width": 150,
-            }, {
-                prop: '4',
-                label: "文件类型",
-                sortable: true,
-                "min-width": 150,
-            }, {
-                prop: '5',
-                label: "创建人",
+                label: "文件个数",
                 sortable: true,
                 "min-width": 150,
             },
             {
-                prop: '6',
-                label: "创建部门",
+                prop: '5',
+                label: "操作人",
                 sortable: true,
                 "min-width": 150,
             },
             {
                 prop: '7',
-                label: "创建时间",
+                label: "操作时间",
                 sortable: true,
                 "min-width": 150,
             },
@@ -268,16 +169,10 @@ const state = reactive({
                 prop: 'caozuo',
                 label: "操作",
                 fixed: "right",
-                "min-width": 250,
+                "min-width": 150,
                 rankDisplayData: [
                     {
-                        name: "修改文件类型"
-                    },
-                    {
-                        name: "文件预览"
-                    },
-                    {
-                        name: "文件下载"
+                        name: "下载"
                     },
                 ],
             }
@@ -656,53 +551,29 @@ const state = reactive({
             background: true,
         }
     },
-    componentsBreadcrumb: {
-        data: [
-            {
-                name: "ceshi",
-            },
-            {
-                name: "ceshi",
-            }
-        ],
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            separator: "/",
-        }
-    },
-    componentsDocumentsDetails: {
-        show: false,
-        visible: [
-            {
-                label: '文件详情',
-                name: "Details-of-Document",
-            },
-            {
-                label: '操作记录',
-                name: "operating-record",
-            },
-        ],
-    },
-    componentsBatch: {
-        selectionData: [],
-        data: [
-            {
-                name: "批量修改文件类型"
-            }
-        ]
-    },
 });
+
+
+//点击返回上一页
+function clickBackPage() {
+    commonFun.routerPage(router, -1)
+}
+
+//点击提交
+function clickSubmit() {
+    commonFun.routerPage(router, {
+        path: "/frontDesk/PrintControlManagement/Seal-application/accomplish"
+    })
+}
+
+
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == "1") {
-        state.componentsDocumentsDetails.show = true;
-    }
+  
 }
-//点击关闭详情
-function clickClose() {
-    state.componentsDocumentsDetails.show = false;
-}
+
+
 //点击表格按钮
 function customClick(row, column, cell, event) {
     console.log(cell.name);
@@ -724,62 +595,167 @@ function customClick(row, column, cell, event) {
     }
 }
 
-//当选择项发生变化时会触发该事件
-function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection;
-}
-
-//点击下载记录
-function clickDownloadRecord() {
-    commonFun.routerPage(router, {
-        path: "/frontDesk/fileManagement/documentLibrary/Download-record"
-    })
-}
-
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-
+    // vFormLibraryRef.value.resetForm()
+    // vFormLibraryRef.value.getFormData().then()
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)
 })
 </script>
 <style lang='scss' scoped>
-.fileManagement-documentLibrary {
+.documentLibrary-Download-record {
     margin: 0%;
+    position: relative;
 
     .title {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        vertical-align: top;
 
-        .title-more {
+        .title-desc {
             display: flex;
             align-items: center;
 
-            .title-more-add {
+            .title-desc-img {
                 margin-right: 0.5rem;
-            }
-
-            .title-more-down {
-                margin-bottom: -4px;
+                cursor: pointer;
             }
         }
     }
 
-    .batch {
+    .custom {
+        padding-right: 1.25rem;
+        box-sizing: border-box;
+        text-align: center;
+        padding-bottom: 4rem;
+
+        .custom-buzhou {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0;
+            box-sizing: border-box;
+
+            .custom-buzhou-list {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .custom-buzhou-list-desc {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 10rem;
+
+                    .custom-buzhou-list-desc-index {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: var(--color-fill--3);
+                        color: var(--color-text-3);
+                        border-radius: var(--border-radius-2);
+                        margin-right: 0.5rem;
+                    }
+
+                    .custom-buzhou-list-desc-text {
+                        font-size: var(--font-size-title-1);
+                        color: var(--color-text-3);
+                    }
+                }
+
+                .custom-buzhou-list-jiantou {
+                    width: 7rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+
+            .indexActive {
+                background-color: var(--primary-6) !important;
+                color: var(--in-common-use-1) !important;
+            }
+
+            .textActive {
+                color: var(--color-text-1) !important;
+            }
+
+            .font-color-45 {
+                color: var(--color-text-3) !important;
+            }
+        }
+
+        .PrintingProcess {
+            .PrintingProcess-content {
+                display: flex;
+                flex-flow: wrap;
+
+                // align-items: flex-start;
+                .PrintingProcess-content-list {
+                    // margin-right: 1rem;
+                    margin-bottom: 1rem;
+                    display: flex;
+                    align-items: center;
+
+                    .PrintingProcess-content-list-cont {
+                        height: 15rem;
+                        align-self: flex-start;
+                        width: 13rem;
+                        border: 1px solid var(--color-border-1);
+                        background-color: var(--color-fill--1);
+                        padding: 1rem;
+                        box-sizing: border-box;
+
+                        .PrintingProcess-content-list-cont-title {
+                            display: flex;
+                            justify-content: center;
+                            height: 2rem;
+                            align-items: center;
+                            font-size: var(--font-size-title-1);
+
+                            .PrintingProcess-content-list-cont-title-img {
+                                margin-right: 0.5rem;
+                            }
+                        }
+
+                        .PrintingProcess-content-list-cont-list {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding: 0.5rem 1rem;
+                            box-sizing: border-box;
+                        }
+                    }
+
+                    .PrintingProcess-content-list-iocn {
+                        margin-left: 1rem;
+                        margin-right: 1rem;
+                        width: 3rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .ap-fixed {
+        width: calc(100%);
+        position: absolute;
+        bottom: 0%;
+        height: 4rem;
         display: flex;
+        justify-content: center;
         align-items: center;
-
-        .batch-desc {
-            @include mixin-margin-right(12)
-        }
-    }
-
-    .button-icon {
-        margin-right: 0.5rem;
+        border-top: 1px solid var(--color-border-2);
+        background-color: var(--in-common-use-1);
+        z-index: 999;
     }
 }
 </style>

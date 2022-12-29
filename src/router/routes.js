@@ -533,6 +533,16 @@ export default [
           import("../views/frontDesk/fileManagement/documentLibrary.vue"),
       },
       {
+        path: "fileManagement/documentLibrary/Download-record",
+        name: "documentLibrary-Download-record",
+        meta: {
+          title: "Download-record",
+          authRequired: true,
+        },
+        component: () =>
+          import("../views/frontDesk/fileManagement/documentLibrary/Download-record.vue"),
+      },
+      {
         path: "fileManagement/documentType",
         name: "fileManagement-documentType",
         meta: {
