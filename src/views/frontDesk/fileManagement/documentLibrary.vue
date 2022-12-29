@@ -245,16 +245,20 @@ const state = reactive({
                 prop: 'caozuo',
                 label: "操作",
                 fixed:"right",
-                "min-width":150,
+                "min-width":250,
                 rankDisplayData: [
                     {
-                        name: "修改"
+                        name: "修改文件类型"
                     },
                     {
-                        name: "删除"
+                        name: "文件预览"
+                    },
+                    {
+                        name: "文件下载"
                     },
                 ],
-            }],
+            }
+        ],
         data: [
             {
                 1: '文件',
