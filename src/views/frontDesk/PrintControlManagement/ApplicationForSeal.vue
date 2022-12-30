@@ -43,15 +43,19 @@
 
             <template #batch>
                 <div class="batch">
-                    <el-button>批量撤销</el-button>
-                    <el-button>批量催办</el-button>
+                    <componentsBatch>
+                        <!-- <el-button>批量撤销</el-button>
+                    <el-button>批量催办</el-button> -->
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
-                        @custom-click="customClick">
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -87,6 +91,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'
 import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
@@ -280,48 +285,48 @@ const state = reactive({
                 prop: '1',
                 label: "单据编码",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "单据类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "印章类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "审批状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '6',
                 label: "申请人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '7',
                 label: "申请部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '8',
                 label: "申请时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "撤销"
@@ -487,7 +492,18 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量撤销"
+            },
+            {
+                name: "批量催办"
+            }
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -553,6 +569,13 @@ function handleCommand(command) {
             break;
     }
 }
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

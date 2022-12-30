@@ -36,8 +36,7 @@
                     <el-button :plain="true" @click="open3">询问消息</el-button>
                     <el-button :plain="true" @click="open4">异常消息</el-button>
                     <el-button :plain="true" @click="openMess">信息弹窗</el-button>
-                    <el-button @click="goInnerPage('/frontDesk/InnerPageApplication')">新增（用印申请）</el-button>
-                    <!-- showFormDialog = true -->
+                    <el-button @click="showFormDialog = true">新增（用印申请）</el-button>
                 </div>
             </template>
             <template #table>

@@ -1,20 +1,18 @@
 <template>
     <ApplicationBillReset :resetData="state"></ApplicationBillReset>
-  </template>
+</template>
   
   <script setup>
   import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
   import ApplicationBillReset from '@/views/components/ApplicationBill-reset/index.vue'
   import { useRouter } from 'vue-router'
+  
   const router = useRouter()
-  const urlParams = router.currentRoute.value.query.transfer;
   const state = reactive({
-    title:'智能用印',
-    isTransfer:urlParams?true:false
+    title:'文件归档',
   })
-  
   </script>
-  
+
   <style lang="scss" scoped>
   .inner-page-content {
       margin: 0%;

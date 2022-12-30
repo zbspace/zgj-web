@@ -3,9 +3,8 @@ import App from './App.vue'
 import router from './router'
 
 import i18n from './i18n'
-import store from './state/store'
 // import { createPinia } from 'pinia'
-import storePinia from './store'
+import store from './store'
 
 /* 引入自定义全局变量 */
 // import './style/index.scss'
@@ -33,7 +32,6 @@ import commonFun from '@/utils/common';
   const app = createApp(App)
   app
     .use(store)
-    .use(storePinia)
     .use(router)
     .use(BootstrapVue3)
     .use(i18n)

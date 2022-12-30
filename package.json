@@ -12,6 +12,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^32.0.0",
     "@ckeditor/ckeditor5-vue": "^2.0.1",
+    "@element-plus/icons-vue": "^2.0.10",
     "@fullcalendar/bootstrap": "^5.10.1",
     "@fullcalendar/core": "^5.10.1",
     "@fullcalendar/daygrid": "^5.10.1",
@@ -47,7 +48,7 @@
     "maska": "^1.5.0",
     "moment": "^2.29.1",
     "particles.vue3": "^1.40.2",
-    "pinia": "^2.0.23",
+    "pinia": "^2.0.28",
     "pinia-plugin-persist": "^1.0.0",
     "prismjs": "^1.26.0",
     "simplebar": "^5.3.6",
@@ -68,8 +69,6 @@
     "vue3-google-map": "^0.8.3",
     "vue3-quill": "^0.2.6",
     "vuevectormap": "^1.0.8",
-    "vuex": "^4.0.2",
-    "vuex-persistedstate": "^4.1.0",
     "yarn": "^1.22.17"
   },
   "devDependencies": {

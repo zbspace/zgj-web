@@ -28,15 +28,17 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick" @custom-click="customClick" @selection-change="selectionChange">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -61,6 +63,7 @@ import componentsSearchForm from "../../components/searchForm"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "../../components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
@@ -454,10 +457,12 @@ const state = reactive({
         ]
     },
 });
-const goInnerPage = (path) => {
-  router.push({
-    path: path
-  })
+const goInnerPage = (path, params) => {
+    let routeObj = { path: path };
+    if (params) {
+        routeObj.query = { transfer: params }
+    }
+    router.push(routeObj)
 }
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -475,7 +480,7 @@ function clickClose() {
 function customClick(row, column, cell, event) {
     console.log(cell);
     if (cell.name === '申请转办') {
-        goInnerPage('/frontDesk/transferApplication')
+        goInnerPage('/frontDesk/transferApplication', 'transfer')
     }
     if (cell.name === '申请重置') {
         goInnerPage('/frontDesk/transferApplication')
@@ -601,7 +606,7 @@ function tabChange(activeName) {
                 name: "申请转办"
             }, {
                 name: "申请重置"
-            },{
+            }, {
                 name: "撤销转办"
             }, {
                 name: "撤销重置"
