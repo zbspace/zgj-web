@@ -117,7 +117,7 @@
                 </li>
               </SimpleBar>
             </div>
-            <template v-if="layoutType === 'twocolumn'">
+            <template v-if="layoutStore.layoutType === 'twocolumn'">
               <SimpleBar class="navbar-nav" id="navbar-nav">
                 <li class="menu-title">
                   <span data-key="t-menu"> {{ $t("t-menu") }}</span>
@@ -1257,13 +1257,15 @@ import router from "@/router";
 import {
   SimpleBar
 } from "simplebar-vue3";
-import {
-  layoutComputed
-} from "@/state/helpers";
+// import {
+//   layoutComputed
+// } from "@/state/helpers";
 import Menu from "@/components/menu.vue";
 import NavBar from "@/components/nav-bar";
 import RightBar from "@/components/right-bar";
 import Footer from "@/components/footer";
+import { useLayoutStore } from '@/store/layout'
+const layoutStore = useLayoutStore()
 import {
   HomeIcon,
   GridIcon,
@@ -1312,7 +1314,7 @@ export default {
   },
 
   computed: {
-    ...layoutComputed,
+    // ...layoutComputed,
   },
   created: () => {
     document.body.removeAttribute("data-layout", "horizontal");
@@ -1453,7 +1455,7 @@ export default {
 
   mounted() {
     this.initActiveMenu();
-    if (this.rmenu == 'vertical' && this.layoutType == 'twocolumn') {
+    if (this.rmenu == 'vertical' && layoutStore.layoutType == 'twocolumn') {
       document.documentElement.setAttribute("data-layout", "vertical");
     }
     document.getElementById('overlay').addEventListener('click', () => {
@@ -1461,7 +1463,7 @@ export default {
     })
 
     window.addEventListener("resize", () => {
-      if (this.layoutType == 'twocolumn') {
+      if (layoutStore.layoutType == 'twocolumn') {
         var windowSize = document.documentElement.clientWidth;
         if (windowSize < 767) {
           document.documentElement.setAttribute("data-layout", "vertical");

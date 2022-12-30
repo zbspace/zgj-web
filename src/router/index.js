@@ -1,32 +1,42 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter } from 'vue-router'
 // import axios from 'axios';
-import routes from './routes';
+import routes from './routes'
 // import appConfig from "../../app.config";
-// import store from '@/state/store';
+import { useAccountInfoStore } from '@/store/accountInfo'
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
   mode: 'history',
 
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition;
+      return savedPosition
     } else {
-      return { top: 0, left: 0 };
+      return { top: 0, left: 0 }
     }
-  },
-});
-
-router.beforeEach((routeTo, routeFrom, next) => {
-  // 更具url判断是业务前台
-  if(routeTo.fullPath.includes('/frontDesk')){
-    sessionStorage.setItem("CurrentSystemType", "business")
-  }else if(routeTo.fullPath.includes('/system')){
-    sessionStorage.setItem("CurrentSystemType", "system")
   }
-  next()
-});
+})
+
+router.beforeEach((routeTo, routeFrom) => {
+  // 更具url判断是业务前台
+  if (routeTo.fullPath.includes('/frontDesk')) {
+    sessionStorage.setItem('CurrentSystemType', 'business')
+  } else if (routeTo.fullPath.includes('/system')) {
+    sessionStorage.setItem('CurrentSystemType', 'system')
+  }
+
+  const accountInfoStore = useAccountInfoStore()
+  if (routeTo.meta.authRequired && !accountInfoStore.name) {
+    // 此路由需要授权，请检查是否已登录
+    // 如果没有，则重定向到登录页面
+    return {
+      path: '/login/account',
+      // 保存我们所在的位置，以便以后再来
+      query: { redirect: routeTo.fullPath }
+    }
+  }
+})
 
 router.beforeResolve(async (routeTo, routeFrom, next) => {
   try {
@@ -35,22 +45,22 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
         if (route.meta && route.meta.beforeResolve) {
           route.meta.beforeResolve(routeTo, routeFrom, (...args) => {
             if (args.length) {
-              next(...args);
-              reject(new Error('Redirected'));
+              next(...args)
+              reject(new Error('Redirected'))
             } else {
-              resolve();
+              resolve()
             }
-          });
+          })
         } else {
-          resolve();
+          resolve()
         }
-      });
+      })
     }
   } catch (error) {
-    return;
+    return
   }
   // document.title = routeTo.meta.title + ' | ' + appConfig.title;
-  next();
-});
+  next()
+})
 
-export default router;
+export default router
