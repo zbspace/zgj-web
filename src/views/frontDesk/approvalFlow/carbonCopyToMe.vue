@@ -1,7 +1,7 @@
 <!-- 抄送给我 -->
 <template>
     <div class="approvalFlow-carbonCopyToMe">
-        <componentsLayout Layout="title,searchForm,table,pagination">
+        <componentsLayout Layout="title,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     <div>抄送给我</div>
@@ -28,8 +28,8 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    <componentsBatch>
+                    </componentsBatch>
                 </div>
             </template>
             <template #tree>
@@ -64,6 +64,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 const props = defineProps({
     // 处理类型
     type: {

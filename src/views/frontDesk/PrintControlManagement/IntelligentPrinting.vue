@@ -28,8 +28,10 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #table>
@@ -61,6 +63,7 @@ import componentsSearchForm from "../../components/searchForm"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "../../components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
@@ -477,7 +480,7 @@ function clickClose() {
 function customClick(row, column, cell, event) {
     console.log(cell);
     if (cell.name === '申请转办') {
-        goInnerPage('/frontDesk/transferApplication','transfer')
+        goInnerPage('/frontDesk/transferApplication', 'transfer')
     }
     if (cell.name === '申请重置') {
         goInnerPage('/frontDesk/transferApplication')
