@@ -86,7 +86,7 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref,inject } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref, inject } from "vue"
 import { useRouter } from 'vue-router';
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
@@ -709,9 +709,22 @@ function customClick(row, column, cell, event) {
     if (cell.name === '修改') {
         showFormDialog.value = true;
     }
-    if (cell.name == '删除') {
+    if (cell.name == '文件下载') {
         ElMessageBox.confirm(
-            '您确定要删除该记录吗？',
+            '您确定要下载文件吗？',
+            {
+                confirmButtonText: '确认',
+                cancelButtonText: '关闭',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+    if (cell.name == '文件预览') {
+        ElMessageBox.confirm(
+            '您确定要预览文件吗？',
             {
                 confirmButtonText: '确认',
                 cancelButtonText: '关闭',
