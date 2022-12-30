@@ -97,6 +97,7 @@ export default [
             "../views/frontDesk/PrintControlManagement/UsePrepressVerification.vue"
           ),
       },
+      
       {
         path: "PrintControlManagement/UsePostPressVerification",
         name: "PrintControlManagement-UsePostPressVerification",
@@ -170,6 +171,24 @@ export default [
             component: () =>
               import(
                 "../views/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process.vue"
+              ),
+          },
+          {
+            path: "File-Archive/ArchiveReset",
+            name: "ArchiveReset",
+            meta: { title: "ArchiveReset", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/File-Archive/ArchiveReset.vue"
+              ),
+          },
+          {
+            path: "File-Archive/FilesDownLoad",
+            name: "FilesDownLoad",
+            meta: { title: "FilesDownLoad", authRequired: true },
+            component: () =>
+              import(
+                "../views/frontDesk/PrintControlManagement/File-Archive/FilesDownLoad.vue"
               ),
           },
           {

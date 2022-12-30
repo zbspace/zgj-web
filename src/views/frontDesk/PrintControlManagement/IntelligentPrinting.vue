@@ -35,8 +35,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick" @custom-click="customClick" @selection-change="selectionChange">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -454,10 +454,12 @@ const state = reactive({
         ]
     },
 });
-const goInnerPage = (path) => {
-  router.push({
-    path: path
-  })
+const goInnerPage = (path, params) => {
+    let routeObj = { path: path };
+    if (params) {
+        routeObj.query = { transfer: params }
+    }
+    router.push(routeObj)
 }
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -475,7 +477,7 @@ function clickClose() {
 function customClick(row, column, cell, event) {
     console.log(cell);
     if (cell.name === '申请转办') {
-        goInnerPage('/frontDesk/transferApplication')
+        goInnerPage('/frontDesk/transferApplication','transfer')
     }
     if (cell.name === '申请重置') {
         goInnerPage('/frontDesk/transferApplication')
@@ -601,7 +603,7 @@ function tabChange(activeName) {
                 name: "申请转办"
             }, {
                 name: "申请重置"
-            },{
+            }, {
                 name: "撤销转办"
             }, {
                 name: "撤销重置"
