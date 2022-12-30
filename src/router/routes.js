@@ -1,4 +1,3 @@
-// import store from "@/state/store";
 import systemRoutes from './system/index.js'
 export default [
   {
