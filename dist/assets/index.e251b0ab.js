@@ -1,1 +1,0 @@
-import{L as e}from"./main.fa36eb63.js";import{a as t,o as r,h as a,d as s,b as c}from"./main.962a6924.js";import"./vertical.15d6c7a4.js";const l={setup(n){return(p,_)=>{const o=t("router-view");return r(),a(e,null,{default:s(()=>[c(o)]),_:1})}}};export{l as default};
