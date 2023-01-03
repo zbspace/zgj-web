@@ -96,7 +96,7 @@ export default [
             '../views/frontDesk/PrintControlManagement/UsePrepressVerification.vue'
           )
       },
-      
+
       {
         path: 'PrintControlManagement/UsePostPressVerification',
         name: 'PrintControlManagement-UsePostPressVerification',
@@ -155,7 +155,7 @@ export default [
               )
           },
           {
-            path: 'Seal-application/fill-form',
+            path: 'Seal-application/Selection-form/:id',
             name: 'Seal-application-fill-form',
             meta: { title: 'fill-form', authRequired: true },
             component: () =>
@@ -173,27 +173,27 @@ export default [
               )
           },
           {
-            path: "File-Archive/ArchiveReset",
-            name: "ArchiveReset",
-            meta: { title: "ArchiveReset", authRequired: true },
+            path: 'File-Archive/ArchiveReset',
+            name: 'ArchiveReset',
+            meta: { title: 'ArchiveReset', authRequired: true },
             component: () =>
               import(
-                "../views/frontDesk/PrintControlManagement/File-Archive/ArchiveReset.vue"
-              ),
+                '../views/frontDesk/PrintControlManagement/File-Archive/ArchiveReset.vue'
+              )
           },
           {
-            path: "File-Archive/FilesDownLoad",
-            name: "FilesDownLoad",
-            meta: { title: "FilesDownLoad", authRequired: true },
+            path: 'File-Archive/FilesDownLoad',
+            name: 'FilesDownLoad',
+            meta: { title: 'FilesDownLoad', authRequired: true },
             component: () =>
               import(
-                "../views/frontDesk/PrintControlManagement/File-Archive/FilesDownLoad.vue"
-              ),
+                '../views/frontDesk/PrintControlManagement/File-Archive/FilesDownLoad.vue'
+              )
           },
           {
-            path: "File-checkRecord/WaterCheckRecord",
-            name: "WaterCheckRecord",
-            meta: { title: "WaterCheckRecord", authRequired: true },
+            path: 'File-checkRecord/WaterCheckRecord',
+            name: 'WaterCheckRecord',
+            meta: { title: 'WaterCheckRecord', authRequired: true },
             component: () =>
               import(
                 '../views/frontDesk/PrintControlManagement/File-checkRecord/WaterCheckRecord.vue'

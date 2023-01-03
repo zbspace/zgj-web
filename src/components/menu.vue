@@ -2147,6 +2147,7 @@
         class="navbar-nav h-100"
         id="navbar-nav"
       >
+<<<<<<< HEAD
         <li class="nav-item" v-show="sidebarSize === 'sm' || sidebarSize === 'sm-hover'" @click="toggleHamburgerMenu">
             <div style="display:flex;justify-content: center;align-items: center; height: 36px;cursor: pointer;margin-top:6px;">
               <svg width="16" height="16" viewBox="0 0 6 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="menu-iconpark">
@@ -2162,6 +2163,12 @@
             </div>
         </li>
         <div v-for="(item, index) in state.menu" :key="index">
+=======
+        <div
+          v-for="(item, index) in state.menu"
+          :key="index"
+        >
+>>>>>>> 8d8bbc0698045b5aab71281248d95a5ef598077a
           <div v-if="item.type == 'part'">
             <li class="menu-title">
               <span data-key="t-menu"> {{ $t(item.label) }}</span>
@@ -2190,7 +2197,10 @@
                 :id="item.label"
               >
                 <ul class="nav nav-sm flex-column">
-                  <div v-for="(data, index) in item.children" :key="index">
+                  <div
+                    v-for="(data, index) in item.children"
+                    :key="index"
+                  >
                     <div v-if="data.children && data.children.length > 0">
                       <li class="nav-item">
                         <a
@@ -2209,7 +2219,10 @@
                           :id="data.label"
                         >
                           <ul class="nav nav-sm flex-column">
-                            <div v-for="(node, index) in data.children" :key="index">
+                            <div
+                              v-for="(node, index) in data.children"
+                              :key="index"
+                            >
                               <li class="nav-item">
                                 <router-link
                                   :to="node.to"
@@ -2296,16 +2309,16 @@ import icon11 from '@/assets/svg/dai-chuli-renwu.svg'
 import icon12 from '@/assets/svg/chaosong-geiwode-liucheng.svg'
 import icon13 from '@/assets/svg/fengxian-tixing-jilu-1.svg'
 import icon14 from '@/assets/svg/fengxian-tixing-jilu-2.svg'
-import icon15 from '@/assets/svg/shuju-kanban-1.svg'
-import icon16 from '@/assets/svg/yongyin-shuju-fenxi-1.svg'
-import icon17 from '@/assets/svg/yinzhang-shuju-fenxi-1.svg'
-import icon18 from '@/assets/svg/yujing-guanli.svg'
+// import icon15 from '@/assets/svg/shuju-kanban-1.svg'
+// import icon16 from '@/assets/svg/yongyin-shuju-fenxi-1.svg'
+// import icon17 from '@/assets/svg/yinzhang-shuju-fenxi-1.svg'
+// import icon18 from '@/assets/svg/yujing-guanli.svg'
 import icon19 from '@/assets/svg/qiye-xinxi.svg'
 import icon20 from '@/assets/svg/wanglai-qiye.svg'
 import icon21 from '@/assets/svg/bumen-yu-yuangong.svg'
 import icon22 from '@/assets/svg/qxgl-icon.svg'
 import icon23 from '@/assets/svg/quanju-canshu-peizhi.svg'
-import icon24 from '@/assets/svg/gujian-shengji-rizhi.svg'
+// import icon24 from '@/assets/svg/gujian-shengji-rizhi.svg'
 import icon25 from '@/assets/svg/zongduan-banben-guanli.svg'
 import icon26 from '@/assets/svg/biaodan-guanli.svg'
 import icon27 from '@/assets/svg/liucheng-guanli.svg'
@@ -2320,40 +2333,12 @@ import icon32 from '@/assets/svg/zongduan-caozuo-rizhi.svg'
 import icon33 from '@/assets/svg/gujian-shengji-rizhi.svg'
 import icon37 from '@/assets/svg/xitong-yunxing-rizhi.svg'
 import { useLayoutStore } from '@/store/layout'
-// import "../unit/SvgIconPack"
-import {
-  HomeIcon,
-  GridIcon,
-  UsersIcon,
-  CommandIcon,
-  PackageIcon,
-  LayersIcon,
-  CopyIcon,
-  FileTextIcon,
-  DatabaseIcon,
-  PieChartIcon,
-  ArchiveIcon,
-  MapPinIcon,
-  Share2Icon
-} from '@zhuowenli/vue-feather-icons'
+
 const layoutStore = useLayoutStore()
 
 export default {
   components: {
-    SimpleBar,
-    HomeIcon,
-    GridIcon,
-    UsersIcon,
-    CommandIcon,
-    PackageIcon,
-    LayersIcon,
-    CopyIcon,
-    FileTextIcon,
-    DatabaseIcon,
-    PieChartIcon,
-    ArchiveIcon,
-    MapPinIcon,
-    Share2Icon
+    SimpleBar
   },
   data () {
     return {
@@ -2718,7 +2703,7 @@ export default {
             name: '固件版本管理',
             label: 't-zgj-cg-menu-gujian-banben-guanli',
             to: '/system/base_setting/firmware_version',
-            icon: icon24
+            icon: icon33
           },
           {
             name: '终端版本管理',
@@ -2863,26 +2848,30 @@ export default {
   methods: {
     onRoutechange (ele) {
       this.initActiveMenu(ele.path)
-      console.log(ele.path, '返回的path')
-      // if (document.getElementsByClassName('mm-active').length > 0) {
-      //   const currentPosition =
-      //     document.getElementsByClassName('mm-active')[0].offsetTop
-      //   if (currentPosition > 500) {
-      //     if (this.$refs.isSimplebar) {
-      //       this.$refs.isSimplebar.value.getScrollElement().scrollTop =
-      //         currentPosition + 300
-      //     }
-      //   }
-      // }
+      const keys = Object.keys(ele.params)
+      let value = ''
+      keys.forEach((key) => { value = '/' + ele.params[key] })
+      this.initActiveMenu(ele.path, value)
+      if (document.getElementsByClassName('mm-active').length > 0) {
+        const currentPosition =
+          document.getElementsByClassName('mm-active')[0].offsetTop
+        if (currentPosition > 500) {
+          if (this.$refs.isSimplebar) {
+            this.$refs.isSimplebar.value.getScrollElement().scrollTop =
+              currentPosition + 300
+          }
+        }
+      }
     },
 
-    initActiveMenu (ele) {
+    initActiveMenu (ele, value) {
       setTimeout(() => {
         if (document.querySelector('#navbar-nav')) {
+          const url = value ? ele.replace(value, '') : ele
           const a = document
             .querySelector('#navbar-nav')
-            .querySelector('[href="' + ele + '"]')
-
+            // .querySelector('[href="' + ele + '"]')
+            .querySelector('[href="' + url + '"]')
           if (a) {
             a.classList.add('active')
             const parentCollapseDiv = a.closest('.collapse.menu-dropdown')
@@ -2944,12 +2933,12 @@ export default {
       if (document.documentElement.getAttribute('data-layout') === 'vertical') {
         if (windowSize < 1025 && windowSize > 767) {
           document.body.classList.remove('vertical-sidebar-enable')
-          document.documentElement.getAttribute('data-sidebar-size') == 'sm'
+          document.documentElement.getAttribute('data-sidebar-size') === 'sm'
             ? document.documentElement.setAttribute('data-sidebar-size', '')
             : document.documentElement.setAttribute('data-sidebar-size', 'sm')
         } else if (windowSize > 1025) {
           document.body.classList.remove('vertical-sidebar-enable')
-          document.documentElement.getAttribute('data-sidebar-size') == 'lg'
+          document.documentElement.getAttribute('data-sidebar-size') === 'lg'
             ? document.documentElement.setAttribute('data-sidebar-size', 'sm')
             : document.documentElement.setAttribute('data-sidebar-size', 'lg')
         } else if (windowSize <= 767) {
@@ -2959,7 +2948,7 @@ export default {
       }
 
       // Two column menu
-      if (document.documentElement.getAttribute('data-layout') == 'twocolumn') {
+      if (document.documentElement.getAttribute('data-layout') === 'twocolumn') {
         document.body.classList.contains('twocolumn-panel')
           ? document.body.classList.remove('twocolumn-panel')
           : document.body.classList.add('twocolumn-panel')

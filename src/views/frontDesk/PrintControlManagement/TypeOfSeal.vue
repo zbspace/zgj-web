@@ -5,12 +5,13 @@
             <template #title>
                 <div class="title">
                     <div>印章类型</div>
-                    <div>
-                        <el-button type="primary" @click="clickEditor('新增')">+ 增加</el-button>
-                        <el-button>
-                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                            <span>更多操作</span>
-                        </el-button>
+                    <div class="title-more">
+                        <div class="title-more-add">
+                            <el-button type="primary" @click="clickEditor('新增')">+ 增加</el-button>
+                        </div>
+                        <div class="title-more-down">
+
+                        </div>
                     </div>
                 </div>
             </template>
@@ -31,7 +32,8 @@
             <template #batch>
                 <div class="batch">
                     <componentsBatch>
-                       
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
                     </componentsBatch>
                 </div>
             </template>
@@ -39,7 +41,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @custom-click="customClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header"
+                        @selection-change="selectionChange" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -60,7 +63,7 @@
     </div>
 </template>
 <script setup>
-import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref, reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -190,43 +193,43 @@ const state = reactive({
                 prop: '1',
                 label: "印章类型编码",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "印章类型名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "描述",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "智能印章",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "普通印章",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '6',
                 label: "创建人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '7',
                 label: "创建时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -385,9 +388,17 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量删除"
+            }
+        ]
+    },
 });
-function clickEditor(editor){
+function clickEditor(editor) {
     fromState.title = editor;
     fromState.showDialog = true;
 }
@@ -410,6 +421,13 @@ function customClick(row, column, cell, event) {
             })
     }
 }
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 
@@ -426,6 +444,25 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .title-more {
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            .title-more-add {
+                margin-right: 0.5rem;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+
+            .title-more-down {
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+        }
     }
 
     .batch {

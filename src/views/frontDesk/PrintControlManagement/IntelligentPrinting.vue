@@ -29,8 +29,8 @@
             <template #batch>
                 <div class="batch">
                     <componentsBatch>
-                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                        <!-- <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button> -->
                     </componentsBatch>
                 </div>
             </template>

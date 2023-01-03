@@ -67,31 +67,33 @@ $unify-primary-color: var(--primary-6);
 }
 
 .el-button {
-  --el-button-hover-bg-color: #F3F6F9;
-  --el-button-hover-border-color: #d4dbeb;
-  --el-button-active-border-color: #d4dbeb;
-  --el-button-hover-text-color:rgba(0,0,0,0.65);
-}
-.el-message-box {
-  .el-button {
     --el-button-hover-bg-color: #F3F6F9;
     --el-button-hover-border-color: #d4dbeb;
     --el-button-active-border-color: #d4dbeb;
-    --el-button-hover-text-color:rgba(0,0,0,0.65);
-  }
-  .el-button--primary {
-    --el-button-text-color: #FFFFFF;
-    --el-button-bg-color: #D0963E;
-    --el-button-border-color: #D0963E;
-    --el-button-outline-color: #D0963E;
-    --el-button-active-color: #D0963E;
-    --el-button-hover-text-color: #FFFFFF;
-    --el-button-hover-bg-color: #D9AB5B;
-    --el-button-hover-border-color: #D9AB5B;
-    --el-button-active-bg-color: #AF7427;
-    --el-button-active-border-color: #AF7427;
-    --el-button-disabled-border-color: #F0F0F0;
-  }
+    --el-button-hover-text-color: rgba(0, 0, 0, 0.65);
+}
+
+.el-message-box {
+    .el-button {
+        --el-button-hover-bg-color: #F3F6F9;
+        --el-button-hover-border-color: #d4dbeb;
+        --el-button-active-border-color: #d4dbeb;
+        --el-button-hover-text-color: rgba(0, 0, 0, 0.65);
+    }
+
+    .el-button--primary {
+        --el-button-text-color: #FFFFFF;
+        --el-button-bg-color: #D0963E;
+        --el-button-border-color: #D0963E;
+        --el-button-outline-color: #D0963E;
+        --el-button-active-color: #D0963E;
+        --el-button-hover-text-color: #FFFFFF;
+        --el-button-hover-bg-color: #D9AB5B;
+        --el-button-hover-border-color: #D9AB5B;
+        --el-button-active-bg-color: #AF7427;
+        --el-button-active-border-color: #AF7427;
+        --el-button-disabled-border-color: #F0F0F0;
+    }
 }
 
 .el-button--primary {
@@ -169,25 +171,26 @@ $unify-primary-color: var(--primary-6);
 }
 
 .el-switch {
-  --el-switch-on-color: #D0963E;
+    --el-switch-on-color: #D0963E;
 }
+
 .el-dropdown__popper {
-  --el-dropdown-menuItem-hover-fill: rgba(0, 0, 0, 0.04)!important;
-  --el-dropdown-menuItem-hover-color:  #D0963E!important;
+    --el-dropdown-menuItem-hover-fill: rgba(0, 0, 0, 0.04) !important;
+    --el-dropdown-menuItem-hover-color: #D0963E !important;
 }
 
 .el-message--info,
 .el-message--success,
 .el-message--warning,
 .el-message--error {
-  --el-message-bg-color: #FFFFFF!important;
-  --el-message-border-color: #FFFFFF!important;
-  box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+    --el-message-bg-color: #FFFFFF !important;
+    --el-message-border-color: #FFFFFF !important;
+    box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
 
-  .el-message__content {
-      --el-message-text-color: rgba(0, 0, 0, 0.85);
-  }
-} 
+    .el-message__content {
+        --el-message-text-color: rgba(0, 0, 0, 0.85);
+    }
+}
 
 /* 
 左侧菜单 字体大小
@@ -225,6 +228,14 @@ $unify-primary-color: var(--primary-6);
 }
 
 /* 
+滚动条
+*/
+.el-scrollbar__bar {
+    z-index: 2 !important;
+}
+
+
+/* 
 内容
 */
 html,
@@ -241,15 +252,18 @@ body {
     padding-left: 0%;
     background-color: var(--background-color-1);
     padding-right: 0;
+
     .container-fluid {
-        padding:0 24px;
+        padding: 0 24px;
         --vz-gutter-x: 0
     }
 }
+
 .logo-p-t {
   padding-top: 16px!important;
   padding-bottom: 16px!important;
 }
+
 // #page-topbar {
 //     background-color: var(--background-color-1);
 // }
@@ -268,17 +282,17 @@ body {
 // }
 
 .static-content-item {
-  margin-left: 12px;
-  position: relative;
+    margin-left: 12px;
+    position: relative;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -10px;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    background-color: #D0963E;
-  }
+    &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -10px;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        background-color: #D0963E;
+    }
 }

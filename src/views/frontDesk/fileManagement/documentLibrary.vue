@@ -25,7 +25,6 @@
                                 </template>
                             </el-dropdown>
                         </div>
-
                     </div>
                 </div>
             </template>
@@ -772,15 +771,21 @@ onMounted(() => {
         vertical-align: top;
 
         .title-more {
+            height: 100%;
             display: flex;
             align-items: center;
 
             .title-more-add {
                 margin-right: 0.5rem;
+                height: 100%;
+                display: flex;
+                align-items: center;
             }
 
             .title-more-down {
-                margin-bottom: -4px;
+                height: 100%;
+                display: flex;
+                align-items: center;
             }
         }
     }

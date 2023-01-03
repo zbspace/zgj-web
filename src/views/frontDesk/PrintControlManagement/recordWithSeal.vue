@@ -5,11 +5,25 @@
             <template #title>
                 <div class="title">
                     <div>用印记录</div>
-                    <div>
-                        <el-button>
-                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                            <span>更多操作</span>
-                        </el-button>
+                    <div class="title-more">
+                        <div class="title-more-add">
+                            <el-button type="primary" @click="showFormDialog = true">+ 增加</el-button>
+                        </div>
+                        <div class="title-more-down">
+                            <el-dropdown>
+                                <el-button>
+                                    <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt=""
+                                        srcset="">
+                                    <span>更多操作</span>
+                                </el-button>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item>查看已作废的单据</el-dropdown-item>
+                                        <el-dropdown-item>导出台账</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -687,12 +701,6 @@ const state = reactive({
         data: [
             {
                 name: "批量作废"
-            },
-            {
-                name: "查看已作废的单据"
-            },
-            {
-                name: "导出台账"
             },
         ]
     },
@@ -1911,6 +1919,25 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .title-more {
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            .title-more-add {
+                margin-right: 0.5rem;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+
+            .title-more-down {
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+        }
     }
 
     .batch {

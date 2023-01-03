@@ -5,12 +5,13 @@
             <template #title>
                 <div class="title">
                     <div>文件类型</div>
-                    <div>
-                        <el-button type="primary" @click="showFormDialog = true">+ 增加</el-button>
-                        <el-button>
-                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                            <span>更多操作</span>
-                        </el-button>
+                    <div class="title-more">
+                        <div class="title-more-add">
+                            <el-button type="primary" @click="showFormDialog = true">+ 增加</el-button>
+                        </div>
+                        <div class="title-more-down">
+                          
+                        </div>
                     </div>
                 </div>
             </template>
@@ -45,8 +46,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick" @custom-click="customClick" @selection-change="selectionChange">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -65,10 +66,10 @@
 
         <!-- 动态表单 -->
         <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增工作台" :centerBtn="true"
-          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600"
-          @close="submitForm">
-          <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
-          </v-form-render>
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000"
+            :height="600" @close="submitForm">
+            <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+            </v-form-render>
         </KDialog>
         <!-- 人员选择  -->
         <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
@@ -90,7 +91,7 @@ import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import KDialog from "@/views/components/modules/kdialog.vue"
 import FormJson from '@/views/addDynamicFormJson/documentType.json'
 import kDepartOrPersonVue from "@/views/components/modules/kDepartOrPerson.vue"
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -106,19 +107,19 @@ const optionData = reactive({})
 const dialogVisible = ref(false)
 const vFormRef = ref(null)
 const submitForm = (type) => {
-  if (!type) {
-    vFormRef.value.resetForm()
-    return
-  }
-  vFormRef.value.getFormData().then(formData => {
-    // Form Validation OK
-    alert(JSON.stringify(formData))
-    showFormDialog.value = false
-  }).catch(error => {
-    // Form Validation failed
+    if (!type) {
+        vFormRef.value.resetForm()
+        return
+    }
+    vFormRef.value.getFormData().then(formData => {
+        // Form Validation OK
+        alert(JSON.stringify(formData))
+        showFormDialog.value = false
+    }).catch(error => {
+        // Form Validation failed
 
-    ElMessage.error(error)
-  })
+        ElMessage.error(error)
+    })
 }
 
 const emit = defineEmits([]);
@@ -220,33 +221,33 @@ const state = reactive({
                 prop: '1',
                 label: "文件类型名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件类型说明",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "文件数",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "创建人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "创建时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":300,
+                fixed: "right",
+                "min-width": 300,
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -465,8 +466,14 @@ const state = reactive({
         selectionData: [],
         data: [
             {
-                name: "批量操作"
-            }
+                name: "批量删除"
+            },
+            {
+                name: "批量设置可见范围"
+            },
+            {
+                name: "批量设置可用范围"
+            },
         ]
     },
 });
@@ -497,13 +504,13 @@ function customClick(row, column, cell, event) {
             }
         )
             .then(() => {
-                
+
             })
     }
-    if(cell.name === '设置维护范围'){
+    if (cell.name === '设置维护范围') {
         showDepPerDialog.value = true;
     }
-    if(cell.name === '设置可用范围'){
+    if (cell.name === '设置可用范围') {
         showDepPerDialog.value = true;
     }
 }
@@ -529,6 +536,24 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        .title-more {
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            .title-more-add {
+                margin-right: 0.5rem;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+
+            .title-more-down {
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+        }
     }
 
     .batch {
