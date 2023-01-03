@@ -214,7 +214,7 @@ onMounted(() => {
     .content {
         display: flex;
         justify-content: space-between;
-        padding-right: 20px;
+        // padding-right: 20px;
         box-sizing: border-box;
 
         .seal-list {

@@ -106,7 +106,7 @@ onMounted(() => {
     @include mixin-padding-top(10);
     @include mixin-padding-bottom(10);
     @include mixin-padding-left(20);
-    @include mixin-padding-right(0);
+    @include mixin-padding-right(20);
     box-sizing: border-box;
     border-radius: var(--border-radius-4);
     background-color: var(--in-common-use-1);
@@ -118,20 +118,20 @@ onMounted(() => {
         padding: 0rem 0 0.5rem 0;
         box-sizing: border-box;
         font-size: var(--font-size-title-2);
-        @include mixin-padding-right(20);
+        @include mixin-padding-right(0);
         box-sizing: border-box;
     }
 
     .ap-box-breadcrumb {
         width: 100%;
-        @include mixin-padding-right(20);
+        @include mixin-padding-right(0);
         box-sizing: border-box;
         padding-top: 1rem;
     }
 
     .ap-box-tabs {
         width: 100%;
-        @include mixin-padding-right(20);
+        @include mixin-padding-right(0);
         box-sizing: border-box;
     }
 
@@ -144,7 +144,7 @@ onMounted(() => {
 
     .ap-box-searchForm {
         width: 100%;
-        @include mixin-padding-right(20);
+        @include mixin-padding-right(0);
         box-sizing: border-box;
 
     }
@@ -153,7 +153,7 @@ onMounted(() => {
         width: 100%;
         padding: 0.5rem 0 0.5rem 0;
         box-sizing: border-box;
-        @include mixin-padding-right(20);
+        @include mixin-padding-right(0);
         box-sizing: border-box;
 
     }
@@ -188,7 +188,7 @@ onMounted(() => {
     }
 
     .ap-box-table {
-        @include mixin-padding-right(20);
+        @include mixin-padding-right(0);
         box-sizing: border-box;
     }
 
@@ -198,7 +198,7 @@ onMounted(() => {
         justify-content: flex-end;
         padding: 1.5rem 0;
         box-sizing: border-box;
-        @include mixin-padding-right(20);
+        @include mixin-padding-right(0);
         box-sizing: border-box;
     }
 
