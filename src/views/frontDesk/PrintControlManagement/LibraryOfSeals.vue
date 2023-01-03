@@ -5,12 +5,26 @@
             <template #title>
                 <div class="title">
                     印章库
-                    <div>
-                        <el-button type="primary" @click="showLibraryDialog = true">+ 增加</el-button>
-                        <el-button>
-                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                            <span>更多操作</span>
-                        </el-button>
+                    <div class="title-more">
+                        <div class="title-more-add">
+                            <el-button type="primary" @click="showLibraryDialog = true">+ 增加</el-button>
+                        </div>
+                        <div class="title-more-down">
+                            <el-dropdown>
+                                <el-button>
+                                    <img class="button-icon" src="@/assets/svg/gengduo-caozuo.svg" alt="" srcset="">
+                                    <span>更多操作</span>
+                                </el-button>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item>印章解绑</el-dropdown-item>
+                                        <el-dropdown-item>导入</el-dropdown-item>
+                                        <el-dropdown-item>导出台账</el-dropdown-item>
+                                        <el-dropdown-item>查看已删除的印章</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -576,18 +590,6 @@ const state = reactive({
             {
                 name: "批量删除"
             },
-            {
-                name: "印章解绑"
-            },
-            {
-                name: "导入"
-            },
-            {
-                name: "导出台账"
-            },
-            {
-                name: "查看已删除的印章"
-            },
         ]
     },
 });
@@ -631,6 +633,25 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .title-more {
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            .title-more-add {
+                margin-right: 0.5rem;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+
+            .title-more-down {
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+        }
     }
 
     .batch {
