@@ -432,7 +432,7 @@ onMounted(() => {
     }
 
     .custom {
-        padding-right: 1.25rem;
+        // padding-right: 1.25rem;
         box-sizing: border-box;
         text-align: center;
         padding-bottom: 4rem;
