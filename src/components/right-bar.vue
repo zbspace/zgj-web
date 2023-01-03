@@ -3,40 +3,24 @@
   <div>
     <div id="preloader">
       <div id="status">
-        <div
-          class="spinner-border text-primary avatar-sm"
-          role="status"
-        >
+        <div class="spinner-border text-primary avatar-sm" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
     </div>
     <div class="customizer-setting d-none d-md-block">
-      <div
-        class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#theme-settings-offcanvas"
-        aria-controls="theme-settings-offcanvas"
-        id="mdi-cog"
-      >
+      <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
+        data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas" id="mdi-cog">
         <i class="mdi mdi-spin mdi-cog-outline fs-22" />
       </div>
     </div>
-    <div
-      class="offcanvas offcanvas-end border-0"
-      tabindex="-1"
-      id="theme-settings-offcanvas"
-    >
+    <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
       <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
         <h5 class="m-0 me-2 text-white">
           主题定制器
         </h5>
-        <button
-          type="button"
-          class="btn-close btn-close-white ms-auto"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        />
+        <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"
+          aria-label="Close" />
       </div>
       <div class="offcanvas-body p-0">
         <SimpleBar class="h-100">
@@ -53,18 +37,9 @@
               <div class="row">
                 <div class="col-4">
                   <div class="form-check card-radio">
-                    <input
-                      id="customizer-layout01"
-                      name="data-layout"
-                      type="radio"
-                      value="vertical"
-                      class="form-check-input"
-                      v-model="layoutType"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="customizer-layout01"
-                    >
+                    <input id="customizer-layout01" name="data-layout" type="radio" value="vertical"
+                      class="form-check-input" v-model="layoutType">
+                    <label class="form-check-label p-0 avatar-md w-100" for="customizer-layout01">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
@@ -89,18 +64,9 @@
                 </div>
                 <div class="col-4">
                   <div class="form-check card-radio">
-                    <input
-                      id="customizer-layout02"
-                      name="data-layout"
-                      type="radio"
-                      value="horizontal"
-                      class="form-check-input"
-                      v-model="layoutType"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="customizer-layout02"
-                    >
+                    <input id="customizer-layout02" name="data-layout" type="radio" value="horizontal"
+                      class="form-check-input" v-model="layoutType">
+                    <label class="form-check-label p-0 avatar-md w-100" for="customizer-layout02">
                       <span class="d-flex h-100 flex-column gap-1">
                         <span class="bg-light d-flex p-1 gap-1 align-items-center">
                           <span class="d-block p-1 bg-soft-primary rounded me-1" />
@@ -118,18 +84,9 @@
                 </div>
                 <div class="col-4">
                   <div class="form-check card-radio">
-                    <input
-                      id="customizer-layout03"
-                      name="data-layout"
-                      type="radio"
-                      value="twocolumn"
-                      class="form-check-input"
-                      v-model="layoutType"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="customizer-layout03"
-                    >
+                    <input id="customizer-layout03" name="data-layout" type="radio" value="twocolumn"
+                      class="form-check-input" v-model="layoutType">
+                    <label class="form-check-label p-0 avatar-md w-100" for="customizer-layout03">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-light d-flex h-100 flex-column gap-1">
@@ -176,18 +133,9 @@
                 <div class="row">
                   <div class="col-4">
                     <div class="form-check card-radio">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="data-layout-mode"
-                        id="layout-mode-light"
-                        value="light"
-                        v-model="mode"
-                      >
-                      <label
-                        class="form-check-label p-0 avatar-md w-100"
-                        for="layout-mode-light"
-                      >
+                      <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-light"
+                        value="light" v-model="mode">
+                      <label class="form-check-label p-0 avatar-md w-100" for="layout-mode-light">
                         <span class="d-flex gap-1 h-100">
                           <span class="flex-shrink-0">
                             <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
@@ -249,10 +197,7 @@
 
             <!-- 布局宽度 -->
             <div v-if="false">
-              <div
-                v-if="layoutType != 'twocolumn'"
-                id="layout-width"
-              >
+              <div v-if="layoutType != 'twocolumn'" id="layout-width">
                 <h6 class="mt-4 mb-0 fw-semibold text-uppercase">
                   布局宽度
                 </h6>
@@ -263,18 +208,9 @@
                 <div class="row">
                   <div class="col-4">
                     <div class="form-check card-radio">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        v-model="layoutWidth"
-                        name="data-layout-width"
-                        id="layout-width-fluid"
-                        value="fluid"
-                      >
-                      <label
-                        class="form-check-label p-0 avatar-md w-100"
-                        for="layout-width-fluid"
-                      >
+                      <input class="form-check-input" type="radio" v-model="layoutWidth" name="data-layout-width"
+                        id="layout-width-fluid" value="fluid">
+                      <label class="form-check-label p-0 avatar-md w-100" for="layout-width-fluid">
                         <span class="d-flex gap-1 h-100">
                           <span class="flex-shrink-0">
                             <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
@@ -299,18 +235,9 @@
                   </div>
                   <div class="col-4">
                     <div class="form-check card-radio">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        v-model="layoutWidth"
-                        name="data-layout-width"
-                        id="layout-width-boxed"
-                        value="boxed"
-                      >
-                      <label
-                        class="form-check-label p-0 avatar-md w-100 px-2"
-                        for="layout-width-boxed"
-                      >
+                      <input class="form-check-input" type="radio" v-model="layoutWidth" name="data-layout-width"
+                        id="layout-width-boxed" value="boxed">
+                      <label class="form-check-label p-0 avatar-md w-100 px-2" for="layout-width-boxed">
                         <span class="d-flex gap-1 h-100 border-start border-end">
                           <span class="flex-shrink-0">
                             <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
@@ -339,10 +266,7 @@
 
             <!-- 布局位置 -->
             <div v-if="false">
-              <div
-                v-if="layoutType != 'twocolumn'"
-                id="layout-position"
-              >
+              <div v-if="layoutType != 'twocolumn'" id="layout-position">
                 <h6 class="mt-4 mb-0 fw-semibold text-uppercase">
                   布局位置
                 </h6>
@@ -350,35 +274,14 @@
                   选择固定或可滚动布局位置
                 </p>
 
-                <div
-                  class="btn-group radio"
-                  role="group"
-                >
-                  <input
-                    type="radio"
-                    class="btn-check"
-                    name="data-layout-position"
-                    id="layout-position-fixed"
-                    value="fixed"
-                    v-model="position"
-                  >
-                  <label
-                    class="btn btn-light w-sm"
-                    for="layout-position-fixed"
-                  >固定</label>
+                <div class="btn-group radio" role="group">
+                  <input type="radio" class="btn-check" name="data-layout-position" id="layout-position-fixed"
+                    value="fixed" v-model="position">
+                  <label class="btn btn-light w-sm" for="layout-position-fixed">固定</label>
 
-                  <input
-                    type="radio"
-                    class="btn-check"
-                    name="data-layout-position"
-                    id="layout-position-scrollable"
-                    value="scrollable"
-                    v-model="position"
-                  >
-                  <label
-                    class="btn btn-light w-sm ms-0"
-                    for="layout-position-scrollable"
-                  >可滚动</label>
+                  <input type="radio" class="btn-check" name="data-layout-position" id="layout-position-scrollable"
+                    value="scrollable" v-model="position">
+                  <label class="btn btn-light w-sm ms-0" for="layout-position-scrollable">可滚动</label>
                 </div>
               </div>
             </div>
@@ -394,31 +297,20 @@
               <div class="row">
                 <div class="col-4">
                   <div class="form-check card-radio">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="data-topbar"
-                      id="topbar-color-light"
-                      value="light"
-                      v-model="topbar"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="topbar-color-light"
-                    >
+                    <input class="form-check-input" type="radio" name="data-topbar" id="topbar-color-light"
+                      value="light" v-model="topbar">
+                    <label class="form-check-label p-0 avatar-md w-100" for="topbar-color-light">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
-                            <span
-                              class="
+                            <span class="
                                 d-block
                                 p-1
                                 px-2
                                 bg-soft-primary
                                 rounded
                                 mb-2
-                              "
-                            />
+                              " />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
@@ -439,31 +331,20 @@
                 </div>
                 <div class="col-4">
                   <div class="form-check card-radio">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="data-topbar"
-                      id="topbar-color-dark"
-                      value="dark"
-                      v-model="topbar"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="topbar-color-dark"
-                    >
+                    <input class="form-check-input" type="radio" name="data-topbar" id="topbar-color-dark" value="dark"
+                      v-model="topbar">
+                    <label class="form-check-label p-0 avatar-md w-100" for="topbar-color-dark">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
-                            <span
-                              class="
+                            <span class="
                                 d-block
                                 p-1
                                 px-2
                                 bg-soft-primary
                                 rounded
                                 mb-2
-                              "
-                            />
+                              " />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
@@ -485,10 +366,7 @@
               </div>
             </div>
             <!-- 侧边栏大小 -->
-            <div
-              v-if="layoutType == 'vertical'"
-              id="sidebar-size"
-            >
+            <div v-if="layoutType == 'vertical'" id="sidebar-size">
               <h6 class="mt-4 mb-0 fw-semibold text-uppercase">
                 侧边栏大小
               </h6>
@@ -499,31 +377,20 @@
               <div class="row">
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="data-sidebar-size"
-                      id="sidebar-size-default"
-                      v-model="sidebarSize"
-                      value="lg"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="sidebar-size-default"
-                    >
+                    <input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-default"
+                      v-model="sidebarSize" value="lg">
+                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-size-default">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
-                            <span
-                              class="
+                            <span class="
                                   d-block
                                   p-1
                                   px-2
                                   bg-soft-primary
                                   rounded
                                   mb-2
-                                "
-                            />
+                                " />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
@@ -571,18 +438,9 @@
 
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarSize"
-                      type="radio"
-                      name="data-sidebar-size"
-                      id="sidebar-size-small"
-                      value="sm"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="sidebar-size-small"
-                    >
+                    <input class="form-check-input" v-model="sidebarSize" type="radio" name="data-sidebar-size"
+                      id="sidebar-size-small" value="sm">
+                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-size-small">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-light d-flex h-100 flex-column gap-1">
@@ -608,18 +466,9 @@
 
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarSize"
-                      type="radio"
-                      name="data-sidebar-size"
-                      id="sidebar-size-small-hover"
-                      value="sm-hover"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="sidebar-size-small-hover"
-                    >
+                    <input class="form-check-input" v-model="sidebarSize" type="radio" name="data-sidebar-size"
+                      id="sidebar-size-small-hover" value="sm-hover">
+                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-size-small-hover">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-light d-flex h-100 flex-column gap-1">
@@ -645,10 +494,7 @@
               </div>
             </div>
             <!-- 侧边栏视图 -->
-            <div
-              v-if="layoutType == 'vertical'"
-              id="sidebar-view"
-            >
+            <div v-if="layoutType == 'vertical'" id="sidebar-view">
               <h6 class="mt-4 mb-0 fw-semibold text-uppercase">
                 侧边栏视图
               </h6>
@@ -659,31 +505,20 @@
               <div class="row">
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarView"
-                      type="radio"
-                      name="data-layout-style"
-                      id="sidebar-view-default"
-                      value="default"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="sidebar-view-default"
-                    >
+                    <input class="form-check-input" v-model="sidebarView" type="radio" name="data-layout-style"
+                      id="sidebar-view-default" value="default">
+                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-view-default">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
-                            <span
-                              class="
+                            <span class="
                                   d-block
                                   p-1
                                   px-2
                                   bg-soft-primary
                                   rounded
                                   mb-2
-                                "
-                            />
+                                " />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
@@ -704,54 +539,39 @@
                 </div>
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarView"
-                      type="radio"
-                      name="data-layout-style"
-                      id="sidebar-view-detached"
-                      value="detached"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="sidebar-view-detached"
-                    >
+                    <input class="form-check-input" v-model="sidebarView" type="radio" name="data-layout-style"
+                      id="sidebar-view-detached" value="detached">
+                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-view-detached">
                       <span class="d-flex h-100 flex-column">
-                        <span
-                          class="
+                        <span class="
                               bg-light
                               d-flex
                               p-1
                               gap-1
                               align-items-center
                               px-2
-                            "
-                        >
+                            ">
                           <span class="d-block p-1 bg-soft-primary rounded me-1" />
-                          <span
-                            class="
+                          <span class="
                                 d-block
                                 p-1
                                 pb-0
                                 px-2
                                 bg-soft-primary
                                 ms-auto
-                              "
-                          />
+                              " />
                           <span class="d-block p-1 pb-0 px-2 bg-soft-primary" />
                         </span>
                         <span class="d-flex gap-1 h-100 p-1 px-2">
                           <span class="flex-shrink-0">
-                            <span
-                              class="
+                            <span class="
                                   bg-light
                                   d-flex
                                   h-100
                                   flex-column
                                   gap-1
                                   p-1
-                                "
-                            >
+                                ">
                               <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                               <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                               <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
@@ -769,10 +589,7 @@
               </div>
             </div>
             <!-- 侧边栏颜色 -->
-            <div
-              v-if="layoutType != 'horizontal'"
-              id="sidebar-color"
-            >
+            <div v-if="layoutType != 'horizontal'" id="sidebar-color">
               <h6 class="mt-4 mb-0 fw-semibold text-uppercase">
                 侧边栏颜色
               </h6>
@@ -783,31 +600,20 @@
               <div class="row">
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarColor"
-                      type="radio"
-                      name="data-sidebar"
-                      id="sidebar-color-light"
-                      value="light"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="sidebar-color-light"
-                    >
+                    <input class="form-check-input" v-model="sidebarColor" type="radio" name="data-sidebar"
+                      id="sidebar-color-light" value="light">
+                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-color-light">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
                           <span class="bg-white border-end d-flex h-100 flex-column gap-1 p-1">
-                            <span
-                              class="
+                            <span class="
                                   d-block
                                   p-1
                                   px-2
                                   bg-soft-primary
                                   rounded
                                   mb-2
-                                "
-                            />
+                                " />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-primary" />
@@ -828,30 +634,19 @@
                 </div>
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarColor"
-                      type="radio"
-                      name="data-sidebar"
-                      id="sidebar-color-dark"
-                      value="dark"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-md w-100"
-                      for="sidebar-color-dark"
-                    >
+                    <input class="form-check-input" v-model="sidebarColor" type="radio" name="data-sidebar"
+                      id="sidebar-color-dark" value="dark">
+                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-color-dark">
                       <span class="d-flex gap-1 h-100">
                         <span class="flex-shrink-0">
-                          <span
-                            class="
+                          <span class="
                                 bg-primary
                                 d-flex
                                 h-100
                                 flex-column
                                 gap-1
                                 p-1
-                              "
-                          >
+                              ">
                             <span class="d-block p-1 px-2 bg-soft-light rounded mb-2" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-light" />
                             <span class="d-block p-1 px-2 pb-0 bg-soft-light" />
@@ -872,14 +667,9 @@
                   </h5>
                 </div>
                 <div class="col-4">
-                  <button
-                    class="btn btn-link avatar-md w-100 p-0 overflow-hidden border collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseBgGradient"
-                    aria-expanded="false"
-                    aria-controls="collapseBgGradient"
-                  >
+                  <button class="btn btn-link avatar-md w-100 p-0 overflow-hidden border collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapseBgGradient" aria-expanded="false"
+                    aria-controls="collapseBgGradient">
                     <span class="d-flex gap-1 h-100">
                       <span class="flex-shrink-0">
                         <span class="bg-vertical-gradient d-flex h-100 flex-column gap-1 p-1">
@@ -902,72 +692,33 @@
                   </h5>
                 </div>
               </div>
-              <div
-                class="collapse"
-                id="collapseBgGradient"
-              >
+              <div class="collapse" id="collapseBgGradient">
                 <div class="d-flex gap-2 flex-wrap img-switch p-2 px-3 bg-light rounded">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      v-model="sidebarColor"
-                      name="data-sidebar"
-                      id="sidebar-color-gradient"
-                      value="gradient"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-xs rounded-circle"
-                      for="sidebar-color-gradient"
-                    >
+                    <input class="form-check-input" type="radio" v-model="sidebarColor" name="data-sidebar"
+                      id="sidebar-color-gradient" value="gradient">
+                    <label class="form-check-label p-0 avatar-xs rounded-circle" for="sidebar-color-gradient">
                       <span class="avatar-title rounded-circle bg-vertical-gradient" />
                     </label>
                   </div>
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      v-model="sidebarColor"
-                      name="data-sidebar"
-                      id="sidebar-color-gradient-2"
-                      value="gradient-2"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-xs rounded-circle"
-                      for="sidebar-color-gradient-2"
-                    >
+                    <input class="form-check-input" type="radio" v-model="sidebarColor" name="data-sidebar"
+                      id="sidebar-color-gradient-2" value="gradient-2">
+                    <label class="form-check-label p-0 avatar-xs rounded-circle" for="sidebar-color-gradient-2">
                       <span class="avatar-title rounded-circle bg-vertical-gradient-2" />
                     </label>
                   </div>
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      v-model="sidebarColor"
-                      name="data-sidebar"
-                      id="sidebar-color-gradient-3"
-                      value="gradient-3"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-xs rounded-circle"
-                      for="sidebar-color-gradient-3"
-                    >
+                    <input class="form-check-input" type="radio" v-model="sidebarColor" name="data-sidebar"
+                      id="sidebar-color-gradient-3" value="gradient-3">
+                    <label class="form-check-label p-0 avatar-xs rounded-circle" for="sidebar-color-gradient-3">
                       <span class="avatar-title rounded-circle bg-vertical-gradient-3" />
                     </label>
                   </div>
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      v-model="sidebarColor"
-                      name="data-sidebar"
-                      id="sidebar-color-gradient-4"
-                      value="gradient-4"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-xs rounded-circle"
-                      for="sidebar-color-gradient-4"
-                    >
+                    <input class="form-check-input" type="radio" v-model="sidebarColor" name="data-sidebar"
+                      id="sidebar-color-gradient-4" value="gradient-4">
+                    <label class="form-check-label p-0 avatar-xs rounded-circle" for="sidebar-color-gradient-4">
                       <span class="avatar-title rounded-circle bg-vertical-gradient-4" />
                     </label>
                   </div>
@@ -976,10 +727,7 @@
             </div>
             <!-- 侧边栏图像 -->
             <div v-if="false">
-              <div
-                v-if="layoutType != 'horizontal'"
-                id="sidebar-img"
-              >
+              <div v-if="layoutType != 'horizontal'" id="sidebar-img">
                 <h6 class="mt-4 mb-0 fw-semibold text-uppercase">
                   侧边栏图像
                 </h6>
@@ -989,18 +737,9 @@
 
                 <div class="d-flex gap-2 flex-wrap img-switch">
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarImage"
-                      type="radio"
-                      name="data-sidebar-img"
-                      id="sidebarimg-none"
-                      value="none"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-sm h-auto"
-                      for="sidebarimg-none"
-                    >
+                    <input class="form-check-input" v-model="sidebarImage" type="radio" name="data-sidebar-img"
+                      id="sidebarimg-none" value="none">
+                    <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-none">
                       <span class="avatar-md w-auto bg-light d-flex align-items-center justify-content-center">
                         <i class="ri-close-fill fs-20" />
                       </span>
@@ -1008,84 +747,32 @@
                   </div>
 
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarImage"
-                      type="radio"
-                      name="data-sidebar-img"
-                      id="sidebarimg-01"
-                      value="img-1"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-sm h-auto"
-                      for="sidebarimg-01"
-                    >
-                      <img
-                        src="@/assets/images/sidebar/img-1.jpg"
-                        alt=""
-                        class="avatar-md w-auto object-cover"
-                      >
+                    <input class="form-check-input" v-model="sidebarImage" type="radio" name="data-sidebar-img"
+                      id="sidebarimg-01" value="img-1">
+                    <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-01">
+                      <img src="@/assets/images/sidebar/img-1.jpg" alt="" class="avatar-md w-auto object-cover">
                     </label>
                   </div>
 
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarImage"
-                      type="radio"
-                      name="data-sidebar-img"
-                      id="sidebarimg-02"
-                      value="img-2"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-sm h-auto"
-                      for="sidebarimg-02"
-                    >
-                      <img
-                        src="@/assets/images/sidebar/img-2.jpg"
-                        alt=""
-                        class="avatar-md w-auto object-cover"
-                      >
+                    <input class="form-check-input" v-model="sidebarImage" type="radio" name="data-sidebar-img"
+                      id="sidebarimg-02" value="img-2">
+                    <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-02">
+                      <img src="@/assets/images/sidebar/img-2.jpg" alt="" class="avatar-md w-auto object-cover">
                     </label>
                   </div>
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarImage"
-                      type="radio"
-                      name="data-sidebar-img"
-                      id="sidebarimg-03"
-                      value="img-3"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-sm h-auto"
-                      for="sidebarimg-03"
-                    >
-                      <img
-                        src="@/assets/images/sidebar/img-3.jpg"
-                        alt=""
-                        class="avatar-md w-auto object-cover"
-                      >
+                    <input class="form-check-input" v-model="sidebarImage" type="radio" name="data-sidebar-img"
+                      id="sidebarimg-03" value="img-3">
+                    <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-03">
+                      <img src="@/assets/images/sidebar/img-3.jpg" alt="" class="avatar-md w-auto object-cover">
                     </label>
                   </div>
                   <div class="form-check sidebar-setting card-radio">
-                    <input
-                      class="form-check-input"
-                      v-model="sidebarImage"
-                      type="radio"
-                      name="data-sidebar-img"
-                      id="sidebarimg-04"
-                      value="img-4"
-                    >
-                    <label
-                      class="form-check-label p-0 avatar-sm h-auto"
-                      for="sidebarimg-04"
-                    >
-                      <img
-                        src="@/assets/images/sidebar/img-4.jpg"
-                        alt=""
-                        class="avatar-md w-auto object-cover"
-                      >
+                    <input class="form-check-input" v-model="sidebarImage" type="radio" name="data-sidebar-img"
+                      id="sidebarimg-04" value="img-4">
+                    <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-04">
+                      <img src="@/assets/images/sidebar/img-4.jpg" alt="" class="avatar-md w-auto object-cover">
                     </label>
                   </div>
                 </div>
@@ -1104,18 +791,9 @@
                 <div class="row">
                   <div class="col-4">
                     <div class="form-check sidebar-setting card-radio">
-                      <input
-                        class="form-check-input"
-                        v-model="preloader"
-                        type="radio"
-                        name="data-preloader"
-                        id="preloader-view-custom"
-                        value="enable"
-                      >
-                      <label
-                        class="form-check-label p-0 avatar-md w-100"
-                        for="preloader-view-custom"
-                      >
+                      <input class="form-check-input" v-model="preloader" type="radio" name="data-preloader"
+                        id="preloader-view-custom" value="enable">
+                      <label class="form-check-label p-0 avatar-md w-100" for="preloader-view-custom">
                         <span class="d-flex gap-1 h-100">
                           <span class="flex-shrink-0">
                             <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
@@ -1133,14 +811,8 @@
                           </span>
                         </span>
                         <!-- <div id="preloader"> -->
-                        <div
-                          id="status"
-                          class="d-flex align-items-center justify-content-center"
-                        >
-                          <div
-                            class="spinner-border text-primary avatar-xxs m-auto"
-                            role="status"
-                          >
+                        <div id="status" class="d-flex align-items-center justify-content-center">
+                          <div class="spinner-border text-primary avatar-xxs m-auto" role="status">
                             <span class="visually-hidden">Loading...</span>
                           </div>
                         </div>
@@ -1153,18 +825,9 @@
                   </div>
                   <div class="col-4">
                     <div class="form-check sidebar-setting card-radio">
-                      <input
-                        class="form-check-input"
-                        v-model="preloader"
-                        type="radio"
-                        name="data-preloader"
-                        id="preloader-view-none"
-                        value="disable"
-                      >
-                      <label
-                        class="form-check-label p-0 avatar-md w-100"
-                        for="preloader-view-none"
-                      >
+                      <input class="form-check-input" v-model="preloader" type="radio" name="data-preloader"
+                        id="preloader-view-none" value="disable">
+                      <label class="form-check-label p-0 avatar-md w-100" for="preloader-view-none">
                         <span class="d-flex gap-1 h-100">
                           <span class="flex-shrink-0">
                             <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
@@ -1199,11 +862,7 @@
             <!-- <button type="button" class="btn btn-primary w-100">立即购买</button> -->
           </div>
           <div class="col-6">
-            <button
-              type="button"
-              class="btn btn-light w-100"
-              id="reset-layout"
-            >
+            <button type="button" class="btn btn-light w-100" id="reset-layout">
               重置
             </button>
           </div>
@@ -1225,7 +884,7 @@ export default {
   components: {
     SimpleBar
   },
-  data () {
+  data() {
     return {
       config: {
         handler: this.handleRightBarClick,
@@ -1236,16 +895,16 @@ export default {
   },
   methods: {
     // ...layoutMethods,
-    hide () {
+    hide() {
       this.$parent.toggleRightSidebar()
     },
-    handleRightBarClick () {
+    handleRightBarClick() {
       this.$parent.hideRightSidebar()
     },
-    middleware (event) {
+    middleware(event) {
       if (event.target.classList) { return !event.target.classList.contains('toggle-right') }
     },
-    removeExtraFade () {
+    removeExtraFade() {
       const fade = document.getElementsByClassName('offcanvas-backdrop fade show')
       for (let i = 0; i < fade.length; i++) {
         while (fade.length > 1) {
@@ -1254,7 +913,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     const rightbar_isopen = localStorage.getItem('rightbar_isopen')
     if (rightbar_isopen == 'true') {
       document.getElementById('mdi-cog').click()
@@ -1309,11 +968,11 @@ export default {
   computed: {
     // ...layoutComputed,
     layoutType: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.layoutType : {} || {};
         return layoutStore.layoutType
       },
-      set (layout) {
+      set(layout) {
         localStorage.setItem('rightbar_isopen', true)
         // this.changeLayoutType({
         //   layoutType: layout,
@@ -1322,11 +981,11 @@ export default {
       }
     },
     layoutWidth: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.layoutWidth : {} || {};
         return layoutStore.layoutWidth
       },
-      set (width) {
+      set(width) {
         // this.changeLayoutWidth({
         //   layoutWidth: width,
         // });
@@ -1334,11 +993,11 @@ export default {
       }
     },
     topbar: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.topbar : {} || {};
         return layoutStore.topbar
       },
-      set (topbar) {
+      set(topbar) {
         // this.changeTopbar({
         //   topbar: topbar,
         // });
@@ -1346,11 +1005,11 @@ export default {
       }
     },
     sidebarSize: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.sidebarSize : {} || {}
         return layoutStore.sidebarSize
       },
-      set (type) {
+      set(type) {
         // return this.changeSidebarSize({
         //   sidebarSize: type,
         // });
@@ -1358,11 +1017,11 @@ export default {
       }
     },
     position: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.position : {} || {};
         return layoutStore.position
       },
-      set (position) {
+      set(position) {
         // return this.changePosition({
         //   position: position,
         // });
@@ -1370,11 +1029,11 @@ export default {
       }
     },
     sidebarView: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.sidebarView : {} || {};
         return layoutStore.sidebarView
       },
-      set (sidebarView) {
+      set(sidebarView) {
         // return this.changeSidebarView({
         //   sidebarView: sidebarView,
         // });
@@ -1382,11 +1041,11 @@ export default {
       }
     },
     sidebarColor: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.sidebarColor : {} || {};
         return layoutStore.sidebarColor
       },
-      set (sidebarColor) {
+      set(sidebarColor) {
         // return this.changeSidebarColor({
         //   sidebarColor: sidebarColor,
         // });
@@ -1394,11 +1053,11 @@ export default {
       }
     },
     sidebarImage: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.sidebarImage : {} || {};
         return layoutStore.sidebarImage
       },
-      set (sidebarImage) {
+      set(sidebarImage) {
         // return this.changeSidebarImage({
         //   sidebarImage: sidebarImage,
         // });
@@ -1406,11 +1065,11 @@ export default {
       }
     },
     preloader: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.preloader : {} || {};
         return layoutStore.preloader
       },
-      set (preloader) {
+      set(preloader) {
         // return this.changePreloader({
         //   preloader: preloader,
         // });
@@ -1418,11 +1077,11 @@ export default {
       }
     },
     mode: {
-      get () {
+      get() {
         // return this.$store ? this.$store.state.layout.mode : {} || {};
         return layoutStore.mode
       },
-      set (mode) {
+      set(mode) {
         // return this.changeMode({
         //   mode: mode,
         // });
@@ -1434,7 +1093,7 @@ export default {
     mode: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'dark':
@@ -1453,7 +1112,7 @@ export default {
     sidebarColor: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'dark':
@@ -1481,7 +1140,7 @@ export default {
     preloader: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           localStorage.setItem('data-preloader', newVal)
         }
@@ -1490,7 +1149,7 @@ export default {
     sidebarImage: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'img-1':
@@ -1515,7 +1174,7 @@ export default {
     sidebarView: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'detached':
@@ -1537,7 +1196,7 @@ export default {
     position: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'fixed':
@@ -1559,7 +1218,7 @@ export default {
     sidebarSize: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'lg':
@@ -1584,7 +1243,7 @@ export default {
     topbar: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'light':
@@ -1600,7 +1259,7 @@ export default {
     layoutWidth: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'fluid':
@@ -1622,7 +1281,7 @@ export default {
     layoutType: {
       immediate: true,
       deep: true,
-      handler (newVal, oldVal) {
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           switch (newVal) {
             case 'horizontal':

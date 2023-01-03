@@ -2147,7 +2147,7 @@
         class="navbar-nav h-100"
         id="navbar-nav"
       >
-        <div v-for="(item, index) in state.menu">
+        <div v-for="(item, index) in state.menu" :key="index">
           <div v-if="item.type == 'part'">
             <li class="menu-title">
               <span data-key="t-menu"> {{ $t(item.label) }}</span>
@@ -2176,7 +2176,7 @@
                 :id="item.label"
               >
                 <ul class="nav nav-sm flex-column">
-                  <div v-for="data in item.children">
+                  <div v-for="(data, index) in item.children" :key="index">
                     <div v-if="data.children && data.children.length > 0">
                       <li class="nav-item">
                         <a
@@ -2195,7 +2195,7 @@
                           :id="data.label"
                         >
                           <ul class="nav nav-sm flex-column">
-                            <div v-for="node in data.children">
+                            <div v-for="(node, index) in data.children" :key="index">
                               <li class="nav-item">
                                 <router-link
                                   :to="node.to"
