@@ -1,2 +1,2 @@
-export const XXXX = 'XXXX'
-
+// 常量
+export const USER = 'USER'

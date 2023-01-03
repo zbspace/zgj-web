@@ -30,8 +30,8 @@
                 <div class="batch">
                     <el-button @click="(showDialog = true)">弹框Demo</el-button>
                     <el-button @click="(showDepPerDialog = true)">组织选择</el-button>
-                    <el-button @click="goInnerPage">二级页面</el-button>
                     <el-button @click="goInnerTablePage">二级表格页面</el-button>
+                    <el-button @click="goInnerPage('/frontDesk/PrintControlManagement/innerPage')">二级页面</el-button>
                     <el-button :plain="true" @click="open2">成功消息</el-button>
                     <el-button :plain="true" @click="open3">询问消息</el-button>
                     <el-button :plain="true" @click="open4">异常消息</el-button>
@@ -53,19 +53,23 @@
             </template>
         </componentsLayout>
 
-            <!-- test - dialog -->
-            <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo Dialog" :oneBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"></KDialog>
+        <!-- test - dialog -->
+        <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo Dialog" :oneBtn="true"
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"></KDialog>
 
-            <!-- 人员选择  -->
-            <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog"></kDepartOrPersonVue>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
 
-            <!-- 动态表单 - 用印申请 -->
-            <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增（用印申请）" :centerBtn="true"  :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600" @close="submitForm">
-                <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
-                </v-form-render>
-            </KDialog>
+        <!-- 动态表单 - 用印申请 -->
+        <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增（用印申请）" :centerBtn="true"
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000"
+            :height="600" @close="submitForm">
+            <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+            </v-form-render>
+        </KDialog>
 
-        </div>
+    </div>
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
@@ -89,6 +93,7 @@ const props = defineProps({
         default: "0",
     },
 })
+const router = useRouter()
 const showDialog = ref(false)
 const showDepPerDialog = ref(false)
 
@@ -100,71 +105,70 @@ const optionData = reactive({})
 const dialogVisible = ref(false)
 const vFormRef = ref(null)
 const submitForm = (type) => {
-  if (!type) {
-    vFormRef.value.resetForm()
-    return
-  }
-  vFormRef.value.getFormData().then(formData => {
-    // Form Validation OK
-    alert(JSON.stringify(formData))
-    showFormDialog.value = false
-  }).catch(error => {
-    // Form Validation failed
-    
-    ElMessage.error(error)
-  })
+    if (!type) {
+        vFormRef.value.resetForm()
+        return
+    }
+    vFormRef.value.getFormData().then(formData => {
+        // Form Validation OK
+        alert(JSON.stringify(formData))
+        showFormDialog.value = false
+    }).catch(error => {
+        // Form Validation failed
+
+        ElMessage.error(error)
+    })
 }
 
-const router = useRouter()
-const goInnerPage = () => {
+const goInnerPage = (path) => {
   router.push({
-    path: '/frontDesk/PrintControlManagement/innerPage'
+    path: path
   })
 }
 
 const goInnerTablePage = () => {
-  router.push({
-    path: '/frontDesk/PrintControlManagement/innerTablePage'
-  })
+    router.push({
+        path: '/frontDesk/PrintControlManagement/innerTablePage'
+    })
 }
 
 const open2 = () => {
-  ElMessage({
-    message: '这是一条成功消息，会自动消失。',
-    type: 'success',
-  })
-} 
+    ElMessage({
+        message: '这是一条成功消息，会自动消失。',
+        type: 'success',
+    })
+}
 const open3 = () => {
-  ElMessage({
-    message: '这是一条询问消息，会自动消失。',
-    type: 'warning'
-  })
+    ElMessage({
+        message: '这是一条询问消息，会自动消失。',
+        type: 'warning'
+    })
 }
 const open4 = () => {
-  ElMessage.error('这是一条异常消息，会自动消失。')
+    ElMessage.error('这是一条异常消息，会自动消失。')
 }
 const openMess = () => {
-  ElMessageBox.confirm(
-    '一系列的信息描述，可能会很长。也可以是很短同样也可以带标点。',
-    '提示？',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  )
-    .then(() => {
-      ElMessage({
-        type: 'success',
-        message: '操作成功！',
-      })
-    })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: '取消操作！',
-      })
-    })
+    ElMessageBox.confirm(
+        '一系列的信息描述，可能会很长。也可以是很短同样也可以带标点。',
+        '提示？',
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(() => {
+            ElMessage({
+                type: 'success',
+                message: '操作成功！',
+            })
+        })
+        .catch(() => {
+            ElMessage({
+                type: 'info',
+                message: '取消操作！',
+            })
+        })
 }
 const emit = defineEmits([]);
 const state = reactive({
@@ -208,8 +212,8 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
@@ -275,16 +279,21 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "风险分类",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "风险项",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "风险项描述",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "开启状态",
@@ -292,14 +301,20 @@ const state = reactive({
             }, {
                 prop: '5',
                 label: "提醒时间",
+                sortable: true,
+                "min-width":150,
             },
             {
                 prop: '6',
                 label: "提醒人",
+                sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "设置提醒人"
@@ -376,7 +391,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },

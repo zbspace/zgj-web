@@ -1,7 +1,7 @@
 <!-- 印章外借信息 -->
 <template>
     <div class="PrintControlManagement-SealloanInformation">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     印章外借信息
@@ -20,17 +20,18 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
+            <template #batch>
+                <div class="batch">
+                    <componentsBatch>
+                      
+                    </componentsBatch>
+                </div>
+            </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick"
+                        @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -40,10 +41,24 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
+        <!-- 印章外借详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+            </componentsDocumentsDetails>
+        </div>
+        <!-- 动态表单 - 印章申请 -->
+        <KDialog @update:show="fromState.showDialog = $event" :show="fromState.showDialog" :title="fromState.title"
+            :centerBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"
+            :width="1000" :height="600" @close="submitLibraryForm" :key="fromState.title">
+            <v-form-render :form-json="fromState.formJson" :form-data="fromState.formJson"
+                :option-data="fromState.optionData" :ref="fromState.vFormLibraryRef">
+            </v-form-render>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -52,6 +67,13 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
+import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { ElMessage, ElMessageBox } from 'element-plus'
+import SealLendingJson from '@/views/addDynamicFormJson/SealLending.json'
+import KDialog from "@/views/components/modules/kdialog.vue"
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -59,6 +81,31 @@ const props = defineProps({
         default: "0",
     },
 })
+
+// 印章申请 新增弹框
+const fromState = reactive({
+    title: '',
+    formJson: SealLendingJson,//动态表单内容
+    optionData: null,
+    vFormLibraryRef: "vFormLibraryRef",
+    showDialog: false,
+})
+const vFormLibraryRef = ref(null)
+
+const submitLibraryForm = (type) => {
+    if (!type) {
+        vFormLibraryRef.value.resetForm();
+        return
+    }
+    vFormLibraryRef.value.getFormData().then(formData => {
+        alert(JSON.stringify(formData))
+        fromState.showDialog = false
+    }).catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+    })
+}
+
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
@@ -87,40 +134,40 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "印章名称",
                 },
             },
             {
                 id: 'picker',
-                label: "选择时间",
+                label: "外带时间",
                 type: "picker",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
-                label: "印章类型",
-                type: "select",
+                id: 'name',
+                label: "外借人",
+                type: "input",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "外借人",
                 },
             },
             {
-                id: 'shenqingr',
+                id: 'name',
                 label: "保管人",
                 type: "input",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "保管人",
                 },
             },
         ],
@@ -167,37 +214,54 @@ const state = reactive({
             prop: '0',
             label: "序号",
             width: 100,
-            sortable: true
         }, {
             prop: '1',
             label: "印章名称",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "印章类型",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "保管人",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "保管部门",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "外借人",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "外借部门",
+            sortable: true,
+            "min-width": 150,
         },
         {
             prop: '7',
             label: "外借时间",
+            sortable: true,
+            "min-width": 200,
         },
         {
             prop: '8',
             label: "外借地点",
+            sortable: true,
+            "min-width": 200,
         },
         {
             prop: 'caozuo',
             label: "操作",
+            fixed: "right",
+            "min-width": 150,
             width: 180,
             rankDisplayData: [
                 {
@@ -210,92 +274,69 @@ const state = reactive({
         }],
         data: [
             {
-                1: '',
-                2: '',
-                3: '往往',
-                4: '',
-                5: '往往',
-                6: '',
-                7: "",
-                8: "",
+                0:'1',
+                1: '测试章',
+                2: '往往',
+                3: '公章',
+                4: '往往',
+                5: '建业科技测试部',
+                6: '建业科技研发中心',
+                7: "2022-12-20 15:00:00",
+                8: "上海市静安区",
+                9: "上海市静安区",
             },
             {
-                1: '',
-                2: '',
-                3: '往往',
-                4: '',
-                5: '往往',
-                6: '',
-                7: "",
-                8: "",
+                0:'1',
+                1: '测试章',
+                2: '往往',
+                3: '公章',
+                4: '往往',
+                5: '建业科技测试部',
+                6: '建业科技研发中心',
+                7: "2022-12-20 15:00:00",
+                8: "上海市静安区",
+                9: "上海市静安区",
             },
             {
-                1: '',
-                2: '',
-                3: '往往',
-                4: '',
-                5: '往往',
-                6: '',
-                7: "",
-                8: "",
+                0:'1',
+                1: '测试章',
+                2: '往往',
+                3: '公章',
+                4: '往往',
+                5: '建业科技测试部',
+                6: '建业科技研发中心',
+                7: "2022-12-20 15:00:00",
+                8: "上海市静安区",
+                9: "上海市静安区",
             },
             {
-                1: '',
-                2: '',
-                3: '往往',
-                4: '',
-                5: '往往',
-                6: '',
-                7: "",
-                8: "",
-            },
-            {
-                1: '',
-                2: '',
-                3: '往往',
-                4: '',
-                5: '往往',
-                6: '',
-                7: "",
-                8: "",
-            },
-            {
-                1: '',
-                2: '',
-                3: '往往',
-                4: '',
-                5: '往往',
-                6: '',
-                7: "",
-                8: "",
-            },
-            {
-                1: '',
-                2: '',
-                3: '往往',
-                4: '',
-                5: '往往',
-                6: '',
-                7: "",
-                8: "",
-            },
-            {
-                1: '',
-                2: '',
-                3: '往往',
-                4: '',
-                5: '往往',
-                6: '',
-                7: "",
-                8: "",
+                0:'1',
+                1: '测试章',
+                2: '往往',
+                3: '公章',
+                4: '往往',
+                5: '建业科技测试部',
+                6: '建业科技研发中心',
+                7: "2022-12-20 15:00:00",
+                8: "上海市静安区",
+                9: "上海市静安区",
             },
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
-            }
+                background: "var(--color-fill--3)",
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (column.property == "1") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
+            },
         }
     },
     componentsTree: {
@@ -392,9 +433,49 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
+    },
+    componentsDocumentsDetails: {
+        show: false,
+        visible: [
+            {
+                label: '印章详情',
+                name: "Particulars-of-Seal",
+            },
+            {
+                label: '保管记录',
+                name: "Record-of-custody",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+        ],
     }
 });
-
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+    // console.log(row, column, cell, event);
+    if (column.property == "1") {
+        state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击关闭详情
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '归还') {
+        fromState.title = '归还';
+        fromState.showDialog = true;
+        fromState.formJson = SealLendingJson;
+    }
+    if (cell.name == '查看历史记录') {
+        router.push({
+            path:'/frontDesk/SealloanInnerPage'
+        })
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

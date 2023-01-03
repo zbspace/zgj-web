@@ -5,12 +5,27 @@
             <template #title>
                 <div class="title">
                     <div>文件库</div>
-                    <div>
-                        <el-button type="primary" @click="showFormDialog = true">+ 增加</el-button>
-                        <el-button>
-                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                            <span>更多操作</span>
-                        </el-button>
+                    <div class="title-more">
+                        <div class="title-more-add">
+                            <el-button type="primary" @click="showFormDialog = true">+ 增加</el-button>
+                        </div>
+                        <div class="title-more-down">
+                            <el-dropdown>
+                                <el-button>
+                                    <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt=""
+                                        srcset="">
+                                    <span>更多操作</span>
+                                </el-button>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item>导入</el-dropdown-item>
+                                        <el-dropdown-item>文件打包下载</el-dropdown-item>
+                                        <el-dropdown-item @click="clickDownloadRecord">下载记录</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </div>
+
                     </div>
                 </div>
             </template>
@@ -27,6 +42,14 @@
                     </componentsSearchForm>
                 </div>
             </template>
+            <template #batch>
+                <div class="batch">
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
+                </div>
+            </template>
             <template #tree>
                 <div>
                     <componentsTree :data="state.componentsTree.data"
@@ -37,8 +60,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -57,15 +80,16 @@
 
         <!-- 动态表单 -->
         <KDialog @update:show="showFormDialog = $event" :show="showFormDialog" title="新增工作台" :centerBtn="true"
-          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600"
-          @close="submitForm">
-          <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
-          </v-form-render>
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000"
+            :height="600" @close="submitForm">
+            <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+            </v-form-render>
         </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
+import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref, inject } from "vue"
+import { useRouter } from 'vue-router';
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -74,10 +98,11 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import KDialog from "@/views/components/modules/kdialog.vue"
 import FormJson from '@/views/addDynamicFormJson/documentLibrary.json'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -85,7 +110,8 @@ const props = defineProps({
         default: "0",
     },
 })
-
+const router = useRouter();
+const commonFun = inject("commonFun");
 const showFormDialog = ref(false)
 const formJson = reactive(FormJson)
 const formData = reactive({})
@@ -93,19 +119,19 @@ const optionData = reactive({})
 const dialogVisible = ref(false)
 const vFormRef = ref(null)
 const submitForm = (type) => {
-  if (!type) {
-    vFormRef.value.resetForm()
-    return
-  }
-  vFormRef.value.getFormData().then(formData => {
-    // Form Validation OK
-    alert(JSON.stringify(formData))
-    showFormDialog.value = false
-  }).catch(error => {
-    // Form Validation failed
+    if (!type) {
+        vFormRef.value.resetForm()
+        return
+    }
+    vFormRef.value.getFormData().then(formData => {
+        // Form Validation OK
+        alert(JSON.stringify(formData))
+        showFormDialog.value = false
+    }).catch(error => {
+        // Form Validation failed
 
-    ElMessage.error(error)
-  })
+        ElMessage.error(error)
+    })
 }
 
 const emit = defineEmits([]);
@@ -139,7 +165,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "文件名称/文件字号",
                 },
             },
             {
@@ -150,30 +176,12 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "文件类型",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "关联单据名称",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -221,43 +229,62 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "文件名称",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件字号",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "关联单据名称",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "文件类型",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "创建人",
+                sortable: true,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "创建部门",
+                sortable: true,
+                "min-width": 150,
             },
             {
                 prop: '7',
                 label: "创建时间",
+                sortable: true,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed: "right",
+                "min-width": 250,
                 rankDisplayData: [
                     {
-                        name: "修改"
+                        name: "修改文件类型"
                     },
                     {
-                        name: "删除"
+                        name: "文件预览"
+                    },
+                    {
+                        name: "文件下载"
                     },
                 ],
-            }],
+            }
+        ],
         data: [
             {
                 1: '文件',
@@ -318,7 +345,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -658,7 +685,15 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量修改文件类型"
+            }
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -671,6 +706,53 @@ function cellClick(row, column, cell, event) {
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    console.log(cell.name);
+    if (cell.name === '修改') {
+        showFormDialog.value = true;
+    }
+    if (cell.name == '文件下载') {
+        ElMessageBox.confirm(
+            '您确定要下载文件吗？',
+            {
+                confirmButtonText: '确认',
+                cancelButtonText: '关闭',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+    if (cell.name == '文件预览') {
+        ElMessageBox.confirm(
+            '您确定要预览文件吗？',
+            {
+                confirmButtonText: '确认',
+                cancelButtonText: '关闭',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
+//点击下载记录
+function clickDownloadRecord() {
+    commonFun.routerPage(router, {
+        path: "/frontDesk/fileManagement/documentLibrary/Download-record"
+    })
+}
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 
@@ -687,6 +769,20 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        vertical-align: top;
+
+        .title-more {
+            display: flex;
+            align-items: center;
+
+            .title-more-add {
+                margin-right: 0.5rem;
+            }
+
+            .title-more-down {
+                margin-bottom: -4px;
+            }
+        }
     }
 
     .batch {

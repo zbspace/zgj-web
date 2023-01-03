@@ -31,7 +31,7 @@
       <template #table>
         <div>
           <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" :data="state.componentsTable.data"
-            :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick">
+            :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick" @custom-click="customClick">
           </componentsTable>
         </div>
       </template>
@@ -59,7 +59,7 @@ import componentsPagination from "@/views/components/pagination";
 import componentsLayout from "@/views/components/Layout";
 import componentsTree from "@/views/components/tree"
 import componentsDocumentsDetails from "@/views/components/documentsDetails.vue"
-
+import { ElMessage,ElMessageBox } from 'element-plus'
 const state = reactive({
 
   componentsSearchForm: {
@@ -91,8 +91,8 @@ const state = reactive({
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
           type: "daterange",
-          "start-placeholder": "Start date",
-          "end-placeholder": "End date"
+          "start-placeholder": "开始时间",
+          "end-placeholder": "结束时间"
         },
         style: {
 
@@ -151,36 +151,47 @@ const state = reactive({
         prop: "0",
         label: "序号",
         width: 100,
-        sortable: true,
       },
       {
         prop: "1",
         label: "企业编码",
         width: 120,
+        sortable: true,
+                "min-width":150,
       },
       {
         prop: "2",
         label: "企业名称",
         width: 120,
+        sortable: true,
+                "min-width":150,
       },
       {
         prop: "3",
         label: "所属部门",
         width: 120,
+        sortable: true,
+                "min-width":150,
       },
       {
         prop: "4",
         label: "联系人",
         width: 100,
+        sortable: true,
+                "min-width":150,
       },
       {
         prop: "5",
         label: "联系方式",
         width: 160,
+        sortable: true,
+                "min-width":150,
       },
       {
         prop: "6",
         label: "备注",
+        sortable: true,
+                "min-width":150,
       },
       {
         prop: "7",
@@ -327,6 +338,26 @@ function cellClick(row, column, cell, event) {
 //点击关闭
 function clickClose() {
   state.componentsDocumentsDetails.show = false;
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    console.log(cell.name);
+    if (cell.name === '修改') {
+        showFormDialog.value = true;
+    }
+    if (cell.name == '删除') {
+        ElMessageBox.confirm(
+            '您确定要删除该记录吗？',
+            {
+                confirmButtonText: '确认',
+                cancelButtonText: '关闭',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+                
+            })
+    }
 }
 </script>
 

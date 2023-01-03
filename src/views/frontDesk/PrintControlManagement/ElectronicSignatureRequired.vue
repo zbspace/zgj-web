@@ -28,15 +28,17 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
-
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -64,6 +66,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 const props = defineProps({
     // 处理类型
@@ -103,7 +106,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "文件名称/申请人/用印编码",
                 },
             },
             {
@@ -114,30 +117,12 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "签章情况",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "申请人",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -185,32 +170,47 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "单据编号",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "文件名称",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "印章名称",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "申请人",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "申请部门",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '6',
                 label: "申请时间",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '7',
                 label: "签章情况",
+                sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "签署"
@@ -283,7 +283,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -407,7 +407,15 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -419,6 +427,12 @@ function cellClick(row, column, cell, event) {
 //点击关闭详情
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
 }
 
 onBeforeMount(() => {

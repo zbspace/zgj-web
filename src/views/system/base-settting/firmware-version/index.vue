@@ -31,14 +31,15 @@
 
       <template #batch>
         <div class="batch">
-          <el-button>批量操作</el-button>
+          <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
         </div>
       </template>
 
       <template #table>
         <div>
           <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute" :data="state.componentsTable.data"
-            :header="state.componentsTable.header" :isSelection="true">
+            :header="state.componentsTable.header" @selection-change="selectionChange">
           </componentsTable>
         </div>
       </template>
@@ -111,8 +112,8 @@ const state = reactive({
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
           type: "daterange",
-          "start-placeholder": "Start date",
-          "end-placeholder": "End date"
+          "start-placeholder": "开始时间",
+          "end-placeholder": "结束时间"
         },
         style: {
 
@@ -181,11 +182,12 @@ const state = reactive({
         prop: "0",
         label: "序号",
         width: 100,
-        sortable: true,
       },
       {
         prop: "1",
         label: "xxx",
+        sortable: true,
+        "min-width": 150,
       },
     ],
     data: [
@@ -345,7 +347,21 @@ const state = reactive({
       "check-strictly": true,
     }
   },
+  componentsBatch: {
+    selectionData: [],
+    data: [
+      {
+        name: "批量操作"
+      }
+    ]
+  },
 });
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+  //    console.log(selection);
+  state.componentsBatch.selectionData = selection;
+}
 
 </script>
 

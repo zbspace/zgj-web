@@ -1,7 +1,7 @@
 <!-- 风险提醒设置 -->
 <template>
     <div class="PrintControlManagement-RiskAlertSetting">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     风险提醒设置
@@ -9,7 +9,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -20,17 +20,16 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
+            <template #batch>
+                <div class="batch">
+                    <componentsBatch>
+                    </componentsBatch>
+                </div>
+            </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -40,10 +39,13 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -52,6 +54,8 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
+import kDepartOrPersonVue from "@/views/components/modules/kDepartOrPerson.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -60,6 +64,7 @@ const props = defineProps({
     },
 })
 const emit = defineEmits([]);
+const showDepPerDialog = ref(false)
 const state = reactive({
     componentsTabs: {
         data: [{
@@ -90,7 +95,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "风险项",
                 },
             },
             {
@@ -101,30 +106,12 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "风险分类",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "风险项描述",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -168,16 +155,21 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "风险分类",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "风险项",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "风险项描述",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "开启状态",
@@ -185,14 +177,20 @@ const state = reactive({
             }, {
                 prop: '5',
                 label: "提醒时间",
+                sortable: true,
+                "min-width":150,
             },
             {
                 prop: '6',
                 label: "提醒人",
+                sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "设置提醒人"
@@ -269,7 +267,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },
@@ -370,6 +368,241 @@ const state = reactive({
     }
 });
 
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "风险分类",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '2',
+                label: "风险项",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '3',
+                label: "风险项描述",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '4',
+                label: "开启状态",
+                customDisplayType: "switch"
+            }, {
+                prop: '5',
+                label: "提醒时间",
+                sortable: true,
+                "min-width":150,
+            },
+            {
+                prop: '6',
+                label: "提醒人",
+                sortable: true,
+                "min-width":150,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
+                rankDisplayData: [
+                    {
+                        name: "设置提醒人"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+        ];
+    } else if (activeName == "2" || activeName == "3") {
+        state.componentsTable.header = [
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            },
+            {
+                prop: '2',
+                label: "风险项",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '3',
+                label: "风险项描述",
+                sortable: true,
+                "min-width":150,
+            }, {
+                prop: '4',
+                label: "开启状态",
+                customDisplayType: "switch"
+            }, {
+                prop: '5',
+                label: "提醒时间",
+                sortable: true,
+                "min-width":150,
+            },
+            {
+                prop: '6',
+                label: "提醒人",
+                sortable: true,
+                "min-width":150,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
+                rankDisplayData: [
+                    {
+                        name: "设置提醒人"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+            {
+                1: '文件防篡改',
+                2: '盖前文件OCR核验异常',
+                3: '',
+                4: '',
+                5: '即时提醒',
+                6: '',
+            },
+        ];
+    }
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if(cell.name === '设置提醒人'){
+        showDepPerDialog.value = true;
+    }
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

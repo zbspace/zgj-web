@@ -1,127 +1,194 @@
 <template>
-  <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,tabs,tree">
-      <template #title>
-        <div class="title">渠道管理</div>
-      </template>
+  <div class="components-Layout">
+   
+   <!-- title -->
+   <div class="card-title">渠道管理</div>
 
-      <template #searchForm>
-        <div>
-          <componentsSearchForm :data="state.componentsSearchForm.data" :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style">
-          </componentsSearchForm>
-        </div>
-      </template>
+   <div class="card-content">
 
-      <template #tree>
-        <div>
-          <componentsTree :data="state.componentsTree.data" :defaultAttribute="state.componentsTree.defaultAttribute">
-          </componentsTree>
-        </div>
-      </template>
+    <!-- left -->
+    <div class="card-l">
 
-    </componentsLayout>
+      <div class="l-column" :class="state.activedVlaue === 1 ? 'l-actived' : ''" @click="changeColumn(1)">
+        <div class="column-diot diot1"></div>
+        <div class="column-t">钉钉</div>
+      </div>
+      <div class="l-column" :class="state.activedVlaue === 2 ? 'l-actived' : ''" @click="changeColumn(2)">
+        <div class="column-diot diot2"></div>
+        <div class="column-t">企业微信</div>
+      </div>
+      <div class="l-column" :class="state.activedVlaue === 3 ? 'l-actived' : ''" @click="changeColumn(3)">
+        <div class="column-diot diot3"></div>
+        <div class="column-t">短信</div>
+      </div>
+      <div class="l-column" :class="state.activedVlaue === 4 ? 'l-actived' : ''" @click="changeColumn(4)">
+        <div class="column-diot diot4"></div>
+        <div class="column-t">更多</div>
+      </div>
+    </div>
+
+    <!-- right -->
+    <div class="card-r">
+      <el-form :model="form" label-width="100px">
+        <el-form-item>
+          <template #label>
+            <div style="line-height: 40px;">是否开启</div>
+          </template>
+          <el-switch v-model="form.delivery" />
+        </el-form-item>
+
+        <el-form-item>
+          <template #label>
+            <div>推送事件</div>
+          </template>
+          <el-button type="primary" :icon="Plus">添加</el-button>
+        </el-form-item>
+      </el-form>
+
+      <!-- box -->
+      <div class="r-box"></div>
+    </div>
+   </div>
   </div>
 </template>
 
 <script setup>
 import { reactive } from "vue";
-import componentsSearchForm from "@/views/components/searchForm";
-import componentsLayout from "@/views/components/Layout.vue";
-import componentsTree from "@/views/components/tree"
-
+import { Plus } from '@element-plus/icons-vue'
 const state = reactive({
-
-  componentsSearchForm: {
-    style: {
-      lineStyle: {
-        width: "30%",
-      },
-      labelStyle: {
-        width: "100px",
-      },
-    },
-
-    data: [
-      {
-        id: "name",
-        label: "关键词",
-        type: "input",
-        inCommonUse: true,
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-          placeholder: "请输入",
-        },
-      },
-      {
-        id: 'picker',
-        label: "选择时间",
-        type: "picker",
-        inCommonUse: true,
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-          type: "daterange",
-          "start-placeholder": "Start date",
-          "end-placeholder": "End date"
-        },
-        style: {
-
-        }
-      },
-      {
-        id: "name",
-        label: "是否开启",
-        type: "switch",
-        inCommonUse: true,
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-          placeholder: "请输入",
-        },
-      },
-      {
-        id: "name",
-        label: "推送事件",
-        type: "button",
-        inCommonUse: true,
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        data: [{
-          name: "编辑",
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: "primary",
-            style: {
-            }
-          },
-        }]
-      },
-    ],
-  },
-
-  componentsTree: {
-    data: [
-      {
-        label: '钉钉',
-      },
-      {
-        label: '企业微信',
-      },
-      {
-        label: '短信',
-      },
-    ],
-    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-    defaultAttribute: {
-      "check-on-click-node": true,
-      "show-checkbox": false,
-      "default-expand-all": true,
-      "expand-on-click-node": false,
-      "check-strictly": true,
-    }
-  },
+  activedVlaue: 1
 });
 
+const changeColumn = (val) => {
+  state.activedVlaue = val
+}
+
+const form = reactive({
+  name: '',
+  region: '',
+  date1: '',
+  date2: '',
+  delivery: false,
+  type: [],
+  resource: '',
+  desc: '',
+})
+
+const onSubmit = () => {
+  console.log('submit!')
+}
 </script>
 
 <style lang="scss" scoped>
+.components-Layout {
+  margin: 0%;
+  width: 100%;
+  height: calc(100vh - 100px);
 
+  display: flex;
+  // flex-flow: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  @include mixin-padding-top(10);
+  @include mixin-padding-bottom(10);
+  @include mixin-padding-left(20);
+  @include mixin-padding-right(0);
+  box-sizing: border-box;
+  border-radius: var(--border-radius-4);
+  background-color: var(--in-common-use-1);
+  margin-top: 24px;
+  position: relative;
+
+  .card-title {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 22px;
+    line-height: 40px;
+    height: 40px;
+  }
+
+  .card-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0 50px 0;
+    flex: 1;
+    width: 100%;
+    .card-l {
+      width: 240px;
+      padding: 0 20px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 20px;
+        right: 0;
+        height: 100%;
+        width: 1px;
+        background: rgba(0, 0, 0, 0.06);
+      }
+
+      .l-column {
+        display: flex;
+        align-items: center;
+        height: 36px;
+        line-height: 36px;
+        margin-top: 12px;
+        color: rgba(0, 0, 0, 0.85);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+        .column-diot {
+          width: 10px;
+          height: 10px;
+          margin: 0 10px;
+          border-radius: 50%;
+        }
+
+        .diot1 {
+          background: #F9B86A;
+        }
+
+        .diot2 {
+          background: #5B92D9;
+        }
+
+        .diot3 {
+          background: #5BD9A3;
+        }
+
+        .diot4 {
+          background: rgba(0, 0, 0, 0.15);
+        }
+      }
+
+      .l-column:hover {
+        background: #D0963E;
+        border-radius: 2px;
+        cursor: pointer;
+        color: #FFFFFF;
+      }
+
+      .l-actived {
+        background: #D0963E;
+        border-radius: 2px;
+        color: #FFFFFF;
+      }
+    }
+
+    .card-r {
+      flex: 1;
+      padding: 0 24px;
+      width: 100%;
+      .r-box {
+        width: 100%;
+        height: 320px;
+        border: 2px dashed rgba(0, 0, 0, 0.15);
+        border-radius: 4px;
+      }
+    }
+  }
+}
 </style>

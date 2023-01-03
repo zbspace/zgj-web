@@ -1,16 +1,30 @@
 <template>
   <div class="account-login-box user-select">
     <div class="login-box">
-
       <!-- tabs -->
       <div class="login-tabs">
-        <div class="common-tabs" :class="state.activeCodeLogin ? 'active' : ''" @click="changeTabs(true)">{{ $t('t-zgj-login.verification')}}</div>
-        <div class="common-tabs" :class="!state.activeCodeLogin ? 'active' : ''" @click="changeTabs(false)">{{ $t('t-zgj-login.accountlogin')}}</div>
+        <div
+          class="common-tabs"
+          :class="state.activeCodeLogin ? 'active' : ''"
+          @click="changeTabs(true)"
+        >
+          {{ $t('t-zgj-login.verification') }}
+        </div>
+        <div
+          class="common-tabs"
+          :class="!state.activeCodeLogin ? 'active' : ''"
+          @click="changeTabs(false)"
+        >
+          {{ $t('t-zgj-login.accountlogin') }}
+        </div>
       </div>
 
       <div class="login-content">
         <!-- 输入框 - 验证码 -->
-        <div class="login-input" v-if="state.activeCodeLogin">
+        <div
+          class="login-input"
+          v-if="state.activeCodeLogin"
+        >
           <el-input
             v-model="state.inputPhone"
             :placeholder="state.placeholderPhone"
@@ -19,84 +33,125 @@
             clearable
           >
             <template #prepend>
-              <el-select v-model="state.select" placeholder="+86" style="width: 80px" size="large">
-                <el-option label="+86" value="1" />
+              <el-select
+                v-model="state.select"
+                placeholder="+86"
+                style="width: 80px"
+                size="large"
+              >
+                <el-option
+                  label="+86"
+                  value="1"
+                />
               </el-select>
             </template>
           </el-input>
 
-          <div class="l-code"> 
+          <div class="l-code">
+            <el-input
+              v-model="state.inputCode"
+              :placeholder="state.placeholderCode"
+              size="large"
+              clearable
+            />
 
-            <el-input 
-            v-model="state.inputCode"
-            :placeholder="state.placeholderCode"
-            size="large" clearable>
-            </el-input>
-
-            <VerificationBtn></VerificationBtn>
+            <VerificationBtn />
           </div>
         </div>
 
         <!-- 输入框 - 密码 -->
-        <div v-else class="login-input">
-          
-          <el-input 
-          v-model="state.inputAccount"
-          :placeholder="state.placeholderCodeAndAccount"
-          size="large" clearable
-          class="l-inpt l-code-inpt"
+        <div
+          v-else
+          class="login-input"
+        >
+          <el-input
+            v-model="state.inputAccount"
+            :placeholder="state.placeholderCodeAndAccount"
+            size="large"
+            clearable
+            class="l-inpt l-code-inpt"
           >
             <template #prefix>
               <div class="icon">
-                <img src="../../../assets/images/login/l_user_icon.svg" />
+                <img src="../../../assets/images/login/l_user_icon.svg">
               </div>
             </template>
           </el-input>
 
-          <div class="l-code"> 
-
-            <el-input 
-            v-model="state.inputPassword"
-            :placeholder="state.placeholderPassword"
-            size="large"
-            :type="state.showPass ? 'text' : 'password'"
-            class="l-code-inpt">
-
+          <div class="l-code">
+            <el-input
+              v-model="state.inputPassword"
+              :placeholder="state.placeholderPassword"
+              size="large"
+              :type="state.showPass ? 'text' : 'password'"
+              class="l-code-inpt"
+            >
               <template #prefix>
                 <div class="icon">
-                  <img src="../../../assets/images/login/l_password_icon.svg" />
+                  <img src="../../../assets/images/login/l_password_icon.svg">
                 </div>
               </template>
 
               <template #suffix>
-                <div class="open-pass" @click="state.showPass = !state.showPass">
-                  <img v-if="state.showPass" src="../../../assets/images/login/l_open_pass.svg" />
-                  <img v-else src="../../../assets/images/login/l_close_pass.svg" />
+                <div
+                  class="open-pass"
+                  @click="state.showPass = !state.showPass"
+                >
+                  <img
+                    v-if="state.showPass"
+                    src="../../../assets/images/login/l_open_pass.svg"
+                  >
+                  <img
+                    v-else
+                    src="../../../assets/images/login/l_close_pass.svg"
+                  >
                 </div>
               </template>
             </el-input>
-
           </div>
 
           <!-- 记住账号 -->
           <div class="remember-password">
-            <div class="l-protocol" @click="state.rememberPas = !state.rememberPas">
-              <img v-if="state.rememberPas" src="../../../assets/images/login/l_select.svg" class="img" />
-              <img v-else src="../../../assets/images/login/l_no_select.svg" class="img" />
-              <span :style="{ color: state.rememberPas ?  '#1985F5' : '#909399'}">{{ $t('t-zgj-login.remember') }}</span>
+            <div
+              class="l-protocol"
+              @click="state.rememberPas = !state.rememberPas"
+            >
+              <img
+                v-if="state.rememberPas"
+                src="../../../assets/images/login/l_select.svg"
+                class="img"
+              >
+              <img
+                v-else
+                src="../../../assets/images/login/l_no_select.svg"
+                class="img"
+              >
+              <span :style="{ color: state.rememberPas ? '#1985F5' : '#909399'}">{{ $t('t-zgj-login.remember') }}</span>
             </div>
-            <div @click="getUpdateDialog">{{ $t('t-zgj-login.forgot')}}</div>
+            <div @click="getUpdateDialog">
+              {{ $t('t-zgj-login.forgot') }}
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 单选框 - 协议 -->
-      <div class="l-protocol" @click="state.protocal = !state.protocal">
-        
-        <img v-if="state.protocal" src="../../../assets/images/login/l_select.svg" class="img" />
-        <img  v-else src="../../../assets/images/login/l_no_select.svg" class="img" />
+      <div
+        class="l-protocol"
+        @click="state.protocal = !state.protocal"
+      >
+        <img
+          v-if="state.protocal"
+          src="../../../assets/images/login/l_select.svg"
+          class="img"
+        >
+        <img
+          v-else
+          src="../../../assets/images/login/l_no_select.svg"
+          class="img"
+        >
         <div class="protocol-text">
-          <span>{{ $t('t-agree-protocol')}}</span>
+          <span>{{ $t('t-agree-protocol') }}</span>
           <span class="item">《 {{ $t('t-service-protocol') }} 》</span>
           <span class="item">《{{ $t('t-privacy-policy') }}》</span>
         </div>
@@ -104,48 +159,70 @@
 
       <!-- btn -->
       <div class="l-btn">
-        <el-button type="primary" class="btn" @click="login">{{ $t('t-zgj-login.loginButton') }}</el-button>
+        <el-button
+          type="primary"
+          class="btn"
+          @click="login"
+        >
+          {{ $t('t-zgj-login.loginButton') }}
+        </el-button>
       </div>
 
       <!-- 注册 -->
       <div class="l-registe">
-        <span>{{ $t('t-no-account')}}?</span>
-        <span class="item" @click="state.ImmediateRegisterDialog = true">{{ $t('t-immediate-register')}}</span>
+        <span>{{ $t('t-no-account') }}?</span>
+        <span
+          class="item"
+          @click="state.ImmediateRegisterDialog = true"
+        >{{ $t('t-immediate-register') }}</span>
       </div>
 
       <!-- 其他登录方式 -->
       <div class="l-divider">
-        <div class="divider"><div class="cover">{{ $t('t-other-login')}}</div></div>
+        <div class="divider">
+          <div class="cover">
+            {{ $t('t-other-login') }}
+          </div>
+        </div>
 
         <div class="l-other-enter">
-          
           <div class="column1 common-col">
-            <div class="img"></div>
+            <div class="img" />
           </div>
           <div class="column2 common-col">
-            <div class="img"></div>
+            <div class="img" />
           </div>
           <div class="column3 common-col">
-            <div class="img"></div>
+            <div class="img" />
           </div>
         </div>
       </div>
     </div>
 
     <!-- 重置密码弹窗 -->
-    <UpdagePasswordDialog v-if="state.showUpdateDialog" @close="closeUpdateDialog"></UpdagePasswordDialog>
+    <UpdagePasswordDialog
+      v-if="state.showUpdateDialog"
+      @close="closeUpdateDialog"
+    />
 
     <!-- 立即注册弹窗 -->
-    <ImmediateRegister v-if="state.ImmediateRegisterDialog" @close="closeUpdateDialog"></ImmediateRegister>
+    <ImmediateRegister
+      v-if="state.ImmediateRegisterDialog"
+      @close="closeUpdateDialog"
+    />
   </div>
 </template>
 <script setup>
-import  i18n from "../../../i18n";
-import { reactive, watch, onMounted} from "vue";
-import router from "../../../router/index";
-import VerificationBtn from "../components/VerificationBtn.vue"
-import UpdagePasswordDialog from  "./UpdagePasswordDialog.vue"
-import ImmediateRegister from "./Register.vue"
+import i18n from '../../../i18n'
+import { reactive, watch, onMounted } from 'vue'
+import router from '../../../router/index'
+import VerificationBtn from '../components/VerificationBtn.vue'
+import UpdagePasswordDialog from './UpdagePasswordDialog.vue'
+import ImmediateRegister from './Register.vue'
+import { useAccountInfoStore } from '@/store/accountInfo'
+import { useRoute } from 'vue-router'
+const accountInfo = useAccountInfoStore()
+const route = useRoute()
 const state = reactive({
   activeCodeLogin: false, // 验证码登录
   protocal: false, // 协议
@@ -165,12 +242,12 @@ const state = reactive({
 })
 
 // 监听 语言切换
-watch(()=> i18n.global.locale, () => {
+watch(() => i18n.global.locale, () => {
   state.placeholderPhone = i18n.global.t('t-zgj-sealElectronic.mobilePlease')
   state.placeholderCode = i18n.global.t('t-zgj-verification.required')
   state.placeholderCodeAndAccount = i18n.global.t('t-zgj-person.PleaseAccount')
   state.placeholderPassword = i18n.global.t('t-zgj-password.required')
-}, { immediate: true, deep: true})
+}, { immediate: true, deep: true })
 
 onMounted(() => {
   state.inputAccount = '156666666666'
@@ -179,7 +256,7 @@ onMounted(() => {
 
 // 监听 tabs 切换
 const changeTabs = (val) => {
-  state.activeCodeLogin = val;
+  state.activeCodeLogin = val
 }
 
 // 打开 重置密码
@@ -194,14 +271,20 @@ const closeUpdateDialog = () => {
 }
 
 const login = () => {
-  router.push('/frontDesk/home')
+  // 存储登录用户信息
+  accountInfo.setAccountInfo({ name: 'xxx', token: 'xxx' })
+  let redirect = route.query.redirect || '/frontDesk/home'
+  if (typeof redirect !== 'string') {
+    redirect = '/frontDesk/home'
+  }
+  router.replace(redirect)
 }
 </script>
 
 <style scoped lang="scss">
 .account-login-box {
   padding: 80px 0 30px;
-  
+
   .login-tabs {
     display: flex;
     font-family: Helvetica-Bold;
@@ -231,7 +314,6 @@ const login = () => {
       text-align: center;
     }
   }
-
 
   .login-content {
     padding: 0 70px;
@@ -359,7 +441,7 @@ const login = () => {
   }
 
   .l-divider {
-    
+
     .divider {
       position: relative;
       width: 200px;
@@ -447,7 +529,7 @@ const login = () => {
           background-size: 100%;
         }
       }
-    }    
+    }
   }
 }
 .user-select {

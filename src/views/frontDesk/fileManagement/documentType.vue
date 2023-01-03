@@ -29,7 +29,10 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #tree>
@@ -43,7 +46,7 @@
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -67,6 +70,9 @@
           <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
           </v-form-render>
         </KDialog>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
     </div>
 </template>
 <script setup>
@@ -79,10 +85,12 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import KDialog from "@/views/components/modules/kdialog.vue"
 import FormJson from '@/views/addDynamicFormJson/documentType.json'
-import { ElMessage } from 'element-plus'
+import kDepartOrPersonVue from "@/views/components/modules/kDepartOrPerson.vue"
+import { ElMessage,ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
     type: {
@@ -90,7 +98,7 @@ const props = defineProps({
         default: "0",
     },
 })
-
+const showDepPerDialog = ref(false)
 const showFormDialog = ref(false)
 const formJson = reactive(FormJson)
 const formData = reactive({})
@@ -144,7 +152,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "请输入文件类型名称或编码",
                 },
             },
             {
@@ -155,30 +163,12 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "文件类型说明",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "文件数",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -226,26 +216,37 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "文件类型名称",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "文件类型说明",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "文件数",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "创建人",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "创建时间",
+                sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
+                "min-width":300,
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -339,7 +340,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -459,7 +460,15 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -472,6 +481,38 @@ function cellClick(row, column, cell, event) {
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    console.log(cell.name);
+    if (cell.name === '修改') {
+        showFormDialog.value = true;
+    }
+    if (cell.name == '删除') {
+        ElMessageBox.confirm(
+            '您确定要删除该记录吗？',
+            {
+                confirmButtonText: '确认',
+                cancelButtonText: '关闭',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+                
+            })
+    }
+    if(cell.name === '设置维护范围'){
+        showDepPerDialog.value = true;
+    }
+    if(cell.name === '设置可用范围'){
+        showDepPerDialog.value = true;
+    }
+}
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

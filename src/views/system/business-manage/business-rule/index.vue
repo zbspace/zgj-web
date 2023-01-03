@@ -89,8 +89,8 @@ const state = reactive({
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
           type: "daterange",
-          "start-placeholder": "Start date",
-          "end-placeholder": "End date"
+          "start-placeholder": "开始时间",
+          "end-placeholder": "结束时间"
         },
         style: {
 
@@ -158,17 +158,20 @@ const state = reactive({
       {
         prop: "0",
         label: "序号",
-        sortable: true,
       },
       {
         prop: "1",
         width: 200,
         label: "名称",
+        sortable: true,
+                "min-width":150,
       },
       {
         prop: "2",
         width: 200,
         label: "创建时间",
+        sortable: true,
+                "min-width":150,
       },
       {
         prop: "7",

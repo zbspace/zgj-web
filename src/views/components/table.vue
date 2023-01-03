@@ -12,15 +12,33 @@
                     </div>
                 </template>
                 <!-- 自定义内容显示 -->
+                <template #default="scope" v-else-if="item.customDisplayType == 'custom'">
+                    <div class="custom">
+                        <slot :name="'custom_' + item.prop"></slot>
+                    </div>
+                </template>
+                <!-- 自定义内容显示 -->
                 <template #default="scope" v-else-if="item.rankDisplayData && item.rankDisplayData.length > 0">
                     <div class="rankDisplayData">
                         <div class="rankDisplayData-node" v-for="(data, num) in item.rankDisplayData.slice(0, 3)"
                             @click="customClick(scope.$index, scope.row, data)">
                             <span>{{ data.name }}</span>
                         </div>
-                        <img class="rankDisplayData-node" src="../../assets/svg/sangedian.svg" alt=""
-                            v-if="item.rankDisplayData.length > 3"
-                            @click="customClick(scope.$index, scope.row, { type: 'more' })">
+                        <div class="rankDisplayData-more" v-if="item.rankDisplayData.length > 3">
+                            <el-dropdown>
+                                <span class="el-dropdown-link">
+                                    <img class="rankDisplayData-node" src="../../assets/svg/sangedian.svg" alt="">
+                                </span>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item v-for="(data, num) in item.rankDisplayData.slice(3)"
+                                            @click="customClick(scope.$index, scope.row, data)">
+                                            {{ data.name }}
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </div>
                     </div>
                 </template>
             </el-table-column>
@@ -102,6 +120,7 @@ onMounted(() => {
 .components-table {
     margin: 0%;
     width: 100%;
+
     .rankDisplayData {
         display: flex;
         // justify-content: space-around;
@@ -112,17 +131,23 @@ onMounted(() => {
             cursor: pointer;
             margin-right: 0.5rem;
         }
+
+        .rankDisplayData-more {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 
-     
-    :deep(.el-table thead) {
-            color: var(--color-text-1);
-            font-size: var(--font-size-body-2);
-            font-weight: var(--font-weight-400);
-        }
 
-        th {
-            font-weight: var(--font-weight-400);
-        }
+    :deep(.el-table thead) {
+        color: var(--color-text-1);
+        font-size: var(--font-size-body-2);
+        font-weight: var(--font-weight-400);
+    }
+
+    th {
+        font-weight: var(--font-weight-400);
+    }
 }
 </style>

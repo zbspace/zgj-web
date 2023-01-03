@@ -1,7 +1,7 @@
 <!-- 流程规范告警提醒 -->
 <template>
     <div class="PrintControlManagement-ProcessSpecificationAlarmNotification">
-        <componentsLayout Layout="title,searchForm,table,pagination">
+        <componentsLayout Layout="title,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     <div>流程规范告警提醒</div>
@@ -28,10 +28,8 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
+                    <componentsBatch>
+                    </componentsBatch>
                 </div>
             </template>
             <template #tree>
@@ -44,7 +42,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -54,10 +53,24 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
+        <!-- 单据详情 -->
+        <div class="ap-box">
+            <componentsDocumentsDetails :show="state.componentsDocumentsDetails.show"
+                :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
+            </componentsDocumentsDetails>
+        </div>
+        <!-- 动态表单 - 处理 -->
+        <KDialog @update:show="fromState.show = $event" :show="fromState.show" :title="fromState.title"
+            :centerBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"
+            :width="1000" :height="600" @close="submitLibraryForm" :key="fromState.title">
+            <v-form-render :form-json="fromState.formJson" :form-data="fromState.formJson"
+                :option-data="fromState.optionData" ref="vFormLibraryRef">
+            </v-form-render>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -66,6 +79,10 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
+import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import WarningOperateJson from '@/views/addDynamicFormJson/WarningOperate.json'
+import KDialog from "@/views/components/modules/kdialog.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -74,6 +91,28 @@ const props = defineProps({
     },
 })
 const emit = defineEmits([]);
+
+
+const fromState = reactive({
+    show:false,
+    title:'处理',
+    formJson:WarningOperateJson
+})
+const vFormLibraryRef = ref(null)
+
+const submitLibraryForm = (type) => {
+    if (!type) {
+        vFormLibraryRef.value.resetForm();
+        return
+    }
+    vFormLibraryRef.value.getFormData().then(formData => {
+        alert(JSON.stringify(formData))
+        fromState.showDialog = false
+    }).catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+    })
+}
 const state = reactive({
     componentsTabs: {
         data: [{
@@ -99,46 +138,69 @@ const state = reactive({
         data: [
             {
                 id: 'name',
-                label: "用印单据名称",
+                label: "关键词",
                 type: "input",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "文件名称/申请人/报警信息",
                 },
             },
             {
                 id: 'picker',
-                label: "关键词",
+                label: "选择时间",
                 type: "picker",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
-                label: "文件类型",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                id: 'shenqingr',
+                label: "报警类型",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "非法使用",
+                    },
+                    {
+                        name: "移动侦测",
+                    },
+                    {
+                        name: "用印异常",
+                    },
+                    {
+                        name: "盖章时间超时",
+                    },
+                    {
+                        name: "印章超时未使用",
+                    },
+                    {
+                        name: "审批通过未用印",
+                    },
+                    {
+                        name: "异常结束",
+                    }
+                ]
             },
             {
                 id: 'shenqingr',
-                label: "申请人",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                label: "处理状态",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "未处理",
+                    },
+                    {
+                        name: "已处理",
+                    }
+                ]
             },
         ],
         butData: [{
@@ -186,35 +248,52 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "用印单据名称",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "文件类型",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "申请人",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "申请部门",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请时间",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '6',
                 label: "操作时间",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '7',
                 label: "未用印时长",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '8',
                 label: "处理状态",
+                sortable: true,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "处理"
@@ -224,7 +303,7 @@ const state = reactive({
             }],
         data: [
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -234,7 +313,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称2',
                 2: '',
                 3: '往往',
                 4: '',
@@ -244,7 +323,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -254,7 +333,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -264,7 +343,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -274,7 +353,7 @@ const state = reactive({
                 8: '',
             },
             {
-                1: '',
+                1: '测试单据名称1',
                 2: '',
                 3: '往往',
                 4: '',
@@ -288,7 +367,16 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (column.property == "1") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
             }
         }
     },
@@ -386,8 +474,60 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
+    },
+    componentsDocumentsDetails: {
+        show: false,
+        visible: [
+            {
+                label: '用印详情',
+                name: "Details-of-Printing",
+            },
+            {
+                label: '审批流程',
+                name: "approval-process",
+            },
+            {
+                label: '领用记录',
+                name: "Record-of-requisition",
+            },
+            {
+                label: '操作记录',
+                name: "operating-record",
+            },
+        ],
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
     }
 });
+// 点击表格单元格
+function cellClick(row, column, cell, event) {
+    // console.log(row, column, cell, event);
+    if (column.property == "1") {
+        state.componentsDocumentsDetails.show = true;
+    }
+}
+//点击关闭详情
+function clickClose() {
+    state.componentsDocumentsDetails.show = false;
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '处理') {
+        fromState.show = true;
+    }
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

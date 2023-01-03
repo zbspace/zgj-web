@@ -13,7 +13,7 @@
   
       <!-- tabs -->
       <div class="nav-natify-tab">
-        <VTabs :active="active" :label="tabsLabel" @update:active="active = $event"></VTabs>
+        <VTabs :active="active" :label="tabsLabel" @update:active="active = $event" style="padding-left:24px"></VTabs>
   
         <div class="natify-content">
           <div v-if="active === tabsLabel[ 0 ].value" class="column">

@@ -26,13 +26,14 @@
                     </componentsSearchForm>
                 </div>
             </template>
-
             <template #batch>
                 <div class="batch">
-                    <el-button type="primary">同步电子签章</el-button>
+                    <componentsBatch>
+                   
+                        <el-button type="primary">同步电子签章</el-button>
+                    </componentsBatch>
                 </div>
             </template>
-
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
@@ -65,6 +66,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 const props = defineProps({
     // 处理类型
@@ -104,7 +106,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "印章名称",
                 },
             },
             {
@@ -115,21 +117,12 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "印膜",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -173,19 +166,26 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "印章名称",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "印膜",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "有效期",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "更新时间",
+                sortable: true,
+                "min-width":150,
             },
         ],
         data: [
@@ -222,7 +222,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });

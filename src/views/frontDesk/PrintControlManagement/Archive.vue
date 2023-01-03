@@ -15,7 +15,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -26,23 +26,19 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
             <template #batch>
                 <div class="batch">
-
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -58,10 +54,74 @@
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
             </componentsDocumentsDetails>
         </div>
+        <!-- 文件归档弹窗 -->
+        <KDialog @update:show="dialogData.show = $event" :show="dialogData.show" title="文件归档" :oneBtn="false"
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')">
+
+            <documentsDetailsPortion>
+                <template #title>
+                    <div class="ap-cont-box-title-label">基本信息</div>
+                </template>
+                <template #content>
+                    <div class="base">
+                        <div>
+                            <span>单据编号</span>
+                            <input type="text" disabled value="2022122876628996" />
+                        </div>
+                        <div>
+                            <span>单据名称</span>
+                            <input type="text" disabled value="测试单据001" />
+                        </div>
+                    </div>
+                </template>
+            </documentsDetailsPortion>
+            <documentsDetailsPortion>
+                <template #title>
+                    <div class="ap-cont-box-title-label">文件归档</div>
+                </template>
+                <template #content>
+                    <div class="files-wrap content-wrap" v-if="state.ArchiveFiles.length > 0">
+                        <span>用印文件</span>
+                        <div class="files-list">
+                            <div class="files-item" v-for="(item, index) in state.ArchiveFiles">
+                                <div>{{ item.fileName }}</div>
+                                <div><svg preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                                        width="1em" height="1em" fill="" viewBox="0 0 16 16"><!--?lit$224171221$-->
+                                        <g>
+                                            <g fill-rule="nonzero" fill="#1985F5" data-follow-fill="#1985F5">
+                                                <path d="M6.155 3.84h3.2v6.368h-3.2z"></path>
+                                                <path d="M6.155 3.84h3.2v6.368h-3.2z"></path>
+                                                <path
+                                                    d="m3.19 5.003 1.29-1.408L7.061.757 7.755 0l.693.757 2.581 2.838 1.291 1.408H3.19ZM8.32 9.77l-.395.437h-.341l-.395-.437H8.32Z">
+                                                </path>
+                                                <path
+                                                    d="M6.155 9.6v.608h3.2V9.6h-3.2Zm4.266 0v1.707H5.088V9.6H0V16h16V9.6h-5.579Zm1.312 5.184H9.6v-2.133h2.133v2.133Zm3.2 0H12.8v-2.133h2.133v2.133Z">
+                                                </path>
+                                            </g>
+                                        </g>
+                                    </svg>请添加归档文件</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="files-add content-wrap">
+                        <span>补充附件</span>
+                        <div class="upload-archives-element">
+                            <div class="top">
+                                <div class="upload-btn">
+                                    <img src="http://10.0.3.243:8088/resources/images/icon/upload_file.png" />
+                                    添加附件
+                                </div>
+                                <div>(可上传图片、文档等类型文件，单个文件大小不能超过 199M)</div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </documentsDetailsPortion>
+        </KDialog>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref, reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -70,7 +130,12 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import KDialog from "@/views/components/modules/kdialog.vue"
+import documentsDetailsPortion from "@/views/components/documentsDetails/portion.vue"
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -79,6 +144,25 @@ const props = defineProps({
     },
 })
 const emit = defineEmits([]);
+
+const dialogData = reactive({
+    show: false,
+    title: '文件归档',
+})
+const vFormLibraryRef = ref(null)
+// const submitLibraryForm = (type) => {
+//     if (!type) {
+//         vFormLibraryRef.value.resetForm();
+//         return
+//     }
+//     vFormLibraryRef.value.getFormData().then(formData => {
+//         alert(JSON.stringify(formData))
+//         fromState.showDialog = false
+//     }).catch(error => {
+//         // Form Validation failed
+//         ElMessage.error(error)
+//     })
+// }
 const state = reactive({
     componentsTabs: {
         data: [{
@@ -106,7 +190,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "文件名称/申请人员/用印编码",
                 },
             },
             {
@@ -117,29 +201,20 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
-                label: "用印文件类型",
-                type: "select",
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "单据名称",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
             },
         ],
@@ -186,28 +261,41 @@ const state = reactive({
             prop: '0',
             label: "序号",
             width: 100,
-            sortable: true
         }, {
             prop: '1',
             label: "单据编号",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "用印文件类型",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "申请人",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请部门",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "申请时间",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
             label: "操作",
+            fixed: "right",
+            "min-width": 150,
             rankDisplayData: [{
                 name: "文件归档"
             },],
@@ -219,7 +307,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -227,7 +315,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -235,7 +323,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -243,7 +331,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -251,7 +339,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -259,7 +347,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
             {
                 1: 'XXXXXXX',
@@ -267,14 +355,14 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
             },
         ],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -402,7 +490,29 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量文件归档"
+            }
+        ]
+    },
+    ArchiveFiles: [
+        {
+            fileName: 'V3.9.5版本测试.xlsx',
+            id: ''
+        },
+        {
+            fileName: '居家办公管理方案.docx',
+            id: ''
+        },
+        {
+            fileName: '电子盖章问题.doc',
+            id: ''
+        }
+    ]
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -414,6 +524,276 @@ function cellClick(row, column, cell, event) {
 //点击关闭详情
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
+            rankDisplayData: [{
+                name: "文件归档"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+        ]
+    } else if (activeName == "2") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '6',
+            label: "归档时间",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '7',
+            label: "文件下载",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
+            rankDisplayData: [
+                {
+                    name: "补传"
+                },
+                {
+                    name: "申请重置"
+                },
+            ],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "用印前",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "用印中",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "用印后",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+            },
+        ]
+        state.componentsTable.defaultAttribute = {
+            stripe: true,
+            "header-cell-style": {
+                background: "var(--color-fill--3)",
+            },
+            "cell-style": ({ row, column, rowIndex, columnIndex }) => {
+                // console.log({ row, column, rowIndex, columnIndex });
+                if (column.property == "2") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
+                if (column.property == "7") {
+                    return {
+                        "color": "var(--Info-6)",
+                        "cursor": "pointer",
+                    }
+                }
+            },
+        }
+    }
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '文件归档') {
+        dialogData.show = true;
+    }
+    if (cell.name === '补传') {
+        dialogData.show = true;
+        state.ArchiveFiles = [];
+    }
+    if (cell.name === '申请重置') {
+        router.push({
+            path: "/frontDesk/PrintControlManagement/File-Archive/ArchiveReset"
+        })
+    }
+}
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
 }
 
 onBeforeMount(() => {
@@ -433,5 +813,59 @@ onMounted(() => {
         align-items: center;
         justify-content: space-between;
     }
+}
+
+.base {
+    display: flex;
+
+    >div {
+        width: 40%;
+        margin: 20px 0;
+
+        >span {
+            margin-right: 16px;
+        }
+    }
+}
+
+.content-wrap {
+    display: flex;
+    margin-bottom: 16px;
+
+    >span {
+        margin-right: 16px;
+    }
+
+    >div {
+        width: 80%;
+        border: 1px solid #ccc;
+
+        .files-item {
+            border-bottom: 1px solid #ccc;
+
+            >div {
+                width: 100%;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                padding-left: 16px;
+            }
+
+            >div:nth-child(2) {
+                height: 50px;
+                justify-content: center;
+                border-top: 1px solid #ccc;
+
+                >svg {
+                    margin-right: 10px;
+                    ;
+                }
+            }
+        }
+    }
+}
+
+.upload-archives-element {
+    padding: 16px;
 }
 </style>

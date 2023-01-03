@@ -29,7 +29,10 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #tree>
@@ -42,8 +45,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -62,12 +65,15 @@
 
         <!-- 动态表单 - 印章库 -->
         <KDialog @update:show="showLibraryDialog = $event" :show="showLibraryDialog" title="新增" :centerBtn="true"
-          :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000" :height="600"
-          @close="submitLibraryForm">
-          <v-form-render :form-json="formLibraryJson" :form-data="formLibraryData" :option-data="optionLibraryData"
-            ref="vFormLibraryRef">
-          </v-form-render>
+            :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')" :width="1000"
+            :height="600" @close="submitLibraryForm">
+            <v-form-render :form-json="formLibraryJson" :form-data="formLibraryData" :option-data="optionLibraryData"
+                ref="vFormLibraryRef">
+            </v-form-render>
         </KDialog>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
     </div>
 </template>
 <script setup>
@@ -80,9 +86,11 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import LibraryJson from '@/views/addDynamicFormJson/LibraryOfSeals.json'
 import KDialog from "@/views/components/modules/kdialog.vue"
+import kDepartOrPersonVue from "@/views/components/modules/kDepartOrPerson.vue"
 import { ElMessage } from 'element-plus'
 const props = defineProps({
     // 处理类型
@@ -99,19 +107,21 @@ const vFormLibraryRef = ref(null)
 const showLibraryDialog = ref(false)
 
 const submitLibraryForm = (type) => {
-  if (!type) {
-    vFormLibraryRef.value.resetForm()
-    return
-  }
-  vFormLibraryRef.value.getFormData().then(formData => {
-    // Form Validation OK
-    alert(JSON.stringify(formData))
-    showLibraryDialog.value = false
-  }).catch(error => {
-    // Form Validation failed
-    ElMessage.error(error)
-  })
+    if (!type) {
+        vFormLibraryRef.value.resetForm()
+        return
+    }
+    vFormLibraryRef.value.getFormData().then(formData => {
+        // Form Validation OK
+        alert(JSON.stringify(formData))
+        showLibraryDialog.value = false
+    }).catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+    })
 }
+const showDepPerDialog = ref(false)
+
 const emit = defineEmits([]);
 const state = reactive({
     componentsTabs: {
@@ -143,7 +153,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "印章名称/保管部门/保管人/印章编码",
                 },
             },
             {
@@ -154,30 +164,105 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
-                label: "印章类型",
-                type: "select",
+                id: 'derivable',
+                label: "保管部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
+                },
+            },
+            {
+                id: 'derivable',
+                label: "管理部门",
+                type: "derivable",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "+选择部门",
                 },
             },
             {
                 id: 'shenqingr',
                 label: "印章状态",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                type: "radioButton",
+                data: [
+                    {
+                        name: "正常  ",
+                    },
+                    {
+                        name: "停用",
+                    },
+                    {
+                        name: "已销毁",
+                    }
+                ]
+            },
+            {
+                id: 'shenqingr',
+                label: "外带状态",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "外带",
+                    },
+                    {
+                        name: "在库",
+                    },
+                ]
+            },
+            {
+                id: 'shenqingr',
+                label: "印章种类",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "普通印章",
+                    },
+                    {
+                        name: "智能印章",
+                    },
+                ]
+            },
+            {
+                id: 'shenqingr',
+                label: "印章可见范围",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "全部人员可见",
+                    },
+                    {
+                        name: "本部门及下级部门可见",
+                    },
+                    {
+                        name: "本部门可见",
+                    },
+                    {
+                        name: "指定人员可见",
+                    },
+                ]
+            },
+            {
+                id: 'wdyy',
+                label: "我保管的印章",
+                type: "checkbox",
+                checkbox: [{
+                    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                    defaultAttribute: {
+                        label: "只显示我保管的印章"
+                    },
+                    style: {
+
+                    }
+                }]
             },
         ],
         butData: [{
@@ -225,31 +310,44 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "印章名称",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "印章类型",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "印章状态",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "保管人",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "保管部门",
+                sortable: true,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "创建时间",
+                sortable: true,
+                "min-width": 150,
             },
 
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed: "right",
+                "min-width": 150,
                 width: '250',
                 rankDisplayData: [
                     {
@@ -341,7 +439,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -465,7 +563,33 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量设置可见范围"
+            },
+            {
+                name: "批量设置可用范围"
+            },
+            {
+                name: "批量删除"
+            },
+            {
+                name: "印章解绑"
+            },
+            {
+                name: "导入"
+            },
+            {
+                name: "导出台账"
+            },
+            {
+                name: "查看已删除的印章"
+            },
+        ]
+    },
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -478,6 +602,19 @@ function cellClick(row, column, cell, event) {
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '修改') {
+        showLibraryDialog.value = true;
+    }
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
 

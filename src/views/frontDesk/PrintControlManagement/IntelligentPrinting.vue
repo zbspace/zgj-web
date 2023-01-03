@@ -15,7 +15,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -28,14 +28,17 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -60,7 +63,11 @@ import componentsSearchForm from "../../components/searchForm"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "../../components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -99,7 +106,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "盖章码/申请人员/文件名称",
                 },
             },
             {
@@ -110,30 +117,34 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
-                label: "使用印章",
-                type: "select",
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
             },
             {
                 id: 'shenqingr',
-                label: "盖章码",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                label: "用印状态",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "审批已完成",
+                    },
+                    {
+                        name: "智能用印中",
+                    }
+                ]
             },
         ],
         butData: [{
@@ -178,45 +189,67 @@ const state = reactive({
         }, {
             prop: '1',
             label: "单据编号",
-            width: 100,
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
-            sortable: true
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "使用印章",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "盖章码",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请盖章次数",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "实际盖章次数",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '7',
             width: 100,
             label: "申请人",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '8',
             label: "申请部门",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '9',
             label: "申请时间",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '10',
-            width: 100,
             label: "用印状态",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
             label: "操作",
-            width: 180,
+            fixed: "right",
+            "min-width": 300,
             rankDisplayData: [{
                 name: "申请转办"
             }, {
                 name: "申请重置"
+            }, {
+                name: "撤销转办"
+            }, {
+                name: "撤销重置"
             },],
         }],
         data: [
@@ -229,7 +262,7 @@ const state = reactive({
                 6: '',
                 7: '往往',
                 8: '',
-                9: '2022/10/30',
+                9: '2022/10/30  15:00:00',
                 10: '',
             },
             {
@@ -241,7 +274,7 @@ const state = reactive({
                 6: '',
                 7: '往往',
                 8: '',
-                9: '2022/10/30',
+                9: '2022/10/30  15:00:00',
                 10: '',
             },
             {
@@ -253,7 +286,7 @@ const state = reactive({
                 6: '',
                 7: '往往',
                 8: '',
-                9: '2022/10/30',
+                9: '2022/10/30  15:00:00',
                 10: '',
             },
             {
@@ -265,7 +298,7 @@ const state = reactive({
                 6: '',
                 7: '往往',
                 8: '',
-                9: '2022/10/30',
+                9: '2022/10/30  15:00:00',
                 10: '',
             },
             {
@@ -277,7 +310,7 @@ const state = reactive({
                 6: '',
                 7: '往往',
                 8: '',
-                9: '2022/10/30',
+                9: '2022/10/30  15:00:00',
                 10: '',
             },
 
@@ -286,7 +319,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -414,8 +447,23 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
+    },
 });
+const goInnerPage = (path, params) => {
+    let routeObj = { path: path };
+    if (params) {
+        routeObj.query = { transfer: params }
+    }
+    router.push(routeObj)
+}
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -428,9 +476,476 @@ function clickClose() {
     state.componentsDocumentsDetails.show = false;
 }
 
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    console.log(cell);
+    if (cell.name === '申请转办') {
+        goInnerPage('/frontDesk/transferApplication', 'transfer')
+    }
+    if (cell.name === '申请重置') {
+        goInnerPage('/frontDesk/transferApplication')
+    }
+    if (cell.name === '撤销转办') {
+        ElMessageBox.confirm(
+            '请问确定要撤销转办申请吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+    if (cell.name === '撤销重置') {
+        ElMessageBox.confirm(
+            '请问确定要撤销重置用印申请吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+    if (cell.name === '结束用印') {
+        ElMessageBox.confirm(
+            '请问确定要结束用印吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+    if (cell.name == '查看历史记录') {
+        ElMessageBox.confirm(
+            '请问确定要催办吗？',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+
+            })
+    }
+}
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '3',
+            label: "使用印章",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '4',
+            label: "盖章码",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '5',
+            label: "申请盖章次数",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '6',
+            label: "实际盖章次数",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '7',
+            width: 100,
+            label: "申请人",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '8',
+            label: "申请部门",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '9',
+            label: "申请时间",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '10',
+            label: "用印状态",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            fixed: "right",
+            "min-width": 300,
+            rankDisplayData: [{
+                name: "申请转办"
+            }, {
+                name: "申请重置"
+            }, {
+                name: "撤销转办"
+            }, {
+                name: "撤销重置"
+            }],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+
+        ];
+    } else if (activeName == "2") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '3',
+            label: "印章名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '4',
+            label: "盖章码",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '5',
+            label: "申请盖章次数",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '6',
+            label: "实际盖章次数",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '7',
+            width: 100,
+            label: "申请人",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '8',
+            label: "申请部门",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '9',
+            label: "申请时间",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '10',
+            label: "用印状态",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            fixed: "right",
+            "min-width": 250,
+            rankDisplayData: [{
+                name: "结束用印"
+            }, {
+                name: "申请重置"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+
+        ];
+    } else if (activeName == "3") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '3',
+            label: "印章名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '4',
+            label: "盖章码",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '5',
+            label: "申请盖章次数",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '6',
+            label: "实际盖章次数",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '7',
+            width: 100,
+            label: "申请人",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '8',
+            label: "申请部门",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '9',
+            label: "申请时间",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '10',
+            label: "用印状态",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            fixed: "right",
+            "min-width": 300,
+            rankDisplayData: [
+                {
+                    name: "申请重置"
+                },
+            ],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '',
+                5: '',
+                6: '',
+                7: '往往',
+                8: '',
+                9: '2022/10/30  15:00:00',
+                10: '',
+            },
+
+        ];
+    }
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-
+    // 切换分页
+    tabChange("1");
 })
 onMounted(() => {
     // console.log(`the component is now mounted.`)

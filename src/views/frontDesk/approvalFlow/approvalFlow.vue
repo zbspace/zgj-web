@@ -17,7 +17,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -30,13 +30,17 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header" :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header"
+                        @selection-change="selectionChange" @cellClick="cellClick"  @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -46,10 +50,25 @@
                 </componentsPagination>
             </template>
         </componentsLayout>
+        <!-- 处理弹窗 -->
+        <KDialog @update:show="dialogProcess.show = $event" :show="dialogProcess.show" :title="dialogProcess.title"
+            :oneBtn="false" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"
+            @close="submitLibraryForm">
+            <v-form-render :form-json="dialogProcess.formJson" :form-data="dialogProcess.formJson"
+                :option-data="dialogProcess.optionData" ref="vFormLibraryRef" :key="dialogProcess.title">
+            </v-form-render>
+            <div class="select-person">
+                <span>添加抄送</span>
+                <div @click="showDepPerDialog = true">+请选择抄送人</div>
+            </div>
+        </KDialog>
+        <!-- 人员选择  -->
+        <kDepartOrPersonVue :show="showDepPerDialog" @update:show="showDepPerDialog = $event" v-if="showDepPerDialog">
+        </kDepartOrPersonVue>
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
+import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
 import Layout from "../../../layouts/main.vue";
 import componentsTable from "../../components/table"
 import componentsSearchForm from "../../components/searchForm"
@@ -58,6 +77,11 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
+import KDialog from "@/views/components/modules/kdialog.vue"
+import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
+import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
+import kDepartOrPersonVue from "../../components/modules/kDepartOrPerson.vue";
 const props = defineProps({
     // 处理类型
     type: {
@@ -66,6 +90,29 @@ const props = defineProps({
     },
 })
 const emit = defineEmits([]);
+
+const showDepPerDialog = ref(false)
+const dialogProcess = reactive({
+    show: false,
+    title: '处理',
+    formJson: RecordSealToReviewJson
+    
+})
+const vFormLibraryRef = ref(null)
+const submitLibraryForm = (type) => {
+    if (!type) {
+        vFormLibraryRef.value.resetForm();
+        return
+    }
+    vFormLibraryRef.value.getFormData().then(formData => {
+        alert(JSON.stringify(formData))
+        fromState.showDialog = false
+    }).catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+    })
+}
+
 const state = reactive({
     componentsTabs: {
         data: [{
@@ -93,7 +140,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "流程主题/申请人/编码",
                 },
             },
             {
@@ -104,29 +151,70 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
+                id: 'wjlx',
                 label: "流程类型",
                 type: "select",
+                options: [
+                    {
+                        label: "用印申请",
+                        value: "1",
+                    },
+                    {
+                        label: "刻章申请",
+                        value: "2",
+                    },
+                    {
+                        label: "销毁申请",
+                        value: "3",
+                    },
+                    {
+                        label: "停用申请",
+                        value: "4",
+                    },
+                    {
+                        label: "变更申请",
+                        value: "5",
+                    },
+                    {
+                        label: "启用申请",
+                        value: "6",
+                    },
+
+                ]
+            },
+            {
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
             },
             {
-                id: 'shenqingr',
-                label: "申请人",
-                type: "input",
+                id: 'derivable',
+                label: "往来单位",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+往来单位",
+                },
+            },
+            {
+                id: 'derivable',
+                label: "选择印章",
+                type: "derivable",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "+选择印章",
                 },
             },
         ],
@@ -175,26 +263,37 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "流程名称",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "流程类型",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "申请人",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "申请部门",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请时间",
+                sortable: true,
+                "min-width": 150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed: "right",
+                "min-width": 150,
                 rankDisplayData: [
                     {
                         name: "审批"
@@ -207,7 +306,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -215,7 +314,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -223,7 +322,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -231,7 +330,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -239,7 +338,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -247,7 +346,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -255,7 +354,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
             {
@@ -263,7 +362,7 @@ const state = reactive({
                 2: '',
                 3: '往往',
                 4: '',
-                5: '2022/10/30',
+                5: '2022/10/30  15:00:00',
                 6: '',
             },
         ],
@@ -271,7 +370,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },
@@ -369,8 +468,280 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
+    },
 });
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [
+            {
+                width: 50,
+                type: "selection"
+            },
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "流程名称",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '2',
+                label: "流程类型",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '3',
+                label: "申请人",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '4',
+                label: "申请部门",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '5',
+                label: "申请时间",
+                sortable: true,
+                "min-width": 150,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                fixed: "right",
+                "min-width": 150,
+                rankDisplayData: [
+                    {
+                        name: "审批"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '',
+            },
+        ];
+    } else if (activeName == "2") {
+        state.componentsTable.header = [
+            {
+                width: 50,
+                type: "selection"
+            },
+            {
+                prop: '0',
+                label: "序号",
+                width: 100,
+            }, {
+                prop: '1',
+                label: "流程名称",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '2',
+                label: "流程类型",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '3',
+                label: "申请人",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '4',
+                label: "申请部门",
+                sortable: true,
+                "min-width": 150,
+            }, {
+                prop: '5',
+                label: "申请时间",
+                sortable: true,
+                "min-width": 150,
+            },
+            {
+                prop: '6',
+                label: "审批时间",
+                sortable: true,
+                "min-width": 150,
+            },
+            {
+                prop: '7',
+                label: "审批状态",
+                sortable: true,
+                "min-width": 150,
+            },
+            {
+                prop: 'caozuo',
+                label: "操作",
+                fixed: "right",
+                "min-width": 150,
+                rankDisplayData: [
+                    {
+                        name: "重批"
+                    },
+                ],
+            }]
+        state.componentsTable.data = [
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+            {
+                1: 'TradeCode21',
+                2: '',
+                3: '往往',
+                4: '',
+                5: '2022/10/30  15:00:00',
+                6: '2022/10/30  15:00:00',
+            },
+        ];
+    }
+}
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
+
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    dialogProcess.show = true;
+    dialogProcess.title = cell.name;
+    if (cell.name === '处理') {
+        dialogProcess.formJson = RecordSealToReviewJson;
+    }
+    if(cell.name === '审批'){
+        dialogProcess.formJson = ApprovalJson;
+    }
+}
+
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -397,6 +768,18 @@ onMounted(() => {
         .batch-desc {
             @include mixin-margin-right(12)
         }
+    }
+}
+.select-person{
+    display:flex;
+    align-items:center;
+    >span{
+        font-size:14px;
+        font-weight: bold;
+        margin-right:20px;
+    }
+    >div{
+        cursor:pointer;
     }
 }
 </style>

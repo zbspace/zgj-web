@@ -1,7 +1,7 @@
 <!-- 用印后核验 -->
 <template>
     <div class="PrintControlManagement-UsePostPressVerification">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     用印后核验
@@ -9,7 +9,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -20,18 +20,17 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
+            <template #batch>
+                <div class="batch">
+                    <componentsBatch>
+                    </componentsBatch>
+                </div>
+            </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -47,6 +46,34 @@
                 :visible="state.componentsDocumentsDetails.visible" @clickClose="clickClose">
             </componentsDocumentsDetails>
         </div>
+        <!-- test - dialog -->
+        <KDialog @update:show="state.showDialog = $event" :show="state.showDialog" title="上传文件核验" :oneBtn="true"
+            :confirmText="$t('t-zgj-operation.ocrsubmit')" :concelText="$t('t-zgj-operation.cancel')">
+            <div>单据名称</div>
+            <div class="files-base">
+                <div class="files-radio">
+                    <el-radio-group v-model="state.filesRadio">
+                        <div class="files-item" v-for="(item, index) in state.files">
+                            <el-radio :label="item.label">{{ item.fileName }}</el-radio>
+                        </div>
+                    </el-radio-group>
+                </div>
+                <div class="upload-file">
+                    <el-upload class="upload-demo" drag
+                        action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" multiple>
+                        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+                        <div class="el-upload__text">
+                            Drop file here or <em>click to upload</em>
+                        </div>
+                        <template #tip>
+                            <div class="el-upload__tip">
+                                jpg/png files with a size less than 500kb
+                            </div>
+                        </template>
+                    </el-upload>
+                </div>
+            </div>
+        </KDialog>
     </div>
 </template>
 <script setup>
@@ -59,7 +86,12 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import KDialog from "@/views/components/modules/kdialog.vue"
+import { useRouter } from 'vue-router'
+import { UploadFilled } from '@element-plus/icons-vue'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -69,6 +101,7 @@ const props = defineProps({
 })
 const emit = defineEmits([]);
 const state = reactive({
+    showDialog: false,
     componentsTabs: {
         data: [{
             label: '未核验',
@@ -98,7 +131,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "请输入文件名称搜索",
                 },
             },
             {
@@ -109,30 +142,12 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "用印文件类型",
-                type: "select",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "申请人",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -178,28 +193,41 @@ const state = reactive({
             prop: '0',
             label: "序号",
             width: 100,
-            sortable: true
         }, {
             prop: '1',
             label: "单据编号",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '2',
             label: "单据名称",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '3',
             label: "用印文件类型",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '4',
             label: "申请人",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '5',
             label: "申请部门",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: '6',
             label: "申请时间",
+            sortable: true,
+            "min-width": 150,
         }, {
             prop: 'caozuo',
             label: "操作",
+            fixed: "right",
+            "min-width": 150,
             rankDisplayData: [{
                 name: "上传文件核验"
             },],
@@ -211,7 +239,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -220,7 +248,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -229,7 +257,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -238,7 +266,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -247,7 +275,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -256,7 +284,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -265,7 +293,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
         ],
@@ -273,7 +301,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -401,7 +429,26 @@ const state = reactive({
                 name: "operating-record",
             },
         ],
-    }
+    },
+    filesRadio: 1,
+    files: [
+        {
+            fileName: '附件名称1',
+            id: '',
+            label: 1,
+        },
+        {
+            fileName: '附件名称2',
+            id: '',
+            label: 2,
+        },
+        {
+            fileName: '附件名称3',
+            id: '',
+            label: 3,
+        }
+    ],
+    activeName: 1,
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
@@ -413,6 +460,401 @@ function cellClick(row, column, cell, event) {
 //点击关闭详情
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    state.activeName = activeName;
+    if (activeName == "1") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            fixed: "right",
+            "min-width": 150,
+            rankDisplayData: [{
+                name: "上传文件核验"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+        ];
+    } else if (activeName == "2") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+            "min-width": 150,
+        },
+        {
+            prop: '7',
+            label: "用印文件份数",
+            sortable: true,
+            "min-width": 150,
+        },
+        {
+            prop: '8',
+            label: "已核验文件数",
+            sortable: true,
+            "min-width": 150,
+        },
+        {
+            prop: '9',
+            label: "最新一次核验时间",
+            sortable: true,
+            "min-width": 200,
+        },
+        {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            fixed: "right",
+            "min-width": 250,
+            rankDisplayData: [{
+                name: "上传文件核验"
+            }, {
+                name: "查看核验记录"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "",
+                9: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+        ];
+    } else if (activeName == "3") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+            "min-width": 150,
+        },
+        {
+            prop: '7',
+            label: "最新一次核验时间",
+            sortable: true,
+            "min-width": 200,
+        },
+        {
+            prop: '8',
+            label: "核验结果",
+            sortable: true,
+            "min-width": 150,
+        },
+        {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+            "min-width": 150,
+        }, {
+            prop: 'caozuo',
+            label: "操作",
+            fixed: "right",
+            "min-width": 250,
+            rankDisplayData: [{
+                name: "重传文件核验"
+            }, {
+                name: "查看核验记录"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+        ];
+    }
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '查看核验记录') {
+        router.push({
+            path: "/frontDesk/PrintControlManagement/File-checkRecord/OcrCheckRecord",
+            query: {
+                record: `post${state.activeName}`
+            }
+        })
+    } else {//上传文件核验
+        state.showDialog = true;
+    }
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -432,5 +874,8 @@ onMounted(() => {
         justify-content: space-between;
     }
 
+    .el-radio-group {
+        flex-direction: column;
+    }
 }
 </style>

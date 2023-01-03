@@ -1,7 +1,7 @@
 <!-- 抄送给我 -->
 <template>
     <div class="approvalFlow-carbonCopyToMe">
-        <componentsLayout Layout="title,searchForm,table,pagination">
+        <componentsLayout Layout="title,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     <div>抄送给我</div>
@@ -28,10 +28,8 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
-                    <el-button>批量操作</el-button>
+                    <componentsBatch>
+                    </componentsBatch>
                 </div>
             </template>
             <template #tree>
@@ -44,8 +42,7 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        :isSelection="true">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -67,6 +64,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 const props = defineProps({
     // 处理类型
     type: {
@@ -105,7 +103,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "流程主题/申请人/抄送人",
                 },
             },
             {
@@ -116,29 +114,70 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
+                id: 'wjlx',
                 label: "流程类型",
                 type: "select",
+                options: [
+                    {
+                        label: "用印申请",
+                        value: "1",
+                    },
+                    {
+                        label: "刻章申请",
+                        value: "2",
+                    },
+                    {
+                        label: "销毁申请",
+                        value: "3",
+                    },
+                    {
+                        label: "停用申请",
+                        value: "4",
+                    },
+                    {
+                        label: "变更申请",
+                        value: "5",
+                    },
+                    {
+                        label: "启用申请",
+                        value: "6",
+                    },
+
+                ]
+            },
+            {
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
             },
             {
-                id: 'shenqingr',
-                label: "所属部门",
-                type: "input",
+                id: 'derivable',
+                label: "往来单位",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+往来单位",
+                },
+            },
+            {
+                id: 'derivable',
+                label: "选择印章",
+                type: "derivable",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    placeholder: "+选择印章",
                 },
             },
         ],
@@ -183,31 +222,46 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "流程主题",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "流程类型",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "所属部门",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "申请人员",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "申请时间",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '6',
                 label: "抄送人",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '7',
                 label: "抄送时间",
+                sortable: true,
+                "min-width": 150,
             }, {
                 prop: '8',
                 label: "审批状态",
+                sortable: true,
+                "min-width": 150,
             },
         ],
         data: [
@@ -238,7 +292,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             }
         }
     },
@@ -336,8 +390,22 @@ const state = reactive({
         defaultAttribute: {
             separator: "/",
         }
-    }
+    },
+    componentsBatch: {
+        selectionData: [],
+        data: [
+            {
+                name: "批量操作"
+            }
+        ]
+    },
 });
+
+//当选择项发生变化时会触发该事件
+function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection;
+}
 
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

@@ -29,7 +29,8 @@
             </template>
             <template #batch>
                 <div class="batch">
-
+                    <componentsBatch>
+                    </componentsBatch>
                 </div>
             </template>
 
@@ -72,8 +73,10 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
-import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
+import KDialog from "@/views/components/modules/kdialog.vue"
+import FormJson from '@/views/addDynamicFormJson/editorCabinet.json'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const props = defineProps({
     // 处理类型
@@ -134,7 +137,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "设备串号/使用地点/工作台编码",
                 },
             },
             {
@@ -145,30 +148,12 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
-            },
-            {
-                id: 'select',
-                label: "智能印章柜名称",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'shenqingr',
-                label: "智能印章柜编码",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
             },
         ],
         butData: [{
@@ -216,32 +201,47 @@ const state = reactive({
                 prop: '0',
                 label: "序号",
                 width: 100,
-                sortable: true
             }, {
                 prop: '1',
                 label: "设备串号",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '2',
                 label: "智能印章柜名称",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '3',
                 label: "智能印章柜编码",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '4',
                 label: "设备状态",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '5',
                 label: "保管人",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '6',
                 label: "保管部门",
+                sortable: true,
+                "min-width":150,
             }, {
                 prop: '7',
                 label: "更新时间",
+                sortable: true,
+                "min-width":150,
             },
             {
                 prop: 'caozuo',
                 label: "操作",
+                fixed:"right",
+                "min-width":150,
                 rankDisplayData: [
                     {
                         name: "修改"
@@ -317,7 +317,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -441,7 +441,7 @@ const state = reactive({
 });
 // 点击表格单元格
 function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event);
+    // console.log(row, column, cell, event);
     if (column.property == "3") {
         state.componentsDocumentsDetails.show = true;
     }

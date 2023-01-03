@@ -1,7 +1,7 @@
 <!-- 防伪水印验证 -->
 <template>
     <div class="PrintControlManagement-SecurityWatermark">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     防伪水印验证
@@ -9,7 +9,7 @@
             </template>
             <template #tabs>
                 <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
+                    <componentsTabs activeName="1" :data="state.componentsTabs.data" @tab-change="tabChange">
                     </componentsTabs>
                 </div>
             </template>
@@ -20,18 +20,18 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
+            <template #batch>
+                <div class="batch">
+                    <componentsBatch>
+                       
+                    </componentsBatch>
+                </div>
+            </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
                         :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick">
+                        @cellClick="cellClick" @custom-click="customClick">
                     </componentsTable>
                 </div>
             </template>
@@ -59,7 +59,11 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
+import { ElMessage,ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const props = defineProps({
     // 处理类型
     type: {
@@ -95,7 +99,7 @@ const state = reactive({
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "盖章码/申请人员/文件名称",
                 },
             },
             {
@@ -106,30 +110,67 @@ const state = reactive({
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
                     type: "daterange",
-                    "start-placeholder": "Start date",
-                    "end-placeholder": "End date"
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
                 },
                 style: {
 
                 }
             },
             {
-                id: 'select',
-                label: "用印文件类型",
-                type: "select",
+                id: 'derivable',
+                label: "所属部门",
+                type: "derivable",
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
                 defaultAttribute: {
-                    placeholder: "请输入",
+                    placeholder: "+选择部门",
                 },
+            },
+            {
+                id: 'picker',
+                label: "申请时间",
+                type: "picker",
+                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+                defaultAttribute: {
+                    type: "daterange",
+                    "start-placeholder": "开始时间",
+                    "end-placeholder": "结束时间"
+                },
+                style: {
+
+                }
             },
             {
                 id: 'shenqingr',
                 label: "用印状态",
-                type: "input",
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
+                type: "radioButton",
+                data: [
+                    {
+                        name: "审批已完成",
+                    },
+                    {
+                        name: "智能用印中",
+                    },
+                    {
+                        name: "待上传文件归档",
+                    },
+                    {
+                        name: "已完成",
+                    }
+                ]
+            },
+            {
+                id: 'shenqingr',
+                label: "用印模式",
+                type: "radioButton",
+                data: [
+                    {
+                        name: "智能用印",
+                    },
+                    {
+                        name: "远程盖章",
+                    },
+                ]
             },
         ],
         butData: [{
@@ -175,31 +216,46 @@ const state = reactive({
             prop: '0',
             label: "序号",
             width: 100,
-            sortable: true
         }, {
             prop: '1',
             label: "单据编号",
+            sortable: true,
+                "min-width":150,
         }, {
             prop: '2',
             label: "单据名称",
+            sortable: true,
+                "min-width":150,
         }, {
             prop: '3',
             label: "用印文件类型",
+            sortable: true,
+                "min-width":150,
         }, {
             prop: '7',
             label: "用印状态",
+            sortable: true,
+                "min-width":150,
         }, {
             prop: '4',
             label: "申请人",
+            sortable: true,
+                "min-width":150,
         }, {
             prop: '5',
             label: "申请部门",
+            sortable: true,
+                "min-width":150,
         }, {
             prop: '6',
             label: "申请时间",
+            sortable: true,
+                "min-width":150,
         }, {
             prop: 'caozuo',
-            label: "操作",
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
             rankDisplayData: [{
                 name: "取消水印验证"
             },],
@@ -211,7 +267,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -220,7 +276,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -229,7 +285,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -238,7 +294,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -247,7 +303,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -256,7 +312,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
             {
@@ -265,7 +321,7 @@ const state = reactive({
                 3: '',
                 4: '往往',
                 5: '',
-                6: '2022/10/30',
+                6: '2022/10/30  15:00:00',
                 7: "",
             },
         ],
@@ -273,7 +329,7 @@ const state = reactive({
         defaultAttribute: {
             stripe: true,
             "header-cell-style": {
-                background: "var(--color-fill--1)",
+                background: "var(--color-fill--3)",
             },
             "cell-style": ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
@@ -413,6 +469,303 @@ function cellClick(row, column, cell, event) {
 //点击关闭详情
 function clickClose() {
     state.componentsDocumentsDetails.show = false;
+}
+
+// 切换分页
+function tabChange(activeName) {
+    // console.log(activeName);
+    if (activeName == "1") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '7',
+            label: "用印状态",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: 'caozuo',
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
+            rankDisplayData: [{
+                name: "取消水印验证"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+        ];
+    } else if (activeName == "2") {
+        state.componentsTable.header = [{
+            width: 50,
+            type: "selection"
+        }, {
+            prop: '0',
+            label: "序号",
+            width: 100,
+        }, {
+            prop: '1',
+            label: "单据编号",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '2',
+            label: "单据名称",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '3',
+            label: "用印文件类型",
+            sortable: true,
+                "min-width":150,
+        }, 
+        {
+            prop: '7',
+            label: "用印状态",
+            sortable: true,
+                "min-width":150,
+        }, 
+        {
+            prop: '8',
+            label: "水印验证节点",
+            sortable: true,
+                "min-width":150,
+        }, 
+        {
+            prop: '9',
+            label: "验证状态",
+            sortable: true,
+                "min-width":150,
+        }, 
+        {
+            prop: '10',
+            label: "验证次数",
+            sortable: true,
+                "min-width":150,
+        }, 
+        {
+            prop: '4',
+            label: "申请人",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '5',
+            label: "申请部门",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: '6',
+            label: "申请时间",
+            sortable: true,
+                "min-width":150,
+        }, {
+            prop: 'caozuo',
+                label: "操作",
+                fixed:"right",
+                "min-width":150,
+            rankDisplayData: [{
+                name: "查看验证记录"
+            },],
+        }]
+        state.componentsTable.data = [
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "盖前验证",
+                9: "正常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "盖中验证",
+                9: "有异常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "盖后验证",
+                9: "正常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "归档验证",
+                9: "有异常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+                8: "盖前验证",
+                9: "有异常",
+                10: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+            {
+                1: 'XXXXXXX',
+                2: '用印申请',
+                3: '',
+                4: '往往',
+                5: '',
+                6: '2022/10/30  15:00:00',
+                7: "",
+            },
+        ];
+    } 
+}
+//点击表格按钮
+function customClick(row, column, cell, event) {
+    if (cell.name === '取消水印验证') {
+        ElMessageBox.confirm(
+            '请问确认要取消水印验证吗？',
+            '取消水印验证',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+                
+            })
+    }
+    if(cell.name === '查看验证记录'){
+        router.push({
+            path: "/frontDesk/PrintControlManagement/File-checkRecord/WaterCheckRecord"
+        })
+    }
 }
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

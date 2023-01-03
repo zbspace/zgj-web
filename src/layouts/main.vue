@@ -1,44 +1,35 @@
 
-
 <template>
-<div>
-    <Vertical v-if="layoutType === 'vertical'" :layout="layoutType">
-        <slot />
+  <div>
+    <Vertical
+      v-if="layoutStore.layoutType === 'vertical'"
+      :layout="layoutStore.layoutType"
+    >
+      <slot />
     </Vertical>
- 
-    <Horizontal v-if="layoutType === 'horizontal'" :layout="layoutType">
-        <slot />
+
+    <Horizontal
+      v-if="layoutStore.layoutType === 'horizontal'"
+      :layout="layoutStore.layoutType"
+    >
+      <slot />
     </Horizontal>
 
-    <TwoColumns v-if="layoutType === 'twocolumn'" :layout="layoutType">
-        <slot />
+    <TwoColumns
+      v-if="layoutStore.layoutType === 'twocolumn'"
+      :layout="layoutStore.layoutType"
+    >
+      <slot />
     </TwoColumns>
-</div>
+  </div>
 </template>
 
+<script setup>
+// import { layoutComputed } from "@/state/helpers";
 
-<script>
-import { layoutComputed } from "@/state/helpers";
-
-import Vertical from "./vertical";
-import Horizontal from "./horizontal";
-import TwoColumns from "./twocolumn";
-
-export default {
-    components: {
-        Vertical,
-        Horizontal,
-        TwoColumns
-    },
-    data() {
-        return {};
-    },
-    computed: {
-        ...layoutComputed,
-    },
-    mounted() {
-        // document.querySelector("html").setAttribute('dir', 'rtl');
-        // console.log('layoutType--->',layoutType);
-    }
-};
+import Vertical from './vertical'
+import Horizontal from './horizontal'
+import TwoColumns from './twocolumn'
+import { useLayoutStore } from '@/store/layout'
+const layoutStore = useLayoutStore()
 </script>
