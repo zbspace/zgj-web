@@ -1,9 +1,0 @@
-diff a/src/components/footer.vue b/src/components/footer.vue	(rejected hunks)
-@@ -1,6 +1,6 @@
- <template>
- <footer class="footer">
--    <div class="container-fluid">
-+    <!-- <div class="container-fluid">
-         <div class="row">
-             <div class="col-sm-6">
-                 {{new Date().getFullYear()}} © Velzon.
