@@ -4,7 +4,7 @@
       router
       :default-active="activeMenu"
       @select="handleSelect"
-      :collapse="isCollapse"
+      :collapse="layoutStore.isCollapse"
       class="el-menu-vertical-demo"
     >
       <template v-for="item in state1.menu">
@@ -128,13 +128,15 @@ import icon31 from '@/assets/svg/xitong-caozuo-rizhi.svg'
 import icon32 from '@/assets/svg/zongduan-caozuo-rizhi.svg'
 import icon33 from '@/assets/svg/gujian-shengji-rizhi.svg'
 import icon37 from '@/assets/svg/xitong-yunxing-rizhi.svg'
-import { ref, computed, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-const { state } = useStore()
+// import { useStore } from 'vuex'
+// const { state } = useStore()
+import { useLayoutStore } from '@/store/layout'
+const layoutStore = useLayoutStore()
 const route = useRoute()
 const activeMenu = ref('')
-const isCollapse = computed(() => state.layout.isCollapse)
+// const isCollapse = computed(() => )
 const state1 = ref({
   menu: [],
   business: [
