@@ -1,7 +1,7 @@
 <!-- 流程规范告警提醒 -->
 <template>
     <div class="PrintControlManagement-ProcessSpecificationAlarmNotification">
-        <componentsLayout Layout="title,searchForm,table,pagination">
+        <componentsLayout Layout="title,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     <div>流程规范告警提醒</div>
@@ -28,8 +28,8 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    <componentsBatch>
+                    </componentsBatch>
                 </div>
             </template>
             <template #tree>
@@ -79,6 +79,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import WarningOperateJson from '@/views/addDynamicFormJson/WarningOperate.json'
 import KDialog from "@/views/components/modules/kdialog.vue"

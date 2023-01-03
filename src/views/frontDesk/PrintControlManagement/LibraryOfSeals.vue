@@ -29,8 +29,10 @@
             </template>
             <template #batch>
                 <div class="batch">
-                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #tree>
@@ -43,8 +45,8 @@
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @cellClick="cellClick" @custom-click="customClick" @selection-change="selectionChange">
+                        :data="state.componentsTable.data" :header="state.componentsTable.header" @cellClick="cellClick"
+                        @custom-click="customClick" @selection-change="selectionChange">
                     </componentsTable>
                 </div>
             </template>
@@ -84,6 +86,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import LibraryJson from '@/views/addDynamicFormJson/LibraryOfSeals.json'
 import KDialog from "@/views/components/modules/kdialog.vue"
@@ -311,40 +314,40 @@ const state = reactive({
                 prop: '1',
                 label: "印章名称",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '2',
                 label: "印章类型",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '3',
                 label: "印章状态",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '4',
                 label: "保管人",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             }, {
                 prop: '5',
                 label: "保管部门",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
             {
                 prop: '6',
                 label: "创建时间",
                 sortable: true,
-                "min-width":150,
+                "min-width": 150,
             },
 
             {
                 prop: 'caozuo',
                 label: "操作",
-                fixed:"right",
-                "min-width":150,
+                fixed: "right",
+                "min-width": 150,
                 width: '250',
                 rankDisplayData: [
                     {
@@ -593,7 +596,7 @@ function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
     if (column.property == "1") {
         state.componentsDocumentsDetails.show = true;
-    } 
+    }
 }
 //点击关闭详情
 function clickClose() {

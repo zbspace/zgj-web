@@ -1,7 +1,7 @@
 <!-- 实时确认 -->
 <template>
     <div class="PrintControlManagement-RealTimeConfirmation">
-        <componentsLayout Layout="title,tabs,searchForm,table,pagination">
+        <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
             <template #title>
                 <div class="title">
                     <div>
@@ -29,7 +29,12 @@
                     </componentsSearchForm>
                 </div>
             </template>
-
+            <template #batch>
+                <div class="batch">
+                    <componentsBatch>
+                    </componentsBatch>
+                </div>
+            </template>
             <template #table>
                 <div>
                     <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
@@ -77,6 +82,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import KDialog from "@/views/components/modules/kdialog.vue"
 import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'

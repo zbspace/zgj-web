@@ -30,6 +30,9 @@
 
             <template #batch>
                 <div class="batch">
+                    <componentsBatch>
+                       
+                    </componentsBatch>
                 </div>
             </template>
 
@@ -66,6 +69,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
 import KDialog from "@/views/components/modules/kdialog.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'

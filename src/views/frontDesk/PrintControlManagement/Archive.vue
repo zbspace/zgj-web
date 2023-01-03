@@ -26,17 +26,12 @@
                     </componentsSearchForm>
                 </div>
             </template>
-            <!-- <template #tree>
-                    <div>
-                        <componentsTree :data="state.componentsTree.data"
-                            :defaultAttribute="state.componentsTree.defaultAttribute">
-                        </componentsTree>
-                    </div>
-                </template> -->
             <template #batch>
                 <div class="batch">
-                    <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                        v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    <componentsBatch>
+                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
+                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
+                    </componentsBatch>
                 </div>
             </template>
             <template #table>
@@ -85,7 +80,7 @@
                     <div class="ap-cont-box-title-label">文件归档</div>
                 </template>
                 <template #content>
-                    <div class="files-wrap content-wrap" v-if="state.ArchiveFiles.length>0">
+                    <div class="files-wrap content-wrap" v-if="state.ArchiveFiles.length > 0">
                         <span>用印文件</span>
                         <div class="files-list">
                             <div class="files-item" v-for="(item, index) in state.ArchiveFiles">
@@ -113,7 +108,7 @@
                         <div class="upload-archives-element">
                             <div class="top">
                                 <div class="upload-btn">
-                                    <img src="http://10.0.3.243:8088/resources/images/icon/upload_file.png"/>
+                                    <img src="http://10.0.3.243:8088/resources/images/icon/upload_file.png" />
                                     添加附件
                                 </div>
                                 <div>(可上传图片、文档等类型文件，单个文件大小不能超过 199M)</div>
@@ -135,6 +130,7 @@ import componentsBreadcrumb from "../../components/breadcrumb"
 import componentsPagination from "../../components/pagination.vue"
 import componentsTabs from "../../components/tabs.vue"
 import componentsLayout from "../../components/Layout.vue"
+import componentsBatch from "@/views/components/batch.vue"
 import componentsDocumentsDetails from "../../components/documentsDetails.vue"
 import KDialog from "@/views/components/modules/kdialog.vue"
 import documentsDetailsPortion from "@/views/components/documentsDetails/portion.vue"
@@ -784,11 +780,11 @@ function customClick(row, column, cell, event) {
     if (cell.name === '文件归档') {
         dialogData.show = true;
     }
-    if (cell.name === '补传'){
+    if (cell.name === '补传') {
         dialogData.show = true;
         state.ArchiveFiles = [];
     }
-    if(cell.name === '申请重置'){
+    if (cell.name === '申请重置') {
         router.push({
             path: "/frontDesk/PrintControlManagement/File-Archive/ArchiveReset"
         })
@@ -818,46 +814,58 @@ onMounted(() => {
         justify-content: space-between;
     }
 }
-.base{
-    display:flex;
-    >div{
-        width:40%;
-        margin:20px 0;
-        >span{
-            margin-right:16px;
+
+.base {
+    display: flex;
+
+    >div {
+        width: 40%;
+        margin: 20px 0;
+
+        >span {
+            margin-right: 16px;
         }
     }
 }
-.content-wrap{
-    display:flex;
-    margin-bottom:16px;
-    >span{
-        margin-right:16px;
+
+.content-wrap {
+    display: flex;
+    margin-bottom: 16px;
+
+    >span {
+        margin-right: 16px;
     }
-    >div{
-        width:80%;
-        border:1px solid #ccc;
-        .files-item{
-            border-bottom:1px solid #ccc;
-            >div{
-                width:100%;
-                height:40px;
-                display:flex;
-                align-items:center;
-                padding-left:16px;
+
+    >div {
+        width: 80%;
+        border: 1px solid #ccc;
+
+        .files-item {
+            border-bottom: 1px solid #ccc;
+
+            >div {
+                width: 100%;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                padding-left: 16px;
             }
-            >div:nth-child(2){
-                height:50px;
-                justify-content:center;
-                border-top:1px solid #ccc;
-                >svg{
-                    margin-right:10px;;
+
+            >div:nth-child(2) {
+                height: 50px;
+                justify-content: center;
+                border-top: 1px solid #ccc;
+
+                >svg {
+                    margin-right: 10px;
+                    ;
                 }
             }
         }
     }
 }
-.upload-archives-element{
-    padding:16px;
+
+.upload-archives-element {
+    padding: 16px;
 }
 </style>
