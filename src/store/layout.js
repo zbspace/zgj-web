@@ -12,7 +12,8 @@ export const useLayoutStore = defineStore({
       sidebarView: 'detached',
       sidebarColor: 'light',
       sidebarImage: 'none',
-      preloader: 'disable'
+      preloader: 'disable',
+      isCollapse: false
     }
   },
   getters: {
@@ -58,6 +59,10 @@ export const useLayoutStore = defineStore({
 
     changePreloader (preloader) {
       this.preloader = preloader
+    },
+
+    changeCollapse (isCollapse) {
+      this.isCollapse = isCollapse
     }
   },
   // 开启数据缓存
