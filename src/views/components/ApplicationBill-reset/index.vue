@@ -29,7 +29,7 @@
             <div class="l-title">基本信息</div>
             <div class="base-info">
                 <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData"
-                    ref="vFormRef" @selectPerson="clickSelect">
+                    ref="vFormRef" @buttonClick="clickSelect">
                 </v-form-render>
             </div>
             <div class="l-title">审批流程</div>
@@ -73,8 +73,10 @@ const submitForm = (type) => {
         ElMessage.error(error)
     })
 }
-function clickSelect(){
-    console.log(111);
+
+// select25439
+function clickSelect(buttonWidget){
+    console.log(buttonWidget);
 }
 </script>
 
