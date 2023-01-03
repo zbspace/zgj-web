@@ -58,6 +58,7 @@
               "
             id="topnav-hamburger-icon"
             @click="toggleHamburgerMenu"
+            v-show="false"
           >
             <!-- topnav-hamburger -->
             <span class="hamburger-icon">
