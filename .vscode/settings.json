@@ -1,0 +1,12 @@
+{
+  "eslint.alwaysShowStatus": true,
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.debug": false,
+  "eslint.quiet": true,
+  "editor.tabSize": 2,
+  // 保存的时候自动格式化
+  // "editor.formatOnSave": true,
+  // 默认格式化工具选择prettier
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
