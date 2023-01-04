@@ -83,8 +83,8 @@ onMounted(() => {
     /* 分页 */
     :deep(.ap-box) {
         .el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
-            background-color: var(--primary-2);
-            color: var(--primary-6);
+            background-color: var(--primary-6);
+            color: var(--in-common-use-1);
         }
 
         .el-pagination.is-background .el-pager li {
