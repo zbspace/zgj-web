@@ -1185,7 +1185,24 @@
     </template>
 
     <template v-else>
-      <ul class="navbar-nav h-100" id="navbar-nav">
+      <ul
+        class="navbar-nav h-100"
+        id="navbar-nav"
+      >
+        <li class="nav-item" v-show="sidebarSize === 'sm' || sidebarSize === 'sm-hover'" @click="toggleHamburgerMenu">
+            <div style="display:flex;justify-content: center;align-items: center; height: 36px;cursor: pointer;margin-top:6px;">
+              <svg width="16" height="16" viewBox="0 0 6 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="menu-iconpark">
+                <path d="M7 4H15" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M7 9H15" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M1 14L15 14" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M3.5633 4.13379L1 6.42502L3.5633 8.68482" stroke="black" stroke-opacity="0.45" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+        </li>
         <div v-for="(item, index) in state.menu" :key="index">
           <div v-if="item.type == 'part'">
             <li class="menu-title">
@@ -1238,21 +1255,23 @@
               <router-link class="nav-link menu-link" :to="item.to">
                 <img class="menu-iconpark" :src="item.icon" alt="" srcset="">
                 <span data-key="t-widgets">{{ $t(item.label) }}</span>
-                <div v-show="false" class="collapse-btn" @click="toggleHamburgerMenu">
-                  <button type="button" class="
-                    btn btn-sm
-                    px-3
-                    fs-16
-                    header-item
-                    vertical-menu-btn
-                    " id="topnav-hamburger-icon">
-                    <span class="hamburger-icon">
-                      <span />
-                      <span />
-                      <span />
-                    </span>
-                  </button>
-                </div>
+                <span
+                  v-show="(item.name === '首页' || item.name === '概览') && sidebarSize === 'lg'"
+                  class="collapse-btn"
+                  @click.stop.prevent="toggleHamburgerMenu"
+                  data-key="t-widgets"
+                >
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 4H15" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M7 9H15" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M1 14L15 14" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M3.5633 4.13379L1 6.42502L3.5633 8.68482" stroke="black" stroke-opacity="0.45" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
               </router-link>
             </li>
           </div>
@@ -1597,6 +1616,12 @@ export default {
         ],
         system: [
           {
+            name: '概览',
+            label: 't-system-overview',
+            to: '/system/home',
+            icon: icon1
+          },
+          {
             name: '企业管理',
             type: 'part',
             label: 't-zgj-cg-menu-qiye-guanli'
@@ -1788,7 +1813,15 @@ export default {
         // return this.$store ? this.$store.state.layout.layoutType : {} || {};
         return layoutStore.layoutType
       }
-    }
+    },
+    sidebarSize: {
+      get() {
+        return layoutStore.sidebarSize
+      },
+      set(type) {
+        layoutStore.changeSidebarSize(type)
+      }
+    },
   },
 
   watch: {
@@ -1796,7 +1829,7 @@ export default {
       handler: 'onRoutechange',
       immediate: true,
       deep: true
-    }
+    },
   },
 
   mounted() {
@@ -1804,7 +1837,8 @@ export default {
   },
 
   methods: {
-    onRoutechange(ele) {
+    onRoutechange (ele) {
+      this.initActiveMenu(ele.path)
       const keys = Object.keys(ele.params)
       let value = ''
       keys.forEach((key) => { value = '/' + ele.params[key] })
@@ -1910,6 +1944,8 @@ export default {
           ? document.body.classList.remove('twocolumn-panel')
           : document.body.classList.add('twocolumn-panel')
       }
+
+      this.sidebarSize = this.sidebarSize === 'lg' ? 'sm' : 'lg'
     }
   }
 }

@@ -199,9 +199,32 @@ $unify-primary-color: var(--primary-6);
     font-size: var(--font-size-body-2);
 }
 
+.navbar-menu .navbar-nav {
+  padding-top: 6px!important;
+  padding-right: 6px!important;
+}
+
+.navbar-menu .navbar-nav .nav-link.active {
+  background-color:  rgba(208, 150, 62, 0.12)!important;
+  border-top-right-radius: 20px!important;
+  border-bottom-right-radius: 20px!important;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link:hover {
+  background-color:  rgba(208, 150, 62, 0.12)!important;
+  color: #7c7f90!important;
+}
+
+.navbar-menu .navbar-nav .nav-link:hover {
+  background-color:  rgba(208, 150, 62, 0.12)!important;
+}
+
 /* 左侧菜单 */
 [data-layout="vertical"][data-sidebar-size="sm"] .navbar-menu .navbar-nav .nav-item:hover>a.menu-link {
-    background-color: var(--Secondary-3);
+    background-color:  rgba(208, 150, 62, 0.12);
+    color: var(--vz-vertical-menu-sub-item-color);
+    border-top-right-radius: 0px!important;
+    border-bottom-right-radius: 0px!important;
 }
 
 /* 
@@ -237,7 +260,8 @@ body {
 }
 
 .logo-p-t {
-    padding-top: 10px !important;
+  padding-top: 16px!important;
+  padding-bottom: 16px!important;
 }
 
 // #page-topbar {
