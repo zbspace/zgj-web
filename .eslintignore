@@ -1,6 +1,6 @@
-src/**/*.js
-src/**/*.vue
-src/**/*.cjs
+# src/**/*.js
+# src/**/*.vue
+# src/**/*.cjs
 # 如果要开启eslint + prettier 把上面3行注释掉就行
 *.sh
 node_modules

@@ -1,6 +1,5 @@
 <template>
   <div class="l-register">
-
     <!-- top -->
     <div class="up-top">
       <!-- 返回按钮 -->
@@ -26,28 +25,50 @@
         clearable
       >
         <template #prepend>
-          <el-select v-model="state.select" placeholder="+86" style="width: 80px" size="large">
+          <el-select
+            v-model="state.select"
+            placeholder="+86"
+            style="width: 80px"
+            size="large"
+          >
             <el-option label="+86" value="1" />
           </el-select>
         </template>
       </el-input>
 
-      <div class="l-code"> 
-
-        <el-input 
-        v-model="state.inputCode"
-        :placeholder="state.placeholderCode"
-        size="large" clearable>
+      <div class="l-code">
+        <el-input
+          v-model="state.inputCode"
+          :placeholder="state.placeholderCode"
+          size="large"
+          clearable
+        >
         </el-input>
 
         <VerificationBtn></VerificationBtn>
       </div>
 
-      <el-input 
+      <el-input
         v-model="state.inputAccount"
         :placeholder="state.placeholderPassword"
-        size="large" clearable
+        size="large"
+        clearable
         class="l-inpt l-code-inpt"
+      >
+        <template #prefix>
+          <div class="icon">
+            <img src="../../../assets/images/login/l_password_icon.svg" />
+          </div>
+        </template>
+      </el-input>
+
+      <div class="l-code">
+        <el-input
+          v-model="state.inputPassword"
+          :placeholder="state.placeholderPasswordAgain"
+          size="large"
+          :type="state.showPass ? 'text' : 'password'"
+          class="l-code-inpt"
         >
           <template #prefix>
             <div class="icon">
@@ -55,34 +76,23 @@
             </div>
           </template>
         </el-input>
-
-      <div class="l-code"> 
-
-        <el-input 
-        v-model="state.inputPassword"
-        :placeholder="state.placeholderPasswordAgain"
-        size="large"
-        :type="state.showPass ? 'text' : 'password'"
-        class="l-code-inpt">
-
-          <template #prefix>
-            <div class="icon">
-              <img src="../../../assets/images/login/l_password_icon.svg" />
-            </div>
-          </template>
-
-        </el-input>
-
       </div>
     </div>
 
     <!-- 协议 -->
     <div class="l-protocol" @click="state.protocal = !state.protocal">
-        
-      <img v-if="state.protocal" src="../../../assets/images/login/l_select.svg" class="img" />
-      <img  v-else src="../../../assets/images/login/l_no_select.svg" class="img" />
+      <img
+        v-if="state.protocal"
+        src="../../../assets/images/login/l_select.svg"
+        class="img"
+      />
+      <img
+        v-else
+        src="../../../assets/images/login/l_no_select.svg"
+        class="img"
+      />
       <div class="protocol-text">
-        <span>{{ $t('t-agree-protocol')}}</span>
+        <span>{{ $t('t-agree-protocol') }}</span>
         <span class="item">《 {{ $t('t-service-protocol') }} 》</span>
         <span class="item">《{{ $t('t-privacy-policy') }}》</span>
       </div>
@@ -90,184 +100,192 @@
 
     <!-- footer -->
     <div class="l-r-footer">
-      <el-button type="primary" class="btn" @click="$emit('close')">{{ $t('t-register') }}</el-button>
+      <el-button type="primary" class="btn" @click="$emit('close')">
+        {{ $t('t-register') }}
+      </el-button>
     </div>
   </div>
 </template>
 
-
 <script setup>
-import i18n from "../../../i18n";
-import { reactive, watch } from "vue";
-import VerificationBtn from "../components/VerificationBtn.vue"
-const state = reactive({
-  inputPhone: null,
-  inputCode: null,
-  inputAccount: null,
-  inputPassword: null,
-  placeholderPhone: null,
-  placeholderCode: null,
-  placeholderPassword: null,
-  placeholderPasswordAgain: null,
-  protocal: false,
-})
+  import i18n from '../../../i18n'
+  import { reactive, watch } from 'vue'
+  import VerificationBtn from '../components/VerificationBtn.vue'
+  const state = reactive({
+    inputPhone: null,
+    inputCode: null,
+    inputAccount: null,
+    inputPassword: null,
+    placeholderPhone: null,
+    placeholderCode: null,
+    placeholderPassword: null,
+    placeholderPasswordAgain: null,
+    protocal: false
+  })
 
-// 监听 语言切换
-watch(()=> i18n.global.locale, () => {
-  state.placeholderPhone = i18n.global.t('t-zgj-sealElectronic.mobilePlease')
-  state.placeholderCode = i18n.global.t('t-zgj-verification.required')
-  state.placeholderPassword = i18n.global.t('t-zgj-password.PleaseSet816')
-  state.placeholderPasswordAgain = i18n.global.t('t-zgj-password.PleaseNewAgain')
-}, { immediate: true, deep: true})
-
+  // 监听 语言切换
+  watch(
+    () => i18n.global.locale,
+    () => {
+      state.placeholderPhone = i18n.global.t(
+        't-zgj-sealElectronic.mobilePlease'
+      )
+      state.placeholderCode = i18n.global.t('t-zgj-verification.required')
+      state.placeholderPassword = i18n.global.t('t-zgj-password.PleaseSet816')
+      state.placeholderPasswordAgain = i18n.global.t(
+        't-zgj-password.PleaseNewAgain'
+      )
+    },
+    { immediate: true, deep: true }
+  )
 </script>
 
 <style scoped lang="scss">
-.l-register {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  right: 0;
-  bottom: 0;
-  width: 790px;
-  height: 530px;
-  background: #FFFFFF;
-  border: 1px solid #F0F0F0;
-  box-shadow: 0 8px 100px 0 rgba(19,59,99,0.07);
-  border-radius: 4px;
-  margin: auto;
-  z-index: 999;
-  padding: 30px;
+  .l-register {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    right: 0;
+    bottom: 0;
+    width: 790px;
+    height: 530px;
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 8px 100px 0 rgba(19, 59, 99, 0.07);
+    border-radius: 4px;
+    margin: auto;
+    z-index: 999;
+    padding: 30px;
 
-  .up-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  .back-btn {
-      width: 40px;
-      font-size: 34px;
-      font-weight: 400;
-      cursor: pointer;
-    }
-
-    .back-t {
-      flex: 1;
-      text-align: center;
-      font-family: PingFang-SC-Bold;
-      font-weight: 700;
-      font-size: 20px;
-      color: #303133;
-    }
-  }
-
-  .l-r-msg {
-    font-family: PingFangSC-Regular;
-    font-weight: 400;
-    font-size: 14px;
-    color: #303133;
-    margin: 8px 0 15px 0;
-    text-align: center;
-  }
-
-  .l-r-inpt {
-    padding: 0 172px;
-
-    .l-code {
+    .up-top {
       display: flex;
-      margin: 20px 0;
+      justify-content: space-between;
+      align-items: center;
+      .back-btn {
+        width: 40px;
+        font-size: 34px;
+        font-weight: 400;
+        cursor: pointer;
+      }
+
+      .back-t {
+        flex: 1;
+        text-align: center;
+        font-family: PingFang-SC-Bold;
+        font-weight: 700;
+        font-size: 20px;
+        color: #303133;
+      }
+    }
+
+    .l-r-msg {
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      font-size: 14px;
+      color: #303133;
+      margin: 8px 0 15px 0;
+      text-align: center;
+    }
+
+    .l-r-inpt {
+      padding: 0 172px;
+
+      .l-code {
+        display: flex;
+        margin: 20px 0;
+        .btn {
+          font-size: 16px;
+          color: #fafafa;
+          width: 180px;
+          height: 44px;
+          border-radius: 2px;
+          text-align: center;
+          line-height: 44px;
+          background: #d0963e;
+          margin-left: 10px;
+        }
+      }
+
+      .l-r-inpt {
+        .icon {
+          position: relative;
+          padding-right: 16px;
+          margin-right: 16px;
+          img {
+            width: 16px;
+            height: 16px;
+          }
+
+          &::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 52%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 18px;
+            background: #f0f0f0;
+          }
+        }
+      }
+
+      .l-u-succcess {
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        font-size: 16px;
+        color: #303133;
+        img {
+          width: 102px;
+          height: 102px;
+          margin-bottom: 45px;
+        }
+      }
+    }
+
+    .l-protocol {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      .img {
+        width: 14px;
+        height: 14px;
+      }
+
+      .protocol-text {
+        font-family: Helvetica;
+        font-size: 12px;
+        color: #333333;
+        letter-spacing: 0;
+        text-align: center;
+        margin-left: 6px;
+        .item {
+          color: #1985f5;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .l-r-footer {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
       .btn {
         font-size: 16px;
-        color: #FAFAFA;
-        width: 180px;
+        color: #fafafa;
+        width: 362px;
         height: 44px;
         border-radius: 2px;
         text-align: center;
         line-height: 44px;
-        background: #D0963E;
-        margin-left: 10px;
-      }
-    }
-
-    .l-r-inpt {
-      .icon {
-        position: relative;
-        padding-right: 16px;
-        margin-right: 16px;
-        img {
-          width: 16px;
-          height: 16px;
-        }
-
-        &::after {
-          content: "";
-          position: absolute;
-          right: 0;
-          top: 52%;
-          transform: translateY(-50%);
-          width: 1px;
-          height: 18px;
-          background: #F0F0F0;
-        }
-      }
-    }
-
-    .l-u-succcess {
-      display: flex;
-      justify-items: center;
-      align-items: center;
-      flex-direction: column;
-      font-family: PingFangSC-Regular;
-      font-weight: 400;
-      font-size: 16px;
-      color: #303133;
-      img {
-        width: 102px;
-        height: 102px;
-        margin-bottom: 45px;
+        background: #d0963e;
       }
     }
   }
-
-  .l-protocol {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-
-    .img {
-      width: 14px;
-      height: 14px;
-    }
-
-    .protocol-text {
-      font-family: Helvetica;
-      font-size: 12px;
-      color: #333333;
-      letter-spacing: 0;
-      text-align: center;
-      margin-left: 6px;
-      .item {
-        color: #1985F5;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .l-r-footer{
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    .btn {
-      font-size: 16px;
-      color: #FAFAFA;
-      width: 362px;
-      height: 44px;
-      border-radius: 2px;
-      text-align: center;
-      line-height: 44px;
-      background: #D0963E;
-    }
-  }
-}
 </style>
