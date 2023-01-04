@@ -2147,7 +2147,6 @@
         class="navbar-nav h-100"
         id="navbar-nav"
       >
-<<<<<<< HEAD
         <li class="nav-item" v-show="sidebarSize === 'sm' || sidebarSize === 'sm-hover'" @click="toggleHamburgerMenu">
             <div style="display:flex;justify-content: center;align-items: center; height: 36px;cursor: pointer;margin-top:6px;">
               <svg width="16" height="16" viewBox="0 0 6 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="menu-iconpark">
@@ -2163,12 +2162,6 @@
             </div>
         </li>
         <div v-for="(item, index) in state.menu" :key="index">
-=======
-        <div
-          v-for="(item, index) in state.menu"
-          :key="index"
-        >
->>>>>>> 8d8bbc0698045b5aab71281248d95a5ef598077a
           <div v-if="item.type == 'part'">
             <li class="menu-title">
               <span data-key="t-menu"> {{ $t(item.label) }}</span>
