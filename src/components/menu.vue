@@ -1190,17 +1190,18 @@
         id="navbar-nav"
       >
         <li class="nav-item" v-show="sidebarSize === 'sm' || sidebarSize === 'sm-hover'" @click="toggleHamburgerMenu">
-            <div style="display:flex;justify-content: center;align-items: center; height: 36px;cursor: pointer;margin-top:6px;">
-              <svg width="16" height="16" viewBox="0 0 6 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="menu-iconpark">
-                <path d="M7 4H15" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+            <div style="display:flex;justify-content: center;align-items: center; height: 36px;cursor: pointer;margin-top:6px;margin-left: 14px;">
+              <svg width="20" height="20" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 4H1" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
                   stroke-linejoin="round" />
-                <path d="M7 9H15" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+                <path d="M9 9H1" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
                   stroke-linejoin="round" />
-                <path d="M1 14L15 14" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
+                <path d="M15 14L1 14" stroke="black" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round"
                   stroke-linejoin="round" />
-                <path d="M3.5633 4.13379L1 6.42502L3.5633 8.68482" stroke="black" stroke-opacity="0.45" stroke-width="1.5"
+                <path d="M12.4367 4.13379L15 6.42502L12.4367 8.68482" stroke="black" stroke-opacity="0.45" stroke-width="1.5"
                   stroke-linecap="round" stroke-linejoin="round" />
               </svg>
+
             </div>
         </li>
         <div v-for="(item, index) in state.menu" :key="index">
@@ -1954,8 +1955,8 @@ export default {
 <style lang='scss' scoped>
 .components-menu {
   .menu-iconpark {
-    @include mixin-width(26);
-    margin-right: 10px;
+    width: 28px;
+    height: 28px;
   }
 }
 
