@@ -246,9 +246,10 @@
                       <div
                         class="dropdown-list-li"
                         :style="{ color: showChanglanPop ? '#D0963E' : 'rgba(0, 0, 0, 0.65)' }"
-                        @click="showChanglanPop = true"
+                        @click="showChanglanPop = !showChanglanPop"
                       >
-                        <img src="../assets/images/navbar/user_info_lan.svg">
+                        <img src="../assets/images/navbar/user_info_lan.svg" v-if="!showChanglanPop">
+                        <img src="../assets/images/navbar/user_info_lan_selected.svg" v-if="showChanglanPop">
                         <span class="dropdown-list-li-text">{{ $t('t-zgj-changeLang') }}</span>
                         <i class="ri-arrow-right-s-line" />
                       </div>
@@ -356,12 +357,12 @@ const toggleHamburgerMenu = () => {
   if (document.documentElement.getAttribute('data-layout') === 'vertical') {
     if (windowSize < 1025 && windowSize > 767) {
       document.body.classList.remove('vertical-sidebar-enable')
-      document.documentElement.getAttribute('data-sidebar-size') == 'sm'
+      document.documentElement.getAttribute('data-sidebar-size') === 'sm'
         ? document.documentElement.setAttribute('data-sidebar-size', '')
         : document.documentElement.setAttribute('data-sidebar-size', 'sm')
     } else if (windowSize > 1025) {
       document.body.classList.remove('vertical-sidebar-enable')
-      document.documentElement.getAttribute('data-sidebar-size') == 'lg'
+      document.documentElement.getAttribute('data-sidebar-size') === 'lg'
         ? document.documentElement.setAttribute('data-sidebar-size', 'sm')
         : document.documentElement.setAttribute('data-sidebar-size', 'lg')
     } else if (windowSize <= 767) {
@@ -371,7 +372,7 @@ const toggleHamburgerMenu = () => {
   }
 
   // Two column menu
-  if (document.documentElement.getAttribute('data-layout') == 'twocolumn') {
+  if (document.documentElement.getAttribute('data-layout') === 'twocolumn') {
     document.body.classList.contains('twocolumn-panel')
       ? document.body.classList.remove('twocolumn-panel')
       : document.body.classList.add('twocolumn-panel')
