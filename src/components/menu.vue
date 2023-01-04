@@ -2870,9 +2870,9 @@ export default {
             const parentCollapseDiv = a.closest('.collapse.menu-dropdown')
             if (parentCollapseDiv) {
               parentCollapseDiv.classList.add('show')
-              parentCollapseDiv.parentElement.children[0].classList.add(
-                'active'
-              )
+              // parentCollapseDiv.parentElement.children[0].classList.add(
+              //   'active'
+              // )
               parentCollapseDiv.parentElement.children[0].setAttribute(
                 'aria-expanded',
                 'true'
@@ -2889,15 +2889,15 @@ export default {
                   parentCollapseDiv.parentElement.closest('.collapse')
                     .previousElementSibling
                 ) {
-                  parentCollapseDiv.parentElement
-                    .closest('.collapse')
-                    .previousElementSibling.classList.add('active')
+                  // parentCollapseDiv.parentElement
+                  //   .closest('.collapse')
+                  //   .previousElementSibling.classList.add('active')
                 }
                 const grandparent = parentCollapseDiv.parentElement
                   .closest('.collapse')
                   .previousElementSibling.parentElement.closest('.collapse')
                 if (grandparent && grandparent.previousElementSibling) {
-                  grandparent.previousElementSibling.classList.add('active')
+                  // grandparent.previousElementSibling.classList.add('active')
                   grandparent.classList.add('show')
                 }
               }
