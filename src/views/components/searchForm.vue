@@ -483,6 +483,7 @@ onMounted(() => {
         @include mixin-padding-bottom(5);
         @include mixin-padding-right(16);
         @include mixin-padding-left(16);
+        font-size: var(--font-size-body-1);
     }
 
     .fill {
@@ -583,6 +584,34 @@ onMounted(() => {
     :deep {
         .width-100 {
             width: 100% !important;
+        }
+
+        input::-webkit-input-placeholder {
+            /* WebKit browsers */
+            // color: #9c9c9c;
+            font-size: var(--font-size-caption);
+        }
+
+        input:-moz-placeholder {
+            /* Mozilla Firefox 4 to 18 */
+            // color: #9c9c9c;
+            font-size: var(--font-size-caption);
+        }
+
+        input::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            // color: #9c9c9c;
+            font-size: var(--font-size-caption);
+        }
+
+        input::-ms-input-placeholder {
+            /* Internet Explorer 10+ */
+            // color: #9c9c9c;
+            font-size: var(--font-size-caption);
+        }
+
+        .el-checkbox__label {
+            font-size: var(--font-size-caption);
         }
     }
 }

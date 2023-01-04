@@ -139,15 +139,30 @@ onMounted(() => {
         }
     }
 
-
-    :deep(.el-table thead) {
-        color: var(--color-text-1);
-        font-size: var(--font-size-body-2);
+    th {
         font-weight: var(--font-weight-400);
     }
 
-    th {
-        font-weight: var(--font-weight-400);
+    :deep {
+        .el-table thead {
+            color: var(--color-text-1);
+            font-size: var(--font-size-body-2);
+            font-weight: var(--font-weight-400);
+        }
+
+        .el-checkbox__input.is-checked .el-checkbox__inner {
+            background-color: var(--primary-6);
+            border-color: var(--primary-6);
+        }
+
+        .el-checkbox__inner:hover {
+            border-color: var(--primary-6);
+        }
+
+        .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+            background-color: var(--primary-6);
+            border-color: var(--primary-6);
+        }
     }
 }
 </style>

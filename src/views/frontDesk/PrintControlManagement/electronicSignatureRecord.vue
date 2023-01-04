@@ -5,11 +5,24 @@
             <template #title>
                 <div class="title">
                     <div>电子签章记录</div>
-                    <div>
-                        <el-button>
-                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                            <span>更多操作</span>
-                        </el-button>
+                    <div class="title-more">
+                        <div class="title-more-add">
+                        </div>
+                        <div class="title-more-down">
+                            <el-dropdown>
+                                <el-button>
+                                    <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt=""
+                                        srcset="">
+                                    <span>更多操作</span>
+                                </el-button>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item>导出台账</el-dropdown-item>
+                                        <el-dropdown-item>查看已作废的单据</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -657,7 +670,7 @@ const state = reactive({
         selectionData: [],
         data: [
             {
-                name: "批量操作"
+                name: "批量作废"
             }
         ]
     },

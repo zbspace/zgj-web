@@ -21,20 +21,22 @@
             </div>
             <div class="ap-box-cent" :style="state.centStyle">
                 <el-scrollbar style="height:100%;overflow: auto;" class="ap-box-cent-scrollbar">
-                    <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
-                        <slot name="searchForm"></slot>
-                    </div>
-                    <div class="ap-box-batch" v-if="state.Layout.batch">
-                        <slot name="batch"></slot>
-                    </div>
-                    <div class="ap-box-table" v-if="state.Layout.table">
-                        <slot name="table"></slot>
-                    </div>
-                    <div class="ap-box-pagination" v-if="state.Layout.pagination">
-                        <slot name="pagination"></slot>
-                    </div>
-                    <div class="ap-box-custom" v-if="state.Layout.custom">
-                        <slot name="custom"></slot>
+                    <div class="ap-box-cent-scrollbar-box">
+                        <div class="ap-box-searchForm " v-if="state.Layout.searchForm">
+                            <slot name="searchForm"></slot>
+                        </div>
+                        <div class="ap-box-batch" v-if="state.Layout.batch">
+                            <slot name="batch"></slot>
+                        </div>
+                        <div class="ap-box-table" v-if="state.Layout.table">
+                            <slot name="table"></slot>
+                        </div>
+                        <div class="ap-box-pagination" v-if="state.Layout.pagination">
+                            <slot name="pagination"></slot>
+                        </div>
+                        <div class="ap-box-custom" v-if="state.Layout.custom">
+                            <slot name="custom"></slot>
+                        </div>
                     </div>
                 </el-scrollbar>
             </div>
@@ -182,6 +184,8 @@ onMounted(() => {
         overflow: auto;
         box-sizing: border-box;
 
+   
+
         .arco-scrollbar {
             height: 100%;
         }
@@ -208,5 +212,4 @@ onMounted(() => {
     }
 
 }
-
 </style>
