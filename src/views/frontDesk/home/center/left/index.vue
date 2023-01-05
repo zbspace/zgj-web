@@ -23,83 +23,78 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-const activeName = ref('first')
-const data = ref([
-  {},
-  {},
-  {},
-])
-const handleClick = (tab, event) => {
-  console.log(tab, event)
-}
-
+  import { ref } from 'vue'
+  const activeName = ref('first')
+  const data = ref([{}, {}, {}])
+  const handleClick = (tab, event) => {
+    console.log(tab, event)
+  }
 </script>
 
 <style lang="scss" scoped>
-.home-center-left {
-  padding: 24px;
-  flex: 1;
-  border-right: 1px solid #e9ebec;
+  .home-center-left {
+    padding: 24px;
+    flex: 1;
+    border-right: 1px solid #e9ebec;
 
-  p {
-    margin-bottom: 0;
-  }
-
-  .item {
-    border-bottom: 1px solid #e9ebec;
-    padding: 16px;
-
-    &:hover {
-      background-color: #f3f6f9;
+    p {
+      margin-bottom: 0;
     }
 
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
+    .item {
+      border-bottom: 1px solid #e9ebec;
+      padding: 16px;
 
-      p {
-        font-weight: bold;
-        margin-bottom: 0;
+      &:hover {
+        background-color: #f3f6f9;
       }
 
-      span {
-        padding: 0 5px;
-        border: 1px solid #D0963E;
-        border-radius: 4px;
-        color: #D0963E;
+      .top {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        cursor: pointer;
+        margin-bottom: 5px;
+
+        p {
+          font-weight: bold;
+          margin-bottom: 0;
+        }
+
+        span {
+          padding: 0 5px;
+          border: 1px solid #d0963e;
+          border-radius: 4px;
+          color: #d0963e;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+      }
+
+      .bottom {
+        display: flex;
+        justify-content: space-between;
       }
     }
 
-    .bottom {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
+    :deep(.el-tabs) {
+      .el-tabs__nav-scroll {
+        .el-tabs__nav {
+          .el-tabs__item {
+            &:hover {
+              color: var(--primary-6);
+            }
+          }
 
-  :deep(.el-tabs) {
-    .el-tabs__nav-scroll {
-      .el-tabs__nav {
-        .el-tabs__item {
-          &:hover {
+          .is-active {
             color: var(--primary-6);
           }
-        }
 
-        .is-active {
-          color: var(--primary-6);
-        }
-
-        .el-tabs__active-bar {
-          background-color: var(--primary-6);
+          .el-tabs__active-bar {
+            background-color: var(--primary-6);
+          }
         }
       }
     }
   }
-}
 </style>
