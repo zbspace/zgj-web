@@ -454,9 +454,11 @@
     }
     props.data.map(item => {
       if (item.inCommonUse) {
+        // console.log();
       } else {
         showUnfold = true
       }
+      return item
     })
     state.cache.showUnfold = showUnfold
     // 设置表单显示数据
@@ -465,13 +467,14 @@
   // 设置表单显示数据
   function setFormData() {
     let formData = []
-    if (state.cache.isUnfold == 0) {
+    if (state.cache.isUnfold === 0) {
       props.data.map(item => {
         if (item.inCommonUse) {
           formData.push(item)
         }
+        return item
       })
-    } else if (state.cache.isUnfold == 1) {
+    } else if (state.cache.isUnfold === 1) {
       formData = props.data
     }
     state.cache.formData = formData
@@ -491,9 +494,9 @@
   }
   // 点击切换展开状态
   function clickCutUnfoldstatus() {
-    if (state.cache.isUnfold == 0) {
+    if (state.cache.isUnfold === 0) {
       state.cache.isUnfold = 1
-    } else if (state.cache.isUnfold == 1) {
+    } else if (state.cache.isUnfold === 1) {
       state.cache.isUnfold = 0
     }
     // 设置表单显示数据
