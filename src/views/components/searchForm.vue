@@ -24,7 +24,7 @@
                                 <span class="ap-box-label-necessary" v-if="item.isNecessary">*</span>
                                 {{ item.label }}
                             </div>
-                            <div class="ap-box-contBox width-0">
+                            <div class="ap-box-contBox width-0" @click="selectPart">
                                 <el-input class="ap-box-contBox-input width-100" v-bind="item.defaultAttribute"
                                     readonly />
                                 <div class="ap-box-contBox-icon">
@@ -218,7 +218,7 @@ const props = defineProps({
     },
 })
 // console.log(props.defaultAttribute['scrollbar-max-height']);
-const emit = defineEmits(['getCurrentValue', 'getCurrentValueAll', 'clickElement']);
+const emit = defineEmits(['getCurrentValue', 'getCurrentValueAll', 'clickElement','selectPart']);
 const state = reactive({
     props: {
         // 默认属性
@@ -331,7 +331,10 @@ function clickCutUnfoldstatus() {
     // 设置表单显示数据
     setFormData()
 }
-
+//点击选择部门
+function selectPart(){
+    emit("selectPart",true);
+}
 watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
     //初始化Props数据

@@ -5,6 +5,16 @@
             <template #title>
                 <div class="title">
                     <div>格口管理</div>
+                </div>
+                <div class="search">
+                    <div class="select-wrap">
+                        <span class="search-label">终端名称</span>
+                        <el-select v-model="state.terminalGrid" placeholder="请选择终端名称" size="small" @change="changeSelect">
+                            <el-option v-for="item in state.termialOptions" :key="item.id" :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </div>
                     <div class="box-card">
                         <!-- status -->
                         <div class="status" v-if="state.mouthLists.length !== 0">
@@ -19,14 +29,6 @@
 
                         </div>
                     </div>
-                </div>
-                <div class="search">
-                    <span class="search-label">终端名称</span>
-                    <el-select v-model="state.terminalGrid" placeholder="请选择终端名称" size="small" @change="changeSelect">
-                        <el-option v-for="item in state.termialOptions" :key="item.id" :label="item.name"
-                            :value="item.id">
-                        </el-option>
-                    </el-select>
                 </div>
                 <div class="columns-status">
                     <MouthStatus></MouthStatus>
@@ -283,8 +285,6 @@ onMounted(() => {
 }
 
 .box-card {
-    margin: 10px;
-
     .header-title {
         position: relative;
         line-height: 25px;
@@ -373,6 +373,7 @@ onMounted(() => {
     margin-top: 10px;
     display:flex;
     align-items:center;
+    justify-content: space-between;
     .search-label {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.85);

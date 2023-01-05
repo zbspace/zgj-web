@@ -32,7 +32,7 @@ const props = defineProps({
     default: () => {
       return {
         在盒: "status_small_in.png",
-        取出: "status_small_out.png",
+        取出: "status_small_out.svg",
         异常放入: "status_small_in.png",
         异常取出: "status_small_error_out.png",
       };

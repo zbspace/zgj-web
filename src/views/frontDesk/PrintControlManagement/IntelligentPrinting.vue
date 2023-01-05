@@ -5,12 +5,12 @@
             <template #title>
                 <div class="title">
                     <div>智能用印</div>
-                    <div>
+                    <!-- <div>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
                         </el-button>
-                    </div>
+                    </div> -->
                 </div>
             </template>
             <template #tabs>
@@ -22,7 +22,7 @@
             <template #searchForm>
                 <div>
                     <componentsSearchForm :data="state.componentsSearchForm.data"
-                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
+                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style" @selectPart="selectPart">
                     </componentsSearchForm>
                 </div>
             </template>
@@ -111,7 +111,7 @@ const state = reactive({
             },
             {
                 id: 'picker',
-                label: "选择时间",
+                label: "申请时间",
                 type: "picker",
                 inCommonUse: true,
                 // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -543,10 +543,7 @@ function customClick(row, column, cell, event) {
 function tabChange(activeName) {
     // console.log(activeName);
     if (activeName == "1") {
-        state.componentsTable.header = [{
-            width: 50,
-            type: "selection"
-        }, {
+        state.componentsTable.header = [ {
             prop: '1',
             label: "单据编号",
             sortable: true,
@@ -677,9 +674,6 @@ function tabChange(activeName) {
         ];
     } else if (activeName == "2") {
         state.componentsTable.header = [{
-            width: 50,
-            type: "selection"
-        }, {
             prop: '1',
             label: "单据编号",
             sortable: true,
@@ -806,9 +800,6 @@ function tabChange(activeName) {
         ];
     } else if (activeName == "3") {
         state.componentsTable.header = [{
-            width: 50,
-            type: "selection"
-        }, {
             prop: '1',
             label: "单据编号",
             sortable: true,
@@ -941,7 +932,10 @@ function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection;
 }
-
+//点击选择部门
+function selectPart(){
+    console.log(111)
+}
 onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 切换分页
