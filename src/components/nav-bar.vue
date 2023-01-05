@@ -5,43 +5,21 @@
         <div class="d-flex">
           <!-- LOGO -->
           <div class="navbar-brand-box horizontal-logo logo-p-t">
-            <router-link
-              to="/"
-              class="logo logo-dark"
-            >
+            <router-link to="/" class="logo logo-dark">
               <span class="logo-sm">
-                <img
-                  src="@/assets/icon/logo.png"
-                  alt=""
-                  height="22"
-                >
+                <img src="@/assets/icon/logo.png" alt="" height="22" />
               </span>
               <span class="logo-lg">
-                <img
-                  src="@/assets/icon/logo.png"
-                  alt=""
-                  height="37"
-                >
+                <img src="@/assets/icon/logo.png" alt="" height="37" />
               </span>
             </router-link>
 
-            <router-link
-              to="/"
-              class="logo logo-light"
-            >
+            <router-link to="/" class="logo logo-light">
               <span class="logo-sm">
-                <img
-                  src="@/assets/icon/logo.png"
-                  alt=""
-                  height="22"
-                >
+                <img src="@/assets/icon/logo.png" alt="" height="22" />
               </span>
               <span class="logo-lg">
-                <img
-                  src="@/assets/icon/logo.png"
-                  alt=""
-                  height="17"
-                >
+                <img src="@/assets/icon/logo.png" alt="" height="17" />
               </span>
             </router-link>
           </div>
@@ -49,13 +27,7 @@
           <!-- 菜单开关 -->
           <button
             type="button"
-            class="
-              btn btn-sm
-              px-3
-              fs-16
-              header-item
-              vertical-menu-btn
-              "
+            class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn"
             id="topnav-hamburger-icon"
             @click="toggleHamburgerMenu"
             v-show="false"
@@ -108,18 +80,17 @@
         <div class="d-flex align-items-center">
           <!-- 系统 -->
           <div class="ap-sys">
-            <div
-              class="ap-sys-but"
-              @click="changeSystemHome"
-            >
+            <div class="ap-sys-but" @click="changeSystemHome">
               <div v-if="state.application.CurrentSystemType == 'business'">
                 <img
                   class="ap-sys-but-icon"
                   src="../assets/icon/system-setup.png"
                   alt=""
                   srcset=""
-                >
-                <span class="ap-sys-but-text">{{ $t('t-back-system-platform') }}</span>
+                />
+                <span class="ap-sys-but-text">{{
+                  $t('t-back-system-platform')
+                }}</span>
               </div>
 
               <div v-if="state.application.CurrentSystemType == 'system'">
@@ -128,17 +99,16 @@
                   src="../assets/images/navbar/nav_front_home.svg"
                   alt=""
                   srcset=""
-                >
-                <span class="ap-sys-but-text">{{ $t('t-front-platform') }}</span>
+                />
+                <span class="ap-sys-but-text">{{
+                  $t('t-front-platform')
+                }}</span>
               </div>
             </div>
           </div>
 
           <!-- 帮助 -->
-          <div
-            class="ms-1 header-item d-none d-sm-flex"
-            ref="dropdownHelpRef"
-          >
+          <div class="ms-1 header-item d-none d-sm-flex" ref="dropdownHelpRef">
             <button
               type="button"
               class="btn btn-icon btn-topbar btn-ghost-secondary"
@@ -156,11 +126,11 @@
                   <img
                     v-show="showHelpPop"
                     src="../assets/images/navbar/help_select_icon.svg"
-                  >
+                  />
                   <img
                     v-show="!showHelpPop"
                     src="../assets/images/navbar/help_icon.svg"
-                  >
+                  />
                 </div>
               </el-tooltip>
             </button>
@@ -195,24 +165,22 @@
                 <img
                   v-show="showUserInfoPop"
                   src="../assets/images/navbar/user_info_close.svg"
-                >
+                />
                 <img
                   v-show="!showUserInfoPop"
                   src="../assets/images/navbar/user_info_open.svg"
-                >
+                />
               </div>
             </button>
             <div
               class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
               aria-labelledby="page-header-cart-dropdown"
-              style="width: 240px;"
+              style="width: 240px"
             >
               <div class="ap-personalCenterDropdown">
                 <div class="dropdown-box">
                   <div class="dropdown-name">
-                    <div class="dropdown-name-icon">
-                      春青
-                    </div>
+                    <div class="dropdown-name-icon"> 春青 </div>
                     <div class="dropdown-name-text">
                       {{ accountInfoStore.name }}
                     </div>
@@ -221,18 +189,24 @@
 
                 <div class="dropdown-list">
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_logo.svg">
-                    <span class="dropdown-list-li-text">{{ $t('t-zgj-person.center') }}</span>
+                    <img src="../assets/images/navbar/user_info_logo.svg" />
+                    <span class="dropdown-list-li-text">{{
+                      $t('t-zgj-person.center')
+                    }}</span>
                   </div>
 
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_lock.svg">
-                    <span class="dropdown-list-li-text">{{ $t('t-zgj-index.updatePwd') }}</span>
+                    <img src="../assets/images/navbar/user_info_lock.svg" />
+                    <span class="dropdown-list-li-text">{{
+                      $t('t-zgj-index.updatePwd')
+                    }}</span>
                   </div>
 
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_down.svg">
-                    <span class="dropdown-list-li-text">{{ $t('t-zgj-DownloadApp.Download') }}</span>
+                    <img src="../assets/images/navbar/user_info_down.svg" />
+                    <span class="dropdown-list-li-text">{{
+                      $t('t-zgj-DownloadApp.Download')
+                    }}</span>
                   </div>
 
                   <el-popover
@@ -245,12 +219,24 @@
                     <template #reference>
                       <div
                         class="dropdown-list-li"
-                        :style="{ color: showChanglanPop ? '#D0963E' : 'rgba(0, 0, 0, 0.65)' }"
+                        :style="{
+                          color: showChanglanPop
+                            ? '#D0963E'
+                            : 'rgba(0, 0, 0, 0.65)'
+                        }"
                         @click="showChanglanPop = !showChanglanPop"
                       >
-                        <img src="../assets/images/navbar/user_info_lan.svg" v-if="!showChanglanPop">
-                        <img src="../assets/images/navbar/user_info_lan_selected.svg" v-if="showChanglanPop">
-                        <span class="dropdown-list-li-text">{{ $t('t-zgj-changeLang') }}</span>
+                        <img
+                          src="../assets/images/navbar/user_info_lan.svg"
+                          v-if="!showChanglanPop"
+                        />
+                        <img
+                          src="../assets/images/navbar/user_info_lan_selected.svg"
+                          v-if="showChanglanPop"
+                        />
+                        <span class="dropdown-list-li-text">{{
+                          $t('t-zgj-changeLang')
+                        }}</span>
                         <i class="ri-arrow-right-s-line" />
                       </div>
                     </template>
@@ -258,14 +244,18 @@
                       <div
                         class="popover-cont-list"
                         @click="setLanguage('ch')"
-                        :class="state.language === 'ch' ? 'popover-selected' : ''"
+                        :class="
+                          state.language === 'ch' ? 'popover-selected' : ''
+                        "
                       >
                         简体中文
                       </div>
                       <div
                         class="popover-cont-list"
                         @click="setLanguage('en')"
-                        :class="state.language === 'en' ? 'popover-selected' : ''"
+                        :class="
+                          state.language === 'en' ? 'popover-selected' : ''
+                        "
                       >
                         English
                       </div>
@@ -273,16 +263,17 @@
                   </el-popover>
 
                   <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_iphone.svg">
-                    <span class="dropdown-list-li-text">{{ $t('t-zgj-mobile-app') }}</span>
+                    <img src="../assets/images/navbar/user_info_iphone.svg" />
+                    <span class="dropdown-list-li-text">{{
+                      $t('t-zgj-mobile-app')
+                    }}</span>
                   </div>
 
-                  <div
-                    class="dropdown-list-li"
-                    @click="handleLogout"
-                  >
-                    <img src="../assets/images/navbar/user_info_layout.svg">
-                    <span class="dropdown-list-li-text">{{ $t('t-zgj-logout-user') }}</span>
+                  <div class="dropdown-list-li" @click="handleLogout">
+                    <img src="../assets/images/navbar/user_info_layout.svg" />
+                    <span class="dropdown-list-li-text">{{
+                      $t('t-zgj-logout-user')
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -295,389 +286,385 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch } from 'vue'
-import useCurrentInstance from '@/hooks/getInstance.js'
-import i18n from '../i18n'
-import useClickQutside from '../hooks/useClickQutside.js'
-import VApplicationNav from '../components/modules/applicationNav.vue'
-import VMailNav from '../components/modules/mailNav.vue'
-import VMessageNav from '../components/modules/messageNav.vue'
-import router from '@/router'
-import { useAccountInfoStore } from '@/store/accountInfo'
-const accountInfoStore = useAccountInfoStore()
-const _this = useCurrentInstance()
+  import { onMounted, reactive, ref, watch } from 'vue'
+  import useCurrentInstance from '@/hooks/getInstance.js'
+  import i18n from '../i18n'
+  import useClickQutside from '../hooks/useClickQutside.js'
+  import VApplicationNav from '../components/modules/applicationNav.vue'
+  import VMailNav from '../components/modules/mailNav.vue'
+  import VMessageNav from '../components/modules/messageNav.vue'
+  import router from '@/router'
+  import { useAccountInfoStore } from '@/store/accountInfo'
+  const accountInfoStore = useAccountInfoStore()
+  const _this = useCurrentInstance()
 
-const state = reactive({
-  application: {
-    CurrentSystemType: 'business' // business / system
-  },
-  language: i18n.global.locale
-})
+  const state = reactive({
+    application: {
+      CurrentSystemType: 'business' // business / system
+    },
+    language: i18n.global.locale
+  })
 
-const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
-if (CurrentSystemType) {
-  state.application.CurrentSystemType = CurrentSystemType
-}
+  const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
+  if (CurrentSystemType) {
+    state.application.CurrentSystemType = CurrentSystemType
+  }
 
-onMounted(() => {
-  // 添加监听 滚动事件
-  document.addEventListener('scroll', function () {
-    const pageTopbar = document.getElementById('page-topbar')
-    if (pageTopbar) {
-      document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50
-        ? pageTopbar.classList.add(
-          'topbar-shadow')
-        : pageTopbar.classList.remove('topbar-shadow')
+  onMounted(() => {
+    // 添加监听 滚动事件
+    document.addEventListener('scroll', function () {
+      const pageTopbar = document.getElementById('page-topbar')
+      if (pageTopbar) {
+        document.body.scrollTop >= 50 ||
+        document.documentElement.scrollTop >= 50
+          ? pageTopbar.classList.add('topbar-shadow')
+          : pageTopbar.classList.remove('topbar-shadow')
+      }
+    })
+
+    // 添加 全屏开关监听 事件
+    // if (document.getElementById("topnav-hamburger-icon"))
+    //   document
+    //     .getElementById("topnav-hamburger-icon")
+    //     .addEventListener("click", toggleHamburgerMenu);
+  })
+
+  // 监听 菜单开关
+  const toggleHamburgerMenu = () => {
+    const windowSize = document.documentElement.clientWidth
+
+    if (windowSize > 767) {
+      document.querySelector('.hamburger-icon').classList.toggle('open')
+    }
+
+    // For collapse horizontal menu
+    if (document.documentElement.getAttribute('data-layout') === 'horizontal') {
+      document.body.classList.contains('menu')
+        ? document.body.classList.remove('menu')
+        : document.body.classList.add('menu')
+    }
+
+    // For collapse vertical menu
+    if (document.documentElement.getAttribute('data-layout') === 'vertical') {
+      if (windowSize < 1025 && windowSize > 767) {
+        document.body.classList.remove('vertical-sidebar-enable')
+        document.documentElement.getAttribute('data-sidebar-size') === 'sm'
+          ? document.documentElement.setAttribute('data-sidebar-size', '')
+          : document.documentElement.setAttribute('data-sidebar-size', 'sm')
+      } else if (windowSize > 1025) {
+        document.body.classList.remove('vertical-sidebar-enable')
+        document.documentElement.getAttribute('data-sidebar-size') === 'lg'
+          ? document.documentElement.setAttribute('data-sidebar-size', 'sm')
+          : document.documentElement.setAttribute('data-sidebar-size', 'lg')
+      } else if (windowSize <= 767) {
+        document.body.classList.add('vertical-sidebar-enable')
+        document.documentElement.setAttribute('data-sidebar-size', 'lg')
+      }
+    }
+
+    // Two column menu
+    if (document.documentElement.getAttribute('data-layout') === 'twocolumn') {
+      document.body.classList.contains('twocolumn-panel')
+        ? document.body.classList.remove('twocolumn-panel')
+        : document.body.classList.add('twocolumn-panel')
+    }
+  }
+
+  // 切换中英文popover
+  const dropdownUserRef = ref(null)
+  const showChanglanPop = ref(false)
+  const showUserInfoPop = ref(false)
+  const isClickOutsideUser = useClickQutside(dropdownUserRef)
+  watch(isClickOutsideUser, () => {
+    // 切换中英文
+    if (isClickOutsideUser.value && showChanglanPop.value) {
+      showChanglanPop.value = false
+    }
+    // 用户信息弹框
+    if (isClickOutsideUser.value && showUserInfoPop.value) {
+      showUserInfoPop.value = false
     }
   })
 
-  // 添加 全屏开关监听 事件
-  // if (document.getElementById("topnav-hamburger-icon"))
-  //   document
-  //     .getElementById("topnav-hamburger-icon")
-  //     .addEventListener("click", toggleHamburgerMenu);
-})
-
-// 监听 菜单开关
-const toggleHamburgerMenu = () => {
-  const windowSize = document.documentElement.clientWidth
-
-  if (windowSize > 767) { document.querySelector('.hamburger-icon').classList.toggle('open') }
-
-  // For collapse horizontal menu
-  if (
-    document.documentElement.getAttribute('data-layout') === 'horizontal'
-  ) {
-    document.body.classList.contains('menu')
-      ? document.body.classList.remove('menu')
-      : document.body.classList.add('menu')
-  }
-
-  // For collapse vertical menu
-  if (document.documentElement.getAttribute('data-layout') === 'vertical') {
-    if (windowSize < 1025 && windowSize > 767) {
-      document.body.classList.remove('vertical-sidebar-enable')
-      document.documentElement.getAttribute('data-sidebar-size') === 'sm'
-        ? document.documentElement.setAttribute('data-sidebar-size', '')
-        : document.documentElement.setAttribute('data-sidebar-size', 'sm')
-    } else if (windowSize > 1025) {
-      document.body.classList.remove('vertical-sidebar-enable')
-      document.documentElement.getAttribute('data-sidebar-size') === 'lg'
-        ? document.documentElement.setAttribute('data-sidebar-size', 'sm')
-        : document.documentElement.setAttribute('data-sidebar-size', 'lg')
-    } else if (windowSize <= 767) {
-      document.body.classList.add('vertical-sidebar-enable')
-      document.documentElement.setAttribute('data-sidebar-size', 'lg')
+  const dropdownHelpRef = ref(null)
+  const showHelpPop = ref(false)
+  const isClickOutsideHelp = useClickQutside(dropdownHelpRef)
+  watch(isClickOutsideHelp, () => {
+    // 帮助弹框
+    if (isClickOutsideHelp.value && showHelpPop.value) {
+      showHelpPop.value = false
     }
-  }
+  })
 
-  // Two column menu
-  if (document.documentElement.getAttribute('data-layout') === 'twocolumn') {
-    document.body.classList.contains('twocolumn-panel')
-      ? document.body.classList.remove('twocolumn-panel')
-      : document.body.classList.add('twocolumn-panel')
-  }
-}
+  // const dropdownNotifyRef = ref(null)
+  // const showNotifyPop = ref(false)
+  // const isClickOutsideNotify = useClickQutside(dropdownNotifyRef)
+  // watch(isClickOutsideNotify, () => {
+  //   // 消息弹框
+  //   if (isClickOutsideNotify.value && showNotifyPop.value) {
+  //     showNotifyPop.value = false
+  //   }
+  //  })
 
-// 切换中英文popover
-const dropdownUserRef = ref(null)
-const showChanglanPop = ref(false)
-const showUserInfoPop = ref(false)
-const isClickOutsideUser = useClickQutside(dropdownUserRef)
-watch(isClickOutsideUser, () => {
-  // 切换中英文
-  if (isClickOutsideUser.value && showChanglanPop.value) {
+  // 切换 中英文
+  const setLanguage = locale => {
+    i18n.global.locale = locale
+    state.language = locale
     showChanglanPop.value = false
   }
-  // 用户信息弹框
-  if (isClickOutsideUser.value && showUserInfoPop.value) {
-    showUserInfoPop.value = false
-  }
-})
 
-const dropdownHelpRef = ref(null)
-const showHelpPop = ref(false)
-const isClickOutsideHelp = useClickQutside(dropdownHelpRef)
-watch(isClickOutsideHelp, () => {
-  // 帮助弹框
-  if (isClickOutsideHelp.value && showHelpPop.value) {
-    showHelpPop.value = false
-  }
-})
-
-// const dropdownNotifyRef = ref(null)
-// const showNotifyPop = ref(false)
-// const isClickOutsideNotify = useClickQutside(dropdownNotifyRef)
-// watch(isClickOutsideNotify, () => {
-//   // 消息弹框
-//   if (isClickOutsideNotify.value && showNotifyPop.value) {
-//     showNotifyPop.value = false
-//   }
-//  })
-
-// 切换 中英文
-const setLanguage = (locale) => {
-  i18n.global.locale = locale
-  state.language = locale
-  showChanglanPop.value = false
-}
-
-// 跳转业务首页或者系统首页
-const changeSystemHome = () => {
   // 跳转业务首页或者系统首页
-  if (state.application.CurrentSystemType === 'business') {
-    _this.$router.push('/system/home')
-  } else if (state.application.CurrentSystemType === 'system') {
-    _this.$router.push('/frontDesk/home')
+  const changeSystemHome = () => {
+    // 跳转业务首页或者系统首页
+    if (state.application.CurrentSystemType === 'business') {
+      _this.$router.push('/system/home')
+    } else if (state.application.CurrentSystemType === 'system') {
+      _this.$router.push('/frontDesk/home')
+    }
   }
-}
 
-const handleLogout = () => {
-  accountInfoStore.setAccountInfo(null)
-  // 跳转到登录页
-  router.push({ name: 'login-account' })
-}
-
+  const handleLogout = () => {
+    accountInfoStore.setAccountInfo(null)
+    // 跳转到登录页
+    router.push({ name: 'login-account' })
+  }
 </script>
-<style lang='scss' scoped>
-.header-content {
-  min-width: 800px;
-}
+<style lang="scss" scoped>
+  .header-content {
+    min-width: 800px;
+  }
 
-.nav-bar-iconpark {
-  font-size: 22px;
-}
+  .nav-bar-iconpark {
+    font-size: 22px;
+  }
 
-.dropdown-item {
-  display: flex;
-  align-items: center;
-}
-
-.ap-dropdown {
-  height: 100%;
-  display: flex;
-  align-items: center;
-
-  .ap-dropdown-text {
-    font-size: var(--font-size-title-1);
-    font-weight: var(--font-weight-700);
+  .dropdown-item {
     display: flex;
     align-items: center;
   }
-}
 
-.ap-sys {
-  margin-right: 1rem;
-
-  .ap-sys-but {
-    border-radius: var(--border-radius-4);
-    opacity: 1;
-    border: 1px solid var(--primary-6);
-    color: var(--primary-6);
-    padding: 0.3rem 0.8rem;
-    box-sizing: border-box;
-    cursor: pointer;
-
-    .ap-sys-but-icon {
-      width: 1.5rem;
-      margin-right: 0.3rem;
-    }
-  }
-}
-
-.ap-personalCenter {
-  font-size: 14px;
-  width: 88px;
-  height: 42px;
-
-  .ap-personalCenter-text {
+  .ap-dropdown {
+    height: 100%;
     display: flex;
     align-items: center;
-    cursor: pointer;
 
-    .ap-personalCenter-name {
-      @include mixin-width(34);
-      @include mixin-height(34);
-      border-radius: var(--border-radius-4);
-      background-color: var(--primary-6);
-      color: var(--in-common-use-1);
-      // padding: 0.5rem 0.4rem;
-      box-sizing: border-box;
-      margin-right: 0.3rem;
+    .ap-dropdown-text {
+      font-size: var(--font-size-title-1);
+      font-weight: var(--font-weight-700);
       display: flex;
       align-items: center;
-      align-content: center;
-      justify-content: center;
-      font-size: var(--font-size-body-1);
     }
-
   }
 
-}
+  .ap-sys {
+    margin-right: 1rem;
 
-.ap-personalCenterDropdown {
-  @include mixin-width(240);
-
-  .dropdown-box {
-    @include mixin-padding(10);
-    box-sizing: border-box;
-  }
-
-  .dropdown-name {
-    @include mixin-height(120);
-    border-radius: var(--border-radius-4);
-    background-color: #F4F5F7;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    flex-flow: wrap;
-
-    .dropdown-name-icon {
-      @include mixin-width(50);
-      @include mixin-height(50);
-      display: flex;
-      align-items: center;
-      align-content: center;
-      justify-content: center;
+    .ap-sys-but {
       border-radius: var(--border-radius-4);
-      background-color: #E2B062;
-      color: var(--in-common-use-1);
-      margin-bottom: 0.5rem;
-    }
+      opacity: 1;
+      border: 1px solid var(--primary-6);
+      color: var(--primary-6);
+      padding: 0.3rem 0.8rem;
+      box-sizing: border-box;
+      cursor: pointer;
 
-    .dropdown-name-text {
-      width: 100%;
-      font-weight: var(--font-weight-500);
-      font-size: 16px;
+      .ap-sys-but-icon {
+        width: 1.5rem;
+        margin-right: 0.3rem;
+      }
     }
   }
 
-  .dropdown-list {
-    .dropdown-list-li {
-      position: relative;
-      padding: 0 20px;
-      box-sizing: border-box;
+  .ap-personalCenter {
+    font-size: 14px;
+    width: 88px;
+    height: 42px;
+
+    .ap-personalCenter-text {
       display: flex;
       align-items: center;
       cursor: pointer;
-      color: rgba(0, 0, 0, 0.65);
-      overflow: hidden;
 
-      &:hover {
-        color: #D0963E !important;
+      .ap-personalCenter-name {
+        @include mixin-width(34);
+        @include mixin-height(34);
+        border-radius: var(--border-radius-4);
+        background-color: var(--primary-6);
+        color: var(--in-common-use-1);
+        // padding: 0.5rem 0.4rem;
+        box-sizing: border-box;
+        margin-right: 0.3rem;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        font-size: var(--font-size-body-1);
+      }
+    }
+  }
 
-        img {
-          position: relative;
-          left: -80px;
-          filter: drop-shadow(#D0963E 80px 0);
+  .ap-personalCenterDropdown {
+    @include mixin-width(240);
+
+    .dropdown-box {
+      @include mixin-padding(10);
+      box-sizing: border-box;
+    }
+
+    .dropdown-name {
+      @include mixin-height(120);
+      border-radius: var(--border-radius-4);
+      background-color: #f4f5f7;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+      flex-flow: wrap;
+
+      .dropdown-name-icon {
+        @include mixin-width(50);
+        @include mixin-height(50);
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        border-radius: var(--border-radius-4);
+        background-color: #e2b062;
+        color: var(--in-common-use-1);
+        margin-bottom: 0.5rem;
+      }
+
+      .dropdown-name-text {
+        width: 100%;
+        font-weight: var(--font-weight-500);
+        font-size: 16px;
+      }
+    }
+
+    .dropdown-list {
+      .dropdown-list-li {
+        position: relative;
+        padding: 0 20px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.65);
+        overflow: hidden;
+
+        &:hover {
+          color: #d0963e !important;
+
+          img {
+            position: relative;
+            left: -80px;
+            filter: drop-shadow(#d0963e 80px 0);
+          }
+        }
+
+        i {
+          position: absolute;
+          right: 20px;
+          top: 50%;
+          font-size: 18px;
+          transform: translateY(-50%);
         }
       }
 
-      i {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        font-size: 18px;
-        transform: translateY(-50%);
+      .dropdown-list-li-text {
+        font-family: 'PingFang SC';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 44px;
+        margin-left: 8px;
+      }
+
+      .dropdown-list-li:hover {
+        background: rgba(192, 196, 204, 0.19829);
       }
     }
-
-    .dropdown-list-li-text {
-      font-family: 'PingFang SC';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 44px;
-      margin-left: 8px;
-    }
-
-    .dropdown-list-li:hover {
-      background: rgba(192, 196, 204, 0.19829);
-    }
   }
 
-}
-
-.ap-personalCenterPopover {
-
-  .popover-cont-list {
-    position: relative;
-    // width: 150px;
-    padding: 16px 24px;
-    cursor: pointer;
-  }
-
-  .popover-cont-list:hover {
-    background: rgba(192, 196, 204, 0.19829);
-    color: #D0963E;
-  }
-
-  .popover-selected::after {
-    content: "";
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 8px;
-    background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat center center;
-    background-size: 100%;
-  }
-}
-
-.ap-enterprise {
-  @include mixin-width(300);
-  // padding: 1rem;
-
-  .ap-enterprise-text {
-    display: flex;
-    flex-flow: wrap;
-    justify-content: center;
-
-    .ap-enterprise-text-list {
-      @include mixin-width(258);
-      padding: 0.4rem 0.5rem;
-      cursor: pointer;
-      margin: 0.2rem;
-      border-radius: var(--border-radius-4);
-      font-weight: var(--font-weight-600);
-      font-size: var(--font-size-body-2);
-
-    }
-  }
-
-  .ap-enterprise-cont {
-    display: flex;
-    flex-flow: wrap;
-    justify-content: center;
-
-    .ap-enterprise-cont-list {
-      @include mixin-width(258);
-      padding: 0.4rem 1rem;
-      cursor: pointer;
-      margin: 0.2rem;
-      border-radius: var(--border-radius-4);
+  .ap-personalCenterPopover {
+    .popover-cont-list {
       position: relative;
+      // width: 150px;
+      padding: 16px 24px;
+      cursor: pointer;
     }
 
-    .defart-selected::after {
-      content: "";
+    .popover-cont-list:hover {
+      background: rgba(192, 196, 204, 0.19829);
+      color: #d0963e;
+    }
+
+    .popover-selected::after {
+      content: '';
       position: absolute;
-      right: 10px;
+      right: 20px;
       top: 50%;
       transform: translateY(-50%);
       width: 12px;
       height: 8px;
-      background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat center center;
+      background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat
+        center center;
       background-size: 100%;
     }
+  }
 
-    .ap-enterprise-cont-list:hover {
-      // background-color: var(--color-fill--2);
-      color: var(--primary-6);
+  .ap-enterprise {
+    @include mixin-width(300);
+    // padding: 1rem;
+
+    .ap-enterprise-text {
+      display: flex;
+      flex-flow: wrap;
+      justify-content: center;
+
+      .ap-enterprise-text-list {
+        @include mixin-width(258);
+        padding: 0.4rem 0.5rem;
+        cursor: pointer;
+        margin: 0.2rem;
+        border-radius: var(--border-radius-4);
+        font-weight: var(--font-weight-600);
+        font-size: var(--font-size-body-2);
+      }
+    }
+
+    .ap-enterprise-cont {
+      display: flex;
+      flex-flow: wrap;
+      justify-content: center;
+
+      .ap-enterprise-cont-list {
+        @include mixin-width(258);
+        padding: 0.4rem 1rem;
+        cursor: pointer;
+        margin: 0.2rem;
+        border-radius: var(--border-radius-4);
+        position: relative;
+      }
+
+      .defart-selected::after {
+        content: '';
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 12px;
+        height: 8px;
+        background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat
+          center center;
+        background-size: 100%;
+      }
+
+      .ap-enterprise-cont-list:hover {
+        // background-color: var(--color-fill--2);
+        color: var(--primary-6);
+      }
     }
   }
-}
 </style>

@@ -53,6 +53,7 @@
                   class="ap-box-contBox-input width-100"
                   v-bind="item.defaultAttribute"
                   readonly
+                  @click="getSelectDepartInfo"
                 />
                 <div class="ap-box-contBox-icon">
                   <img
