@@ -19,7 +19,7 @@
             :style="[
               props.style.lineStyle,
               item.style,
-              computed_fill(item, index)
+              computedFill(item, index)
             ]"
             @click="clickElement(item, index)"
           >
@@ -118,7 +118,8 @@
               </div>
               <div
                 class="ap-box-autoBox checkbox"
-                v-for="data in item.checkbox"
+                v-for="(data, num) in item.checkbox"
+                :key="num"
               >
                 <el-checkbox
                   v-bind="data.defaultAttribute"
@@ -139,9 +140,12 @@
                   v-model="item.value"
                   @change="getCurrentValue(item, index)"
                 >
-                  <el-radio v-for="data in item.radio" :label="data.label">{{
-                    data.name
-                  }}</el-radio>
+                  <el-radio
+                    v-for="(data, num) in item.radio"
+                    :key="num"
+                    :label="data.label"
+                    >{{ data.name }}</el-radio
+                  >
                 </el-radio-group>
               </div>
             </div>
@@ -193,7 +197,11 @@
                 {{ item.label }}
               </div>
               <div class="ap-box-contBox">
-                <div class="button-contBox" v-for="data in item.data">
+                <div
+                  class="button-contBox"
+                  v-for="(data, num) in item.data"
+                  :key="num"
+                >
                   <div class="custom-button" :style="item.style">
                     {{ data.name }}
                   </div>
@@ -212,7 +220,11 @@
                 {{ item.label }}
               </div>
               <div class="ap-box-contBox">
-                <div class="button-contBox" v-for="data in item.data">
+                <div
+                  class="button-contBox"
+                  v-for="(data, num) in item.data"
+                  :key="num"
+                >
                   <div class="custom-button" :style="item.style">
                     {{ data.name }}
                   </div>
@@ -227,7 +239,11 @@
                 >
                 {{ item.label }}
               </div>
-              <div class="ap-box-contBox" v-for="data in item.data">
+              <div
+                class="ap-box-contBox"
+                v-for="(data, num) in item.data"
+                :key="num"
+              >
                 <slot :name="data.id"></slot>
               </div>
             </div>
@@ -236,6 +252,7 @@
             <div
               class="ap-box"
               v-for="(item, index) in props.butData"
+              :key="index"
               @click="clickElement(item, index)"
               :style="item.style"
             >
@@ -302,17 +319,21 @@
     // 表单数据
     data: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 按钮数据
     butData: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 样式
     style: {
       type: Object,
-      default: function () {
+      default: () => {
         return {
           lineStyle: {
             width: 'calc(100% / 3)'
@@ -333,7 +354,7 @@
     // 默认属性
     defaultAttribute: {
       type: Object,
-      default: function () {
+      default: () => {
         return {
           isUnfold: false,
           'scrollbar-max-height': 'auto',
@@ -346,8 +367,7 @@
   const emit = defineEmits([
     'getCurrentValue',
     'getCurrentValueAll',
-    'clickElement',
-    'getSelectDepartInfo'
+    'clickElement'
   ])
   const state = reactive({
     props: {
@@ -372,8 +392,7 @@
     }
   })
   // 计算 占满一行
-  // eslint-disable-next-line camelcase
-  const computed_fill = computed(() => {
+  const computedFill = computed(() => {
     return (item, index) => {
       // console.log(item, index);
       const fixed = [
@@ -436,9 +455,11 @@
     }
     props.data.map(item => {
       if (item.inCommonUse) {
+        // console.log();
       } else {
         showUnfold = true
       }
+      return item
     })
     state.cache.showUnfold = showUnfold
     // 设置表单显示数据
@@ -447,13 +468,14 @@
   // 设置表单显示数据
   function setFormData() {
     let formData = []
-    if (state.cache.isUnfold == 0) {
+    if (state.cache.isUnfold === 0) {
       props.data.map(item => {
         if (item.inCommonUse) {
           formData.push(item)
         }
+        return item
       })
-    } else if (state.cache.isUnfold == 1) {
+    } else if (state.cache.isUnfold === 1) {
       formData = props.data
     }
     state.cache.formData = formData
@@ -473,9 +495,9 @@
   }
   // 点击切换展开状态
   function clickCutUnfoldstatus() {
-    if (state.cache.isUnfold == 0) {
+    if (state.cache.isUnfold === 0) {
       state.cache.isUnfold = 1
-    } else if (state.cache.isUnfold == 1) {
+    } else if (state.cache.isUnfold === 1) {
       state.cache.isUnfold = 0
     }
     // 设置表单显示数据
@@ -497,12 +519,6 @@
     // 初始化表单单数据
     initFormData()
   })
-
-  // 自定义事件
-  // 选择部门 - 类型处理
-  const getSelectDepartInfo = () => {
-    emit('getSelectDepartInfo')
-  }
 </script>
 <style lang="scss" scoped>
   .components-searchForm {

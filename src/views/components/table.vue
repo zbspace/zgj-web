@@ -13,7 +13,11 @@
       class="ap-table"
     >
       <!-- 列表内容 -->
-      <el-table-column v-bind="item" v-for="(item, index) in props.header">
+      <el-table-column
+        v-bind="item"
+        v-for="(item, index) in props.header"
+        :key="index"
+      >
         <!-- 自定义内容显示 -->
         <template #default="scope" v-if="item.customDisplayType == 'switch'">
           <div class="switch">
@@ -25,7 +29,7 @@
           #default="scope"
           v-else-if="item.customDisplayType == 'custom'"
         >
-          <div class="custom">
+          <div class="custom" :index="scope.$index">
             <slot :name="'custom_' + item.prop"></slot>
           </div>
         </template>
@@ -38,6 +42,7 @@
             <div
               class="rankDisplayData-node"
               v-for="(data, num) in item.rankDisplayData.slice(0, 3)"
+              :key="num"
               @click="customClick(scope.$index, scope.row, data)"
             >
               <span>{{ data.name }}</span>
@@ -58,6 +63,7 @@
                   <el-dropdown-menu>
                     <el-dropdown-item
                       v-for="(data, num) in item.rankDisplayData.slice(3)"
+                      :key="num"
                       @click="customClick(scope.$index, scope.row, data)"
                     >
                       {{ data.name }}
@@ -74,7 +80,7 @@
 </template>
 <script setup>
   import {
-    reactive,
+    // reactive,
     defineProps,
     defineEmits,
     onBeforeMount,
@@ -94,12 +100,16 @@
     // 表头数据
     header: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 表格数据
     data: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 是否多选
     isSelection: {
@@ -109,7 +119,9 @@
     // 默认属性
     defaultAttribute: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     }
   })
   const emit = defineEmits([
@@ -120,7 +132,7 @@
     'row-click',
     'custom-click'
   ])
-  const state = reactive({})
+  //   const state = reactive({})
   // console.log(props.defaultAttribute);
   // 	当用户手动勾选数据行的 Checkbox 时触发的事件
   function select(selection, row) {

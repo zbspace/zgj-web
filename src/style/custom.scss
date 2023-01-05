@@ -213,7 +213,7 @@ $unify-primary-color: var(--primary-6);
 */
 :deep(.el-form-item.is-error .el-input__wrapper) {
   background: #ffeee8;
-  border: 1px solid #ecad9d;
+  box-shadow: 0 0 0 1px #ecad9d inset;
 }
 
 /* 

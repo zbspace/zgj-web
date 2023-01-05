@@ -52,7 +52,7 @@
       type: String,
       default: '0'
     },
-    //取消底部的线
+    // 取消底部的线
     cancelBottomLine: {
       type: Boolean,
       default: false
@@ -60,9 +60,11 @@
     // 布局
     data: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
-    //选中名字
+    // 选中名字
     activeName: {
       type: String,
       default: ''
@@ -82,17 +84,22 @@
   function getActiveName() {
     emit('getActiveName', state.activeName)
   }
-  //初始化数据
+  // 初始化数据
   function initData() {}
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
-    //初始化数据
+    // 初始化数据
     initData()
   })
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-    //初始化数据
+    // 初始化数据
     initData()
+
+    // 暂时不用
+    tabChange()
+    // 暂时不用
+    getActiveName()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -115,6 +122,9 @@
 
         .ap-box-right-icon {
           margin-right: 0.5rem;
+        }
+        .ap-box-right-icon:hover {
+          filter: drop-shadow(var(--primary-6) 80px 0);
         }
       }
     }
