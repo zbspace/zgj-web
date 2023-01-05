@@ -201,22 +201,20 @@ $unify-primary-color: var(--primary-6);
 输入框移入hover样式
 */
 :deep(.el-input__wrapper:hover){
-    box-shadow: none;
-    border:1px solid rgba(0, 0, 0, 0.45);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45) inset;
 }
 /* 
 输入框聚焦样式
 */
 :deep(.el-input .el-input__wrapper.is-focus){
-    box-shadow: none;
-    border: 1px solid #D0963E;
+    box-shadow: 0 0 0 1px #D0963E inset;
 }
 /* 
 输入框错误状态
 */
 :deep(.el-form-item.is-error .el-input__wrapper) {
     background: #FFEEE8;
-    border: 1px solid #ECAD9D;
+    box-shadow: 0 0 0 1px #ECAD9D inset;
 }
 
 /* 
@@ -240,16 +238,16 @@ $unify-primary-color: var(--primary-6);
 下拉框移入hover颜色去除
 */
 :deep(.el-select){
-    --el-select-border-color-hover:none;
+    --el-select-border-color-hover:rgba(0, 0, 0, 0.45);
 }
 /* 
 下拉框聚焦颜色去除
 */
 :deep(.el-select .el-input__wrapper.is-focus){
-    box-shadow:none !important;
+    box-shadow:0 0 0 1px #D0963E inset !important;
 }
 :deep(.el-select .el-input.is-focus .el-input__wrapper){
-    box-shadow:none !important;
+    box-shadow:0 0 0 1px #D0963E inset !important;
 }
 /* 
 左侧菜单 字体大小
