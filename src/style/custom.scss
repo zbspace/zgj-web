@@ -387,3 +387,33 @@ body {
     background-color: #d0963e;
   }
 }
+
+// 表格页面 右上角按钮样式
+.title-more {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  .title-more-add {
+    margin-right: 0.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .title-more-down {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
+.more-operation-dropdown {
+  .el-scrollbar {
+    .el-dropdown-menu {
+      .el-dropdown-menu__item {
+        min-width: 108px;
+        justify-content: center;
+      }
+    }
+  }
+}

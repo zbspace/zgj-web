@@ -1,6 +1,8 @@
 <template>
   <div class="message-center-event">
-    <componentsLayout Layout="title,searchForm,table,pagination,tabs,tree">
+    <componentsLayout
+      Layout="title,searchForm,table,pagination,tabs,tree,batch"
+    >
       <template #title>
         <div class="title"> 消息事件 </div>
       </template>
@@ -47,6 +49,12 @@
         </div>
       </template>
 
+      <template #batch>
+        <div class="batch">
+          <componentsBatch> </componentsBatch>
+        </div>
+      </template>
+
       <template #table>
         <div>
           <componentsTable
@@ -86,6 +94,8 @@
   import componentsTabs from '@/views/components/tabs.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import icon from '@/assets/svg/system/message-center/icon.svg'
+  import componentsBatch from '@/views/components/batch.vue'
+
   const activeName = ref('1')
   const state = reactive({
     componentsTabs: {
@@ -119,24 +129,9 @@
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '请输入'
+            placeholder: '事件名称/事件描述'
           }
         },
-        // {
-        //   id: 'picker',
-        //   label: '选择时间',
-        //   type: 'picker',
-        //   inCommonUse: true,
-        //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        //   defaultAttribute: {
-        //     type: 'daterange',
-        //     'start-placeholder': '开始时间',
-        //     'end-placeholder': '结束时间'
-        //   },
-        //   style: {
-
-        //   }
-        // },
         {
           id: 'name',
           label: '状态',
@@ -148,12 +143,8 @@
           },
           options: [
             {
-              value: 'Option1',
-              label: 'Option1'
-            },
-            {
-              value: 'Option2',
-              label: 'Option2'
+              value: '1',
+              label: '全部'
             }
           ]
         }
@@ -194,22 +185,25 @@
       header: [
         {
           width: 50,
-          type: 'selection'
+          type: 'selection',
+          fixed: true
         },
         {
           prop: '0',
           label: '序号',
-          width: 80
-        },
-        {
-          prop: '1',
-          label: '事件类别',
-          sortable: true,
-          'min-width': 150
+          width: 80,
+          fixed: true
         },
         {
           prop: '2',
           label: '事件名称',
+          sortable: true,
+          'min-width': 150,
+          fixed: true
+        },
+        {
+          prop: '1',
+          label: '事件类别',
           sortable: true,
           'min-width': 150
         },
@@ -223,11 +217,11 @@
           prop: '4',
           label: '更新时间',
           sortable: true,
-          'min-width': 150
+          width: 180
         },
         {
           prop: '5',
-          label: '开启状态',
+          label: '状态',
           sortable: true,
           'min-width': 150
         },
@@ -246,7 +240,7 @@
         {
           prop: '8',
           label: '操作',
-          'min-width': 200,
+          width: 180,
           fixed: 'right',
           rankDisplayData: [
             {
@@ -266,64 +260,51 @@
       ],
       data: [
         {
+          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
-          4: '2022/10/30',
+          4: '2022/10/30 22:22:22',
           5: '启用',
           6: '小张',
           7: '钉钉'
         },
         {
+          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
-          4: '2022/10/30',
+          4: '2022/10/30 22:22:22',
           5: '启用',
           6: '小张',
           7: '钉钉'
         },
         {
+          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
-          4: '2022/10/30',
+          4: '2022/10/30 22:22:22',
           5: '启用',
           6: '小张',
           7: '钉钉'
         },
         {
+          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
-          4: '2022/10/30',
+          4: '2022/10/30 22:22:22',
           5: '启用',
           6: '小张',
           7: '钉钉'
         },
         {
+          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
-          4: '2022/10/30',
-          5: '启用',
-          6: '小张',
-          7: '钉钉'
-        },
-        {
-          1: '用印申请',
-          2: '用印申请',
-          3: '事件描述',
-          4: '2022/10/30',
-          5: '启用',
-          6: '小张',
-          7: '钉钉'
-        },
-        {
-          1: '用印申请',
-          2: '用印申请',
-          3: '事件描述',
-          4: '2022/10/30',
+          4: '2022/10/30 22:22:22',
           5: '启用',
           6: '小张',
           7: '钉钉'
