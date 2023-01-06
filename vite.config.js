@@ -15,7 +15,7 @@ export default defineConfig({
       template: {
         compilerOptions: {
           // 将所有带短横线的标签名都视为自定义元素
-          isCustomElement: (tag) => tag.includes('_')
+          isCustomElement: tag => tag.includes('_')
         }
       }
     }),
@@ -29,12 +29,10 @@ export default defineConfig({
     //   // failOnError:false,
     //   // include: ['src/**/*.js', 'src/**/*.vue', 'src/*.js', 'src/*.vue']
     // }),
-    vueJsx({
-
-    })
+    vueJsx({})
   ],
   build: {
-    target: ['edge90', 'chrome90', 'firefox90', 'safari15'],
+    target: 'es2015',
     sourcemap: false,
     brotliSize: true,
     rollupOptions: {
@@ -66,7 +64,17 @@ export default defineConfig({
         replacement: 'vue-i18n/dist/vue-i18n.cjs.js'
       }
     ],
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss', '.css']
+    extensions: [
+      '.mjs',
+      '.js',
+      '.ts',
+      '.jsx',
+      '.tsx',
+      '.json',
+      '.vue',
+      '.scss',
+      '.css'
+    ]
   },
   css: {
     preprocessorOptions: {

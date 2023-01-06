@@ -1,40 +1,17 @@
 <template>
   <div class="comp-info-top">
     <div class="bg">
-      <div class="left">
-        23
-      </div>
+      <div class="left"> 23 </div>
       <div class="right">
-        <div class="name">
-          上海建业信息科技股份有限公司
-        </div>
-        <div
-          class="label"
-          v-if="!edit"
-        >
+        <div class="name"> 上海建业信息科技股份有限公司 </div>
+        <div class="label" v-if="!edit">
           <span>{{ input }}</span>
-          <img
-            :src="inputIcon"
-            alt=""
-            @click="edit = !edit"
-          >
+          <img :src="inputIcon" alt="" @click="edit = !edit" />
         </div>
-        <div
-          v-if="edit"
-          class="input"
-        >
-          <el-input
-            v-model="input"
-            placeholder="请输入新的头部系统显示名称"
-          />
-          <span
-            class="save"
-            @click="save"
-          >保存</span>
-          <span
-            class="cancel"
-            @click="cancel"
-          >取消</span>
+        <div v-if="edit" class="input">
+          <el-input v-model="input" placeholder="请输入新的头部系统显示名称" />
+          <span class="save" @click="save">保存</span>
+          <span class="cancel" @click="cancel">取消</span>
         </div>
       </div>
     </div>
@@ -42,22 +19,26 @@
 </template>
 
 <script setup>
-import inputIcon from '@/assets/svg/system/comp-info/input.svg'
-import { ref } from 'vue'
-const input = ref('上海测试专属')
-const edit = ref(false)
-const save = () => { edit.value = !edit.value }
-const cancel = () => { edit.value = !edit.value }
+  import inputIcon from '@/assets/svg/system/comp-info/input.svg'
+  import { ref } from 'vue'
+  const input = ref('上海测试专属')
+  const edit = ref(false)
+  const save = () => {
+    edit.value = !edit.value
+  }
+  const cancel = () => {
+    edit.value = !edit.value
+  }
 </script>
 
 <style lang="scss" scoped>
-  .comp-info-top{
-  background-color: #fff;
-  height: 188px;
-  width: 100%;
-  border-radius: 4px;
-  padding:  24px 16px;
-  .bg{
+  .comp-info-top {
+    background-color: #fff;
+    height: 188px;
+    width: 100%;
+    border-radius: 4px;
+    padding: 24px 16px;
+    .bg {
       background: rgba(105, 70, 70, 0.04);
       border-radius: 4px;
       width: 100%;
@@ -76,7 +57,7 @@ const cancel = () => { edit.value = !edit.value }
         background-color: #fff;
       }
       .right {
-        .name{
+        .name {
           font-style: normal;
           font-weight: 400;
           font-size: 22px;
@@ -106,7 +87,7 @@ const cancel = () => { edit.value = !edit.value }
             font-weight: 400;
             font-size: 14px;
             line-height: 22px;
-            color: #3E78D0;
+            color: #3e78d0;
             margin-right: 12px;
             margin-left: 18px;
             cursor: pointer;
