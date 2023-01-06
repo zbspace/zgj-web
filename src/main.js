@@ -26,9 +26,8 @@ import 'vform-jy/dist/designer.style.css'
 import { requireComp } from '@/components/index'
 
 // 全局自定义公共方法
-import commonFun from '@/utils/common';
-
-(async () => {
+import commonFun from '@/utils/common'
+;(async () => {
   const app = createApp(App)
   app
     .use(store)
