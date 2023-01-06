@@ -277,7 +277,7 @@
           prop: '5',
           label: '发起确认时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '6',
@@ -547,7 +547,7 @@
           prop: '5',
           label: '发起确认时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '6',
@@ -656,7 +656,7 @@
           prop: '5',
           label: '发起确认时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '6',

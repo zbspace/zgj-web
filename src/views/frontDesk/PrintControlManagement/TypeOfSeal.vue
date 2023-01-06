@@ -224,7 +224,7 @@
           prop: '1',
           label: '印章类型编码',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '2',
@@ -260,7 +260,7 @@
           prop: '7',
           label: '创建时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: 'caozuo',

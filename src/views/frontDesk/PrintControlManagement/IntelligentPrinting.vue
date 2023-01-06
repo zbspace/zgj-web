@@ -620,7 +620,7 @@
           prop: '9',
           label: '申请时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '10',
@@ -770,7 +770,7 @@
           prop: '9',
           label: '申请时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '10',
@@ -914,7 +914,7 @@
           prop: '9',
           label: '申请时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '10',
@@ -926,7 +926,7 @@
           prop: 'caozuo',
           label: '操作',
           fixed: 'right',
-          'min-width': 300,
+          'min-width': 100,
           rankDisplayData: [
             {
               name: '申请重置'

@@ -258,7 +258,7 @@
           prop: '3',
           label: '智能印章柜编码',
           sortable: true,
-          'min-width': 150
+          'min-width': 300
         },
         {
           prop: '4',
@@ -282,7 +282,7 @@
           prop: '7',
           label: '更新时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: 'caozuo',

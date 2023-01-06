@@ -186,7 +186,7 @@
           prop: '2',
           label: '风险项',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '3',
@@ -203,7 +203,7 @@
           prop: '5',
           label: '提醒时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '6',
@@ -414,7 +414,7 @@
           prop: '2',
           label: '风险项',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '3',
@@ -431,7 +431,7 @@
           prop: '5',
           label: '提醒时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '6',
@@ -528,7 +528,7 @@
           prop: '2',
           label: '风险项',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '3',
@@ -545,7 +545,7 @@
           prop: '5',
           label: '提醒时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '6',

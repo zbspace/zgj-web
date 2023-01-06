@@ -258,7 +258,7 @@
           prop: '3',
           label: '工作台编码',
           sortable: true,
-          'min-width': 150
+          'min-width': 300
         },
         {
           prop: '4',

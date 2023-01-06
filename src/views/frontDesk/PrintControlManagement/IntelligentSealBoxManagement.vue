@@ -259,7 +259,7 @@
           prop: '3',
           label: '智能印章盒编码',
           sortable: true,
-          'min-width': 150
+          'min-width': 300
         },
         {
           prop: '4',

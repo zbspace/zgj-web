@@ -342,7 +342,7 @@
           prop: '9',
           label: '操作时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: '10',

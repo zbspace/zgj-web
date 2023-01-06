@@ -272,7 +272,7 @@
           prop: '6',
           label: '申请时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: 'caozuo',
@@ -551,7 +551,7 @@
           prop: '6',
           label: '申请时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: 'caozuo',
@@ -699,7 +699,7 @@
           prop: '6',
           label: '申请时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: 'caozuo',
