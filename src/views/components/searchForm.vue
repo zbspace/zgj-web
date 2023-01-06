@@ -21,7 +21,6 @@
               item.style,
               computedFill(item, index)
             ]"
-            @click="clickElement(item, index)"
           >
             <!-- input -->
             <div class="ap-box-cont input" v-if="item.type == 'input'">
@@ -48,12 +47,14 @@
                 >
                 {{ item.label }}
               </div>
-              <div class="ap-box-contBox width-0">
+              <div
+                class="ap-box-contBox width-0"
+                @click="clickElement(item, index)"
+              >
                 <el-input
                   class="ap-box-contBox-input width-100"
                   v-bind="item.defaultAttribute"
                   readonly
-                  @click="getSelectDepartInfo"
                 />
                 <div class="ap-box-contBox-icon">
                   <img
@@ -273,10 +274,13 @@
               class="ap-box"
               v-for="(item, index) in props.butData"
               :key="index"
-              @click="clickElement(item, index)"
               :style="item.style"
             >
-              <div class="ap-box-cont" v-if="item.type == 'click'">
+              <div
+                class="ap-box-cont"
+                v-if="item.type == 'click'"
+                @click="clickSubmit(item, index)"
+              >
                 <el-button v-bind="item.defaultAttribute">{{
                   item.name
                 }}</el-button>
@@ -305,7 +309,11 @@
                   />
                 </div>
               </div>
-              <div class="ap-box-cont" v-if="item.type == 'text'">
+              <div
+                class="ap-box-cont"
+                v-if="item.type == 'text'"
+                @click="clickSubmit(item, index)"
+              >
                 {{ item.name }}
               </div>
             </div>
@@ -387,7 +395,8 @@
   const emit = defineEmits([
     'getCurrentValue',
     'getCurrentValueAll',
-    'clickElement'
+    'clickElement',
+    'clickSubmit'
   ])
   const state = reactive({
     props: {
@@ -509,10 +518,15 @@
   function getCurrentValueAll() {
     emit('getCurrentValueAll', props.data)
   }
-  // 点击按钮
+  // 点击表单
   function clickElement(item, index) {
     emit('clickElement', item, index)
   }
+  // 点击按钮
+  function clickSubmit(item, index) {
+    emit('clickSubmit', item, index)
+  }
+
   // 点击切换展开状态
   function clickCutUnfoldstatus() {
     if (state.cache.isUnfold === 0) {

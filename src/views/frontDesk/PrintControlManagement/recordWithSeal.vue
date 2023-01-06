@@ -49,6 +49,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -58,7 +59,8 @@
           <componentsBatch>
             <el-button
               :disabled="state.componentsBatch.selectionData.length == 0"
-              v-for="item in state.componentsBatch.data"
+              v-for="(item, index) in state.componentsBatch.data"
+              :key="index"
               >{{ item.name }}</el-button
             >
           </componentsBatch>
@@ -113,22 +115,29 @@
       >
       </v-form-render>
     </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
     ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsTree from '../../components/tree'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
@@ -137,20 +146,22 @@
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'
   import KDialog from '@/views/components/modules/kdialog.vue'
+
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import dialogProcessJson from '@/views/addDynamicFormJson/ProcessStopJson.json'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
 
   // import { ConsoleWriter } from "istanbul-lib-report";
   const router = useRouter()
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
-  const emit = defineEmits([])
-
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
+  // const emit = defineEmits([])
+  const showDepPerDialog = ref(false)
   const dialogProcess = reactive({
     show: false,
     title: '流程终止',
@@ -166,7 +177,7 @@
       .getFormData()
       .then(formData => {
         alert(JSON.stringify(formData))
-        fromState.showDialog = false
+        // fromState.showDialog = false
       })
       .catch(error => {
         // Form Validation failed
@@ -626,7 +637,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '2') {
+          if (column.property === '2') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -763,11 +774,11 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == '2') {
+    if (column.property === '2') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '撤销') {
       ElMessageBox.confirm('撤销后本次申请送审将被取消，请问确定要撤销吗？', {
@@ -776,7 +787,7 @@
         type: 'warning'
       }).then(() => {})
     }
-    if (cell.name == '作废') {
+    if (cell.name === '作废') {
       ElMessageBox.confirm(
         '作废后当前记录将从当前表格中消失，请问确定要作废吗？',
         {
@@ -786,7 +797,7 @@
         }
       ).then(() => {})
     }
-    if (cell.name == '流程终止') {
+    if (cell.name === '流程终止') {
       dialogProcess.show = true
       dialogProcess.title = '流程终止'
       dialogProcess.formJson = dialogProcessJson
@@ -807,7 +818,7 @@
       dialogProcess.title = '复核'
       dialogProcess.formJson = RecordSealToReviewJson
     }
-    if (cell.name == '解除用印限制') {
+    if (cell.name === '解除用印限制') {
       ElMessageBox.confirm(
         '若单据满足【远程盖章】、【实时视频盖章】、【二维码水印校验】、【限时用印】、【印章外带】、【盖前文件内容核验】条件，此操作会取消所有相关校验并将盖章模式转为普通智能用印，以支持用印人跳过限制直接用印，确定要继续吗？',
         {
@@ -823,7 +834,7 @@
       })
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
@@ -831,7 +842,7 @@
   // 切换分页
   function tabChange(activeName) {
     // console.log(activeName);
-    if (activeName == '1') {
+    if (activeName === '1') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -987,7 +998,7 @@
           8: ''
         }
       ]
-    } else if (activeName == '2' || activeName == '3') {
+    } else if (activeName === '2' || activeName === '3') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -1152,7 +1163,7 @@
           8: ''
         }
       ]
-    } else if (activeName == '4') {
+    } else if (activeName === '4') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -1311,7 +1322,7 @@
           8: ''
         }
       ]
-    } else if (activeName == '5') {
+    } else if (activeName === '5') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -1475,7 +1486,7 @@
           8: ''
         }
       ]
-    } else if (activeName == '6') {
+    } else if (activeName === '6') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -1642,7 +1653,7 @@
           8: ''
         }
       ]
-    } else if (activeName == '7') {
+    } else if (activeName === '7') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -1806,7 +1817,7 @@
           8: ''
         }
       ]
-    } else if (activeName == '8') {
+    } else if (activeName === '8') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -1974,10 +1985,18 @@
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {
