@@ -11,7 +11,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
-            @getSelectDepartInfo="showDepPerDialog = true"
+            @clickElement="showDepPerDialog = true"
           >
           </componentsSearchForm>
         </div>
