@@ -32,7 +32,7 @@ export default defineConfig({
     vueJsx({})
   ],
   build: {
-    target: ['edge90', 'chrome90', 'firefox90', 'safari15'],
+    target: 'es2015',
     sourcemap: false,
     brotliSize: true,
     rollupOptions: {
