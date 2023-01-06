@@ -34,6 +34,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -76,10 +77,18 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
+    ref,
     reactive,
     defineProps,
     defineEmits,
@@ -93,6 +102,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '../../components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'
   const router = useRouter()
@@ -500,6 +510,7 @@
       ]
     }
   })
+  const showDepPerDialog = ref(false)
   const goInnerPage = (path, params) => {
     let routeObj = { path: path }
     if (params) {
@@ -514,12 +525,12 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
 
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(cell)
     if (cell.name === '申请转办') {
@@ -1003,6 +1014,14 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {

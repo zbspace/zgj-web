@@ -34,6 +34,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -172,6 +173,13 @@
         </template>
       </documentsDetailsPortion>
     </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
@@ -195,6 +203,7 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import { useRouter } from 'vue-router'
   const router = useRouter()
   const props = defineProps({
@@ -205,7 +214,7 @@
     }
   })
   const emit = defineEmits([])
-
+  const showDepPerDialog = ref(false)
   const dialogData = reactive({
     show: false,
     title: '文件归档'
@@ -887,6 +896,14 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {
