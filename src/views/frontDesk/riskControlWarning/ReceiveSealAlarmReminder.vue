@@ -195,7 +195,7 @@
         },
         {
           id: 'picker',
-          label: '选择时间',
+          label: '操作时间',
           type: 'picker',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
