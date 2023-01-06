@@ -11,7 +11,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
-            @getSelectDepartInfo="showDepPerDialog = true"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -261,6 +261,13 @@
       }
     }
   })
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
+  }
 </script>
 
 <style lang="scss" scoped></style>

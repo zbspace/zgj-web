@@ -121,8 +121,8 @@
                 v-for="(item, index) in state.ArchiveFiles"
               >
                 <div>{{ item.fileName }}</div>
-                <div
-                  ><svg
+                <div>
+                  <svg
                     preserveAspectRatio="xMidYMid meet"
                     xmlns="http://www.w3.org/2000/svg"
                     width="1em"
@@ -146,9 +146,10 @@
                           d="M6.155 9.6v.608h3.2V9.6h-3.2Zm4.266 0v1.707H5.088V9.6H0V16h16V9.6h-5.579Zm1.312 5.184H9.6v-2.133h2.133v2.133Zm3.2 0H12.8v-2.133h2.133v2.133Z"
                         ></path>
                       </g>
-                    </g></svg
-                  >请添加归档文件</div
-                >
+                    </g>
+                  </svg>
+                  请添加归档文件
+                </div>
               </div>
             </div>
           </div>
@@ -258,7 +259,7 @@
         },
         {
           id: 'picker',
-          label: '选择时间',
+          label: '申请时间',
           type: 'picker',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -355,7 +356,7 @@
           prop: '6',
           label: '申请时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
         },
         {
           prop: 'caozuo',
