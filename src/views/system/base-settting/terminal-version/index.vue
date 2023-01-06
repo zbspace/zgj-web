@@ -6,24 +6,17 @@
           <div>终端版本管理</div>
           <div>
             <el-button type="primary">+ 新建</el-button>
-            <el-button>
-              <img
-                class="button-icon"
-                src="@/assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
           </div>
         </div>
       </template>
 
       <template #tabs>
-        <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
-        </div>
+        <VTabs
+          :active="activeName"
+          :label="tabsLabel"
+          @update:active="activeName = $event"
+          style="margin-top: 12px"
+        ></VTabs>
       </template>
 
       <template #searchForm>
@@ -40,16 +33,53 @@
       <template #batch>
         <div class="batch">
           <el-button>批量操作</el-button>
+          <componentsBatch></componentsBatch>
         </div>
       </template>
 
       <template #table>
         <div>
           <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
+            :defaultAttribute="state.componentsWorkbenchTable.defaultAttribute"
+            :data="state.componentsWorkbenchTable.data"
+            :header="state.componentsWorkbenchTable.header"
             :isSelection="true"
+            @selection-change="selectionChange"
+            v-if="activeName === 'first'"
+          >
+          </componentsTable>
+
+          <componentsTable
+            :defaultAttribute="state.componentsAPPSealTable.defaultAttribute"
+            :data="state.componentsAPPSealTable.data"
+            :header="state.componentsAPPSealTable.header"
+            :isSelection="true"
+            @selection-change="selectionChange"
+            v-if="activeName === 'second'"
+          >
+          </componentsTable>
+
+          <componentsTable
+            :defaultAttribute="
+              state.componentsSmartSealCabinetTable.defaultAttribute
+            "
+            :data="state.componentsSmartSealCabinetTable.data"
+            :header="state.componentsSmartSealCabinetTable.header"
+            :isSelection="true"
+            @selection-change="selectionChange"
+            v-if="activeName === 'third'"
+          >
+          </componentsTable>
+
+          <componentsTable
+            :defaultAttribute="
+              state.componentsSmartSealBoxTable.defaultAttribute
+            "
+            :data="state.componentsSmartSealBoxTable.data"
+            :header="state.componentsSmartSealBoxTable.header"
+            :isSelection="true"
+            @selection-change="selectionChange"
+            v-if="activeName === 'fourth'"
           >
           </componentsTable>
         </div>
@@ -67,40 +97,34 @@
 </template>
 
 <script setup>
-  import { reactive } from 'vue'
+  import { reactive, ref } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
-  import componentsTabs from '@/views/components/tabs'
-  import componentsTree from '@/views/components/tree'
+  import VTabs from '@/components/modules/tabs.vue'
+  import componentsBatch from '@/views/components/batch.vue'
+  const activeName = ref('first')
 
-  const state = reactive({
-    componentsTabs: {
-      data: [
-        {
-          label: '工作台',
-          name: '1'
-        },
-        {
-          label: 'APP',
-          name: '2'
-        },
-        {
-          label: 'IOS',
-          name: '3'
-        },
-        {
-          label: '智能印章柜',
-          name: '4'
-        },
-        {
-          label: '智能印章盒',
-          name: '5'
-        }
-      ]
+  const tabsLabel = ref([
+    {
+      name: 't-zgj-logRecord.Workbench',
+      value: 'first'
     },
-
+    {
+      name: 't-app',
+      value: 'second'
+    },
+    {
+      name: 't-zgj-cg-menu-zhineng-yinzhang-gui',
+      value: 'third'
+    },
+    {
+      name: 't-zgj-cg-menu-zhineng-yinzhang-he',
+      value: 'fourth'
+    }
+  ])
+  const state = reactive({
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -123,8 +147,19 @@
           }
         },
         {
+          id: 'name',
+          label: '强制升级',
+          type: 'select',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '请选择'
+          },
+          options: []
+        },
+        {
           id: 'picker',
-          label: '选择时间',
+          label: '创建时间',
           type: 'picker',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -134,26 +169,6 @@
             'end-placeholder': '结束时间'
           },
           style: {}
-        },
-        {
-          id: 'name',
-          label: 'xx',
-          type: 'select',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: 'Option1',
-              label: 'Option1'
-            },
-            {
-              value: 'Option2',
-              label: 'Option2'
-            }
-          ]
         }
       ],
       butData: [
@@ -188,7 +203,7 @@
       ]
     },
 
-    componentsTable: {
+    componentsWorkbenchTable: {
       header: [
         {
           width: 50,
@@ -197,100 +212,505 @@
         {
           prop: '0',
           label: '序号',
-          width: 100
+          width: 80,
+          align: 'center'
         },
         {
           prop: '1',
-          label: 'xxx',
+          label: '版本号',
           sortable: true,
-          'min-width': 150
+          'min-width': 100
+        },
+        {
+          prop: '2',
+          label: '安卓版本编号',
+          sortable: true,
+          'min-width': 140
+        },
+        {
+          prop: '3',
+          label: '是否强制升级',
+          sortable: true,
+          'min-width': 140
+        },
+        {
+          prop: '4',
+          label: 'apk名称',
+          sortable: true,
+          'min-width': 120
+        },
+        {
+          prop: '5',
+          label: '创建人',
+          sortable: true,
+          'min-width': 100
+        },
+        {
+          prop: '6',
+          label: '创建时间',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: '7',
+          label: '版本说明',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'caozuo',
+          label: '操作',
+          fixed: 'right',
+          'min-width': 180,
+          rankDisplayData: [
+            {
+              name: '修改'
+            },
+            {
+              name: '删除'
+            },
+            {
+              name: '下载版本包'
+            }
+          ]
         }
       ],
       data: [
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
+          0: 1,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
+          0: 2,
+          1: 'V4.1.2',
+          2: '126',
+          3: '否',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
+          0: 3,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
+          0: 4,
+          1: 'V1.5.2',
+          2: '863',
+          3: '否',
+          4: '测试版本',
+          5: '岳海涛',
+          6: '2022-04-23 08:00:00',
+          7: '无'
         }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--1)'
+          background: 'var(--color-fill--3)'
         }
       }
     },
-
+    componentsAPPSealTable: {
+      header: [
+        {
+          width: 50,
+          type: 'selection'
+        },
+        {
+          prop: '0',
+          label: '序号',
+          width: 80,
+          align: 'center'
+        },
+        {
+          prop: '1',
+          label: '版本号',
+          sortable: true,
+          'min-width': 100
+        },
+        {
+          prop: '2',
+          label: '安卓版本编号',
+          sortable: true,
+          'min-width': 140
+        },
+        {
+          prop: '3',
+          label: '是否强制升级',
+          sortable: true,
+          'min-width': 140
+        },
+        {
+          prop: '4',
+          label: 'apk名称',
+          sortable: true,
+          'min-width': 120
+        },
+        {
+          prop: '5',
+          label: '创建人',
+          sortable: true,
+          'min-width': 100
+        },
+        {
+          prop: '6',
+          label: '创建时间',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: '7',
+          label: '版本说明',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'caozuo',
+          label: '操作',
+          fixed: 'right',
+          'min-width': 180,
+          rankDisplayData: [
+            {
+              name: '修改'
+            },
+            {
+              name: '删除'
+            },
+            {
+              name: '下载版本包'
+            }
+          ]
+        }
+      ],
+      data: [
+        {
+          0: 1,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 2,
+          1: 'V4.1.2',
+          2: '126',
+          3: '否',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 3,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        }
+      ],
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        stripe: true,
+        'header-cell-style': {
+          background: 'var(--color-fill--3)'
+        }
+      }
+    },
+    componentsSmartSealCabinetTable: {
+      header: [
+        {
+          width: 50,
+          type: 'selection'
+        },
+        {
+          prop: '0',
+          label: '序号',
+          width: 80,
+          align: 'center'
+        },
+        {
+          prop: '1',
+          label: '版本号',
+          sortable: true,
+          'min-width': 100
+        },
+        {
+          prop: '2',
+          label: '安卓版本编号',
+          sortable: true,
+          'min-width': 140
+        },
+        {
+          prop: '3',
+          label: '是否强制升级',
+          sortable: true,
+          'min-width': 140
+        },
+        {
+          prop: '4',
+          label: 'apk名称',
+          sortable: true,
+          'min-width': 120
+        },
+        {
+          prop: '5',
+          label: '创建人',
+          sortable: true,
+          'min-width': 100
+        },
+        {
+          prop: '6',
+          label: '创建时间',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: '7',
+          label: '版本说明',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'caozuo',
+          label: '操作',
+          fixed: 'right',
+          'min-width': 180,
+          rankDisplayData: [
+            {
+              name: '修改'
+            },
+            {
+              name: '删除'
+            },
+            {
+              name: '下载版本包'
+            }
+          ]
+        }
+      ],
+      data: [
+        {
+          0: 1,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 2,
+          1: 'V4.1.2',
+          2: '126',
+          3: '否',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 3,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 4,
+          1: 'V1.5.2',
+          2: '863',
+          3: '否',
+          4: '测试版本',
+          5: '岳海涛',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        }
+      ],
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        stripe: true,
+        'header-cell-style': {
+          background: 'var(--color-fill--3)'
+        }
+      }
+    },
+    componentsSmartSealBoxTable: {
+      header: [
+        {
+          width: 50,
+          type: 'selection'
+        },
+        {
+          prop: '0',
+          label: '序号',
+          width: 80,
+          align: 'center'
+        },
+        {
+          prop: '1',
+          label: '版本号',
+          sortable: true,
+          'min-width': 100
+        },
+        {
+          prop: '2',
+          label: '安卓版本编号',
+          sortable: true,
+          'min-width': 140
+        },
+        {
+          prop: '3',
+          label: '是否强制升级',
+          sortable: true,
+          'min-width': 140
+        },
+        {
+          prop: '4',
+          label: 'apk名称',
+          sortable: true,
+          'min-width': 120
+        },
+        {
+          prop: '5',
+          label: '创建人',
+          sortable: true,
+          'min-width': 100
+        },
+        {
+          prop: '6',
+          label: '创建时间',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: '7',
+          label: '版本说明',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'caozuo',
+          label: '操作',
+          fixed: 'right',
+          'min-width': 180,
+          rankDisplayData: [
+            {
+              name: '修改'
+            },
+            {
+              name: '删除'
+            },
+            {
+              name: '下载版本包'
+            }
+          ]
+        }
+      ],
+      data: [
+        {
+          0: 1,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 2,
+          1: 'V4.1.2',
+          2: '126',
+          3: '否',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 3,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 4,
+          1: 'V1.5.2',
+          2: '863',
+          3: '否',
+          4: '测试版本',
+          5: '岳海涛',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 5,
+          1: 'V1.1.2',
+          2: '863',
+          3: '是',
+          4: '测试版本',
+          5: '汤博',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        },
+        {
+          0: 6,
+          1: 'V1.5.2',
+          2: '863',
+          3: '否',
+          4: '测试版本',
+          5: '岳海涛',
+          6: '2022-04-23 08:00:00',
+          7: '无'
+        }
+      ],
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        stripe: true,
+        'header-cell-style': {
+          background: 'var(--color-fill--3)'
+        }
+      }
+    },
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 60,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 500,
+        layout: 'sizes, prev, pager, next, jumper',
+        total: 60,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
@@ -364,6 +784,12 @@
       }
     }
   })
+
+  // 当选择项发生变化时会触发该事件
+  function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection
+  }
 </script>
 
 <style lang="scss" scoped>

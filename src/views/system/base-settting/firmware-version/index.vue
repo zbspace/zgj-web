@@ -25,9 +25,11 @@
         <div class="batch">
           <el-button
             :disabled="state.componentsBatch.selectionData.length == 0"
-            v-for="item in state.componentsBatch.data"
-            >{{ item.name }}</el-button
-          >
+            v-for="(item, index) in state.componentsBatch.data"
+            :key="index"
+            >{{ item.name }}
+          </el-button>
+          <componentsBatch></componentsBatch>
         </div>
       </template>
 
@@ -60,9 +62,7 @@
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
-  import componentsTabs from '@/views/components/tabs'
-  import componentsTree from '@/views/components/tree'
-
+  import componentsBatch from '@/views/components/batch.vue'
   const state = reactive({
     componentsSearchForm: {
       style: {
