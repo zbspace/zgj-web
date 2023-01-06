@@ -202,8 +202,18 @@
                   v-for="(data, num) in item.data"
                   :key="num"
                 >
-                  <div class="custom-button" :style="item.style">
+                  <div
+                    class="custom-button"
+                    :class="{ checked: data.checked ? true : false }"
+                    :style="item.style"
+                    @click="clickradioBut(item.data, data, num)"
+                  >
                     {{ data.name }}
+                    <img
+                      class="custom-button-checkIcon"
+                      src="@/assets/svg/anniu-xuanzhong.svg"
+                      alt=""
+                    />
                   </div>
                 </div>
               </div>
@@ -225,8 +235,18 @@
                   v-for="(data, num) in item.data"
                   :key="num"
                 >
-                  <div class="custom-button" :style="item.style">
+                  <div
+                    class="custom-button"
+                    :class="{ checked: data.checked ? true : false }"
+                    :style="item.style"
+                    @click="clickcheckBut(item.data, data, num)"
+                  >
                     {{ data.name }}
+                    <img
+                      class="custom-button-checkIcon"
+                      src="@/assets/svg/anniu-xuanzhong.svg"
+                      alt=""
+                    />
                   </div>
                 </div>
               </div>
@@ -504,6 +524,28 @@
     setFormData()
   }
 
+  // 点击选中单选按钮
+  function clickradioBut(arr, node, index) {
+    // console.log(arr, node, index)
+    if (node.checked) {
+      arr[index].checked = false
+    } else {
+      arr.forEach(element => {
+        element.checked = false
+      })
+      arr[index].checked = true
+    }
+  }
+  // 点击选中多选按钮
+  function clickcheckBut(arr, node, index) {
+    // console.log(arr, node, index)
+    if (node.checked) {
+      arr[index].checked = false
+    } else {
+      arr[index].checked = true
+    }
+  }
+
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
     // 初始化Props数据
@@ -643,17 +685,33 @@
     }
 
     .custom-button {
-      border: 1px dashed var(--color-border-1);
-      border-radius: var(--border-radius-2);
-      width: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      @include mixin-padding-top(5);
-      @include mixin-padding-bottom(5);
-      @include mixin-padding-right(16);
-      @include mixin-padding-left(16);
-      font-size: var(--font-size-body-1);
+      & {
+        border: 1px dashed var(--color-border-1);
+        border-radius: var(--border-radius-2);
+        width: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include mixin-padding-top(5);
+        @include mixin-padding-bottom(5);
+        @include mixin-padding-right(16);
+        @include mixin-padding-left(16);
+        font-size: var(--font-size-body-1);
+        position: relative;
+      }
+      .custom-button-checkIcon {
+        position: absolute;
+        top: -1px;
+        right: -1px;
+        display: none;
+      }
+    }
+    .checked {
+      border: 1px solid var(--primary-6);
+      color: var(--primary-6);
+      .custom-button-checkIcon {
+        display: inline-block;
+      }
     }
 
     .fill {

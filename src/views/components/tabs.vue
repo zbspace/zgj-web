@@ -9,7 +9,8 @@
         <el-tab-pane
           :label="item.label"
           :name="item.name"
-          v-for="item in state.data"
+          v-for="(item, index) in state.data"
+          :key="index"
         >
         </el-tab-pane>
       </el-tabs>
@@ -26,7 +27,7 @@
     watch
   } from 'vue'
   const props = defineProps({
-    //标识
+    // 标识
     refs: {
       type: String,
       default: ''
@@ -36,7 +37,7 @@
       type: String,
       default: '0'
     },
-    //取消底部的线
+    // 取消底部的线
     cancelBottomLine: {
       type: Boolean,
       default: false
@@ -44,9 +45,11 @@
     // 布局
     data: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
-    //选中名字
+    // 选中名字
     activeName: {
       type: String,
       default: ''
@@ -66,7 +69,7 @@
   function getActiveName() {
     emit('getActiveName', state.activeName)
   }
-  //初始化数据
+  // 初始化数据
   function initData() {
     state.activeName = props.activeName
     state.data = props.data
@@ -74,13 +77,15 @@
   }
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
-    //初始化数据
+    // 初始化数据
     initData()
   })
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-    //初始化数据
+    // 初始化数据
     initData()
+    // 暂时不用
+    getActiveName()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -90,7 +95,7 @@
   .components-tabs {
     margin: 0%;
 
-    :deep(.ap-box) {
+    :deep {
       .el-tabs__nav-wrap::after {
         height: 1px;
         background-color: var(--color-border-2);
@@ -107,11 +112,13 @@
       .el-tabs__item:hover {
         color: var(--primary-6);
       }
-    }
-
-    :deep(.cancelBottomLine) {
-      .el-tabs__nav-wrap::after {
-        height: 0;
+      .el-tabs__item {
+        color: var(--color-text-3);
+      }
+      .cancelBottomLine {
+        .el-tabs__nav-wrap::after {
+          height: 0;
+        }
       }
     }
   }
