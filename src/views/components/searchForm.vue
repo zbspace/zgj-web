@@ -367,7 +367,8 @@
   const emit = defineEmits([
     'getCurrentValue',
     'getCurrentValueAll',
-    'clickElement'
+    'clickElement',
+    'getSelectDepartInfo'
   ])
   const state = reactive({
     props: {
@@ -519,6 +520,10 @@
     // 初始化表单单数据
     initFormData()
   })
+
+  const getSelectDepartInfo = () => {
+    emit('getSelectDepartInfo')
+  }
 </script>
 <style lang="scss" scoped>
   .components-searchForm {

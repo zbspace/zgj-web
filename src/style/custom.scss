@@ -347,7 +347,16 @@ body {
 .el-date-table td.today .el-date-table-cell__text {
   color: var(--primary-6) !important;
 }
-
+.el-date-table td.today.end-date .el-date-table-cell__text,
+.el-date-table td.today.start-date .el-date-table-cell__text {
+  color: #ffffff !important;
+}
+.el-picker-panel__icon-btn {
+  margin: 0 !important;
+}
+.el-date-table th {
+  text-align: center !important;
+}
 .el-table .ascending .sort-caret.ascending {
   border-bottom-color: var(--primary-6) !important;
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <componentsLayout Layout="title,searchForm,table,pagination">
+    <componentsLayout Layout="title,searchForm,table,pagination,batch">
       <template #title>
         <div class="title">系统操作日志</div>
       </template>
@@ -14,6 +14,12 @@
             @getSelectDepartInfo="showDepPerDialog = true"
           >
           </componentsSearchForm>
+        </div>
+      </template>
+
+      <template #batch>
+        <div class="batch">
+          <componentsBatch></componentsBatch>
         </div>
       </template>
 
@@ -55,6 +61,7 @@
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import componentsBatch from '@/views/components/batch.vue'
   const showDepPerDialog = ref(false)
   const state = reactive({
     componentsSearchForm: {

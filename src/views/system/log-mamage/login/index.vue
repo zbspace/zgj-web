@@ -1,6 +1,6 @@
 <template>
   <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,tabs">
+    <componentsLayout Layout="title,searchForm,table,pagination,tabs,batch">
       <template #title>
         <div class="title">登录日志</div>
       </template>
@@ -24,6 +24,12 @@
             :style="state.componentsSearchForm.style"
           >
           </componentsSearchForm>
+        </div>
+      </template>
+
+      <template #batch>
+        <div class="batch">
+          <componentsBatch></componentsBatch>
         </div>
       </template>
 
@@ -67,7 +73,7 @@
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsTabs from '@/views/components/tabs.vue'
-
+  import componentsBatch from '@/views/components/batch.vue'
   const state = reactive({
     componentsTabs: {
       data: [
