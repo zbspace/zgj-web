@@ -2921,10 +2921,4 @@
     top: 50%;
     transform: translateY(-50%);
   }
-
-  .nav-item {
-    // overflow: hidden;
-    border-top-right-radius: 20px !important;
-    border-bottom-right-radius: 20px !important;
-  }
 </style>

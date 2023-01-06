@@ -8,43 +8,21 @@
         <!-- LOGO -->
         <div class="navbar-brand-box logo-p-t">
           <!-- Dark Logo-->
-          <router-link
-            to="/"
-            class="logo logo-dark"
-          >
+          <router-link to="/" class="logo logo-dark">
             <span class="logo-sm">
-              <img
-                src="@/assets/icon/logo.png"
-                alt=""
-                height="22"
-              >
+              <img src="@/assets/icon/logo.png" alt="" height="22" />
             </span>
             <span class="logo-lg">
-              <img
-                src="@/assets/icon/logo.png"
-                alt=""
-                height="30"
-              >
+              <img src="@/assets/icon/logo.png" alt="" height="30" />
             </span>
           </router-link>
           <!-- Light Logo-->
-          <router-link
-            to="/"
-            class="logo logo-light"
-          >
+          <router-link to="/" class="logo logo-light">
             <span class="logo-sm">
-              <img
-                src="@/assets/icon/logo.png"
-                alt=""
-                height="22"
-              >
+              <img src="@/assets/icon/logo.png" alt="" height="22" />
             </span>
             <span class="logo-lg">
-              <img
-                src="@/assets/icon/logo.png"
-                alt=""
-                height="30"
-              >
+              <img src="@/assets/icon/logo.png" alt="" height="30" />
             </span>
           </router-link>
           <button
@@ -57,21 +35,14 @@
           </button>
         </div>
 
-        <SimpleBar
-          id="scrollbar"
-          class="h-100"
-          ref="scrollbar"
-        >
-          <Menu />
+        <SimpleBar id="scrollbar" class="h-100" ref="scrollbar">
+          <Menus />
         </SimpleBar>
         <div class="sidebar-background" />
       </div>
       <!-- Left Sidebar End -->
       <!-- Vertical Overlay-->
-      <div
-        class="vertical-overlay"
-        id="overlay"
-      />
+      <div class="vertical-overlay" id="overlay" />
     </div>
     <!-- ============================================================== -->
     <!-- Start Page Content here -->
@@ -91,79 +62,90 @@
 </template>
 
 <script>
-import router from '@/router'
-import { SimpleBar } from 'simplebar-vue3'
-// import { layoutComputed } from "@/state/helpers";
+  import router from '@/router'
+  import { SimpleBar } from 'simplebar-vue3'
+  // import { layoutComputed } from "@/state/helpers";
 
-import NavBar from '@/components/nav-bar'
-import Menu from '@/components/menu.vue'
-import RightBar from '@/components/right-bar'
-import Footer from '@/components/footer'
-localStorage.setItem('hoverd', false)
+  import NavBar from '@/components/nav-bar'
+  import Menus from '@/components/menu.vue'
+  import RightBar from '@/components/right-bar'
+  localStorage.setItem('hoverd', false)
 
-/**
- * Vertical layout
- */
-export default {
-  components: { NavBar, RightBar, Footer, SimpleBar, Menu },
-  data () {
-    return {
-      isMenuCondensed: false
-    }
-  },
-  computed: {
-    // ...layoutComputed,
-  },
-  created: () => {
-    document.body.removeAttribute('data-layout', 'horizontal')
-    document.body.removeAttribute('data-topbar', 'dark')
-    document.body.removeAttribute('data-layout-size', 'boxed')
-  },
-  methods: {
-    initActiveMenu () {
-      if (document.documentElement.getAttribute('data-sidebar-size') === 'sm-hover') {
-        localStorage.setItem('hoverd', true)
-        document.documentElement.setAttribute('data-sidebar-size', 'sm-hover-active')
-      } else if (document.documentElement.getAttribute('data-sidebar-size') === 'sm-hover-active') {
-        localStorage.setItem('hoverd', false)
-        document.documentElement.setAttribute('data-sidebar-size', 'sm-hover')
-      } else {
-        document.documentElement.setAttribute('data-sidebar-size', 'sm-hover')
+  /**
+   * Vertical layout
+   */
+  export default {
+    components: { NavBar, RightBar, SimpleBar, Menus },
+    data() {
+      return {
+        isMenuCondensed: false
       }
     },
-    toggleMenu () {
-      document.body.classList.toggle('sidebar-enable')
+    computed: {
+      // ...layoutComputed,
+    },
+    created: () => {
+      document.body.removeAttribute('data-layout', 'horizontal')
+      document.body.removeAttribute('data-topbar', 'dark')
+      document.body.removeAttribute('data-layout-size', 'boxed')
+    },
+    methods: {
+      initActiveMenu() {
+        if (
+          document.documentElement.getAttribute('data-sidebar-size') ===
+          'sm-hover'
+        ) {
+          localStorage.setItem('hoverd', true)
+          document.documentElement.setAttribute(
+            'data-sidebar-size',
+            'sm-hover-active'
+          )
+        } else if (
+          document.documentElement.getAttribute('data-sidebar-size') ===
+          'sm-hover-active'
+        ) {
+          localStorage.setItem('hoverd', false)
+          document.documentElement.setAttribute('data-sidebar-size', 'sm-hover')
+        } else {
+          document.documentElement.setAttribute('data-sidebar-size', 'sm-hover')
+        }
+      },
+      toggleMenu() {
+        document.body.classList.toggle('sidebar-enable')
 
-      if (window.screen.width >= 992) {
-        // eslint-disable-next-line no-unused-vars
-        router.afterEach((routeTo, routeFrom) => {
-          document.body.classList.remove('sidebar-enable')
+        if (window.screen.width >= 992) {
+          // eslint-disable-next-line no-unused-vars
+          router.afterEach((routeTo, routeFrom) => {
+            document.body.classList.remove('sidebar-enable')
+            document.body.classList.remove('vertical-collpsed')
+          })
+          document.body.classList.toggle('vertical-collpsed')
+        } else {
+          // eslint-disable-next-line no-unused-vars
+          router.afterEach((routeTo, routeFrom) => {
+            document.body.classList.remove('sidebar-enable')
+          })
           document.body.classList.remove('vertical-collpsed')
-        })
-        document.body.classList.toggle('vertical-collpsed')
-      } else {
-        // eslint-disable-next-line no-unused-vars
-        router.afterEach((routeTo, routeFrom) => {
-          document.body.classList.remove('sidebar-enable')
-        })
-        document.body.classList.remove('vertical-collpsed')
+        }
+        this.isMenuCondensed = !this.isMenuCondensed
+      },
+      toggleRightSidebar() {
+        document.body.classList.toggle('right-bar-enabled')
+      },
+      hideRightSidebar() {
+        document.body.classList.remove('right-bar-enabled')
       }
-      this.isMenuCondensed = !this.isMenuCondensed
     },
-    toggleRightSidebar () {
-      document.body.classList.toggle('right-bar-enabled')
-    },
-    hideRightSidebar () {
-      document.body.classList.remove('right-bar-enabled')
+    mounted() {
+      if (localStorage.getItem('hoverd') === 'true') {
+        document.documentElement.setAttribute(
+          'data-sidebar-size',
+          'sm-hover-active'
+        )
+      }
+      document.getElementById('overlay').addEventListener('click', () => {
+        document.body.classList.remove('vertical-sidebar-enable')
+      })
     }
-  },
-  mounted () {
-    if (localStorage.getItem('hoverd') === 'true') {
-      document.documentElement.setAttribute('data-sidebar-size', 'sm-hover-active')
-    }
-    document.getElementById('overlay').addEventListener('click', () => {
-      document.body.classList.remove('vertical-sidebar-enable')
-    })
   }
-}
 </script>

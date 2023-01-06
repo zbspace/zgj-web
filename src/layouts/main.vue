@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <Vertical
@@ -25,11 +24,11 @@
 </template>
 
 <script setup>
-// import { layoutComputed } from "@/state/helpers";
+  // import { layoutComputed } from "@/state/helpers";
 
-import Vertical from './vertical'
-import Horizontal from './horizontal'
-import TwoColumns from './twocolumn'
-import { useLayoutStore } from '@/store/layout'
-const layoutStore = useLayoutStore()
+  import Vertical from './vertical'
+  import Horizontal from './horizontal'
+  import TwoColumns from './twocolumn'
+  import { useLayoutStore } from '@/store/layout'
+  const layoutStore = useLayoutStore()
 </script>

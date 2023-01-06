@@ -251,17 +251,17 @@ $unify-primary-color: var(--primary-6);
 /* 
 日期选择聚焦颜色更改
 */
-:deep(.el-range-editor.is-active){
-    box-shadow:0 0 0 1px #D0963E inset !important;
+:deep(.el-range-editor.is-active) {
+  box-shadow: 0 0 0 1px #d0963e inset !important;
 }
 /* 
 计数器颜色修改
 */
-:deep(.el-input-number__decrease){
-    background: rgba(0, 0, 0, 0.04);
+:deep(.el-input-number__decrease) {
+  background: rgba(0, 0, 0, 0.04);
 }
-:deep(.el-input-number__increase){
-    background: rgba(0, 0, 0, 0.04);
+:deep(.el-input-number__increase) {
+  background: rgba(0, 0, 0, 0.04);
 }
 /* 
 左侧菜单 字体大小
@@ -325,6 +325,7 @@ body {
 }
 
 .page-content {
+  height: 100vh;
   padding-bottom: 0%;
   padding-top: 68px;
   padding-left: 0%;
@@ -332,7 +333,7 @@ body {
   padding-right: 0;
 
   .container-fluid {
-    padding: 0 24px;
+    padding: 0 16px;
     --vz-gutter-x: 0;
   }
 }
