@@ -575,10 +575,6 @@
     // 初始化表单单数据
     initFormData()
   })
-
-  const getSelectDepartInfo = () => {
-    emit('getSelectDepartInfo')
-  }
 </script>
 <style lang="scss" scoped>
   .components-searchForm {
