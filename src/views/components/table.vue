@@ -213,6 +213,15 @@
         background-color: var(--primary-6);
         border-color: var(--primary-6);
       }
+      .el-table__body tr.hover-row.current-row > td,
+      .el-table__body tr.hover-row.el-table__row--striped.current-row > td,
+      .el-table__body tr.hover-row.el-table__row--striped > td,
+      .el-table__body tr.hover-row > td {
+        background-color: var(--background-color-1);
+      }
+      .el-table tbody tr:hover > td {
+        background-color: var(--background-color-1);
+      }
     }
   }
 </style>
