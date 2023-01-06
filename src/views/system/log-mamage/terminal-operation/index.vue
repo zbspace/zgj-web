@@ -135,7 +135,6 @@
           width: '100px'
         }
       },
-
       data: [
         {
           id: 'name',

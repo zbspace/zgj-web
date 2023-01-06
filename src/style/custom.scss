@@ -234,13 +234,13 @@ $unify-primary-color: var(--primary-6);
   color: #c0c4cc;
 }
 /* 
-下拉框移入hover颜色去除
+下拉框移入hover颜色更改
 */
 // :deep(.el-select) {
 //   --el-select-border-color-hover: none;
 // }
 /* 
-下拉框聚焦颜色去除
+下拉框聚焦颜色更改
 */
 // :deep(.el-select .el-input__wrapper.is-focus) {
 //   box-shadow: none !important;
@@ -248,6 +248,21 @@ $unify-primary-color: var(--primary-6);
 // :deep(.el-select .el-input.is-focus .el-input__wrapper) {
 //   box-shadow: none !important;
 // }
+/* 
+日期选择聚焦颜色更改
+*/
+:deep(.el-range-editor.is-active){
+    box-shadow:0 0 0 1px #D0963E inset !important;
+}
+/* 
+计数器颜色修改
+*/
+:deep(.el-input-number__decrease){
+    background: rgba(0, 0, 0, 0.04);
+}
+:deep(.el-input-number__increase){
+    background: rgba(0, 0, 0, 0.04);
+}
 /* 
 左侧菜单 字体大小
 */
@@ -394,5 +409,35 @@ body {
     width: 6px;
     height: 6px;
     background-color: #d0963e;
+  }
+}
+
+// 表格页面 右上角按钮样式
+.title-more {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  .title-more-add {
+    margin-right: 0.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .title-more-down {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
+.more-operation-dropdown {
+  .el-scrollbar {
+    .el-dropdown-menu {
+      .el-dropdown-menu__item {
+        min-width: 108px;
+        justify-content: center;
+      }
+    }
   }
 }

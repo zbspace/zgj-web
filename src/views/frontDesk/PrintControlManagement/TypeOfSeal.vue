@@ -1,477 +1,508 @@
 <!-- 印章类型 -->
 <template>
-    <div class="PrintControlManagement-TypeOfSeal">
-        <componentsLayout Layout="title,searchForm,table,pagination,batch">
-            <template #title>
-                <div class="title">
-                    <div>印章类型</div>
-                    <div class="title-more">
-                        <div class="title-more-add">
-                            <el-button type="primary" @click="clickEditor('新增')">+ 增加</el-button>
-                        </div>
-                        <div class="title-more-down">
+  <div class="PrintControlManagement-TypeOfSeal">
+    <componentsLayout Layout="title,searchForm,table,pagination,batch">
+      <template #title>
+        <div class="title">
+          <div>印章类型</div>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="clickEditor('新增')"
+                >+ 增加</el-button
+              >
+            </div>
+            <div class="title-more-down"> </div>
+          </div>
+        </div>
+      </template>
+      <template #tabs>
+        <div>
+          <componentsTabs activeName="1" :data="state.componentsTabs.data">
+          </componentsTabs>
+        </div>
+      </template>
+      <template #searchForm>
+        <div>
+          <componentsSearchForm
+            :data="state.componentsSearchForm.data"
+            :butData="state.componentsSearchForm.butData"
+            :style="state.componentsSearchForm.style"
+          >
+          </componentsSearchForm>
+        </div>
+      </template>
 
-                        </div>
-                    </div>
-                </div>
-            </template>
-            <template #tabs>
-                <div>
-                    <componentsTabs activeName="1" :data="state.componentsTabs.data">
-                    </componentsTabs>
-                </div>
-            </template>
-            <template #searchForm>
-                <div>
-                    <componentsSearchForm :data="state.componentsSearchForm.data"
-                        :butData="state.componentsSearchForm.butData" :style="state.componentsSearchForm.style">
-                    </componentsSearchForm>
-                </div>
-            </template>
+      <template #batch>
+        <div class="batch">
+          <componentsBatch>
+            <el-button
+              :disabled="state.componentsBatch.selectionData.length == 0"
+              v-for="item in state.componentsBatch.data"
+              >{{ item.name }}</el-button
+            >
+          </componentsBatch>
+        </div>
+      </template>
 
-            <template #batch>
-                <div class="batch">
-                    <componentsBatch>
-                        <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button>
-                    </componentsBatch>
-                </div>
-            </template>
-
-            <template #table>
-                <div>
-                    <componentsTable :defaultAttribute="state.componentsTable.defaultAttribute"
-                        :data="state.componentsTable.data" :header="state.componentsTable.header"
-                        @selection-change="selectionChange" @custom-click="customClick">
-                    </componentsTable>
-                </div>
-            </template>
-            <template #pagination>
-                <componentsPagination :data="state.componentsPagination.data"
-                    :defaultAttribute="state.componentsPagination.defaultAttribute">
-                </componentsPagination>
-            </template>
-        </componentsLayout>
-        <!-- 动态表单 - 印章类型新增/修改 -->
-        <KDialog @update:show="fromState.showDialog = $event" :show="fromState.showDialog" :title="fromState.title"
-            :centerBtn="true" :confirmText="$t('t-zgj-operation.submit')" :concelText="$t('t-zgj-operation.cancel')"
-            :width="1000" :height="600" @close="submitLibraryForm" :key="fromState.title">
-            <v-form-render :form-json="fromState.formJson" :form-data="fromState.formJson"
-                :option-data="fromState.optionData" :ref="fromState.vFormLibraryRef">
-            </v-form-render>
-        </KDialog>
-    </div>
+      <template #table>
+        <div>
+          <componentsTable
+            :defaultAttribute="state.componentsTable.defaultAttribute"
+            :data="state.componentsTable.data"
+            :header="state.componentsTable.header"
+            @selection-change="selectionChange"
+            @custom-click="customClick"
+          >
+          </componentsTable>
+        </div>
+      </template>
+      <template #pagination>
+        <componentsPagination
+          :data="state.componentsPagination.data"
+          :defaultAttribute="state.componentsPagination.defaultAttribute"
+        >
+        </componentsPagination>
+      </template>
+    </componentsLayout>
+    <!-- 动态表单 - 印章类型新增/修改 -->
+    <KDialog
+      @update:show="fromState.showDialog = $event"
+      :show="fromState.showDialog"
+      :title="fromState.title"
+      :centerBtn="true"
+      :confirmText="$t('t-zgj-operation.submit')"
+      :concelText="$t('t-zgj-operation.cancel')"
+      :width="1000"
+      :height="600"
+      @close="submitLibraryForm"
+      :key="fromState.title"
+    >
+      <v-form-render
+        :form-json="fromState.formJson"
+        :form-data="fromState.formJson"
+        :option-data="fromState.optionData"
+        :ref="fromState.vFormLibraryRef"
+      >
+      </v-form-render>
+    </KDialog>
+  </div>
 </template>
 <script setup>
-import { ref, reactive, defineProps, defineEmits, onBeforeMount, onMounted } from "vue"
-import Layout from "../../../layouts/main.vue";
-import componentsTable from "../../components/table"
-import componentsSearchForm from "../../components/searchForm"
-import componentsTree from "../../components/tree"
-import componentsBreadcrumb from "../../components/breadcrumb"
-import componentsPagination from "../../components/pagination.vue"
-import componentsTabs from "../../components/tabs.vue"
-import componentsLayout from "../../components/Layout.vue"
-import componentsBatch from "@/views/components/batch.vue"
-import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
-import KDialog from "@/views/components/modules/kdialog.vue"
-import { ElMessage, ElMessageBox } from 'element-plus'
-const props = defineProps({
+  import {
+    ref,
+    reactive,
+    defineProps,
+    defineEmits,
+    onBeforeMount,
+    onMounted
+  } from 'vue'
+  import Layout from '../../../layouts/main.vue'
+  import componentsTable from '../../components/table'
+  import componentsSearchForm from '../../components/searchForm'
+  import componentsTree from '../../components/tree'
+  import componentsBreadcrumb from '../../components/breadcrumb'
+  import componentsPagination from '../../components/pagination.vue'
+  import componentsTabs from '../../components/tabs.vue'
+  import componentsLayout from '../../components/Layout.vue'
+  import componentsBatch from '@/views/components/batch.vue'
+  import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
+  import KDialog from '@/views/components/modules/kdialog.vue'
+  import { ElMessage, ElMessageBox } from 'element-plus'
+  const props = defineProps({
     // 处理类型
     type: {
-        type: String,
-        default: "0",
-    },
-})
+      type: String,
+      default: '0'
+    }
+  })
 
-// 印章类型 新增弹框
-const fromState = reactive({
+  // 印章类型 新增弹框
+  const fromState = reactive({
     title: '',
-    formJson: StampTypeApplicationJson,//动态表单内容
+    formJson: StampTypeApplicationJson, //动态表单内容
     optionData: null,
-    vFormLibraryRef: "vFormLibraryRef",
-    showDialog: false,
-})
-const vFormLibraryRef = ref(null)
+    vFormLibraryRef: 'vFormLibraryRef',
+    showDialog: false
+  })
+  const vFormLibraryRef = ref(null)
 
-const emit = defineEmits([]);
-const state = reactive({
+  const emit = defineEmits([])
+  const state = reactive({
     componentsTabs: {
-        data: [{
-            label: '待签章',
-            name: "1",
-        }, {
-            label: '已签章',
-            name: "2",
-        }, {
-            label: '不可用',
-            name: "3",
-        },]
+      data: [
+        {
+          label: '待签章',
+          name: '1'
+        },
+        {
+          label: '已签章',
+          name: '2'
+        },
+        {
+          label: '不可用',
+          name: '3'
+        }
+      ]
     },
     componentsSearchForm: {
-        style: {
-            lineStyle: {
-                width: "calc(100% / 3)",
-            },
-            labelStyle: {
-                width: "100px"
-            },
+      style: {
+        lineStyle: {
+          width: 'calc(100% / 3)'
         },
-        data: [
-            {
-                id: 'name',
-                label: "关键词",
-                type: "input",
-                inCommonUse: true,
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    placeholder: "请输入",
-                },
-            },
-            {
-                id: 'picker',
-                label: "选择时间",
-                type: "picker",
-                inCommonUse: true,
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    type: "daterange",
-                    "start-placeholder": "开始时间",
-                    "end-placeholder": "结束时间"
-                },
-                style: {
-
-                }
-            },
-        ],
-        butData: [{
-            id: "more",
-            name: "展开",
-            type: "unfold",
-            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-            defaultAttribute: {
-                type: "primary"
-            },
-            style: {
-
-            }
-        }, {
-            id: "inquire",
-            name: "查询",
-            type: "click",
-            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-            defaultAttribute: {
-                type: "primary"
-            },
-            style: {
-
-            }
-        }, {
-            id: "reset",
-            name: "重置",
-            type: "click",
-            // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-            defaultAttribute: {
-
-            },
-            style: {
-
-            }
-        },],
+        labelStyle: {
+          width: '100px'
+        }
+      },
+      data: [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '请输入'
+          }
+        },
+        {
+          id: 'picker',
+          label: '选择时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        }
+      ],
+      butData: [
+        {
+          id: 'more',
+          name: '展开',
+          type: 'unfold',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'primary'
+          },
+          style: {}
+        },
+        {
+          id: 'inquire',
+          name: '查询',
+          type: 'click',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'primary'
+          },
+          style: {}
+        },
+        {
+          id: 'reset',
+          name: '重置',
+          type: 'click',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {},
+          style: {}
+        }
+      ]
     },
     componentsTable: {
-        header: [
+      header: [
+        {
+          width: 50,
+          type: 'selection'
+        },
+        {
+          prop: '0',
+          label: '序号',
+          width: 100
+        },
+        {
+          prop: '1',
+          label: '印章类型编码',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: '2',
+          label: '印章类型名称',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '3',
+          label: '描述',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '4',
+          label: '智能印章',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '5',
+          label: '普通印章',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '6',
+          label: '创建人',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '7',
+          label: '创建时间',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'caozuo',
+          label: '操作',
+          fixed: 'right',
+          'min-width': 150,
+          rankDisplayData: [
             {
-                width: 50,
-                type: "selection"
+              name: '修改'
             },
             {
-                prop: '0',
-                label: "序号",
-                width: 100,
-            }, {
-                prop: '1',
-                label: "印章类型编码",
-                sortable: true,
-                "min-width": 150,
-            }, {
-                prop: '2',
-                label: "印章类型名称",
-                sortable: true,
-                "min-width": 150,
-            }, {
-                prop: '3',
-                label: "描述",
-                sortable: true,
-                "min-width": 150,
-            }, {
-                prop: '4',
-                label: "智能印章",
-                sortable: true,
-                "min-width": 150,
-            }, {
-                prop: '5',
-                label: "普通印章",
-                sortable: true,
-                "min-width": 150,
-            }, {
-                prop: '6',
-                label: "创建人",
-                sortable: true,
-                "min-width": 150,
-            }, {
-                prop: '7',
-                label: "创建时间",
-                sortable: true,
-                "min-width": 150,
-            },
-            {
-                prop: 'caozuo',
-                label: "操作",
-                fixed: "right",
-                "min-width": 150,
-                rankDisplayData: [
-                    {
-                        name: "修改"
-                    },
-                    {
-                        name: "删除"
-                    },
-                ],
-            }],
-        data: [
-            {
-                1: '2022122023212245645',
-                2: '1',
-                3: '公章',
-                4: '是',
-                5: '否',
-                6: '邱伟',
-                7: '2022-12-20',
-            },
-            {
-                1: '2022122023212245645',
-                2: '1',
-                3: '公章',
-                4: '是',
-                5: '否',
-                6: '邱伟',
-                7: '2022-12-20',
-            },
-            {
-                1: '2022122023212245645',
-                2: '1',
-                3: '公章',
-                4: '是',
-                5: '否',
-                6: '邱伟',
-                7: '2022-12-20',
-            },
-            {
-                1: '2022122023212245645',
-                2: '1',
-                3: '公章',
-                4: '是',
-                5: '否',
-                6: '邱伟',
-                7: '2022-12-20',
-            },
-            {
-                1: '2022122023212245645',
-                2: '1',
-                3: '公章',
-                4: '是',
-                5: '否',
-                6: '邱伟',
-                7: '2022-12-20',
+              name: '删除'
             }
-        ],
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            stripe: true,
-            "header-cell-style": {
-                background: "var(--color-fill--3)",
-            }
+          ]
         }
+      ],
+      data: [
+        {
+          1: '2022122023212245645',
+          2: '1',
+          3: '公章',
+          4: '是',
+          5: '否',
+          6: '邱伟',
+          7: '2022-12-20'
+        },
+        {
+          1: '2022122023212245645',
+          2: '1',
+          3: '公章',
+          4: '是',
+          5: '否',
+          6: '邱伟',
+          7: '2022-12-20'
+        },
+        {
+          1: '2022122023212245645',
+          2: '1',
+          3: '公章',
+          4: '是',
+          5: '否',
+          6: '邱伟',
+          7: '2022-12-20'
+        },
+        {
+          1: '2022122023212245645',
+          2: '1',
+          3: '公章',
+          4: '是',
+          5: '否',
+          6: '邱伟',
+          7: '2022-12-20'
+        },
+        {
+          1: '2022122023212245645',
+          2: '1',
+          3: '公章',
+          4: '是',
+          5: '否',
+          6: '邱伟',
+          7: '2022-12-20'
+        }
+      ],
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        stripe: true,
+        'header-cell-style': {
+          background: 'var(--color-fill--3)'
+        }
+      }
     },
     componentsTree: {
-        data: [
+      data: [
+        {
+          label: 'A层级菜单1',
+          children: [
             {
-                label: 'A层级菜单1',
-                children: [
-                    {
-                        label: 'B层级菜单1',
-                        children: [
-                            {
-                                label: 'C层级菜单1',
-                            },
-                        ],
-                    },
-                ],
+              label: 'B层级菜单1',
+              children: [
+                {
+                  label: 'C层级菜单1'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: 'A层级菜单2',
+          children: [
+            {
+              label: 'B层级菜单1',
+              children: [
+                {
+                  label: 'C层级菜单1'
+                }
+              ]
             },
             {
-                label: 'A层级菜单2',
-                children: [
-                    {
-                        label: 'B层级菜单1',
-                        children: [
-                            {
-                                label: 'C层级菜单1',
-                            },
-                        ],
-                    },
-                    {
-                        label: 'B层级菜单2',
-                        children: [
-                            {
-                                label: 'C层级菜单1',
-                            },
-                        ],
-                    },
-                ],
+              label: 'B层级菜单2',
+              children: [
+                {
+                  label: 'C层级菜单1'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: 'A层级菜单3',
+          children: [
+            {
+              label: 'B层级菜单1',
+              children: [
+                {
+                  label: 'C层级菜单1'
+                }
+              ]
             },
             {
-                label: 'A层级菜单3',
-                children: [
-                    {
-                        label: 'B层级菜单1',
-                        children: [
-                            {
-                                label: 'C层级菜单1',
-                            },
-                        ],
-                    },
-                    {
-                        label: 'B层级菜单2',
-                        children: [
-                            {
-                                label: 'C层级菜单1',
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            "check-on-click-node": true,
-            "show-checkbox": false,
-            "default-expand-all": true,
-            "expand-on-click-node": false,
-            "check-strictly": true,
+              label: 'B层级菜单2',
+              children: [
+                {
+                  label: 'C层级菜单1'
+                }
+              ]
+            }
+          ]
         }
+      ],
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        'check-on-click-node': true,
+        'show-checkbox': false,
+        'default-expand-all': true,
+        'expand-on-click-node': false,
+        'check-strictly': true
+      }
     },
     componentsPagination: {
-        data: {
-            amount: 400,
-            index: 1,
-            pageNumber: 80,
-        },
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            layout: "sizes, prev, pager, next, jumper",
-            total: 500,
-            'page-sizes': [10, 100, 200, 300, 400],
-            background: true,
-        }
+      data: {
+        amount: 400,
+        index: 1,
+        pageNumber: 80
+      },
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        layout: 'prev, pager, next, jumper',
+        total: 500,
+        'page-sizes': [10, 100, 200, 300, 400],
+        background: true
+      }
     },
     componentsBreadcrumb: {
-        data: [
-            {
-                name: "ceshi",
-            },
-            {
-                name: "ceshi",
-            }
-        ],
-        // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        defaultAttribute: {
-            separator: "/",
+      data: [
+        {
+          name: 'ceshi'
+        },
+        {
+          name: 'ceshi'
         }
+      ],
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        separator: '/'
+      }
     },
     componentsBatch: {
-        selectionData: [],
-        data: [
-            {
-                name: "批量删除"
-            }
-        ]
-    },
-});
-function clickEditor(editor) {
-    fromState.title = editor;
-    fromState.showDialog = true;
-}
-//点击表格按钮
-function customClick(row, column, cell, event) {
+      selectionData: [],
+      data: [
+        {
+          name: '批量删除'
+        }
+      ]
+    }
+  })
+  function clickEditor(editor) {
+    fromState.title = editor
+    fromState.showDialog = true
+  }
+  //点击表格按钮
+  function customClick(row, column, cell, event) {
     if (cell.name === '修改') {
-        clickEditor(cell.name);
+      clickEditor(cell.name)
     }
     if (cell.name == '删除') {
-        ElMessageBox.confirm(
-            '请问确定要删除吗？',
-            {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning',
-            }
-        )
-            .then(() => {
-
-            })
+      ElMessageBox.confirm('请问确定要删除吗？', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {})
     }
-}
+  }
 
-//当选择项发生变化时会触发该事件
-function selectionChange(selection) {
+  //当选择项发生变化时会触发该事件
+  function selectionChange(selection) {
     //    console.log(selection);
-    state.componentsBatch.selectionData = selection;
-}
+    state.componentsBatch.selectionData = selection
+  }
 
-onBeforeMount(() => {
+  onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-
-})
-onMounted(() => {
+  })
+  onMounted(() => {
     // console.log(`the component is now mounted.`)
-})
+  })
 </script>
-<style lang='scss' scoped>
-.PrintControlManagement-TypeOfSeal {
+<style lang="scss" scoped>
+  .PrintControlManagement-TypeOfSeal {
     margin: 0%;
 
     .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .title-more {
+        height: 100%;
         display: flex;
         align-items: center;
-        justify-content: space-between;
 
-        .title-more {
-            height: 100%;
-            display: flex;
-            align-items: center;
-
-            .title-more-add {
-                margin-right: 0.5rem;
-                height: 100%;
-                display: flex;
-                align-items: center;
-            }
-
-            .title-more-down {
-                height: 100%;
-                display: flex;
-                align-items: center;
-            }
+        .title-more-add {
+          margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
         }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
     }
 
     .batch {
-        display: flex;
-        align-items: center;
+      display: flex;
+      align-items: center;
 
-        .batch-desc {
-            @include mixin-margin-right(12)
-        }
+      .batch-desc {
+        @include mixin-margin-right(12);
+      }
     }
-}
+  }
 </style>
