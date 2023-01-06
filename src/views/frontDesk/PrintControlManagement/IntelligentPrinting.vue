@@ -561,7 +561,7 @@
   // 切换分页
   function tabChange(activeName) {
     // console.log(activeName);
-    if (activeName == '1') {
+    if (activeName === '1') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -711,7 +711,7 @@
           10: ''
         }
       ]
-    } else if (activeName == '2') {
+    } else if (activeName === '2') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -855,7 +855,7 @@
           10: ''
         }
       ]
-    } else if (activeName == '3') {
+    } else if (activeName === '3') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -999,7 +999,7 @@
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
