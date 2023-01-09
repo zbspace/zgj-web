@@ -17,6 +17,16 @@ const routes = {
         import('@/views/system/company-manage/company-info/index.vue')
     },
     {
+      path: 'license',
+      name: 'update-license',
+      meta: {
+        title: '更新license',
+        authRequired: true
+      },
+      component: () =>
+        import('@/views/system/company-manage/update-license/index.vue')
+    },
+    {
       path: 'company_dealing',
       name: 'company-dealing',
       meta: {

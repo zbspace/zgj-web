@@ -1,95 +1,54 @@
 <template>
-  <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,batch">
+  <div class="update-license">
+    <componentsLayout Layout="title,custom">
       <template #title>
         <div class="title">
-          <div>往来企业</div>
-          <div class="title-more">
-            <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
-                >+ 增加</el-button
-              >
+          <div>更新license</div>
+          <div class="title-more"> </div>
+        </div>
+      </template>
+      <template #custom>
+        <div class="custom">
+          <div class="custom-input">
+            <div class="custom-input-val">
+              <el-input v-model="input" placeholder="输入license" />
+              <el-button type="primary">获取</el-button>
             </div>
-            <div class="title-more-down">
-              <el-dropdown>
-                <el-button>
-                  <img
-                    class="button-icon"
-                    src="@/assets/svg/gengduo-caozuo.svg"
-                    alt=""
-                    srcset=""
-                  />
-                  <span>更多操作</span>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>导入</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+            <div class="custom-input-desc"
+              >说明：请输入新的许可证密钥（license）来获取系统使用权限
             </div>
+          </div>
+          <div class="custom-table">
+            <componentsTable
+              :defaultAttribute="state.componentsTable.defaultAttribute"
+              :data="state.componentsTable.data"
+              :header="state.componentsTable.header"
+              :isSelection="true"
+              @cellClick="cellClick"
+              @custom-click="customClick"
+            >
+            </componentsTable>
+          </div>
+          <div class="custom-pagination">
+            <componentsPagination
+              :data="state.componentsPagination.data"
+              :defaultAttribute="state.componentsPagination.defaultAttribute"
+            >
+            </componentsPagination>
           </div>
         </div>
       </template>
-
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
-      <template #batch>
-        <div class="batch">
-          <el-button>批量删除</el-button>
-        </div>
-      </template>
-
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :isSelection="true"
-            @cellClick="cellClick"
-            @custom-click="customClick"
-          >
-          </componentsTable>
-        </div>
-      </template>
-
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-        >
-        </componentsPagination>
-      </template>
     </componentsLayout>
-    <!-- 往来详情 -->
-    <div class="ap-box">
-      <componentsDocumentsDetails
-        :show="state.componentsDocumentsDetails.show"
-        :visible="state.componentsDocumentsDetails.visible"
-        @clickClose="clickClose"
-      >
-      </componentsDocumentsDetails>
-    </div>
   </div>
 </template>
 
 <script setup>
   import { reactive } from 'vue'
   import componentsTable from '@/views/components/table'
-  import componentsSearchForm from '@/views/components/searchForm'
+  // import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
+  // import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import { ElMessageBox } from 'element-plus'
   const state = reactive({
     componentsSearchForm: {
@@ -159,11 +118,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          fixed: true
-        },
-        {
           prop: '0',
           label: '序号',
           width: 80,
@@ -171,114 +125,39 @@
           fixed: true
         },
         {
-          prop: '2',
-          label: '企业名称',
+          prop: '1',
+          label: 'license密钥',
           sortable: true,
           'min-width': 150,
           fixed: true,
           'show-overflow-tooltip': true
         },
         {
-          prop: '1',
-          label: '企业编码',
+          prop: '2',
+          label: '更新人',
           sortable: true,
           'min-width': 150
         },
 
         {
           prop: '3',
-          label: '所属部门',
+          label: '更新时间',
           sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '联系人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '联系方式',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '备注',
-          sortable: true,
-          'min-width': 150,
-          'show-overflow-tooltip': true
-        },
-        {
-          prop: '7',
-          label: '操作',
-          fixed: 'right',
-          width: '120px',
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '删除'
-            }
-          ]
+          'min-width': 180
         }
       ],
       data: [
         {
           0: 1,
-          1: '001',
-          2: '222222222222222222222222222222222222222222222222',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
+          1: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+          2: '王往',
+          3: '2022-12-26 18:00:00'
         },
         {
           0: 1,
-          1: '001',
-          2: '222222222222222222222222222222222222222222222222',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          0: 1,
-          1: '001',
-          2: '222222222222222222222222222222222222222222222222',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          0: 1,
-          1: '001',
-          2: '222222222222222222222222222222222222222222222222',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          0: 1,
-          1: '001',
-          2: '222222222222222222222222222222222222222222222222',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          0: 1,
-          1: '001',
-          2: '222222222222222222222222222222222222222222222222',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
+          1: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+          2: '里斯',
+          3: '2022-12-26 18:00:00'
         }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -289,7 +168,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '2') {
+          if (column.property === '1') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -307,7 +186,7 @@
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
-        layout: 'sizes, prev, pager, next, jumper',
+        layout: 'prev, pager, next, jumper',
         total: 500,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
@@ -397,15 +276,15 @@
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
-    if (column.property === '2') {
-      state.componentsDocumentsDetails.show = true
+    // console.log(row, column, cell, event)
+    if (column.property === '1') {
+      // state.componentsDocumentsDetails.show = true
     }
   }
-  // 点击关闭
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
-  }
+  // // 点击关闭
+  // function clickClose() {
+  //   state.componentsDocumentsDetails.show = false
+  // }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(cell.name)
@@ -423,27 +302,41 @@
 </script>
 
 <style lang="scss" scoped>
-  .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .title-more {
-      height: 100%;
+  .update-license {
+    .title {
       display: flex;
       align-items: center;
-
-      .title-more-add {
-        margin-right: 0.5rem;
+      justify-content: space-between;
+      .title-more {
         height: 100%;
         display: flex;
         align-items: center;
-      }
 
-      .title-more-down {
-        height: 100%;
-        display: flex;
-        align-items: center;
+        .title-more-add {
+          margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
       }
+    }
+    .custom-input {
+      margin: 0.5rem 0rem;
+    }
+    .custom-pagination {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding: 1.5rem 0;
+      box-sizing: border-box;
+      padding-right: 0rem;
+      box-sizing: border-box;
     }
   }
 </style>

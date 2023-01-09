@@ -233,7 +233,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--1)'
+          background: 'var(--color-fill--3)'
         }
       }
     },

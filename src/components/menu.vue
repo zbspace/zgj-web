@@ -2573,7 +2573,7 @@
             {
               name: '更新license',
               label: 't-zgj-cg-menu-gengxin-license',
-              to: '/system/company/info',
+              to: '/system/company/license',
               icon: icon19
             },
             {
