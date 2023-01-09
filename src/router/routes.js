@@ -263,6 +263,15 @@ export default [
               )
           },
           {
+            path: 'Grid-management/GridType',
+            name: 'GridType',
+            meta: { title: 'GridType', authRequired: true },
+            component: () =>
+              import(
+                '../views/frontDesk/PrintControlManagement/Grid-management/GridType.vue'
+              )
+          },
+          {
             path: 'Seal-application/accomplish',
             name: 'Seal-application-accomplish',
             meta: { title: 'accomplish', authRequired: true },

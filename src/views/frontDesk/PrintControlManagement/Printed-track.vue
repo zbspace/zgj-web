@@ -5,12 +5,12 @@
             <template #title>
                 <div class="title">
                     <div>用印轨迹</div>
-                    <div>
+                    <!-- <div>
                         <el-button>
                             <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
                             <span>更多操作</span>
                         </el-button>
-                    </div>
+                    </div> -->
                 </div>
             </template>
             <template #tabs>
@@ -99,21 +99,21 @@ const state = reactive({
                     placeholder: "请输入",
                 },
             },
-            {
-                id: 'picker',
-                label: "选择时间",
-                type: "picker",
-                inCommonUse: true,
-                // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-                defaultAttribute: {
-                    type: "daterange",
-                    "start-placeholder": "开始时间",
-                    "end-placeholder": "结束时间"
-                },
-                style: {
+            // {
+            //     id: 'picker',
+            //     label: "选择时间",
+            //     type: "picker",
+            //     inCommonUse: true,
+            //     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+            //     defaultAttribute: {
+            //         type: "daterange",
+            //         "start-placeholder": "开始时间",
+            //         "end-placeholder": "结束时间"
+            //     },
+            //     style: {
 
-                }
-            },
+            //     }
+            // },
         ],
         butData: [{
             id: "more",
@@ -230,13 +230,13 @@ onMounted(() => {
                 .seal-item-wrap {
                     display: flex;
                     height: 96px;
-                    padding: 22px 0 0 22px;
+                    padding: 16px 0 0 16px;
                     box-sizing: border-box;
                     cursor: pointer;
 
                     >span {
-                        width: 24px;
-                        height: 24px;
+                        width: 16px;
+                        height: 16px;
                         background-image: url('../../../assets/svg/map-pin-fillweizhi.svg');
                         background-repeat: no-repeat;
                         background-size: 100% auto;
@@ -245,11 +245,11 @@ onMounted(() => {
                     }
 
                     >div {
-                        font-size: 14px;
+                        font-size: 12px;
                         color: rgba(0, 0, 0, 0.65);
 
                         >h3 {
-                            font-size: 16px;
+                            font-size: 14px;
                             color: rgba(0, 0, 0, 0.85);
                             font-style: normal;
                         }
