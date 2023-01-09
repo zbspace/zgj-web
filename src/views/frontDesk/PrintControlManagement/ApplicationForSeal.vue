@@ -56,6 +56,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -125,6 +126,13 @@
       >
       </v-form-render>
     </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
@@ -150,6 +158,7 @@
   import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
   import StampChangeJson from '@/views/addDynamicFormJson/StampChange.json'
   import KDialog from '@/views/components/modules/kdialog.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   const props = defineProps({
     // 处理类型
     type: {
@@ -166,7 +175,7 @@
     showDialog: false
   })
   const vFormLibraryRef = ref(null)
-
+  const showDepPerDialog = ref(false)
   const submitLibraryForm = type => {
     if (!type) {
       vFormLibraryRef.value.resetForm()
@@ -625,6 +634,14 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {

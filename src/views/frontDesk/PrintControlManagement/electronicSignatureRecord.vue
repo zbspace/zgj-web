@@ -45,6 +45,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -90,10 +91,18 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
+    ref,
     reactive,
     defineProps,
     defineEmits,
@@ -110,6 +119,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   const props = defineProps({
     // 处理类型
@@ -708,6 +718,7 @@
       ]
     }
   })
+  const showDepPerDialog = ref(false)
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -1103,6 +1114,14 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {
