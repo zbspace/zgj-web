@@ -52,21 +52,21 @@
         <div class="pc-name" v-if="platform === 'pc'">{{ boxCode }}</div>
         <!-- 按钮组 -->
         <div class="btns">
-          <div
+          <el-button
             class="unlock-btn btn"
             v-if="!isCancel"
             @click.stop="unlock"
           >
           <!-- :style="{ marginTop: !isBound && platform === 'pc' ? '60px' : '' }" -->
             开锁
-          </div>
-          <div
+          </el-button>
+          <el-button
             class="check-btn btn"
             v-if="!isCancel"
             @click.stop="check"
           >
             盘点
-          </div>
+          </el-button>
           <div
             class="unlock-btn btn seal-btn"
             v-if="isCancel"
@@ -289,6 +289,7 @@ export default {
         font-weight: 500;
         font-size: 12px;
         color: #D0963E;
+        margin-left:0;
       }
       .seal-btn {
         margin-top: 60px;
