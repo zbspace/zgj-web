@@ -30,6 +30,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -67,10 +68,18 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
+    ref,
     reactive,
     defineProps,
     defineEmits,
@@ -86,6 +95,7 @@
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   const props = defineProps({
     // 处理类型
     type: {
@@ -426,11 +436,20 @@
       ]
     }
   })
+  const showDepPerDialog = ref(false)
 
   //当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {
