@@ -121,8 +121,8 @@
                                     </div>
                                 </div>
                                 <div class="grid-btn">
-                                    <button class="openLock" @click.stop="handleOpen(item)">开锁</button>
-                                    <button @click.stop="handlePan(item)">盘点</button>
+                                    <el-button class="openLock" @click.stop="handleOpen(item)">开锁</el-button>
+                                    <el-button class="check-btn btn" @click.stop="handlePan(item)">盘点</el-button>
                                 </div>
                                 <div class="grid-btn" v-if="false">
                                     <div class="grid-pan-text" v-if="item.enable">
@@ -655,6 +655,9 @@ onMounted(() => {
                     color: rgba(0, 0, 0, 0.65);
                     cursor: pointer;
                 }
+                .check-button{
+
+                }
             }
         }
 
@@ -943,7 +946,9 @@ onMounted(() => {
                     background-repeat: no-repeat;
                     border-radius: 2px;
                 }
-
+                .check-btn{
+                    margin-left:0;
+                }
                 >.openLock {
                     background: #D0963E;
                     color: #FFFFFF;
