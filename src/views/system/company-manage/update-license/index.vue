@@ -11,8 +11,19 @@
         <div class="custom">
           <div class="custom-input">
             <div class="custom-input-val">
-              <el-input v-model="input" placeholder="输入license" />
-              <el-button type="primary">获取</el-button>
+              <div class="custom-input-val-input">
+                <el-input
+                  v-model="state.cache.setLicense"
+                  placeholder="输入license"
+                />
+              </div>
+              <el-button
+                class="custom-input-val-button"
+                type="primary"
+                @click="clickGain"
+              >
+                获取
+              </el-button>
             </div>
             <div class="custom-input-desc"
               >说明：请输入新的许可证密钥（license）来获取系统使用权限
@@ -39,18 +50,98 @@
         </div>
       </template>
     </componentsLayout>
+    <KDialog
+      @update:show="showDialog = $event"
+      :show="showDialog"
+      title="license信息"
+      :centerBtn="true"
+      :confirmText="$t('t-zgj-operation.submit')"
+      :concelText="$t('t-zgj-operation.cancel')"
+      :width="1000"
+      :height="700"
+    >
+      <div class="licenseInfo">
+        <div class="licenseInfo-title">
+          <div class="licenseInfo-title-cont">
+            <div class="licenseInfo-title-cont-title">系统版本</div>
+            <div class="licenseInfo-title-cont-v">V1.2.5</div>
+            <div class="licenseInfo-title-cont-desc">
+              产品识别码：254455FJFHS4585SKJAHDK444--4444555SJJXHHU887
+            </div>
+          </div>
+        </div>
+        <div class="licenseInfo-authorization">
+          <div class="licenseInfo-authorization-title">授权信息</div>
+          <div class="licenseInfo-authorization-cont">
+            <div
+              v-for="(item, index) in state.cache.authorizationMessage.list"
+              :key="index"
+              class="licenseInfo-authorization-cont-list"
+            >
+              <div class="licenseInfo-authorization-cont-list-label">
+                {{ item.label }}：
+              </div>
+              <div class="licenseInfo-authorization-cont-list-value">
+                {{ item.value }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </KDialog>
   </div>
 </template>
 
 <script setup>
-  import { reactive } from 'vue'
+  import { ref, reactive } from 'vue'
   import componentsTable from '@/views/components/table'
   // import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
   // import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import { ElMessageBox } from 'element-plus'
+
+  import KDialog from '@/views/components/modules/kdialog.vue'
   const state = reactive({
+    cache: {
+      setLicense: '',
+      authorizationMessage: {
+        list: [
+          {
+            label: 'license',
+            value: '254455FJFHS4585SKJAHDK444--4444555SJJXHHU887'
+          },
+          {
+            label: '授权用户',
+            value: '章管家'
+          },
+          {
+            label: 'license过期时间',
+            value: '永不过期'
+          },
+          {
+            label: '内部单位数',
+            value: '不限'
+          },
+          {
+            label: '外部单位数',
+            value: '不限'
+          },
+          {
+            label: '内部个人用户数',
+            value: '不限'
+          },
+          {
+            label: '外部个人用户数',
+            value: '不限'
+          },
+          {
+            label: '应用接入数',
+            value: '不限'
+          }
+        ]
+      }
+    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -274,6 +365,7 @@
       ]
     }
   })
+  const showDialog = ref(false)
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event)
@@ -298,6 +390,11 @@
         type: 'warning'
       }).then(() => {})
     }
+  }
+
+  // 点击获取
+  function clickGain() {
+    showDialog.value = true
   }
 </script>
 
@@ -328,6 +425,30 @@
     }
     .custom-input {
       margin: 0.5rem 0rem;
+      display: flex;
+      flex-flow: wrap;
+      justify-content: center;
+      align-content: flex-start;
+      .custom-input-val {
+        display: flex;
+        align-items: center;
+        width: 60%;
+        .custom-input-val-input {
+          width: calc(100% - 4rem);
+          padding-right: 0.5rem;
+          box-sizing: border-box;
+        }
+      }
+      .custom-input-desc {
+        display: flex;
+        align-items: center;
+        width: 60%;
+        margin: 1rem 0;
+        color: var(--color-text-2);
+      }
+    }
+    .custom-table {
+      margin: 1rem 0 0.5rem 0;
     }
     .custom-pagination {
       width: 100%;
@@ -337,6 +458,54 @@
       box-sizing: border-box;
       padding-right: 0rem;
       box-sizing: border-box;
+    }
+    .licenseInfo {
+      .licenseInfo-title {
+        margin-bottom: 1rem;
+        .licenseInfo-title-cont {
+          padding: 1rem;
+          box-sizing: border-box;
+          background-color: var(--color-fill--2);
+          border-radius: var(--border-radius-4);
+          .licenseInfo-title-cont-title {
+            font-size: var(--font-size-body-2);
+          }
+          .licenseInfo-title-cont-v {
+            padding: 0.5rem 0;
+            box-sizing: border-box;
+            font-size: var(--font-size-title-3);
+            font-weight: 500;
+          }
+          .licenseInfo-title-cont-desc {
+            color: var(--color-text-3);
+          }
+        }
+      }
+      .licenseInfo-authorization {
+        .licenseInfo-authorization-title {
+          color: var(--color-text-1);
+          margin-bottom: 0.5rem;
+        }
+        .licenseInfo-authorization-cont {
+          padding: 1rem;
+          box-sizing: border-box;
+          border-radius: var(--border-radius-4);
+          border: 1px solid var(--color-border-1);
+          .licenseInfo-authorization-cont-list {
+            display: flex;
+            padding: 0.5rem 0rem;
+            box-sizing: border-box;
+            .licenseInfo-authorization-cont-list-label {
+              width: 10rem;
+              text-align: right;
+              color: var(--color-text-3);
+            }
+            .licenseInfo-authorization-cont-list-value {
+              color: var(--color-text-1);
+            }
+          }
+        }
+      }
     }
   }
 </style>
