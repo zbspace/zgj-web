@@ -27,7 +27,7 @@
                                 </u>
                                 <div class="grid-btns">
                                     <div class="check-button" @click="checkAll">一键盘点</div>
-                                    <div class="grid-type">格口类型</div>
+                                    <div class="grid-type" @click="goGridType">格口类型</div>
                                 </div>
 
                             </div>
@@ -500,6 +500,11 @@ function customClick(row, column, cell, event) {
 function goDetail(item) {
     router.push({
         path: "/frontDesk/PrintControlManagement/Grid-management/CabinetGridInfo"
+    })
+}
+function goGridType(){
+    router.push({
+        path: "/frontDesk/PrintControlManagement/Grid-management/GridType"
     })
 }
 function selectSealBox(index) {
