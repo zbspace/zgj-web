@@ -5,16 +5,10 @@
       <template #title>
         <div class="title">
           <div> 审批流程 </div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary">导出台账</el-button>
+            </div>
           </div>
         </div>
       </template>
@@ -57,7 +51,6 @@
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
             @selection-change="selectionChange"
-            @cellClick="cellClick"
             @custom-click="customClick"
           >
           </componentsTable>
@@ -205,6 +198,15 @@
           style: {}
         },
         {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+选择部门'
+          }
+        },
+        {
           id: 'wjlx',
           label: '流程类型',
           type: 'select',
@@ -237,15 +239,6 @@
         },
         {
           id: 'derivable',
-          label: '所属部门',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '+选择部门'
-          }
-        },
-        {
-          id: 'derivable',
           label: '往来单位',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -255,7 +248,7 @@
         },
         {
           id: 'derivable',
-          label: '选择印章',
+          label: '印章名称',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -778,6 +771,192 @@
           4: '',
           5: '2022/10/30  15:00:00',
           6: '2022/10/30  15:00:00'
+        }
+      ]
+    }
+
+    // 查询条件
+    if (activeName == '1') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '流程主题/申请人/编码'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+选择部门'
+          }
+        },
+        {
+          id: 'wjlx',
+          label: '流程类型',
+          type: 'select',
+          options: [
+            {
+              label: '用印申请',
+              value: '1'
+            },
+            {
+              label: '刻章申请',
+              value: '2'
+            },
+            {
+              label: '销毁申请',
+              value: '3'
+            },
+            {
+              label: '停用申请',
+              value: '4'
+            },
+            {
+              label: '变更申请',
+              value: '5'
+            },
+            {
+              label: '启用申请',
+              value: '6'
+            }
+          ]
+        },
+        {
+          id: 'derivable',
+          label: '往来单位',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+往来单位'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '印章名称',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+选择印章'
+          }
+        }
+      ]
+    } else if (activeName == '2') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '流程主题/申请人/编码'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'wjlx',
+          label: '审批状态',
+          type: 'select',
+          options: [
+            {
+              label: '状态1',
+              value: '1'
+            },
+            {
+              label: '状态2',
+              value: '2'
+            }
+          ]
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+选择部门'
+          }
+        },
+        {
+          id: 'wjlx',
+          label: '流程类型',
+          type: 'select',
+          options: [
+            {
+              label: '用印申请',
+              value: '1'
+            },
+            {
+              label: '刻章申请',
+              value: '2'
+            },
+            {
+              label: '销毁申请',
+              value: '3'
+            },
+            {
+              label: '停用申请',
+              value: '4'
+            },
+            {
+              label: '变更申请',
+              value: '5'
+            },
+            {
+              label: '启用申请',
+              value: '6'
+            }
+          ]
+        },
+        {
+          id: 'derivable',
+          label: '往来单位',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+往来单位'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '印章名称',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+选择印章'
+          }
         }
       ]
     }

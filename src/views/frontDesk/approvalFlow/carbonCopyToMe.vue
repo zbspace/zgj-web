@@ -5,16 +5,10 @@
       <template #title>
         <div class="title">
           <div>抄送给我</div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary">导出台账</el-button>
+            </div>
           </div>
         </div>
       </template>
@@ -155,6 +149,15 @@
           style: {}
         },
         {
+          id: 'derivable',
+          label: '所属部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+选择部门'
+          }
+        },
+        {
           id: 'wjlx',
           label: '流程类型',
           type: 'select',
@@ -186,31 +189,16 @@
           ]
         },
         {
-          id: 'derivable',
-          label: '所属部门',
-          type: 'derivable',
+          id: 'picker',
+          label: '抄送时间',
+          type: 'picker',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
-          }
-        },
-        {
-          id: 'derivable',
-          label: '往来单位',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '+往来单位'
-          }
-        },
-        {
-          id: 'derivable',
-          label: '选择印章',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '+选择印章'
-          }
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
         }
       ],
       butData: [

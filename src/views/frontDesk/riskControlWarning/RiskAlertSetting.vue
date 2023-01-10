@@ -123,6 +123,36 @@
           defaultAttribute: {
             placeholder: '风险项'
           }
+        },
+        {
+          id: 'wjlx',
+          label: '风险分类',
+          type: 'select',
+          options: [
+            {
+              label: '风险分类1',
+              value: '1'
+            },
+            {
+              label: '风险分类2',
+              value: '2'
+            }
+          ]
+        },
+        {
+          id: 'wjlx',
+          label: '开启状态',
+          type: 'select',
+          options: [
+            {
+              label: '状态1',
+              value: '1'
+            },
+            {
+              label: '状态2',
+              value: '2'
+            }
+          ]
         }
       ],
       butData: [
@@ -619,6 +649,80 @@
         }
       ]
     }
+
+    // 查询条件
+    if (activeName == '1') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '风险项'
+          }
+        },
+        {
+          id: 'wjlx',
+          label: '风险分类',
+          type: 'select',
+          options: [
+            {
+              label: '风险分类1',
+              value: '1'
+            },
+            {
+              label: '风险分类2',
+              value: '2'
+            }
+          ]
+        },
+        {
+          id: 'wjlx',
+          label: '开启状态',
+          type: 'select',
+          options: [
+            {
+              label: '状态1',
+              value: '1'
+            },
+            {
+              label: '状态2',
+              value: '2'
+            }
+          ]
+        }
+      ]
+    } else if (activeName == '2' || activeName == '3') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '风险项'
+          }
+        },
+        {
+          id: 'wjlx',
+          label: '开启状态',
+          type: 'select',
+          options: [
+            {
+              label: '状态1',
+              value: '1'
+            },
+            {
+              label: '状态2',
+              value: '2'
+            }
+          ]
+        }
+      ]
+    }
   }
   //点击表格按钮
   function customClick(row, column, cell, event) {
@@ -628,6 +732,8 @@
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    // 切换分页
+    tabChange('1')
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

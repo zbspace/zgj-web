@@ -5,17 +5,6 @@
       <template #title>
         <div class="title">
           <div>流程规范告警提醒</div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
-          </div>
         </div>
       </template>
       <template #tabs>
@@ -206,43 +195,62 @@
           style: {}
         },
         {
-          id: 'shenqingr',
-          label: '报警类型',
-          type: 'radioButton',
-          data: [
+          id: 'wjlx',
+          label: '印章名称',
+          type: 'select',
+          options: [
             {
-              name: '非法使用'
+              label: '印章名称1',
+              value: '1'
             },
             {
-              name: '移动侦测'
-            },
-            {
-              name: '用印异常'
-            },
-            {
-              name: '盖章时间超时'
-            },
-            {
-              name: '印章超时未使用'
-            },
-            {
-              name: '审批通过未用印'
-            },
-            {
-              name: '异常结束'
+              label: '印章名称2',
+              value: '2'
             }
           ]
         },
         {
-          id: 'shenqingr',
-          label: '处理状态',
-          type: 'radioButton',
-          data: [
+          id: 'wjlx',
+          label: '告警风险项',
+          type: 'select',
+          options: [
             {
-              name: '未处理'
+              label: '告警风险项1',
+              value: '1'
             },
             {
-              name: '已处理'
+              label: '告警风险项2',
+              value: '2'
+            }
+          ]
+        },
+        {
+          id: 'wjlx',
+          label: '处理状态',
+          type: 'select',
+          options: [
+            {
+              label: '状态1',
+              value: '1'
+            },
+            {
+              label: '状态2',
+              value: '2'
+            }
+          ]
+        },
+        {
+          id: 'wjlx',
+          label: '处理意见',
+          type: 'select',
+          options: [
+            {
+              label: '意见1',
+              value: '1'
+            },
+            {
+              label: '意见2',
+              value: '2'
             }
           ]
         }
