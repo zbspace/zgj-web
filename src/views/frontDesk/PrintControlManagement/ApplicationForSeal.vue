@@ -31,16 +31,6 @@
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
           </div>
         </div>
       </template>
