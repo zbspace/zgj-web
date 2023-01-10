@@ -245,42 +245,35 @@
         },
         {
           id: 'derivable',
-          label: '所属部门',
+          label: '印章类型',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
+            placeholder: '+印章类型'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
           }
         },
         {
           id: 'shenqingr',
-          label: '审批状态',
-          type: 'radioButton',
-          data: [
-            {
-              name: '未送审'
-            },
-            {
-              name: '审批中'
-            },
-            {
-              name: '已退回'
-            },
-            {
-              name: '已撤销'
-            },
-            {
-              name: '已通过'
-            },
-            {
-              name: '已办理'
-            }
-          ]
-        },
-        {
-          id: 'shenqingr',
           label: '单据类型',
-          type: 'radioButton',
+          type: 'checkButton',
           data: [
             {
               name: '刻章申请'
@@ -299,6 +292,31 @@
             },
             {
               name: '换章申请'
+            }
+          ]
+        },
+        {
+          id: 'shenqingr',
+          label: '审批状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '未送审'
+            },
+            {
+              name: '审批中'
+            },
+            {
+              name: '已退回'
+            },
+            {
+              name: '已撤销'
+            },
+            {
+              name: '已通过'
+            },
+            {
+              name: '已办理'
             }
           ]
         }

@@ -184,68 +184,39 @@
           style: {}
         },
         {
-          id: 'wjlx',
-          label: '文件类型',
-          type: 'select',
-          options: [
-            {
-              label: '归档强制',
-              value: '1'
-            },
-            {
-              label: '审批测试',
-              value: '2'
-            },
-            {
-              label: '测试审批',
-              value: '3'
-            },
-            {
-              label: '中安全+移动侦测',
-              value: '4'
-            },
-            {
-              label: '中安全+骑缝',
-              value: '4'
-            },
-            {
-              label: '白板',
-              value: '4'
-            },
-            {
-              label: '中安全+远程+视频+盖后+限次',
-              value: '4'
-            },
-            {
-              label: '中安全-多组合',
-              value: '4'
-            },
-            {
-              label: '中安全--',
-              value: '4'
-            },
-            {
-              label: '中安全-盖后',
-              value: '4'
-            }
-          ]
-        },
-        {
           id: 'derivable',
-          label: '所属部门',
+          label: '文件类型',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
+            placeholder: '+文件类型'
           }
         },
         {
           id: 'derivable',
-          label: '当前审批人',
+          label: '印章名称',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+请选择'
+            placeholder: '+印章名称'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
           }
         },
         {
@@ -258,113 +229,26 @@
           }
         },
         {
-          id: 'derivable',
-          label: '选择印章',
-          type: 'derivable',
+          id: 'name',
+          label: '金额',
+          type: 'scopeInput',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '+选择印章'
+          startAttribute: {
+            placeholder: '最小金额'
+          },
+          endAttribute: {
+            placeholder: '最大金额'
           }
         },
         {
-          id: 'shenqingr',
-          label: '门户推送状态',
-          type: 'radioButton',
-          data: [
-            {
-              name: '推送异常'
-            },
-            {
-              name: '推送正常'
-            }
-          ]
-        },
-        {
-          id: 'shenqingr',
-          label: '审批状态',
-          type: 'radioButton',
-          data: [
-            {
-              name: '未送审'
-            },
-            {
-              name: '审批中'
-            },
-            {
-              name: '已退回'
-            },
-            {
-              name: '已撤销'
-            },
-            {
-              name: '已通过'
-            }
-          ]
-        },
-        {
-          id: 'shenqingr',
-          label: '盖章状态',
-          type: 'checkButton',
-          data: [
-            {
-              name: '不可用      '
-            },
-            {
-              name: '未用印自动退回'
-            },
-            {
-              name: '待智能用印'
-            },
-            {
-              name: '智能用印中'
-            },
-            {
-              name: '待上传文件归档'
-            },
-            {
-              name: '已上传智能用印'
-            },
-            {
-              name: '已上传文件归档'
-            }
-          ]
-        },
-        {
-          id: 'shenqingr',
-          label: '用印状态',
-          type: 'radioButton',
-          data: [
-            {
-              name: '正常'
-            },
-            {
-              name: '异常'
-            }
-          ]
-        },
-        {
           id: 'wdyy',
-          label: '我的用印',
+          label: '我的申请单据',
           type: 'checkbox',
           checkbox: [
             {
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
-                label: '只显示我的用印'
-              },
-              style: {}
-            }
-          ]
-        },
-        {
-          id: 'wdyy',
-          label: '印章外带',
-          type: 'checkbox',
-          checkbox: [
-            {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '是'
+                label: '只显示我的申请单据'
               },
               style: {}
             }

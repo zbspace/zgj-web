@@ -198,28 +198,16 @@
         {
           id: 'wdyy',
           label: '用印模式',
-          type: 'checkbox',
-          checkbox: [
+          type: 'checkButton',
+          data: [
             {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '智能用印'
-              },
-              style: {}
+              name: '智能用印'
             },
             {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '远程盖章'
-              },
-              style: {}
+              name: '远程盖章'
             },
             {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '实时视频盖章'
-              },
-              style: {}
+              name: '实时视频盖章'
             }
           ]
         }

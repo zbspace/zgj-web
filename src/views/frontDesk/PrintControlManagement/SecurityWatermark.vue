@@ -805,6 +805,263 @@
         }
       ]
     }
+
+    // 搜索条件
+    if (activeName == '1') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '盖章码/申请人员/文件名称'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'derivable',
+          label: '文件类型',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+文件类型'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'shenqingr',
+          label: '用印状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '待审批'
+            },
+            {
+              name: '待文件核验'
+            },
+            {
+              name: '待智能用印'
+            },
+            {
+              name: '智能用印中'
+            },
+            {
+              name: '已完成用印'
+            },
+            {
+              name: '待上传文件归档'
+            },
+            {
+              name: '已完成归档'
+            }
+          ]
+        },
+        {
+          id: 'shenqingr',
+          label: '用印模式',
+          type: 'checkButton',
+          data: [
+            {
+              name: '智能用印'
+            },
+            {
+              name: '远程盖章'
+            },
+            {
+              name: '实时视频盖章'
+            }
+          ]
+        },
+        {
+          id: 'wdyy',
+          label: '我的申请单据',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '是'
+              },
+              style: {}
+            }
+          ]
+        }
+      ]
+    } else if (activeName == '2') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '盖章码/申请人员/文件名称'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'derivable',
+          label: '文件类型',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+文件类型'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'shenqingr',
+          label: '用印状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '待审批'
+            },
+            {
+              name: '待文件核验'
+            },
+            {
+              name: '待智能用印'
+            },
+            {
+              name: '智能用印中'
+            },
+            {
+              name: '已完成用印'
+            },
+            {
+              name: '待上传文件归档'
+            },
+            {
+              name: '已完成归档'
+            }
+          ]
+        },
+        {
+          id: 'shenqingr',
+          label: '用印模式',
+          type: 'checkButton',
+          data: [
+            {
+              name: '智能用印'
+            },
+            {
+              name: '远程盖章'
+            },
+            {
+              name: '实时视频盖章'
+            }
+          ]
+        },
+        {
+          id: 'shenqingr',
+          label: '水印验证节点',
+          type: 'checkButton',
+          data: [
+            {
+              name: '盖前'
+            },
+            {
+              name: '盖中'
+            },
+            {
+              name: '盖后'
+            },
+            {
+              name: '归档'
+            }
+          ]
+        },
+        {
+          id: 'shenqingr',
+          label: '水印验证状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '正常'
+            },
+            {
+              name: '有异常'
+            }
+          ]
+        },
+        {
+          id: 'wdyy',
+          label: '我的申请单据',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '是'
+              },
+              style: {}
+            }
+          ]
+        }
+      ]
+    }
   }
   //点击表格按钮
   function customClick(row, column, cell, event) {
@@ -832,6 +1089,8 @@
 
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    // 切换分页
+    tabChange('1')
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

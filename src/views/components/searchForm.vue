@@ -548,7 +548,7 @@
   }
   // 获取当前表单的值
   function getCurrentValue(item, index) {
-    console.log(item, index)
+    // console.log(item, index)
     emit('getCurrentValue', item, index)
     getCurrentValueAll()
   }
@@ -610,6 +610,7 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    // console.log(props.data)
   })
 </script>
 <style lang="scss" scoped>

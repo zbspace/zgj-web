@@ -5,16 +5,16 @@
       <template #title>
         <div class="title">
           <div>用印记录</div>
-          <div
-            class="title-more"
-            v-if="state.componentsTitle.more.data.length > 0"
-          >
+          <div class="title-more">
             <div class="title-more-add">
               <el-button type="primary" @click="showFormDialog = true"
                 >+ 增加</el-button
               >
             </div>
-            <div class="title-more-down">
+            <div
+              class="title-more-down"
+              v-if="state.componentsTitle.more.data.length > 0"
+            >
               <el-dropdown>
                 <el-button>
                   <img
@@ -378,6 +378,19 @@
           style: {}
         },
         {
+          id: 'wdyy',
+          label: '用印状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '正常'
+            },
+            {
+              name: '异常'
+            }
+          ]
+        },
+        {
           id: 'shenqingr',
           label: '印章外带',
           type: 'switch'
@@ -391,27 +404,6 @@
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
                 label: '是'
-              },
-              style: {}
-            }
-          ]
-        },
-        {
-          id: 'wdyy',
-          label: '用印状态',
-          type: 'checkbox',
-          checkbox: [
-            {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '正常'
-              },
-              style: {}
-            },
-            {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '异常'
               },
               style: {}
             }
@@ -2442,6 +2434,19 @@
           style: {}
         },
         {
+          id: 'wdyy',
+          label: '用印状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '正常'
+            },
+            {
+              name: '异常'
+            }
+          ]
+        },
+        {
           id: 'shenqingr',
           label: '印章外带',
           type: 'switch'
@@ -2455,27 +2460,6 @@
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
                 label: '是'
-              },
-              style: {}
-            }
-          ]
-        },
-        {
-          id: 'wdyy',
-          label: '用印状态',
-          type: 'checkbox',
-          checkbox: [
-            {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '正常'
-              },
-              style: {}
-            },
-            {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '异常'
               },
               style: {}
             }
