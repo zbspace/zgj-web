@@ -5,17 +5,6 @@
       <template #title>
         <div class="title">
           <div>智能用印</div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
-          </div>
         </div>
       </template>
       <template #tabs>
@@ -42,8 +31,14 @@
       <template #batch>
         <div class="batch">
           <componentsBatch>
-            <!-- <el-button :disabled="state.componentsBatch.selectionData.length == 0"
-                            v-for="item in state.componentsBatch.data">{{ item.name }}</el-button> -->
+            <el-button
+              :disabled="state.componentsBatch.selectionData.length == 0"
+              v-for="(item, index) in state.componentsBatch.data"
+              :key="index"
+              @click="clickBatchButton(item, index)"
+            >
+              {{ item.name }}
+            </el-button>
           </componentsBatch>
         </div>
       </template>
@@ -90,8 +85,8 @@
   import {
     ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
@@ -103,17 +98,17 @@
   import componentsBatch from '../../components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
+  import { ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'
   const router = useRouter()
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
-  const emit = defineEmits([])
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
+  // const emit = defineEmits([])
   const state = reactive({
     componentsTabs: {
       data: [
@@ -166,23 +161,65 @@
         },
         {
           id: 'derivable',
-          label: '所属部门',
+          label: '文件类型',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
+            placeholder: '+文件类型'
           }
         },
         {
-          id: 'shenqingr',
-          label: '用印状态',
-          type: 'radioButton',
-          data: [
+          id: 'derivable',
+          label: '印章名称',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+印章名称'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'wdyy',
+          label: '用印模式',
+          type: 'checkbox',
+          checkbox: [
             {
-              name: '审批已完成'
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '智能用印'
+              },
+              style: {}
             },
             {
-              name: '智能用印中'
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '远程盖章'
+              },
+              style: {}
+            },
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '实时视频盖章'
+              },
+              style: {}
             }
           ]
         }
@@ -376,7 +413,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '2') {
+          if (column.property === '2') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -512,7 +549,7 @@
   })
   const showDepPerDialog = ref(false)
   const goInnerPage = (path, params) => {
-    let routeObj = { path: path }
+    const routeObj = { path: path }
     if (params) {
       routeObj.query = { transfer: params }
     }
@@ -521,7 +558,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == '2') {
+    if (column.property === '2') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -560,7 +597,7 @@
         type: 'warning'
       }).then(() => {})
     }
-    if (cell.name == '查看历史记录') {
+    if (cell.name === '查看历史记录') {
       ElMessageBox.confirm('请问确定要催办吗？', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -1008,6 +1045,18 @@
         }
       ]
     }
+    // 批量
+    if (activeName === '1') {
+      state.componentsBatch.data = []
+    } else if (activeName === '2') {
+      state.componentsBatch.data = [
+        {
+          name: '批量结束用印'
+        }
+      ]
+    } else if (activeName === '2') {
+      state.componentsBatch.data = []
+    }
   }
 
   // 当选择项发生变化时会触发该事件
@@ -1024,6 +1073,21 @@
     }
   }
 
+  // 点击批量按钮
+  function clickBatchButton(item, index) {
+    console.log(item, index)
+    if (item.name === '批量结束用印') {
+      ElMessageBox.confirm(
+        '已选中单据【】、【】、【】，请问确定要结束用印吗？',
+        '批量结束用印',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).then(() => {})
+    }
+  }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 切换分页

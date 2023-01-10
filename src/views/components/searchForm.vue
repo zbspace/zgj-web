@@ -22,7 +22,7 @@
               computedFill(item, index)
             ]"
           >
-            <!-- input -->
+            <!-- input 输入框-->
             <div class="ap-box-cont input" v-if="item.type == 'input'">
               <div class="ap-box-label" :style="props.style.labelStyle">
                 <span class="ap-box-label-necessary" v-if="item.isNecessary"
@@ -39,8 +39,11 @@
                 />
               </div>
             </div>
-            <!-- derivable -->
-            <div class="ap-box-cont derivable" v-if="item.type == 'derivable'">
+            <!-- derivable 选择弹出框-->
+            <div
+              class="ap-box-cont derivable"
+              v-else-if="item.type == 'derivable'"
+            >
               <div class="ap-box-label" :style="props.style.labelStyle">
                 <span class="ap-box-label-necessary" v-if="item.isNecessary"
                   >*</span
@@ -65,7 +68,7 @@
                 </div>
               </div>
             </div>
-            <!-- select -->
+            <!-- select 下拉选择框-->
             <div class="ap-box-cont select" v-else-if="item.type == 'select'">
               <div class="ap-box-label" :style="props.style.labelStyle">
                 <span class="ap-box-label-necessary" v-if="item.isNecessary"
@@ -89,7 +92,7 @@
                 </el-select>
               </div>
             </div>
-            <!-- picker -->
+            <!-- picker 时间选择器-->
             <div class="ap-box-cont picker" v-else-if="item.type == 'picker'">
               <div class="ap-box-label" :style="props.style.labelStyle">
                 <span class="ap-box-label-necessary" v-if="item.isNecessary"
@@ -106,7 +109,7 @@
                 />
               </div>
             </div>
-            <!-- checkbox -->
+            <!-- checkbox 多选-->
             <div
               class="ap-box-cont checkbox"
               v-else-if="item.type == 'checkbox'"
@@ -130,7 +133,7 @@
                 />
               </div>
             </div>
-            <!-- radio -->
+            <!-- radio 单选-->
             <div class="ap-box-cont radio" v-else-if="item.type == 'radio'">
               <div class="ap-box-label" :style="props.style.labelStyle">{{
                 item.label
@@ -150,7 +153,7 @@
                 </el-radio-group>
               </div>
             </div>
-            <!-- cascader -->
+            <!-- cascader 级联-->
             <div
               class="ap-box-cont cascader"
               v-else-if="item.type == 'cascader'"
@@ -171,7 +174,7 @@
                 />
               </div>
             </div>
-            <!-- switch -->
+            <!-- switch 开关-->
             <div class="ap-box-cont switch" v-else-if="item.type == 'switch'">
               <div class="ap-box-label" :style="props.style.labelStyle">
                 <span class="ap-box-label-necessary" v-if="item.isNecessary"
@@ -186,7 +189,7 @@
                 />
               </div>
             </div>
-            <!-- radioButton -->
+            <!-- radioButton 单选按钮-->
             <div
               class="ap-box-cont radioButton"
               v-else-if="item.type == 'radioButton'"
@@ -219,7 +222,7 @@
                 </div>
               </div>
             </div>
-            <!-- checkButton -->
+            <!-- checkButton 多选按钮-->
             <div
               class="ap-box-cont checkButton"
               v-else-if="item.type == 'checkButton'"
@@ -252,7 +255,38 @@
                 </div>
               </div>
             </div>
-            <!-- custom -->
+            <!-- scopeInput 范围输入框 -->
+            <div
+              class="ap-box-cont scopeInput"
+              v-if="item.type == 'scopeInput'"
+            >
+              <div class="ap-box-label" :style="props.style.labelStyle">
+                <span class="ap-box-label-necessary" v-if="item.isNecessary"
+                  >*</span
+                >
+                {{ item.label }}
+              </div>
+              <div class="ap-box-contBox">
+                <div class="ap-box-contBox-start">
+                  <el-input
+                    class="width-100"
+                    v-bind="item.startAttribute"
+                    v-model="item.startValue"
+                    @input="getCurrentValue(item, index)"
+                  />
+                </div>
+                <div class="ap-box-contBox-cut"> - </div>
+                <div class="ap-box-contBox-end">
+                  <el-input
+                    class="width-100"
+                    v-bind="item.endAttribute"
+                    v-model="item.endValue"
+                    @input="getCurrentValue(item, index)"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- custom 自定义内容-->
             <div class="ap-box-cont custom" v-else-if="item.type == 'custom'">
               <div class="ap-box-label" :style="props.style.labelStyle">
                 <span class="ap-box-label-necessary" v-if="item.isNecessary"
@@ -475,6 +509,9 @@
       }
     }
     // console.log(props.defaultAttribute, state.props.defaultAttribute);
+
+    // 初始化表单单数据
+    initFormData()
   }
   // 初始化表单单数据
   function initFormData() {
@@ -511,6 +548,7 @@
   }
   // 获取当前表单的值
   function getCurrentValue(item, index) {
+    console.log(item, index)
     emit('getCurrentValue', item, index)
     getCurrentValueAll()
   }
@@ -572,8 +610,6 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
-    // 初始化表单单数据
-    initFormData()
   })
 </script>
 <style lang="scss" scoped>
@@ -817,6 +853,20 @@
 
       .button-contBox {
         flex-grow: 0 !important;
+      }
+    }
+    .scopeInput {
+      .ap-box-contBox {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 0%;
+        .ap-box-contBox-start {
+          width: calc(50% - 1rem);
+        }
+        .ap-box-contBox-end {
+          width: calc(50% - 1rem);
+        }
       }
     }
 
