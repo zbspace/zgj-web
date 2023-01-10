@@ -342,9 +342,7 @@ export default [
           authRequired: true
         },
         component: () =>
-          import(
-            '../views/frontDesk/PrintControlManagement/recordWithSeal.vue'
-          )
+          import('../views/frontDesk/PrintControlManagement/recordWithSeal.vue')
       },
       {
         path: 'PrintControlManagement/electronicSignatureRecord',
@@ -366,9 +364,7 @@ export default [
           authRequired: true
         },
         component: () =>
-          import(
-            '../views/frontDesk/PrintControlManagement/LibraryOfSeals.vue'
-          )
+          import('../views/frontDesk/PrintControlManagement/LibraryOfSeals.vue')
       },
       {
         path: 'PrintControlManagement/ApplicationForSeal',
@@ -567,7 +563,9 @@ export default [
           authRequired: true
         },
         component: () =>
-          import('../views/frontDesk/fileManagement/documentLibrary/Download-record.vue')
+          import(
+            '../views/frontDesk/fileManagement/documentLibrary/Download-record.vue'
+          )
       },
       {
         path: 'fileManagement/documentType',
