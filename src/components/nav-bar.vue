@@ -114,6 +114,7 @@
               class="btn btn-icon btn-topbar btn-ghost-secondary"
               data-toggle="fullscreen"
               @click="showHelpPop = !showHelpPop"
+              style="border: none"
             >
               <el-tooltip
                 class="box-item"
@@ -146,37 +147,30 @@
           <VApplicationNav />
 
           <!-- 用户信息 -->
-          <div
-            class="dropdown topbar-head-dropdown ms-1 header-item"
-            ref="dropdownUserRef"
-          >
-            <button
-              type="button"
-              class="btn btn-icon btn-topbar btn-ghost-secondary ap-personalCenter"
-              id="page-header-cart-dropdown"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="outside"
-              aria-haspopup="true"
-              aria-expanded="false"
-              @click="showUserInfoPop = !showUserInfoPop"
+          <div>
+            <el-popover
+              placement="bottom"
+              :width="240"
+              trigger="hover"
+              @before-enter="showUserPop"
+              @after-leave="hideUserPop"
             >
-              <div class="ap-personalCenter-text">
-                <span class="ap-personalCenter-name">春青</span>
-                <img
-                  v-show="showUserInfoPop"
-                  src="../assets/images/navbar/user_info_close.svg"
-                />
-                <img
-                  v-show="!showUserInfoPop"
-                  src="../assets/images/navbar/user_info_open.svg"
-                />
-              </div>
-            </button>
-            <div
-              class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
-              aria-labelledby="page-header-cart-dropdown"
-              style="width: 240px"
-            >
+              <template #reference>
+                <el-button class="btn-topbar ap-personalCenter">
+                  <div class="ap-personalCenter-text">
+                    <span class="ap-personalCenter-name">春青</span>
+                    <img
+                      v-show="!showUserInfoPop"
+                      src="../assets/images/navbar/user_info_close.svg"
+                    />
+                    <img
+                      v-show="showUserInfoPop"
+                      src="../assets/images/navbar/user_info_open.svg"
+                    />
+                  </div>
+                </el-button>
+              </template>
+
               <div class="ap-personalCenterDropdown">
                 <div class="dropdown-box">
                   <div class="dropdown-name">
@@ -214,7 +208,9 @@
                     placement="left-start"
                     :show-arrow="false"
                     :close-delay="80"
-                    :visible="showChanglanPop"
+                    :teleported="false"
+                    @before-enter="showPop"
+                    @after-leave="hidePop"
                   >
                     <template #reference>
                       <div
@@ -224,7 +220,6 @@
                             ? '#D0963E'
                             : 'rgba(0, 0, 0, 0.65)'
                         }"
-                        @click="showChanglanPop = !showChanglanPop"
                       >
                         <img
                           src="../assets/images/navbar/user_info_lan.svg"
@@ -277,7 +272,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </el-popover>
           </div>
         </div>
       </div>
@@ -370,22 +365,7 @@
     }
   }
 
-  // 切换中英文popover
-  const dropdownUserRef = ref(null)
-  const showChanglanPop = ref(false)
-  const showUserInfoPop = ref(false)
-  const isClickOutsideUser = useClickQutside(dropdownUserRef)
-  watch(isClickOutsideUser, () => {
-    // 切换中英文
-    if (isClickOutsideUser.value && showChanglanPop.value) {
-      showChanglanPop.value = false
-    }
-    // 用户信息弹框
-    if (isClickOutsideUser.value && showUserInfoPop.value) {
-      showUserInfoPop.value = false
-    }
-  })
-
+  // 帮助中心
   const dropdownHelpRef = ref(null)
   const showHelpPop = ref(false)
   const isClickOutsideHelp = useClickQutside(dropdownHelpRef)
@@ -396,23 +376,18 @@
     }
   })
 
-  // const dropdownNotifyRef = ref(null)
-  // const showNotifyPop = ref(false)
-  // const isClickOutsideNotify = useClickQutside(dropdownNotifyRef)
-  // watch(isClickOutsideNotify, () => {
-  //   // 消息弹框
-  //   if (isClickOutsideNotify.value && showNotifyPop.value) {
-  //     showNotifyPop.value = false
-  //   }
-  //  })
-
   // 切换 中英文
+  const showChanglanPop = ref(false)
   const setLanguage = locale => {
     i18n.global.locale = locale
     state.language = locale
+  }
+  const showPop = () => {
+    showChanglanPop.value = true
+  }
+  const hidePop = () => {
     showChanglanPop.value = false
   }
-
   // 跳转业务首页或者系统首页
   const changeSystemHome = () => {
     // 跳转业务首页或者系统首页
@@ -423,10 +398,20 @@
     }
   }
 
+  // 退出登录
   const handleLogout = () => {
     accountInfoStore.setAccountInfo(null)
     // 跳转到登录页
     router.push({ name: 'login-account' })
+  }
+
+  // 用户信息弹框
+  const showUserInfoPop = ref(false)
+  const showUserPop = () => {
+    showUserInfoPop.value = true
+  }
+  const hideUserPop = () => {
+    showUserInfoPop.value = false
   }
 </script>
 <style lang="scss" scoped>
@@ -479,7 +464,7 @@
     font-size: 14px;
     width: 88px;
     height: 42px;
-
+    border: none;
     .ap-personalCenter-text {
       display: flex;
       align-items: center;
@@ -500,19 +485,20 @@
         justify-content: center;
         font-size: var(--font-size-body-1);
       }
+
+      img {
+        margin-left: 8px;
+      }
     }
   }
 
   .ap-personalCenterDropdown {
-    @include mixin-width(240);
-
     .dropdown-box {
-      @include mixin-padding(10);
       box-sizing: border-box;
     }
 
     .dropdown-name {
-      @include mixin-height(120);
+      height: 120px;
       border-radius: var(--border-radius-4);
       background-color: #f4f5f7;
       text-align: center;
@@ -521,6 +507,7 @@
       align-content: center;
       justify-content: center;
       flex-flow: wrap;
+      margin-bottom: 8px;
 
       .dropdown-name-icon {
         @include mixin-width(50);
@@ -545,7 +532,7 @@
     .dropdown-list {
       .dropdown-list-li {
         position: relative;
-        padding: 0 20px;
+        padding: 0 8px;
         box-sizing: border-box;
         display: flex;
         align-items: center;
@@ -565,7 +552,7 @@
 
         i {
           position: absolute;
-          right: 20px;
+          right: 0;
           top: 50%;
           font-size: 18px;
           transform: translateY(-50%);
