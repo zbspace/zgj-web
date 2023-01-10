@@ -27,7 +27,7 @@
                                 </u>
                                 <div class="grid-btns">
                                     <div class="check-button" @click="checkAll">一键盘点</div>
-                                    <div class="grid-type">格口类型</div>
+                                    <div class="grid-type" @click="goGridType">格口类型</div>
                                 </div>
 
                             </div>
@@ -121,8 +121,8 @@
                                     </div>
                                 </div>
                                 <div class="grid-btn">
-                                    <button class="openLock" @click.stop="handleOpen(item)">开锁</button>
-                                    <button @click.stop="handlePan(item)">盘点</button>
+                                    <el-button class="openLock" @click.stop="handleOpen(item)">开锁</el-button>
+                                    <el-button class="check-btn btn" @click.stop="handlePan(item)">盘点</el-button>
                                 </div>
                                 <div class="grid-btn" v-if="false">
                                     <div class="grid-pan-text" v-if="item.enable">
@@ -502,6 +502,11 @@ function goDetail(item) {
         path: "/frontDesk/PrintControlManagement/Grid-management/CabinetGridInfo"
     })
 }
+function goGridType(){
+    router.push({
+        path: "/frontDesk/PrintControlManagement/Grid-management/GridType"
+    })
+}
 function selectSealBox(index) {
     state.sealBoxIndex = index;
 }
@@ -649,6 +654,9 @@ onMounted(() => {
                     font-size: 14px;
                     color: rgba(0, 0, 0, 0.65);
                     cursor: pointer;
+                }
+                .check-button{
+
                 }
             }
         }
@@ -938,7 +946,9 @@ onMounted(() => {
                     background-repeat: no-repeat;
                     border-radius: 2px;
                 }
-
+                .check-btn{
+                    margin-left:0;
+                }
                 >.openLock {
                     background: #D0963E;
                     color: #FFFFFF;

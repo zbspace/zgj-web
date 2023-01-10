@@ -56,6 +56,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -125,6 +126,13 @@
       >
       </v-form-render>
     </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
@@ -150,6 +158,7 @@
   import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
   import StampChangeJson from '@/views/addDynamicFormJson/StampChange.json'
   import KDialog from '@/views/components/modules/kdialog.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   const props = defineProps({
     // 处理类型
     type: {
@@ -166,7 +175,7 @@
     showDialog: false
   })
   const vFormLibraryRef = ref(null)
-
+  const showDepPerDialog = ref(false)
   const submitLibraryForm = type => {
     if (!type) {
       vFormLibraryRef.value.resetForm()
@@ -236,42 +245,35 @@
         },
         {
           id: 'derivable',
-          label: '所属部门',
+          label: '印章类型',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
+            placeholder: '+印章类型'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
           }
         },
         {
           id: 'shenqingr',
-          label: '审批状态',
-          type: 'radioButton',
-          data: [
-            {
-              name: '未送审'
-            },
-            {
-              name: '审批中'
-            },
-            {
-              name: '已退回'
-            },
-            {
-              name: '已撤销'
-            },
-            {
-              name: '已通过'
-            },
-            {
-              name: '已办理'
-            }
-          ]
-        },
-        {
-          id: 'shenqingr',
           label: '单据类型',
-          type: 'radioButton',
+          type: 'checkButton',
           data: [
             {
               name: '刻章申请'
@@ -290,6 +292,31 @@
             },
             {
               name: '换章申请'
+            }
+          ]
+        },
+        {
+          id: 'shenqingr',
+          label: '审批状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '未送审'
+            },
+            {
+              name: '审批中'
+            },
+            {
+              name: '已退回'
+            },
+            {
+              name: '已撤销'
+            },
+            {
+              name: '已通过'
+            },
+            {
+              name: '已办理'
             }
           ]
         }
@@ -625,6 +652,14 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {

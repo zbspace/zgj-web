@@ -11,7 +11,10 @@
                 >+ 增加</el-button
               >
             </div>
-            <div class="title-more-down">
+            <div
+              class="title-more-down"
+              v-if="state.componentsTitle.more.data.length > 0"
+            >
               <el-dropdown>
                 <el-button>
                   <img
@@ -24,8 +27,12 @@
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>查看已作废的单据</el-dropdown-item>
-                    <el-dropdown-item>导出台账</el-dropdown-item>
+                    <el-dropdown-item
+                      v-for="(item, index) in state.componentsTitle.more.data"
+                      :key="index"
+                    >
+                      {{ item.name }}
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -185,6 +192,15 @@
       })
   }
   const state = reactive({
+    componentsTitle: {
+      more: {
+        data: [
+          {
+            name: ''
+          }
+        ]
+      }
+    },
     componentsTabs: {
       data: [
         {
@@ -303,20 +319,29 @@
         },
         {
           id: 'derivable',
-          label: '所属部门',
+          label: '印章名称',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
+            placeholder: '+印章名称'
           }
         },
         {
           id: 'derivable',
-          label: '当前审批人',
+          label: '申请人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+请选择'
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
           }
         },
         {
@@ -329,81 +354,33 @@
           }
         },
         {
-          id: 'derivable',
-          label: '选择印章',
-          type: 'derivable',
+          id: 'name',
+          label: '金额',
+          type: 'scopeInput',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '+选择印章'
+          startAttribute: {
+            placeholder: '最小金额'
+          },
+          endAttribute: {
+            placeholder: '最大金额'
           }
         },
         {
-          id: 'shenqingr',
-          label: '门户推送状态',
-          type: 'radioButton',
-          data: [
-            {
-              name: '推送异常'
-            },
-            {
-              name: '推送正常'
-            }
-          ]
+          id: 'picker',
+          label: '盖章时间',
+          type: 'picker',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
         },
         {
-          id: 'shenqingr',
-          label: '审批状态',
-          type: 'radioButton',
-          data: [
-            {
-              name: '未送审'
-            },
-            {
-              name: '审批中'
-            },
-            {
-              name: '已退回'
-            },
-            {
-              name: '已撤销'
-            },
-            {
-              name: '已通过'
-            }
-          ]
-        },
-        {
-          id: 'shenqingr',
-          label: '盖章状态',
-          type: 'checkButton',
-          data: [
-            {
-              name: '不可用      '
-            },
-            {
-              name: '未用印自动退回'
-            },
-            {
-              name: '待智能用印'
-            },
-            {
-              name: '智能用印中'
-            },
-            {
-              name: '待上传文件归档'
-            },
-            {
-              name: '已上传智能用印'
-            },
-            {
-              name: '已上传文件归档'
-            }
-          ]
-        },
-        {
-          id: 'shenqingr',
+          id: 'wdyy',
           label: '用印状态',
-          type: 'radioButton',
+          type: 'checkButton',
           data: [
             {
               name: '正常'
@@ -414,22 +391,13 @@
           ]
         },
         {
-          id: 'wdyy',
-          label: '我的用印',
-          type: 'checkbox',
-          checkbox: [
-            {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '只显示我的用印'
-              },
-              style: {}
-            }
-          ]
+          id: 'shenqingr',
+          label: '印章外带',
+          type: 'switch'
         },
         {
           id: 'wdyy',
-          label: '印章外带',
+          label: '我的申请单据',
           type: 'checkbox',
           checkbox: [
             {
@@ -1983,6 +1951,522 @@
         }
       ]
     }
+
+    // 批量
+    if (activeName === '1' || activeName === '7' || activeName === '8') {
+      state.componentsBatch.data = [
+        {
+          name: '批量作废'
+        }
+      ]
+    } else if (
+      activeName === '2' ||
+      activeName === '3' ||
+      activeName === '4' ||
+      activeName === '5' ||
+      activeName === '6'
+    ) {
+      state.componentsBatch.data = [
+        {
+          name: '批量作废'
+        },
+        {
+          name: '批量流程终止'
+        }
+      ]
+    }
+
+    // 更多操作
+    if (
+      activeName === '1' ||
+      activeName === '2' ||
+      activeName === '3' ||
+      activeName === '4' ||
+      activeName === '5' ||
+      activeName === '6' ||
+      activeName === '7'
+    ) {
+      state.componentsTitle.more.data = [
+        {
+          name: '查看已作废的单据'
+        },
+        {
+          name: '导出台账'
+        }
+      ]
+    } else if (activeName === '8') {
+      state.componentsTitle.more.data = [
+        {
+          name: '查看已作废的单据'
+        }
+      ]
+    }
+
+    // 搜索条件
+    if (
+      activeName === '1' ||
+      activeName === '2' ||
+      activeName === '3' ||
+      activeName === '8'
+    ) {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '文件名称/申请人/用印编码'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'wjlx',
+          label: '文件类型',
+          type: 'select',
+          options: [
+            {
+              label: '归档强制',
+              value: '1'
+            },
+            {
+              label: '审批测试',
+              value: '2'
+            },
+            {
+              label: '测试审批',
+              value: '3'
+            },
+            {
+              label: '中安全+移动侦测',
+              value: '4'
+            },
+            {
+              label: '中安全+骑缝',
+              value: '4'
+            },
+            {
+              label: '白板',
+              value: '4'
+            },
+            {
+              label: '中安全+远程+视频+盖后+限次',
+              value: '4'
+            },
+            {
+              label: '中安全-多组合',
+              value: '4'
+            },
+            {
+              label: '中安全--',
+              value: '4'
+            },
+            {
+              label: '中安全-盖后',
+              value: '4'
+            }
+          ]
+        },
+        {
+          id: 'derivable',
+          label: '印章名称',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+印章名称'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '往来单位',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+往来单位'
+          }
+        },
+        {
+          id: 'name',
+          label: '金额',
+          type: 'scopeInput',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          startAttribute: {
+            placeholder: '最小金额'
+          },
+          endAttribute: {
+            placeholder: '最大金额'
+          }
+        },
+        {
+          id: 'shenqingr',
+          label: '印章外带',
+          type: 'switch'
+        },
+        {
+          id: 'wdyy',
+          label: '我的申请单据',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '是'
+              },
+              style: {}
+            }
+          ]
+        }
+      ]
+    } else if (activeName === '4') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '文件名称/申请人/用印编码'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'wjlx',
+          label: '文件类型',
+          type: 'select',
+          options: [
+            {
+              label: '归档强制',
+              value: '1'
+            },
+            {
+              label: '审批测试',
+              value: '2'
+            },
+            {
+              label: '测试审批',
+              value: '3'
+            },
+            {
+              label: '中安全+移动侦测',
+              value: '4'
+            },
+            {
+              label: '中安全+骑缝',
+              value: '4'
+            },
+            {
+              label: '白板',
+              value: '4'
+            },
+            {
+              label: '中安全+远程+视频+盖后+限次',
+              value: '4'
+            },
+            {
+              label: '中安全-多组合',
+              value: '4'
+            },
+            {
+              label: '中安全--',
+              value: '4'
+            },
+            {
+              label: '中安全-盖后',
+              value: '4'
+            }
+          ]
+        },
+        {
+          id: 'derivable',
+          label: '印章名称',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+印章名称'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '往来单位',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+往来单位'
+          }
+        },
+        {
+          id: 'name',
+          label: '金额',
+          type: 'scopeInput',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          startAttribute: {
+            placeholder: '最小金额'
+          },
+          endAttribute: {
+            placeholder: '最大金额'
+          }
+        },
+        {
+          id: 'picker',
+          label: '盖章时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'shenqingr',
+          label: '印章外带',
+          type: 'switch'
+        },
+        {
+          id: 'wdyy',
+          label: '我的申请单据',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '是'
+              },
+              style: {}
+            }
+          ]
+        }
+      ]
+    } else if (activeName === '5' || activeName === '6' || activeName === '7') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '文件名称/申请人/用印编码'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'wjlx',
+          label: '文件类型',
+          type: 'select',
+          options: [
+            {
+              label: '归档强制',
+              value: '1'
+            },
+            {
+              label: '审批测试',
+              value: '2'
+            },
+            {
+              label: '测试审批',
+              value: '3'
+            },
+            {
+              label: '中安全+移动侦测',
+              value: '4'
+            },
+            {
+              label: '中安全+骑缝',
+              value: '4'
+            },
+            {
+              label: '白板',
+              value: '4'
+            },
+            {
+              label: '中安全+远程+视频+盖后+限次',
+              value: '4'
+            },
+            {
+              label: '中安全-多组合',
+              value: '4'
+            },
+            {
+              label: '中安全--',
+              value: '4'
+            },
+            {
+              label: '中安全-盖后',
+              value: '4'
+            }
+          ]
+        },
+        {
+          id: 'derivable',
+          label: '印章名称',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+印章名称'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '往来单位',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+往来单位'
+          }
+        },
+        {
+          id: 'name',
+          label: '金额',
+          type: 'scopeInput',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          startAttribute: {
+            placeholder: '最小金额'
+          },
+          endAttribute: {
+            placeholder: '最大金额'
+          }
+        },
+        {
+          id: 'picker',
+          label: '盖章时间',
+          type: 'picker',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'wdyy',
+          label: '用印状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '正常'
+            },
+            {
+              name: '异常'
+            }
+          ]
+        },
+        {
+          id: 'shenqingr',
+          label: '印章外带',
+          type: 'switch'
+        },
+        {
+          id: 'wdyy',
+          label: '我的申请单据',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '是'
+              },
+              style: {}
+            }
+          ]
+        }
+      ]
+    }
   }
 
   // 当选择项发生变化时会触发该事件
@@ -2001,6 +2485,8 @@
 
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    // 切换分页
+    tabChange('1')
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

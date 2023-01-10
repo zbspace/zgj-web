@@ -189,7 +189,7 @@
         },
         {
           id: 'picker',
-          label: '更新时间',
+          label: '创建时间',
           type: 'picker',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -199,6 +199,53 @@
             'end-placeholder': '结束时间'
           },
           style: {}
+        },
+        {
+          id: 'derivable',
+          label: '保管人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+保管人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '保管部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+保管部门'
+          }
+        },
+        {
+          id: 'wjlx',
+          label: '设备状态',
+          type: 'select',
+          options: [
+            {
+              label: '正常',
+              value: '1'
+            },
+            {
+              label: '异常',
+              value: '2'
+            }
+          ]
+        },
+        {
+          id: 'wdyy',
+          label: '印章盒',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '我保管的印章盒'
+              },
+              style: {}
+            }
+          ]
         }
       ],
       butData: [

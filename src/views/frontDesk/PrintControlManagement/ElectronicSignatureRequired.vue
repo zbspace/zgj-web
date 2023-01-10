@@ -5,17 +5,6 @@
       <template #title>
         <div class="title">
           <div>待电子签章</div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
-          </div>
         </div>
       </template>
       <template #tabs>
@@ -151,6 +140,33 @@
             'end-placeholder': '结束时间'
           },
           style: {}
+        },
+        {
+          id: 'derivable',
+          label: '印章名称',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+印章名称'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
         }
       ],
       butData: [
@@ -442,11 +458,7 @@
     },
     componentsBatch: {
       selectionData: [],
-      data: [
-        {
-          name: '批量操作'
-        }
-      ]
+      data: []
     }
   })
   // 点击表格单元格

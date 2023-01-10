@@ -187,20 +187,47 @@
         },
         {
           id: 'name',
-          label: '外借人',
-          type: 'input',
+          label: '印章类型',
+          type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '外借人'
+            placeholder: '+印章类型'
           }
         },
         {
           id: 'name',
           label: '保管人',
-          type: 'input',
+          type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '保管人'
+            placeholder: '+保管人'
+          }
+        },
+        {
+          id: 'name',
+          label: '保管部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+保管部门'
+          }
+        },
+        {
+          id: 'name',
+          label: '外借人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+外借人'
+          }
+        },
+        {
+          id: 'name',
+          label: '外借部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+外借部门'
           }
         }
       ],

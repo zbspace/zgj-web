@@ -263,6 +263,15 @@ export default [
               )
           },
           {
+            path: 'Grid-management/GridType',
+            name: 'GridType',
+            meta: { title: 'GridType', authRequired: true },
+            component: () =>
+              import(
+                '../views/frontDesk/PrintControlManagement/Grid-management/GridType.vue'
+              )
+          },
+          {
             path: 'Seal-application/accomplish',
             name: 'Seal-application-accomplish',
             meta: { title: 'accomplish', authRequired: true },
@@ -333,9 +342,7 @@ export default [
           authRequired: true
         },
         component: () =>
-          import(
-            '../views/frontDesk/PrintControlManagement/recordWithSeal.vue'
-          )
+          import('../views/frontDesk/PrintControlManagement/recordWithSeal.vue')
       },
       {
         path: 'PrintControlManagement/electronicSignatureRecord',
@@ -357,9 +364,7 @@ export default [
           authRequired: true
         },
         component: () =>
-          import(
-            '../views/frontDesk/PrintControlManagement/LibraryOfSeals.vue'
-          )
+          import('../views/frontDesk/PrintControlManagement/LibraryOfSeals.vue')
       },
       {
         path: 'PrintControlManagement/ApplicationForSeal',
@@ -558,7 +563,9 @@ export default [
           authRequired: true
         },
         component: () =>
-          import('../views/frontDesk/fileManagement/documentLibrary/Download-record.vue')
+          import(
+            '../views/frontDesk/fileManagement/documentLibrary/Download-record.vue'
+          )
       },
       {
         path: 'fileManagement/documentType',

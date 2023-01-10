@@ -2809,6 +2809,7 @@ export const en = {
   't-zgj-cg-menu-yujing-shuju-fenxi': '预警数据分析',
   't-zgj-cg-menu-qiye-guanli': '企业管理',
   't-zgj-cg-menu-qiye-xinxi': '企业信息',
+  't-zgj-cg-menu-gengxin-license': '更新license',
   't-zgj-cg-menu-wanglai-qiye': '往来企业',
   't-zgj-cg-menu-bumen-yu-yuangong': '部门与员工',
   't-zgj-cg-menu-danwei-yu-bumen-guanli': '单位与部门管理',

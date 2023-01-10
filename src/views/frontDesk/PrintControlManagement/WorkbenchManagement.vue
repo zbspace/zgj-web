@@ -5,19 +5,12 @@
       <template #title>
         <div class="title">
           <div>工作台管理</div>
-          <div>
-            <el-button type="primary" @click="showFormDialog = true"
-              >+ 增加</el-button
-            >
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="showFormDialog = true"
+                >+ 增加</el-button
+              >
+            </div>
           </div>
         </div>
       </template>
@@ -188,7 +181,7 @@
         },
         {
           id: 'picker',
-          label: '更新时间',
+          label: '创建时间',
           type: 'picker',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -198,6 +191,53 @@
             'end-placeholder': '结束时间'
           },
           style: {}
+        },
+        {
+          id: 'derivable',
+          label: '保管人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+保管人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '保管部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+保管部门'
+          }
+        },
+        {
+          id: 'wjlx',
+          label: '设备状态',
+          type: 'select',
+          options: [
+            {
+              label: '正常',
+              value: '1'
+            },
+            {
+              label: '异常',
+              value: '2'
+            }
+          ]
+        },
+        {
+          id: 'wdyy',
+          label: '工作台',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '我保管的工作台'
+              },
+              style: {}
+            }
+          ]
         }
       ],
       butData: [
@@ -527,6 +567,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .title-more {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        .title-more-add {
+          margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
     }
 
     .batch {

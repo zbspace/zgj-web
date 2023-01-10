@@ -2571,6 +2571,12 @@
               icon: icon19
             },
             {
+              name: '更新license',
+              label: 't-zgj-cg-menu-gengxin-license',
+              to: '/system/company/license',
+              icon: icon19
+            },
+            {
               name: '往来企业',
               label: 't-zgj-cg-menu-wanglai-qiye',
               to: '/system/company/company_dealing',

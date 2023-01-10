@@ -5,16 +5,38 @@
       <template #title>
         <div class="title">
           <div>文件归档</div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="showFormDialog = true"
+                >+ 增加</el-button
+              >
+            </div>
+            <div
+              class="title-more-down"
+              v-if="state.componentsTitle.more.data.length > 0"
+            >
+              <el-dropdown>
+                <el-button>
+                  <img
+                    class="button-icon"
+                    src="../../../assets/svg/gengduo-caozuo.svg"
+                    alt=""
+                    srcset=""
+                  />
+                  <span>更多操作</span>
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(item, index) in state.componentsTitle.more.data"
+                      :key="index"
+                    >
+                      {{ item.name }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
           </div>
         </div>
       </template>
@@ -34,6 +56,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -43,9 +66,11 @@
           <componentsBatch>
             <el-button
               :disabled="state.componentsBatch.selectionData.length == 0"
-              v-for="item in state.componentsBatch.data"
-              >{{ item.name }}</el-button
+              v-for="(item, index) in state.componentsBatch.data"
+              :key="index"
             >
+              {{ item.name }}
+            </el-button>
           </componentsBatch>
         </div>
       </template>
@@ -119,6 +144,7 @@
               <div
                 class="files-item"
                 v-for="(item, index) in state.ArchiveFiles"
+                :key="index"
               >
                 <div>{{ item.fileName }}</div>
                 <div>
@@ -172,22 +198,29 @@
         </template>
       </documentsDetailsPortion>
     </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
     ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsTree from '../../components/tree'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
@@ -195,22 +228,23 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import { useRouter } from 'vue-router'
   const router = useRouter()
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
-  const emit = defineEmits([])
-
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
+  // const emit = defineEmits([])
+  const showDepPerDialog = ref(false)
   const dialogData = reactive({
     show: false,
     title: '文件归档'
   })
-  const vFormLibraryRef = ref(null)
+  // const vFormLibraryRef = ref(null)
   // const submitLibraryForm = (type) => {
   //     if (!type) {
   //         vFormLibraryRef.value.resetForm();
@@ -225,6 +259,16 @@
   //     })
   // }
   const state = reactive({
+    cache: {},
+    componentsTitle: {
+      more: {
+        data: [
+          {
+            name: ''
+          }
+        ]
+      }
+    },
     componentsTabs: {
       data: [
         {
@@ -232,8 +276,12 @@
           name: '1'
         },
         {
-          label: '已归档',
+          label: '归档中',
           name: '2'
+        },
+        {
+          label: '已归档',
+          name: '3'
         }
       ]
     },
@@ -272,12 +320,79 @@
         },
         {
           id: 'derivable',
-          label: '所属部门',
+          label: '文件类型',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
+            placeholder: '+文件类型'
           }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '往来单位',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+往来单位'
+          }
+        },
+        {
+          id: 'picker',
+          label: '归档时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'wdyy',
+          label: '用印状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '正常'
+            },
+            {
+              name: '异常'
+            }
+          ]
+        },
+        {
+          id: 'wdyy',
+          label: '我的申请单据',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '是'
+              },
+              style: {}
+            }
+          ]
         }
       ],
       butData: [
@@ -436,7 +551,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '2') {
+          if (column.property === '2') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -563,11 +678,7 @@
     },
     componentsBatch: {
       selectionData: [],
-      data: [
-        {
-          name: '批量文件归档'
-        }
-      ]
+      data: []
     },
     ArchiveFiles: [
       {
@@ -587,11 +698,11 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == '2') {
+    if (column.property === '2') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
@@ -599,7 +710,7 @@
   // 切换分页
   function tabChange(activeName) {
     // console.log(activeName);
-    if (activeName == '1') {
+    if (activeName === '1') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -716,7 +827,136 @@
           6: '2022/10/30  15:00:00'
         }
       ]
-    } else if (activeName == '2') {
+    } else if (activeName === '2') {
+      state.componentsTable.header = [
+        {
+          width: 50,
+          type: 'selection'
+        },
+        {
+          prop: '0',
+          label: '序号',
+          width: 100
+        },
+        {
+          prop: '1',
+          label: '单据编号',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '2',
+          label: '单据名称',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '3',
+          label: '用印文件类型',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '4',
+          label: '申请人',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '5',
+          label: '申请部门',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '6',
+          label: '申请时间',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: '7',
+          label: '用印文件数',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: '8',
+          label: '已归档文件数',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'caozuo',
+          label: '操作',
+          fixed: 'right',
+          'min-width': 150,
+          rankDisplayData: [
+            {
+              name: '文件归档'
+            }
+          ]
+        }
+      ]
+      state.componentsTable.data = [
+        {
+          1: 'XXXXXXX',
+          2: '用印申请',
+          3: '',
+          4: '往往',
+          5: '',
+          6: '2022/10/30  15:00:00'
+        },
+        {
+          1: 'XXXXXXX',
+          2: '用印申请',
+          3: '',
+          4: '往往',
+          5: '',
+          6: '2022/10/30  15:00:00'
+        },
+        {
+          1: 'XXXXXXX',
+          2: '用印申请',
+          3: '',
+          4: '往往',
+          5: '',
+          6: '2022/10/30  15:00:00'
+        },
+        {
+          1: 'XXXXXXX',
+          2: '用印申请',
+          3: '',
+          4: '往往',
+          5: '',
+          6: '2022/10/30  15:00:00'
+        },
+        {
+          1: 'XXXXXXX',
+          2: '用印申请',
+          3: '',
+          4: '往往',
+          5: '',
+          6: '2022/10/30  15:00:00'
+        },
+        {
+          1: 'XXXXXXX',
+          2: '用印申请',
+          3: '',
+          4: '往往',
+          5: '',
+          6: '2022/10/30  15:00:00'
+        },
+        {
+          1: 'XXXXXXX',
+          2: '用印申请',
+          3: '',
+          4: '往往',
+          5: '',
+          6: '2022/10/30  15:00:00'
+        }
+      ]
+    } else if (activeName === '3') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -852,13 +1092,13 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '2') {
+          if (column.property === '2') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
             }
           }
-          if (column.property == '7') {
+          if (column.property === '7') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -867,8 +1107,205 @@
         }
       }
     }
+
+    // 更多操作
+    if (activeName === '1') {
+      state.componentsTitle.more.data = []
+    } else if (activeName === '2') {
+      state.componentsTitle.more.data = []
+    } else if (activeName === '3') {
+      state.componentsTitle.more.data = [
+        {
+          name: '文件打包下载'
+        },
+        {
+          name: '下载记录'
+        }
+      ]
+    }
+
+    // 搜索条件
+    if (activeName === '1' || activeName === '2') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '文件名称/申请人员/用印编码'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'derivable',
+          label: '文件类型',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+文件类型'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'wdyy',
+          label: '我的申请单据',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '是'
+              },
+              style: {}
+            }
+          ]
+        }
+      ]
+    } else if (activeName === '3') {
+      state.componentsSearchForm.data = [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '文件名称/申请人员/用印编码'
+          }
+        },
+        {
+          id: 'picker',
+          label: '申请时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'derivable',
+          label: '文件类型',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+文件类型'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '往来单位',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+往来单位'
+          }
+        },
+        {
+          id: 'picker',
+          label: '归档时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'derivable',
+          label: '选择印章',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+选择印章'
+          }
+        },
+        {
+          id: 'wdyy',
+          label: '用印状态',
+          type: 'checkButton',
+          data: [
+            {
+              name: '正常'
+            },
+            {
+              name: '异常'
+            }
+          ]
+        },
+        {
+          id: 'wdyy',
+          label: '我的申请单据',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '是'
+              },
+              style: {}
+            }
+          ]
+        }
+      ]
+    }
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '文件归档') {
       dialogData.show = true
@@ -883,14 +1320,24 @@
       })
     }
   }
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
   }
 
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    // 切换分页
+    tabChange('1')
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -904,6 +1351,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      .title-more {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        .title-more-add {
+          margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
     }
   }
 

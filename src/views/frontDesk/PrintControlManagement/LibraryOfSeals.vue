@@ -47,6 +47,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -240,26 +241,26 @@
         },
         {
           id: 'derivable',
-          label: '保管部门',
+          label: '保管人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
+            placeholder: '+保管人'
           }
         },
         {
           id: 'derivable',
-          label: '管理部门',
+          label: '保管部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+选择部门'
+            placeholder: '+保管部门'
           }
         },
         {
           id: 'shenqingr',
           label: '印章状态',
-          type: 'radioButton',
+          type: 'checkButton',
           data: [
             {
               name: '正常  '
@@ -274,21 +275,8 @@
         },
         {
           id: 'shenqingr',
-          label: '外带状态',
-          type: 'radioButton',
-          data: [
-            {
-              name: '外带'
-            },
-            {
-              name: '在库'
-            }
-          ]
-        },
-        {
-          id: 'shenqingr',
           label: '印章种类',
-          type: 'radioButton',
+          type: 'checkButton',
           data: [
             {
               name: '普通印章'
@@ -300,22 +288,8 @@
         },
         {
           id: 'shenqingr',
-          label: '印章可见范围',
-          type: 'radioButton',
-          data: [
-            {
-              name: '全部人员可见'
-            },
-            {
-              name: '本部门及下级部门可见'
-            },
-            {
-              name: '本部门可见'
-            },
-            {
-              name: '指定人员可见'
-            }
-          ]
+          label: '印章外带',
+          type: 'switch'
         },
         {
           id: 'wdyy',
@@ -670,6 +644,14 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {
