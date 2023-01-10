@@ -442,3 +442,8 @@ body {
     }
   }
 }
+
+.el-input-number__decrease:hover,
+.el-input-number__increase:hover {
+  color: var(--primary-4) !important;
+}
