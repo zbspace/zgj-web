@@ -23,8 +23,10 @@
 
       <template #batch>
         <div class="batch">
-          <componentsBatch          :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"></componentsBatch>
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          ></componentsBatch>
         </div>
       </template>
 
