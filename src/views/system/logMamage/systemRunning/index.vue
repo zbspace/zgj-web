@@ -69,7 +69,7 @@
         },
         {
           id: 'picker',
-          label: '选择时间',
+          label: '操作时间',
           type: 'picker',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -82,23 +82,14 @@
         },
         {
           id: 'name',
-          label: 'xx',
+          label: '日志等级',
           type: 'select',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择'
           },
-          options: [
-            {
-              value: 'Option1',
-              label: 'Option1'
-            },
-            {
-              value: 'Option2',
-              label: 'Option2'
-            }
-          ]
+          options: []
         }
       ],
       butData: [
@@ -142,79 +133,52 @@
         {
           prop: '0',
           label: '序号',
-          width: 100
+          width: 80,
+          align: 'center'
         },
         {
           prop: '1',
-          label: 'xxx',
+          label: '时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 180
+        },
+        {
+          prop: '2',
+          label: '应用名称',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: '3',
+          label: '内容',
+          sortable: true,
+          'min-width': 120
         }
       ],
       data: [
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
+          0: 1,
+          1: '2022-01-21 09:08:00',
+          2: 'plumelog-test',
+          3: '警告日志展示'
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
+          0: 2,
+          1: '2022-01-13 19:08:00',
+          2: 'plumelog',
+          3: '警告日志展示'
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
+          0: 3,
+          1: '2022-08-21 09:00:10',
+          2: 'plumelog-01',
+          3: '警告日志展示'
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30',
-          6: ''
+          0: 4,
+          1: '2022-01-21 09:08:00',
+          2: 'plumelog',
+          3: '警告日志展示详情'
         }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性

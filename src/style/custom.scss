@@ -107,7 +107,7 @@ $unify-primary-color: var(--primary-6);
 }
 
 .el-select-dropdown__item.selected {
-  color: #d0963e;
+  color: #d0963e !important;
 }
 
 .el-pagination.is-background .el-pager li:not(.is-disabled):hover {
