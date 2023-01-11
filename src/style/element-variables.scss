@@ -1,7 +1,9 @@
 /* 
-用来重定义变量  
+用来重定义变量  element
 */
-
+body {
+  --vz-body-color: var(--color-text-1);
+}
 
 .el-button {
   --el-button-text-color: var(--color-text-2);
@@ -13,4 +15,16 @@
 
 .el-pagination__jump {
   --el-text-color-regular: var(--color-text-1);
+}
+
+.el-input__inner {
+  --el-input-text-color: var(--color-text-1);
+}
+
+.el-button.is-disabled {
+  --el-button-disabled-text-color: var(--color-text-3);
+}
+
+.el-tree {
+  --el-tree-text-color: var(--color-text-1);
 }
