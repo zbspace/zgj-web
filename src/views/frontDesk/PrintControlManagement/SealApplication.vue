@@ -39,8 +39,7 @@
           <el-button @click="showDialog = true">弹框Demo</el-button>
           <el-button @click="showDepPerDialog = true">组织选择</el-button>
           <el-button @click="goInnerTablePage">二级表格页面</el-button>
-          <el-button
-            @click="goInnerPage('/frontDesk/electronicSeal/innerPage')"
+          <el-button @click="goInnerPage('/frontDesk/electronicSeal/innerPage')"
             >二级页面</el-button
           >
           <el-button :plain="true" @click="open2">成功消息</el-button>
@@ -523,7 +522,7 @@
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
-        layout: 'sizes, prev, pager, next, jumper',
+        layout: 'prev, pager, next, jumper',
         total: 500,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true

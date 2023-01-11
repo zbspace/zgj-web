@@ -233,7 +233,7 @@
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
-        layout: 'sizes, prev, pager, next, jumper',
+        layout: 'prev, pager, next, jumper',
         total: 30,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true

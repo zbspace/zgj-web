@@ -1,37 +1,33 @@
 <template>
-  <!-- 消息 -->
-  <div
-    class="dropdown topbar-head-dropdown ms-1 header-item"
-    ref="dropdownNotifyRef"
-    style="margin: 0 9px"
-  >
-    <button
-      type="button"
-      class="btn btn-icon btn-topbar btn-ghost-secondary"
-      id="page-header-cart-dropdown"
-      data-bs-toggle="dropdown"
-      data-bs-auto-close="outside"
-      aria-haspopup="true"
-      aria-expanded="false"
-      @click="showNotifyPop = !showNotifyPop"
-      style="transform: rotateY(180deg); border: none"
+  <div class="message-container">
+    <el-popover
+      placement="bottom"
+      :width="442"
+      trigger="click"
+      :show-arrow="false"
+      @before-enter="showPop"
+      @after-leave="hidePop"
     >
-      <img
-        v-show="!showNotifyPop"
-        src="../../assets/images/navbar/notify_icon.svg"
-      />
-      <img
-        v-show="showNotifyPop"
-        src="../../assets/images/navbar/notify_select_icon.svg"
-      />
-      <span
-        class="position-absolute translate-middle p-1 bg-danger border border-light rounded-circle"
-      ></span>
-    </button>
-    <div
-      class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
-      aria-labelledby="page-header-cart-dropdown"
-    >
+      <template #reference>
+        <el-button
+          class="btn-drown"
+          @click="showNotifyPop = !showNotifyPop"
+          style="transform: rotateY(180deg); border: none; width: 24px"
+        >
+          <img
+            v-show="!showNotifyPop"
+            src="../../assets/images/navbar/notify_icon.svg"
+          />
+          <img
+            v-show="showNotifyPop"
+            src="../../assets/images/navbar/notify_select_icon.svg"
+          />
+          <span
+            class="position-absolute translate-middle p-1 bg-danger border border-light rounded-circle"
+          ></span>
+        </el-button>
+      </template>
+
       <!-- tabs -->
       <div class="nav-natify-tab">
         <VTabs
@@ -73,7 +69,7 @@
           <div>{{ $t('t-view-all-notify') }}</div>
         </div>
       </div>
-    </div>
+    </el-popover>
   </div>
 </template>
 
@@ -152,17 +148,27 @@
       isRead: false
     }
   ])
+
+  const showPop = () => {
+    showNotifyPop.value = true
+  }
+  const hidePop = () => {
+    showNotifyPop.value = false
+  }
 </script>
 
 <style lang="scss" scoped>
+  .message-container {
+    margin: 0 10px;
+  }
   .nav-natify-tab {
-    padding-top: 26px;
+    padding-top: 10px;
 
     .natify-content {
       height: 294px;
 
       .column {
-        padding: 5px 4px 5px 32px;
+        padding: 5px 0px 5px 22px;
         height: 64px;
 
         .item {
@@ -208,8 +214,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 24px;
-      height: 50px;
+      padding: 0 12px;
+      height: 40px;
       color: rgba($color: #000000, $alpha: 0.45);
       border-top: 1px solid rgba($color: #000000, $alpha: 0.06);
 
@@ -220,7 +226,7 @@
         font-size: 14px;
         line-height: 24px;
         cursor: pointer;
-
+        margin-top: 12px;
         &:hover {
           color: #3e78d0;
         }

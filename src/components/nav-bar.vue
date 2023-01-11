@@ -24,22 +24,6 @@
             </router-link>
           </div>
 
-          <!-- 菜单开关 -->
-          <button
-            type="button"
-            class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn"
-            id="topnav-hamburger-icon"
-            @click="toggleHamburgerMenu"
-            v-show="false"
-          >
-            <!-- topnav-hamburger -->
-            <span class="hamburger-icon">
-              <span />
-              <span />
-              <span />
-            </span>
-          </button>
-
           <!-- 公司选择 -->
           <form class="app-search d-none d-md-block">
             <div class="ap-dropdown">
@@ -108,13 +92,13 @@
           </div>
 
           <!-- 帮助 -->
-          <div class="ms-1 header-item d-none d-sm-flex" ref="dropdownHelpRef">
+          <div ref="dropdownHelpRef">
             <button
               type="button"
               class="btn btn-icon btn-topbar btn-ghost-secondary"
               data-toggle="fullscreen"
               @click="showHelpPop = !showHelpPop"
-              style="border: none"
+              style="border: none; margin: 0 10px"
             >
               <el-tooltip
                 class="box-item"
@@ -152,6 +136,7 @@
               placement="bottom"
               :width="240"
               trigger="hover"
+              :show-arrow="false"
               @before-enter="showUserPop"
               @after-leave="hideUserPop"
             >
@@ -316,54 +301,7 @@
           : pageTopbar.classList.remove('topbar-shadow')
       }
     })
-
-    // 添加 全屏开关监听 事件
-    // if (document.getElementById("topnav-hamburger-icon"))
-    //   document
-    //     .getElementById("topnav-hamburger-icon")
-    //     .addEventListener("click", toggleHamburgerMenu);
   })
-
-  // 监听 菜单开关
-  const toggleHamburgerMenu = () => {
-    const windowSize = document.documentElement.clientWidth
-
-    if (windowSize > 767) {
-      document.querySelector('.hamburger-icon').classList.toggle('open')
-    }
-
-    // For collapse horizontal menu
-    if (document.documentElement.getAttribute('data-layout') === 'horizontal') {
-      document.body.classList.contains('menu')
-        ? document.body.classList.remove('menu')
-        : document.body.classList.add('menu')
-    }
-
-    // For collapse vertical menu
-    if (document.documentElement.getAttribute('data-layout') === 'vertical') {
-      if (windowSize < 1025 && windowSize > 767) {
-        document.body.classList.remove('vertical-sidebar-enable')
-        document.documentElement.getAttribute('data-sidebar-size') === 'sm'
-          ? document.documentElement.setAttribute('data-sidebar-size', '')
-          : document.documentElement.setAttribute('data-sidebar-size', 'sm')
-      } else if (windowSize > 1025) {
-        document.body.classList.remove('vertical-sidebar-enable')
-        document.documentElement.getAttribute('data-sidebar-size') === 'lg'
-          ? document.documentElement.setAttribute('data-sidebar-size', 'sm')
-          : document.documentElement.setAttribute('data-sidebar-size', 'lg')
-      } else if (windowSize <= 767) {
-        document.body.classList.add('vertical-sidebar-enable')
-        document.documentElement.setAttribute('data-sidebar-size', 'lg')
-      }
-    }
-
-    // Two column menu
-    if (document.documentElement.getAttribute('data-layout') === 'twocolumn') {
-      document.body.classList.contains('twocolumn-panel')
-        ? document.body.classList.remove('twocolumn-panel')
-        : document.body.classList.add('twocolumn-panel')
-    }
-  }
 
   // 帮助中心
   const dropdownHelpRef = ref(null)

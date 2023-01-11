@@ -1,6 +1,6 @@
 <template>
   <!-- 信息 -->
-  <div style="margin: 0 16px" ref="dropdownMailRef">
+  <div style="margin: 0 12px" ref="dropdownMailRef">
     <el-button
       style="border: none; width: 24px"
       @click="showMailPop = !showMailPop"

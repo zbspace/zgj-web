@@ -5,6 +5,7 @@
       placement="bottom"
       :width="340"
       trigger="hover"
+      :show-arrow="false"
       @before-enter="showPop"
       @after-leave="hidePop"
     >
@@ -84,7 +85,7 @@
 <style lang="scss" scoped>
   .application-drown {
     overflow: hidden;
-    margin: 0 9px;
+    margin: 0 10px;
 
     .btn-drown {
       width: 28px;
