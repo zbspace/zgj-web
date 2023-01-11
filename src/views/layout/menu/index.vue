@@ -113,25 +113,12 @@
 
   const route = useRoute()
   const activeMenu = ref('')
-  // const state = ref({
-  //   menu: [],
-  //   CurrentSystemType: 'business'
-  // })
 
   const handleSelect = (index, indexPath) => {
     console.log(index, indexPath)
     activeMenu.value = index
   }
 
-  // const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
-  // if (CurrentSystemType) {
-  //   state.value.CurrentSystemType = CurrentSystemType
-  // }
-  // if (CurrentSystemType === 'business') {
-  //   state.value.menu = business
-  // } else if (CurrentSystemType === 'system') {
-  //   state.value.menu = system
-  // }
   activeMenu.value = route.path
 </script>
 
