@@ -3,6 +3,14 @@
 */
 
 
-:root {
+.el-button {
   --el-button-text-color: var(--color-text-2);
+}
+
+.el-pager li {
+  --el-pagination-button-color: var(--color-text-1);
+}
+
+.el-pagination__jump {
+  --el-text-color-regular: var(--color-text-1);
 }
