@@ -32,11 +32,11 @@ export const business = [
     // icon: icon2,
     icon: '#yongyinguanli-73o018b7',
     children: [
-      {
-        name: '用印申请',
-        to: '/frontDesk/printControlManage/useSealManage/sealApplication',
-        label: 't-zgj-cg-menu-yongyin-shenqing'
-      },
+      // {
+      //   name: '用印申请',
+      //   to: '/frontDesk/printControlManage/useSealManage/sealApplication',
+      //   label: 't-zgj-cg-menu-yongyin-shenqing'
+      // },
       {
         name: '用印申请',
         to: '/frontDesk/printControlManage/useSealManage/selectionForm',
