@@ -447,3 +447,28 @@ body {
 .el-input-number__increase:hover {
   color: var(--primary-4) !important;
 }
+.el-menu--popup-container {
+  .el-menu-item.is-active {
+    color: var(--primary-4) !important;
+  }
+
+  .el-menu-item:hover,
+  .el-sub-menu:hover,
+  .el-sub-menu__title:hover {
+    background-color: rgba(208, 150, 62, 0.12) !important;
+    color: var(--primary-6) !important;
+  }
+}
+
+.drawer-class.el-drawer.rtl {
+  top: 65px !important;
+  height: auto !important;
+}
+.drawer-class.el-drawer {
+  box-shadow: none;
+  border-left: 1px solid #eee;
+  width: 540px !important;
+  .el-drawer__body {
+    padding: 0;
+  }
+}

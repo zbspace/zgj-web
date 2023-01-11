@@ -24,9 +24,8 @@
       v-model="showMailPop"
       title=""
       :with-header="false"
-      :append-to-body="false"
+      :append-to-body="true"
       :modal="false"
-      :z-index="-1"
       class="drawer-class"
     >
       <!-- header -->
@@ -336,19 +335,6 @@
 
     &:hover {
       border: 1px solid #3e78d0;
-    }
-  }
-
-  :deep(.drawer-class.el-drawer.rtl) {
-    top: 65px !important;
-    height: auto !important;
-  }
-  :deep(.drawer-class.el-drawer) {
-    box-shadow: none;
-    border-left: 1px solid #eee;
-    width: 540px !important;
-    .el-drawer__body {
-      padding: 0;
     }
   }
 </style>

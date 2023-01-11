@@ -282,7 +282,6 @@
 
 <script setup>
   import { onMounted, reactive, ref, watch } from 'vue'
-  import useCurrentInstance from '@/hooks/getInstance.js'
   import i18n from '../i18n'
   import useClickQutside from '../hooks/useClickQutside.js'
   import VApplicationNav from '../components/modules/applicationNav.vue'

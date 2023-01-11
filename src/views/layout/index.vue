@@ -5,7 +5,7 @@
     </el-header>
     <el-container>
       <el-aside>
-        <el-scrollbar height="calc(100vh - 64px)">
+        <el-scrollbar height="calc(100vh - 64px)" style="background: #fff">
           <Menus />
         </el-scrollbar>
       </el-aside>
@@ -36,13 +36,12 @@
       z-index: 1;
       height: 64px;
     }
-    :deep(.el-container) {
-    }
     :deep(.el-main) {
-      padding: 16px 0 0 20px;
-      .layout-scrollbar {
-        padding-right: 20px;
-      }
+      padding: 16px;
+      // padding: 16px 0 0 20px;
+      // .layout-scrollbar {
+      //   padding-right: 20px;
+      // }
     }
   }
 </style>

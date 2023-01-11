@@ -13,6 +13,7 @@
       @select="handleSelect"
       :collapse="layoutStore.isCollapse"
       :unique-opened="true"
+      :collapse-transition="false"
       class="el-menu-vertical-demo"
     >
       <template v-for="item in menus[menusInfoStore.currentType]">
@@ -81,7 +82,9 @@
           >
             <svg
               class="iconpark-icon contraction-icon"
-              @click="layoutStore.changeCollapse(!layoutStore.isCollapse)"
+              @click.stop.prevent="
+                layoutStore.changeCollapse(!layoutStore.isCollapse)
+              "
             >
               <use href="#cebianshousuo"></use>
             </svg>

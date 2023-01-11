@@ -121,7 +121,7 @@
     box-sizing: border-box;
     border-radius: var(--border-radius-4);
     background-color: var(--in-common-use-1);
-    margin-top: 24px;
+    // margin-top: 18px;
     position: relative;
 
     .ap-box-title {
