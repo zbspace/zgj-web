@@ -221,7 +221,7 @@ onMounted(() => {
             width: 260px;
 
             .seal-item {
-                height: 96px;
+                height: 76px;
                 background: #FFFFFF;
                 border: 1px solid rgba(0, 0, 0, 0.15);
                 border-radius: 4px;
@@ -229,7 +229,7 @@ onMounted(() => {
 
                 .seal-item-wrap {
                     display: flex;
-                    height: 96px;
+                    height: 76px;
                     padding: 16px 0 0 16px;
                     box-sizing: border-box;
                     cursor: pointer;
