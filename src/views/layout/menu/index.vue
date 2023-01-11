@@ -187,7 +187,7 @@
       .el-menu-item:not(.is-active) {
         color: rgba(0, 0, 0, 0.85);
         span {
-          color: rgba(0, 0, 0, 0.65);
+          color: rgba(0, 0, 0, 0.85);
         }
       }
       .el-menu-item {
@@ -219,16 +219,15 @@
           background: rgba(208, 150, 62, 0.12);
           span,
           .iconpark-icon {
-            color: var(--primary-6);
+            color: var(--primary-6) !important;
           }
           .name-front {
-            background-color: var(--primary-6);
+            background-color: var(--primary-6) !important;
           }
         }
       }
 
       .el-sub-menu {
-        // margin-bottom: 10px;
         .el-sub-menu__title {
           height: 42px;
           .iconpark-icon {
@@ -243,13 +242,27 @@
             background: rgba(208, 150, 62, 0.12);
             span,
             .iconpark-icon {
-              color: var(--primary-6);
+              color: var(--primary-6) !important;
             }
           }
         }
         .el-tooltip__trigger {
           padding: 0;
           margin-left: 20px;
+        }
+        .el-menu-item:not(.is-active) {
+          color: rgba(0, 0, 0, 0.85);
+          span {
+            color: rgba(0, 0, 0, 0.65);
+          }
+        }
+        .el-sub-menu {
+          .el-sub-menu__title {
+            color: rgba(0, 0, 0, 0.85);
+            span {
+              color: rgba(0, 0, 0, 0.65);
+            }
+          }
         }
       }
     }
