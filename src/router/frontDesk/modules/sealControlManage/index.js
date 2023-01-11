@@ -13,15 +13,15 @@ const routes = {
         authRequired: true
       },
       children: [
-        {
-          path: 'sealApplication',
-          name: 'SealApplication',
-          meta: { title: '用印申请', authRequired: true },
-          component: () =>
-            import(
-              '@/views/frontDesk/PrintControlManagement/SealApplication.vue'
-            )
-        },
+        // {
+        //   path: 'sealApplication',
+        //   name: 'SealApplication',
+        //   meta: { title: '用印申请', authRequired: true },
+        //   component: () =>
+        //     import(
+        //       '@/views/frontDesk/PrintControlManagement/SealApplication.vue'
+        //     )
+        // },
         {
           path: 'selectionForm',
           name: 'SelectionForm',
