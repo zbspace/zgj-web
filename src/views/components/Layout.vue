@@ -114,8 +114,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    @include mixin-padding-top(10);
-    @include mixin-padding-bottom(10);
+    @include mixin-padding-top(20);
+    @include mixin-padding-bottom(20);
     @include mixin-padding-left(20);
     @include mixin-padding-right(20);
     box-sizing: border-box;
