@@ -54,12 +54,10 @@
       </template>
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button
-              :disabled="state.componentsBatch.selectionData.length == 0"
-              v-for="item in state.componentsBatch.data"
-              >{{ item.name }}</el-button
-            >
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -135,17 +133,17 @@
 <script setup>
   import {
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted,
     ref
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
@@ -155,13 +153,13 @@
   import KDialog from '@/views/components/modules/kdialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import { ElMessage } from 'element-plus'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
   // 印章库 新增弹框
   const formLibraryJson = reactive(LibraryJson)
   const formLibraryData = reactive({})
@@ -188,7 +186,7 @@
   }
   const showDepPerDialog = ref(false)
 
-  const emit = defineEmits([])
+  // const emit = defineEmits([])
   const state = reactive({
     componentsTabs: {
       data: [
@@ -470,7 +468,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '1') {
+          if (column.property === '1') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -593,6 +591,9 @@
     },
     componentsBatch: {
       selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
       data: [
         {
           name: '批量设置可见范围'
@@ -609,25 +610,30 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == '1') {
+    if (column.property === '1') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '修改') {
       showLibraryDialog.value = true
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
   }
 
   // 点击搜索表单

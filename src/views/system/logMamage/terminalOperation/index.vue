@@ -27,14 +27,10 @@
 
       <template #batch>
         <div class="batch">
-          <el-button
-            :disabled="state.componentsBatch.selectionData.length == 0"
-            v-for="(item, index) in state.componentsBatch.data"
-            :key="index"
-            >{{ item.name }}</el-button
-          >
-
-          <componentsBatch></componentsBatch>
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          ></componentsBatch>
         </div>
       </template>
       <template #table>
@@ -652,6 +648,9 @@
 
     componentsBatch: {
       selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
       data: [
         {
           name: '批量下载'
@@ -664,6 +663,11 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
   }
 </script>
 
