@@ -662,6 +662,7 @@
         position: relative;
         @include mixin-padding-right(10);
         box-sizing: border-box;
+        color: var(--color-text-1);
 
         .ap-box-label-necessary {
           color: red;
