@@ -26,13 +26,10 @@
       </template>
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button
-              :disabled="state.componentsBatch.selectionData.length == 0"
-              v-for="(item, index) in state.componentsBatch.data"
-              :key="index"
-              >{{ item.name }}</el-button
-            >
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -470,6 +467,9 @@
     },
     componentsBatch: {
       selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
       data: []
     }
   })
@@ -489,6 +489,11 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
   }
 
   // 点击搜索表单

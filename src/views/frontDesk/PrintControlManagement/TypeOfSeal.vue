@@ -34,12 +34,10 @@
 
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button
-              :disabled="state.componentsBatch.selectionData.length == 0"
-              v-for="item in state.componentsBatch.data"
-              >{{ item.name }}</el-button
-            >
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -89,44 +87,44 @@
 </template>
 <script setup>
   import {
-    ref,
+    // ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsTree from '../../components/tree'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
   import KDialog from '@/views/components/modules/kdialog.vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+  import { ElMessageBox } from 'element-plus'
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
 
   // 印章类型 新增弹框
   const fromState = reactive({
     title: '',
-    formJson: StampTypeApplicationJson, //动态表单内容
+    formJson: StampTypeApplicationJson, // 动态表单内容
     optionData: null,
     vFormLibraryRef: 'vFormLibraryRef',
     showDialog: false
   })
-  const vFormLibraryRef = ref(null)
+  // const vFormLibraryRef = ref(null)
 
-  const emit = defineEmits([])
+  // const emit = defineEmits([])
   const state = reactive({
     componentsTabs: {
       data: [
@@ -429,6 +427,9 @@
     },
     componentsBatch: {
       selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
       data: [
         {
           name: '批量删除'
@@ -440,12 +441,12 @@
     fromState.title = editor
     fromState.showDialog = true
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '修改') {
       clickEditor(cell.name)
     }
-    if (cell.name == '删除') {
+    if (cell.name === '删除') {
       ElMessageBox.confirm('请问确定要删除吗？', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -454,10 +455,15 @@
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
   }
 
   onBeforeMount(() => {
