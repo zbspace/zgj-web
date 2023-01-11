@@ -23,6 +23,7 @@
             class="dropdown-list-cont"
             v-for="(item, index) in state.appEntrance"
             :key="index"
+            @click="goMenu(item)"
           >
             <img
               class="dropdown-list-cont-img"
@@ -40,6 +41,7 @@
 
 <script setup>
   import { reactive, ref } from 'vue'
+  import { useRouter } from 'vue-router'
   import icon1 from '@/assets/svg/more-Seal-Application.svg'
   import icon2 from '@/assets/svg/more-my-Seal-Application.svg'
   import icon3 from '@/assets/svg/more-file-document.svg'
@@ -79,6 +81,28 @@
   }
   const hidePop = () => {
     actived.value = false
+  }
+
+  const router = useRouter()
+
+  const goMenu = attr => {
+    console.log(attr.name)
+    // 用印申请
+    attr.name === 't-zgj-F_SEAL_APPLY' && router.push({ name: 'SelectionForm' })
+
+    // 文件归档
+    attr.name === 't-zgj-F_SEAL_FILE_UPLOAD' && router.push({ name: 'Archive' })
+
+    // 印章申请
+    attr.name === 't-zgj-F_SEAL_INFO_APPLY' &&
+      router.push({ name: 'ApplicationForSeal' })
+
+    // 印章库
+    attr.name === 't-zgj-F_SEAL_INFO' && router.push({ name: 'LibraryOfSeals' })
+
+    // 文件库
+    attr.name === 't-zgj-F_DOCUMENT_INFO' &&
+      router.push({ name: 'DocumentLibrary' })
   }
 </script>
 
