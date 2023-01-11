@@ -21,6 +21,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -59,36 +60,47 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
+    ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsTree from '../../components/tree'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { useRouter } from 'vue-router'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+
   const router = useRouter()
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
-  const emit = defineEmits([])
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
+  // const emit = defineEmits([])
+  const showDepPerDialog = ref(false)
   const state = reactive({
     componentsTabs: {
       data: [
@@ -344,7 +356,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '2') {
+          if (column.property === '2') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -474,11 +486,11 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == '2') {
+    if (column.property === '2') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
@@ -487,7 +499,7 @@
   function tabChange(activeName) {
     state.activeName = activeName
     // console.log(activeName);
-    if (activeName == '1') {
+    if (activeName === '1') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -611,7 +623,7 @@
           7: ''
         }
       ]
-    } else if (activeName == '2') {
+    } else if (activeName === '2') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -756,7 +768,7 @@
           7: ''
         }
       ]
-    } else if (activeName == '3') {
+    } else if (activeName === '3') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -898,7 +910,7 @@
       ]
     }
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '上传文件核验') {
       // ElMessageBox.confirm(
@@ -922,6 +934,14 @@
       })
     }
   }
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })
