@@ -174,23 +174,26 @@
       header: [
         {
           width: 50,
-          type: 'selection'
+          type: 'selection',
+          fixed: true
         },
         {
           prop: '0',
           label: '序号',
           width: 80,
-          align: 'center'
-        },
-        {
-          prop: '1',
-          label: '部门编码',
-          sortable: true,
-          'min-width': 150
+          align: 'center',
+          fixed: true
         },
         {
           prop: '2',
           label: '部门名称',
+          sortable: true,
+          'min-width': 150,
+          fixed: true
+        },
+        {
+          prop: '1',
+          label: '部门编码',
           sortable: true,
           'min-width': 150
         },
@@ -222,7 +225,7 @@
           prop: '7',
           label: '操作',
           width: 150,
-          flex: 'right',
+          fixed: 'right',
           rankDisplayData: [
             {
               name: '修改'

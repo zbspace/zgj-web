@@ -17,11 +17,13 @@
       </el-main>
     </el-container>
   </el-container>
+  <RightBar />
 </template>
 
 <script setup>
   import NavBar from '@/components/nav-bar'
   import Menus from '@/views/layout/menu/index.vue'
+  import RightBar from '@/components/right-bar'
 </script>
 <style lang="scss" scoped>
   .layout-container {

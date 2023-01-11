@@ -504,7 +504,8 @@ function goDetail(item) {
 }
 function goGridType(){
     router.push({
-        path: "/frontDesk/PrintControlManagement/Grid-management/GridType"
+        // path: "/frontDesk/PrintControlManagement/Grid-management/GridType"
+        name: 'GridType'
     })
 }
 function selectSealBox(index) {

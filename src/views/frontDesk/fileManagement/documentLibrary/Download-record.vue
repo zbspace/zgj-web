@@ -589,7 +589,8 @@
   //点击提交
   function clickSubmit() {
     commonFun.routerPage(router, {
-      path: '/frontDesk/PrintControlManagement/Seal-application/accomplish'
+      // path: '/frontDesk/PrintControlManagement/Seal-application/accomplish'
+      name: 'Accomplish'
     })
   }
 

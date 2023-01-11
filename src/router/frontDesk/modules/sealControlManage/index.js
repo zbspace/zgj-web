@@ -1,26 +1,27 @@
 const routes = {
-  path: '/frontDesk',
+  path: 'printControlManage',
   meta: {
     title: '印控管理',
     authRequired: true
   },
+  component: () => import('@/views/frontDesk/PrintControlManagement/index.vue'),
   children: [
     {
-      path: 'printControlManagement',
+      path: 'useSealManage',
       meta: {
         title: '用印管理',
         authRequired: true
       },
       children: [
-        {
-          path: 'sealApplication',
-          name: 'SealApplication',
-          meta: { title: '用印申请', authRequired: true },
-          component: () =>
-            import(
-              '@/views/frontDesk/PrintControlManagement/SealApplication.vue'
-            )
-        },
+        // {
+        //   path: 'sealApplication',
+        //   name: 'SealApplication',
+        //   meta: { title: '用印申请', authRequired: true },
+        //   component: () =>
+        //     import(
+        //       '@/views/frontDesk/PrintControlManagement/SealApplication.vue'
+        //     )
+        // },
         {
           path: 'selectionForm',
           name: 'SelectionForm',
@@ -30,10 +31,11 @@ const routes = {
               '@/views/frontDesk/PrintControlManagement/Seal-application/Selection-form.vue'
             )
         },
+        // todo
         {
           path: 'selectionForm/confirmApprovalProcess',
           name: 'ConfirmApprovalProcess',
-          meta: { title: 'confirmApprovalProcess', authRequired: true },
+          meta: { title: '', authRequired: true },
           component: () =>
             import(
               '@/views/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process.vue'
@@ -48,6 +50,16 @@ const routes = {
               '@/views/frontDesk/PrintControlManagement/Seal-application/fill-form.vue'
             )
         },
+        // todo
+        {
+          path: 'sealApplication/accomplish',
+          name: 'Accomplish',
+          meta: { title: '???', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/Seal-application/accomplish.vue'
+            )
+        },
         {
           path: 'intelligentPrinting',
           name: 'IntelligentPrinting',
@@ -58,6 +70,15 @@ const routes = {
           component: () =>
             import(
               '@/views/frontDesk/PrintControlManagement/IntelligentPrinting.vue'
+            )
+        },
+        {
+          path: 'intelligentPrinting/transferApplication',
+          name: 'TransferApplication',
+          meta: { title: '转办申请', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/transferApplication.vue'
             )
         },
         {
@@ -98,6 +119,15 @@ const routes = {
           component: () =>
             import(
               '@/views/frontDesk/PrintControlManagement/recordWithSeal.vue'
+            )
+        },
+        {
+          path: 'recordWithSeal/innerPageApplication',
+          name: 'InnerPageApplication',
+          meta: { title: '用印申请', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/InnerPageApplication.vue'
             )
         },
         {
@@ -163,6 +193,15 @@ const routes = {
           component: () =>
             import(
               '@/views/frontDesk/PrintControlManagement/SealloanInformation.vue'
+            )
+        },
+        {
+          path: 'sealloanInformation/sealloanInnerPage',
+          name: 'SealloanInnerPage',
+          meta: { title: '历史记录', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/SealloanInnerPage.vue'
             )
         }
       ]
@@ -242,7 +281,6 @@ const routes = {
     },
     {
       path: 'electronicSeal',
-      name: 'SlectronicSeal',
       meta: {
         title: '电子签章',
         authRequired: true
@@ -255,6 +293,25 @@ const routes = {
           component: () =>
             import(
               '@/views/frontDesk/PrintControlManagement/electronic-seal-apply/Selection-form.vue'
+            )
+        },
+        {
+          path: 'eSelectionForm/fillForm',
+          name: 'ESelectionFillForm',
+          meta: { title: '', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form.vue'
+            )
+        },
+        // todo
+        {
+          path: 'eSelectionForm/accomplish',
+          name: 'ESelectionAccomplish',
+          meta: { title: '', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/electronic-seal-apply/accomplish.vue'
             )
         },
         {
@@ -301,6 +358,22 @@ const routes = {
             authRequired: true
           },
           component: () => import('@/views/frontDesk/home/index.vue')
+        },
+        {
+          path: 'innerPage',
+          name: 'InnerPage',
+          meta: { title: '二级页面', authRequired: true },
+          component: () =>
+            import('@/views/frontDesk/PrintControlManagement/innerPage.vue')
+        },
+        {
+          path: 'innerTablePage',
+          name: 'InnerTablePage',
+          meta: { title: '二级页面', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/InnerTablePage.vue'
+            )
         }
       ]
     },
@@ -410,6 +483,26 @@ const routes = {
                 )
             }
           ]
+        },
+        // todo
+        {
+          path: 'viewOutSeal',
+          name: 'ViewOutSeal',
+          meta: { title: '???', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/Grid-management/ViewOutSeal.vue'
+            )
+        },
+        // todo
+        {
+          path: 'gridType',
+          name: 'GridType',
+          meta: { title: '???', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/Grid-management/GridType.vue'
+            )
         }
       ]
     }
