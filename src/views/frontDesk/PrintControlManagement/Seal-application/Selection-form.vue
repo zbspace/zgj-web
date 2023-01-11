@@ -115,7 +115,7 @@
   // 点击列表按钮
   function clickListBut(n) {
     commonFun.routerPage(router, {
-      name: 'Seal-application-fill-form',
+      name: 'selectionForms',
       params: { id: n }
     })
   }

@@ -4,42 +4,10 @@
     <div>
       <!-- ========== Left Sidebar Start ========== -->
       <!-- ========== App Menu ========== -->
-      <div class="app-menu navbar-menu">
-        <!-- LOGO -->
-        <div class="navbar-brand-box logo-p-t">
-          <!-- Dark Logo-->
-          <router-link to="/" class="logo logo-dark">
-            <span class="logo-sm">
-              <img src="@/assets/icon/logo.png" alt="" height="22" />
-            </span>
-            <span class="logo-lg">
-              <img src="@/assets/icon/logo.png" alt="" height="30" />
-            </span>
-          </router-link>
-          <!-- Light Logo-->
-          <router-link to="/" class="logo logo-light">
-            <span class="logo-sm">
-              <img src="@/assets/icon/logo.png" alt="" height="22" />
-            </span>
-            <span class="logo-lg">
-              <img src="@/assets/icon/logo.png" alt="" height="30" />
-            </span>
-          </router-link>
-          <button
-            type="button"
-            class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-            id="vertical-hover"
-            @click="initActiveMenu"
-          >
-            <i class="ri-record-circle-line" />
-          </button>
-        </div>
+      <!-- <el-scrollbar height="calc(100vh - 64px)">
+        <Menus />
+      </el-scrollbar> -->
 
-        <SimpleBar id="scrollbar" class="h-100" ref="scrollbar">
-          <Menus />
-        </SimpleBar>
-        <div class="sidebar-background" />
-      </div>
       <!-- Left Sidebar End -->
       <!-- Vertical Overlay-->
       <div class="vertical-overlay" id="overlay" />
@@ -67,6 +35,7 @@
   // import { layoutComputed } from "@/state/helpers";
 
   import NavBar from '@/components/nav-bar'
+  // import Menus from '@/layouts/menu'
   import Menus from '@/components/menu.vue'
   import RightBar from '@/components/right-bar'
   localStorage.setItem('hoverd', false)
@@ -149,3 +118,12 @@
     }
   }
 </script>
+<style lang="scss" scoped>
+  #layout-wrapper {
+    :deep(.el-scrollbar) {
+      display: inline-block;
+      margin-top: 64px;
+      background-color: #fff;
+    }
+  }
+</style>

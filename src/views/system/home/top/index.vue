@@ -41,7 +41,6 @@
       border-radius: 4px;
       box-shadow: 0 0 2px 2px rgb(224 227 234 / 70%);
       box-sizing: border-box;
-      margin-bottom: 15px;
       transition: all 0.3s ease 0s;
       padding: 0.4rem 0rem;
       text-align: center;

@@ -1316,7 +1316,8 @@
     }
     if (cell.name === '申请重置') {
       router.push({
-        path: '/frontDesk/PrintControlManagement/File-Archive/ArchiveReset'
+        // path: '/frontDesk/PrintControlManagement/File-Archive/ArchiveReset'
+        name: 'ArchiveReset'
       })
     }
   }

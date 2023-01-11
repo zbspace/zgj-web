@@ -915,7 +915,8 @@
     }
     if (cell.name === '查看核验记录') {
       router.push({
-        path: '/frontDesk/PrintControlManagement/File-checkRecord/OcrCheckRecord',
+        // path: '/frontDesk/PrintControlManagement/File-checkRecord/OcrCheckRecord',
+        name: 'OcrCheckRecord',
         query: {
           record: `pre${state.activeName}`
         }

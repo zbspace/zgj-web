@@ -499,7 +499,7 @@ function customClick(row, column, cell, event) {
 }
 function goDetail(item) {
     router.push({
-        path: "/frontDesk/PrintControlManagement/Grid-management/CabinetGridInfo"
+        path: "/frontDesk/equipmentManage/IntelligentSealCabinetManagement/cabinetGridInfo"
     })
 }
 function goGridType(){
@@ -525,7 +525,8 @@ function handleGrid() {
 }
 function lastTimeCheck(){
     router.push({
-        path: "/frontDesk/PrintControlManagement/Grid-management/ViewCheckInfo"
+        // path: "/frontDesk/PrintControlManagement/Grid-management/ViewCheckInfo"
+        name: 'ViewCheckInfo'
     })
 }
 onBeforeMount(() => {

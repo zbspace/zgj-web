@@ -354,10 +354,6 @@
 
 <style lang="scss" scoped>
   .system-home {
-    height: calc(100vh - 100px);
-    overflow-y: auto;
-    margin-top: 24px;
-
     .charts {
       background-color: #fff;
       border: 1px solid #fff;

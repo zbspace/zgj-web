@@ -10,11 +10,9 @@ export const useAccountInfoStore = defineStore({
       token: ''
     }
   },
-  getters: {
-
-  },
+  getters: {},
   actions: {
-    setAccountInfo (accountInfo) {
+    setAccountInfo(accountInfo) {
       this.name = accountInfo ? accountInfo.name : ''
       this.token = accountInfo ? accountInfo.token : ''
     }

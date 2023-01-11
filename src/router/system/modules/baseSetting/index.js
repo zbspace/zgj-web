@@ -1,39 +1,39 @@
 const routes = {
-  path: 'base_setting',
-  name: 'base-setting',
+  path: 'baseSetting',
   meta: {
+    title: '基础设置',
     authRequired: true
   },
   children: [
     {
-      path: 'firmware_version',
-      name: 'firmware-version',
+      path: 'firmwareVersion',
+      name: 'VirmwareVersion',
       meta: {
         title: '固件版本管理',
         authRequired: true
       },
       component: () =>
-        import('@/views/system/base-settting/firmware-version/index.vue')
+        import('@/views/system/baseSetting/firmwareVersion/index.vue')
     },
     {
-      path: 'global_parameter',
-      name: 'global-parameter',
+      path: 'globalParameter',
+      name: 'GlobalParameter',
       meta: {
         title: '全局参数设置',
         authRequired: true
       },
       component: () =>
-        import('@/views/system/base-settting/global-parameter/index.vue')
+        import('@/views/system/baseSetting/globalParameter/index.vue')
     },
     {
-      path: 'terminal_version',
-      name: 'terminal-version',
+      path: 'terminalVersion',
+      name: 'TerminalVersion',
       meta: {
         title: '终端版本管理',
         authRequired: true
       },
       component: () =>
-        import('@/views/system/base-settting/terminal-version/index.vue')
+        import('@/views/system/baseSetting/terminalVersion/index.vue')
     }
   ]
 }

@@ -119,7 +119,8 @@ function clickBackPage() {
 //点击下一步
 function clickNextStep() {
     commonFun.routerPage(router, {
-        path: "/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process"
+        // path: "/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process"
+        name: 'ConfirmApprovalProcess'
     })
 }
 

@@ -35,6 +35,22 @@
               <span class="cancel" @click="cancel1">取消</span>
             </div>
           </div>
+
+          <div class="rows">
+            <span class="label">服务器域名</span>
+            <div v-if="!edit1">
+              <span class="content">jnh444555555</span>
+              <img :src="inputIcon" alt="" @click="edit1 = true" />
+            </div>
+            <div class="input" v-else>
+              <el-input
+                v-model="input1"
+                placeholder="请输入新的头部系统显示名称"
+              />
+              <span class="save" @click="save1">保存</span>
+              <span class="cancel" @click="cancel1">取消</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="base">

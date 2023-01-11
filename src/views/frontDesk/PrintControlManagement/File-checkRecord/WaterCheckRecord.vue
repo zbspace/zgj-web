@@ -292,7 +292,8 @@ function selectSealBox(index) {
 }
 function viewOutSeal() {
     router.push({
-        path: "/frontDesk/PrintControlManagement/Grid-management/ViewCheckInfo"
+        // path: "/frontDesk/PrintControlManagement/Grid-management/ViewCheckInfo"
+        name: 'ViewCheckInfo'
     })
 }
 onBeforeMount(() => {

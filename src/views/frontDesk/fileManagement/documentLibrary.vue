@@ -789,7 +789,7 @@
   //点击下载记录
   function clickDownloadRecord() {
     commonFun.routerPage(router, {
-      path: '/frontDesk/fileManagement/documentLibrary/Download-record'
+      path: '/frontDesk/fileManagement/downloadRecord'
     })
   }
 

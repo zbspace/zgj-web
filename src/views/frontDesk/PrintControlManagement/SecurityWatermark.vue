@@ -1074,7 +1074,8 @@
     }
     if (cell.name === '查看验证记录') {
       router.push({
-        path: '/frontDesk/PrintControlManagement/File-checkRecord/WaterCheckRecord'
+        // path: '/frontDesk/PrintControlManagement/File-checkRecord/WaterCheckRecord'
+        name: 'WaterCheckRecord'
       })
     }
   }
