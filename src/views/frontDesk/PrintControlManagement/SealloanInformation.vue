@@ -17,6 +17,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -77,50 +78,58 @@
       >
       </v-form-render>
     </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
     ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsTree from '../../components/tree'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import SealLendingJson from '@/views/addDynamicFormJson/SealLending.json'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import { useRouter } from 'vue-router'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   const router = useRouter()
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
 
   // 印章申请 新增弹框
   const fromState = reactive({
     title: '',
-    formJson: SealLendingJson, //动态表单内容
+    formJson: SealLendingJson, // 动态表单内容
     optionData: null,
     vFormLibraryRef: 'vFormLibraryRef',
     showDialog: false
   })
   const vFormLibraryRef = ref(null)
-
+  const showDepPerDialog = ref(false)
   const submitLibraryForm = type => {
     if (!type) {
       vFormLibraryRef.value.resetForm()
@@ -138,7 +147,7 @@
       })
   }
 
-  const emit = defineEmits([])
+  // const emit = defineEmits([])
   const state = reactive({
     componentsTabs: {
       data: [
@@ -187,20 +196,47 @@
         },
         {
           id: 'name',
-          label: '外借人',
-          type: 'input',
+          label: '印章类型',
+          type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '外借人'
+            placeholder: '+印章类型'
           }
         },
         {
           id: 'name',
           label: '保管人',
-          type: 'input',
+          type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '保管人'
+            placeholder: '+保管人'
+          }
+        },
+        {
+          id: 'name',
+          label: '保管部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+保管部门'
+          }
+        },
+        {
+          id: 'name',
+          label: '外借人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+外借人'
+          }
+        },
+        {
+          id: 'name',
+          label: '外借部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+外借部门'
           }
         }
       ],
@@ -368,7 +404,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '1') {
+          if (column.property === '1') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -493,27 +529,37 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == '1') {
+    if (column.property === '1') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '归还') {
       fromState.title = '归还'
       fromState.showDialog = true
       fromState.formJson = SealLendingJson
     }
-    if (cell.name == '查看历史记录') {
+    if (cell.name === '查看历史记录') {
       router.push({
-        path: '/frontDesk/SealloanInnerPage'
+        // path: '/frontDesk/SealloanInnerPage'
+        name: 'SealloanInnerPage'
       })
     }
   }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })

@@ -5,16 +5,10 @@
       <template #title>
         <div class="title">
           <div> 实时确认 </div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary">导出台账</el-button>
+            </div>
           </div>
         </div>
       </template>
@@ -194,17 +188,20 @@
           }
         },
         {
-          id: 'picker',
-          label: '发起确认时间',
-          type: 'picker',
+          id: 'wjlx',
+          label: '发起类型',
+          type: 'select',
           inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'daterange',
-            'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
-          },
-          style: {}
+          options: [
+            {
+              label: '远程盖章',
+              value: '2'
+            },
+            {
+              label: '实时视频盖章',
+              value: '3'
+            }
+          ]
         }
       ],
       butData: [
@@ -739,6 +736,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .title-more {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        .title-more-add {
+          margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
     }
   }
   .realTimeBtn {

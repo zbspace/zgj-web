@@ -136,6 +136,7 @@
       align-items: center;
       .ap-desc-text {
         margin-right: 0.5rem;
+        color: var(--color-text-1);
       }
     }
     /* 分页 */

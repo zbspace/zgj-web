@@ -5,20 +5,28 @@
       <img class="logo" src="../../assets/images/login/logo.png" />
       <div class="left">
         <!-- 下载 -->
-        <div class="down">
-          <div class="down-t" @click="downloadToop" :class="state.showDownToop ? 'selected-toop' : 'no-selected'">
+        <div class="down" ref="dropdownDownloadRef">
+          <div
+            class="down-t"
+            @click="downloadToop"
+            :class="showDownloadPop ? 'selected-toop' : 'no-selected'"
+          >
             <div class="icon"></div>
-            <div class="user-select">{{ $t('t-zgj-DownloadApp.Download')}}</div>
+            <div class="user-select">{{
+              $t('t-zgj-DownloadApp.Download')
+            }}</div>
           </div>
 
-          <div class="tooltip-down" :style="{'display': state.showDownToop ? 'block' : 'none'}">
+          <div
+            class="tooltip-down"
+            :style="{ display: showDownloadPop ? 'block' : 'none' }"
+          >
             <div class="qrcode">
-
               <div class="ios box">
                 <div class="code"></div>
                 <div class="title">
                   <img src="../../assets/images/login/ios_down.svg" />
-                  <div>{{ $t('t-zgj-DownloadApp.IOS')}}</div>
+                  <div>{{ $t('t-zgj-DownloadApp.IOS') }}</div>
                 </div>
               </div>
 
@@ -26,32 +34,55 @@
                 <div class="code"></div>
                 <div class="title">
                   <img src="../../assets/images/login/android_down.svg" />
-                  <div>{{ $t('t-zgj-DownloadApp.Android')}}</div>
+                  <div>{{ $t('t-zgj-DownloadApp.Android') }}</div>
                 </div>
               </div>
-              
             </div>
-            <div class="tip">{{ $t('t-zgj-tips.downAppTips1')}}</div>
-            <div class="tip">{{ $t('t-zgj-tips.downAppTips2')}}</div>
-          </div>
-        </div>
-        
-        <!-- 切换语言 -->
-        <div class="language" @click="changeLangToop">
-          <div class="common-btn user-select" :class="state.showLangToop ? 'open-toop' : 'close-toop'">{{ $t("t-zgj-type") }}</div>
-          <div class="tooltip-lan" :style="{'display': state.showLangToop ? 'block' : 'none'}">
-            <div class="item user-select" @click="changeLanguage('ch')">简体中文</div>
-            <div class="item user-select" @click="changeLanguage('en')">English</div>
+            <div class="tip">{{ $t('t-zgj-tips.downAppTips1') }}</div>
+            <div class="tip">{{ $t('t-zgj-tips.downAppTips2') }}</div>
           </div>
         </div>
 
+        <!-- 切换语言 -->
+        <div
+          class="language"
+          @click="changeLangToop"
+          ref="dropdownChangeLanRef"
+        >
+          <div
+            class="common-btn user-select"
+            :class="showChangeLanPop ? 'open-toop' : 'close-toop'"
+            >{{ $t('t-zgj-type') }}</div
+          >
+          <div
+            class="tooltip-lan"
+            :style="{ display: showChangeLanPop ? 'block' : 'none' }"
+          >
+            <div class="item user-select" @click="changeLanguage('ch')"
+              >简体中文</div
+            >
+            <div class="item user-select" @click="changeLanguage('en')"
+              >English</div
+            >
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- content -->
     <div class="content-login">
-      <div class="login-type" @click="changeLogin" :class="state.showAccountLogin ? 'account-icon' : 'code-icon'">
-        <div class="l-type-tip user-select" :class="state.languageCh ? 'tip' : 'tip-left'">{{ state.showAccountLogin ? $t('t-scan-login') : $t('t-code-login')}}</div>
+      <div
+        class="login-type"
+        @click="changeLogin"
+        :class="state.showAccountLogin ? 'account-icon' : 'code-icon'"
+      >
+        <div
+          class="l-type-tip user-select"
+          :class="state.languageCh ? 'tip' : 'tip-left'"
+          >{{
+            state.showAccountLogin ? $t('t-scan-login') : $t('t-code-login')
+          }}</div
+        >
       </div>
 
       <!-- 登录-账号密码 -->
@@ -61,7 +92,6 @@
 
       <!-- 登录-扫码 -->
       <div v-show="!state.showAccountLogin" class="l-scan-box">
-
         <!-- title -->
         <div class="scan-title user-select">{{ $t('t-scan-login') }}</div>
 
@@ -71,7 +101,7 @@
         <!-- 二维码 -->
         <div class="scan-code" @click="updateScanCode">
           <div class="code">
-            <div :style="{ display: state.scanCodeError ? 'block' : 'none'}">
+            <div :style="{ display: state.scanCodeError ? 'block' : 'none' }">
               <div class="mask-code"></div>
               <div class="mask-top user-select">
                 <!-- 二维码已失效 -->
@@ -89,50 +119,71 @@
     </div>
 
     <!-- footer -->
-    <div class="footer-login">Copyright@2012-2022  章管家  沪ICP备13006057号-6  上海建业信息科技股份有限公司</div>
+    <div class="footer-login"
+      >Copyright@2012-2022 章管家 沪ICP备13006057号-6
+      上海建业信息科技股份有限公司</div
+    >
   </div>
 </template>
 
 <script setup>
-import  I18n from "../../i18n";
-import { reactive,onMounted } from "vue";
-import VAccountLogin from "./modules/AccountLogin.vue"
-const state = reactive({
-  showDownToop: false, // 下载弹窗
-  showLangToop: false, // 切换语言弹窗
-  showAccountLogin: true, // 账号密码登录页
-  languageCh: true, // 中文
-  scanCodeError: true // 二维码失效
-})
-// 切换语言
-const changeLanguage = (locale) => {
-  I18n.global.locale = locale
-  state.languageCh = locale === 'ch'
-}
+  import I18n from '../../i18n'
+  import { reactive, onMounted, ref, watch } from 'vue'
+  import VAccountLogin from './modules/AccountLogin.vue'
+  import useClickQutside from '@/hooks/useClickQutside.js'
 
-// 监听 切换语言展示弹窗
-const changeLangToop = () => {
-  state.showLangToop = !state.showLangToop;
-}
+  // 切换语言弹窗
+  const dropdownChangeLanRef = ref(null)
+  const showChangeLanPop = ref(false)
+  const isClickOutsideChange = useClickQutside(dropdownChangeLanRef)
+  watch(isClickOutsideChange, () => {
+    if (isClickOutsideChange.value && showChangeLanPop.value) {
+      showChangeLanPop.value = false
+    }
+  })
 
-// 监听 下载展示弹窗
-const downloadToop = () => {
-  state.showDownToop = !state.showDownToop;
-}
+  // 下载弹窗
+  const dropdownDownloadRef = ref(null)
+  const showDownloadPop = ref(false)
+  const isClickOutsideDownload = useClickQutside(dropdownDownloadRef)
+  watch(isClickOutsideDownload, () => {
+    if (isClickOutsideDownload.value && showDownloadPop.value) {
+      showDownloadPop.value = false
+    }
+  })
 
-// 监听 登录方式切换
-const changeLogin = () => {
-  state.showAccountLogin = !state.showAccountLogin;
-}
+  const state = reactive({
+    showAccountLogin: true, // 账号密码登录页
+    languageCh: true, // 中文
+    scanCodeError: true // 二维码失效
+  })
+  // 切换语言
+  const changeLanguage = locale => {
+    I18n.global.locale = locale
+    state.languageCh = locale === 'ch'
+  }
 
-// 监听 二维码刷新
-const updateScanCode = () => {
-  state.scanCodeError = false
-}
+  // 监听 切换语言展示弹窗
+  const changeLangToop = () => {
+    showChangeLanPop.value = !showChangeLanPop.value
+  }
 
-onMounted(() => {
-})
+  // 监听 下载展示弹窗
+  const downloadToop = () => {
+    showDownloadPop.value = !showDownloadPop.value
+  }
 
+  // 监听 登录方式切换
+  const changeLogin = () => {
+    state.showAccountLogin = !state.showAccountLogin
+  }
+
+  // 监听 二维码刷新
+  const updateScanCode = () => {
+    state.scanCodeError = false
+  }
+
+  onMounted(() => {})
 </script>
 
 <style lang="scss" scoped>
@@ -142,7 +193,7 @@ onMounted(() => {
     min-width: 1000px;
     min-height: 800px;
     padding: 30px 40px 20px 60px;
-    background: #F5F6F7;
+    background: #f5f6f7;
 
     .header-login {
       display: flex;
@@ -177,9 +228,10 @@ onMounted(() => {
           }
 
           .selected-toop {
-            color: #D0963E;
+            color: #d0963e;
             .icon {
-              background: url(../../assets/images/login/phone_icon_hover.png) no-repeat center center;
+              background: url(../../assets/images/login/phone_icon_hover.png)
+                no-repeat center center;
               background-size: 100%;
             }
           }
@@ -187,7 +239,8 @@ onMounted(() => {
           .no-selected {
             color: #303133;
             .icon {
-              background: url(../../assets/images/login/phone_icon.png) no-repeat center center;
+              background: url(../../assets/images/login/phone_icon.png)
+                no-repeat center center;
               background-size: 100%;
             }
           }
@@ -197,21 +250,21 @@ onMounted(() => {
             top: 52px;
             left: -280px;
             width: 420px;
-            background: #FFFFFF;
+            background: #ffffff;
             border-radius: 4px;
-            border: 1px solid #F0F0F0;
-            box-shadow: 0 -8px 20px 0 rgba(19,59,99,0.07);
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 -8px 20px 0 rgba(19, 59, 99, 0.07);
             padding: 8px 0;
             z-index: 9999;
 
             &::before {
-              content: "";
+              content: '';
               position: absolute;
               top: -20px;
               left: 80%;
               width: 0;
               height: 0;
-              border-bottom: 12px solid #FFFFFF;
+              border-bottom: 12px solid #ffffff;
               border-left: 12px solid transparent;
               border-top: 12px solid transparent;
               border-right: 12px solid transparent;
@@ -222,23 +275,24 @@ onMounted(() => {
               display: flex;
               justify-content: space-between;
               padding: 20px 46px;
-              
+
               .box {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
- 
+
                 .code {
                   width: 140px;
                   height: 140px;
-                  background: url(../../assets/images/login/test.png) no-repeat center center;
+                  background: url(../../assets/images/login/test.png) no-repeat
+                    center center;
                   background-size: 100%;
                   margin-bottom: 10px;
                 }
                 .title {
                   display: flex;
- 
+
                   img {
                     width: 20px;
                     height: 20px;
@@ -264,7 +318,6 @@ onMounted(() => {
           position: relative;
           cursor: pointer;
 
-         
           .common-btn {
             padding: 0px 30px 0px 14px;
             line-height: 36px;
@@ -274,7 +327,7 @@ onMounted(() => {
             width: 105px;
             text-align: center;
             &::after {
-              content: "";
+              content: '';
               position: absolute;
               right: 10px;
               transform: translateY(-50%);
@@ -287,12 +340,12 @@ onMounted(() => {
           }
 
           .open-toop {
-            color: #D0963E;
-            border: 1px solid #D0963E;
+            color: #d0963e;
+            border: 1px solid #d0963e;
 
             &::after {
               top: 60%;
-              border-top: 6px solid rgba($color: #D0963E, $alpha: 0.8);
+              border-top: 6px solid rgba($color: #d0963e, $alpha: 0.8);
               border-bottom: 6px solid transparent;
             }
           }
@@ -310,23 +363,23 @@ onMounted(() => {
           .tooltip-lan {
             position: absolute;
             top: 50px;
-            left: 0;
-            width: 106px;
-            background: #FFFFFF;
+            left: -6px;
+            width: 120px;
+            background: #ffffff;
             border-radius: 4px;
-            border: 1px solid #F0F0F0;
-            box-shadow: 0 -8px 20px 0 rgba(19,59,99,0.07);
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 -8px 20px 0 rgba(19, 59, 99, 0.07);
             padding: 8px 0;
-            
+
             &::before {
-              content: "";
+              content: '';
               position: absolute;
               top: -20px;
               left: 50%;
               transform: translateX(-50%);
               width: 0;
               height: 0;
-              border-bottom: 12px solid #FFFFFF;
+              border-bottom: 12px solid #ffffff;
               border-left: 12px solid transparent;
               border-top: 12px solid transparent;
               border-right: 12px solid transparent;
@@ -340,10 +393,12 @@ onMounted(() => {
               letter-spacing: 0;
               line-height: 32px;
               text-align: center;
+              &:hover {
+                border-radius: 4px;
+                color: #d0963e;
+              }
             }
-
           }
-
         }
       }
     }
@@ -356,14 +411,14 @@ onMounted(() => {
       bottom: 0;
       height: 530px;
       width: 504px;
-      background: #FFFFFF;
-      border: 1px solid #F0F0F0;
-      box-shadow: 0 8px 100px 0 rgba(19,59,99,0.07);
+      background: #ffffff;
+      border: 1px solid #f0f0f0;
+      box-shadow: 0 8px 100px 0 rgba(19, 59, 99, 0.07);
       border-radius: 4px;
       margin: auto;
       z-index: 99;
 
-      .login-type{
+      .login-type {
         width: 80px;
         height: 80px;
         position: absolute;
@@ -373,7 +428,7 @@ onMounted(() => {
         font-family: Helvetica-Bold;
         font-weight: 700;
         font-size: 14px;
-        color: #FAFAFA;
+        color: #fafafa;
         letter-spacing: 0;
         line-height: 50px;
         text-align: center;
@@ -386,12 +441,12 @@ onMounted(() => {
           min-width: 127px;
           // padding: 0 4px;
           height: 50px;
-          background: #D0963E;
-          box-shadow: 0 0 6px 0 rgba(0,0,0,0.12);
+          background: #d0963e;
+          box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.12);
           border-radius: 2px;
 
           &::after {
-            content: "";
+            content: '';
             position: absolute;
             right: -20px;
             top: 50%;
@@ -400,7 +455,7 @@ onMounted(() => {
             height: 0;
             border-radius: 2px;
             border-right: 10px solid transparent;
-            border-left: 10px solid #D0963E;
+            border-left: 10px solid #d0963e;
             border-top: 10px solid transparent;
             border-bottom: 10px solid transparent;
           }
@@ -423,15 +478,17 @@ onMounted(() => {
       }
 
       .account-icon {
-        background: url(../../assets/images/login/ercode.png) no-repeat center center;
+        background: url(../../assets/images/login/ercode.png) no-repeat center
+          center;
         background-size: 100%;
       }
 
       .code-icon {
-        background: url(../../assets/images/login/account.png) no-repeat center center;
+        background: url(../../assets/images/login/account.png) no-repeat center
+          center;
         background-size: 100%;
       }
-      
+
       .l-scan-box {
         text-align: center;
         .scan-title {
@@ -456,10 +513,11 @@ onMounted(() => {
             position: relative;
             width: 214px;
             height: 214px;
-            background: #FFFFFF;
-            border: 1px solid #F0F0F0;
+            background: #ffffff;
+            border: 1px solid #f0f0f0;
             border-radius: 8px;
-            background: url(../../assets/images/login/test.png) no-repeat center center;
+            background: url(../../assets/images/login/test.png) no-repeat center
+              center;
             background-size: 100%;
           }
 
@@ -484,7 +542,7 @@ onMounted(() => {
               font-family: Helvetica-Bold;
               font-weight: 700;
               font-size: 16px;
-              color: #FAFAFA;
+              color: #fafafa;
               text-align: center;
               margin: 60px 0 22px 0;
             }
@@ -492,7 +550,7 @@ onMounted(() => {
             .mask-btn {
               width: 120px;
               height: 50px;
-              background: #FFFFFF;
+              background: #ffffff;
               border-radius: 4px;
               margin: auto;
               color: #606266;
@@ -505,7 +563,8 @@ onMounted(() => {
             height: 206px;
             width: 168px;
             margin-left: 4px;
-            background: url(../../assets/images/login/l_scan_bg.png) no-repeat center center;
+            background: url(../../assets/images/login/l_scan_bg.png) no-repeat
+              center center;
             background-size: 100%;
           }
         }

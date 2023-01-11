@@ -5,16 +5,10 @@
       <template #title>
         <div class="title">
           <div>电子印章库</div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary">同步电子签章</el-button>
+            </div>
           </div>
         </div>
       </template>
@@ -36,9 +30,7 @@
       </template>
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button type="primary">同步电子签章</el-button>
-          </componentsBatch>
+          <componentsBatch> </componentsBatch>
         </div>
       </template>
       <template #table>
@@ -146,6 +138,34 @@
             'end-placeholder': '结束时间'
           },
           style: {}
+        },
+        {
+          id: 'select',
+          label: '印章类型',
+          type: 'select',
+          value: '',
+          options: [
+            {
+              label: '电子章',
+              value: '1'
+            }
+          ]
+        },
+        {
+          id: 'select',
+          label: '印章状态',
+          type: 'select',
+          value: '',
+          options: [
+            {
+              label: '正常',
+              value: '1'
+            },
+            {
+              label: '异常',
+              value: '2'
+            }
+          ]
         }
       ],
       butData: [
@@ -397,6 +417,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .title-more {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        .title-more-add {
+          margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
     }
 
     .batch {

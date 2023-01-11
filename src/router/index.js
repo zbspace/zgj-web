@@ -3,13 +3,14 @@ import { createWebHistory, createRouter } from 'vue-router'
 import routes from './routes'
 // import appConfig from "../../app.config";
 import { useAccountInfoStore } from '@/store/accountInfo'
+import { useMenusInfoStore } from '@/store/menus'
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
   mode: 'history',
 
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {
@@ -20,10 +21,11 @@ const router = createRouter({
 
 router.beforeEach((routeTo, routeFrom) => {
   // 更具url判断是业务前台
+  const menusInfoStore = useMenusInfoStore()
   if (routeTo.fullPath.includes('/frontDesk')) {
-    sessionStorage.setItem('CurrentSystemType', 'business')
+    menusInfoStore.setMenusInfo('business')
   } else if (routeTo.fullPath.includes('/system')) {
-    sessionStorage.setItem('CurrentSystemType', 'system')
+    menusInfoStore.setMenusInfo('system')
   }
 
   const accountInfoStore = useAccountInfoStore()

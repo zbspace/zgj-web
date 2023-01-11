@@ -5,19 +5,12 @@
       <template #title>
         <div class="title">
           <div>工作台管理</div>
-          <div>
-            <el-button type="primary" @click="showFormDialog = true"
-              >+ 增加</el-button
-            >
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="showFormDialog = true"
+                >+ 增加</el-button
+              >
+            </div>
           </div>
         </div>
       </template>
@@ -33,6 +26,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -93,22 +87,29 @@
       >
       </v-form-render>
     </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
+    ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
-    onMounted,
-    ref
+    onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsTree from '../../components/tree'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
@@ -117,18 +118,20 @@
   import KDialog from '@/views/components/modules/kdialog.vue'
   import FormJson from '@/views/addDynamicFormJson/WorkbenchManagement.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
   const showFormDialog = ref(false)
   const formJson = reactive(FormJson)
   const formData = reactive({})
   const optionData = reactive({})
-  const dialogVisible = ref(false)
+  // const dialogVisible = ref(false)
+  const showDepPerDialog = ref(false)
   const vFormRef = ref(null)
   const submitForm = type => {
     if (!type) {
@@ -148,7 +151,7 @@
         ElMessage.error(error)
       })
   }
-  const emit = defineEmits([])
+  // const emit = defineEmits([])
   const state = reactive({
     componentsTabs: {
       data: [
@@ -188,7 +191,7 @@
         },
         {
           id: 'picker',
-          label: '更新时间',
+          label: '创建时间',
           type: 'picker',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -198,6 +201,53 @@
             'end-placeholder': '结束时间'
           },
           style: {}
+        },
+        {
+          id: 'derivable',
+          label: '保管人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+保管人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '保管部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+保管部门'
+          }
+        },
+        {
+          id: 'wjlx',
+          label: '设备状态',
+          type: 'select',
+          options: [
+            {
+              label: '正常',
+              value: '1'
+            },
+            {
+              label: '异常',
+              value: '2'
+            }
+          ]
+        },
+        {
+          id: 'wdyy',
+          label: '工作台',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '我保管的工作台'
+              },
+              style: {}
+            }
+          ]
         }
       ],
       butData: [
@@ -369,7 +419,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '3') {
+          if (column.property === '3') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -490,21 +540,21 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     console.log(row, column, cell, event)
-    if (column.property == '3') {
+    if (column.property === '3') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭
+  // 点击关闭
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(cell.name)
     if (cell.name === '修改') {
       showFormDialog.value = true
     }
-    if (cell.name == '删除') {
+    if (cell.name === '删除') {
       ElMessageBox.confirm('您确定要删除该记录吗？', {
         confirmButtonText: '确认',
         cancelButtonText: '关闭',
@@ -512,6 +562,14 @@
       }).then(() => {})
     }
   }
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })
@@ -527,6 +585,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .title-more {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        .title-more-add {
+          margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
     }
 
     .batch {

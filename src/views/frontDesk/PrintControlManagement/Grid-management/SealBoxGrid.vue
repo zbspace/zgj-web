@@ -244,12 +244,13 @@ function customClick(row, column, cell, event) {
 }
 function goDetail(item){
     router.push({
-        path: "/frontDesk/PrintControlManagement/Grid-management/SealBoxGridInfo"
+        path: "/frontDesk/equipmentManage/intelligentSealBoxManagement/sealBoxGridInfo"
     })
 }
 function lastTimeCheck(){
     router.push({
-        path: "/frontDesk/PrintControlManagement/Grid-management/ViewCheckInfo"
+        // path: "/frontDesk/PrintControlManagement/Grid-management/ViewCheckInfo"
+        name: 'ViewCheckInfo'
     })
 }
 onBeforeMount(() => {

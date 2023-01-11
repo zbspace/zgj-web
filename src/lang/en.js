@@ -2124,7 +2124,7 @@ export const en = {
   't-zgj-message.Announcement': 'Announcement',
   't-zgj-message.notification': 'System notification',
   't-zgj-message.timeSend': 'Send time',
-  't-zgj-message.Title': 'Title',
+  't-zgj-message.Title': 'Messages',
   't-zgj-param.Sort': 'Sort value',
   't-zgj-param.SortExists': 'The sort already exists',
   't-zgj-use.selectCancel': 'Please select the record to termination',

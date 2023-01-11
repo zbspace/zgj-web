@@ -5,16 +5,10 @@
       <template #title>
         <div class="title">
           <div>处理任务</div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary">导出台账</el-button>
+            </div>
           </div>
         </div>
       </template>
@@ -209,39 +203,8 @@
           style: {}
         },
         {
-          id: 'wjlx',
-          label: '流程类型',
-          type: 'select',
-          options: [
-            {
-              label: '用印申请',
-              value: '1'
-            },
-            {
-              label: '刻章申请',
-              value: '2'
-            },
-            {
-              label: '销毁申请',
-              value: '3'
-            },
-            {
-              label: '停用申请',
-              value: '4'
-            },
-            {
-              label: '变更申请',
-              value: '5'
-            },
-            {
-              label: '启用申请',
-              value: '6'
-            }
-          ]
-        },
-        {
           id: 'derivable',
-          label: '所属部门',
+          label: '单据申请部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -249,22 +212,19 @@
           }
         },
         {
-          id: 'derivable',
-          label: '往来单位',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '+往来单位'
-          }
-        },
-        {
-          id: 'derivable',
-          label: '选择印章',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '+选择印章'
-          }
+          id: 'wjlx',
+          label: '任务类型',
+          type: 'select',
+          options: [
+            {
+              label: '任务类型1',
+              value: '1'
+            },
+            {
+              label: '任务类型2',
+              value: '2'
+            }
+          ]
         }
       ],
       butData: [

@@ -5,17 +5,6 @@
       <template #title>
         <div class="title">
           <div>待电子签章</div>
-          <div>
-            <el-button>
-              <img
-                class="button-icon"
-                src="../../../assets/svg/gengduo-caozuo.svg"
-                alt=""
-                srcset=""
-              />
-              <span>更多操作</span>
-            </el-button>
-          </div>
         </div>
       </template>
       <template #tabs>
@@ -30,6 +19,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -39,7 +29,8 @@
           <componentsBatch>
             <el-button
               :disabled="state.componentsBatch.selectionData.length == 0"
-              v-for="item in state.componentsBatch.data"
+              v-for="(item, index) in state.componentsBatch.data"
+              :key="index"
               >{{ item.name }}</el-button
             >
           </componentsBatch>
@@ -74,34 +65,44 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
   import {
+    ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsTree from '../../components/tree'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
-  const emit = defineEmits([])
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
+  // const emit = defineEmits([])
+  const showDepPerDialog = ref(false)
   const state = reactive({
     componentsTabs: {
       data: [
@@ -151,6 +152,33 @@
             'end-placeholder': '结束时间'
           },
           style: {}
+        },
+        {
+          id: 'derivable',
+          label: '印章名称',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+印章名称'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请人',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请人'
+          }
+        },
+        {
+          id: 'derivable',
+          label: '申请部门',
+          type: 'derivable',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '+申请部门'
+          }
         }
       ],
       butData: [
@@ -319,7 +347,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '2') {
+          if (column.property === '2') {
             return {
               color: 'var(--Info-6)',
               cursor: 'pointer'
@@ -442,29 +470,33 @@
     },
     componentsBatch: {
       selectionData: [],
-      data: [
-        {
-          name: '批量操作'
-        }
-      ]
+      data: []
     }
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == '2') {
+    if (column.property === '2') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+  }
+
+  // 点击搜索表单
+  function clickElement(item, index) {
+    // console.log(item, index)
+    if (item.type === 'derivable') {
+      showDepPerDialog.value = true
+    }
   }
 
   onBeforeMount(() => {

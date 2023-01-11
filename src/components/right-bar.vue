@@ -503,7 +503,7 @@
               </p>
 
               <div class="row">
-                <div class="col-4">
+                <!-- <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
                     <input class="form-check-input" v-model="sidebarView" type="radio" name="data-layout-style"
                       id="sidebar-view-default" value="default">
@@ -536,7 +536,7 @@
                   <h5 class="fs-13 text-center mt-2">
                     默认
                   </h5>
-                </div>
+                </div> -->
                 <div class="col-4">
                   <div class="form-check sidebar-setting card-radio">
                     <input class="form-check-input" v-model="sidebarView" type="radio" name="data-layout-style"

@@ -15,9 +15,9 @@
 </script>
 <style lang="scss" scoped>
   .frontdesk-home {
-    height: calc(100vh - 100px);
-    overflow-y: auto;
-    margin-top: 24px;
+    // height: calc(100vh - 100px);
+    // overflow-y: auto;
+    // margin-top: 24px;
     border-radius: 5px;
     position: relative;
     z-index: 0;

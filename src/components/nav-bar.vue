@@ -24,22 +24,6 @@
             </router-link>
           </div>
 
-          <!-- 菜单开关 -->
-          <button
-            type="button"
-            class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn"
-            id="topnav-hamburger-icon"
-            @click="toggleHamburgerMenu"
-            v-show="false"
-          >
-            <!-- topnav-hamburger -->
-            <span class="hamburger-icon">
-              <span />
-              <span />
-              <span />
-            </span>
-          </button>
-
           <!-- 公司选择 -->
           <form class="app-search d-none d-md-block">
             <div class="ap-dropdown">
@@ -81,7 +65,7 @@
           <!-- 系统 -->
           <div class="ap-sys">
             <div class="ap-sys-but" @click="changeSystemHome">
-              <div v-if="state.application.CurrentSystemType == 'business'">
+              <div v-if="menusInfoStore.currentType === 'business'">
                 <img
                   class="ap-sys-but-icon"
                   src="../assets/icon/system-setup.png"
@@ -93,7 +77,7 @@
                 }}</span>
               </div>
 
-              <div v-if="state.application.CurrentSystemType == 'system'">
+              <div v-if="menusInfoStore.currentType === 'system'">
                 <img
                   class="ap-sys-but-icon"
                   src="../assets/images/navbar/nav_front_home.svg"
@@ -108,12 +92,13 @@
           </div>
 
           <!-- 帮助 -->
-          <div class="ms-1 header-item d-none d-sm-flex" ref="dropdownHelpRef">
+          <div ref="dropdownHelpRef">
             <button
               type="button"
               class="btn btn-icon btn-topbar btn-ghost-secondary"
               data-toggle="fullscreen"
               @click="showHelpPop = !showHelpPop"
+              style="border: none; margin: 0 10px"
             >
               <el-tooltip
                 class="box-item"
@@ -146,37 +131,31 @@
           <VApplicationNav />
 
           <!-- 用户信息 -->
-          <div
-            class="dropdown topbar-head-dropdown ms-1 header-item"
-            ref="dropdownUserRef"
-          >
-            <button
-              type="button"
-              class="btn btn-icon btn-topbar btn-ghost-secondary ap-personalCenter"
-              id="page-header-cart-dropdown"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="outside"
-              aria-haspopup="true"
-              aria-expanded="false"
-              @click="showUserInfoPop = !showUserInfoPop"
+          <div>
+            <el-popover
+              placement="bottom"
+              :width="240"
+              trigger="hover"
+              :show-arrow="false"
+              @before-enter="showUserPop"
+              @after-leave="hideUserPop"
             >
-              <div class="ap-personalCenter-text">
-                <span class="ap-personalCenter-name">春青</span>
-                <img
-                  v-show="showUserInfoPop"
-                  src="../assets/images/navbar/user_info_close.svg"
-                />
-                <img
-                  v-show="!showUserInfoPop"
-                  src="../assets/images/navbar/user_info_open.svg"
-                />
-              </div>
-            </button>
-            <div
-              class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0 dropdown-menu-cart"
-              aria-labelledby="page-header-cart-dropdown"
-              style="width: 240px"
-            >
+              <template #reference>
+                <el-button class="btn-topbar ap-personalCenter">
+                  <div class="ap-personalCenter-text">
+                    <span class="ap-personalCenter-name">春青</span>
+                    <img
+                      v-show="!showUserInfoPop"
+                      src="../assets/images/navbar/user_info_close.svg"
+                    />
+                    <img
+                      v-show="showUserInfoPop"
+                      src="../assets/images/navbar/user_info_open.svg"
+                    />
+                  </div>
+                </el-button>
+              </template>
+
               <div class="ap-personalCenterDropdown">
                 <div class="dropdown-box">
                   <div class="dropdown-name">
@@ -214,7 +193,9 @@
                     placement="left-start"
                     :show-arrow="false"
                     :close-delay="80"
-                    :visible="showChanglanPop"
+                    :teleported="false"
+                    @before-enter="showPop"
+                    @after-leave="hidePop"
                   >
                     <template #reference>
                       <div
@@ -224,7 +205,6 @@
                             ? '#D0963E'
                             : 'rgba(0, 0, 0, 0.65)'
                         }"
-                        @click="showChanglanPop = !showChanglanPop"
                       >
                         <img
                           src="../assets/images/navbar/user_info_lan.svg"
@@ -277,7 +257,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </el-popover>
           </div>
         </div>
       </div>
@@ -287,7 +267,6 @@
 
 <script setup>
   import { onMounted, reactive, ref, watch } from 'vue'
-  import useCurrentInstance from '@/hooks/getInstance.js'
   import i18n from '../i18n'
   import useClickQutside from '../hooks/useClickQutside.js'
   import VApplicationNav from '../components/modules/applicationNav.vue'
@@ -295,8 +274,9 @@
   import VMessageNav from '../components/modules/messageNav.vue'
   import router from '@/router'
   import { useAccountInfoStore } from '@/store/accountInfo'
+  import { useMenusInfoStore } from '@/store/menus'
   const accountInfoStore = useAccountInfoStore()
-  const _this = useCurrentInstance()
+  const menusInfoStore = useMenusInfoStore()
 
   const state = reactive({
     application: {
@@ -321,71 +301,9 @@
           : pageTopbar.classList.remove('topbar-shadow')
       }
     })
-
-    // 添加 全屏开关监听 事件
-    // if (document.getElementById("topnav-hamburger-icon"))
-    //   document
-    //     .getElementById("topnav-hamburger-icon")
-    //     .addEventListener("click", toggleHamburgerMenu);
   })
 
-  // 监听 菜单开关
-  const toggleHamburgerMenu = () => {
-    const windowSize = document.documentElement.clientWidth
-
-    if (windowSize > 767) {
-      document.querySelector('.hamburger-icon').classList.toggle('open')
-    }
-
-    // For collapse horizontal menu
-    if (document.documentElement.getAttribute('data-layout') === 'horizontal') {
-      document.body.classList.contains('menu')
-        ? document.body.classList.remove('menu')
-        : document.body.classList.add('menu')
-    }
-
-    // For collapse vertical menu
-    if (document.documentElement.getAttribute('data-layout') === 'vertical') {
-      if (windowSize < 1025 && windowSize > 767) {
-        document.body.classList.remove('vertical-sidebar-enable')
-        document.documentElement.getAttribute('data-sidebar-size') === 'sm'
-          ? document.documentElement.setAttribute('data-sidebar-size', '')
-          : document.documentElement.setAttribute('data-sidebar-size', 'sm')
-      } else if (windowSize > 1025) {
-        document.body.classList.remove('vertical-sidebar-enable')
-        document.documentElement.getAttribute('data-sidebar-size') === 'lg'
-          ? document.documentElement.setAttribute('data-sidebar-size', 'sm')
-          : document.documentElement.setAttribute('data-sidebar-size', 'lg')
-      } else if (windowSize <= 767) {
-        document.body.classList.add('vertical-sidebar-enable')
-        document.documentElement.setAttribute('data-sidebar-size', 'lg')
-      }
-    }
-
-    // Two column menu
-    if (document.documentElement.getAttribute('data-layout') === 'twocolumn') {
-      document.body.classList.contains('twocolumn-panel')
-        ? document.body.classList.remove('twocolumn-panel')
-        : document.body.classList.add('twocolumn-panel')
-    }
-  }
-
-  // 切换中英文popover
-  const dropdownUserRef = ref(null)
-  const showChanglanPop = ref(false)
-  const showUserInfoPop = ref(false)
-  const isClickOutsideUser = useClickQutside(dropdownUserRef)
-  watch(isClickOutsideUser, () => {
-    // 切换中英文
-    if (isClickOutsideUser.value && showChanglanPop.value) {
-      showChanglanPop.value = false
-    }
-    // 用户信息弹框
-    if (isClickOutsideUser.value && showUserInfoPop.value) {
-      showUserInfoPop.value = false
-    }
-  })
-
+  // 帮助中心
   const dropdownHelpRef = ref(null)
   const showHelpPop = ref(false)
   const isClickOutsideHelp = useClickQutside(dropdownHelpRef)
@@ -396,37 +314,42 @@
     }
   })
 
-  // const dropdownNotifyRef = ref(null)
-  // const showNotifyPop = ref(false)
-  // const isClickOutsideNotify = useClickQutside(dropdownNotifyRef)
-  // watch(isClickOutsideNotify, () => {
-  //   // 消息弹框
-  //   if (isClickOutsideNotify.value && showNotifyPop.value) {
-  //     showNotifyPop.value = false
-  //   }
-  //  })
-
   // 切换 中英文
+  const showChanglanPop = ref(false)
   const setLanguage = locale => {
     i18n.global.locale = locale
     state.language = locale
+  }
+  const showPop = () => {
+    showChanglanPop.value = true
+  }
+  const hidePop = () => {
     showChanglanPop.value = false
   }
-
   // 跳转业务首页或者系统首页
   const changeSystemHome = () => {
     // 跳转业务首页或者系统首页
-    if (state.application.CurrentSystemType === 'business') {
-      _this.$router.push('/system/home')
-    } else if (state.application.CurrentSystemType === 'system') {
-      _this.$router.push('/frontDesk/home')
+    if (menusInfoStore.currentType === 'business') {
+      router.push({ path: '/system/home' })
+    } else if (menusInfoStore.currentType === 'system') {
+      router.push({ path: '/frontDesk/home' })
     }
   }
 
+  // 退出登录
   const handleLogout = () => {
     accountInfoStore.setAccountInfo(null)
     // 跳转到登录页
     router.push({ name: 'login-account' })
+  }
+
+  // 用户信息弹框
+  const showUserInfoPop = ref(false)
+  const showUserPop = () => {
+    showUserInfoPop.value = true
+  }
+  const hideUserPop = () => {
+    showUserInfoPop.value = false
   }
 </script>
 <style lang="scss" scoped>
@@ -479,7 +402,7 @@
     font-size: 14px;
     width: 88px;
     height: 42px;
-
+    border: none;
     .ap-personalCenter-text {
       display: flex;
       align-items: center;
@@ -500,19 +423,20 @@
         justify-content: center;
         font-size: var(--font-size-body-1);
       }
+
+      img {
+        margin-left: 8px;
+      }
     }
   }
 
   .ap-personalCenterDropdown {
-    @include mixin-width(240);
-
     .dropdown-box {
-      @include mixin-padding(10);
       box-sizing: border-box;
     }
 
     .dropdown-name {
-      @include mixin-height(120);
+      height: 120px;
       border-radius: var(--border-radius-4);
       background-color: #f4f5f7;
       text-align: center;
@@ -521,6 +445,7 @@
       align-content: center;
       justify-content: center;
       flex-flow: wrap;
+      margin-bottom: 8px;
 
       .dropdown-name-icon {
         @include mixin-width(50);
@@ -545,7 +470,7 @@
     .dropdown-list {
       .dropdown-list-li {
         position: relative;
-        padding: 0 20px;
+        padding: 0 8px;
         box-sizing: border-box;
         display: flex;
         align-items: center;
@@ -565,7 +490,7 @@
 
         i {
           position: absolute;
-          right: 20px;
+          right: 0;
           top: 50%;
           font-size: 18px;
           transform: translateY(-50%);
