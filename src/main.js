@@ -21,6 +21,8 @@ import 'element-plus/dist/index.css'
 import VForm3 from 'vform-jy'
 import 'vform-jy/dist/designer.style.css'
 
+import '@/utils/SvgIconPack'
+
 // 全局自定义组件
 // import components from "@/views/components/modules/index";
 import { requireComp } from '@/components/index'

@@ -81,7 +81,7 @@
           <!-- 系统 -->
           <div class="ap-sys">
             <div class="ap-sys-but" @click="changeSystemHome">
-              <div v-if="state.application.CurrentSystemType == 'business'">
+              <div v-if="menusInfoStore.currentType === 'business'">
                 <img
                   class="ap-sys-but-icon"
                   src="../assets/icon/system-setup.png"
@@ -93,7 +93,7 @@
                 }}</span>
               </div>
 
-              <div v-if="state.application.CurrentSystemType == 'system'">
+              <div v-if="menusInfoStore.currentType === 'system'">
                 <img
                   class="ap-sys-but-icon"
                   src="../assets/images/navbar/nav_front_home.svg"
@@ -290,8 +290,9 @@
   import VMessageNav from '../components/modules/messageNav.vue'
   import router from '@/router'
   import { useAccountInfoStore } from '@/store/accountInfo'
+  import { useMenusInfoStore } from '@/store/menus'
   const accountInfoStore = useAccountInfoStore()
-  const _this = useCurrentInstance()
+  const menusInfoStore = useMenusInfoStore()
 
   const state = reactive({
     application: {
@@ -391,10 +392,10 @@
   // 跳转业务首页或者系统首页
   const changeSystemHome = () => {
     // 跳转业务首页或者系统首页
-    if (state.application.CurrentSystemType === 'business') {
-      _this.$router.push('/system/home')
-    } else if (state.application.CurrentSystemType === 'system') {
-      _this.$router.push('/frontDesk/home')
+    if (menusInfoStore.currentType === 'business') {
+      router.push({ path: '/system/home' })
+    } else if (menusInfoStore.currentType === 'system') {
+      router.push({ path: '/frontDesk/home' })
     }
   }
 

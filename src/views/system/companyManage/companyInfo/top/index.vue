@@ -1,7 +1,9 @@
 <template>
   <div class="comp-info-top">
     <div class="bg">
-      <div class="left"> 23 </div>
+      <div class="left">
+        <img src="@/assets/svg/verification/verification-error.svg" alt="" />
+      </div>
       <div class="right">
         <div class="name"> 上海建业信息科技股份有限公司 </div>
         <div class="label" v-if="!edit">
@@ -50,7 +52,7 @@
         margin-right: 18px;
         height: 72px;
         width: 72px;
-        border-radius: 0px;
+        border-radius: 100%;
         display: flex;
         align-items: center;
         justify-content: center;

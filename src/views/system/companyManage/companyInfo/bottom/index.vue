@@ -11,7 +11,7 @@
     </div>
     <div class="upload">
       <img :src="shapeIcon" alt="" />
-      <p>上传首页LOGO</p>
+      <p>上传登录页LOGO</p>
     </div>
   </div>
 </template>

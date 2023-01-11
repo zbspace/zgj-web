@@ -16,52 +16,50 @@ export const useLayoutStore = defineStore({
       isCollapse: false
     }
   },
-  getters: {
-
-  },
+  getters: {},
   actions: {
-    changeLayoutType (layoutType) {
+    changeLayoutType(layoutType) {
       this.layoutType = layoutType
       document.body.removeAttribute('style')
     },
 
-    changeLayoutWidth (layoutWidth) {
+    changeLayoutWidth(layoutWidth) {
       this.layoutWidth = layoutWidth
     },
 
-    changeSidebarSize (sidebarSize) {
+    changeSidebarSize(sidebarSize) {
       this.sidebarSize = sidebarSize
     },
 
-    changeTopbar (topbar) {
+    changeTopbar(topbar) {
       this.topbar = topbar
     },
 
-    changeMode (mode) {
+    changeMode(mode) {
       this.mode = mode
     },
 
-    changePosition (position) {
+    changePosition(position) {
       this.position = position
     },
 
-    changeSidebarView (sidebarView) {
+    changeSidebarView(sidebarView) {
       this.sidebarView = sidebarView
     },
 
-    changeSidebarColor (sidebarColor) {
+    changeSidebarColor(sidebarColor) {
       this.sidebarColor = sidebarColor
     },
 
-    changeSidebarImage (sidebarImage) {
+    changeSidebarImage(sidebarImage) {
       this.sidebarImage = sidebarImage
     },
 
-    changePreloader (preloader) {
+    changePreloader(preloader) {
       this.preloader = preloader
     },
 
-    changeCollapse (isCollapse) {
+    changeCollapse(isCollapse) {
       this.isCollapse = isCollapse
     }
   },
