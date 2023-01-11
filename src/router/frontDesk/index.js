@@ -10,7 +10,7 @@ const routes = {
   children: [
     {
       path: 'home',
-      name: 'frontDesk-home',
+      name: 'FrontDeskHome',
       meta: { title: '首页', authRequired: true },
       component: async () => await import('@/views/frontDesk/home/index.vue')
     },

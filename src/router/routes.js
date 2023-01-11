@@ -3,12 +3,18 @@ import frontDeskRoutes from './frontDesk/index.js'
 export default [
   {
     path: '/',
-    name: 'appLayout',
     component: () => import('@/views/layout/index.vue'),
     meta: {
       authRequired: true
     },
-    children: [frontDeskRoutes, systemRoutes]
+    children: [
+      {
+        path: '',
+        redirect: '/frontDesk/home'
+      },
+      frontDeskRoutes,
+      systemRoutes
+    ]
   },
   // 章管家
   {
