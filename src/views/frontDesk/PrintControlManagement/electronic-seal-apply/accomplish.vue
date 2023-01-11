@@ -165,7 +165,8 @@ function clickBackPage() {
 //点击提交
 function clickSubmit() {
     commonFun.routerPage(router, {
-        path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
+        // path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
+        name: 'ESelectionFillForm'
     })
 }
 

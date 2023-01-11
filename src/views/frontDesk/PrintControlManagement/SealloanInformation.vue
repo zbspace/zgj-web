@@ -546,7 +546,8 @@
     }
     if (cell.name === '查看历史记录') {
       router.push({
-        path: '/frontDesk/SealloanInnerPage'
+        // path: '/frontDesk/SealloanInnerPage'
+        name: 'SealloanInnerPage'
       })
     }
   }

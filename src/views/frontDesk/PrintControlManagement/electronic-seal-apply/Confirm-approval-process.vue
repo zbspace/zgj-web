@@ -260,7 +260,8 @@ function clickBackPage() {
 //点击提交
 function clickSubmit() {
     commonFun.routerPage(router, {
-        path: "/frontDesk/PrintControlManagement/electronic-seal-apply/accomplish"
+        // path: "/frontDesk/PrintControlManagement/electronic-seal-apply/accomplish"
+        name: 'ESelectionAccomplish'
     })
 }
 

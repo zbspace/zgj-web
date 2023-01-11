@@ -559,10 +559,18 @@
   function customClick(row, column, cell, event) {
     console.log(cell)
     if (cell.name === '申请转办') {
-      goInnerPage('/frontDesk/transferApplication', 'transfer')
+      // goInnerPage('/frontDesk/transferApplication', 'transfer')
+      goInnerPage(
+        '/frontDesk/printControlManage/useSealManage/intelligentPrinting/transferApplication',
+        'transfer'
+      )
     }
     if (cell.name === '申请重置') {
-      goInnerPage('/frontDesk/transferApplication')
+      // goInnerPage('/frontDesk/transferApplication')
+      goInnerPage(
+        '/frontDesk/printControlManage/useSealManage/intelligentPrinting/transferApplication',
+        'transfer'
+      )
     }
     if (cell.name === '撤销转办') {
       ElMessageBox.confirm('请问确定要撤销转办申请吗？', {

@@ -310,7 +310,8 @@ function selectSealBox(index) {
 }
 function viewOutSeal(){
     router.push({
-        path: "/frontDesk/PrintControlManagement/Grid-management/ViewOutSeal"
+        // path: "/frontDesk/PrintControlManagement/Grid-management/ViewOutSeal"
+        name: 'ViewOutSeal'
     })
 }
 onBeforeMount(() => {

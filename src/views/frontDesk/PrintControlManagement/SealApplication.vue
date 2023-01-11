@@ -40,7 +40,7 @@
           <el-button @click="showDepPerDialog = true">组织选择</el-button>
           <el-button @click="goInnerTablePage">二级表格页面</el-button>
           <el-button
-            @click="goInnerPage('/frontDesk/PrintControlManagement/innerPage')"
+            @click="goInnerPage('/frontDesk/electronicSeal/innerPage')"
             >二级页面</el-button
           >
           <el-button :plain="true" @click="open2">成功消息</el-button>
@@ -177,7 +177,7 @@
 
   const goInnerTablePage = () => {
     router.push({
-      path: '/frontDesk/PrintControlManagement/innerTablePage'
+      path: '/frontDesk/electronicSeal/innerTablePage'
     })
   }
 

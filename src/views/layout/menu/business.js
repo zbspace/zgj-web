@@ -28,38 +28,38 @@ export const business = [
   {
     name: '用印管理',
     label: 't-zgj-cg-menu-yongyin-guanli',
-    to: '/frontDesk/PrintControlManagement',
+    to: '/frontDesk/printControlManage/useSealManage',
     // icon: icon2,
     icon: '#yongyinguanli-73o018b7',
     children: [
       {
         name: '用印申请',
-        to: '/frontDesk/printControlManagement/sealApplication',
+        to: '/frontDesk/printControlManage/useSealManage/sealApplication',
         label: 't-zgj-cg-menu-yongyin-shenqing'
       },
       {
         name: '用印申请',
-        to: '/frontDesk/printControlManagement/selectionForm',
+        to: '/frontDesk/printControlManage/useSealManage/selectionForm',
         label: 't-zgj-cg-menu-yongyin-shenqing'
       },
       {
         name: '智能用印',
-        to: '/frontDesk/printControlManagement/intelligentPrinting',
+        to: '/frontDesk/printControlManage/useSealManage/intelligentPrinting',
         label: 't-zgj-cg-menu-zhineng-yongyin'
       },
       {
         name: '文件归档',
-        to: '/frontDesk/printControlManagement/archive',
+        to: '/frontDesk/printControlManage/useSealManage/archive',
         label: 't-zgj-cg-menu-wenjian-guidang'
       },
       {
         name: '用印记录',
-        to: '/frontDesk/printControlManagement/recordWithSeal',
+        to: '/frontDesk/printControlManage/useSealManage/recordWithSeal',
         label: 't-zgj-cg-menu-yongyin-jilu'
       },
       {
         name: '用印轨迹',
-        to: '/frontDesk/printControlManagement/printedTrack',
+        to: '/frontDesk/printControlManage/useSealManage/printedTrack',
         label: 't-zgj-cg-menu-yongyin-guiji'
       }
     ]
@@ -67,28 +67,28 @@ export const business = [
   {
     name: '印章管理',
     label: 't-zgj-cg-menu-yinzhang-guanli',
-    to: '/frontDesk/sealManage',
+    to: '/frontDesk/printControlManage/sealManage',
     // icon: icon3,
     icon: '#yinzhangguanli-73o018do',
     children: [
       {
         name: '印章库',
-        to: '/frontDesk/sealManage/libraryOfSeals',
+        to: '/frontDesk/printControlManage/sealManage/libraryOfSeals',
         label: 't-zgj-cg-menu-yinzhang-ku'
       },
       {
         name: '印章申请',
-        to: '/frontDesk/sealManage/applicationForSeal',
+        to: '/frontDesk/printControlManage/sealManage/applicationForSeal',
         label: 't-zgj-cg-menu-yinzhang-shenqing'
       },
       {
         name: '印章类型',
-        to: '/frontDesk/sealManage/typeOfSeal',
+        to: '/frontDesk/printControlManage/sealManage/typeOfSeal',
         label: 't-zgj-cg-menu-yinzhang-leixing'
       },
       {
         name: '印章外借信息',
-        to: '/frontDesk/sealManage/sealloanInformation',
+        to: '/frontDesk/printControlManage/sealManage/sealloanInformation',
         label: 't-zgj-cg-menu-yinzhang-waijie-xinxi'
       }
     ]
@@ -96,28 +96,28 @@ export const business = [
   {
     name: '文件防篡改',
     label: 't-zgj-cg-menu-wenjian-fangchuangai',
-    to: '/frontDesk/fileTamperProof',
+    to: '/frontDesk/printControlManage/fileTamperProof',
     // icon: icon4,
     icon: '#wenjianheyan-73o018dm',
     children: [
       {
         name: '防伪水印验证',
-        to: '/frontDesk/fileTamperProof/securityWatermark',
+        to: '/frontDesk/printControlManage/fileTamperProof/securityWatermark',
         label: 't-zgj-cg-menu-fangwei-shuiyin-yanzheng'
       },
       {
         name: '文件内容核验',
         label: 't-zgj-cg-menu-wenjian-neirong-heyan',
-        to: '/frontDesk/fileTamperProof/fileContentVerification',
+        to: '/frontDesk/printControlManage/fileTamperProof/fileContentVerification',
         children: [
           {
             name: '用印前核验',
-            to: '/frontDesk/fileTamperProof/fileContentVerification/usePrepressVerification',
+            to: '/frontDesk/printControlManage/fileTamperProof/fileContentVerification/usePrepressVerification',
             label: 't-zgj-cg-menu-yongyin-qian-heyan'
           },
           {
             name: '用印后核验',
-            to: '/frontDesk/fileTamperProof/fileContentVerification/usePostPressVerification',
+            to: '/frontDesk/printControlManage/fileTamperProof/fileContentVerification/usePostPressVerification',
             label: 't-zgj-cg-menu-yongyin-hou-heyan'
           }
         ]
@@ -127,33 +127,33 @@ export const business = [
   {
     name: '电子签章',
     label: 't-zgj-cg-menu-dianzi-qianzhang',
-    to: '/frontDesk/electronicSeal',
+    to: '/frontDesk/printControlManage/electronicSeal',
     // icon: icon5,
     icon: '#dianziqianzhang',
     children: [
       {
         name: '电子签章申请',
-        to: '/frontDesk/electronicSeal/eSelectionForm',
+        to: '/frontDesk/printControlManage/electronicSeal/eSelectionForm',
         label: 't-zgj-cg-menu-dianzi-qianzhang-shenqing'
       },
       {
         name: '待电子签章',
-        to: '/frontDesk/electronicSeal/electronicSignatureRequired',
+        to: '/frontDesk/printControlManage/electronicSeal/electronicSignatureRequired',
         label: 't-zgj-cg-menu-dai-dianzi-qianzhang'
       },
       {
         name: '电子签章记录',
-        to: '/frontDesk/electronicSeal/electronicSignatureRecord',
+        to: '/frontDesk/printControlManage/electronicSeal/electronicSignatureRecord',
         label: 't-zgj-cg-menu-dianzi-qianzhang-jilu'
       },
       {
         name: '电子印章库',
-        to: '/frontDesk/electronicSeal/electronicSealLibrary',
+        to: '/frontDesk/printControlManage/electronicSeal/electronicSealLibrary',
         label: 't-zgj-cg-menu-dianzi-yinzhang-ku'
       },
       {
         name: '用户认证',
-        to: '/frontDesk/electronicSeal/userAuthentication',
+        to: '/frontDesk/printControlManage/electronicSeal/userAuthentication',
         label: 't-zgj-cg-menu-yonghu-renzheng'
       }
     ]
@@ -161,45 +161,45 @@ export const business = [
   {
     name: '设备管理',
     label: 't-zgj-cg-menu-shebei-guanli',
-    to: '/frontDesk/equipmentManage',
+    to: '/frontDesk/printControlManage/equipmentManage',
     // icon: icon6,
     icon: '#shebeiguanli',
     children: [
       {
         name: '工作台管理',
         label: 't-zgj-cg-menu-gongzuotai-guanli',
-        to: '/frontDesk/equipmentManage/workbenchManagement'
+        to: '/frontDesk/printControlManage/equipmentManage/workbenchManagement'
       },
       {
         name: '智能印章盒管理',
         label: 't-zgj-cg-menu-zhineng-yinzhang-he-guanli',
-        to: '/frontDesk/intelligentSealBoxManagement',
+        to: '/frontDesk/printControlManage/intelligentSealBoxManagement',
         children: [
           {
             name: '智能印章盒管理',
-            to: '/frontDesk/equipmentManage/intelligentSealBoxManagement',
+            to: '/frontDesk/printControlManage/equipmentManage/intelligentSealBoxManagement',
             label: 't-zgj-cg-menu-zhineng-yinzhang-he-guanli'
           },
           {
             name: '格口管理',
-            to: '/frontDesk/equipmentManage/intelligentSealBoxManagement/sealBoxGrid',
+            to: '/frontDesk/printControlManage/equipmentManage/intelligentSealBoxManagement/sealBoxGrid',
             label: 't-zgj-cg-menu-zhineng-yinzhang-he-gekou-guanli'
           }
         ]
       },
       {
         name: '智能印章柜管理',
-        to: '/frontDesk/equipmentManage/intelligentSealCabinetManagement',
+        to: '/frontDesk/printControlManage/equipmentManage/intelligentSealCabinetManagement',
         label: 't-zgj-cg-menu-zhineng-yinzhang-gui-guanli',
         children: [
           {
             name: '智能印章柜管理',
-            to: '/frontDesk/equipmentManage/IntelligentSealCabinetManagement',
+            to: '/frontDesk/printControlManage/equipmentManage/intelligentSealCabinetManagement',
             label: 't-zgj-cg-menu-zhineng-yinzhang-gui-guanli'
           },
           {
             name: '格口管理',
-            to: '/frontDesk/equipmentManage/IntelligentSealCabinetManagement/cabinetGrid',
+            to: '/frontDesk/printControlManage/equipmentManage/intelligentSealCabinetManagement/cabinetGrid',
             label: 't-zgj-cg-menu-zhineng-yinzhang-gui-gekou-guanli'
           }
         ]

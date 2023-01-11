@@ -96,7 +96,8 @@ const state = reactive({
 //点击列表按钮
 function clickListBut() {
     commonFun.routerPage(router, {
-        path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
+        // path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
+        name: 'ESelectionFillForm'
     })
 }
 

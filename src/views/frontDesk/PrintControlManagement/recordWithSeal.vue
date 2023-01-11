@@ -798,7 +798,8 @@
     }
     if (cell.name === '去送审') {
       router.push({
-        path: '/frontDesk/InnerPageApplication'
+        // path: '/frontDesk/InnerPageApplication'
+        name: 'InnerPageApplication'
       })
     }
   }
