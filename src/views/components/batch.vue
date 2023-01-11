@@ -1,7 +1,18 @@
 <template>
   <div class="components-batch">
     <div class="ap-box">
-      <slot></slot>
+      <slot>
+        <div class="ap-box-left" v-if="state.props.data.length > 0">
+          <el-button
+            v-bind="state.props.defaultAttribute"
+            v-for="(item, index) in state.props.data"
+            :key="index"
+            @click="clickBatchButton(item, index)"
+          >
+            {{ item.name }}
+          </el-button>
+        </div>
+      </slot>
       <div class="ap-box-right">
         <div class="ap-box-right-fill shuaxin">
           <svg
@@ -165,7 +176,7 @@
   import {
     reactive,
     defineProps,
-    defineEmits,
+    // defineEmits,
     onBeforeMount,
     onMounted,
     watch
@@ -181,11 +192,6 @@
       type: String,
       default: '0'
     },
-    // 取消底部的线
-    cancelBottomLine: {
-      type: Boolean,
-      default: false
-    },
     // 布局
     data: {
       type: Array,
@@ -193,28 +199,32 @@
         return []
       }
     },
-    // 选中名字
-    activeName: {
-      type: String,
-      default: ''
+    // 属性
+    defaultAttribute: {
+      type: Array,
+      default: () => {
+        return {}
+      }
     }
   })
-  const emit = defineEmits(['tab-change', 'getActiveName'])
+  const emit = defineEmits(['clickBatchButton'])
   const state = reactive({
-    activeName: '',
-    data: [],
-    cancelBottomLine: false
+    props: {
+      data: []
+    }
   })
   // console.log(props.data);
-  function tabChange(pane, ev) {
-    // console.log(pane, ev);
-    emit('tab-change', state.activeName)
-  }
-  function getActiveName() {
-    emit('getActiveName', state.activeName)
-  }
+
   // 初始化数据
-  function initData() {}
+  function initData() {
+    state.props.data = props.data
+    state.props.defaultAttribute = props.defaultAttribute
+  }
+
+  // 点击批量按钮
+  function clickBatchButton(item, index) {
+    emit('clickBatchButton', item, index)
+  }
 
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
@@ -225,11 +235,6 @@
     // console.log(`the component is now onBeforeMount.`)
     // 初始化数据
     initData()
-
-    // 暂时不用
-    tabChange()
-    // 暂时不用
-    getActiveName()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -246,7 +251,11 @@
       justify-content: flex-start;
       align-items: flex-end;
       align-content: flex-end;
-
+      .ap-box-left {
+        .el-button {
+          font-size: var(--font-size-caption);
+        }
+      }
       .ap-box-right {
         margin-left: auto;
         display: flex;

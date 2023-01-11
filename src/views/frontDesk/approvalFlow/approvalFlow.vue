@@ -35,12 +35,10 @@
       </template>
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button
-              :disabled="state.componentsBatch.selectionData.length == 0"
-              v-for="item in state.componentsBatch.data"
-              >{{ item.name }}</el-button
-            >
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -100,16 +98,16 @@
   import {
     ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
+  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
+  // import componentsTree from '../../components/tree'
+  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
@@ -118,14 +116,14 @@
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
   import kDepartOrPersonVue from '../../components/modules/kDepartOrPerson.vue'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
-  const emit = defineEmits([])
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
+  // const emit = defineEmits([])
 
   const showDepPerDialog = ref(false)
   const dialogProcess = reactive({
@@ -143,11 +141,12 @@
       .getFormData()
       .then(formData => {
         alert(JSON.stringify(formData))
-        fromState.showDialog = false
+        // fromState.showDialog = false
       })
       .catch(error => {
         // Form Validation failed
-        ElMessage.error(error)
+        // ElMessage.error(error)
+        console.log(error)
       })
   }
 
@@ -511,18 +510,17 @@
     },
     componentsBatch: {
       selectionData: [],
-      data: [
-        {
-          name: '批量操作'
-        }
-      ]
+      defaultAttribute: {
+        disabled: true
+      },
+      data: []
     }
   })
 
   // 切换分页
   function tabChange(activeName) {
     // console.log(activeName);
-    if (activeName == '1') {
+    if (activeName === '1') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -641,7 +639,7 @@
           6: ''
         }
       ]
-    } else if (activeName == '2') {
+    } else if (activeName === '2') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -776,7 +774,7 @@
     }
 
     // 查询条件
-    if (activeName == '1') {
+    if (activeName === '1') {
       state.componentsSearchForm.data = [
         {
           id: 'name',
@@ -860,7 +858,7 @@
           }
         }
       ]
-    } else if (activeName == '2') {
+    } else if (activeName === '2') {
       state.componentsSearchForm.data = [
         {
           id: 'name',
@@ -962,13 +960,18 @@
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
   }
 
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     dialogProcess.show = true
     dialogProcess.title = cell.name

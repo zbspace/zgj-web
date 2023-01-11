@@ -33,12 +33,10 @@
       </template>
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button
-              :disabled="state.componentsBatch.selectionData.length == 0"
-              v-for="item in state.componentsBatch.data"
-              >{{ item.name }}</el-button
-            >
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -513,6 +511,9 @@
     },
     componentsBatch: {
       selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
       data: [
         {
           name: '批量删除'
@@ -561,6 +562,11 @@
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
   }
 
   onBeforeMount(() => {

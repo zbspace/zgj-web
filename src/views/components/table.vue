@@ -41,7 +41,7 @@
           <div class="rankDisplayData">
             <div
               class="rankDisplayData-node"
-              v-for="(data, num) in item.rankDisplayData.slice(0, 3)"
+              v-for="(data, num) in item.rankDisplayData.slice(0, 6)"
               :key="num"
               @click="customClick(scope.$index, scope.row, data)"
             >
@@ -49,7 +49,7 @@
             </div>
             <div
               class="rankDisplayData-more"
-              v-if="item.rankDisplayData.length > 3"
+              v-if="item.rankDisplayData.length > 6"
             >
               <el-dropdown>
                 <span class="el-dropdown-link">
@@ -62,7 +62,7 @@
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item
-                      v-for="(data, num) in item.rankDisplayData.slice(3)"
+                      v-for="(data, num) in item.rankDisplayData.slice(6)"
                       :key="num"
                       @click="customClick(scope.$index, scope.row, data)"
                     >
