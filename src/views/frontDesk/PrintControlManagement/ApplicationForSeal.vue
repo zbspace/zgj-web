@@ -397,7 +397,7 @@
           prop: 'caozuo',
           label: '操作',
           fixed: 'right',
-          'min-width': 150,
+          'min-width': 180,
           rankDisplayData: [
             {
               name: '撤销'

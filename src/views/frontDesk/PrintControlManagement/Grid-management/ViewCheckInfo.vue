@@ -364,7 +364,7 @@ onMounted(() => {
             border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 10px;
             padding: 20px 63px;
-            box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+            
 
             >.left,
             .right {
@@ -396,7 +396,9 @@ onMounted(() => {
                 width: 1px;
             }
         }
-
+        .grid-cell-item:hover{
+            box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+        }
         .grid-tab {
             display: flex;
 
