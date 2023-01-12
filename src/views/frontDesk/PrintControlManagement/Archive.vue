@@ -6,11 +6,7 @@
         <div class="title">
           <div>文件归档</div>
           <div class="title-more">
-            <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
-                >+ 增加</el-button
-              >
-            </div>
+            <div class="title-more-add"> </div>
             <div
               class="title-more-down"
               v-if="state.componentsTitle.more.data.length > 0"
