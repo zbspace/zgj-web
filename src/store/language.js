@@ -1,15 +1,16 @@
 import { defineStore } from 'pinia'
-export const useAccountInfoStore = defineStore({
-  id: 'language',
+import { LANGUAGE } from '@/utils/constants'
+export const useLanguageStore = defineStore({
+  id: LANGUAGE,
   state: () => {
     return {
-      lang: 'zh'
+      lang: ''
     }
   },
   getters: {},
   actions: {
     setLanguage(lang) {
-      this.lang = lang || 'zh'
+      this.lang = lang || ''
     }
   },
   // 开启数据缓存
