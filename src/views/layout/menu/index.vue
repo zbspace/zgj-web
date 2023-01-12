@@ -24,7 +24,7 @@
         >
           <template #title>
             <svg class="iconpark-icon"><use :href="item.icon"></use></svg>
-            <span>{{ item.name }} </span>
+            <span>{{ $t(item.label) }} </span>
           </template>
 
           <div v-for="child in item.children" :key="child.label">
@@ -35,7 +35,7 @@
             >
               <template #title>
                 <span class="name-front"></span>
-                <span>{{ child.name }} </span>
+                <span>{{ $t(child.label) }} </span>
               </template>
 
               <div v-for="child1 in child.children" :key="child1.label">
@@ -45,10 +45,10 @@
                   v-if="child1.to"
                 >
                   <span class="name-front"></span>
-                  <span>{{ child1.name }}</span>
+                  <span>{{ $t(child1.label) }}</span>
                 </el-menu-item>
                 <p v-else>
-                  {{ child1.name }}
+                  {{ $t(child1.label) }}
                 </p>
               </div>
             </el-sub-menu>
@@ -59,10 +59,10 @@
               v-else-if="child.to"
             >
               <span class="name-front"></span>
-              <span> {{ child.name }}</span>
+              <span> {{ $t(child.label) }}</span>
             </el-menu-item>
             <p v-else>
-              {{ child.name }}
+              {{ $t(child.label) }}
             </p>
           </div>
         </el-sub-menu>
@@ -75,7 +75,7 @@
         >
           <svg class="iconpark-icon"><use :href="item.icon"></use></svg>
           <template #title>
-            <span>{{ item.name }}</span>
+            <span>{{ $t(item.label) }}</span>
           </template>
           <template
             v-if="item.to === '/frontDesk/home' || item.to === '/system/home'"
@@ -92,7 +92,7 @@
         </el-menu-item>
 
         <p class="disable-p" v-else-if="!item.to" :key="item.label + 'aa'">
-          {{ item.name }}
+          {{ $t(item.label) }}
         </p>
       </template>
     </el-menu>
@@ -100,22 +100,31 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue'
+  import { ref, watch, reactive } from 'vue'
   import { useRoute } from 'vue-router'
   import { useLayoutStore } from '@/store/layout'
   import { business } from './business'
   import { system } from './system'
   import { useMenusInfoStore } from '@/store/menus'
+  import { useLanguageStore } from '@/store/language'
+  import { getItem } from '@/utils/storage.js'
+  import { LANGUAGE } from '@/utils/constants'
+  const route = useRoute()
+
+  watch(reactive(route), o => {
+    activeMenu.value = o.path
+  })
+
+  const languageStore = useLanguageStore()
+  languageStore.setLanguage(getItem(LANGUAGE))
 
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()
   const menus = { business, system }
 
-  const route = useRoute()
   const activeMenu = ref('')
 
   const handleSelect = (index, indexPath) => {
-    console.log(index, indexPath)
     activeMenu.value = index
   }
 
@@ -124,6 +133,7 @@
 
 <script>
   import { defineComponent } from 'vue'
+  import { Watch } from '@element-plus/icons-vue'
   export default defineComponent({
     name: 'Menus'
   })
@@ -196,6 +206,7 @@
         line-height: 22px;
         border-top-right-radius: 22px;
         border-bottom-right-radius: 22px;
+        margin-bottom: 4px;
         .el-menu-tooltip__trigger {
           padding: 0;
           left: auto;
