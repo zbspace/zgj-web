@@ -29,10 +29,7 @@
       >
       </div>
       <div class="ap-box-cent" :style="state.centStyle">
-        <el-scrollbar
-          style="height: 100%; overflow: auto; padding-right: 16px"
-          class="ap-box-cent-scrollbar"
-        >
+        <el-scrollbar class="ap-box-cent-scrollbar" ref="layoutScrollbar">
           <div class="ap-box-cent-scrollbar-box">
             <div class="ap-box-searchForm" v-if="state.Layout.searchForm">
               <slot name="searchForm"></slot>
@@ -59,7 +56,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, defineProps, onBeforeMount, onMounted } from 'vue'
+  import { ref, reactive, defineProps, onBeforeMount, onMounted } from 'vue'
   const props = defineProps({
     // 标识
     refs: {
@@ -81,6 +78,7 @@
     Layout: {},
     centStyle: {}
   })
+  const layoutScrollbar = ref(null)
   // 初始化布局
   function initLayout() {
     if (props.Layout) {
@@ -93,6 +91,11 @@
     }
     // console.log(state.Layout);
   }
+
+  // function setScrollLeft() {
+  //   return -16
+  // }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化布局
@@ -100,6 +103,8 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    console.log(layoutScrollbar.value.setScrollLeft)
+    layoutScrollbar.value.setScrollLeft(100)
   })
 </script>
 <style lang="scss" scoped>
