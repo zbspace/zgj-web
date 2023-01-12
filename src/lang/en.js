@@ -2758,7 +2758,7 @@ export const en = {
   't-zgj-Workbench.DormancyDuration': 'Dormancy Duration',
   't-zgj-Workbench.FaceCheck': 'Face Check',
   't-zgj-Workbench.Minutes': 'Minutes',
-  't-zgj-cg-menu-shouye': '首页',
+  't-zgj-cg-menu-shouye': '首页en',
   't-zgj-cg-menu-gailan': '概览',
   't-zgj-cg-menu-yinkong-guanli': '印控管理',
   't-zgj-cg-menu-yongyin-guanli': '用印管理',

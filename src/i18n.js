@@ -6,6 +6,8 @@ import { gr } from '@/lang/gr'
 import { it } from '@/lang/it'
 import { ru } from '@/lang/ru'
 import { sp } from '@/lang/sp'
+import { getItem } from '@/utils/storage.js'
+import { LANGUAGE } from '@/utils/constants'
 
 const setDateTimeFormats = {
   short: {
@@ -31,7 +33,7 @@ const dateTimeFormats = {
 }
 
 export default createI18n({
-  locale: import.meta.env.VITE_VUE_APP_I18N_LOCALE || 'ch',
+  locale: getItem(LANGUAGE) ? getItem(LANGUAGE).lang : 'ch',
   fallbackLocale: import.meta.env.VITE_VUE_APP_I18N_FALLBACK_LOCALE || 'en',
   messages: { ch, en, fr, gr, it, ru, sp },
   dateTimeFormats

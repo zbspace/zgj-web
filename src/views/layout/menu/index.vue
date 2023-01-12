@@ -110,6 +110,7 @@
   import { getItem } from '@/utils/storage.js'
   import { LANGUAGE } from '@/utils/constants'
   const route = useRoute()
+  const activeMenu = ref('')
 
   watch(reactive(route), o => {
     activeMenu.value = o.path
@@ -121,8 +122,6 @@
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()
   const menus = { business, system }
-
-  const activeMenu = ref('')
 
   const handleSelect = (index, indexPath) => {
     activeMenu.value = index
