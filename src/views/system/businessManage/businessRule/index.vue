@@ -254,7 +254,7 @@
         {
           prop: '8',
           label: '操作',
-          width: 180,
+          width: 320,
           fixed: 'right',
           rankDisplayData: [
             {

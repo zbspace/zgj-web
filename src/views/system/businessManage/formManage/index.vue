@@ -287,7 +287,7 @@
           prop: '8',
           label: '操作',
           fixed: 'right',
-          width: 180,
+          width: 320,
           rankDisplayData: [
             {
               name: '修改'

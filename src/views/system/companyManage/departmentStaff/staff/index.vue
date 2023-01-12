@@ -240,7 +240,7 @@
           prop: '6',
           label: '操作',
           flex: 'right',
-          width: 200,
+          width: 320,
           rankDisplayData: [
             {
               name: '修改'
