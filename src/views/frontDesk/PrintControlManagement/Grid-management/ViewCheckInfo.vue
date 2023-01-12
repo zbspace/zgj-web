@@ -405,7 +405,7 @@ onMounted(() => {
 
             .device-tab {
                 display: flex;
-                padding: 0;
+                padding: 2px;
                 background: rgba(0, 0, 0, 0.04);
                 /* 线条 border/描边 */
 
@@ -413,9 +413,8 @@ onMounted(() => {
                 border-radius: 2px;
 
                 .device-item {
-                    width: 84px;
+                    width: 68px;
                     height: 24px;
-                    background: #EAEAEA;
                     border-radius: 4px;
                     list-style: none;
                     display: flex;

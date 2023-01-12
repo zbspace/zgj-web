@@ -240,7 +240,7 @@
         {
           prop: '8',
           label: '操作',
-          width: 180,
+          width: 210,
           fixed: 'right',
           rankDisplayData: [
             {
@@ -480,7 +480,7 @@
       }
     }
     .item {
-      padding: 7px 24px;
+      padding: 7px 30px;
       font-weight: 400;
       font-size: 14px;
       line-height: 22px;

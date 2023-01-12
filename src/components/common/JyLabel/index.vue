@@ -6,16 +6,16 @@
       <div class="button">
         <el-button
           type="primary"
-          size="small"
+          style="height: 28px"
           v-if="props.btn"
           @click="emit('on-click')"
         >
           {{ props.btn }}
         </el-button>
         <el-button
-          size="small"
           v-if="props.btn1"
           @click="emit('on-click-cancel')"
+          style="height: 28px"
         >
           {{ props.btn1 }}
         </el-button>
