@@ -240,7 +240,7 @@
         {
           prop: '8',
           label: '操作',
-          width: 210,
+          width: 260,
           fixed: 'right',
           rankDisplayData: [
             {

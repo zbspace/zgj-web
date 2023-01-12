@@ -1947,7 +1947,7 @@ export const ch = {
   't-zgj-message.Announcement': '公告',
   't-zgj-message.notification': '系统通知',
   't-zgj-message.timeSend': '发送时间',
-  't-zgj-message.Title': '消息',
+  't-zgj-message.Title': '待办事项',
   't-zgj-param.Sort': '参数排序值',
   't-zgj-param.SortExists': '该排序已存在',
   't-zgj-use.selectCancel': '请选择要终止流程的记录',

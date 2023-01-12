@@ -293,7 +293,7 @@
           prop: 'caozuo',
           label: '操作',
           fixed: 'right',
-          'min-width': 300,
+          'min-width': 400,
           rankDisplayData: [
             {
               name: '修改'
