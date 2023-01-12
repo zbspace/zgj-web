@@ -45,7 +45,10 @@
 
       <template #batch>
         <div class="batch">
-          <el-button>批量删除</el-button>
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          ></componentsBatch>
         </div>
       </template>
 
@@ -58,6 +61,7 @@
             :isSelection="true"
             @cellClick="cellClick"
             @custom-click="customClick"
+            @selection-change="selectionChange"
           >
           </componentsTable>
         </div>
@@ -90,6 +94,7 @@
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
+  import componentsBatch from '@/views/components/batch.vue'
   import { ElMessageBox } from 'element-plus'
   const state = reactive({
     componentsSearchForm: {
@@ -393,6 +398,17 @@
           name: 'operating-record'
         }
       ]
+    },
+    componentsBatch: {
+      selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
+      data: [
+        {
+          name: '批量删除'
+        }
+      ]
     }
   })
   // 点击表格单元格
@@ -418,6 +434,17 @@
         cancelButtonText: '关闭',
         type: 'warning'
       }).then(() => {})
+    }
+  }
+
+  // 当选择项发生变化时会触发该事件
+  function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
     }
   }
 </script>
