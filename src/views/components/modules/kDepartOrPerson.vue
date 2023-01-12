@@ -35,7 +35,8 @@
 
         <!-- crumbs -->
         <div class="select-crumbs user-select">
-          <el-breadcrumb :separator-icon="ArrowRight">
+          <!-- 隐藏 -->
+          <el-breadcrumb :separator-icon="ArrowRight" v-show="false">
             <el-breadcrumb-item @click="changeCrumb('all')">
               组织架构
             </el-breadcrumb-item>
@@ -46,6 +47,49 @@
               >{{ item.curmbsName }}
             </el-breadcrumb-item>
           </el-breadcrumb>
+
+          <!-- 自定义面包屑 -->
+          <div class="custom-bread">
+            <!-- 组织架构 -->
+            <div class="bread-home bread-item">
+              <div class="item-text">组织架构</div>
+              <div class="item-arrow">
+                <svg
+                  width="6"
+                  height="10"
+                  viewBox="0 0 6 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.78132 5.00001L0.481323 1.70001L1.42399 0.757342L5.66666 5.00001L1.42399 9.24268L0.481323 8.30001L3.78132 5.00001Z"
+                    fill="black"
+                    fill-opacity="0.25"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <!-- 循环 -->
+            <div class="bread-item" v-for="(item, i) in curmbs" :key="i">
+              <div class="item-text">{{ ittem.curmbsName }}</div>
+              <div class="item-arrow">
+                <svg
+                  width="6"
+                  height="10"
+                  viewBox="0 0 6 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.78132 5.00001L0.481323 1.70001L1.42399 0.757342L5.66666 5.00001L1.42399 9.24268L0.481323 8.30001L3.78132 5.00001Z"
+                    fill="black"
+                    fill-opacity="0.25"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- select-list -->
@@ -475,6 +519,13 @@
 
       .select-crumbs {
         padding: 6px 20px 6px 0;
+
+        .custom-bread {
+          display: flex;
+
+          .bread-home {
+          }
+        }
       }
 
       .select-list {
