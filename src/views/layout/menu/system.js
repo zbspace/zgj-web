@@ -69,28 +69,29 @@ export const system = [
         name: '邀请审核',
         to: '/system/companyManage/departmentStaff/audit',
         label: 't-zgj-cg-menu-yaoqing-shenhe'
+      },
+      {
+        name: '权限管理',
+        label: 't-zgj-cg-menu-quanxian-guanli',
+        to: '/system/companyManage/departmentStaff/permission',
+        // icon: icon22,
+        icon: '#cebiandaohanglan'
+        // children: [
+        //   {
+        //     name: '角色权限配置',
+        //     to: '/system/company/permission/role',
+        //     label: 't-zgj-cg-menu-jueshe-quanxian-peizhi'
+        //   },
+        //   {
+        //     name: '基础权限配置',
+        //     to: '/system/company/permission/rule',
+        //     label: 't-zgj-cg-menu-jichu-quanxian-peizhi'
+        //   }
+        // ]
       }
     ]
   },
-  {
-    name: '权限管理',
-    label: 't-zgj-cg-menu-quanxian-guanli',
-    to: '/system/companyManage/permission',
-    // icon: icon22,
-    icon: '#cebiandaohanglan'
-    // children: [
-    //   {
-    //     name: '角色权限配置',
-    //     to: '/system/company/permission/role',
-    //     label: 't-zgj-cg-menu-jueshe-quanxian-peizhi'
-    //   },
-    //   {
-    //     name: '基础权限配置',
-    //     to: '/system/company/permission/rule',
-    //     label: 't-zgj-cg-menu-jichu-quanxian-peizhi'
-    //   }
-    // ]
-  },
+
   {
     name: '基础设置',
     type: 'part',

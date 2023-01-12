@@ -66,12 +66,6 @@
           <div class="ap-sys">
             <div class="ap-sys-but" @click="changeSystemHome">
               <div v-if="menusInfoStore.currentType === 'business'">
-                <!-- <img
-                  class="ap-sys-but-icon"
-                  src="../assets/icon/system-setup.png"
-                  alt=""
-                  srcset=""
-                /> -->
                 <svg class="iconpark-icon ap-sys-but-icon">
                   <use href="#xitonghoutai"></use>
                 </svg>

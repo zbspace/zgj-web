@@ -469,8 +469,10 @@
       margin-right: 24px;
       margin-bottom: 8px;
       margin-top: 8px;
+      display: flex;
+      align-items: center;
       img {
-        margin-right: 14px;
+        margin-right: 12px;
       }
       span {
         font-weight: 400;
@@ -480,7 +482,7 @@
       }
     }
     .item {
-      padding: 7px 30px;
+      padding: 7px 28px;
       font-weight: 400;
       font-size: 14px;
       line-height: 22px;
