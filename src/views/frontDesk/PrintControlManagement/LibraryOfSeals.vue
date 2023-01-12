@@ -285,9 +285,18 @@
           ]
         },
         {
-          id: 'shenqingr',
-          label: '印章外带',
-          type: 'switch'
+          id: 'wdyy',
+          label: '',
+          type: 'checkbox',
+          checkbox: [
+            {
+              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+              defaultAttribute: {
+                label: '印章外带'
+              },
+              style: {}
+            }
+          ]
         },
         {
           id: 'wdyy',

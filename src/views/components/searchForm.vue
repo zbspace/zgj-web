@@ -699,7 +699,7 @@
     }
 
     .butData {
-      width: calc(100% / 3);
+      width: calc(100% / 3 - 100px);
       display: flex;
       // flex-flow: wrap;
       justify-content: flex-end;
