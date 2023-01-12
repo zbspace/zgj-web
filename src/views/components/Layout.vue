@@ -103,8 +103,6 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
-    console.log(layoutScrollbar.value.setScrollLeft)
-    layoutScrollbar.value.setScrollLeft(100)
   })
 </script>
 <style lang="scss" scoped>
