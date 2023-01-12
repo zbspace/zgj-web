@@ -903,7 +903,7 @@
       }
 
       .el-checkbox__label {
-        font-size: var(--font-size-caption);
+        font-size: var(--font-size-body-2);
       }
     }
   }
