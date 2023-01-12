@@ -66,24 +66,30 @@
           <div class="ap-sys">
             <div class="ap-sys-but" @click="changeSystemHome">
               <div v-if="menusInfoStore.currentType === 'business'">
-                <img
+                <!-- <img
                   class="ap-sys-but-icon"
                   src="../assets/icon/system-setup.png"
                   alt=""
                   srcset=""
-                />
+                /> -->
+                <svg class="iconpark-icon ap-sys-but-icon">
+                  <use href="#xitongshezhi"></use>
+                </svg>
                 <span class="ap-sys-but-text">{{
                   $t('t-back-system-platform')
                 }}</span>
               </div>
 
               <div v-if="menusInfoStore.currentType === 'system'">
-                <img
+                <!-- <img
                   class="ap-sys-but-icon"
                   src="../assets/images/navbar/nav_front_home.svg"
                   alt=""
                   srcset=""
-                />
+                /> -->
+                <svg class="iconpark-icon ap-sys-but-icon">
+                  <use href="#xitongshezhi"></use>
+                </svg>
                 <span class="ap-sys-but-text">{{
                   $t('t-front-platform')
                 }}</span>
@@ -275,8 +281,11 @@
   import router from '@/router'
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useMenusInfoStore } from '@/store/menus'
+  import { useLanguageStore } from '@/store/language'
+
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
+  const languageStore = useLanguageStore()
 
   const state = reactive({
     application: {
@@ -319,6 +328,8 @@
   const setLanguage = locale => {
     i18n.global.locale = locale
     state.language = locale
+    console.log(locale)
+    languageStore.setLanguage(locale)
   }
   const showPop = () => {
     showChanglanPop.value = true
@@ -393,7 +404,9 @@
 
       .ap-sys-but-icon {
         width: 1.5rem;
+        height: 1.5rem;
         margin-right: 0.3rem;
+        color: var(--primary-6);
       }
     }
   }

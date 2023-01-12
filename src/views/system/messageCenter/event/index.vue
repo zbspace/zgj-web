@@ -480,7 +480,7 @@
       }
     }
     .item {
-      padding: 7px 24px;
+      padding: 7px 30px;
       font-weight: 400;
       font-size: 14px;
       line-height: 22px;
