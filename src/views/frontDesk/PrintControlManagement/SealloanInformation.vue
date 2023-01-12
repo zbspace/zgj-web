@@ -280,7 +280,7 @@
         {
           prop: '0',
           label: '序号',
-          width: 100
+          width: 60
         },
         {
           prop: '1',

@@ -180,7 +180,7 @@
         {
           prop: '0',
           label: '序号',
-          width: 80,
+          width: 60,
           align: 'center',
           fixed: true
         },
