@@ -75,14 +75,8 @@
               </div>
 
               <div v-if="menusInfoStore.currentType === 'system'">
-                <!-- <img
-                  class="ap-sys-but-icon"
-                  src="../assets/images/navbar/nav_front_home.svg"
-                  alt=""
-                  srcset=""
-                /> -->
                 <svg class="iconpark-icon ap-sys-but-icon">
-                  <use href="#xitonghoutai"></use>
+                  <use href="#Property1yewuqiantai"></use>
                 </svg>
                 <span class="ap-sys-but-text">{{
                   $t('t-front-platform')
