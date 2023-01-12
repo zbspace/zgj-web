@@ -654,7 +654,7 @@
       align-items: center;
       @include mixin-padding-top(10);
       @include mixin-padding-bottom(10);
-      @include mixin-padding-right(10);
+      @include mixin-padding-right(0);
       box-sizing: border-box;
 
       .ap-box-label {

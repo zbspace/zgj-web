@@ -30,7 +30,7 @@
       </div>
       <div class="ap-box-cent" :style="state.centStyle">
         <el-scrollbar
-          style="height: 100%; overflow: auto"
+          style="height: 100%; overflow: auto; padding-right: 16px"
           class="ap-box-cent-scrollbar"
         >
           <div class="ap-box-cent-scrollbar-box">
@@ -190,7 +190,11 @@
       height: 100%;
       overflow: auto;
       box-sizing: border-box;
-
+      .ap-box-cent-scrollbar {
+        @include mixin-padding-right(16);
+        height: 100%;
+        overflow: auto;
+      }
       .arco-scrollbar {
         height: 100%;
       }
