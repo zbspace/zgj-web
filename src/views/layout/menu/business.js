@@ -17,7 +17,6 @@ export const business = [
     name: '首页',
     label: 't-zgj-cg-menu-shouye',
     to: '/frontDesk/home',
-    // icon: icon1
     icon: '#shouye-73o018d8'
   },
   {
@@ -25,11 +24,11 @@ export const business = [
     type: 'part',
     label: 't-zgj-cg-menu-yinkong-guanli'
   },
+
   {
     name: '用印管理',
     label: 't-zgj-cg-menu-yongyin-guanli',
     to: '/frontDesk/printControlManage/useSealManage',
-    // icon: icon2,
     icon: '#yongyinguanli-73o018b7',
     children: [
       // {
@@ -65,43 +64,13 @@ export const business = [
     ]
   },
   {
-    name: '印章管理',
-    label: 't-zgj-cg-menu-yinzhang-guanli',
-    to: '/frontDesk/printControlManage/sealManage',
-    // icon: icon3,
-    icon: '#yinzhangguanli-73o018do',
-    children: [
-      {
-        name: '印章库',
-        to: '/frontDesk/printControlManage/sealManage/libraryOfSeals',
-        label: 't-zgj-cg-menu-yinzhang-ku'
-      },
-      {
-        name: '印章申请',
-        to: '/frontDesk/printControlManage/sealManage/applicationForSeal',
-        label: 't-zgj-cg-menu-yinzhang-shenqing'
-      },
-      {
-        name: '印章类型',
-        to: '/frontDesk/printControlManage/sealManage/typeOfSeal',
-        label: 't-zgj-cg-menu-yinzhang-leixing'
-      },
-      {
-        name: '印章外借信息',
-        to: '/frontDesk/printControlManage/sealManage/sealloanInformation',
-        label: 't-zgj-cg-menu-yinzhang-waijie-xinxi'
-      }
-    ]
-  },
-  {
     name: '文件防篡改',
     label: 't-zgj-cg-menu-wenjian-fangchuangai',
     to: '/frontDesk/printControlManage/fileTamperProof',
-    // icon: icon4,
     icon: '#wenjianheyan-73o018dm',
     children: [
       {
-        name: '防伪水印验证',
+        name: '防伪水印核验',
         to: '/frontDesk/printControlManage/fileTamperProof/securityWatermark',
         label: 't-zgj-cg-menu-fangwei-shuiyin-yanzheng'
       },
@@ -124,11 +93,40 @@ export const business = [
       }
     ]
   },
+
+  {
+    name: '印章管理',
+    label: 't-zgj-cg-menu-yinzhang-guanli',
+    to: '/frontDesk/printControlManage/sealManage',
+    icon: '#yinzhangguanli-73o018do',
+    children: [
+      {
+        name: '印章库',
+        to: '/frontDesk/printControlManage/sealManage/libraryOfSeals',
+        label: 't-zgj-cg-menu-yinzhang-ku'
+      },
+      {
+        name: '印章申请',
+        to: '/frontDesk/printControlManage/sealManage/applicationForSeal',
+        label: 't-zgj-cg-menu-yinzhang-shenqing'
+      },
+      {
+        name: '印章外借信息',
+        to: '/frontDesk/printControlManage/sealManage/sealloanInformation',
+        label: 't-zgj-cg-menu-yinzhang-waijie-xinxi'
+      },
+      {
+        name: '印章类型',
+        to: '/frontDesk/printControlManage/sealManage/typeOfSeal',
+        label: 't-zgj-cg-menu-yinzhang-leixing'
+      }
+    ]
+  },
+
   {
     name: '电子签章',
     label: 't-zgj-cg-menu-dianzi-qianzhang',
     to: '/frontDesk/printControlManage/electronicSeal',
-    // icon: icon5,
     icon: '#dianziqianzhang',
     children: [
       {
@@ -137,19 +135,19 @@ export const business = [
         label: 't-zgj-cg-menu-dianzi-qianzhang-shenqing'
       },
       {
-        name: '待电子签章',
+        name: '电子签章',
         to: '/frontDesk/printControlManage/electronicSeal/electronicSignatureRequired',
         label: 't-zgj-cg-menu-dai-dianzi-qianzhang'
-      },
-      {
-        name: '电子签章记录',
-        to: '/frontDesk/printControlManage/electronicSeal/electronicSignatureRecord',
-        label: 't-zgj-cg-menu-dianzi-qianzhang-jilu'
       },
       {
         name: '电子印章库',
         to: '/frontDesk/printControlManage/electronicSeal/electronicSealLibrary',
         label: 't-zgj-cg-menu-dianzi-yinzhang-ku'
+      },
+      {
+        name: '电子签章记录',
+        to: '/frontDesk/printControlManage/electronicSeal/electronicSignatureRecord',
+        label: 't-zgj-cg-menu-dianzi-qianzhang-jilu'
       },
       {
         name: '用户认证',
@@ -158,11 +156,11 @@ export const business = [
       }
     ]
   },
+
   {
     name: '设备管理',
     label: 't-zgj-cg-menu-shebei-guanli',
     to: '/frontDesk/printControlManage/equipmentManage',
-    // icon: icon6,
     icon: '#shebeiguanli',
     children: [
       {
@@ -176,7 +174,7 @@ export const business = [
         to: '/frontDesk/printControlManage/intelligentSealBoxManagement',
         children: [
           {
-            name: '智能印章盒管理',
+            name: '印章盒管理',
             to: '/frontDesk/printControlManage/equipmentManage/intelligentSealBoxManagement',
             label: 't-zgj-cg-menu-zhineng-yinzhang-he-guanli'
           },
@@ -187,13 +185,14 @@ export const business = [
           }
         ]
       },
+
       {
         name: '智能印章柜管理',
         to: '/frontDesk/printControlManage/equipmentManage/intelligentSealCabinetManagement',
         label: 't-zgj-cg-menu-zhineng-yinzhang-gui-guanli',
         children: [
           {
-            name: '智能印章柜管理',
+            name: '印章柜管理',
             to: '/frontDesk/printControlManage/equipmentManage/intelligentSealCabinetManagement',
             label: 't-zgj-cg-menu-zhineng-yinzhang-gui-guanli'
           },
@@ -216,51 +215,15 @@ export const business = [
     name: '文件库',
     label: 't-zgj-cg-menu-wenjian-ku',
     to: '/frontDesk/fileManagement/documentLibrary',
-    // icon: icon7
     icon: '#wenjianku-73o018d4'
   },
   {
     name: '文件类型',
     label: 't-zgj-cg-menu-wenjian-leixing',
     to: '/frontDesk/fileManagement/documentType',
-    // icon: icon8
     icon: '#wenjianleixing-73o018dp'
   },
 
-  {
-    name: '流程审批',
-    label: 't-zgj-cg-menu-liucheng-shenpi',
-    type: 'part'
-  },
-
-  {
-    name: '实时确认',
-    label: 't-zgj-cg-menu-shishi-queren',
-    to: '/frontDesk/processApprove/realTimeConfirmation',
-    // icon: icon9
-    icon: '#zidingyiduijiepeizhi'
-  },
-  {
-    name: '审批流程',
-    label: 't-zgj-cg-menu-shenpi-liucheng',
-    to: '/frontDesk/processApprove/approvalFlow',
-    // icon: icon10
-    icon: '#daishenpiliucheng'
-  },
-  {
-    name: '处理任务',
-    label: 't-zgj-cg-menu-chuli-renwu',
-    to: '/frontDesk/processApprove/handleTask',
-    // icon: icon11
-    icon: '#daichulirenwu'
-  },
-  {
-    name: '抄送给我',
-    label: 't-zgj-cg-menu-caoshong-geiwo',
-    to: '/frontDesk/processApprove/carbonCopyToMe',
-    // icon: icon12
-    icon: '#chaosonggeiwodeliucheng'
-  },
   {
     name: '风控预警',
     label: 't-zgj-cg-menu-fengkong-yujing',
@@ -270,14 +233,12 @@ export const business = [
     name: '风控提醒设置',
     label: 't-zgj-cg-menu-fengkong-tixing-shezhi',
     to: '/frontDesk/riskControlWarning/riskAlertSetting',
-    // icon: icon14
     icon: '#fengxiantixingshezhi-73o018ap'
   },
   {
     name: '风险提醒记录',
     label: 't-zgj-cg-menu-fengxian-tixing-jilu',
     to: '/frontDesk/riskControlWarning/riskAlertRecord',
-    // icon: icon13,
     icon: '#fengxiantixingjilu-73o018do',
     children: [
       {
@@ -286,15 +247,45 @@ export const business = [
         label: 't-zgj-cg-menu-yongyin-gaojing-tixing'
       },
       {
-        name: '领用印章告警提醒',
-        to: '/frontDesk/riskControlWarning/riskAlertRecord/receiveSealAlarmReminder',
-        label: 't-zgj-cg-menu-lingyong-yinzhang-gaojing-tixing'
-      },
-      {
         name: '流程规范告警提醒',
         to: '/frontDesk/riskControlWarning/riskAlertRecord/processSpecificationAlarmNotification',
         label: 't-zgj-cg-menu-liucheng-guifan-gaojing-tixing'
+      },
+      {
+        name: '领用印章告警提醒',
+        to: '/frontDesk/riskControlWarning/riskAlertRecord/receiveSealAlarmReminder',
+        label: 't-zgj-cg-menu-lingyong-yinzhang-gaojing-tixing'
       }
     ]
+  },
+
+  {
+    name: '流程审批',
+    label: 't-zgj-cg-menu-liucheng-shenpi',
+    type: 'part'
+  },
+  {
+    name: '实时确认',
+    label: 't-zgj-cg-menu-shishi-queren',
+    to: '/frontDesk/processApprove/realTimeConfirmation',
+    icon: '#zidingyiduijiepeizhi'
+  },
+  {
+    name: '审批流程',
+    label: 't-zgj-cg-menu-shenpi-liucheng',
+    to: '/frontDesk/processApprove/approvalFlow',
+    icon: '#daishenpiliucheng'
+  },
+  {
+    name: '处理任务',
+    label: 't-zgj-cg-menu-chuli-renwu',
+    to: '/frontDesk/processApprove/handleTask',
+    icon: '#daichulirenwu'
+  },
+  {
+    name: '抄送给我',
+    label: 't-zgj-cg-menu-caoshong-geiwo',
+    to: '/frontDesk/processApprove/carbonCopyToMe',
+    icon: '#chaosonggeiwodeliucheng'
   }
 ]

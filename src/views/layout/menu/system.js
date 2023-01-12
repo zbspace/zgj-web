@@ -19,10 +19,126 @@
 export const system = [
   {
     name: '概览',
-    label: 't-zgj-cg-menu-shouye',
+    label: 't-zgj-cg-menu-gailan',
     to: '/system/home',
     icon: '#shouye-73o018d8'
   },
+
+  {
+    name: '业务管理',
+    type: 'part',
+    label: 't-zgj-cg-menu-yewu-guanli'
+  },
+  {
+    name: '流程管理',
+    label: 't-zgj-cg-menu-liucheng-guanli',
+    to: '/system/businessManage/flowManage',
+    icon: '#liuchengguanli'
+  },
+  {
+    name: '表单管理',
+    label: 't-zgj-cg-menu-biaodan-guanli',
+    to: '/system/businessManage/formManage',
+    icon: '#biaodan-guanli'
+  },
+  {
+    name: '业务规则配置',
+    label: 't-zgj-cg-menu-yewu-guizhe-peizhi',
+    to: '/system/businessManage/businessRule',
+    icon: '#yewuguizepeizhi'
+  },
+
+  {
+    name: '日志管理',
+    type: 'part',
+    label: 't-zgj-cg-menu-rizhi-guanli'
+  },
+
+  {
+    name: '系统操作日志',
+    label: 't-zgj-cg-menu-xitong-caozuo-rizhi',
+    to: '/system/logMamage/systemOperation',
+    icon: '#xitongcaozuorizhi'
+  },
+  {
+    name: '系统运行日志',
+    label: 't-zgj-cg-menu-xitong-yunxing-rizhi',
+    to: '/system/logMamage/systemRunning',
+    icon: '#cebiandaohanglan2'
+  },
+  {
+    name: '终端操作日志',
+    label: 't-zgj-cg-menu-zongduan-caozuorizhi',
+    to: '/system/logMamage/terminalOperation',
+    icon: '#zhongduancaozuorizhi'
+  },
+  {
+    name: '固件升级日志',
+    label: 't-zgj-cg-menu-gujian-shengji-rizhi',
+    to: '/system/logMamage/firmwareUpgrade',
+    icon: '#gujianshengjirizhi'
+  },
+  {
+    name: '登录日志',
+    label: 't-zgj-cg-menu-denglu-rizhi',
+    to: '/system/logMamage/login',
+    icon: '#denglurizhi'
+  },
+
+  {
+    name: '消息中心',
+    type: 'part',
+    label: 't-zgj-cg-menu-xiaoxi-zhongxin'
+  },
+  {
+    name: '消息事件',
+    label: 't-zgj-cg-menu-xiaoxi-shijan',
+    to: '/system/messageCenter/event',
+    icon: '#tongzhishijian'
+  },
+  {
+    name: '消息模板',
+    label: 't-zgj-cg-menu-xiaoxi-muban',
+    to: '/system/messageCenter/template',
+    icon: '#tongzhimoban'
+  },
+  {
+    name: '渠道管理',
+    label: 't-zgj-cg-menu-qudao-peizhi',
+    to: '/system/messageCenter/channel',
+    icon: '#qudaoguanli'
+  },
+  {
+    name: '消息日志',
+    label: 't-zgj-cg-menu-xiaoxi-rizhi',
+    to: '/system/messageCenter/log',
+    icon: '#xiaoxirizhi'
+  },
+
+  {
+    name: '基础设置',
+    type: 'part',
+    label: 't-zgj-cg-menu-jichu-shezhi'
+  },
+  {
+    name: '终端版本管理',
+    label: 't-zgj-cg-menu-zongduan-banben-guanli',
+    to: '/system/baseSetting/terminalVersion',
+    icon: '#zhongduanbanbenguanli'
+  },
+  {
+    name: '固件版本管理',
+    label: 't-zgj-cg-menu-gujian-banben-guanli',
+    to: '/system/baseSetting/firmwareVersion',
+    icon: '#cebiandaohanglan1'
+  },
+  {
+    name: '全局参数设置',
+    label: 't-zgj-cg-menu-quanju-canshu-shezhi',
+    to: '/system/baseSetting/globalParameter',
+    icon: '#quanjucanshushezhi'
+  },
+
   {
     name: '企业管理',
     type: 'part',
@@ -32,7 +148,6 @@ export const system = [
     name: '企业信息',
     label: 't-zgj-cg-menu-qiye-xinxi',
     to: '/system/companyManage/companyInfo',
-    // icon: icon19
     icon: '#qiyexinxi'
   },
   {
@@ -45,14 +160,12 @@ export const system = [
     name: '往来企业',
     label: 't-zgj-cg-menu-wanglai-qiye',
     to: '/system/companyManage/companyDealing',
-    // icon: icon20
     icon: '#wanglaiqiye'
   },
   {
     name: '部门与员工',
     label: 't-zgj-cg-menu-bumen-yu-yuangong',
     to: '/system/companyManage/departmentStaff',
-    // icon: icon21,
     icon: '#bumenyuyuangong',
     children: [
       {
@@ -66,12 +179,7 @@ export const system = [
         label: 't-zgj-cg-menu-yuangong-guanli'
       },
       {
-        name: '邀请审核',
-        to: '/system/companyManage/departmentStaff/audit',
-        label: 't-zgj-cg-menu-yaoqing-shenhe'
-      },
-      {
-        name: '权限管理',
+        name: '角色权限管理',
         label: 't-zgj-cg-menu-quanxian-guanli',
         to: '/system/companyManage/departmentStaff/permission',
         // icon: icon22,
@@ -88,133 +196,12 @@ export const system = [
         //     label: 't-zgj-cg-menu-jichu-quanxian-peizhi'
         //   }
         // ]
+      },
+      {
+        name: '邀请审核',
+        to: '/system/companyManage/departmentStaff/audit',
+        label: 't-zgj-cg-menu-yaoqing-shenhe'
       }
     ]
-  },
-
-  {
-    name: '基础设置',
-    type: 'part',
-    label: 't-zgj-cg-menu-jichu-shezhi'
-  },
-  {
-    name: '全局参数设置',
-    label: 't-zgj-cg-menu-quanju-canshu-shezhi',
-    to: '/system/baseSetting/globalParameter',
-    // icon: icon23
-    icon: '#quanjucanshushezhi'
-  },
-  {
-    name: '固件版本管理',
-    label: 't-zgj-cg-menu-gujian-banben-guanli',
-    to: '/system/baseSetting/firmwareVersion',
-    // icon: icon33
-    icon: '#cebiandaohanglan1'
-  },
-  {
-    name: '终端版本管理',
-    label: 't-zgj-cg-menu-zongduan-banben-guanli',
-    to: '/system/baseSetting/terminalVersion',
-    // icon: icon25
-    icon: '#zhongduanbanbenguanli'
-  },
-  {
-    name: '业务管理',
-    type: 'part',
-    label: 't-zgj-cg-menu-yewu-guanli'
-  },
-  {
-    name: '表单管理',
-    label: 't-zgj-cg-menu-biaodan-guanli',
-    to: '/system/businessManage/formManage',
-    // icon: icon26
-    icon: '#biaodan-guanli'
-  },
-  {
-    name: '流程管理',
-    label: 't-zgj-cg-menu-liucheng-guanli',
-    to: '/system/businessManage/flowManage',
-    // icon: icon27
-    icon: '#liuchengguanli'
-  },
-  {
-    name: '业务规则配置',
-    label: 't-zgj-cg-menu-yewu-guizhe-peizhi',
-    to: '/system/businessManage/businessRule',
-    // icon: icon28
-    icon: '#yewuguizepeizhi'
-  },
-  {
-    name: '消息中心',
-    type: 'part',
-    label: 't-zgj-cg-menu-xiaoxi-zhongxin'
-  },
-  {
-    name: '消息事件',
-    label: 't-zgj-cg-menu-xiaoxi-shijan',
-    to: '/system/messageCenter/event',
-    // icon: icon29
-    icon: '#tongzhishijian'
-  },
-  {
-    name: '消息模板',
-    label: 't-zgj-cg-menu-xiaoxi-muban',
-    to: '/system/messageCenter/template',
-    // icon: icon34
-    icon: '#tongzhimoban'
-  },
-  {
-    name: '渠道配置',
-    label: 't-zgj-cg-menu-qudao-peizhi',
-    to: '/system/messageCenter/channel',
-    // icon: icon35
-    icon: '#qudaoguanli'
-  },
-  {
-    name: '消息日志',
-    label: 't-zgj-cg-menu-xiaoxi-rizhi',
-    to: '/system/messageCenter/log',
-    // icon: icon36
-    icon: '#xiaoxirizhi'
-  },
-  {
-    name: '日志管理',
-    type: 'part',
-    label: 't-zgj-cg-menu-rizhi-guanli'
-  },
-  {
-    name: '登录日志',
-    label: 't-zgj-cg-menu-denglu-rizhi',
-    to: '/system/logMamage/login',
-    // icon: icon30
-    icon: '#denglurizhi'
-  },
-  {
-    name: '系统操作日志',
-    label: 't-zgj-cg-menu-xitong-caozuo-rizhi',
-    to: '/system/logMamage/systemOperation',
-    // icon: icon31
-    icon: '#xitongcaozuorizhi'
-  },
-  {
-    name: '系统运行日志',
-    label: 't-zgj-cg-menu-xitong-yunxing-rizhi',
-    to: '/system/logMamage/systemRunning',
-    // icon: icon37
-    icon: '#cebiandaohanglan2'
-  },
-  {
-    name: '终端操作日志',
-    label: 't-zgj-cg-menu-zongduan-caozuorizhi',
-    to: '/system/logMamage/terminalOperation',
-    // icon: icon32
-    icon: '#zhongduancaozuorizhi'
-  },
-  {
-    name: '固件升级日志',
-    label: 't-zgj-cg-menu-gujian-shengji-rizhi',
-    to: '/system/logMamage/firmwareUpgrade',
-    // icon: icon33
-    icon: '#gujianshengjirizhi'
   }
 ]

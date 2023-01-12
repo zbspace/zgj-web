@@ -2565,6 +2565,7 @@ export const ch = {
   't-zgj-Workbench.FaceCheck': '还章人脸识别校验',
   't-zgj-Workbench.Minutes': '分钟',
   't-zgj-cg-menu-shouye': '首页',
+  't-zgj-cg-menu-gailan': '概览',
   't-zgj-cg-menu-yinkong-guanli': '印控管理',
   't-zgj-cg-menu-yongyin-guanli': '用印管理',
   't-zgj-cg-menu-yongyin-shenqing': '用印申请',
