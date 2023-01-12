@@ -73,40 +73,40 @@ const routes = {
             import(
               '@/views/system/companyManage/departmentStaff/staff/index.vue'
             )
+        },
+        {
+          path: 'permission',
+          name: 'permission',
+          meta: {
+            title: '权限管理',
+            authRequired: true
+          },
+          component: () =>
+            import('@/views/system/companyManage/permission/index.vue')
+          // children: [
+          //   {
+          //     path: 'role',
+          //     name: 'role',
+          //     meta: {
+          //       title: '角色权限配置',
+          //       authRequired: true
+          //     },
+          //     component: () =>
+          //       import('@/views/system/companyManage/permission/role/index.vue')
+          //   },
+          //   {
+          //     path: 'rule',
+          //     name: 'rule',
+          //     meta: {
+          //       title: '基础权限配置',
+          //       authRequired: true
+          //     },
+          //     component: () =>
+          //       import('@/views/system/companyManage/permission/rule/index.vue')
+          //   }
+          // ]
         }
       ]
-    },
-    {
-      path: 'permission',
-      name: 'permission',
-      meta: {
-        title: '权限管理',
-        authRequired: true
-      },
-      component: () =>
-        import('@/views/system/companyManage/permission/index.vue')
-      // children: [
-      //   {
-      //     path: 'role',
-      //     name: 'role',
-      //     meta: {
-      //       title: '角色权限配置',
-      //       authRequired: true
-      //     },
-      //     component: () =>
-      //       import('@/views/system/companyManage/permission/role/index.vue')
-      //   },
-      //   {
-      //     path: 'rule',
-      //     name: 'rule',
-      //     meta: {
-      //       title: '基础权限配置',
-      //       authRequired: true
-      //     },
-      //     component: () =>
-      //       import('@/views/system/companyManage/permission/rule/index.vue')
-      //   }
-      // ]
     }
   ]
 }

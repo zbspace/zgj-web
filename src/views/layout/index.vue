@@ -40,10 +40,6 @@
     }
     :deep(.el-main) {
       padding: 16px;
-      // padding: 16px 0 0 20px;
-      // .layout-scrollbar {
-      //   padding-right: 20px;
-      // }
     }
   }
 </style>
