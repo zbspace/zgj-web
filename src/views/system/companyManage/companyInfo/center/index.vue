@@ -3,16 +3,16 @@
     <div class="left">
       <div class="base">
         <JyLabel label="基础信息" />
-        <div>
+        <div class="form-content">
           <div class="rows">
             <span class="label">单位负责人</span>
-            <div v-if="!edit">
-              <span class="content">马丽丽</span>
-              <img :src="inputIcon" alt="" @click="edit = true" />
+            <div v-if="!edit1">
+              <span class="content">{{ formData.data3 }}</span>
+              <img :src="inputIcon" alt="" @click="edit1 = true" />
             </div>
             <div class="input" v-else>
               <el-input
-                v-model="input"
+                v-model="formData.data3"
                 placeholder="请输入新的头部系统显示名称"
               />
               <span class="save" @click="save">保存</span>
@@ -22,13 +22,13 @@
 
           <div class="rows">
             <span class="label">负责人手机号</span>
-            <div v-if="!edit1">
-              <span class="content">18017607672</span>
-              <img :src="inputIcon" alt="" @click="edit1 = true" />
+            <div v-if="!edit4">
+              <span class="content">{{ formData.data4 }}</span>
+              <img :src="inputIcon" alt="" @click="edit4 = true" />
             </div>
             <div class="input" v-else>
               <el-input
-                v-model="input1"
+                v-model="formData.data4"
                 placeholder="请输入新的头部系统显示名称"
               />
               <span class="save" @click="save1">保存</span>
@@ -38,17 +38,17 @@
 
           <div class="rows">
             <span class="label">服务器域名</span>
-            <div v-if="!edit1">
-              <span class="content">jnh444555555</span>
-              <img :src="inputIcon" alt="" @click="edit1 = true" />
+            <div v-if="!edit5">
+              <span class="content">{{ formData.data5 }}</span>
+              <img :src="inputIcon" alt="" @click="edit5 = true" />
             </div>
             <div class="input" v-else>
               <el-input
-                v-model="input1"
+                v-model="formData.data5"
                 placeholder="请输入新的头部系统显示名称"
               />
-              <span class="save" @click="save1">保存</span>
-              <span class="cancel" @click="cancel1">取消</span>
+              <span class="save" @click="save2">保存</span>
+              <span class="cancel" @click="cancel2">取消</span>
             </div>
           </div>
         </div>
@@ -71,14 +71,22 @@
           <div>
             <div class="rows input">
               <el-form-item label="超级管理员" prop="data1">
-                <span class="content" v-if="!edit2">李旺</span>
-                <el-input v-if="edit2" v-model="data1" placeholder="" />
+                <span class="content" v-if="!edit2">{{ formData.data1 }}</span>
+                <el-input
+                  v-if="edit2"
+                  v-model="formData.data1"
+                  placeholder=""
+                />
               </el-form-item>
             </div>
             <div class="rows input">
               <el-form-item label="超级管理员账号" prop="data1">
-                <span class="content" v-if="!edit2">225487</span>
-                <el-input v-if="edit2" v-model="data2" placeholder="" />
+                <span class="content" v-if="!edit2">{{ formData.data2 }}</span>
+                <el-input
+                  v-if="edit2"
+                  v-model="formData.data2"
+                  placeholder=""
+                />
               </el-form-item>
             </div>
           </div>
@@ -102,31 +110,31 @@
       >
         <div>
           <div class="rows">
-            <el-form-item label="首次登录必须修改密码" prop="data1">
+            <el-form-item label="首次登录必须修改密码" prop="data6">
               <span class="content color-3ED096" v-if="!edit3">开</span>
-              <el-switch v-else v-model="data1" />
+              <el-switch v-else v-model="formData.data6" />
             </el-form-item>
           </div>
           <div class="rows">
-            <el-form-item label="弱密码禁止保存" prop="data1">
+            <el-form-item label="弱密码禁止保存" prop="data7">
               <span class="content color-3ED096" v-if="!edit3">开</span>
-              <el-switch v-else v-model="data1" />
+              <el-switch v-else v-model="formData.data7" />
             </el-form-item>
           </div>
           <div class="rows">
             <!-- <span class="label w-140">密码变更提醒</span>
             <span class="content color-3ED096">开</span>
              -->
-            <el-form-item label="密码变更提醒" prop="data1">
+            <el-form-item label="密码变更提醒" prop="data8">
               <div v-if="!edit3">
                 <span class="content color-3ED096">开</span>
                 <span class="color-black-045">（提醒周期5天）</span>
               </div>
               <div v-else>
-                <el-switch v-model="data1" />
+                <el-switch v-model="formData.data8" />
                 <span>&ensp;&ensp;提醒周期&ensp;&ensp;</span>
                 <el-input-number
-                  v-model="data1"
+                  v-model="formData.data9"
                   :min="1"
                   :max="31"
                   @change="handleChange"
@@ -136,10 +144,10 @@
             </el-form-item>
           </div>
           <div class="rows">
-            <el-form-item label="密码至少包含" prop="data1">
+            <el-form-item label="密码至少包含" prop="data10">
               <span class="tab" v-if="!edit3">小写字母</span>
               <div v-else>
-                <el-checkbox-group v-model="data1">
+                <el-checkbox-group v-model="formData.data10">
                   <el-checkbox label="大写字母" />
                   <el-checkbox label="小写字母" />
                   <el-checkbox label="数字" />
@@ -149,11 +157,11 @@
             </el-form-item>
           </div>
           <div class="rows">
-            <el-form-item label="限制密码长度至少为" prop="data1">
+            <el-form-item label="限制密码长度至少为" prop="data11">
               <span class="content tab" v-if="!edit3">8</span>
               <el-input-number
                 v-else
-                v-model="data1"
+                v-model="formData.data11"
                 :min="1"
                 :max="31"
                 @change="handleChange"
@@ -162,11 +170,11 @@
             </el-form-item>
           </div>
           <div class="rows">
-            <el-form-item label="初始密码" prop="data1">
+            <el-form-item label="初始密码" prop="data12">
               <span class="content tab" v-if="!edit3">13780094578</span>
               <div v-else>
                 <el-input
-                  v-model="data1"
+                  v-model="formData.data12"
                   type="password"
                   style="width: 126px"
                   placeholder="请输入"
@@ -184,28 +192,45 @@
 <script setup>
   import inputIcon from '@/assets/svg/system/comp-info/input.svg'
   import { ref } from 'vue'
-  const input = ref('上海测试专属')
-  const input1 = ref('上海测试专属')
-  const edit = ref(false)
   const edit1 = ref(false)
   const edit2 = ref(false)
   const edit3 = ref(false)
+  const edit4 = ref(false)
+  const edit5 = ref(false)
   const rules = ref([])
   const formData = ref({
-    data1: '',
-    data2: ''
+    data1: '111',
+    data2: '222',
+    data3: '玛丽',
+    data4: '18017607670',
+    data5: 'www.yyy.com',
+    data6: true,
+    data7: true,
+    data8: true,
+    data9: 5,
+    data10: [],
+    data11: 8,
+    data12: '11111111'
   })
   const save = () => {
-    edit.value = !edit.value
-  }
-  const cancel = () => {
-    edit.value = !edit.value
+    edit1.value = !edit1.value
   }
   const save1 = () => {
+    edit4.value = !edit4.value
+  }
+
+  const save2 = () => {
+    edit5.value = !edit5.value
+  }
+
+  const cancel = () => {
     edit1.value = !edit1.value
   }
   const cancel1 = () => {
-    edit1.value = !edit1.value
+    edit4.value = !edit4.value
+  }
+  const cancel2 = () => {
+    edit5.value = !edit5.value
   }
 
   const onClick3 = () => {
@@ -234,8 +259,12 @@
       .base {
         width: 436px;
         background-color: #fff;
-        padding: 24px;
+        padding: 24px 24px 7px 24px;
         margin-bottom: 16px;
+        .form-content {
+          display: flex;
+          flex-direction: column;
+        }
       }
     }
     .right {

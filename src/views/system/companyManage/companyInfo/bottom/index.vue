@@ -1,6 +1,12 @@
 <template>
   <div class="comp-info-bottom">
-    <JyLabel label="系统页面设置" btn="修改" @on-click="onClick" />
+    <JyLabel
+      label="系统页面设置"
+      :btn="edit ? '保存' : '修改'"
+      :btn1="edit ? '取消' : ''"
+      @on-click="onClick"
+      @on-click-cancel="onClickCancel"
+    />
     <div class="switch">
       <span>页面水印</span>
       <el-switch v-model="value" size="large" inactive-text="" />
@@ -20,9 +26,13 @@
   import { ref } from 'vue'
   import shapeIcon from '@/assets/svg/system/comp-info/shape.svg'
   const value = ref(false)
+  const edit = ref(false)
 
   const onClick = () => {
-    console.log(123)
+    edit.value = !edit.value
+  }
+  const onClickCancel = () => {
+    edit.value = false
   }
 </script>
 

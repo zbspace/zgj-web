@@ -116,7 +116,7 @@
   })
 
   const languageStore = useLanguageStore()
-  languageStore.setLanguage(getItem(LANGUAGE))
+  languageStore.setLanguage(getItem(LANGUAGE) ? getItem(LANGUAGE).lang : 'ch')
 
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()

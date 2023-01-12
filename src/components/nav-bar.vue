@@ -88,7 +88,7 @@
                   srcset=""
                 /> -->
                 <svg class="iconpark-icon ap-sys-but-icon">
-                  <use href="#xitongshezhi"></use>
+                  <use href="#xitonghoutai"></use>
                 </svg>
                 <span class="ap-sys-but-text">{{
                   $t('t-front-platform')
