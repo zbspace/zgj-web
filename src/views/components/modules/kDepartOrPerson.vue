@@ -36,7 +36,7 @@
         <!-- crumbs -->
         <div class="select-crumbs user-select">
           <!-- 隐藏 -->
-          <el-breadcrumb :separator-icon="ArrowRight" v-show="false">
+          <el-breadcrumb :separator-icon="ArrowRight" v-show="true">
             <el-breadcrumb-item @click="changeCrumb('all')">
               组织架构
             </el-breadcrumb-item>
@@ -49,7 +49,7 @@
           </el-breadcrumb>
 
           <!-- 自定义面包屑 -->
-          <div class="custom-bread">
+          <div class="custom-bread" v-show="false">
             <!-- 组织架构 -->
             <div class="bread-home bread-item">
               <div class="item-text">组织架构</div>
@@ -522,9 +522,6 @@
 
         .custom-bread {
           display: flex;
-
-          .bread-home {
-          }
         }
       }
 
