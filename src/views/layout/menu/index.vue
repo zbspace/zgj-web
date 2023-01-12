@@ -133,7 +133,6 @@
 
 <script>
   import { defineComponent } from 'vue'
-  import { Watch } from '@element-plus/icons-vue'
   export default defineComponent({
     name: 'Menus'
   })
@@ -241,12 +240,14 @@
       .el-sub-menu {
         .el-sub-menu__title {
           height: 42px;
+          border-top-right-radius: 22px;
+          border-bottom-right-radius: 22px;
           .iconpark-icon {
             width: 22px;
             height: 22px;
             margin-right: 10px;
           }
-          transition: all 0.3s;
+          // transition: all 0.3s;
           &:hover {
             border-top-right-radius: 22px;
             border-bottom-right-radius: 22px;
@@ -290,6 +291,7 @@
       }
       .el-menu-item {
         padding: 0;
+        border-radius: 4px !important;
         .el-tooltip__trigger {
           margin-left: 0;
           width: 62px;
@@ -314,7 +316,6 @@
         }
         &:hover {
           background: rgba(0, 0, 0, 0.04);
-          border-radius: 4px;
           span,
           .iconpark-icon {
             color: var(--primary-6);
@@ -324,12 +325,12 @@
       .el-sub-menu {
         .el-sub-menu__title {
           margin-left: 0;
+          border-radius: 4px !important;
           .iconpark-icon {
             margin-right: 0;
           }
           &:hover {
             background: rgba(0, 0, 0, 0.04);
-            border-radius: 4px;
             span,
             .iconpark-icon {
               color: var(--primary-6);

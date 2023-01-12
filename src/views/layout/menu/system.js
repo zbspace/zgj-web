@@ -37,7 +37,7 @@ export const system = [
   },
   {
     name: '更新license',
-    label: 't-zgj-cg-menu-qiye-xinxi',
+    label: 't-zgj-cg-menu-gengxin-license',
     to: '/system/companyManage/updateLicense',
     icon: '#qiyexinxi'
   },
