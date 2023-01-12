@@ -35,7 +35,7 @@
 
         <!-- crumbs -->
         <div class="select-crumbs user-select">
-          <el-breadcrumb :separator-icon="ArrowRight" v-show="false">
+          <el-breadcrumb :separator-icon="ArrowRight">
             <el-breadcrumb-item @click="changeCrumb('all')">
               组织架构
             </el-breadcrumb-item>
@@ -46,9 +46,6 @@
               >{{ item.curmbsName }}
             </el-breadcrumb-item>
           </el-breadcrumb>
-
-          <!-- 自定义面包屑 -->
-          <div> </div>
         </div>
 
         <!-- select-list -->
