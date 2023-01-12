@@ -378,13 +378,13 @@
         },
         {
           id: 'wdyy',
-          label: '我的申请单据',
+          label: '',
           type: 'checkbox',
           checkbox: [
             {
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
-                label: '是'
+                label: '我的申请单据'
               },
               style: {}
             }
@@ -1054,13 +1054,13 @@
         },
         {
           id: 'wdyy',
-          label: '我的申请单据',
+          label: '',
           type: 'checkbox',
           checkbox: [
             {
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
-                label: '是'
+                label: '我的申请单据'
               },
               style: {}
             }
@@ -1165,13 +1165,13 @@
         },
         {
           id: 'wdyy',
-          label: '我的申请单据',
+          label: '',
           type: 'checkbox',
           checkbox: [
             {
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
-                label: '是'
+                label: '我的申请单据'
               },
               style: {}
             }

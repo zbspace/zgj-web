@@ -237,7 +237,7 @@
         },
         {
           id: 'wdyy',
-          label: '工作台',
+          label: '',
           type: 'checkbox',
           checkbox: [
             {

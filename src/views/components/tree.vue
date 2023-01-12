@@ -159,6 +159,10 @@
         width: 18px;
         height: 18px;
       }
+
+      .el-tree-node__expand-icon.is-leaf {
+        width: 0px;
+      }
     }
   }
 </style>

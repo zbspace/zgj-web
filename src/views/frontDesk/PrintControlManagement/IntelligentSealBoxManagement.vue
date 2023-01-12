@@ -236,7 +236,7 @@
         },
         {
           id: 'wdyy',
-          label: '印章盒',
+          label: '',
           type: 'checkbox',
           checkbox: [
             {

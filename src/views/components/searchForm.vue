@@ -480,7 +480,8 @@
         index === state.cache.formData.length - 1
       ) {
         return {
-          width: 'auto'
+          width: 'auto',
+          'min-width': 'calc(100% / 3 * 2 + 100px)'
         }
       } else if (
         alterable.indexOf(item.type) > -1 &&

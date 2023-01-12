@@ -235,7 +235,7 @@
         },
         {
           id: 'wdyy',
-          label: '印章柜',
+          label: '',
           type: 'checkbox',
           checkbox: [
             {

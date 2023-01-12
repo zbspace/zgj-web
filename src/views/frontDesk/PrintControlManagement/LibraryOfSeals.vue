@@ -291,13 +291,13 @@
         },
         {
           id: 'wdyy',
-          label: '我保管的印章',
+          label: '',
           type: 'checkbox',
           checkbox: [
             {
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
-                label: '只显示我保管的印章'
+                label: '我保管的印章'
               },
               style: {}
             }
