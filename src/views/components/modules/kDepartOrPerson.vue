@@ -36,7 +36,7 @@
         <!-- crumbs -->
         <div class="select-crumbs user-select">
           <!-- 隐藏 -->
-          <el-breadcrumb :separator-icon="ArrowRight" v-show="true">
+          <el-breadcrumb :separator-icon="ArrowRight" v-show="false">
             <el-breadcrumb-item @click="changeCrumb('all')">
               组织架构
             </el-breadcrumb-item>
@@ -49,30 +49,14 @@
           </el-breadcrumb>
 
           <!-- 自定义面包屑 -->
-          <div class="custom-bread" v-show="false">
+          <div class="custom-bread" v-show="true">
             <!-- 组织架构 -->
             <div class="bread-home bread-item">
-              <div class="item-text">组织架构</div>
-              <div class="item-arrow">
-                <svg
-                  width="6"
-                  height="10"
-                  viewBox="0 0 6 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3.78132 5.00001L0.481323 1.70001L1.42399 0.757342L5.66666 5.00001L1.42399 9.24268L0.481323 8.30001L3.78132 5.00001Z"
-                    fill="black"
-                    fill-opacity="0.25"
-                  />
-                </svg>
-              </div>
+              <div class="item" @click="changeCrumb('all')">组织架构</div>
             </div>
 
             <!-- 循环 -->
             <div class="bread-item" v-for="(item, i) in curmbs" :key="i">
-              <div class="item-text">{{ ittem.curmbsName }}</div>
               <div class="item-arrow">
                 <svg
                   width="6"
@@ -88,6 +72,12 @@
                   />
                 </svg>
               </div>
+
+              <el-tooltip :content="item.curmbsName" placement="bottom">
+                <div class="item-text" @click="changeCrumb(item.id)">
+                  {{ item.curmbsName }}
+                </div>
+              </el-tooltip>
             </div>
           </div>
         </div>
@@ -270,7 +260,7 @@
         id: 5,
         dataType: 2,
         parentId: 0,
-        labelName: '测试中心'
+        labelName: '建业科技测试中心'
       },
       {
         id: 6,
@@ -522,6 +512,42 @@
 
         .custom-bread {
           display: flex;
+
+          .bread-item {
+            display: flex;
+            align-items: center;
+          }
+
+          .bread-home {
+            .item {
+              margin-right: 10px;
+              padding: 1px 4px;
+              border-radius: 2px;
+              height: 24px;
+              line-height: 23px;
+            }
+
+            .item:hover {
+              color: #d0963e;
+              background: rgba(208, 150, 62, 0.1);
+            }
+          }
+          .item-text {
+            padding: 1px 4px;
+            border-radius: 2px;
+            height: 24px;
+            line-height: 23px;
+            margin: 0 10px;
+            max-width: 103px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .item-text:hover {
+            color: #d0963e;
+            background: rgba(208, 150, 62, 0.1);
+          }
         }
       }
 
