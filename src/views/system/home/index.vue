@@ -11,14 +11,12 @@
         <jy-echarts :options="echartsbaroption" />
       </div>
     </div>
-    <JyMessageBox v-model="messages"></JyMessageBox>
   </div>
 </template>
 
 <script setup>
   import Top from './top'
   import { ref } from 'vue'
-  const messages = ref(true)
   const echartslineoption = ref({
     tooltip: {},
     legend: {
