@@ -4,19 +4,32 @@
       v-model="isVisible"
       :before-close="handleClose"
       destroy-on-close
-      :show-close="props.showClose"
+      :show-close="mode === 2 || showClose"
       align-center
       :close-on-click-modal="false"
+      :class="`message-box-${mode}`"
     >
       <template #header>
-        <slot name="header">
-          <img src="@/assets/svg/common/warning.svg" alt="" />
-          <span>提示？</span>
-        </slot>
+        <!-- mode1 -->
+        <div v-if="mode === 1">
+          <slot name="header">
+            <div class="header-div">
+              <img src="@/assets/svg/common/warning.svg" alt="" />
+              <span>提示？</span>
+            </div>
+          </slot>
+        </div>
+
+        <!-- mode2 -->
+        <div v-if="mode === 2">
+          <slot name="header">
+            <span>标题</span>
+          </slot>
+        </div>
       </template>
 
       <div>
-        <slot />
+        <slot> （这里填写内容） </slot>
       </div>
 
       <template #footer>
@@ -32,16 +45,25 @@
 <script setup>
   import { computed } from 'vue'
   const props = defineProps({
+    // 展示隐藏
     modelValue: {
       type: Boolean,
       default: false
     },
+
+    // 是否显示关闭按钮
     showClose: {
       type: Boolean,
       default: false
+    },
+
+    // 2种模式（1、2）
+    mode: {
+      type: Number,
+      default: 2
     }
   })
-  const emit = defineEmits(['update:modelValue', 'onConfirm', 'onCancel'])
+  const emit = defineEmits(['update:modelValue', 'on-confirm', 'on-cancel'])
 
   const isVisible = computed({
     get() {
@@ -58,6 +80,7 @@
 
   const confirm = value => {
     emit('on-confirm', value)
+    isVisible.value = false
   }
   const cancel = value => {
     emit('on-cancel', value)
@@ -70,12 +93,18 @@
     :deep(.el-dialog) {
       width: 480px;
       min-height: auto;
-      padding: 32px 32px 24px 32px;
+      padding: 0;
       .el-dialog__header {
         padding: 0;
         display: flex;
         align-items: center;
-        margin-bottom: 12px;
+        margin-right: 0;
+        height: 55px;
+        padding-left: 24px;
+        .header-div {
+          display: flex;
+          align-items: center;
+        }
         img {
           width: 21px;
           margin-right: 18px;
@@ -92,8 +121,7 @@
       .el-dialog__body {
         height: auto;
         min-height: auto;
-        padding: 0 0 0 40px;
-        margin-bottom: 24px;
+        padding: 0 24px 0 64px;
         font-family: 'PingFang SC';
         font-style: normal;
         font-weight: 400;
@@ -102,8 +130,19 @@
         color: rgba(0, 0, 0, 0.65);
       }
       .el-dialog__footer {
-        border-top: none;
-        padding: 0;
+        padding: 24px;
+      }
+    }
+    :deep(.message-box-2) {
+      .el-dialog__header {
+        border-bottom: solid 1px rgba(0, 0, 0, 0.06);
+      }
+      .el-dialog__body {
+        padding: 24px 24px 22px 24px;
+        border-bottom: solid 1px rgba(0, 0, 0, 0.06);
+      }
+      .el-dialog__footer {
+        padding: 10px 24px;
       }
     }
   }
