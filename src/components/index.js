@@ -18,4 +18,8 @@ export function requireComp(app) {
     'JyMessageBox',
     defineAsyncComponent(() => import('./common/JyMessageBox/index.vue'))
   )
+  app.component(
+    'JyPopconfirm',
+    defineAsyncComponent(() => import('./common/JyPopconfirm/index.vue'))
+  )
 }
