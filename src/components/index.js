@@ -22,4 +22,8 @@ export function requireComp(app) {
     'JyPopconfirm',
     defineAsyncComponent(() => import('./common/JyPopconfirm/index.vue'))
   )
+  app.component(
+    'JyBreadcrumb',
+    defineAsyncComponent(() => import('./common/JyBreadcrumb/index.vue'))
+  )
 }
