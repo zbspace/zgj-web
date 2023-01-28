@@ -1,23 +1,19 @@
 <template>
   <div>
-    <el-dialog
-      v-model="modelValue"
-      title="add form"
-      fullscreen
-      class="add-form-dialog"
-    >
-      <jy-vform ref="vformRef" />
-      <template #footer>
-        <el-button @click="cancel"> 取消 </el-button>
-        <el-button type="primary" @click="handleSubmit"> 确定 </el-button>
-      </template>
-    </el-dialog>
+    <JyBreadcrumb :routes="routes" />
+    <!-- <el-button @click="cancel"> 取消 </el-button>
+    <el-button type="primary" @click="handleSubmit"> 确定 </el-button> -->
+    <jy-vform ref="vformRef" />
   </div>
 </template>
 
 <script setup>
   import { ref } from 'vue'
   const vformRef = ref(null)
+  const routes = ref([
+    { path: '/system/businessManage/formManage', label: '表单管理' },
+    { path: '', label: '新增' }
+  ])
   defineProps({
     modelValue: {
       type: Boolean,
@@ -30,7 +26,6 @@
     emit('update:modelValue', false)
   }
   const handleSubmit = () => {
-    emit('update:modelValue', false)
     console.log('vform--->', vformRef.value.getFormJson())
   }
 </script>

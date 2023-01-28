@@ -16,7 +16,7 @@
       :collapse-transition="false"
       class="el-menu-vertical-demo"
     >
-      <template v-for="item in menus[menusInfoStore.currentType]">
+      <template v-for="item in menusInfoStore.menus">
         <el-sub-menu
           :index="item.to"
           :key="item.to"
@@ -111,23 +111,43 @@
   import { LANGUAGE } from '@/utils/constants'
   const route = useRoute()
   const activeMenu = ref('')
+  const currentIndex = ref('')
+  const menusInfoStore = useMenusInfoStore()
+  const layoutStore = useLayoutStore()
 
   watch(reactive(route), o => {
-    activeMenu.value = o.path
+    menusInfoStore.setMenus(
+      menusInfoStore.currentType === 'business' ? business : system
+    )
+    currentIndex.value = ''
+    setActiveMenu(o.path, menusInfoStore.menus)
   })
 
   const languageStore = useLanguageStore()
   languageStore.setLanguage(getItem(LANGUAGE) ? getItem(LANGUAGE).lang : 'ch')
 
-  const layoutStore = useLayoutStore()
-  const menusInfoStore = useMenusInfoStore()
-  const menus = { business, system }
+  menusInfoStore.setMenus(
+    menusInfoStore.currentType === 'business' ? business : system
+  )
 
   const handleSelect = (index, indexPath) => {
     activeMenu.value = index
   }
 
-  activeMenu.value = route.path
+  function setActiveMenu(route, routes) {
+    routes.forEach(item => {
+      if (item.children && item.children.length) {
+        setActiveMenu(route, item.children)
+      }
+      if (route.indexOf(item.to) > -1 && item.to.length >= currentIndex.value) {
+        currentIndex.value = item.to
+        console.log(currentIndex)
+        activeMenu.value = currentIndex
+      }
+    })
+  }
+
+  setActiveMenu(route.path, menusInfoStore.menus)
 </script>
 
 <script>
