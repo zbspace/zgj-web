@@ -1,17 +1,3 @@
-// import icon1 from '@/assets/svg/shouye-1.svg'
-// import icon2 from '@/assets/svg/yongyin-guanli-1.svg'
-// import icon3 from '@/assets/svg/yinzhang-guanli-1.svg'
-// import icon4 from '@/assets/svg/yinzhang-guanli-2.svg'
-// import icon5 from '@/assets/svg/dianzi-qianzhang.svg'
-// import icon6 from '@/assets/svg/shebei-guanli.svg'
-// import icon7 from '@/assets/svg/wenjianku-1.svg'
-// import icon8 from '@/assets/svg/wenjian-leixing-1.svg'
-// import icon9 from '@/assets/svg/liuchengshenpi-ssqr.svg'
-// import icon10 from '@/assets/svg/dai-shenpi-liucheng.svg'
-// import icon11 from '@/assets/svg/dai-chuli-renwu.svg'
-// import icon12 from '@/assets/svg/chaosong-geiwode-liucheng.svg'
-// import icon13 from '@/assets/svg/fengxian-tixing-jilu-1.svg'
-// import icon14 from '@/assets/svg/fengxian-tixing-jilu-2.svg'
 export const business = [
   {
     name: '首页',

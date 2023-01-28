@@ -1,21 +1,3 @@
-// import icon19 from '@/assets/svg/qiye-xinxi.svg'
-// import icon20 from '@/assets/svg/wanglai-qiye.svg'
-// import icon21 from '@/assets/svg/bumen-yu-yuangong.svg'
-// import icon22 from '@/assets/svg/qxgl-icon.svg'
-// import icon23 from '@/assets/svg/quanju-canshu-peizhi.svg'
-// import icon25 from '@/assets/svg/zongduan-banben-guanli.svg'
-// import icon26 from '@/assets/svg/biaodan-guanli.svg'
-// import icon27 from '@/assets/svg/liucheng-guanli.svg'
-// import icon28 from '@/assets/svg/yewu-guizhe-peizhi.svg'
-// import icon29 from '@/assets/svg/xiaoxi-shijian.svg'
-// import icon34 from '@/assets/svg/xiaoxi-muban.svg'
-// import icon35 from '@/assets/svg/xiaoxi-qdpz.svg'
-// import icon36 from '@/assets/svg/xiaoxi-xxrz.svg'
-// import icon30 from '@/assets/svg/denglu-rizi.svg'
-// import icon31 from '@/assets/svg/xitong-caozuo-rizhi.svg'
-// import icon32 from '@/assets/svg/zongduan-caozuo-rizhi.svg'
-// import icon33 from '@/assets/svg/gujian-shengji-rizhi.svg'
-// import icon37 from '@/assets/svg/xitong-yunxing-rizhi.svg'
 export const system = [
   {
     name: '概览',
