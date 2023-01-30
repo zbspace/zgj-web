@@ -1,6 +1,6 @@
 <template>
   <div class="components-Layout Custom-button">
-    <div class="ap-parcel" :class="{ 'padding-16': props.free ? false : true }">
+    <div class="ap-parcel" :style="props.style">
       <div class="ap-free" v-if="props.free">
         <slot></slot>
       </div>
@@ -85,6 +85,13 @@
     free: {
       type: Boolean,
       default: false
+    },
+    // 容器样式
+    style: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   })
   const state = reactive({
@@ -109,7 +116,7 @@
   // function setScrollLeft() {
   //   return -16
   // }
-
+  console.log(props.free)
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化布局

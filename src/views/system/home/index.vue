@@ -1,22 +1,30 @@
 <template>
   <div class="system-home">
-    <div class="content">
-      <Top />
-      <div class="charts">
-        <div class="charts-title"> 每日用印情况统计图 </div>
-        <jy-echarts :options="echartslineoption" />
+    <componentsLayout
+      :style="{
+        padding: '16px'
+      }"
+      :free="true"
+    >
+      <div class="content">
+        <Top />
+        <div class="charts">
+          <div class="charts-title"> 每日用印情况统计图 </div>
+          <jy-echarts :options="echartslineoption" />
+        </div>
+        <div class="charts">
+          <div class="charts-title"> 印章使用情况统计图 </div>
+          <jy-echarts :options="echartsbaroption" />
+        </div>
       </div>
-      <div class="charts">
-        <div class="charts-title"> 印章使用情况统计图 </div>
-        <jy-echarts :options="echartsbaroption" />
-      </div>
-    </div>
+    </componentsLayout>
   </div>
 </template>
 
 <script setup>
   import Top from './top'
   import { ref } from 'vue'
+  import componentsLayout from '@/views/components/Layout.vue'
   const echartslineoption = ref({
     tooltip: {},
     legend: {

@@ -22,7 +22,7 @@
     onBeforeMount,
     onMounted
   } from 'vue'
-  import componentsLayout from '../../components/Layout.vue'
+  import componentsLayout from '@/views/components/Layout.vue'
   const props = defineProps({
     // 处理类型
     type: {
