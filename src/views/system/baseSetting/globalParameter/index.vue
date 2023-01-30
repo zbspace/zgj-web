@@ -1,21 +1,28 @@
 <template>
-  <div class="components-Layout">
-    <!-- title -->
-    <div class="ap-box-title">全局参数设置</div>
+  <componentsLayout
+    :style="{
+      padding: '16px'
+    }"
+    :free="true"
+  >
+    <div class="components-Layout">
+      <!-- title -->
+      <div class="ap-box-title">全局参数设置</div>
 
-    <!-- tabs -->
-    <div style="padding-left: 20px">
-      <VTabs
-        :active="currentValue"
-        :label="tabsLabel"
-        @update:active="currentValue = $event"
-        :border="false"
-      ></VTabs>
+      <!-- tabs -->
+      <div style="padding-left: 20px">
+        <VTabs
+          :active="currentValue"
+          :label="tabsLabel"
+          @update:active="currentValue = $event"
+          :border="false"
+        ></VTabs>
+      </div>
+      <keep-alive>
+        <component :is="map[currentValue]" />
+      </keep-alive>
     </div>
-    <keep-alive>
-      <component :is="map[currentValue]" />
-    </keep-alive>
-  </div>
+  </componentsLayout>
 </template>
 
 <script setup>
@@ -26,6 +33,7 @@
   import SmartTerminal from './smart-terminal'
   import SmartUse from './smart-use'
   import System from './system'
+  import componentsLayout from '@/views/components/Layout.vue'
 
   const currentValue = ref('1')
   const tabsLabel = ref([
@@ -59,7 +67,7 @@
   .components-Layout {
     margin: 0%;
     width: 100%;
-    height: calc(100vh - 100px);
+    height: 100%;
 
     display: flex;
     // flex-flow: wrap;

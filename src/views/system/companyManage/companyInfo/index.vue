@@ -1,15 +1,23 @@
 <template>
-  <div class="comp-info">
-    <Top />
-    <Center />
-    <Bottom />
-  </div>
+  <componentsLayout
+    :style="{
+      padding: '16px'
+    }"
+    :free="true"
+  >
+    <div class="comp-info">
+      <Top />
+      <Center />
+      <Bottom />
+    </div>
+  </componentsLayout>
 </template>
 
 <script setup>
   import Top from './top'
   import Center from './center'
   import Bottom from './bottom'
+  import componentsLayout from '@/views/components/Layout.vue'
 </script>
 
 <script>

@@ -1,73 +1,81 @@
 <template>
-  <div class="components-Layout">
-    <!-- title -->
-    <div class="card-title">渠道管理</div>
+  <componentsLayout
+    :style="{
+      padding: '16px'
+    }"
+    :free="true"
+  >
+    <div class="components-Layout">
+      <!-- title -->
+      <div class="card-title">渠道管理</div>
 
-    <div class="card-content">
-      <!-- left -->
-      <div class="card-l">
-        <div
-          class="l-column"
-          :class="state.activedVlaue === 1 ? 'l-actived' : ''"
-          @click="changeColumn(1)"
-        >
-          <div class="column-diot diot1"></div>
-          <div class="column-t">钉钉</div>
+      <div class="card-content">
+        <!-- left -->
+        <div class="card-l">
+          <div
+            class="l-column"
+            :class="state.activedVlaue === 1 ? 'l-actived' : ''"
+            @click="changeColumn(1)"
+          >
+            <div class="column-diot diot1"></div>
+            <div class="column-t">钉钉</div>
+          </div>
+          <div
+            class="l-column"
+            :class="state.activedVlaue === 2 ? 'l-actived' : ''"
+            @click="changeColumn(2)"
+          >
+            <div class="column-diot diot2"></div>
+            <div class="column-t">企业微信</div>
+          </div>
+          <div
+            class="l-column"
+            :class="state.activedVlaue === 3 ? 'l-actived' : ''"
+            @click="changeColumn(3)"
+          >
+            <div class="column-diot diot3"></div>
+            <div class="column-t">短信</div>
+          </div>
+          <div
+            class="l-column"
+            :class="state.activedVlaue === 4 ? 'l-actived' : ''"
+            @click="changeColumn(4)"
+          >
+            <div class="column-diot diot4"></div>
+            <div class="column-t">更多</div>
+          </div>
         </div>
-        <div
-          class="l-column"
-          :class="state.activedVlaue === 2 ? 'l-actived' : ''"
-          @click="changeColumn(2)"
-        >
-          <div class="column-diot diot2"></div>
-          <div class="column-t">企业微信</div>
-        </div>
-        <div
-          class="l-column"
-          :class="state.activedVlaue === 3 ? 'l-actived' : ''"
-          @click="changeColumn(3)"
-        >
-          <div class="column-diot diot3"></div>
-          <div class="column-t">短信</div>
-        </div>
-        <div
-          class="l-column"
-          :class="state.activedVlaue === 4 ? 'l-actived' : ''"
-          @click="changeColumn(4)"
-        >
-          <div class="column-diot diot4"></div>
-          <div class="column-t">更多</div>
-        </div>
-      </div>
 
-      <!-- right -->
-      <div class="card-r">
-        <el-form :model="form" label-width="100px">
-          <el-form-item>
-            <template #label>
-              <div style="line-height: 40px">是否开启</div>
-            </template>
-            <el-switch v-model="form.delivery" />
-          </el-form-item>
+        <!-- right -->
+        <div class="card-r">
+          <el-form :model="form" label-width="100px">
+            <el-form-item>
+              <template #label>
+                <div style="line-height: 40px">是否开启</div>
+              </template>
+              <el-switch v-model="form.delivery" />
+            </el-form-item>
 
-          <el-form-item>
-            <template #label>
-              <div>推送事件</div>
-            </template>
-            <el-button type="primary" :icon="Plus">添加</el-button>
-          </el-form-item>
-        </el-form>
+            <el-form-item>
+              <template #label>
+                <div>推送事件</div>
+              </template>
+              <el-button type="primary" :icon="Plus">添加</el-button>
+            </el-form-item>
+          </el-form>
 
-        <!-- box -->
-        <div class="r-box"></div>
+          <!-- box -->
+          <div class="r-box"></div>
+        </div>
       </div>
     </div>
-  </div>
+  </componentsLayout>
 </template>
 
 <script setup>
   import { reactive } from 'vue'
   import { Plus } from '@element-plus/icons-vue'
+  import componentsLayout from '@/views/components/Layout.vue'
   const state = reactive({
     activedVlaue: 1
   })
@@ -92,7 +100,7 @@
   .components-Layout {
     margin: 0%;
     width: 100%;
-    height: calc(100vh - 100px);
+    height: 100%;
 
     display: flex;
     // flex-flow: wrap;
