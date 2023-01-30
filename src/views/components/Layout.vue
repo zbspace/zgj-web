@@ -1,6 +1,10 @@
 <template>
   <div class="components-Layout Custom-button">
-    <div class="ap-parcel" :style="props.style">
+    <div
+      class="ap-parcel"
+      :style="props.style"
+      :class="{ 'padding-16': props.free ? false : true }"
+    >
       <div class="ap-free" v-if="props.free">
         <slot></slot>
       </div>
