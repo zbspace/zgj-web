@@ -39,7 +39,12 @@
       height: 64px;
     }
     :deep(.el-main) {
-      padding: 16px;
+      padding: 0px;
+    }
+    :deep {
+      .el-scrollbar__view {
+        height: 100%;
+      }
     }
   }
 </style>

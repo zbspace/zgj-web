@@ -12,7 +12,8 @@ const routes = {
       path: 'home',
       name: 'FrontDeskHome',
       meta: { title: '首页', authRequired: true },
-      component: async () => await import('@/views/frontDesk/home/index.vue')
+      component: async () =>
+        await import('@/views/frontDesk/home-page/home.vue')
     },
     sealControlManage,
     riskControlWarning,
