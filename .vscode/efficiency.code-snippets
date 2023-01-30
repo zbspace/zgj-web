@@ -1,0 +1,48 @@
+{
+  // Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "Print to console": {
+    "scope": "javascript,typescript",
+    "prefix": "log",
+    "body": ["console.log('--->', $1);"],
+    "description": "Log output to console"
+  },
+  "Try catch message": {
+    "scope": "typescript",
+    "prefix": "trymsg",
+    "body": [
+      "try {",
+      "\t$1",
+      "} catch (error) {",
+      "\tthis.messageError(error);",
+      "}"
+    ],
+    "description": "捕获错误并弹窗提示"
+  },
+  "Required Validate": {
+    "scope": "typescript",
+    "prefix": "required",
+    "body": "{ required: true, message: \"请输入$1\", trigger: \"blur\" }",
+    "description": "表单验证必填配置"
+  },
+  "Entity Class": {
+    "scope": "typescript",
+    "prefix": "exportClass",
+    "body": ["export class $1{", "\t$2", "}"],
+    "description": "创建实体类"
+  }
+}

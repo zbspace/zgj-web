@@ -162,11 +162,10 @@
 <style lang="scss" scoped>
   .menus {
     padding-top: 20px;
-    padding-right: 10px;
+    // padding-right: 10px;
     padding-bottom: 15px;
     background-color: #fff;
     width: 216px;
-    transition: all 0.3s;
     .menu-iconpark {
       @include mixin-width(26);
       margin-right: 10px;
@@ -204,6 +203,7 @@
       border-right: none;
       .el-menu-item.is-active {
         background: rgba(208, 150, 62, 0.12);
+        border-left: 4px solid #d0963e;
         span,
         .iconpark-icon {
           color: var(--primary-6);
@@ -222,9 +222,8 @@
         height: 44px;
         font-size: 14px;
         line-height: 22px;
-        border-top-right-radius: 22px;
-        border-bottom-right-radius: 22px;
         margin-bottom: 4px;
+        border-left: 4px solid #fff;
         .el-menu-tooltip__trigger {
           padding: 0;
           left: auto;
@@ -245,7 +244,9 @@
           transform: rotate(0deg);
         }
         &:hover {
+          border-left: 4px solid #d0963e;
           background: rgba(208, 150, 62, 0.12);
+          transition: none;
           span,
           .iconpark-icon {
             color: var(--primary-6) !important;
@@ -259,18 +260,16 @@
       .el-sub-menu {
         .el-sub-menu__title {
           height: 42px;
-          border-top-right-radius: 22px;
-          border-bottom-right-radius: 22px;
+          border-left: 4px solid #fff;
           .iconpark-icon {
             width: 22px;
             height: 22px;
             margin-right: 10px;
           }
-          // transition: all 0.3s;
           &:hover {
-            border-top-right-radius: 22px;
-            border-bottom-right-radius: 22px;
+            border-left: 4px solid #d0963e;
             background: rgba(208, 150, 62, 0.12);
+            transition: none;
             span,
             .iconpark-icon {
               color: var(--primary-6) !important;
