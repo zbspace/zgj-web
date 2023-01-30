@@ -103,8 +103,8 @@
   import { ref, watch, reactive } from 'vue'
   import { useRoute } from 'vue-router'
   import { useLayoutStore } from '@/store/layout'
-  import { business } from './business'
-  import { system } from './system'
+  import { business, businessAside } from './business'
+  import { system, systemAside } from './system'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
   import { getItem } from '@/utils/storage.js'
@@ -118,6 +118,9 @@
   watch(reactive(route), o => {
     menusInfoStore.setMenus(
       menusInfoStore.currentType === 'business' ? business : system
+    )
+    menusInfoStore.setAsides(
+      menusInfoStore.currentType === 'business' ? businessAside : systemAside
     )
     currentIndex.value = ''
     setActiveMenu(o.path, menusInfoStore.menus)
@@ -166,6 +169,7 @@
     padding-bottom: 15px;
     background-color: #fff;
     width: 216px;
+    transition: all 0.3s;
     .menu-iconpark {
       @include mixin-width(26);
       margin-right: 10px;
@@ -302,6 +306,7 @@
       .el-menu-item.is-active {
         background: rgba(0, 0, 0, 0.04);
         border-radius: 4px;
+        border-left: 0;
         span,
         .iconpark-icon {
           color: var(--primary-6);
@@ -310,6 +315,7 @@
       .el-menu-item {
         padding: 0;
         border-radius: 4px !important;
+        border-left: 0;
         .el-tooltip__trigger {
           margin-left: 0;
           width: 62px;
@@ -334,6 +340,7 @@
         }
         &:hover {
           background: rgba(0, 0, 0, 0.04);
+          border-left: 0;
           span,
           .iconpark-icon {
             color: var(--primary-6);
@@ -344,11 +351,13 @@
         .el-sub-menu__title {
           margin-left: 0;
           border-radius: 4px !important;
+          border-left: 0;
           .iconpark-icon {
             margin-right: 0;
           }
           &:hover {
             background: rgba(0, 0, 0, 0.04);
+            border-left: 0;
             span,
             .iconpark-icon {
               color: var(--primary-6);

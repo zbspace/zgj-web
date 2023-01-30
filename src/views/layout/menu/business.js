@@ -275,3 +275,26 @@ export const business = [
     icon: '#chaosonggeiwodeliucheng'
   }
 ]
+export const businessAside = [
+  { name: '首页', icon: '#liuchengguanli', to: '/frontDesk/home' },
+  {
+    name: '印控管理',
+    icon: '#liuchengguanli',
+    to: '/frontDesk/printControlManage'
+  },
+  {
+    name: '文件管理',
+    icon: '#liuchengguanli',
+    to: '/frontDesk/fileManagement'
+  },
+  {
+    name: '流程审批',
+    icon: '#liuchengguanli',
+    to: '/frontDesk/processApprove'
+  },
+  {
+    name: '风控预警',
+    icon: '#liuchengguanli',
+    to: '/frontDesk/riskControlWarning'
+  }
+]

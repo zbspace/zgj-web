@@ -7,7 +7,8 @@ export const useMenusInfoStore = defineStore({
   state: () => {
     return {
       currentType: 'business',
-      menus: []
+      menus: [],
+      asides: []
     }
   },
   getters: {},
@@ -16,8 +17,13 @@ export const useMenusInfoStore = defineStore({
       console.log(menusInfo)
       this.currentType = menusInfo
     },
+
     setMenus(menus) {
       this.menus = menus
+    },
+
+    setAsides(asides) {
+      this.asides = asides
     }
   },
   // 开启数据缓存
