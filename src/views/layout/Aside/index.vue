@@ -38,10 +38,6 @@
   const useDebounce = debounce(setTempMenus, 50)
 
   watch(reactive(route), o => {
-    // 设置model集合
-    menusInfoStore.setAsides(
-      menusInfoStore.currentType === 'business' ? businessAside : systemAside
-    )
     initData()
   })
 
@@ -53,6 +49,10 @@
     setMenus(modelRoute.value.split('/').slice(0, 3).join('/'))
     // 顺带设置Collapse模式
     layoutStore.changeCollapse(false)
+    // 设置model集合
+    menusInfoStore.setAsides(
+      menusInfoStore.currentType === 'business' ? businessAside : systemAside
+    )
     menusInfoStore.setTempMenus()
   }
 
