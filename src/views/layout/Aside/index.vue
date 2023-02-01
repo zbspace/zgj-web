@@ -43,7 +43,7 @@
   })
 
   modelRoute.value = route.path
-  getRoutesInModel(modelRoute.value)
+  getPresentMenus(modelRoute.value.split('/').slice(0, 3).join('/'))
 
   function onOver(model) {
     hover.value = model
@@ -64,7 +64,7 @@
     }
   }
 
-  const getPresentMenus = model => {
+  function getPresentMenus(model) {
     tempMenus = menusInfoStore.menus
     menusInfoStore.setMenus(
       menusInfoStore.currentType === 'business' ? business : system
