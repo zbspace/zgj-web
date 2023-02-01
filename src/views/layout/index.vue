@@ -20,7 +20,7 @@
           <el-main>
             <!-- 子路由出口 -->
             <el-scrollbar
-              height="100%"
+              height="calc(100vh - 64px)"
               class="layout-scrollbar"
               ref="contentRef"
             >

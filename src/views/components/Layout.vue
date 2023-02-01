@@ -134,6 +134,7 @@
   .components-Layout {
     margin: 0%;
     width: 100%;
+    // height: calc(100vh - 82px);
     height: 100%;
     .ap-parcel {
       width: 100%;
@@ -141,6 +142,7 @@
     }
     .padding-16 {
       @include mixin-padding(16);
+      box-sizing: border-box;
     }
     .ap-deliberate {
       width: 100%;
