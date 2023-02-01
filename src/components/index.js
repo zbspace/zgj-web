@@ -26,4 +26,8 @@ export function requireComp(app) {
     'JyBreadcrumb',
     defineAsyncComponent(() => import('./common/JyBreadcrumb/index.vue'))
   )
+  app.component(
+    'JyBackTop',
+    defineAsyncComponent(() => import('./common/JyBackTop/index.vue'))
+  )
 }

@@ -6,14 +6,18 @@ export const useLayoutStore = defineStore({
       layoutType: 'vertical',
       layoutWidth: 'fluid',
       sidebarSize: 'lg',
-      topbar: 'light',
       mode: 'light',
       position: 'fixed',
       sidebarView: 'detached',
       sidebarColor: 'light',
       sidebarImage: 'none',
       preloader: 'disable',
-      isCollapse: false
+      isCollapse: false,
+
+      topbar: 'light', // 顶栏颜色
+      themeType: 'light', // 配色方案
+      sidebarType: '1', // 菜单侧边栏模式
+      rightBarVisible: false // 右侧菜单显隐
     }
   },
   getters: {},
@@ -32,7 +36,7 @@ export const useLayoutStore = defineStore({
     },
 
     changeTopbar(topbar) {
-      this.topbar = topbar
+      this.topbar = topbar || 'light'
     },
 
     changeMode(mode) {
@@ -61,6 +65,18 @@ export const useLayoutStore = defineStore({
 
     changeCollapse(isCollapse) {
       this.isCollapse = isCollapse
+    },
+
+    setThemeType(themeType) {
+      this.themeType = themeType || 'light'
+    },
+
+    setSidebarType(sidebarType) {
+      this.sidebarType = sidebarType || '1'
+    },
+
+    setRightBarVisible(bool) {
+      this.rightBarVisible = bool
     }
   },
   // 开启数据缓存

@@ -176,30 +176,40 @@ export const system = [
 ]
 
 export const systemAside = [
-  { name: '首页', icon: '#liuchengguanli', to: '/system/home' },
+  {
+    name: '首页',
+    icon: '#liuchengguanli',
+    route: '/system/home',
+    to: '/system/home'
+  },
   {
     name: '业务管理',
     icon: '#liuchengguanli',
-    to: '/system/businessManage'
+    route: '/system/businessManage',
+    to: '/system/businessManage/flowManage'
   },
   {
     name: '日志管理',
     icon: '#liuchengguanli',
-    to: '/system/logMamage'
+    route: '/system/logMamage',
+    to: '/system/logMamage/systemOperation'
   },
   {
     name: '消息中心',
     icon: '#liuchengguanli',
-    to: '/system/messageCenter'
+    route: '/system/messageCenter',
+    to: '/system/messageCenter/event'
   },
   {
     name: '基础设置',
     icon: '#liuchengguanli',
-    to: '/system/baseSetting'
+    route: '/system/baseSetting',
+    to: '/system/baseSetting/terminalVersion'
   },
   {
     name: '企业管理',
     icon: '#liuchengguanli',
-    to: '/system/companyManage'
+    route: '/system/companyManage',
+    to: '/system/companyManage/companyInfo'
   }
 ]

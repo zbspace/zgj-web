@@ -109,48 +109,63 @@
   import { useLanguageStore } from '@/store/language'
   import { getItem } from '@/utils/storage.js'
   import { LANGUAGE } from '@/utils/constants'
+
   const route = useRoute()
   const activeMenu = ref('')
   const currentIndex = ref('')
   const menusInfoStore = useMenusInfoStore()
   const layoutStore = useLayoutStore()
+  const languageStore = useLanguageStore()
 
   watch(reactive(route), o => {
-    menusInfoStore.setMenus(
-      menusInfoStore.currentType === 'business' ? business : system
-    )
-    menusInfoStore.setAsides(
-      menusInfoStore.currentType === 'business' ? businessAside : systemAside
-    )
     currentIndex.value = ''
-    setActiveMenu(o.path, menusInfoStore.menus)
+    getPresentMenus()
   })
 
-  const languageStore = useLanguageStore()
-  languageStore.setLanguage(getItem(LANGUAGE) ? getItem(LANGUAGE).lang : 'ch')
+  const initData = () => {
+    languageStore.setLanguage(getItem(LANGUAGE) ? getItem(LANGUAGE).lang : 'ch')
+    getPresentMenus()
+  }
 
-  menusInfoStore.setMenus(
-    menusInfoStore.currentType === 'business' ? business : system
-  )
+  // 根据菜单模式（sidebarType） 获取相对应的menus集合
+  const getPresentMenus = () => {
+    let menus = menusInfoStore.currentType === 'business' ? business : system
+    // 如果是第二种模式，需要赛选出当前模块下的菜单item
+    if (layoutStore.sidebarType === '2') {
+      menusInfoStore.setAsides(
+        menusInfoStore.currentType === 'business' ? businessAside : systemAside
+      )
+      const modelRoute = route.path.split('/').slice(0, 3).join('/')
+      menus = menusInfoStore.menus.filter(v => {
+        return (
+          v.to &&
+          v.to.indexOf(modelRoute) > -1 &&
+          (v.to !== '/frontDesk/home' || v.to !== '/system/home')
+        )
+      })
+    }
+    menusInfoStore.setMenus(menus)
+    setActiveMenu(route.path, menusInfoStore.menus)
+  }
 
-  const handleSelect = (index, indexPath) => {
+  const handleSelect = index => {
     activeMenu.value = index
   }
 
-  function setActiveMenu(route, routes) {
+  // 设置激活menu
+  const setActiveMenu = (route, routes) => {
     routes.forEach(item => {
       if (item.children && item.children.length) {
         setActiveMenu(route, item.children)
       }
       if (route.indexOf(item.to) > -1 && item.to.length >= currentIndex.value) {
         currentIndex.value = item.to
-        console.log(currentIndex)
         activeMenu.value = currentIndex
       }
     })
   }
 
-  setActiveMenu(route.path, menusInfoStore.menus)
+  initData()
 </script>
 
 <script>

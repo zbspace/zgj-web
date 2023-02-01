@@ -3,7 +3,7 @@
  * @param {*} key
  * @returns
  */
-export const getItem = (key) => {
+export const getItem = key => {
   const data = window.localStorage.getItem(key)
   if (!data) return null
   try {
@@ -29,6 +29,6 @@ export const setItem = (key, value) => {
  * 移除缓存
  * @param {*} key
  */
-export const removeItem = (key) => {
+export const removeItem = key => {
   window.localStorage.removeItem(key)
 }

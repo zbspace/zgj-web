@@ -275,26 +275,36 @@ export const business = [
     icon: '#chaosonggeiwodeliucheng'
   }
 ]
+
 export const businessAside = [
-  { name: '首页', icon: '#liuchengguanli', to: '/frontDesk/home' },
+  {
+    name: '首页',
+    icon: '#liuchengguanli',
+    route: '/frontDesk/home',
+    to: '/frontDesk/home'
+  },
   {
     name: '印控管理',
     icon: '#liuchengguanli',
-    to: '/frontDesk/printControlManage'
+    route: '/frontDesk/printControlManage',
+    to: '/frontDesk/printControlManage/useSealManage'
   },
   {
     name: '文件管理',
     icon: '#liuchengguanli',
-    to: '/frontDesk/fileManagement'
+    route: '/frontDesk/fileManagement',
+    to: '/frontDesk/fileManagement/documentLibrary'
   },
   {
     name: '流程审批',
     icon: '#liuchengguanli',
-    to: '/frontDesk/processApprove'
+    route: '/frontDesk/processApprove',
+    to: '/frontDesk/processApprove/realTimeConfirmation'
   },
   {
     name: '风控预警',
     icon: '#liuchengguanli',
-    to: '/frontDesk/riskControlWarning'
+    route: '/frontDesk/riskControlWarning',
+    to: '/frontDesk/riskControlWarning/riskAlertSetting'
   }
 ]

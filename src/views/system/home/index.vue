@@ -10,11 +10,11 @@
         <Top />
         <div class="charts">
           <div class="charts-title"> 每日用印情况统计图 </div>
-          <jy-echarts :options="echartslineoption" />
+          <JyEcharts :options="echartslineoption" />
         </div>
         <div class="charts">
           <div class="charts-title"> 印章使用情况统计图 </div>
-          <jy-echarts :options="echartsbaroption" />
+          <JyEcharts :options="echartsbaroption" />
         </div>
       </div>
     </componentsLayout>
