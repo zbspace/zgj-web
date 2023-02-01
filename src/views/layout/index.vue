@@ -12,7 +12,14 @@
           <NavBar />
         </el-header>
         <el-container>
-          <el-aside :style="!menusInfoStore.menus.length ? 'width: 0' : ''">
+          <el-aside
+            :style="
+              (menusInfoStore.tempMenus && !menusInfoStore.tempMenus.length) ||
+              (!menusInfoStore.menus.length && !menusInfoStore.tempMenus)
+                ? 'width: 0'
+                : ''
+            "
+          >
             <el-scrollbar height="calc(100vh - 64px)" style="background: #fff">
               <Menus />
             </el-scrollbar>

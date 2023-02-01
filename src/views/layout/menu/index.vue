@@ -16,7 +16,7 @@
       :collapse-transition="false"
       class="el-menu-vertical-demo"
     >
-      <template v-for="item in menusInfoStore.menus">
+      <template v-for="item in getMenus">
         <el-sub-menu
           :index="item.to"
           :key="item.to"
@@ -100,11 +100,11 @@
 </template>
 
 <script setup>
-  import { ref, watch, reactive } from 'vue'
+  import { ref, watch, reactive, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { useLayoutStore } from '@/store/layout'
-  import { business, businessAside } from './business'
-  import { system, systemAside } from './system'
+  import { business } from './business'
+  import { system } from './system'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
   import { getItem } from '@/utils/storage.js'
@@ -119,53 +119,48 @@
 
   watch(reactive(route), o => {
     currentIndex.value = ''
-    getPresentMenus()
+    activeMenu.value = route.path
+    setMenus()
   })
 
-  const initData = () => {
-    languageStore.setLanguage(getItem(LANGUAGE) ? getItem(LANGUAGE).lang : 'ch')
-    getPresentMenus()
-  }
-
-  // 根据菜单模式（sidebarType） 获取相对应的menus集合
-  const getPresentMenus = () => {
-    let menus = menusInfoStore.currentType === 'business' ? business : system
-    // 如果是第二种模式，需要赛选出当前模块下的菜单item
-    if (layoutStore.sidebarType === '2') {
-      menusInfoStore.setAsides(
-        menusInfoStore.currentType === 'business' ? businessAside : systemAside
-      )
-      const modelRoute = route.path.split('/').slice(0, 3).join('/')
-      menus = menusInfoStore.menus.filter(v => {
-        return (
-          v.to &&
-          v.to.indexOf(modelRoute) > -1 &&
-          (v.to !== '/frontDesk/home' || v.to !== '/system/home')
-        )
-      })
-    }
-    menusInfoStore.setMenus(menus)
-    setActiveMenu(route.path, menusInfoStore.menus)
-  }
-
-  const handleSelect = index => {
-    activeMenu.value = index
-  }
-
-  // 设置激活menu
-  const setActiveMenu = (route, routes) => {
-    routes.forEach(item => {
-      if (item.children && item.children.length) {
-        setActiveMenu(route, item.children)
-      }
-      if (route.indexOf(item.to) > -1 && item.to.length >= currentIndex.value) {
-        currentIndex.value = item.to
-        activeMenu.value = currentIndex
-      }
-    })
-  }
+  const getMenus = computed(() => {
+    return menusInfoStore.tempMenus || menusInfoStore.menus
+  })
 
   initData()
+  function initData() {
+    languageStore.setLanguage(getItem(LANGUAGE) ? getItem(LANGUAGE).lang : 'ch')
+    setMenus()
+  }
+
+  // 设置menus集合
+  function setMenus() {
+    activeMenu.value = route.path
+    if (layoutStore.sidebarType === '2') return // 直接在Aside组件中设置
+    const menus = menusInfoStore.currentType === 'business' ? business : system
+    menusInfoStore.setMenus(menus)
+  }
+
+  function handleSelect(url) {
+    activeMenu.value = url
+  }
+
+  // /**
+  //  * 设置激活menuitem
+  //  * @param {*} route
+  //  * @param {*} menus
+  //  */
+  // function setActiveMenu(route, menus) {
+  //   menus.forEach(item => {
+  //     if (item.children && item.children.length) {
+  //       setActiveMenu(route, item.children)
+  //     }
+  //     if (route.indexOf(item.to) > -1 && item.to.length >= currentIndex.value) {
+  //       currentIndex.value = item.to
+  //       activeMenu.value = currentIndex
+  //     }
+  //   })
+  // }
 </script>
 
 <script>
