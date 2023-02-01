@@ -904,6 +904,7 @@
 
       .el-checkbox__label {
         font-size: var(--font-size-body-2);
+        color: var(--color-text-1);
       }
     }
   }

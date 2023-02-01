@@ -115,6 +115,9 @@
     }
     :deep {
       margin-bottom: 0%;
+      .el-tree-node__content {
+        @include mixin-height(32);
+      }
       .el-tree .el-icon svg {
         //原有的箭头 去掉
         display: none !important;

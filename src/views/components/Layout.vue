@@ -190,7 +190,8 @@
 
     .ap-box-cont {
       display: flex;
-      width: 100%;
+      width: calc(100% + 1rem);
+      padding-right: 1rem;
       flex-grow: 1;
       overflow: auto;
     }
@@ -230,15 +231,22 @@
     .ap-box-cent {
       width: 85%;
       height: 100%;
-      overflow: auto;
       box-sizing: border-box;
       .ap-box-cent-scrollbar {
-        @include mixin-padding-right(16);
+        // @include mixin-padding-right(16);
         height: 100%;
         overflow: auto;
       }
       .arco-scrollbar {
         height: 100%;
+      }
+      :deep {
+        .el-scrollbar {
+          overflow: visible;
+        }
+        .el-scrollbar__bar {
+          right: -1rem;
+        }
       }
     }
 
