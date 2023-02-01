@@ -10,8 +10,6 @@
 
     <!-- title -->
     <div class="inner-page-title">
-
-
       <div class="inner-title">
         <!-- <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd"
@@ -26,8 +24,8 @@
     <!-- content -->
     <div class="inner-page-content">
       <!-- 进度条 -->
-      <div class="process" style="display:flex;">
-        <div >1</div>
+      <div class="process" style="display: flex">
+        <div>1</div>
         <div class="jiantou-right"></div>
         <div>2</div>
         <div class="jiantou-right"></div>
@@ -48,79 +46,74 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { Edit, Picture, UploadFilled } from '@element-plus/icons-vue'
-const router = useRouter()
-
+  import { useRouter } from 'vue-router'
+  import { Edit, Picture, UploadFilled } from '@element-plus/icons-vue'
+  const router = useRouter()
 </script>
 
 <style lang="scss" scoped>
-.inner-page-content {
-  margin: 0%;
-  width: 100%;
-  height: calc(100vh - 100px);
-
-  display: flex;
-  // flex-flow: wrap;
-  align-content: flex-start;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-direction: column;
-  @include mixin-padding-top(10);
-  @include mixin-padding-bottom(10);
-  @include mixin-padding-left(20);
-  @include mixin-padding-right(0);
-  box-sizing: border-box;
-  border-radius: var(--border-radius-4);
-  background-color: var(--in-common-use-1);
-  margin-top: 20px;
-  padding: 16px 20px;
-
-  .inner-page-title {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    cursor: pointer;
-
-    .inner-title {
-      display: flex;
-      align-items: center;
-      font-size: 22px;
-      height: 60px;
-      color: rgba(0, 0, 0, 0.85);
-    }
-  }
-
   .inner-page-content {
-    .process{
-      display:flex;
-      justify-content:center;
-      width:100%;
-      >div{
-        width:24px;
-        height:24px;
-        display:flex;
-        align-items:center;
-        justify-content: center;
-        background: rgba(0, 0, 0, 0.04);
-        border-radius: 2px;
+    margin: 0%;
+    width: 100%;
+    height: calc(100vh - 100px);
+
+    display: flex;
+    // flex-flow: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    @include mixin-padding-top(10);
+    @include mixin-padding-bottom(10);
+    @include mixin-padding-left(20);
+    @include mixin-padding-right(0);
+    box-sizing: border-box;
+    border-radius: var(--border-radius-4);
+    background-color: var(--in-common-use-1);
+    margin-top: 20px;
+    padding: 16px 20px;
+
+    .inner-page-title {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+      cursor: pointer;
+
+      .inner-title {
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        height: 60px;
         color: rgba(0, 0, 0, 0.85);
       }
-      >.jiantou-right{
-        width:52px;
-        margin:0 38px;
-        background-color:#fff;
-        background-image:url('../../../assets/svg/jiantou-right.svg');
-        background-size:100% auto;
-        background-repeat:no-repeat;
-        background-position: center;
+    }
+
+    .inner-page-content {
+      .process {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        > div {
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0, 0, 0, 0.04);
+          border-radius: 2px;
+          color: rgba(0, 0, 0, 0.85);
+        }
+        > .jiantou-right {
+          width: 52px;
+          margin: 0 38px;
+          background-color: #fff;
+          background-image: url('../../../assets/svg/jiantou-right.svg');
+          background-size: 100% auto;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
       }
     }
-    
   }
-
-
-  
-}
 </style>

@@ -110,7 +110,38 @@
               </div>
             </div>
             <div class="ap-cont-module-right">
-              <div class="module-box">1</div>
+              <div class="module-box fast">
+                <div class="fast-back">
+                  <img
+                    class="fast-back-img"
+                    src="@/assets/icon/home-back-kuaijie.png"
+                    alt=""
+                  />
+                </div>
+                <div class="fast-cont">
+                  <div class="fast-cont-title">快捷申请用印 </div>
+                  <div class="fast-cont-but">
+                    <el-button type="primary" class="fast-button">
+                      <i class="fast-icon">
+                        <svg class="iconpark-icon">
+                          <use href="#shenqing-yongyin"></use>
+                        </svg>
+                      </i>
+                      用印申请
+                    </el-button>
+                  </div>
+                  <div class="fast-cont-but">
+                    <el-button class="fast-button" plain>
+                      <i class="fast-icon">
+                        <svg class="iconpark-icon">
+                          <use href="#dianzi-qianzhang"></use>
+                        </svg>
+                      </i>
+                      电子签章
+                    </el-button>
+                  </div>
+                </div>
+              </div>
               <div class="module-box">1</div>
               <div class="module-box">1</div>
             </div>
@@ -512,6 +543,43 @@
         }
         .ap-cont-module-right {
           width: 35%;
+          .fast {
+            position: relative;
+            .fast-back {
+              position: absolute;
+              height: 100%;
+              right: 0%;
+              top: 0%;
+              .fast-back-img {
+                height: 100%;
+              }
+            }
+            .fast-cont {
+              .fast-cont-title {
+                font-size: var(--font-size-title-2);
+                color: var(--color-text-1);
+                margin-bottom: 1rem;
+              }
+              .fast-cont-but {
+                margin-top: 0.5rem;
+                .fast-button {
+                  width: 40%;
+                  height: 2.2rem;
+                  box-sizing: border-box;
+                  display: flex;
+                  align-items: center;
+                }
+                .fast-icon {
+                  margin-right: 0.3rem;
+                }
+              }
+            }
+            .fast-icon {
+              .iconpark-icon {
+                width: 1rem;
+              }
+            }
+          }
         }
         .module-box {
           background: var(--color-fill--5);
