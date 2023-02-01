@@ -142,7 +142,18 @@
                   </div>
                 </div>
               </div>
-              <div class="module-box">1</div>
+              <div class="module-box remind">
+                <div class="remind-tabs">
+                  <componentsTabs
+                    activeName="1"
+                    :data="state.remind.tabs.data"
+                  ></componentsTabs>
+                  <div class="remind-more"> 更多 </div>
+                </div>
+                <div class="remind-box">
+                  <div class="list"> </div>
+                </div>
+              </div>
               <div class="module-box">1</div>
             </div>
           </div>
@@ -198,6 +209,20 @@
           name: '3'
         }
       ]
+    },
+    remind: {
+      tabs: {
+        data: [
+          {
+            label: '预警提醒',
+            name: '1'
+          },
+          {
+            label: '通知提醒',
+            name: '2'
+          }
+        ]
+      }
     }
   })
   const echartslineoption = ref({
@@ -578,6 +603,19 @@
               .iconpark-icon {
                 width: 1rem;
               }
+            }
+          }
+          .remind {
+            position: relative;
+            .remind-more {
+              position: absolute;
+              right: 0%;
+              top: 0rem;
+              @include mixin-padding(16);
+              color: var(--color-text-3);
+              height: 72px;
+              display: flex;
+              align-items: center;
             }
           }
         }
