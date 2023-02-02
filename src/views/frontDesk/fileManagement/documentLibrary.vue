@@ -755,24 +755,24 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(cell.name)
     if (cell.name === '修改') {
       showFormDialog.value = true
     }
-    if (cell.name == '文件下载') {
+    if (cell.name === '文件下载') {
       ElMessageBox.confirm('您确定要下载文件吗？', {
         confirmButtonText: '确认',
         cancelButtonText: '关闭',
         type: 'warning'
       }).then(() => {})
     }
-    if (cell.name == '文件预览') {
+    if (cell.name === '文件预览') {
       ElMessageBox.confirm('您确定要预览文件吗？', {
         confirmButtonText: '确认',
         cancelButtonText: '关闭',
@@ -781,7 +781,7 @@
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection

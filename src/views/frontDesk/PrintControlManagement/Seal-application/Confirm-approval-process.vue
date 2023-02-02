@@ -104,6 +104,24 @@
           <div class="ap-fixed">
             <el-button type="primary" @click="clickSubmit">提交</el-button>
             <el-button @click="clickBackPage">上一步</el-button>
+            <el-button class="ap-fixed-save">
+              <span class="ap-fixed-save-text"> 保存模板 </span>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content=""
+                placement="top"
+              >
+                <template #content>
+                  <div style="width: 300px">
+                    模板可用于提高重复发起同种类型用印申请的填写效率，一种文件类型仅允许保存一个模板，保存后可在申请页面直接引用
+                  </div>
+                </template>
+                <i class="ap-fixed-save-icon">
+                  <svg class="iconpark-icon"><use href="#icon4"></use></svg>
+                </i>
+              </el-tooltip>
+            </el-button>
           </div>
         </div>
       </template>
@@ -393,6 +411,12 @@
       border-top: 1px solid var(--color-border-2);
       background-color: var(--in-common-use-1);
       z-index: 999;
+      .ap-fixed-save-icon {
+        .iconpark-icon {
+          width: 1rem;
+          height: 1rem;
+        }
+      }
     }
   }
 </style>

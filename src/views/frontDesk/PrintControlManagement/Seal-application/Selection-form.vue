@@ -90,17 +90,61 @@
                   去申请
                 </el-button>
               </div>
+              <div
+                class="ap-cont-liebiao-list-template"
+                @click="clickSavedTemplate"
+              >
+                <span class="text">保存的模板</span>
+                <i class="icon">
+                  <svg class="iconpark-icon"><use href="#icon3"></use></svg>
+                </i>
+              </div>
             </div>
           </div>
         </div>
       </template>
     </componentsLayout>
+    <!-- 动态表单 -->
+    <KDialog
+      @update:show="showFormDialog = $event"
+      :show="showFormDialog"
+      title="选择模板"
+      :centerBtn="true"
+      :confirmText="$t('t-zgj-operation.submit')"
+      :concelText="$t('t-zgj-operation.cancel')"
+      :width="1000"
+      :height="600"
+      @close="submitForm"
+    >
+      <div class="optional-module">
+        <div class="optional-module-list" v-for="n in 6" :key="n">
+          <div class="optional-module-list-title">
+            <div class="optional-module-list-title-desc">
+              文件类型文件类型文件类型文件类型
+            </div>
+            <div class="optional-module-list-title-time">
+              2022-09-11 10:21:55
+            </div>
+          </div>
+          <div class="optional-module-list-desc">
+            <div class="optional-module-list-desc-text">
+              单据名称单据名称单据名称单据名称单据名称单据名称
+            </div>
+            <div class="optional-module-list-desc-but">
+              <div class="button shiyong">使用</div>
+              <div class="button shanchu">删除</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </KDialog>
   </div>
 </template>
 <script setup>
-  import { defineProps, onBeforeMount, onMounted, inject } from 'vue'
+  import { ref, defineProps, onBeforeMount, onMounted, inject } from 'vue'
   import { useRouter } from 'vue-router'
-  import componentsLayout from '../../../components/Layout.vue'
+  import componentsLayout from '@/views/components/Layout.vue'
+  import KDialog from '@/views/components/modules/kdialog.vue'
   // eslint-disable-next-line no-unused-vars
   const props = defineProps({
     // 处理类型
@@ -111,13 +155,23 @@
   })
   const router = useRouter()
   const commonFun = inject('commonFun')
-
+  const showFormDialog = ref(false)
   // 点击列表按钮
   function clickListBut(n) {
     commonFun.routerPage(router, {
       name: 'selectionForms',
       params: { id: n }
     })
+  }
+
+  // 点击 保存的模板
+  function clickSavedTemplate() {
+    showFormDialog.value = true
+  }
+
+  // 提交 保存的模板
+  function submitForm() {
+    showFormDialog.value = false
   }
 
   onBeforeMount(() => {
@@ -216,6 +270,7 @@
           border: 1px solid var(--color-border-1);
           border-radius: var(--border-radius-4);
           background-color: var(--color-fill--1);
+          position: relative;
 
           .ap-cont-liebiao-list-back {
             width: 10rem;
@@ -233,6 +288,82 @@
 
           .ap-cont-liebiao-list-but {
             margin-bottom: 0.5rem;
+          }
+          .ap-cont-liebiao-list-template {
+            position: absolute;
+            top: 1rem;
+            right: 0%;
+            color: var(--Info-6);
+            display: flex;
+            cursor: pointer;
+            .text {
+              height: 1.5rem;
+              display: flex;
+              align-items: center;
+              margin-right: 0.2rem;
+            }
+            .icon {
+              width: 1.5rem;
+              height: 1.5rem;
+              display: flex;
+              align-items: center;
+              .iconpark-icon {
+                width: 1rem;
+                height: 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+    .optional-module {
+      .optional-module-list {
+        display: flex;
+        border: 1px solid var(--color-border-1);
+        border-radius: var(--border-radius-4);
+        margin: 1rem 0rem;
+        padding: 1rem;
+        box-sizing: border-box;
+        flex-flow: wrap;
+        .optional-module-list-title {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0.5rem;
+          .optional-module-list-title-desc {
+            width: calc(100% - 10rem);
+            color: var(--color-text-1);
+          }
+          .optional-module-list-title-time {
+            width: 10rem;
+            text-align: right;
+            color: var(--color-text-3);
+            font-size: var(--font-size-body-1);
+          }
+        }
+        .optional-module-list-desc {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          .optional-module-list-desc-text {
+            width: calc(100% - 10rem);
+            color: var(--color-text-3);
+          }
+          .optional-module-list-desc-but {
+            display: flex;
+            .button {
+              padding: 0.2rem 1rem;
+              border-radius: var(--border-radius-2);
+              border: 1px solid var(--color-border-1);
+              font-size: var(--font-size-body-1);
+              margin-left: 0.5rem;
+              color: var(--color-text-2);
+            }
+            .shiyong {
+              color: var(--Info-6);
+              background-color: var(--Info-1);
+              border-color: var(--Info-1);
+            }
           }
         }
       }
