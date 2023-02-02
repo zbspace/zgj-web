@@ -6,17 +6,18 @@
                 <div class="title">
                     <div>格口管理</div>
                 </div>
-                
-                    <div class="search">
-                        <div class="select-wrap">
-                            <span class="search-label">终端名称</span>
-                            <el-select v-model="state.terminalGrid" placeholder="请选择终端名称" size="small" @change="changeSelect">
-                                <el-option v-for="item in state.termialOptions" :key="item.id" :label="item.name"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </div>
-                        <div class="box-card">
+
+                <div class="search">
+                    <div class="select-wrap">
+                        <span class="search-label">终端名称</span>
+                        <el-select v-model="state.terminalGrid" placeholder="请选择终端名称" size="small"
+                            @change="changeSelect">
+                            <el-option v-for="item in state.termialOptions" :key="item.id" :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </div>
+                    <div class="box-card">
                         <!-- status -->
                         <div class="status" v-if="state.mouthLists.length !== 0">
                             <div class="columns-check">
@@ -34,9 +35,9 @@
 
                         </div>
                     </div>
-                    </div>
-                    
-                
+                </div>
+
+
                 <div class="columns-status">
                     <div class="device-tab">
                         <div class="device-item" :class="{ 'selected': state.sealBoxIndex == index }"
@@ -50,8 +51,7 @@
                 <div class="tableData">
                     <div class="tableData-item" v-for="(it, io) in handleGrid()" v-bind:key="io">
                         <!-- :class="{ 'grid-item-pan': panIng && (panIndex[0] == io && panIndex[1] == index), 'grid-item-limit': panIng && !item.enable }" -->
-                        <div class="grid-item" v-for="(item, index) in it" v-bind:key="index"
-                            @click="goDetail(item)">
+                        <div class="grid-item" v-for="(item, index) in it" v-bind:key="index" @click="goDetail(item)">
                             <div class="err-ignore" v-if="item.state < 0">格口异常<span
                                     v-if="item.ignoreException">（已忽略）</span></div>
                             <div class="grid-left">
@@ -430,8 +430,8 @@ const state = reactive({
             state: 1,
             inBoxState: 1,
             bindState: 1,
-            bindCount:3,
-            inCount:2,
+            bindCount: 3,
+            inCount: 2,
             link: '',
             ignoreException: false,
             boxCode: 'A-1-8',
@@ -502,7 +502,7 @@ function goDetail(item) {
         path: "/frontDesk/equipmentManage/IntelligentSealCabinetManagement/cabinetGridInfo"
     })
 }
-function goGridType(){
+function goGridType() {
     router.push({
         // path: "/frontDesk/PrintControlManagement/Grid-management/GridType"
         name: 'GridType'
@@ -524,7 +524,7 @@ function handleGrid() {
     })
     return [gridData1, gridData2]
 }
-function lastTimeCheck(){
+function lastTimeCheck() {
     router.push({
         // path: "/frontDesk/PrintControlManagement/Grid-management/ViewCheckInfo"
         name: 'ViewCheckInfo'
@@ -657,9 +657,8 @@ onMounted(() => {
                     color: rgba(0, 0, 0, 0.65);
                     cursor: pointer;
                 }
-                .check-button{
 
-                }
+                .check-button {}
             }
         }
 
@@ -715,6 +714,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     .search-label {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.85);
@@ -938,9 +938,9 @@ onMounted(() => {
                     height: 32px;
                     border: none;
                     background: #fff;
-                    font-size: 12px;
+                    font-size: 14px;
                     font-family: PingFangSC-Medium, PingFang SC;
-                    font-weight: 500;
+                    font-weight: normal;
                     color: #D0963E;
                     border: 1px solid #D0963E;
                     // background-image: url('../../assets/image/bindseal-bg.png');
@@ -948,9 +948,11 @@ onMounted(() => {
                     background-repeat: no-repeat;
                     border-radius: 2px;
                 }
-                .check-btn{
-                    margin-left:0;
+
+                .check-btn {
+                    margin-left: 0;
                 }
+
                 >.openLock {
                     background: #D0963E;
                     color: #FFFFFF;
@@ -994,7 +996,8 @@ onMounted(() => {
             }
         }
     }
-    .grid-item:hover{
+
+    .grid-item:hover {
         box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
     }
 }

@@ -1,42 +1,25 @@
 <template>
   <div class="card-container">
     <!-- pc -->
-    <div
-      :class="platform === 'pc' ? 'card-pc' : 'card-terminal'"
-      :style="{
-        border: isCancel ? '1px dashed #c0c4cc' : '',
-        background: isCancel ? '#F5F5F5' : '#FFFFFF',
-      }"
-      @click.stop="goDetail"
-    >
+    <div :class="platform === 'pc' ? 'card-pc' : 'card-terminal'" :style="{
+      border: isCancel ? '1px dashed #c0c4cc' : '',
+      background: isCancel ? '#F5F5F5' : '#FFFFFF',
+    }" @click.stop="goDetail">
       <div class="status-label" v-if="ignoreException">格口异常(已忽略)</div>
       <div class="status-label" v-if="isError && !ignoreException">
         格口异常
       </div>
       <!-- left / top -->
       <div class="card-column left">
-        <div
-          class="img-box size-box"
-          :class="isError ? 'error-bg' : 'normal-bg'"
-        >
-          <div
-            v-if="platform === 'terminal'"
-            class="terminal-name"
-            :style="{
-              color: isError ? '#ffffff' : '#c0c4cc',
-            }"
-          >
+        <div class="img-box size-box" :class="isError ? 'error-bg' : 'normal-bg'">
+          <div v-if="platform === 'terminal'" class="terminal-name" :style="{
+            color: isError ? '#ffffff' : '#c0c4cc',
+          }">
             {{ boxCode }}
           </div>
           <img src="../../../../../assets/svg/device/seal-zn-icon.svg" v-if="showImgIn" />
-          <img
-            src="../../../../../assets/svg/device/seal-zn-out-icon.svg"
-            v-if="showImgOutNormal"
-          />
-          <img
-            src="../../../../../assets/svg/device/seal-zn-error-icon.svg"
-            v-if="showImgOutError"
-          />
+          <img src="../../../../../assets/svg/device/seal-zn-out-icon.svg" v-if="showImgOutNormal" />
+          <img src="../../../../../assets/svg/device/seal-zn-error-icon.svg" v-if="showImgOutError" />
           <!-- bug -->
           <!-- <img :src="require(`../assets/images/${handleImgUrl}`)" /> -->
         </div>
@@ -52,26 +35,14 @@
         <div class="pc-name" v-if="platform === 'pc'">{{ boxCode }}</div>
         <!-- 按钮组 -->
         <div class="btns">
-          <el-button
-            class="unlock-btn btn"
-            v-if="!isCancel"
-            @click.stop="unlock"
-          >
-          <!-- :style="{ marginTop: !isBound && platform === 'pc' ? '60px' : '' }" -->
+          <el-button class="unlock-btn btn" v-if="!isCancel" @click.stop="unlock">
+            <!-- :style="{ marginTop: !isBound && platform === 'pc' ? '60px' : '' }" -->
             开锁
           </el-button>
-          <el-button
-            class="check-btn btn"
-            v-if="!isCancel"
-            @click.stop="check"
-          >
+          <el-button class="check-btn btn" v-if="!isCancel" @click.stop="check">
             盘点
           </el-button>
-          <div
-            class="unlock-btn btn seal-btn"
-            v-if="isCancel"
-            @click.stop="Cancel"
-          >
+          <div class="unlock-btn btn seal-btn" v-if="isCancel" @click.stop="Cancel">
             注销
           </div>
           <div class="unlock-btn btn" v-if="false" @click.stop="unlockReturn">
@@ -226,11 +197,13 @@ export default {
     .size-box {
       width: 168px;
       height: 92px;
+
       img {
         width: 36px;
         height: 62px;
       }
     }
+
     .name-style {
       width: 164px;
       height: 40px;
@@ -244,14 +217,16 @@ export default {
       // width:calc(100% - 188px);
       // margin-left:50px;
       text-align: center;
-      
+
     }
-    .center{
-      width:1px;
-      height:154px;
+
+    .center {
+      width: 1px;
+      height: 154px;
       border-left: 1px dashed rgba(0, 0, 0, 0.15);
-      margin:0 10%;
+      margin: 0 10%;
     }
+
     .left {
       // flex: 1;
     }
@@ -278,7 +253,7 @@ export default {
 
       .unlock-btn {
         font-weight: 500;
-        font-size: 12px;
+        font-size: 14px;
         color: #fafafa;
         background-color: #D0963E;
       }
@@ -287,18 +262,21 @@ export default {
         border: 0.56px solid #D0963E;
         margin-top: 20px;
         font-weight: 500;
-        font-size: 12px;
+        font-size: 14px;
         color: #D0963E;
-        margin-left:0;
+        margin-left: 0;
       }
+
       .seal-btn {
         margin-top: 60px;
       }
     }
   }
-  .card-pc:hover{
+
+  .card-pc:hover {
     box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
   }
+
   // 终端
   .card-terminal {
     display: flex;
@@ -311,10 +289,12 @@ export default {
     box-shadow: 0 2px 25px 1px rgba(0, 0, 0, 0.13);
     border-radius: 10px;
     position: relative;
+
     .size-box {
       width: 236px;
       height: 184px;
       background: #ECECEC;
+
       img {
         width: 57px;
         height: 98px;
@@ -346,6 +326,7 @@ export default {
       flex-direction: column;
       width: 264px;
       margin-top: 50px;
+
       .btn {
         font-weight: 500;
         font-size: 14px;
@@ -390,7 +371,7 @@ export default {
   .card-column {
     display: flex;
     flex-direction: column;
-    align-items:center;
+    align-items: center;
   }
 
   .status-label {
