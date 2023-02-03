@@ -184,11 +184,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          fixed: true
-        },
-        {
           prop: '0',
           label: '序号',
           width: 60,
