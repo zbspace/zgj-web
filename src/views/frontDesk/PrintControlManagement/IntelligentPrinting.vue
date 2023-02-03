@@ -75,6 +75,12 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+    <JyElMessageBox :show="true" :defaultAttribute="{}">
+      <template #header>
+        <div class="header"> 标题 </div>
+      </template>
+      <div> ceshi </div>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
