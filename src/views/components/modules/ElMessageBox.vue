@@ -1,23 +1,49 @@
 <template>
   <div class="components-ElMessageBox">
-    <el-dialog v-model="state.props.show" v-bind="state.props.defaultAttribute">
-      <div class="dialog">
-        <div>
-          <div>
+    <el-dialog
+      v-model="state.props.show"
+      v-bind="state.props.defaultAttribute"
+      @close="closeCallBack"
+    >
+      <div
+        class="dialog"
+        :style="{ height: state.props.defaultAttribute.height }"
+      >
+        <div class="dialog-header">
+          <div class="dialog-header-icon" v-if="state.props['show-icon']">
             <svg class="iconpark-icon"><use href="#icon4"></use></svg>
           </div>
-          <div>
-            <slot name="header"></slot>
+          <div class="dialog-header-cont" v-if="state.props['show-title']">
+            <slot name="header"> </slot>
           </div>
-          <div>
+          <div
+            class="dialog-header-remove"
+            @click="clickClose"
+            v-if="state.props['show-close']"
+          >
             <svg class="iconpark-icon"><use href="#Vector"></use></svg>
           </div>
         </div>
-        <div>
-          <slot name="content"></slot>
+        <div class="cut-off-rule" v-if="state.props['show-cut-off-rule']"></div>
+        <div
+          class="dialog-content"
+          :class="{
+            'center-content': state.props.defaultAttribute.center ? true : false
+          }"
+        >
+          <slot name="content"> 内容 </slot>
         </div>
-        <div>
-          <slot name="footer"></slot>
+        <div class="cut-off-rule" v-if="state.props['show-cut-off-rule']"></div>
+        <div
+          class="dialog-footer"
+          :class="{
+            'center-footer': state.props.defaultAttribute.center ? true : false
+          }"
+        >
+          <slot name="footer">
+            <el-button type="primary">确定</el-button>
+            <el-button @click="clickClose">取消</el-button>
+          </slot>
         </div>
       </div>
     </el-dialog>
@@ -27,13 +53,17 @@
 <script setup>
   /* 
     show 是否显示 默认 false
+    show-cut-off-rule 是否显示分割线 默认 false
+    show-close 是否显示关闭图标 默认 true
+    show-icon 是否显示icon 默认 false
+    show-title 是否显示title 默认 true
     defaultAttribute  默认属性   element的对话框属性 
 */
   import {
     // ref,
     reactive,
     defineProps,
-    // defineEmits,
+    defineEmits,
     onBeforeMount,
     onMounted,
     watch
@@ -48,6 +78,22 @@
       type: Boolean,
       default: false
     },
+    'show-cut-off-rule': {
+      type: Boolean,
+      default: false
+    },
+    'show-close': {
+      type: Boolean,
+      default: true
+    },
+    'show-icon': {
+      type: Boolean,
+      default: false
+    },
+    'show-title': {
+      type: Boolean,
+      default: true
+    },
     defaultAttribute: {
       type: Object,
       default: () => {
@@ -59,16 +105,23 @@
     props: {
       defaultAttribute: {
         'align-center': true,
-        'show-close': false
+        'show-close': false,
+        width: '500px',
+        center: false
       }
     }
   })
+  const emit = defineEmits(['close'])
   // 初始化 props
   function initProps() {
+    console.log('--->', 'initProps')
     const dispose = state.props
     for (const key in props) {
       if (Object.hasOwnProperty.call(dispose, key)) {
         // console.log('--->', key)
+        if (key !== 'defaultAttribute') {
+          dispose[key] = props[key]
+        }
       } else {
         dispose[key] = props[key]
       }
@@ -78,7 +131,16 @@
         dispose.defaultAttribute[key] = props.defaultAttribute[key]
       }
     }
-    console.log('--->', dispose)
+    console.log('--->', props, dispose)
+  }
+
+  // 点击关闭弹框
+  function clickClose() {
+    state.props.show = false
+  }
+  // 点击关闭后回调
+  function closeCallBack() {
+    emit('close', state.props.show)
   }
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
@@ -97,6 +159,66 @@
 
 <style lang="scss" scoped>
   .components-ElMessageBox {
+    .dialog {
+      display: flex;
+      flex-direction: column;
+      .dialog-header {
+        display: flex;
+        position: relative;
+        padding: 1rem 3rem 1rem 3rem;
+        box-sizing: border-box;
+        align-items: center;
+        .dialog-header-icon {
+          position: absolute;
+          left: 1rem;
+          height: 1.5rem;
+          display: flex;
+          align-items: center;
+          .iconpark-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+          }
+        }
+        .dialog-header-cont {
+          color: var(--color-text-1);
+          font-size: var(--font-size-title-1);
+        }
+        .dialog-header-remove {
+          position: absolute;
+          right: 1rem;
+          cursor: pointer;
+          height: 1.5rem;
+          display: flex;
+          align-items: center;
+          .iconpark-icon {
+            width: 1rem;
+            height: 1rem;
+          }
+        }
+      }
+      .dialog-content {
+        padding: 1rem 2rem;
+        box-sizing: border-box;
+        flex-grow: 1;
+        color: var(--color-text-2);
+      }
+      .dialog-footer {
+        padding: 1rem 2rem;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .cut-off-rule {
+        width: 100%;
+        border-bottom: 1px solid var(--color-border-2);
+      }
+      .center-content {
+        text-align: center;
+      }
+      .center-footer {
+        justify-content: center;
+      }
+    }
     :deep(.el-dialog) {
       .el-dialog__header {
         display: none;

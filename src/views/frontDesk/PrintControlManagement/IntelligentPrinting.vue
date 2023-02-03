@@ -75,11 +75,13 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
-    <JyElMessageBox :show="true" :defaultAttribute="{}">
+    <JyElMessageBox :show="state.JyElMessageBox.show" :defaultAttribute="{}">
       <template #header>
-        <div class="header"> 标题 </div>
+        <div class="header"> {{ state.JyElMessageBox.header.data }} </div>
       </template>
-      <div> ceshi </div>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
     </JyElMessageBox>
   </div>
 </template>
@@ -515,6 +517,15 @@
           name: '批量操作'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   const showDepPerDialog = ref(false)
@@ -567,6 +578,11 @@
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {})
+      return
+      // state.JyElMessageBox.header.data = '提示？'
+      // state.JyElMessageBox.content.data = '请问确定要撤销重置用印申请吗？'
+      // state.JyElMessageBox.show = true
+      // console.log('--->', state.JyElMessageBox)
     }
     if (cell.name === '结束用印') {
       ElMessageBox.confirm('请问确定要结束用印吗？', {
