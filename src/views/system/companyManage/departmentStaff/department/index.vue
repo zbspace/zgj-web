@@ -43,12 +43,21 @@
         </div>
       </template>
 
-      <template #batch>
+      <!-- <template #batch>
         <div class="batch">
           <componentsBatch>
             <el-button>批量删除</el-button>
             <el-button>批量启用</el-button>
             <el-button>批量停用</el-button>
+          </componentsBatch>
+        </div>
+      </template> -->
+      <template #batch>
+        <div class="batch">
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -105,6 +114,7 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
+
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -376,6 +386,26 @@
         {
           label: '流程记录',
           name: 'operating-record'
+        }
+      ]
+    },
+    componentsBatch: {
+      selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
+      data: [
+        {
+          name: '批量停用'
+        },
+        {
+          name: '批量启用'
+        },
+        {
+          name: '批量删除'
+        },
+        {
+          name: '批量重置密码'
         }
       ]
     }
