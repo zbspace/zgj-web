@@ -11,7 +11,7 @@
       "
       @mouseover="onOver(item.route)"
       @mouseleave="onLeave(item.route)"
-      @click="router.push({ path: item.to })"
+      @click="onClick(item.route, item.to)"
     >
       <svg class="iconpark-icon contraction-icon">
         <use :href="item.icon"></use>
@@ -25,62 +25,87 @@
   import { ref, watch, reactive } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useMenusInfoStore } from '@/store/menus'
+  import { useLayoutStore } from '@/store/layout'
   import { debounce } from '@/utils/tools.js'
   import { business, businessAside } from '../Menu/business'
-  import { system, systemAside } from '../menu/system'
+  import { system, systemAside } from '../Menu/system'
 
   const menusInfoStore = useMenusInfoStore()
+  const layoutStore = useLayoutStore()
   const route = useRoute()
   const router = useRouter()
   const modelRoute = ref('')
-  const useDebounce = debounce(setMenus, 1)
-  const hover = ref('')
-  let tempHover = ''
-  let tempMenus = menusInfoStore.menus
+  const useDebounce = debounce(setTempMenus, 50)
 
   watch(reactive(route), o => {
-    modelRoute.value = o.path
+    initData()
   })
 
-  modelRoute.value = route.path
-  getPresentMenus(modelRoute.value.split('/').slice(0, 3).join('/'))
-
-  function onOver(model) {
-    hover.value = model
-    tempHover = model
-    useDebounce(model)
-  }
-
-  // 动态设置menus集合
-  function setMenus(model) {
-    getRoutesInModel(model)
-  }
-
-  function getRoutesInModel(model) {
-    if (!tempHover || tempHover !== hover.value) {
-      menusInfoStore.setMenus(tempMenus)
-    } else {
-      getPresentMenus(model)
-    }
-  }
-
-  function getPresentMenus(model) {
-    tempMenus = menusInfoStore.menus
-    menusInfoStore.setMenus(
-      menusInfoStore.currentType === 'business' ? business : system
-    )
+  initData()
+  function initData() {
+    // 设置当前激活的model
+    modelRoute.value = route.path
+    // 根据当前model设置menus集合
+    setMenus(modelRoute.value.split('/').slice(0, 3).join('/'))
+    // 顺带设置Collapse模式
+    layoutStore.changeCollapse(false)
+    // 设置model集合
     menusInfoStore.setAsides(
       menusInfoStore.currentType === 'business' ? businessAside : systemAside
     )
-    const menus = menusInfoStore.menus.filter(v => {
+    menusInfoStore.setTempMenus()
+  }
+
+  /**
+   * 点击menu model 需要跳转到对应model的首个页面的url
+   * 并设置此model对应的menus集合
+   * @param {*} path
+   */
+  function onClick(model, path) {
+    modelRoute.value = model
+    router.push({ path })
+    setMenus(model)
+  }
+
+  /**
+   * hove model的时候触发，需要根据当前menu模块设置临时menus集合
+   * @param {*} model
+   */
+  function onOver(model) {
+    useDebounce(model)
+  }
+
+  /**
+   * 鼠标移除model的时候，需要将tempMenus清空，显示真实menus集合
+   */
+  function onLeave() {
+    setTimeout(() => {
+      menusInfoStore.setTempMenus()
+    }, 50)
+  }
+
+  /**
+   * 设置临时menus集合,用于显示
+   * @param {*} model
+   */
+  function setTempMenus(model) {
+    let menus = menusInfoStore.currentType === 'business' ? business : system
+    menus = menus.filter(v => {
+      return v.to && v.to.indexOf(model) > -1 && v.to !== model
+    })
+    menusInfoStore.setTempMenus(menus)
+  }
+
+  /**
+   * 根据当前model，设置对应的额menus集合
+   * @param {\} model
+   */
+  function setMenus(model) {
+    let menus = menusInfoStore.currentType === 'business' ? business : system
+    menus = menus.filter(v => {
       return v.to && v.to.indexOf(model) > -1 && v.to !== model
     })
     menusInfoStore.setMenus(menus)
-  }
-
-  function onLeave() {
-    tempHover = ''
-    menusInfoStore.setMenus(tempMenus)
   }
 </script>
 

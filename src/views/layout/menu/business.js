@@ -17,11 +17,6 @@ export const business = [
     to: '/frontDesk/printControlManage/useSealManage',
     icon: '#yongyinguanli-73o018b7',
     children: [
-      // {
-      //   name: '用印申请',
-      //   to: '/frontDesk/printControlManage/useSealManage/sealApplication',
-      //   label: 't-zgj-cg-menu-yongyin-shenqing'
-      // },
       {
         name: '用印申请',
         to: '/frontDesk/printControlManage/useSealManage/selectionForm',
@@ -287,7 +282,7 @@ export const businessAside = [
     name: '印控管理',
     icon: '#liuchengguanli',
     route: '/frontDesk/printControlManage',
-    to: '/frontDesk/printControlManage/useSealManage'
+    to: '/frontDesk/printControlManage/useSealManage/selectionForm'
   },
   {
     name: '文件管理',
@@ -296,15 +291,15 @@ export const businessAside = [
     to: '/frontDesk/fileManagement/documentLibrary'
   },
   {
-    name: '流程审批',
-    icon: '#liuchengguanli',
-    route: '/frontDesk/processApprove',
-    to: '/frontDesk/processApprove/realTimeConfirmation'
-  },
-  {
     name: '风控预警',
     icon: '#liuchengguanli',
     route: '/frontDesk/riskControlWarning',
     to: '/frontDesk/riskControlWarning/riskAlertSetting'
+  },
+  {
+    name: '流程审批',
+    icon: '#liuchengguanli',
+    route: '/frontDesk/processApprove',
+    to: '/frontDesk/processApprove/realTimeConfirmation'
   }
 ]

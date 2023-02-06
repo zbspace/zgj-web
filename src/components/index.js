@@ -30,4 +30,10 @@ export function requireComp(app) {
     'JyBackTop',
     defineAsyncComponent(() => import('./common/JyBackTop/index.vue'))
   )
+  app.component(
+    'JyElMessageBox',
+    defineAsyncComponent(() =>
+      import('@/views/components/modules/ElMessageBox.vue')
+    )
+  )
 }

@@ -56,11 +56,10 @@
 
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button>批量停用</el-button>
-            <el-button>批量启用</el-button>
-            <el-button>批量删除</el-button>
-            <el-button>批量重置密码</el-button>
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -72,6 +71,7 @@
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
             @cellClick="cellClick"
+            @selection-change="selectionChange"
           >
           </componentsTable>
         </div>
@@ -351,6 +351,26 @@
           name: ''
         }
       ]
+    },
+    componentsBatch: {
+      selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
+      data: [
+        {
+          name: '批量停用'
+        },
+        {
+          name: '批量启用'
+        },
+        {
+          name: '批量删除'
+        },
+        {
+          name: '批量重置密码'
+        }
+      ]
     }
   })
   // 点击表格单元格
@@ -363,6 +383,17 @@
   // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
+  }
+
+  // 当选择项发生变化时会触发该事件
+  function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
   }
 </script>
 

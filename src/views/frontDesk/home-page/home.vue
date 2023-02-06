@@ -110,9 +110,113 @@
               </div>
             </div>
             <div class="ap-cont-module-right">
-              <div class="module-box">1</div>
-              <div class="module-box">1</div>
-              <div class="module-box">1</div>
+              <div class="module-box fast">
+                <div class="fast-back">
+                  <img
+                    class="fast-back-img"
+                    src="@/assets/icon/home-back-kuaijie.png"
+                    alt=""
+                  />
+                </div>
+                <div class="fast-cont">
+                  <div class="fast-cont-title">快捷申请用印 </div>
+                  <div class="fast-cont-but">
+                    <el-button type="primary" class="fast-button">
+                      <i class="fast-icon">
+                        <svg class="iconpark-icon">
+                          <use href="#shenqing-yongyin"></use>
+                        </svg>
+                      </i>
+                      用印申请
+                    </el-button>
+                  </div>
+                  <div class="fast-cont-but">
+                    <el-button class="fast-button" plain>
+                      <i class="fast-icon">
+                        <svg class="iconpark-icon">
+                          <use href="#dianzi-qianzhang"></use>
+                        </svg>
+                      </i>
+                      电子签章
+                    </el-button>
+                  </div>
+                </div>
+              </div>
+              <div class="module-box remind">
+                <div class="remind-tabs">
+                  <componentsTabs
+                    activeName="1"
+                    :data="state.remind.tabs.data"
+                  ></componentsTabs>
+                  <div class="remind-more"> 更多 </div>
+                </div>
+                <div class="remind-box">
+                  <div class="list" v-for="n in 6" :key="n">
+                    <div class="list-timeLine">
+                      <div
+                        class="list-timeLine-dian"
+                        :class="{ 'dian-new': n == 1 ? true : false }"
+                      ></div>
+                      <div class="list-timeLine-line" v-if="n < 6"></div>
+                    </div>
+                    <div class="list-cont">
+                      <div class="list-cont-time">
+                        <div class="list-cont-time-o">12-01 </div>
+                        <div class="list-cont-time-t">12:18 </div>
+                      </div>
+                      <div class="list-cont-desc">
+                        <div class="list-cont-desc-title">
+                          【消息】用印申请单状态提醒
+                          <i class="remind-icon" v-if="n == 1">
+                            <svg class="iconpark-icon">
+                              <use href="#Group3982"></use>
+                            </svg>
+                          </i>
+                        </div>
+                        <div class="list-cont-desc-cont">
+                          《项目二承包合同》用印申请已审批
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="module-box copy">
+                <div class="copy-title">
+                  <div class="copy-title-name"> 抄送给我 </div>
+                  <div class="copy-title-more"> 更多 </div>
+                </div>
+                <div class="copy-box">
+                  <div class="list" v-for="n in 6" :key="n">
+                    <div class="list-timeLine">
+                      <div
+                        class="list-timeLine-dian"
+                        :class="{ 'dian-new': n == 1 ? true : false }"
+                      ></div>
+                      <div class="list-timeLine-line" v-if="n < 6"></div>
+                    </div>
+                    <div class="list-cont">
+                      <div class="list-cont-time">
+                        <div class="list-cont-time-o">12-01 </div>
+                        <div class="list-cont-time-t">12:18 </div>
+                      </div>
+                      <div class="list-cont-desc">
+                        <div class="list-cont-desc-title">
+                          【消息】用印申请单状态提醒
+                          <i class="copy-icon" v-if="n == 1">
+                            <svg class="iconpark-icon">
+                              <use href="#Group3982"></use>
+                            </svg>
+                          </i>
+                        </div>
+                        <div class="list-cont-desc-cont">
+                          《项目二承包合同》用印申请已审批
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -124,8 +228,8 @@
   import {
     ref,
     reactive,
-    defineProps,
-    defineEmits,
+    // defineProps,
+    // defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
@@ -167,6 +271,20 @@
           name: '3'
         }
       ]
+    },
+    remind: {
+      tabs: {
+        data: [
+          {
+            label: '预警提醒',
+            name: '1'
+          },
+          {
+            label: '通知提醒',
+            name: '2'
+          }
+        ]
+      }
     }
   })
   const echartslineoption = ref({
@@ -418,7 +536,7 @@
         display: flex;
         justify-content: space-between;
         .ap-cont-module-left {
-          width: calc(65% - 16px);
+          width: calc(70% - 16px);
           .flow {
             position: relative;
             .flow-more {
@@ -511,7 +629,197 @@
           }
         }
         .ap-cont-module-right {
-          width: 35%;
+          width: 30%;
+          .fast {
+            position: relative;
+            .fast-back {
+              position: absolute;
+              height: 100%;
+              right: 0%;
+              top: 0%;
+              .fast-back-img {
+                height: 100%;
+              }
+            }
+            .fast-cont {
+              .fast-cont-title {
+                font-size: var(--font-size-title-2);
+                color: var(--color-text-1);
+                margin-bottom: 1rem;
+              }
+              .fast-cont-but {
+                margin-top: 0.5rem;
+                .fast-button {
+                  width: 40%;
+                  height: 2.2rem;
+                  box-sizing: border-box;
+                  display: flex;
+                  align-items: center;
+                }
+                .fast-icon {
+                  margin-right: 0.3rem;
+                }
+              }
+            }
+            .fast-icon {
+              .iconpark-icon {
+                width: 1rem;
+              }
+            }
+          }
+          .remind {
+            position: relative;
+            .remind-more {
+              position: absolute;
+              right: 0%;
+              top: 0rem;
+              @include mixin-padding(16);
+              color: var(--color-text-3);
+              height: 72px;
+              display: flex;
+              align-items: center;
+            }
+            .list {
+              display: flex;
+              .list-timeLine {
+                width: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 0.5rem;
+                box-sizing: border-box;
+                .list-timeLine-dian {
+                  width: 0.4rem;
+                  height: 0.4rem;
+                  background-color: var(--color-fill-25);
+                  border-radius: 50%;
+                }
+                .list-timeLine-line {
+                  height: calc(100% - 0.9rem);
+                  width: 1px;
+                  background-color: var(--color-border-1);
+                }
+                .dian-new {
+                  background-color: var(--danger-6);
+                }
+              }
+              .list-cont {
+                width: calc(100% - 1rem);
+                display: flex;
+                padding: 0% 0% 1rem 0%;
+                box-sizing: border-box;
+                .list-cont-time {
+                  color: var(--color-text-3);
+                  text-align: right;
+                  width: 2.5rem;
+                  .list-cont-time-o {
+                    margin-bottom: 0.3rem;
+                  }
+                  .list-cont-time-t {
+                    font-size: var(--font-size-body-1);
+                  }
+                }
+                .list-cont-desc {
+                  width: calc(100% - 2.5rem);
+                  .list-cont-desc-title {
+                    color: var(--color-text-1);
+                    margin-bottom: 0.3rem;
+                  }
+                  .list-cont-desc-cont {
+                    color: var(--color-text-3);
+                  }
+                }
+              }
+            }
+
+            .remind-icon {
+              width: auto;
+              height: 0.8rem;
+              .iconpark-icon {
+                width: 2rem;
+                height: 0.8rem;
+              }
+            }
+          }
+          .copy {
+            position: relative;
+            .copy-title {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 1rem;
+              .copy-title-name {
+                font-size: var(--font-size-title-1);
+                color: var(--color-text-1);
+              }
+              .copy-title-more {
+                color: var(--color-text-3);
+              }
+            }
+            .list {
+              display: flex;
+              .list-timeLine {
+                width: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 0.5rem;
+                box-sizing: border-box;
+                .list-timeLine-dian {
+                  width: 0.4rem;
+                  height: 0.4rem;
+                  background-color: var(--color-fill-25);
+                  border-radius: 50%;
+                }
+                .list-timeLine-line {
+                  height: calc(100% - 0.9rem);
+                  width: 1px;
+                  background-color: var(--color-border-1);
+                }
+                .dian-new {
+                  background-color: var(--danger-6);
+                }
+              }
+              .list-cont {
+                width: calc(100% - 1rem);
+                display: flex;
+                padding: 0% 0% 1rem 0%;
+                box-sizing: border-box;
+                .list-cont-time {
+                  color: var(--color-text-3);
+                  text-align: right;
+                  width: 2.5rem;
+                  .list-cont-time-o {
+                    margin-bottom: 0.3rem;
+                  }
+                  .list-cont-time-t {
+                    font-size: var(--font-size-body-1);
+                  }
+                }
+                .list-cont-desc {
+                  width: calc(100% - 2.5rem);
+                  .list-cont-desc-title {
+                    color: var(--color-text-1);
+                    margin-bottom: 0.3rem;
+                  }
+                  .list-cont-desc-cont {
+                    color: var(--color-text-3);
+                  }
+                }
+              }
+            }
+
+            .copy-icon {
+              width: auto;
+              height: 0.8rem;
+              .iconpark-icon {
+                width: 2rem;
+                height: 0.8rem;
+              }
+            }
+          }
         }
         .module-box {
           background: var(--color-fill--5);

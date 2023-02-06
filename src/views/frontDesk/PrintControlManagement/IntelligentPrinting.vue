@@ -75,6 +75,18 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -509,6 +521,16 @@
           name: '批量操作'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      },
+      'show-icon': false
     }
   })
   const showDepPerDialog = ref(false)
@@ -549,32 +571,25 @@
       )
     }
     if (cell.name === '撤销转办') {
-      ElMessageBox.confirm('请问确定要撤销转办申请吗？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请问确定要撤销转办申请吗？'
+      state.JyElMessageBox.show = true
     }
     if (cell.name === '撤销重置') {
-      ElMessageBox.confirm('请问确定要撤销重置用印申请吗？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请问确定要撤销重置用印申请吗？'
+      state.JyElMessageBox.show = true
+      // console.log('--->', state.JyElMessageBox)
     }
     if (cell.name === '结束用印') {
-      ElMessageBox.confirm('请问确定要结束用印吗？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请问确定要结束用印吗？'
+      state.JyElMessageBox.show = true
     }
     if (cell.name === '查看历史记录') {
-      ElMessageBox.confirm('请问确定要催办吗？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请问确定要催办吗？'
+      state.JyElMessageBox.show = true
     }
   }
 
@@ -982,15 +997,10 @@
   function clickBatchButton(item, index) {
     console.log(item, index)
     if (item.name === '批量结束用印') {
-      ElMessageBox.confirm(
-        '已选中单据【】、【】、【】，请问确定要结束用印吗？',
-        '批量结束用印',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).then(() => {})
+      state.JyElMessageBox.header.data = '批量结束用印'
+      state.JyElMessageBox.content.data =
+        '已选中单据【】、【】、【】，请问确定要结束用印吗？'
+      state.JyElMessageBox.show = true
     }
   }
   onBeforeMount(() => {
