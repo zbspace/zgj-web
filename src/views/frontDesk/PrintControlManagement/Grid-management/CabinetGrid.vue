@@ -499,7 +499,7 @@ function customClick(row, column, cell, event) {
 }
 function goDetail(item) {
     router.push({
-        path: "/frontDesk/equipmentManage/IntelligentSealCabinetManagement/cabinetGridInfo"
+        path: "/frontDesk/printControlManage/equipmentManage/IntelligentSealCabinetManagement/cabinetGridInfo"
     })
 }
 function goGridType() {
