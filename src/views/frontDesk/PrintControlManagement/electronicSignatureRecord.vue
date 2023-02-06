@@ -96,6 +96,18 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -601,6 +613,15 @@
           name: '批量作废'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   const showDepPerDialog = ref(false)
@@ -983,15 +1004,10 @@
   //点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '作废') {
-      ElMessageBox.confirm(
-        '作废后当前记录将从当前表格中消失，请问确定要作废吗？',
-        '作废',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data =
+        '作废后当前记录将从当前表格中消失，请问确定要作废吗？'
+      state.JyElMessageBox.show = true
     }
   }
 

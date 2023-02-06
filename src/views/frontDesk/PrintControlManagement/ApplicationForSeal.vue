@@ -119,6 +119,18 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -630,6 +642,15 @@
           name: '批量催办'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   // 点击表格单元格
@@ -646,18 +667,15 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '撤销') {
-      ElMessageBox.confirm('撤销后本次申请送审将被取消，请问确定要撤销吗？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data =
+        '撤销后本次申请送审将被取消，请问确定要撤销吗？'
+      state.JyElMessageBox.show = true
     }
     if (cell.name === '催办') {
-      ElMessageBox.confirm('请问确定要催办吗？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请问确定要催办吗？'
+      state.JyElMessageBox.show = true
     }
   }
   function handleCommand(command) {

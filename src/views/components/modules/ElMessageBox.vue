@@ -1,7 +1,7 @@
 <template>
   <div class="components-ElMessageBox">
     <el-dialog
-      v-model="state.props.show"
+      v-model="state.props.modelValue"
       v-bind="state.props.defaultAttribute"
       @close="closeCallBack"
     >
@@ -9,22 +9,29 @@
         class="dialog"
         :style="{ height: state.props.defaultAttribute.height }"
       >
-        <div class="dialog-header">
-          <div class="dialog-header-icon" v-if="state.props['show-icon']">
+        <div
+          class="dialog-header"
+          v-if="
+            state.props['showIcon'] ||
+            state.props['showTitle'] ||
+            state.props['showCutOffRule']
+          "
+        >
+          <div class="dialog-header-icon" v-if="state.props['showIcon']">
             <svg class="iconpark-icon"><use href="#icon4"></use></svg>
           </div>
-          <div class="dialog-header-cont" v-if="state.props['show-title']">
-            <slot name="header"> </slot>
+          <div class="dialog-header-cont" v-if="state.props['showTitle']">
+            <slot name="header">标题 </slot>
           </div>
           <div
             class="dialog-header-remove"
             @click="clickClose"
-            v-if="state.props['show-close']"
+            v-if="state.props['showClose']"
           >
             <svg class="iconpark-icon"><use href="#Vector"></use></svg>
           </div>
         </div>
-        <div class="cut-off-rule" v-if="state.props['show-cut-off-rule']"></div>
+        <div class="cut-off-rule" v-if="state.props['showCutOffRule']"></div>
         <div
           class="dialog-content"
           :class="{
@@ -33,7 +40,7 @@
         >
           <slot name="content"> 内容 </slot>
         </div>
-        <div class="cut-off-rule" v-if="state.props['show-cut-off-rule']"></div>
+        <div class="cut-off-rule" v-if="state.props['showCutOffRule']"></div>
         <div
           class="dialog-footer"
           :class="{
@@ -51,14 +58,14 @@
 </template>
 
 <script setup>
-  /* 
-    show 是否显示 默认 false
-    show-cut-off-rule 是否显示分割线 默认 false
-    show-close 是否显示关闭图标 默认 true
-    show-icon 是否显示icon 默认 false
-    show-title 是否显示title 默认 true
-    defaultAttribute  默认属性   element的对话框属性 
-*/
+  /*
+      modelValue 是否显示 默认 false
+      show-cut-off-rule 是否显示分割线 默认 false
+      show-close 是否显示关闭图标 默认 true
+      show-icon 是否显示icon 默认 false   一般警告弹框会显示
+      show-title 是否显示title 默认 true
+      defaultAttribute  默认属性   element的对话框属性
+  */
   import {
     // ref,
     reactive,
@@ -74,7 +81,7 @@
       type: String,
       default: '0'
     },
-    show: {
+    modelValue: {
       type: Boolean,
       default: false
     },
@@ -111,10 +118,10 @@
       }
     }
   })
-  const emit = defineEmits(['close'])
+  const emit = defineEmits(['close', 'update:modelValue'])
   // 初始化 props
   function initProps() {
-    console.log('--->', 'initProps')
+    // console.log('--->', 'initProps')
     const dispose = state.props
     for (const key in props) {
       if (Object.hasOwnProperty.call(dispose, key)) {
@@ -136,11 +143,13 @@
 
   // 点击关闭弹框
   function clickClose() {
-    state.props.show = false
+    state.props.modelValue = false
   }
   // 点击关闭后回调
   function closeCallBack() {
-    emit('close', state.props.show)
+    state.props.modelValue = false
+    // console.log('--->modelValue', state.props.modelValue)
+    emit('update:modelValue', state.props.modelValue)
   }
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
@@ -165,7 +174,7 @@
       .dialog-header {
         display: flex;
         position: relative;
-        padding: 1rem 3rem 1rem 3rem;
+        padding: 1rem 2.5rem 1rem 2.5rem;
         box-sizing: border-box;
         align-items: center;
         .dialog-header-icon {
@@ -197,7 +206,7 @@
         }
       }
       .dialog-content {
-        padding: 1rem 2rem;
+        padding: 0rem 2.5rem;
         box-sizing: border-box;
         flex-grow: 1;
         color: var(--color-text-2);

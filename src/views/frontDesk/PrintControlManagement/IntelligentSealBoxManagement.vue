@@ -91,6 +91,18 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -534,6 +546,15 @@
           name: 'operating-record'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   // 点击表格单元格
@@ -554,11 +575,9 @@
       showFormDialog.value = true
     }
     if (cell.name === '删除') {
-      ElMessageBox.confirm('您确定要删除该记录吗？', {
-        confirmButtonText: '确认',
-        cancelButtonText: '关闭',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
+      state.JyElMessageBox.show = true
     }
   }
 

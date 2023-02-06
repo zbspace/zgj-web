@@ -83,6 +83,18 @@
       >
       </v-form-render>
     </KDialog>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -435,6 +447,15 @@
           name: '批量删除'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   function clickEditor(editor) {
@@ -447,11 +468,9 @@
       clickEditor(cell.name)
     }
     if (cell.name === '删除') {
-      ElMessageBox.confirm('请问确定要删除吗？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请问确定要删除吗？'
+      state.JyElMessageBox.show = true
     }
   }
 

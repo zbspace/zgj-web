@@ -122,6 +122,18 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -743,6 +755,15 @@
           name: '批量作废'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   // 点击表格单元格
@@ -755,21 +776,16 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '撤销') {
-      ElMessageBox.confirm('撤销后本次申请送审将被取消，请问确定要撤销吗？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data =
+        '撤销后本次申请送审将被取消，请问确定要撤销吗？'
+      state.JyElMessageBox.show = true
     }
     if (cell.name === '作废') {
-      ElMessageBox.confirm(
-        '作废后当前记录将从当前表格中消失，请问确定要作废吗？',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data =
+        '作废后当前记录将从当前表格中消失，请问确定要作废吗？'
+      state.JyElMessageBox.show = true
     }
     if (cell.name === '流程终止') {
       dialogProcess.show = true
@@ -793,14 +809,10 @@
       dialogProcess.formJson = RecordSealToReviewJson
     }
     if (cell.name === '解除用印限制') {
-      ElMessageBox.confirm(
-        '若单据满足【远程盖章】、【实时视频盖章】、【二维码水印校验】、【限时用印】、【印章外带】、【盖前文件内容核验】条件，此操作会取消所有相关校验并将盖章模式转为普通智能用印，以支持用印人跳过限制直接用印，确定要继续吗？',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).then(() => {})
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data =
+        '若单据满足【远程盖章】、【实时视频盖章】、【二维码水印校验】、【限时用印】、【印章外带】、【盖前文件内容核验】条件，此操作会取消所有相关校验并将盖章模式转为普通智能用印，以支持用印人跳过限制直接用印，确定要继续吗？'
+      state.JyElMessageBox.show = true
     }
     if (cell.name === '去送审') {
       router.push({

@@ -67,6 +67,18 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -493,6 +505,15 @@
           name: 'Record-of-requisition'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   const showDepPerDialog = ref(false)
@@ -1066,11 +1087,9 @@
   //点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '取消水印验证') {
-      ElMessageBox.confirm('请问确认要取消水印验证吗？', '取消水印验证', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {})
+      state.JyElMessageBox.header.data = '取消水印验证'
+      state.JyElMessageBox.content.data = '请问确认要取消水印验证吗？'
+      state.JyElMessageBox.show = true
     }
     if (cell.name === '查看验证记录') {
       router.push({

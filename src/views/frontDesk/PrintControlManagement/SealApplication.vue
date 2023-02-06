@@ -107,6 +107,18 @@
       >
       </v-form-render>
     </KDialog>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -196,27 +208,31 @@
     ElMessage.error('这是一条异常消息，会自动消失。')
   }
   const openMess = () => {
-    ElMessageBox.confirm(
-      '一系列的信息描述，可能会很长。也可以是很短同样也可以带标点。',
-      '提示？',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    )
-      .then(() => {
-        ElMessage({
-          type: 'success',
-          message: '操作成功！'
-        })
-      })
-      .catch(() => {
-        ElMessage({
-          type: 'info',
-          message: '取消操作！'
-        })
-      })
+    // ElMessageBox.confirm(
+    //   '一系列的信息描述，可能会很长。也可以是很短同样也可以带标点。',
+    //   '提示？',
+    //   {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning'
+    //   }
+    // )
+    //   .then(() => {
+    //     ElMessage({
+    //       type: 'success',
+    //       message: '操作成功！'
+    //     })
+    //   })
+    //   .catch(() => {
+    //     ElMessage({
+    //       type: 'info',
+    //       message: '取消操作！'
+    //     })
+    //   })
+    state.JyElMessageBox.header.data = '提示？'
+    state.JyElMessageBox.content.data =
+      '一系列的信息描述，可能会很长。也可以是很短同样也可以带标点。'
+    state.JyElMessageBox.show = true
   }
   const emit = defineEmits([])
   const state = reactive({
@@ -540,6 +556,15 @@
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         separator: '/'
+      }
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
       }
     }
   })
