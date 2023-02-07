@@ -12,8 +12,8 @@ export const useLayoutStore = defineStore({
       sidebarColor: 'light',
       sidebarImage: 'none',
       preloader: 'disable',
-      isCollapse: false,
 
+      isCollapse: false, // 菜单栏是否折叠
       topbar: 'light', // 顶栏颜色
       themeType: 'light', // 配色方案
       sidebarType: '1', // 菜单侧边栏模式

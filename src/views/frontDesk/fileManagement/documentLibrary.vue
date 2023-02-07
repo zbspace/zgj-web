@@ -146,7 +146,6 @@
     inject
   } from 'vue'
   import { useRouter } from 'vue-router'
-  import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -809,7 +808,7 @@
     }
   }
 
-  //点击下载记录
+  // 点击下载记录
   function clickDownloadRecord() {
     commonFun.routerPage(router, {
       path: '/frontDesk/fileManagement/downloadRecord'

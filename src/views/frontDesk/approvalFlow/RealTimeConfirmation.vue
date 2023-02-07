@@ -107,7 +107,6 @@
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -485,12 +484,12 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
 
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     dialogProcess.show = true
     dialogProcess.title = cell.name
