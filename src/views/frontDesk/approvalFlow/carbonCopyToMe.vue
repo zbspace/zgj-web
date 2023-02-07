@@ -80,7 +80,6 @@
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -426,7 +425,7 @@
   })
   const showDepPerDialog = ref(false)
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection

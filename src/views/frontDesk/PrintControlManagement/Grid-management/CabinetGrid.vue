@@ -148,7 +148,6 @@
 </template>
 <script setup>
 import { reactive, defineProps, defineEmits, onBeforeMount, onMounted, ref } from "vue"
-import Layout from "../../../../layouts/main.vue";
 import componentsTable from "../../../components/table"
 import componentsSearchForm from "../../../components/searchForm"
 import componentsTree from "../../../components/tree"
