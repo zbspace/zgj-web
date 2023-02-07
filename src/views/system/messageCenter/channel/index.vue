@@ -133,7 +133,7 @@
       width: 100%;
       .card-l {
         width: 240px;
-        padding: 0 20px;
+        padding: 0 20px 0 0;
         position: relative;
         display: flex;
         flex-direction: column;
