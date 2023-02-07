@@ -632,6 +632,9 @@
     if (cell.name === '修改') {
       showLibraryDialog.value = true
     }
+    if (cell.name === '设置维护范围' || cell.name === '设置可用范围') {
+      showDepPerDialog.value = true
+    }
   }
 
   // 当选择项发生变化时会触发该事件
