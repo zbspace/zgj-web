@@ -281,6 +281,20 @@ element table 样式
 }
 
 /* 
+动态表单元素间距
+*/
+:deep(.el-form-item--default){
+  margin-bottom:12px !important;
+  // height:32px !important;
+}
+:deep(.el-form .el-row){
+  padding:0;
+}
+:deep(.el-form-item__label){
+  margin:0;
+}
+
+/* 
 左侧菜单 字体大小
 */
 .navbar-menu .navbar-nav .nav-link {

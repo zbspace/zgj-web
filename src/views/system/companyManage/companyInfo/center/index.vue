@@ -63,30 +63,18 @@
         >
           <JyLabel
             label="超级管理员"
-            :btn="edit2 ? '保存' : '变更'"
-            :btn1="edit2 ? '取消' : ''"
-            @on-click="onClick2"
-            @on-click-cancel="onClickCancel2"
+            btn="变更"
+            @on-click="changeSAVisible = true"
           />
           <div>
             <div class="rows input">
               <el-form-item label="超级管理员" prop="data1">
-                <span class="content" v-if="!edit2">{{ formData.data1 }}</span>
-                <el-input
-                  v-if="edit2"
-                  v-model="formData.data1"
-                  placeholder=""
-                />
+                <span class="content">{{ formData.data1 }}</span>
               </el-form-item>
             </div>
             <div class="rows input">
               <el-form-item label="超级管理员账号" prop="data1">
-                <span class="content" v-if="!edit2">{{ formData.data2 }}</span>
-                <el-input
-                  v-if="edit2"
-                  v-model="formData.data2"
-                  placeholder=""
-                />
+                <span class="content">{{ formData.data2 }}</span>
               </el-form-item>
             </div>
           </div>
@@ -187,17 +175,20 @@
       </el-form>
     </div>
   </div>
+  <!-- 变更超级管理员 -->
+  <ChangeSuperAdmin v-model="changeSAVisible" />
 </template>
 
 <script setup>
   import inputIcon from '@/assets/svg/system/comp-info/input.svg'
+  import ChangeSuperAdmin from '../ChangeSuperAdmin'
   import { ref } from 'vue'
   const edit1 = ref(false)
-  const edit2 = ref(false)
   const edit3 = ref(false)
   const edit4 = ref(false)
   const edit5 = ref(false)
   const rules = ref([])
+  const changeSAVisible = ref(false)
   const formData = ref({
     data1: '111',
     data2: '222',
@@ -238,12 +229,6 @@
   }
   const onClickCancel3 = () => {
     edit3.value = !edit3.value
-  }
-  const onClick2 = () => {
-    edit2.value = !edit2.value
-  }
-  const onClickCancel2 = () => {
-    edit2.value = !edit2.value
   }
 
   const handleChange = () => {
