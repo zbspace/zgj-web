@@ -104,7 +104,8 @@ function initData() {
 function fileUpload(file) {
   console.log(file.name);
   let fileFormats = ['doc', 'docx', 'xls', 'xlsx', 'pdf'];
-  let fileFormat = file.name.split('.')[1];
+  let lastIndex = file.name.lastIndexOf('.') + 1;
+  let fileFormat = file.name.substr(lastIndex);
   if (fileFormats.indexOf(fileFormat) == -1) {
     this.$message({
       message: '请上传正确文件格式的文件！',
@@ -126,7 +127,8 @@ function handelImg(name) {
   }
 }
 function requireImg(fileName) {
-  let item = fileName.split('.')[1];
+  let lastIndex = fileName.lastIndexOf('.') + 1;
+  let item = fileName.substr(lastIndex);
   return new URL(`../../../assets/svg/upload/${handelImg(item)}`, import.meta.url).href;
 }
 function deleteFile(index) {

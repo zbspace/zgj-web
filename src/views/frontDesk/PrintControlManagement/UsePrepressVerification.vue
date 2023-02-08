@@ -43,7 +43,7 @@
       </componentsDocumentsDetails>
     </div>
     <KDialog @update:show="state.componentsUploadFile.show = $event" :show="state.componentsUploadFile.show"
-      title="上传文件核验" :oneBtn="true" :confirmText="$t('t-zgj-operation.ocrsubmit')"
+      title="上传文件核验" :oneBtn="true" :width="1000" :confirmText="$t('t-zgj-operation.ocrsubmit')"
       :concelText="$t('t-zgj-operation.cancel')">
       <fileCheckUpload :data="state.componentsUploadFile"></fileCheckUpload>
     </KDialog>
