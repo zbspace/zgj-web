@@ -2,9 +2,7 @@
   <div class="back-top">
     <div class="back-top-item" @click.stop="scrollToTop">
       <div class="back-top-item-curtain">
-        <svg class="iconpark-icon">
-          <use href="#zhongduancaozuorizhi"></use>
-        </svg>
+        <svg class="iconpark-icon"><use href="#toTop"></use></svg>
       </div>
       <div class="back-top-item-mask"></div>
       <div class="back-top-item-content">TT</div>
@@ -12,19 +10,15 @@
 
     <div @click.stop="" class="back-top-item">
       <div class="back-top-item-curtain">
-        <svg class="iconpark-icon">
-          <use href="#zhongduancaozuorizhi"></use>
-        </svg>
+        <svg class="iconpark-icon"><use href="#kf"></use></svg>
       </div>
       <div class="back-top-item-mask"></div>
       <div class="back-top-item-content">KF</div>
     </div>
 
     <div @click.stop="showRightBar" class="back-top-item">
-      <div class="back-top-item-curtain">
-        <svg class="iconpark-icon">
-          <use href="#zhongduancaozuorizhi"></use>
-        </svg>
+      <div class="back-top-item-curtain back-top-item-curtain-bg">
+        <svg class="iconpark-icon"><use href="#setting"></use></svg>
       </div>
       <div class="back-top-item-mask"></div>
       <div class="back-top-item-content">RB</div>
@@ -106,6 +100,13 @@
         border-radius: 50%;
         text-align: center;
         z-index: 99;
+      }
+      .back-top-item-curtain-bg {
+        background: #d0963e;
+        box-shadow: 0px 3px 6px -4px rgba(208, 150, 62, 0.7),
+          0px 6px 16px rgba(208, 150, 62, 0.08),
+          0px 9px 28px 8px rgba(208, 150, 62, 0.05);
+        border-radius: 4px;
       }
       &:hover {
         .back-top-item-content {
