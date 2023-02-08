@@ -259,7 +259,7 @@
     })
   }
   onMounted(() => {
-    dialogEl.value.addEventListener('mousedown', commonEvent)
+    props.draggable && dialogEl.value.addEventListener('mousedown', commonEvent)
   })
 
   watch(

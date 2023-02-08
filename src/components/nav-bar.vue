@@ -161,7 +161,7 @@
                 </div>
 
                 <div class="dropdown-list">
-                  <div class="dropdown-list-li">
+                  <div class="dropdown-list-li" @click="goPersonCenter">
                     <img src="../assets/images/navbar/user_info_logo.svg" />
                     <span class="dropdown-list-li-text">{{
                       $t('t-zgj-person.center')
@@ -349,6 +349,11 @@
   }
   const hideUserPop = () => {
     showUserInfoPop.value = false
+  }
+
+  // 个人中心
+  const goPersonCenter = () => {
+    router.push({ name: 'personally' })
   }
 </script>
 <style lang="scss" scoped>
