@@ -224,7 +224,7 @@ element table 样式
 输入框错误状态
 */
 :deep(.el-form-item.is-error .el-input__wrapper) {
-  background: #ffeee8;
+  // background: #ffeee8;
   box-shadow: 0 0 0 1px #ecad9d inset;
 }
 
@@ -283,15 +283,15 @@ element table 样式
 /* 
 动态表单元素间距
 */
-:deep(.el-form-item--default){
-  margin-bottom:12px !important;
+:deep(.el-form-item--default) {
+  margin-bottom: 12px !important;
   // height:32px !important;
 }
-:deep(.el-form .el-row){
-  padding:0;
+:deep(.el-form .el-row) {
+  padding: 0;
 }
-:deep(.el-form-item__label){
-  margin:0;
+:deep(.el-form-item__label) {
+  margin: 0;
 }
 
 /* 

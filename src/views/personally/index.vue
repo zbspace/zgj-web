@@ -100,7 +100,7 @@
         <div class="cont-box">
           <!-- depart -->
           <el-row class="row">
-            <el-col :span="2" style="min-width: 80px">
+            <el-col :span="2" style="min-width: 100px">
               <div class="label">所属部门 :</div>
             </el-col>
             <el-col :span="16">
@@ -117,7 +117,7 @@
 
           <!-- 角色 -->
           <el-row class="row">
-            <el-col :span="2" style="min-width: 80px">
+            <el-col :span="2" style="min-width: 100px">
               <div class="label">角色 :</div>
             </el-col>
             <el-col :span="16">
@@ -127,7 +127,7 @@
 
           <!-- 职位 -->
           <el-row class="row">
-            <el-col :span="2" style="min-width: 80px">
+            <el-col :span="2" style="min-width: 100px">
               <div class="label">职位 :</div>
             </el-col>
             <el-col :span="16">
@@ -137,7 +137,7 @@
 
           <!-- 工号 -->
           <el-row class="row">
-            <el-col :span="2" style="min-width: 80px">
+            <el-col :span="2" style="min-width: 100px">
               <div class="label">工号 :</div>
             </el-col>
             <el-col :span="16">
@@ -146,8 +146,8 @@
           </el-row>
 
           <!-- 照片 -->
-          <el-row>
-            <el-col :span="2" style="min-width: 80px">
+          <el-row class="row">
+            <el-col :span="2" style="min-width: 100px">
               <div class="label">人脸图片 :</div>
             </el-col>
             <el-col :span="16">
@@ -184,15 +184,80 @@
           </el-row>
         </div>
       </div>
+      <JyDialog title="更换手机号" v-model="showFormDialog" :width="600">
+        <el-form
+          label-position="left"
+          ref="loginformRef"
+          label-width="100px"
+          :model="loginform"
+          hide-required-asterisk
+        >
+          <el-form-item>
+            <template #label>
+              <div class="from-label">已绑定手机号</div>
+            </template>
+            <div>12345678901</div>
+          </el-form-item>
+          <el-form-item
+            prop="username"
+            :rules="[
+              {
+                required: true,
+                message: '新手机号不能为空',
+                trigger: 'blur'
+              }
+            ]"
+          >
+            <template #label>
+              <div class="from-label">新手机号</div>
+            </template>
+            <el-input
+              v-model="loginform.username"
+              placeholder="请输入"
+              style="width: 210px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            class="clearfix"
+            label="验证码"
+            prop="password"
+            :rules="[
+              {
+                required: true,
+                message: '验证码不能为空',
+                trigger: 'blur'
+              }
+            ]"
+          >
+            <template #label>
+              <div class="from-label">验证码</div>
+            </template>
+            <el-input
+              v-model="loginform.password"
+              show-password
+              placeholder="请输入验证码"
+              style="width: 210px"
+            ></el-input>
+            <VerificationBtn :customStyle="customStyle"></VerificationBtn>
+          </el-form-item>
+        </el-form>
+
+        <template #footer>
+          <el-button type="primary" @click="login"> 提交 </el-button>
+          <el-button @click="onClose">取消</el-button>
+        </template>
+      </JyDialog>
     </div>
   </div>
 </template>
 
 <script setup>
   import router from '@/router'
-  import { ref } from 'vue'
+  import { reactive, ref } from 'vue'
   import { ElMessage } from 'element-plus'
   import { Plus } from '@element-plus/icons-vue'
+  import JyDialog from '@/components/common/JyDialog/index.vue'
+  import VerificationBtn from '@/views/login/components/VerificationBtn.vue'
   const imageUrl = ref('')
 
   const handleAvatarSuccess = (response, uploadFile) => {
@@ -217,12 +282,34 @@
 
   const showFormDialog = ref(false)
 
-  // const submitForm = () => {
-  //   showFormDialog.value = false
-  // }
-
   const changePhoneNumber = () => {
     showFormDialog.value = true
+  }
+
+  const onClose = value => {
+    showFormDialog.value = false
+  }
+
+  const loginform = reactive({
+    username: '',
+    password: ''
+  })
+  const loginformRef = ref(null)
+
+  const login = () => {
+    loginformRef.value.validate(valid => {
+      if (valid) {
+        showFormDialog.value = false
+      } else {
+        return false
+      }
+    })
+  }
+
+  const customStyle = {
+    width: '120px',
+    height: '32px',
+    fontSize: '14px'
   }
 </script>
 
@@ -352,5 +439,12 @@
         }
       }
     }
+  }
+  .from-label {
+    text-align: end;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.65);
   }
 </style>

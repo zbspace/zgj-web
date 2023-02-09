@@ -81,7 +81,7 @@
       }
       .el-dialog__body {
         padding: 0 64px;
-        min-height: 304px;
+        min-height: 200px;
       }
     }
   }
