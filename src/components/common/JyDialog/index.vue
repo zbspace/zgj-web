@@ -6,6 +6,7 @@
       center
       align-center
       destroy-on-close
+      @closed="closed"
     >
       <template #header>
         <slot name="title">
@@ -19,8 +20,8 @@
 
       <template #footer>
         <slot name="footer">
-          <el-button type="primary" @click="onConfirm"> 确认 </el-button>
-          <el-button @click="onClose">取消</el-button>
+          <el-button type="primary" @click="confirm"> 确认 </el-button>
+          <el-button @click="isVisible = false">取消</el-button>
         </slot>
       </template>
     </el-dialog>
@@ -44,7 +45,7 @@
     }
   })
 
-  const emit = defineEmits(['update:modelValue', 'on-confirm', 'on-close'])
+  const emit = defineEmits(['update:modelValue', 'on-confirm', 'on-closed'])
 
   const isVisible = computed({
     get() {
@@ -55,15 +56,13 @@
     }
   })
 
-  const onClose = value => {
-    console.log('--->', 3333)
-    emit('update:modelValue', value)
+  const confirm = () => {
+    emit('on-closed')
     isVisible.value = false
   }
 
-  const onConfirm = value => {
-    emit('update:modelValue', value)
-    isVisible.value = false
+  const closed = () => {
+    emit('on-closed')
   }
 </script>
 
