@@ -2,6 +2,7 @@
   <JyDialog
     :title="step === 1 ? '身份验证' : '变更超级管理员'"
     v-model="isVisible"
+    @on-closed="onClosed"
   >
     <div class="authentication-form">
       <el-form
@@ -32,7 +33,14 @@
           <el-form-item label="手机验证码" prop="vcode">
             <div class="vcode">
               <el-input v-model="formData.vcode" />
-              <el-button type="primary">获取验证码</el-button>
+              <el-button
+                type="primary"
+                :disabled="countdownTime >= 0"
+                @click="sendVCode"
+                >{{
+                  countdownTime < 0 ? '获取验证码' : countdownTime + '秒后重发'
+                }}</el-button
+              >
             </div>
           </el-form-item>
         </div>
@@ -86,6 +94,8 @@
   const formRef = ref(null)
   const step = ref(1)
   const options = ref([{ label: 'zb', value: '1' }])
+  const timer = ref(null)
+  const countdownTime = ref(-1)
   const props = defineProps({
     visible: {
       type: Boolean,
@@ -132,11 +142,12 @@
   const submit = async () => {
     await formRef.value.validate((valid, fields) => {
       if (valid) {
-        cancel()
+        // cancel()
         ElMessage({
           message: '超级管理员变更成功',
           type: 'success'
         })
+        showImgVCode()
       } else {
         console.log('error', fields)
       }
@@ -147,6 +158,29 @@
     isVisible.value = false
     step.value = 1
     formData.value = new SuperAdmin()
+  }
+
+  const showImgVCode = () => {}
+
+  const sendVCode = () => {
+    countdownTime.value = 10
+    if (!timer.value) {
+      timer.value = setInterval(() => {
+        console.log('--->', 33332)
+        if (countdownTime.value < 0) {
+          clearInterval(timer.value)
+          timer.value = null
+        } else {
+          countdownTime.value--
+        }
+      }, 1000)
+    }
+  }
+
+  const onClosed = () => {
+    clearInterval(timer.value)
+    timer.value = null
+    countdownTime.value = -1
   }
 </script>
 
