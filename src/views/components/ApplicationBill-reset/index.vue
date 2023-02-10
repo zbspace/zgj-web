@@ -1,48 +1,54 @@
 <template>
-    <div class="inner-page-content">
-        <!-- 面包屑 -->
-        <div class="inner-crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ resetData.title }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{resetData.isTransfer?'申请转办':'申请重置'}}</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-
-        <!-- title -->
-        <div class="inner-page-title">
-
-
-            <div class="inner-title" @click="router.go(-1)">
-                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M0.313093 8.72017C-0.104364 8.32243 -0.104364 7.67757 0.313093 7.27983L7.11595 0.798304C7.5334 0.400565 8.21024 0.400565 8.62769 0.798304C9.04515 1.19604 9.04515 1.8409 8.62769 2.23864L3.64968 6.98153H18V9.01847H3.64968L8.62769 13.7614C9.04515 14.1591 9.04515 14.804 8.62769 15.2017C8.21024 15.5994 7.5334 15.5994 7.11595 15.2017L0.313093 8.72017Z"
-                        fill="black" fill-opacity="0.85" />
-                </svg>
-                <div style="margin-left: 6px">智能用印</div>
-            </div>
-            <div class="confirm btn" @click="submitForm">提交</div>
-        </div>
-
-        <!-- content -->
+    <componentsLayout :style="{
+        padding: '16px'
+    }" :free="true">
         <div class="inner-page-content">
-
-            <div class="l-title">基本信息</div>
-            <div class="base-info">
-                <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData"
-                    ref="vFormRef" @buttonClick="clickSelect">
-                </v-form-render>
+            <!-- 面包屑 -->
+            <div class="inner-crumbs">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item>{{ resetData.title }}</el-breadcrumb-item>
+                    <el-breadcrumb-item>{{ resetData.isTransfer ? '申请转办' : '申请重置' }}</el-breadcrumb-item>
+                </el-breadcrumb>
             </div>
-            <div class="l-title">审批流程</div>
+
+            <!-- title -->
+            <div class="inner-page-title">
+
+
+                <div class="inner-title" @click="router.go(-1)">
+                    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M0.313093 8.72017C-0.104364 8.32243 -0.104364 7.67757 0.313093 7.27983L7.11595 0.798304C7.5334 0.400565 8.21024 0.400565 8.62769 0.798304C9.04515 1.19604 9.04515 1.8409 8.62769 2.23864L3.64968 6.98153H18V9.01847H3.64968L8.62769 13.7614C9.04515 14.1591 9.04515 14.804 8.62769 15.2017C8.21024 15.5994 7.5334 15.5994 7.11595 15.2017L0.313093 8.72017Z"
+                            fill="black" fill-opacity="0.85" />
+                    </svg>
+                    <div style="margin-left: 6px">智能用印</div>
+                </div>
+                <div class="confirm btn" @click="submitForm">提交</div>
+            </div>
+
+            <!-- content -->
+            <div class="inner-page-content">
+
+                <div class="l-title">基本信息</div>
+                <div class="base-info">
+                    <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef"
+                        @buttonClick="clickSelect">
+                    </v-form-render>
+                </div>
+                <div class="l-title">审批流程</div>
+            </div>
+            <div v-if="state.selectPerson">1111</div>
         </div>
-        <div v-if="state.selectPerson">1111</div>
-    </div>
+    </componentsLayout>
+
 </template>
   
 <script setup>
-import { ref,reactive, defineProps, defineEmits, onBeforeMount, onMounted, watch } from "vue"
+import { ref, reactive, defineProps, defineEmits, onBeforeMount, onMounted, watch } from "vue"
 import ResetFromJson from '@/views/addDynamicFormJson/ResetForm'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import componentsLayout from '@/views/components/Layout.vue'
 const router = useRouter()
 const props = defineProps({
     // 展示权限
@@ -52,7 +58,7 @@ const props = defineProps({
     }
 })
 const state = reactive({
-    selectPerson:false
+    selectPerson: false
 })
 const formJson = reactive(ResetFromJson)
 const formData = reactive({})
@@ -75,7 +81,7 @@ const submitForm = (type) => {
 }
 
 // select25439
-function clickSelect(buttonWidget){
+function clickSelect(buttonWidget) {
     console.log(buttonWidget);
 }
 </script>
@@ -85,8 +91,6 @@ function clickSelect(buttonWidget){
 .inner-page-content {
     margin: 0%;
     width: 100%;
-    height: calc(100vh - 100px);
-
     display: flex;
     // flex-flow: wrap;
     align-content: flex-start;
@@ -129,7 +133,7 @@ function clickSelect(buttonWidget){
             color: rgba(0, 0, 0, 0.85);
             padding-bottom: 6px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            margin-bottom: 80px;
+            margin-bottom: 24px;
 
             &::before {
                 content: '';
@@ -167,8 +171,9 @@ function clickSelect(buttonWidget){
     .confirm:active {
         background: #AF7427;
     }
-    .base-info{
-        width:100%;
+
+    .base-info {
+        width: 100%;
     }
 }
 </style>

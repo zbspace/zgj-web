@@ -36,4 +36,12 @@ export function requireComp(app) {
       import('@/views/components/modules/ElMessageBox.vue')
     )
   )
+  app.component(
+    'JyDialog',
+    defineAsyncComponent(() => import('./common/JyDialog/index.vue'))
+  )
+  app.component(
+    'JyVertifyBox',
+    defineAsyncComponent(() => import('./common/JyVertifyBox/index.vue'))
+  )
 }

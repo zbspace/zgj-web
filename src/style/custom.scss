@@ -24,7 +24,7 @@ $unify-primary-color: var(--primary-6);
     background: #{$unify-primary-color};
   }
 
-  .el-radio__input.is-checked+.el-radio__label {
+  .el-radio__input.is-checked + .el-radio__label {
     color: #{$unify-primary-color};
   }
 }
@@ -63,8 +63,6 @@ $unify-primary-color: var(--primary-6);
 .el-date-editor.el-input__wrapper {
   width: 100%;
 }
-
-
 
 /* 下拉菜单 */
 // .el-popper__arrow {
@@ -201,7 +199,6 @@ element table 样式
   color: var(--color-text-2);
 }
 
-
 /* 
 输入框禁用状态样式
 */
@@ -227,7 +224,7 @@ element table 样式
 输入框错误状态
 */
 :deep(.el-form-item.is-error .el-input__wrapper) {
-  background: #ffeee8;
+  // background: #ffeee8;
   box-shadow: 0 0 0 1px #ecad9d inset;
 }
 
@@ -284,6 +281,20 @@ element table 样式
 }
 
 /* 
+动态表单元素间距
+*/
+:deep(.el-form-item--default) {
+  margin-bottom: 12px !important;
+  // height:32px !important;
+}
+:deep(.el-form .el-row) {
+  padding: 0;
+}
+:deep(.el-form-item__label) {
+  margin: 0;
+}
+
+/* 
 左侧菜单 字体大小
 */
 .navbar-menu .navbar-nav .nav-link {
@@ -315,7 +326,11 @@ element table 样式
 }
 
 /* 左侧菜单 */
-[data-layout='vertical'][data-sidebar-size='sm'] .navbar-menu .navbar-nav .nav-item:hover>a.menu-link {
+[data-layout='vertical'][data-sidebar-size='sm']
+  .navbar-menu
+  .navbar-nav
+  .nav-item:hover
+  > a.menu-link {
   background-color: rgba(208, 150, 62, 0.12);
   color: var(--vz-vertical-menu-sub-item-color);
   border-top-right-radius: 0px !important;
@@ -501,4 +516,29 @@ body {
   .el-drawer__body {
     padding: 0;
   }
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader {
+  img {
+    width: 96px;
+    height: 96px;
+  }
+}
+// .avatar-uploader .el-upload:hover {
+//   border-color: #d0963e;
+// }
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 96px;
+  height: 96px;
+  text-align: center;
 }

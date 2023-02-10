@@ -2,10 +2,12 @@
   <el-container
     class="layout-container"
     :class="'layout-container-' + layoutStore.sidebarType"
+    :data-topbar="layoutStore.topbar"
   >
     <el-aside class="left-aside-div" v-if="layoutStore.sidebarType === '2'">
       <Asides />
     </el-aside>
+
     <el-main>
       <el-container>
         <el-header>
@@ -70,7 +72,7 @@
       background: #ffffff;
       box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.06);
       position: relative;
-      z-index: 1;
+      // z-index: 1;
       height: 64px;
     }
     :deep {

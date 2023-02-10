@@ -119,7 +119,6 @@
     onBeforeMount,
     onMounted
   } from 'vue'
-  import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -632,7 +631,7 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
@@ -1001,7 +1000,7 @@
       ]
     }
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '作废') {
       state.JyElMessageBox.header.data = '提示？'
@@ -1011,7 +1010,7 @@
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection

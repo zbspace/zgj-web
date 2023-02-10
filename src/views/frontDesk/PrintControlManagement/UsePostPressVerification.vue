@@ -62,45 +62,15 @@
     </div>
     <!-- test - dialog -->
     <KDialog
-      @update:show="state.showDialog = $event"
-      :show="state.showDialog"
+      @update:show="state.componentsUploadFile.show = $event"
+      :width="1000"
+      :show="state.componentsUploadFile.show"
       title="上传文件核验"
       :oneBtn="true"
       :confirmText="$t('t-zgj-operation.ocrsubmit')"
       :concelText="$t('t-zgj-operation.cancel')"
     >
-      <div>单据名称</div>
-      <div class="files-base">
-        <div class="files-radio">
-          <el-radio-group v-model="state.filesRadio">
-            <div
-              class="files-item"
-              v-for="(item, index) in state.files"
-              :key="index"
-            >
-              <el-radio :label="item.label">{{ item.fileName }}</el-radio>
-            </div>
-          </el-radio-group>
-        </div>
-        <div class="upload-file">
-          <el-upload
-            class="upload-demo"
-            drag
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-            multiple
-          >
-            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-            <div class="el-upload__text">
-              Drop file here or <em>click to upload</em>
-            </div>
-            <template #tip>
-              <div class="el-upload__tip">
-                jpg/png files with a size less than 500kb
-              </div>
-            </template>
-          </el-upload>
-        </div>
-      </div>
+      <fileCheckUpload :data="state.componentsUploadFile"></fileCheckUpload>
     </KDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
@@ -120,7 +90,6 @@
     onBeforeMount,
     onMounted
   } from 'vue'
-  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   // import componentsTree from '../../components/tree'
@@ -134,6 +103,7 @@
   import { useRouter } from 'vue-router'
   import { UploadFilled } from '@element-plus/icons-vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import fileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   const router = useRouter()
   // const props = defineProps({
   //   // 处理类型
@@ -145,7 +115,6 @@
   // const emit = defineEmits([])
   const showDepPerDialog = ref(false)
   const state = reactive({
-    showDialog: false,
     componentsTabs: {
       data: [
         {
@@ -539,24 +508,37 @@
         }
       ]
     },
-    filesRadio: 1,
-    files: [
-      {
-        fileName: '附件名称1',
-        id: '',
-        label: 1
-      },
-      {
-        fileName: '附件名称2',
-        id: '',
-        label: 2
-      },
-      {
-        fileName: '附件名称3',
-        id: '',
-        label: 3
-      }
-    ],
+    componentsUploadFile: {
+      show: false,
+      name: '单据名称',
+      files: [
+        {
+          fileName: '附件名称1.docx',
+          id: '',
+          label: 1
+        },
+        {
+          fileName: '附件名称2.doc',
+          id: '',
+          label: 2
+        },
+        {
+          fileName: '附件名称3.pdf',
+          id: '',
+          label: 3
+        },
+        {
+          fileName: '附件名称3.xls',
+          id: '',
+          label: 4
+        },
+        {
+          fileName: '附件名称3.xlsx',
+          id: '',
+          label: 5
+        }
+      ]
+    },
     activeName: 1
   })
   // 点击表格单元格
@@ -990,6 +972,11 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
+    console.log(row)
+    console.log(cell)
+    console.log(column[2])
+    console.log(event)
+
     if (cell.name === '查看核验记录') {
       router.push({
         // path: '/frontDesk/PrintControlManagement/File-checkRecord/OcrCheckRecord',
@@ -1000,7 +987,7 @@
       })
     } else {
       // 上传文件核验
-      state.showDialog = true
+      state.componentsUploadFile.show = true
     }
   }
 

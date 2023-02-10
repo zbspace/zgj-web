@@ -7,16 +7,16 @@
   >
     <div class="comp-info">
       <Top />
-      <Center />
+      <Centers />
       <Bottom />
     </div>
   </componentsLayout>
 </template>
 
 <script setup>
-  import Top from './top'
-  import Center from './center'
-  import Bottom from './bottom'
+  import Top from './Top'
+  import Centers from './Center'
+  import Bottom from './Bottom'
   import componentsLayout from '@/views/components/Layout.vue'
 </script>
 
@@ -26,6 +26,8 @@
     name: 'CompanyName'
   })
 </script>
+
+<script></script>
 
 <style lang="scss" scoped>
   .comp-info {

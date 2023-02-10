@@ -139,7 +139,6 @@
     onMounted,
     ref
   } from 'vue'
-  // import Layout from '../../../layouts/main.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -631,6 +630,9 @@
   function customClick(row, column, cell, event) {
     if (cell.name === '修改') {
       showLibraryDialog.value = true
+    }
+    if (cell.name === '设置维护范围' || cell.name === '设置可用范围') {
+      showDepPerDialog.value = true
     }
   }
 

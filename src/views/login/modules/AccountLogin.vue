@@ -164,7 +164,7 @@
       </div>
 
       <!-- 其他登录方式 -->
-      <div class="l-divider">
+      <div class="l-divider" v-if="false">
         <div class="divider">
           <div class="cover">
             {{ $t('t-other-login') }}

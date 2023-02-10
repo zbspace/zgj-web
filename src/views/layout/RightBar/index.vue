@@ -64,7 +64,6 @@
   }
 
   const sidebarTypeChange = value => {
-    console.log('--->', value)
     if (layoutStore.sidebarType === '1') {
       const menus =
         menusInfoStore.currentType === 'business' ? business : system
