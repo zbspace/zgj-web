@@ -82,8 +82,8 @@ export default defineConfig({
         additionalData: '@import "@/style/index.scss";' // 注入全局样式变量（有性能问题，可优化）
       }
     }
-  }
-  // optimizeDeps: {
-  //   include: ['@/../lib/vform/designer.umd.js']
-  // },
+  },
+  optimizeDeps: {
+    include: ['@/../lib/vform/designer.umd.js']
+  },
 })
