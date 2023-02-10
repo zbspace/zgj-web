@@ -133,7 +133,7 @@ function clickSelect(buttonWidget) {
             color: rgba(0, 0, 0, 0.85);
             padding-bottom: 6px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            margin-bottom: 80px;
+            margin-bottom: 24px;
 
             &::before {
                 content: '';

@@ -79,6 +79,7 @@
       <el-button @click="cancel"> 取消 </el-button>
     </template>
   </JyDialog>
+  <JyVertifyBox v-model="visibleVcode" />
 </template>
 
 <script setup>
@@ -92,6 +93,7 @@
   }
   const formData = ref(new SuperAdmin())
   const formRef = ref(null)
+  const visibleVcode = ref(true)
   const step = ref(1)
   const options = ref([{ label: 'zb', value: '1' }])
   const timer = ref(null)
@@ -211,6 +213,7 @@
           button {
             margin-left: 10px;
             width: 124px;
+            flex-shrink: 0;
           }
         }
       }
