@@ -8,20 +8,29 @@
       <div
         class="dialog"
         :style="{ height: state.props.defaultAttribute.height }"
+        v-if="state.props['customContent']"
+      >
+        <slot> </slot>
+      </div>
+      <div
+        class="dialog"
+        :style="{ height: state.props.defaultAttribute.height }"
+        v-else
       >
         <div
           class="dialog-header"
           v-if="
-            state.props['showIcon'] ||
-            state.props['showTitle'] ||
-            state.props['showCutOffRule']
+            state.props['showHeader'] &&
+            (state.props['showIcon'] ||
+              state.props['showTitle'] ||
+              state.props['showCutOffRule'])
           "
         >
           <div class="dialog-header-icon" v-if="state.props['showIcon']">
             <svg class="iconpark-icon"><use href="#icon4"></use></svg>
           </div>
           <div class="dialog-header-cont" v-if="state.props['showTitle']">
-            <slot name="header">标题 </slot>
+            <slot name="header"> </slot>
           </div>
           <div
             class="dialog-header-remove"
@@ -38,7 +47,7 @@
             'center-content': state.props.defaultAttribute.center ? true : false
           }"
         >
-          <slot name="content"> 内容 </slot>
+          <slot name="content"> </slot>
         </div>
         <div class="cut-off-rule" v-if="state.props['showCutOffRule']"></div>
         <div
@@ -46,6 +55,7 @@
           :class="{
             'center-footer': state.props.defaultAttribute.center ? true : false
           }"
+          v-if="state.props['showFooter']"
         >
           <slot name="footer">
             <el-button type="primary">确定</el-button>
@@ -64,6 +74,9 @@
       show-close 是否显示关闭图标 默认 true
       show-icon 是否显示icon 默认 false   一般警告弹框会显示
       show-title 是否显示title 默认 true
+      show-footer 是否显示footer 默认 true
+      show-header 是否显示header 默认 true
+      custom-content 是否内容全部自定义 默认 false
       defaultAttribute  默认属性   element的对话框属性
   */
   import {
@@ -100,6 +113,18 @@
     'show-title': {
       type: Boolean,
       default: true
+    },
+    'show-footer': {
+      type: Boolean,
+      default: true
+    },
+    'show-header': {
+      type: Boolean,
+      default: true
+    },
+    'custom-content': {
+      type: Boolean,
+      default: false
     },
     defaultAttribute: {
       type: Object,
@@ -234,6 +259,7 @@
       }
       .el-dialog__body {
         padding: 0%;
+        height: 100%;
       }
     }
   }

@@ -1,11 +1,17 @@
 <template>
-  <div>
+  <div class="flowManage-index">
     <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
       <template #title>
         <div class="title">
           <div>流程管理</div>
-          <div>
-            <el-button type="primary">+ 新建</el-button>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button
+                type="primary"
+                @click="state.JyElMessageBox.show = true"
+                >+ 新建</el-button
+              >
+            </div>
           </div>
         </div>
       </template>
@@ -71,6 +77,21 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 新建弹框 -->
+    <div>
+      <JyElMessageBox
+        v-model="state.JyElMessageBox.show"
+        :custom-content="true"
+        :defaultAttribute="{
+          fullscreen: true,
+          height: '100%'
+        }"
+      >
+        <newlyIncreased
+          @close="state.JyElMessageBox.show = false"
+        ></newlyIncreased>
+      </JyElMessageBox>
+    </div>
   </div>
 </template>
 
@@ -83,7 +104,7 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-
+  import newlyIncreased from './newly-increased.vue'
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -455,6 +476,15 @@
           name: 'operating-record'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: true,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   // 点击表格单元格
@@ -471,9 +501,29 @@
 </script>
 
 <style lang="scss" scoped>
-  .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .flowManage-index {
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .title-more {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        .title-more-add {
+          margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
   }
 </style>
