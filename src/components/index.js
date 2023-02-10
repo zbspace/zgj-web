@@ -40,4 +40,8 @@ export function requireComp(app) {
     'JyDialog',
     defineAsyncComponent(() => import('./common/JyDialog/index.vue'))
   )
+  app.component(
+    'JyVertifyBox',
+    defineAsyncComponent(() => import('./common/JyVertifyBox/index.vue'))
+  )
 }

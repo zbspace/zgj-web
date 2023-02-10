@@ -90,36 +90,39 @@
         <!-- 默认插槽 -->
         <slot></slot>
       </div>
-      <!-- footer -->
-      <div class="footer-custom">
-        <!-- 两个按钮 -->
-        <div
-          v-if="!oneBtn"
-          class="default-footer-btns"
-          :class="props.centerBtn ? 'one-btn' : 'two-btn'"
-        >
-          <div
-            class="confirm btn"
-            @click.stop="handleShow(false, true, 'confrim')"
-            >{{ props.confirmText }}</div
-          >
-          <div class="concel btn" @click.stop="handleShow(false, true)">{{
-            props.concelText
-          }}</div>
-        </div>
 
-        <!-- 一个按钮 -->
-        <div
-          class="default-footer-btns"
-          v-if="oneBtn"
-          :class="!props.centerBtn ? 'one-btn' : 'two-btn'"
-        >
-          <div class="confirm btn" @click.stop="handleShow(false, true)">{{
-            props.confirmText
-          }}</div>
+      <!-- footer -->
+      <!-- 按钮插槽 -->
+      <slot name="footer">
+        <div class="footer-custom" v-if="footer">
+          <!-- 两个按钮 -->
+          <div
+            v-if="!oneBtn"
+            class="default-footer-btns"
+            :class="props.centerBtn ? 'one-btn' : 'two-btn'"
+          >
+            <div
+              class="confirm btn"
+              @click.stop="handleShow(false, true, 'confrim')"
+              >{{ props.confirmText }}</div
+            >
+            <div class="concel btn" @click.stop="handleShow(false, true)">{{
+              props.concelText
+            }}</div>
+          </div>
+
+          <!-- 一个按钮 -->
+          <div
+            class="default-footer-btns"
+            v-if="oneBtn"
+            :class="!props.centerBtn ? 'one-btn' : 'two-btn'"
+          >
+            <div class="confirm btn" @click.stop="handleShow(false, true)">{{
+              props.confirmText
+            }}</div>
+          </div>
         </div>
-        <!-- <slot name="footer" v-else></slot> -->
-      </div>
+      </slot>
     </div>
   </div>
 </template>
@@ -194,6 +197,10 @@
     centerBtn: {
       type: Boolean,
       default: false
+    },
+    footer: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -228,15 +235,17 @@
     }
     if (type === 'confrim') {
       emit('close', true)
+      emit('update:show', true)
       return
     }
+
     showDialog.value = val
     const timer = setTimeout(() => {
       clearTimeout(timer)
       emit('update:show', val)
       emit('close')
       showDialog.value = !val
-    }, 300)
+    }, 200)
   }
 
   // 监听全屏事件
@@ -259,7 +268,7 @@
     })
   }
   onMounted(() => {
-    dialogEl.value.addEventListener('mousedown', commonEvent)
+    props.draggable && dialogEl.value.addEventListener('mousedown', commonEvent)
   })
 
   watch(
@@ -331,11 +340,12 @@
         padding: 12px 24px;
         overflow-y: auto;
         border-top: 1px solid rgba(0, 0, 0, 0.06);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        // border-bottom: 1px solid rgba(0, 0, 0, 0.06);
       }
 
       .footer-custom {
         height: 55px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
         .default-footer-btns {
           display: flex;
           // justify-content: flex-end;

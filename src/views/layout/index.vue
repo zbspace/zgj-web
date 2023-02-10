@@ -72,7 +72,7 @@
       background: #ffffff;
       box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.06);
       position: relative;
-      z-index: 1;
+      // z-index: 1;
       height: 64px;
     }
     :deep {

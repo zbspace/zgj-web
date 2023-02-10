@@ -161,21 +161,21 @@
                 </div>
 
                 <div class="dropdown-list">
-                  <div class="dropdown-list-li">
+                  <div class="dropdown-list-li" @click="goPersonCenter">
                     <img src="../assets/images/navbar/user_info_logo.svg" />
                     <span class="dropdown-list-li-text">{{
                       $t('t-zgj-person.center')
                     }}</span>
                   </div>
 
-                  <div class="dropdown-list-li">
+                  <div class="dropdown-list-li" @click="changePassword">
                     <img src="../assets/images/navbar/user_info_lock.svg" />
                     <span class="dropdown-list-li-text">{{
                       $t('t-zgj-index.updatePwd')
                     }}</span>
                   </div>
 
-                  <div class="dropdown-list-li">
+                  <div class="dropdown-list-li" @click="openDownload">
                     <img src="../assets/images/navbar/user_info_down.svg" />
                     <span class="dropdown-list-li-text">{{
                       $t('t-zgj-DownloadApp.Download')
@@ -257,6 +257,78 @@
       </div>
     </div>
   </header>
+  <JyDialog title="修改密码" v-model="showFormDialog" :width="540">
+    <el-form label-position="left" ref="loginformRef" :model="loginform">
+      <el-form-item
+        prop="username"
+        :rules="[
+          {
+            required: true,
+            message: '原密码不能为空',
+            trigger: 'blur'
+          }
+        ]"
+        style="margin-left: 30px"
+      >
+        <template #label>
+          <div class="from-label">原密码</div>
+        </template>
+        <el-input
+          v-model="loginform.username"
+          placeholder="请输入"
+          style="width: 264px"
+        ></el-input>
+      </el-form-item>
+      <el-form-item
+        prop="username"
+        :rules="[
+          {
+            required: true,
+            message: '新密码不能为空',
+            trigger: 'blur'
+          }
+        ]"
+        style="margin-left: 30px"
+      >
+        <template #label>
+          <div class="from-label">新密码</div>
+        </template>
+        <el-input
+          v-model="loginform.username"
+          placeholder="请输入"
+          style="width: 264px"
+        ></el-input>
+      </el-form-item>
+      <el-form-item
+        class="clearfix"
+        label="验证码"
+        prop="password"
+        :rules="[
+          {
+            required: true,
+            message: '确认新密码不能为空',
+            trigger: 'blur'
+          }
+        ]"
+      >
+        <template #label>
+          <div class="from-label">确认新密码</div>
+        </template>
+        <el-input
+          v-model="loginform.password"
+          show-password
+          placeholder="请输入"
+          style="width: 264px"
+        ></el-input>
+      </el-form-item>
+    </el-form>
+
+    <template #footer>
+      <el-button type="primary" @click="login"> 确定 </el-button>
+      <el-button @click="onClose">取消</el-button>
+    </template>
+  </JyDialog>
+  <VDownload v-model="showDialog"></VDownload>
 </template>
 
 <script setup>
@@ -270,7 +342,8 @@
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
-
+  import JyDialog from '@/components/common/JyDialog/index.vue'
+  import VDownload from '../components/modules/downloadApp.vue'
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
   const languageStore = useLanguageStore()
@@ -349,6 +422,44 @@
   }
   const hideUserPop = () => {
     showUserInfoPop.value = false
+  }
+
+  // 个人中心
+  const goPersonCenter = () => {
+    router.push({ name: 'personally' })
+  }
+
+  // 修改密码弹框
+  const showFormDialog = ref(false)
+
+  const changePassword = () => {
+    showFormDialog.value = true
+  }
+
+  const onClose = value => {
+    showFormDialog.value = false
+  }
+
+  const loginform = reactive({
+    username: '',
+    password: ''
+  })
+  const loginformRef = ref(null)
+
+  const login = () => {
+    loginformRef.value.validate(valid => {
+      if (valid) {
+        showFormDialog.value = false
+      } else {
+        return false
+      }
+    })
+  }
+
+  // 下载app弹窗
+  const showDialog = ref(false)
+  const openDownload = () => {
+    showDialog.value = true
   }
 </script>
 <style lang="scss" scoped>
@@ -592,5 +703,13 @@
         color: var(--primary-6);
       }
     }
+  }
+
+  .from-label {
+    text-align: end;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.65);
   }
 </style>
