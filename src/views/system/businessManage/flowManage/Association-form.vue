@@ -82,14 +82,31 @@
     </div>
     <div class="add" v-if="state.currentState === '2'">
       <div class="info-footer">
-        <el-button type="primary">编辑</el-button>
+        <el-button type="primary" @click="clickEdit">编辑</el-button>
         <el-button @click="clickReselect">重新选择</el-button>
       </div>
+    </div>
+    <!-- 新建弹框 -->
+    <div>
+      <JyElMessageBox
+        v-model="state.JyElMessageBox.show"
+        :custom-content="true"
+        :defaultAttribute="{
+          fullscreen: true,
+          height: '100%'
+        }"
+      >
+        <AddFrom
+          :formId="12345667"
+          @formClose="state.JyElMessageBox.show = false"
+        />
+      </JyElMessageBox>
     </div>
   </div>
 </template>
 <script setup>
   import { reactive } from 'vue'
+  import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
@@ -108,6 +125,15 @@
           desc: '表单1表单1表单1表单1表单1表单1表单'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   const form = reactive({
@@ -125,6 +151,10 @@
   // 点击重新选择
   function clickReselect() {
     state.currentState = '1'
+  }
+  // 点击编辑
+  function clickEdit() {
+    state.JyElMessageBox.show = true
   }
 </script>
 <style lang="scss" scoped>

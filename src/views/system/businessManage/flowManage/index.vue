@@ -478,7 +478,7 @@
       ]
     },
     JyElMessageBox: {
-      show: true,
+      show: false,
       header: {
         data: ''
       },
