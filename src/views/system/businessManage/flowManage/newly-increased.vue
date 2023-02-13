@@ -9,7 +9,31 @@
         <span class="process-back-text">新增</span>
       </template>
       <template #subTitle>
-        <el-button class="process-save-but" type="primary"> 保存 </el-button>
+        <div class="process-save">
+          <div class="process-save-down">
+            <el-popover placement="bottom" :width="400" trigger="click">
+              <template #reference>
+                <div class="process-save-down-text"> 5项不完善 </div>
+              </template>
+              <div class="popover-cont">
+                <div class="popover-cont-title">内容不完善，当前无法发布</div>
+                <div class="popover-cont-subTitle">
+                  以下内容不完善，请修改后发布
+                </div>
+                <div class="popover-cont-list">
+                  <div class="popover-cont-list-li" v-for="n in 6" :key="n">
+                    <div class="popover-cont-list-li-name">基础信息</div>
+                    <div class="popover-cont-list-li-desc">
+                      流程名称不能为空
+                    </div>
+                    <div class="popover-cont-list-li-but">去修改 </div>
+                  </div>
+                </div>
+              </div>
+            </el-popover>
+          </div>
+          <el-button class="process-save-but" type="primary"> 保存 </el-button>
+        </div>
       </template>
       <template #content>
         <basicsInfo
@@ -91,5 +115,53 @@
     margin: 0%;
     width: 100%;
     height: 100%;
+    .process-save {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      .process-save-down {
+        margin-right: 0.5rem;
+        .process-save-down-text {
+          color: var(--danger-6);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .popover-cont {
+    padding: 0.5rem;
+    color: var(--color-text-1);
+    .popover-cont-title {
+      font-size: var(--font-size-title-1);
+    }
+    .popover-cont-subTitle {
+      color: var(--color-text-3);
+      margin-top: 0.8rem;
+    }
+    .popover-cont-list {
+      margin-top: 0.2rem;
+      .popover-cont-list-li {
+        display: flex;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.04);
+        justify-content: space-between;
+        padding: 0.8rem 1rem;
+        margin: 0rem 0rem 0.5rem 0rem;
+        .popover-cont-list-li-name {
+          width: 4rem;
+        }
+        .popover-cont-list-li-desc {
+          color: var(--color-text-3);
+          width: calc(100% - 7rem);
+          padding: 0% 0.5rem;
+        }
+        .popover-cont-list-li-but {
+          color: var(--Info-6);
+          width: 3rem;
+          cursor: pointer;
+        }
+      }
+    }
   }
 </style>

@@ -27,28 +27,6 @@
           </div>
         </div>
         <div class="process-save">
-          <div class="process-save-down">
-            <el-popover placement="bottom" :width="400" trigger="click">
-              <template #reference>
-                <div class="process-save-down-text"> 5项不完善 </div>
-              </template>
-              <div class="popover-cont">
-                <div class="popover-cont-title">内容不完善，当前无法发布</div>
-                <div class="popover-cont-subTitle">
-                  以下内容不完善，请修改后发布
-                </div>
-                <div class="popover-cont-list">
-                  <div class="popover-cont-list-li" v-for="n in 6" :key="n">
-                    <div class="popover-cont-list-li-name">基础信息</div>
-                    <div class="popover-cont-list-li-desc">
-                      流程名称不能为空
-                    </div>
-                    <div class="popover-cont-list-li-but">去修改 </div>
-                  </div>
-                </div>
-              </div>
-            </el-popover>
-          </div>
           <slot name="subTitle">
             <el-button class="process-save-but" type="primary">
               保存

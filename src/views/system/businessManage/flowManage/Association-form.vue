@@ -81,6 +81,15 @@
       </div>
     </div>
     <div class="add" v-if="state.currentState === '2'">
+      <div>
+        <v-form-render
+          :form-json="formLibraryJson"
+          :form-data="formLibraryData"
+          :option-data="optionLibraryData"
+          ref="vFormLibraryRef"
+        >
+        </v-form-render>
+      </div>
       <div class="info-footer">
         <el-button type="primary" @click="clickEdit">编辑</el-button>
         <el-button @click="clickReselect">重新选择</el-button>
@@ -107,6 +116,7 @@
 <script setup>
   import { reactive } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
+  const formLibraryJson = reactive({})
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
