@@ -176,23 +176,28 @@
     background-color: var(--color-fill--5);
     position: relative;
     color: var(--color-text-1);
+
     .choice {
       width: 100%;
       height: 100%;
     }
+
     .info-box {
       width: 50%;
       margin: 0% auto;
       text-align: center;
+
       .info-title {
         padding-top: 3rem;
         font-size: var(--font-size-title-2);
         color: var(--color-text-1);
       }
+
       .info-from {
         margin-top: 1.5rem;
       }
     }
+
     .info-footer {
       width: 100%;
       position: absolute;
@@ -203,6 +208,7 @@
       justify-content: center;
       border-top: 1px solid var(--color-border-2);
     }
+
     .info-remind {
       background: var(--Warning-1);
       /* 警告 Warning/禁用 */
@@ -212,48 +218,58 @@
       padding: 1rem;
       margin-top: 1rem;
       text-align: left;
+
       .info-remind-title {
         display: flex;
         align-items: center;
         font-size: var(--font-size-title-1);
+
         .info-remind-title-icon {
           margin-right: 0.5rem;
           width: 1.3rem;
           height: 1.3rem;
+
           .icon {
             width: 100%;
             height: 100%;
           }
         }
       }
+
       .info-remind-p {
         padding: 0.2rem 1.8rem;
         box-sizing: border-box;
         color: var(--color-text-3);
       }
     }
+
     .info-form {
       margin-top: 1rem;
       padding: 0% 10%;
       box-sizing: border-box;
     }
+
     .info-noContent {
       margin-top: 1rem;
       display: flex;
       justify-content: center;
       flex-flow: wrap;
+
       .info-noContent-backcolor {
         background-color: #d9d9d9;
         width: 15rem;
         height: 8rem;
       }
+
       .info-noContent-desc {
         width: 100%;
         margin-top: 1rem;
       }
     }
+
     .info-list {
       margin-top: 1rem;
+
       .info-list-box {
         display: flex;
         align-items: center;
@@ -266,31 +282,37 @@
         box-sizing: border-box;
         margin: 0.5rem 0rem;
         cursor: pointer;
+
         .info-list-box-redio {
           width: 1rem;
           display: flex;
           justify-content: center;
           align-items: center;
         }
+
         .info-list-box-text {
           width: calc(100% - 5rem);
         }
+
         .info-list-box-sub {
           width: 4rem;
         }
       }
     }
+
     .icon {
       width: 1rem;
       height: 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
+
       .iconpark-icon {
         width: 100%;
         height: 100%;
       }
     }
+
     // 已启用
     .Have-been-enabled {
       background: var(--success-1);
@@ -302,6 +324,7 @@
       padding: 0.1rem 0.2rem;
       box-sizing: border-box;
     }
+
     // 禁用
     .disabled {
       background: var(--color-fill--2);
@@ -313,10 +336,12 @@
       padding: 0.1rem 0.2rem;
       box-sizing: border-box;
     }
+
     :deep(.el-form) {
       .el-form-item__label {
         margin-bottom: 0%;
       }
+
       .el-select {
         width: 100%;
       }
