@@ -283,18 +283,19 @@ element table 样式
 /* 
 动态表单元素间距
 */
-:deep(.el-form-item--default) {
-  margin-bottom: 12px !important;
-  // height:32px !important;
-}
-:deep(.el-form .el-row) {
-  padding: 0;
-}
-:deep(.el-form-item__label) {
-  margin: 0;
-}
-:deep(.el-form-item__error){
-  padding-top: 0;
+.el-form {
+  :deep(.el-form-item--default) {
+    margin-bottom: 24px;
+  }
+  :deep(.el-form .el-row) {
+    padding: 0;
+  }
+  :deep(.el-form-item__label) {
+    margin: 0;
+  }
+  :deep(.el-form-item__error) {
+    padding-top: 4px;
+  }
 }
 
 /* 
