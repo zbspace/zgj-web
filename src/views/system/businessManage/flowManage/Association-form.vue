@@ -81,15 +81,43 @@
       </div>
     </div>
     <div class="add" v-if="state.currentState === '2'">
+      <div>
+        <v-form-render
+          :form-json="formLibraryJson"
+          :form-data="formLibraryData"
+          :option-data="optionLibraryData"
+          ref="vFormLibraryRef"
+        >
+        </v-form-render>
+      </div>
       <div class="info-footer">
-        <el-button type="primary">编辑</el-button>
+        <el-button type="primary" @click="clickEdit">编辑</el-button>
         <el-button @click="clickReselect">重新选择</el-button>
       </div>
+    </div>
+    <!-- 新建弹框 -->
+    <div>
+      <JyElMessageBox
+        v-model="state.JyElMessageBox.show"
+        :custom-content="true"
+        :defaultAttribute="{
+          fullscreen: true,
+          height: '100%'
+        }"
+      >
+        <AddFrom
+          :formId="'12345667'"
+          v-model="state.JyElMessageBox.show"
+          @formClose="state.JyElMessageBox.show = false"
+        />
+      </JyElMessageBox>
     </div>
   </div>
 </template>
 <script setup>
   import { reactive } from 'vue'
+  import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
+  const formLibraryJson = reactive({})
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
@@ -108,6 +136,15 @@
           desc: '表单1表单1表单1表单1表单1表单1表单'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   const form = reactive({
@@ -126,6 +163,10 @@
   function clickReselect() {
     state.currentState = '1'
   }
+  // 点击编辑
+  function clickEdit() {
+    state.JyElMessageBox.show = true
+  }
 </script>
 <style lang="scss" scoped>
   .flowManage-Association-form {
@@ -136,23 +177,28 @@
     background-color: var(--color-fill--5);
     position: relative;
     color: var(--color-text-1);
+
     .choice {
       width: 100%;
       height: 100%;
     }
+
     .info-box {
       width: 50%;
       margin: 0% auto;
       text-align: center;
+
       .info-title {
         padding-top: 3rem;
         font-size: var(--font-size-title-2);
         color: var(--color-text-1);
       }
+
       .info-from {
         margin-top: 1.5rem;
       }
     }
+
     .info-footer {
       width: 100%;
       position: absolute;
@@ -163,6 +209,7 @@
       justify-content: center;
       border-top: 1px solid var(--color-border-2);
     }
+
     .info-remind {
       background: var(--Warning-1);
       /* 警告 Warning/禁用 */
@@ -172,48 +219,58 @@
       padding: 1rem;
       margin-top: 1rem;
       text-align: left;
+
       .info-remind-title {
         display: flex;
         align-items: center;
         font-size: var(--font-size-title-1);
+
         .info-remind-title-icon {
           margin-right: 0.5rem;
           width: 1.3rem;
           height: 1.3rem;
+
           .icon {
             width: 100%;
             height: 100%;
           }
         }
       }
+
       .info-remind-p {
         padding: 0.2rem 1.8rem;
         box-sizing: border-box;
         color: var(--color-text-3);
       }
     }
+
     .info-form {
       margin-top: 1rem;
       padding: 0% 10%;
       box-sizing: border-box;
     }
+
     .info-noContent {
       margin-top: 1rem;
       display: flex;
       justify-content: center;
       flex-flow: wrap;
+
       .info-noContent-backcolor {
         background-color: #d9d9d9;
         width: 15rem;
         height: 8rem;
       }
+
       .info-noContent-desc {
         width: 100%;
         margin-top: 1rem;
       }
     }
+
     .info-list {
       margin-top: 1rem;
+
       .info-list-box {
         display: flex;
         align-items: center;
@@ -226,31 +283,37 @@
         box-sizing: border-box;
         margin: 0.5rem 0rem;
         cursor: pointer;
+
         .info-list-box-redio {
           width: 1rem;
           display: flex;
           justify-content: center;
           align-items: center;
         }
+
         .info-list-box-text {
           width: calc(100% - 5rem);
         }
+
         .info-list-box-sub {
           width: 4rem;
         }
       }
     }
+
     .icon {
       width: 1rem;
       height: 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
+
       .iconpark-icon {
         width: 100%;
         height: 100%;
       }
     }
+
     // 已启用
     .Have-been-enabled {
       background: var(--success-1);
@@ -262,6 +325,7 @@
       padding: 0.1rem 0.2rem;
       box-sizing: border-box;
     }
+
     // 禁用
     .disabled {
       background: var(--color-fill--2);
@@ -273,10 +337,12 @@
       padding: 0.1rem 0.2rem;
       box-sizing: border-box;
     }
+
     :deep(.el-form) {
       .el-form-item__label {
         margin-bottom: 0%;
       }
+
       .el-select {
         width: 100%;
       }

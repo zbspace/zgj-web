@@ -27,9 +27,6 @@
           </div>
         </div>
         <div class="process-save">
-          <div>
-            <div> 5项不完善 </div>
-          </div>
           <slot name="subTitle">
             <el-button class="process-save-but" type="primary">
               保存
@@ -227,6 +224,14 @@
           width: 25%;
           display: flex;
           justify-content: flex-end;
+          align-items: center;
+          .process-save-down {
+            margin-right: 0.5rem;
+            .process-save-down-text {
+              color: var(--danger-6);
+              cursor: pointer;
+            }
+          }
         }
       }
       .content {
@@ -236,6 +241,42 @@
         display: flex;
         align-items: flex-start;
         justify-content: center;
+      }
+    }
+  }
+
+  .popover-cont {
+    padding: 0.5rem;
+    color: var(--color-text-1);
+    .popover-cont-title {
+      font-size: var(--font-size-title-1);
+    }
+    .popover-cont-subTitle {
+      color: var(--color-text-3);
+      margin-top: 0.8rem;
+    }
+    .popover-cont-list {
+      margin-top: 0.2rem;
+      .popover-cont-list-li {
+        display: flex;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.04);
+        justify-content: space-between;
+        padding: 0.8rem 1rem;
+        margin: 0rem 0rem 0.5rem 0rem;
+        .popover-cont-list-li-name {
+          width: 4rem;
+        }
+        .popover-cont-list-li-desc {
+          color: var(--color-text-3);
+          width: calc(100% - 7rem);
+          padding: 0% 0.5rem;
+        }
+        .popover-cont-list-li-but {
+          color: var(--Info-6);
+          width: 3rem;
+          cursor: pointer;
+        }
       }
     }
   }
