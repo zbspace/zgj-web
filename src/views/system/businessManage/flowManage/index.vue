@@ -79,7 +79,7 @@
     </div>
     <!-- 新建弹框 -->
     <div v-if="state.JyElMessageBox.show">
-      <JyElMessageBox
+      <AntModalBox
         v-model="state.JyElMessageBox.show"
         :custom-content="true"
         :defaultAttribute="{
@@ -90,7 +90,7 @@
         <newlyIncreased
           @close="state.JyElMessageBox.show = false"
         ></newlyIncreased>
-      </JyElMessageBox>
+      </AntModalBox>
     </div>
   </div>
 </template>
@@ -105,6 +105,7 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import newlyIncreased from './newly-increased.vue'
+  import AntModalBox from '@/views/components/modules/AntModalBox.vue'
   const state = reactive({
     componentsSearchForm: {
       style: {
