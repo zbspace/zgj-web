@@ -5654,7 +5654,7 @@ utrie@^1.0.2:
   dependencies:
     base64-arraybuffer "^1.0.2"
 
-vform-jy@^3.2.4:
+vform-jy@^3.2.10:
   version "3.2.10"
   resolved "https://registry.yarnpkg.com/vform-jy/-/vform-jy-3.2.10.tgz#1b98b3143ed5febc664d092e1cbd0614020d1d15"
   integrity sha512-8h/7dtjdg68jMg9mWPQ6bV2K25Nu1PRoSzCTfi7pILIvMYnog5mlj1uAP7vi/IPd8YYiOi2rvuv0uVZu8aV2Bw==
