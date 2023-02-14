@@ -167,7 +167,13 @@
     onRefresh: () => {}
   })
 
-  const emit = defineEmits(['update:modelValue', 'on-closed', 'click'])
+  const emit = defineEmits([
+    'update:modelValue',
+    'on-closed',
+    'click',
+    'on-success',
+    'on-failed'
+  ])
 
   const isVisible = computed({
     get() {
@@ -214,6 +220,7 @@
   const yRef = ref(0)
   const PI = Math.PI
   const L = l + r * 2 + 3 // 滑块实际边长
+
   const drawPath = (ctx, x, y, operation) => {
     ctx.beginPath()
     ctx.moveTo(x, y)
@@ -376,9 +383,11 @@
         sliderClass.value = 'sliderContainer sliderContainer_success'
         typeof onSuccess === 'function' && onSuccess()
         isVisible.value = false
+        emit('on-success')
       } else {
         sliderClass.value = 'sliderContainer sliderContainer_fail'
         textTip.value = '请再试一次'
+        emit('on-failed')
         reset()
       }
     } else {
@@ -386,6 +395,18 @@
       typeof onFail === 'function' && onFail()
       setTimeout(reset.bind(this), 1000)
     }
+  }
+
+  const getRandomNumberByRange = (start, end) => {
+    return Math.round(Math.random() * (end - start) + start)
+  }
+
+  const sum = (x, y) => {
+    return x + y
+  }
+
+  const square = x => {
+    return x * x
   }
 
   onMounted(() => {
@@ -400,18 +421,6 @@
       }
     }
   )
-
-  function getRandomNumberByRange(start, end) {
-    return Math.round(Math.random() * (end - start) + start)
-  }
-
-  function sum(x, y) {
-    return x + y
-  }
-
-  function square(x) {
-    return x * x
-  }
 </script>
 
 <style lang="scss" scoped>
