@@ -1,0 +1,31 @@
+@primary-color: #ff9e4f;
+@component-background: #f2f3f5;
+@table-header-bg: #f2f3f5;
+@border-color-split: #dee0e3;
+@text-color: #575757;
+@component-background: #ffffff;
+@table-row-hover-bg: #f2f3f5;
+
+@import './flow-design.less';
+
+.full-modal {
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+  }
+  .ant-modal-body {
+    flex: 1;
+    padding: 0;
+  }
+}
+
+.ant-drawer {
+  z-index: 1004 !important;
+}

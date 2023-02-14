@@ -35,6 +35,7 @@
           :label="tabsLabel"
           @update:active="active = $event"
           style="padding-left: 24px"
+          :hiddenBadge="false"
         ></VTabs>
 
         <div class="natify-content">

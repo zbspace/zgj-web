@@ -158,14 +158,14 @@
         box-sizing: border-box;
         box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12),
           0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
-        background-color: var(--color-fill--5);
+        background-color: #ffffff;
         justify-content: space-between;
         .process-back {
-          color: var(--color-text-1);
+          color: rgba(0, 0, 0, 0.85);
           display: flex;
           align-items: center;
           width: 25%;
-          font-size: var(--font-size-title-2);
+          font-size: 22px;
           .iconpark {
             width: 1.5rem;
             height: 1.5rem;
@@ -179,7 +179,7 @@
             }
           }
           .process-back-text {
-            font-size: var(--font-size-title-2);
+            font-size: 22px;
             // cursor: pointer;
           }
         }
@@ -191,7 +191,7 @@
           .tabs {
             display: flex;
             align-items: center;
-            color: var(--color-text-3);
+            color: rgba(0, 0, 0, 0.45);
             margin: 0% 4%;
             box-sizing: border-box;
             height: 100%;
@@ -201,25 +201,25 @@
               width: 1.2rem;
               height: 1.2rem;
               border-radius: 50%;
-              border: 1px solid var(--color-border-1);
+              border: 1px solid rgba(0, 0, 0, 0.15);
               display: flex;
               align-items: center;
               justify-content: center;
               margin-right: 0.5rem;
             }
             .tabs-text {
-              font-size: var(--font-size-title-1);
+              font-size: 16px;
             }
           }
           .checked-tabs {
-            border-bottom: 2px solid var(--primary-6);
+            border-bottom: 2px solid #d0963e;
             .tabs-icon {
-              background-color: var(--primary-6);
-              border: 1px solid var(--primary-6);
-              color: var(--color-text-6);
+              background-color: #d0963e;
+              border: 1px solid #d0963e;
+              color: #ffffff;
             }
             .tabs-text {
-              color: var(--primary-6);
+              color: #d0963e;
             }
           }
         }
@@ -232,7 +232,7 @@
       .content {
         width: 100%;
         height: calc(100% - 4rem);
-        background-color: var(--background-color-1);
+        background-color: #f2f2f2;
         display: flex;
         align-items: flex-start;
         justify-content: center;

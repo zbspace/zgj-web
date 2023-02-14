@@ -1,9 +1,16 @@
 <template>
   <div class="components-ElMessageBox">
-    <el-dialog
-      v-model="state.props.modelValue"
+    <a-modal
+      v-model:visible="state.props.modelValue"
       v-bind="state.props.defaultAttribute"
-      @close="closeCallBack"
+      :footer="null"
+      @onCancel="closeCallBack"
+      @onOk="closeCallBack"
+      width="100%"
+      wrap-class-name="full-modal"
+      :getContainer="false"
+      :closable="false"
+      :zIndex="1003"
     >
       <div
         class="dialog"
@@ -63,7 +70,7 @@
           </slot>
         </div>
       </div>
-    </el-dialog>
+    </a-modal>
   </div>
 </template>
 
@@ -96,7 +103,7 @@
     },
     modelValue: {
       type: Boolean,
-      default: false
+      default: true
     },
     'show-cut-off-rule': {
       type: Boolean,

@@ -78,7 +78,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 新建弹框 -->
-    <div>
+    <div v-if="state.JyElMessageBox.show">
       <JyElMessageBox
         v-model="state.JyElMessageBox.show"
         :custom-content="true"
@@ -478,7 +478,7 @@
       ]
     },
     JyElMessageBox: {
-      show: true,
+      show: false,
       header: {
         data: ''
       },

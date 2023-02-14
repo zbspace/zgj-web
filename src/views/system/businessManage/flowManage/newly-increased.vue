@@ -18,6 +18,9 @@
         <AssociationForm
           v-if="state.processTabs.checkedNode.index == '2'"
         ></AssociationForm>
+        <VFlowDesign
+          v-if="state.processTabs.checkedNode.index == '3'"
+        ></VFlowDesign>
         <advancedSetup
           v-if="state.processTabs.checkedNode.index == '4'"
         ></advancedSetup>
@@ -30,6 +33,7 @@
   import layout from './layout.vue'
   import basicsInfo from './basics-info.vue'
   import AssociationForm from './Association-form.vue'
+  import VFlowDesign from './flow-design.vue'
   import advancedSetup from './advanced-setup.vue'
   const emit = defineEmits(['close', 'update:modelValue', 'clickCutTabs'])
   const state = reactive({
