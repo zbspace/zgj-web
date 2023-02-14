@@ -106,7 +106,8 @@
         }"
       >
         <AddFrom
-          :formId="12345667"
+          :formId="'12345667'"
+          v-model="state.JyElMessageBox.show"
           @formClose="state.JyElMessageBox.show = false"
         />
       </JyElMessageBox>
