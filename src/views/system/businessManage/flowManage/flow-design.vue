@@ -624,8 +624,10 @@
 
 <style scoped lang="scss">
   .contanier-flow {
-    background: #ffffff;
-    width: 90%;
-    margin-top: 24px;
+    width: 100%;
+    height: 100%;
+    .flow-designer .flow-designer-wrap {
+      background-color: rgba($color: #000000, $alpha: 0);
+    }
   }
 </style>
