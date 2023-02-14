@@ -201,6 +201,7 @@ function handleChange(name) {
 
     .iconpark-icon {
       width: 18px;
+      height: 18px;
       margin-right: 8px;
     }
   }
