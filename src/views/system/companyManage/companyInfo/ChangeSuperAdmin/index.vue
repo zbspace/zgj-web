@@ -79,7 +79,11 @@
       <el-button @click="cancel"> 取消 </el-button>
     </template>
   </JyDialog>
-  <JyVertifyBox v-model="visibleVcode" />
+  <JyVertifyBox
+    v-model="visibleVcode"
+    @on-success="success"
+    @on-failed="failed"
+  />
 </template>
 
 <script setup>
@@ -183,6 +187,13 @@
     clearInterval(timer.value)
     timer.value = null
     countdownTime.value = -1
+  }
+
+  const success = () => {
+    console.log('--->', 'success')
+  }
+  const failed = () => {
+    console.log('--->', 'failed')
   }
 </script>
 

@@ -293,6 +293,9 @@ element table 样式
 :deep(.el-form-item__label) {
   margin: 0;
 }
+:deep(.el-form-item__error){
+  padding-top: 0;
+}
 
 /* 
 左侧菜单 字体大小
