@@ -175,7 +175,7 @@
   const showMailPop = ref(false)
   const isClickOutsideMail = useClickQutside(dropdownMailRef)
   watch(isClickOutsideMail, () => {
-    console.log(showMailPop.value, 'showMailPop.value')
+    // console.log(showMailPop.value, 'showMailPop.value')
     // 邮件弹框
     if (isClickOutsideMail.value && showMailPop.value) {
       showMailPop.value = false

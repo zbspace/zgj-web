@@ -120,7 +120,7 @@
   // function setScrollLeft() {
   //   return -16
   // }
-  console.log(props.free)
+  // console.log(props.free)
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化布局
