@@ -7,6 +7,7 @@
       align-center
       destroy-on-close
       @closed="closed"
+      @open="opend"
     >
       <div class="vertify">
         <!-- 验证box -->
@@ -94,7 +95,7 @@
 </template>
 
 <script setup>
-  import { ref, watch, onMounted, computed } from 'vue'
+  import { ref, watch, computed } from 'vue'
 
   const props = defineProps({
     title: {
@@ -409,9 +410,9 @@
     return x * x
   }
 
-  onMounted(() => {
+  const opend = () => {
     initImg()
-  })
+  }
 
   watch(
     () => visible,

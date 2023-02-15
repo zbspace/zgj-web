@@ -1,89 +1,93 @@
 <template>
-  <JyDialog
-    :title="step === 1 ? '身份验证' : '变更超级管理员'"
-    v-model="isVisible"
-    @on-closed="onClosed"
-  >
-    <div class="authentication-form">
-      <el-form
-        :model="formData"
-        label-width="112px"
-        :rules="rules"
-        ref="formRef"
-      >
-        <div v-if="step === 1">
-          <el-form-item label="验证方式">
-            <el-radio-group v-model="formData.verification">
-              <el-radio label="1">手机号验证</el-radio>
-              <el-radio label="2">邮箱验证</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="超级管理员">
-            <span>李旺</span>
-          </el-form-item>
-          <el-form-item label="超级管理员账号">
-            <span>225487</span>
-          </el-form-item>
-          <el-form-item label="超级管理员手机号">
-            <span>13780094758</span>
-          </el-form-item>
-          <el-form-item label="超级管理员邮箱号">
-            <span>13780094758@qq.com</span>
-          </el-form-item>
-          <el-form-item label="手机验证码" prop="vcode">
-            <div class="vcode">
-              <el-input v-model="formData.vcode" />
-              <el-button
-                type="primary"
-                :disabled="countdownTime >= 0"
-                @click="sendVCode"
-                >{{
-                  countdownTime < 0 ? '获取验证码' : countdownTime + '秒后重发'
-                }}</el-button
-              >
-            </div>
-          </el-form-item>
-        </div>
+  <div>
+    <JyDialog
+      :title="step === 1 ? '身份验证' : '变更超级管理员'"
+      v-model="isVisible"
+      @on-closed="onClosed"
+    >
+      <div class="authentication-form">
+        <el-form
+          :model="formData"
+          label-width="112px"
+          :rules="rules"
+          ref="formRef"
+        >
+          <div v-if="step === 1">
+            <el-form-item label="验证方式">
+              <el-radio-group v-model="formData.verification">
+                <el-radio label="1">手机号验证</el-radio>
+                <el-radio label="2">邮箱验证</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="超级管理员">
+              <span>李旺</span>
+            </el-form-item>
+            <el-form-item label="超级管理员账号">
+              <span>225487</span>
+            </el-form-item>
+            <el-form-item label="超级管理员手机号">
+              <span>13780094758</span>
+            </el-form-item>
+            <el-form-item label="超级管理员邮箱号">
+              <span>13780094758@qq.com</span>
+            </el-form-item>
+            <el-form-item label="手机验证码" prop="vcode">
+              <div class="vcode">
+                <el-input v-model="formData.vcode" />
+                <el-button
+                  type="primary"
+                  :disabled="countdownTime >= 0"
+                  @click="visibleVcode = true"
+                  >{{
+                    countdownTime < 0
+                      ? '获取验证码'
+                      : countdownTime + '秒后重发'
+                  }}</el-button
+                >
+              </div>
+            </el-form-item>
+          </div>
 
-        <div v-if="step === 2">
-          <el-form-item label="超级管理员">
-            <span>李旺</span>
-          </el-form-item>
-          <el-form-item label="超级管理员账号">
-            <span>225487</span>
-          </el-form-item>
-          <el-form-item label="新的超管姓名" prop="name">
-            <el-select style="width: 264px" v-model="formData.name">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="新的超管账号">
-            <el-input disabled style="width: 264px"></el-input>
-          </el-form-item>
-        </div>
-      </el-form>
-    </div>
+          <div v-if="step === 2">
+            <el-form-item label="超级管理员">
+              <span>李旺</span>
+            </el-form-item>
+            <el-form-item label="超级管理员账号">
+              <span>225487</span>
+            </el-form-item>
+            <el-form-item label="新的超管姓名" prop="name">
+              <el-select style="width: 264px" v-model="formData.name">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="新的超管账号">
+              <el-input disabled style="width: 264px"></el-input>
+            </el-form-item>
+          </div>
+        </el-form>
+      </div>
 
-    <template #footer>
-      <el-button type="primary" @click="next" v-if="step === 1">
-        下一步
-      </el-button>
-      <el-button type="primary" @click="submit" v-if="step === 2">
-        提交
-      </el-button>
-      <el-button @click="cancel"> 取消 </el-button>
-    </template>
-  </JyDialog>
-  <JyVertifyBox
-    v-model="visibleVcode"
-    @on-success="success"
-    @on-failed="failed"
-  />
+      <template #footer>
+        <el-button type="primary" @click="next" v-if="step === 1">
+          下一步
+        </el-button>
+        <el-button type="primary" @click="submit" v-if="step === 2">
+          提交
+        </el-button>
+        <el-button @click="cancel"> 取消 </el-button>
+      </template>
+    </JyDialog>
+    <JyVertifyBox
+      v-model="visibleVcode"
+      @on-success="success"
+      @on-failed="failed"
+    />
+  </div>
 </template>
 
 <script setup>
@@ -97,13 +101,17 @@
   }
   const formData = ref(new SuperAdmin())
   const formRef = ref(null)
-  const visibleVcode = ref(true)
+  const visibleVcode = ref(false)
   const step = ref(1)
   const options = ref([{ label: 'zb', value: '1' }])
   const timer = ref(null)
   const countdownTime = ref(-1)
   const props = defineProps({
     visible: {
+      type: Boolean,
+      default: false
+    },
+    modelValue: {
       type: Boolean,
       default: false
     }
@@ -172,7 +180,6 @@
     countdownTime.value = 10
     if (!timer.value) {
       timer.value = setInterval(() => {
-        console.log('--->', 33332)
         if (countdownTime.value < 0) {
           clearInterval(timer.value)
           timer.value = null
@@ -190,7 +197,8 @@
   }
 
   const success = () => {
-    console.log('--->', 'success')
+    // console.log('--->', 'success')
+    sendVCode()
   }
   const failed = () => {
     console.log('--->', 'failed')
