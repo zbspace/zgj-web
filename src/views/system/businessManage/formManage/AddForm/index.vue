@@ -1,10 +1,18 @@
 <template>
   <div>
-    <el-dialog v-model="isVisible" title="add form" fullscreen class="add-form-dialog">
+    <el-dialog
+      v-model="isVisible"
+      title="add form"
+      fullscreen
+      class="add-form-dialog"
+    >
       <div class="form-header">
-        <div class="backPrev" @click="backPrev"><svg class="iconpark-icon">
+        <div class="backPrev" @click="backPrev">
+          <svg class="iconpark-icon">
             <use href="#Vector8Stroke"></use>
-          </svg>{{ props.formId ? '编辑' : '新增' }}</div>
+          </svg>
+          {{ props.formId ? '编辑' : '新增' }}
+        </div>
         <div>
           <el-tabs class="demo-tabs" @tab-change="handleChange">
             <el-tab-pane>
@@ -32,11 +40,17 @@
       <div class="formBase" v-show="!isShowFrom">
         <div class="formBase-bg">
           <div class="form-title">请填写如下基础信息</div>
-          <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef"
-            @buttonClick="clickSelect">
+          <v-form-render
+            :form-json="formJson"
+            :form-data="formData"
+            :option-data="optionData"
+            ref="vFormRef"
+            @buttonClick="clickSelect"
+          >
+            <template #slot79423> 12222 </template>
+            <template #slot38887> 11111 </template>
           </v-form-render>
         </div>
-
       </div>
       <jy-vform ref="vformRef" v-show="isShowFrom" />
 
@@ -49,188 +63,189 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import formStepJson from '@/views/addDynamicFormJson/formStep';
-const vformRef = ref(null)
-const isShowFrom = ref(false)
-const formJson = reactive(formStepJson)
-const formData = reactive({})
-const optionData = reactive({})
-const vFormRef = ref(null)
-const submitForm = (type) => {
-  if (!type) {
-    vFormRef.value.resetForm()
-    return
-  }
-  vFormRef.value.getFormData().then(formData => {
-    // Form Validation OK
-    if (isShowFrom.value) {
-      alert(JSON.stringify(formData))
-      showFormDialog.value = false
-    } else {
-      isShowFrom.value = true
+  import { ref, reactive, computed } from 'vue'
+  import { ElMessage } from 'element-plus'
+  import formStepJson from '@/views/addDynamicFormJson/formStep'
+  const vformRef = ref(null)
+  const isShowFrom = ref(false)
+  const formJson = reactive(formStepJson)
+  const formData = reactive({})
+  const optionData = reactive({})
+  const vFormRef = ref(null)
+  const submitForm = type => {
+    if (!type) {
+      vFormRef.value.resetForm()
+      return
     }
-  }).catch(error => {
-    // Form Validation failed
+    vFormRef.value
+      .getFormData()
+      .then(formData => {
+        // Form Validation OK
+        if (isShowFrom.value) {
+          alert(JSON.stringify(formData))
+          showFormDialog.value = false
+        } else {
+          isShowFrom.value = true
+        }
+      })
+      .catch(error => {
+        // Form Validation failed
 
-    ElMessage.error(error)
-  })
-}
-const props = defineProps({
-  formId: {
-    type: String,
-    default: ''
-  },
-  modelValue: {
-    type: Boolean,
-    default: false
-  },
-})
-
-const isVisible = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
+        ElMessage.error(error)
+      })
   }
-})
+  const props = defineProps({
+    formId: {
+      type: String,
+      default: ''
+    },
+    modelValue: {
+      type: Boolean,
+      default: false
+    }
+  })
 
-const emit = defineEmits(['update:modelValue', 'formClose'])
-const cancel = () => {
-  emit('update:modelValue', false)
-}
-const handleSubmit = () => {
-  emit('update:modelValue', true)
-  console.log('vform--->', vformRef.value.getFormJson())
-}
-function backPrev() {
-  emit('update:modelValue', false)
-  emit('formClose', false);
-}
-function handleChange(name) {
-  isShowFrom.value = name > 0 ? true : false;
-}
+  const isVisible = computed({
+    get() {
+      return props.modelValue
+    },
+    set(value) {
+      emit('update:modelValue', value)
+    }
+  })
+
+  const emit = defineEmits(['update:modelValue', 'formClose'])
+  const cancel = () => {
+    emit('update:modelValue', false)
+  }
+  const handleSubmit = () => {
+    emit('update:modelValue', true)
+    console.log('vform--->', vformRef.value.getFormJson())
+  }
+  function backPrev() {
+    emit('update:modelValue', false)
+    emit('formClose', false)
+  }
+  function handleChange(name) {
+    isShowFrom.value = name > 0
+  }
 </script>
 
 <style lang="scss" scoped>
-:deep(.add-form-dialog) {
-  padding-top: 16px;
-  background: #F2F2F2;
+  :deep(.add-form-dialog) {
+    padding-top: 16px;
+    background: #f2f2f2;
 
-  .el-dialog__header {
-    display: none;
-  }
+    .el-dialog__header {
+      display: none;
+    }
 
-  .el-dialog__body {
-    padding: 0;
-    height: 100%;
-    overflow: auto;
-  }
+    .el-dialog__body {
+      padding: 0;
+      height: 100%;
+      overflow: auto;
+    }
 
-  .el-dialog__footer {
-    border-top: 1px solid #e9ebec;
-  }
+    .el-dialog__footer {
+      border-top: 1px solid #e9ebec;
+    }
 
-  .custom-tabs-label {
-    display: flex;
-    align-items: center;
-    color: rgba(0, 0, 0, 0.45);
-
-    .order {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 1px solid rgba(0, 0, 0, 0.15);
+    .custom-tabs-label {
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin-right: 14px;
       color: rgba(0, 0, 0, 0.45);
+
+      .order {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 14px;
+        color: rgba(0, 0, 0, 0.45);
+      }
     }
 
+    .el-tabs__item.is-active {
+      .custom-tabs-label {
+        color: #d0963e;
+      }
 
-  }
-
-  .el-tabs__item.is-active {
-    .custom-tabs-label {
-      color: #D0963E;
+      .order {
+        color: #fff;
+        background: #d0963e;
+        border: none;
+      }
     }
 
-    .order {
-      color: #fff;
-      background: #D0963E;
-      border: none;
-    }
-  }
+    .el-tabs__item:hover {
+      .custom-tabs-label {
+        color: #d0963e;
+      }
 
-  .el-tabs__item:hover {
-    .custom-tabs-label {
-      color: #D0963E;
-    }
-
-    .order {
-      color: #fff;
-      background: #D0963E;
-      border: none;
-    }
-  }
-}
-
-.form-header {
-  width: 100%;
-  height: 64px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 10;
-  background: #FFFFFF;
-  padding: 0 24px;
-  /* 投影/默认 */
-
-  box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
-
-  .backPrev {
-    font-size: 22px;
-    color: rgba(0, 0, 0, 0.85);
-    cursor: pointer;
-
-    .iconpark-icon {
-      width: 18px;
-      height: 18px;
-      margin-right: 8px;
+      .order {
+        color: #fff;
+        background: #d0963e;
+        border: none;
+      }
     }
   }
 
-  .save-btn {
-    background: #D0963E;
-    border-radius: 2px;
-    color: #FFFFFF;
+  .form-header {
+    width: 100%;
+    height: 64px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    background: #ffffff;
+    padding: 0 24px;
+    /* 投影/默认 */
+
+    box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12),
+      0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+    .backPrev {
+      font-size: 22px;
+      color: rgba(0, 0, 0, 0.85);
+      cursor: pointer;
+
+      .iconpark-icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+      }
+    }
+
+    .save-btn {
+      background: #d0963e;
+      border-radius: 2px;
+      color: #ffffff;
+    }
   }
-}
 
-.formBase {
-  width: 80%;
-  height: 85%;
-  background: #fff;
-  margin: 72px auto 0 auto;
-  min-width: 600px;
+  .formBase {
+    width: 80%;
+    height: 85%;
+    background: #fff;
+    margin: 72px auto 0 auto;
+    min-width: 600px;
 
-  .formBase-bg {
-    width: 495px;
-    margin: 0 auto;
+    .formBase-bg {
+      width: 495px;
+      margin: 0 auto;
+    }
 
+    .form-title {
+      color: rgba(0, 0, 0, 0.85);
+      font-size: 22px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
   }
-
-  .form-title {
-    color: rgba(0, 0, 0, 0.85);
-    font-size: 22px;
-    margin-bottom: 24px;
-    text-align: center;
-  }
-}
 </style>
