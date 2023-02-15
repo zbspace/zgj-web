@@ -190,7 +190,7 @@
    * selectedStatus 0(未选中) 1（部分） 2（全部）
    */
   import { defineProps, defineEmits, reactive, ref, watch } from 'vue'
-  import { treeDataTranslate } from '@/hooks/handleTreeData.js'
+  import { treeDataTranslate } from '@/utils/hooks/handleTreeData.js'
   import { Search, ArrowRight } from '@element-plus/icons-vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import kTree from './kTree.vue'
@@ -351,12 +351,12 @@
   )
   // 处理面包屑 - 递归展示
   const handleCurmbs = (attr, attrId) => {
-    var path = []
+    const path = []
     if (!attr) return []
-    var forFn = function (tree, id) {
-      for (var i = 0; i < tree.length; i++) {
+    const forFn = function (tree, id) {
+      for (let i = 0; i < tree.length; i++) {
         // 存放最后返回的内容,返回text集合
-        var data = tree[i]
+        const data = tree[i]
         path.push({
           curmbsName: data.labelName,
           id: data.id

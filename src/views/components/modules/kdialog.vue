@@ -144,7 +144,7 @@
    */
   // <KDialog @update:show="showDialog = $event" :show="showDialog" title="Demo标题"></KDialog>
   import { defineProps, defineEmits, ref, onMounted, watch } from 'vue'
-  import { fackClickOutSide } from '@/hooks/fackClickOutSide.js'
+  import { fackClickOutSide } from '@/utils/hooks/fackClickOutSide.js'
 
   fackClickOutSide()
 
