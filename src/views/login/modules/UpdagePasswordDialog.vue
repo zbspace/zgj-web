@@ -145,7 +145,7 @@
 <script setup>
   import VSteps from '../components/VSteps.vue'
   import VerificationBtn from '../components/VerificationBtn.vue'
-  import i18n from '../../../i18n'
+  import i18n from '@/utils/i18n'
   import { reactive, watch } from 'vue'
 
   const state = reactive({

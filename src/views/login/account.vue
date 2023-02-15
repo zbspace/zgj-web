@@ -127,7 +127,7 @@
 </template>
 
 <script setup>
-  import I18n from '../../i18n'
+  import I18n from '@/utils/i18n'
   import { reactive, onMounted, ref, watch } from 'vue'
   import VAccountLogin from './modules/AccountLogin.vue'
   import useClickQutside from '@/hooks/useClickQutside.js'
