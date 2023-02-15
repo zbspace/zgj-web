@@ -9,8 +9,6 @@ import store from './store'
 /* 引入自定义全局变量 */
 // import './style/index.scss'
 
-import BootstrapVue3 from 'bootstrap-vue-3'
-
 import '@/assets/fonts/font.css'
 import '@/assets/scss/config/minimal/app.scss'
 
@@ -35,7 +33,6 @@ import commonFun from '@/utils/common'
   app
     .use(store)
     .use(router)
-    .use(BootstrapVue3)
     .use(i18n)
     .use(ElementPlus, { locale: zhCn })
     .use(VForm3)
