@@ -658,6 +658,12 @@
                 }
                 .fast-icon {
                   margin-right: 0.3rem;
+                  width: 1rem;
+                  height: 1rem;
+                  .iconpark-icon {
+                    width: 1rem;
+                    height: 1rem;
+                  }
                 }
               }
             }
