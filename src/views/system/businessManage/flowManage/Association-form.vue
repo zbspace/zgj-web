@@ -26,7 +26,13 @@
           </div>
         </div>
         <div class="info-form">
-          <el-form :model="form" label-width="80px" :rules="rules" ref="ruleFormRef" status-icon>
+          <el-form
+            :model="form"
+            label-width="80px"
+            :rules="rules"
+            ref="ruleFormRef"
+            status-icon
+          >
             <el-form-item label="业务类型" required>
               <el-select v-model="form.businessType" placeholder="请选择">
                 <el-option label="Zone one" value="shanghai" />
@@ -46,7 +52,11 @@
           <div class="info-noContent-desc">暂无可关联的表单</div>
         </div>
         <div class="info-list" v-else>
-          <div class="info-list-box" v-for="(item, index) in state.list.data" :key="index">
+          <div
+            class="info-list-box"
+            v-for="(item, index) in state.list.data"
+            :key="index"
+          >
             <div class="info-list-box-redio">
               <el-radio-group v-model="state.list.radio" class="ml-4">
                 <el-radio :label="index" size="large">
@@ -72,8 +82,12 @@
     </div>
     <div class="add" v-if="state.currentState === '2'">
       <div>
-        <v-form-render :form-json="formLibraryJson" :form-data="formLibraryData" :option-data="optionLibraryData"
-          ref="vFormLibraryRef">
+        <v-form-render
+          :form-json="formLibraryJson"
+          :form-data="formLibraryData"
+          :option-data="optionLibraryData"
+          ref="vFormLibraryRef"
+        >
         </v-form-render>
       </div>
       <div class="info-footer">
@@ -83,248 +97,255 @@
     </div>
     <!-- 新建弹框 -->
     <div>
-      <JyElMessageBox v-model="state.JyElMessageBox.show" :custom-content="true" :defaultAttribute="{
-        fullscreen: true,
-        height: '100%'
-      }">
-        <AddFrom :formId="'12345667'" v-model="state.JyElMessageBox.show"
-          @formClose="state.JyElMessageBox.show = false" />
+      <JyElMessageBox
+        v-model="state.JyElMessageBox.show"
+        :custom-content="true"
+        :defaultAttribute="{
+          fullscreen: true,
+          height: '100%'
+        }"
+      >
+        <AddFrom
+          :formId="'12345667'"
+          v-model="state.JyElMessageBox.show"
+          @formClose="state.JyElMessageBox.show = false"
+        />
       </JyElMessageBox>
     </div>
   </div>
 </template>
 <script setup>
-import { reactive } from 'vue'
-import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-const formLibraryJson = reactive({})
-const state = reactive({
-  currentState: '1', // 1选择表单  2 编辑表单
-  list: {
-    radio: '',
-    data: [
-      {
-        desc: '表单1表单1表单1表单1表单1表单1表单'
-      },
-      {
-        desc: '表单1表单1表单1表单1表单1表单1表单'
-      },
-      {
-        desc: '表单1表单1表单1表单1表单1表单1表单'
-      },
-      {
-        desc: '表单1表单1表单1表单1表单1表单1表单'
-      }
-    ]
-  },
-  JyElMessageBox: {
-    show: false,
-    header: {
-      data: ''
+  import { reactive } from 'vue'
+  import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
+  const formLibraryJson = reactive({})
+  const state = reactive({
+    currentState: '1', // 1选择表单  2 编辑表单
+    list: {
+      radio: '',
+      data: [
+        {
+          desc: '表单1表单1表单1表单1表单1表单1表单'
+        },
+        {
+          desc: '表单1表单1表单1表单1表单1表单1表单'
+        },
+        {
+          desc: '表单1表单1表单1表单1表单1表单1表单'
+        },
+        {
+          desc: '表单1表单1表单1表单1表单1表单1表单'
+        }
+      ]
     },
-    content: {
-      data: ''
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
+  })
+  const form = reactive({
+    ProcessName: '',
+    ProcessType: false,
+    businessType: '',
+    fileType: '',
+    rangeApplication: '',
+    desc: ''
+  })
+  // 点击去创建
+  function clickEditForm() {
+    state.currentState = '2'
   }
-})
-const form = reactive({
-  ProcessName: '',
-  ProcessType: false,
-  businessType: '',
-  fileType: '',
-  rangeApplication: '',
-  desc: ''
-})
-// 点击去创建
-function clickEditForm() {
-  state.currentState = '2'
-}
-// 点击重新选择
-function clickReselect() {
-  state.currentState = '1'
-}
-// 点击编辑
-function clickEdit() {
-  state.JyElMessageBox.show = true
-}
+  // 点击重新选择
+  function clickReselect() {
+    state.currentState = '1'
+  }
+  // 点击编辑
+  function clickEdit() {
+    state.JyElMessageBox.show = true
+  }
 </script>
 <style lang="scss" scoped>
-.flowManage-Association-form {
-  margin: 0%;
-  width: 90%;
-  height: calc(95% - 1rem);
-  margin-top: 1rem;
-  background-color: var(--color-fill--5);
-  position: relative;
-  color: var(--color-text-1);
-
-  .choice {
-    width: 100%;
-    height: 100%;
-  }
-
-  .info-box {
-    width: 50%;
-    margin: 0% auto;
-    text-align: center;
-
-    .info-title {
-      padding-top: 3rem;
-      font-size: var(--font-size-title-2);
-      color: var(--color-text-1);
-    }
-
-    .info-from {
-      margin-top: 1.5rem;
-    }
-  }
-
-  .info-footer {
-    width: 100%;
-    position: absolute;
-    bottom: 0%;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: 1px solid var(--color-border-2);
-  }
-
-  .info-remind {
-    background: var(--Warning-1);
-    /* 警告 Warning/禁用 */
-
-    border: 1px solid var(--Warning-3);
-    border-radius: var(--border-radius-2);
-    padding: 1rem;
+  .flowManage-Association-form {
+    margin: 0%;
+    width: 90%;
+    height: calc(95% - 1rem);
     margin-top: 1rem;
-    text-align: left;
+    background-color: var(--color-fill--5);
+    position: relative;
+    color: var(--color-text-1);
 
-    .info-remind-title {
+    .choice {
+      width: 100%;
+      height: 100%;
+    }
+
+    .info-box {
+      width: 50%;
+      margin: 0% auto;
+      text-align: center;
+
+      .info-title {
+        padding-top: 3rem;
+        font-size: var(--font-size-title-2);
+        color: var(--color-text-1);
+      }
+
+      .info-from {
+        margin-top: 1.5rem;
+      }
+    }
+
+    .info-footer {
+      width: 100%;
+      position: absolute;
+      bottom: 0%;
+      height: 4rem;
       display: flex;
       align-items: center;
-      font-size: var(--font-size-title-1);
+      justify-content: center;
+      border-top: 1px solid var(--color-border-2);
+    }
 
-      .info-remind-title-icon {
-        margin-right: 0.5rem;
-        width: 1.3rem;
-        height: 1.3rem;
+    .info-remind {
+      background: var(--Warning-1);
+      /* 警告 Warning/禁用 */
 
-        .icon {
-          width: 100%;
-          height: 100%;
+      border: 1px solid var(--Warning-3);
+      border-radius: var(--border-radius-2);
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: left;
+
+      .info-remind-title {
+        display: flex;
+        align-items: center;
+        font-size: var(--font-size-title-1);
+
+        .info-remind-title-icon {
+          margin-right: 0.5rem;
+          width: 1.3rem;
+          height: 1.3rem;
+
+          .icon {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+
+      .info-remind-p {
+        padding: 0.2rem 1.8rem;
+        box-sizing: border-box;
+        color: var(--color-text-3);
+      }
+    }
+
+    .info-form {
+      margin-top: 1rem;
+      padding: 0% 10%;
+      box-sizing: border-box;
+    }
+
+    .info-noContent {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      flex-flow: wrap;
+
+      .info-noContent-backcolor {
+        background-color: #d9d9d9;
+        width: 15rem;
+        height: 8rem;
+      }
+
+      .info-noContent-desc {
+        width: 100%;
+        margin-top: 1rem;
+      }
+    }
+
+    .info-list {
+      margin-top: 1rem;
+
+      .info-list-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+        padding: 0.7rem 1rem;
+        box-sizing: border-box;
+        background: var(--color-fill--2);
+        border-radius: var(--border-radius-2);
+        box-sizing: border-box;
+        margin: 0.5rem 0rem;
+        cursor: pointer;
+
+        .info-list-box-redio {
+          width: 1rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .info-list-box-text {
+          width: calc(100% - 5rem);
+        }
+
+        .info-list-box-sub {
+          width: 4rem;
         }
       }
     }
 
-    .info-remind-p {
-      padding: 0.2rem 1.8rem;
-      box-sizing: border-box;
-      color: var(--color-text-3);
-    }
-  }
-
-  .info-form {
-    margin-top: 1rem;
-    padding: 0% 10%;
-    box-sizing: border-box;
-  }
-
-  .info-noContent {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    flex-flow: wrap;
-
-    .info-noContent-backcolor {
-      background-color: #d9d9d9;
-      width: 15rem;
-      height: 8rem;
-    }
-
-    .info-noContent-desc {
-      width: 100%;
-      margin-top: 1rem;
-    }
-  }
-
-  .info-list {
-    margin-top: 1rem;
-
-    .info-list-box {
+    .icon {
+      width: 1rem;
+      height: 1rem;
       display: flex;
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
-      text-align: left;
-      padding: 0.7rem 1rem;
-      box-sizing: border-box;
-      background: var(--color-fill--2);
+
+      .iconpark-icon {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    // 已启用
+    .Have-been-enabled {
+      background: var(--success-1);
+      /* 成功 Success/常规 */
+      border: 1px solid var(--success-6);
       border-radius: var(--border-radius-2);
+      font-size: var(--font-size-caption);
+      color: var(--success-6);
+      padding: 0.1rem 0.2rem;
       box-sizing: border-box;
-      margin: 0.5rem 0rem;
-      cursor: pointer;
+    }
 
-      .info-list-box-redio {
-        width: 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    // 禁用
+    .disabled {
+      background: var(--color-fill--2);
+      /* 成功 Success/常规 */
+      border: 1px solid var(--color-border-1);
+      border-radius: var(--border-radius-2);
+      font-size: var(--font-size-caption);
+      color: var(--color-text-2);
+      padding: 0.1rem 0.2rem;
+      box-sizing: border-box;
+    }
+
+    :deep(.el-form) {
+      .el-form-item__label {
+        margin-bottom: 0%;
       }
 
-      .info-list-box-text {
-        width: calc(100% - 5rem);
-      }
-
-      .info-list-box-sub {
-        width: 4rem;
+      .el-select {
+        width: 100%;
       }
     }
   }
-
-  .icon {
-    width: 1rem;
-    height: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .iconpark-icon {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  // 已启用
-  .Have-been-enabled {
-    background: var(--success-1);
-    /* 成功 Success/常规 */
-    border: 1px solid var(--success-6);
-    border-radius: var(--border-radius-2);
-    font-size: var(--font-size-caption);
-    color: var(--success-6);
-    padding: 0.1rem 0.2rem;
-    box-sizing: border-box;
-  }
-
-  // 禁用
-  .disabled {
-    background: var(--color-fill--2);
-    /* 成功 Success/常规 */
-    border: 1px solid var(--color-border-1);
-    border-radius: var(--border-radius-2);
-    font-size: var(--font-size-caption);
-    color: var(--color-text-2);
-    padding: 0.1rem 0.2rem;
-    box-sizing: border-box;
-  }
-
-  :deep(.el-form) {
-    .el-form-item__label {
-      margin-bottom: 0%;
-    }
-
-    .el-select {
-      width: 100%;
-    }
-  }
-}
 </style>
