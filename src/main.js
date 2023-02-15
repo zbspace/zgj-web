@@ -19,7 +19,6 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 
 import VForm3 from 'vform-jy'
-import 'vform-jy/dist/designer.style.css'
 // import VForm3 from '@/../lib/vform/designer.umd.js'
 // import '../lib/vform/designer.style.css'
 
