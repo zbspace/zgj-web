@@ -495,8 +495,9 @@
                     >
                       <div
                         class="sealDetails-basic-information-list"
-                        v-for="item in state.cache.DetailsOfDocument
+                        v-for="(item, num) in state.cache.DetailsOfDocument
                           .basicInformation.data"
+                        :key="num"
                       >
                         <div class="sealDetails-basic-information-list-label"
                           >{{ item.label }}：
@@ -992,7 +993,9 @@
     // 展示权限
     visible: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 默认显示
     activeName: {
@@ -1006,7 +1009,9 @@
     // 数据
     data: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     }
   })
   const emit = defineEmits(['clickClose'])
