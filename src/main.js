@@ -17,8 +17,6 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 
 import VForm3 from 'vform-jy'
-// import VForm3 from '@/../lib/vform/designer.umd.js'
-// import '../lib/vform/designer.style.css'
 
 import '@/utils/SvgIconPack'
 
@@ -37,7 +35,7 @@ import commonFun from '@/utils/common'
     .use(ElementPlus, { locale: zhCn })
     .use(VForm3)
     .mount('#app')
-  app.provide('commonFun', commonFun)
+    .provide('commonFun', commonFun)
   requireComp(app)
   requireAntIcons(app)
 })()
