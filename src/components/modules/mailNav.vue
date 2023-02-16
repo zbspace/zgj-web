@@ -169,13 +169,13 @@
 
 <script setup>
   import { ref, watch, onMounted } from 'vue'
-  import useClickQutside from '../../hooks/useClickQutside.js'
+  import useClickQutside from '@/utils/hooks/useClickQutside.js'
 
   const dropdownMailRef = ref(null)
   const showMailPop = ref(false)
   const isClickOutsideMail = useClickQutside(dropdownMailRef)
   watch(isClickOutsideMail, () => {
-    console.log(showMailPop.value, 'showMailPop.value')
+    // console.log(showMailPop.value, 'showMailPop.value')
     // 邮件弹框
     if (isClickOutsideMail.value && showMailPop.value) {
       showMailPop.value = false

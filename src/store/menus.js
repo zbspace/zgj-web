@@ -17,7 +17,7 @@ export const useMenusInfoStore = defineStore({
   getters: {},
   actions: {
     setMenusInfo(menusInfo) {
-      console.log(menusInfo)
+      // console.log(menusInfo)
       this.currentType = menusInfo
     },
 
