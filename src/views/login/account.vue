@@ -130,7 +130,7 @@
   import I18n from '@/utils/i18n'
   import { reactive, onMounted, ref, watch } from 'vue'
   import VAccountLogin from './modules/AccountLogin.vue'
-  import useClickQutside from '@/hooks/useClickQutside.js'
+  import useClickQutside from '@/utils/hooks/useClickQutside.js'
 
   // 切换语言弹窗
   const dropdownChangeLanRef = ref(null)

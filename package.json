@@ -87,7 +87,7 @@
     "@babel/eslint-parser": "^7.17.0",
     "@babel/preset-env": "^7.20.2",
     "@originjs/vite-plugin-require-context": "^1.0.9",
-    "@vitejs/plugin-legacy": "^1.8.0",
+    "@vitejs/plugin-legacy": "^4.0.1",
     "@vitejs/plugin-vue": "^3.1.0",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
     "consola": "^2.15.3",
