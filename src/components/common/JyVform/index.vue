@@ -19,4 +19,6 @@
   })
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+  @import 'vform-jy/dist/designer.style.css';
+</style>

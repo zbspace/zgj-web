@@ -20,7 +20,7 @@
    */
   import { reactive, watch, defineProps } from 'vue'
   import { ElMessage } from 'element-plus'
-  import i18n from '../../../i18n'
+  import i18n from '@/utils/i18n'
   const props = defineProps({
     customStyle: {
       type: Object,

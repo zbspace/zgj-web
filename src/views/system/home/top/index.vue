@@ -2,16 +2,15 @@
   <div class="system-home-top">
     <div class="list">
       <div class="item" v-for="(item, index) in data" :key="index">
-        <!-- <div :class="`bg bg-${index}`"> </div> -->
         <img :src="item.img" alt="" />
         <div>
-          <span class="sum" :class="index !== 0 ? 'color-dark' : ''">{{
-            item.sum
-          }}</span>
-          <span class="unit"
-            ><span class="base" v-if="item.base">/{{ item.base }}</span
-            >{{ item.unit }}</span
-          >
+          <span class="sum" :class="index !== 0 ? 'color-dark' : ''">
+            {{ item.sum }}
+          </span>
+          <span class="unit">
+            <span class="base" v-if="item.base">/{{ item.base }} </span>
+            {{ item.unit }}
+          </span>
         </div>
         <div class="type">
           {{ item.type }}
@@ -88,27 +87,6 @@
         top: 0;
         background-color: #fff;
       }
-      // .bg-1 {
-      //   background: linear-gradient(
-      //     179.58deg,
-      //     rgba(255, 255, 255, 0) 6.63%,
-      //     #ffffff 99.8%
-      //   );
-      // }
-      // .bg-2 {
-      //   background: linear-gradient(
-      //     179.61deg,
-      //     rgba(255, 255, 255, 0) 9.77%,
-      //     #ffffff 99.81%
-      //   );
-      // }
-      // .bg-3 {
-      //   background: linear-gradient(
-      //     179.61deg,
-      //     rgba(255, 255, 255, 0) 9.77%,
-      //     #ffffff 99.81%
-      //   );
-      // }
       img {
         height: 116px;
         position: absolute;
