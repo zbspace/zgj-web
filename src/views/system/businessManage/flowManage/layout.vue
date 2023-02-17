@@ -49,7 +49,12 @@
     defineProps,
     watch
   } from 'vue'
-  const emit = defineEmits(['close', 'update:modelValue', 'clickCutTabs'])
+  const emit = defineEmits([
+    'close',
+    'update:modelValue',
+    'clickCutTabs',
+    'beforeCutTabs'
+  ])
   const props = defineProps({
     // 处理类型
     type: {
@@ -119,12 +124,7 @@
   function clickClose() {
     emit('close')
   }
-  // // 点击关闭后回调
-  // function closeCallBack() {
-  //   state.props.modelValue = false
-  //   // console.log('--->modelValue', state.props.modelValue)
-  //   emit('update:modelValue', state.props.modelValue)
-  // }
+
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
     // 初始化数据

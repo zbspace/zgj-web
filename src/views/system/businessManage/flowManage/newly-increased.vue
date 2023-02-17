@@ -92,6 +92,13 @@
   const refAssociationForm = ref(null)
   // 点击切换选项
   const clickCutTabs = (data, item) => {
+    if (item.index === '3') {
+      const InfoValue = refAssociationForm.value.getInfoValue()
+      console.log('--->', InfoValue)
+      if (!InfoValue.SelectionForm) {
+        return
+      }
+    }
     data.forEach(element => {
       element.checked = false
     })
@@ -735,9 +742,6 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
-    setTimeout(() => {
-      refAssociationForm.value.getInfoValue()
-    }, 1000)
   })
 </script>
 <style lang="scss" scoped>
