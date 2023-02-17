@@ -46,9 +46,8 @@
             :option-data="optionData"
             ref="vFormRef"
             @buttonClick="clickSelect"
+            @changeSelectForm="fromSelect"
           >
-            <template #slot79423> 12222 </template>
-            <template #slot38887> 11111 </template>
           </v-form-render>
         </div>
       </div>
@@ -63,7 +62,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed } from 'vue'
+  import { ref, reactive, computed, onMounted } from 'vue'
   import { ElMessage } from 'element-plus'
   import formStepJson from '@/views/addDynamicFormJson/formStep'
   const vformRef = ref(null)
@@ -128,7 +127,15 @@
   }
   function handleChange(name) {
     isShowFrom.value = name > 0
+    console.log(vFormRef)
   }
+  function fromSelect(value) {
+    console.log(value)
+    console.log(12345)
+  }
+  onMounted(() => {
+    console.log(`the component is now mounted.`)
+  })
 </script>
 
 <style lang="scss" scoped>

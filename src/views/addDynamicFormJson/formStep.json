@@ -84,12 +84,36 @@
             "value": 1
           },
           {
-            "label": "文件类型",
+            "label": "转办申请",
             "value": 2
           },
           {
-            "label": "刻章申请",
+            "label": "重置用印申请",
             "value": 3
+          },
+          {
+            "value": 4,
+            "label": "刻章申请"
+          },
+          {
+            "value": 5,
+            "label": "停用申请"
+          },
+          {
+            "value": "6",
+            "label": "启用申请"
+          },
+          {
+            "value": 7,
+            "label": "变更申请"
+          },
+          {
+            "value": 8,
+            "label": "换章申请"
+          },
+          {
+            "value": 9,
+            "label": "销毁申请"
           }
         ],
         "required": true,
@@ -116,14 +140,14 @@
             ]
           }
         ],
-        "customClass": "",
+        "customClass": [],
         "labelIconClass": null,
         "labelIconPosition": "rear",
         "labelTooltip": null,
         "onCreated": "",
         "onMounted": "",
         "onRemoteQuery": "",
-        "onChange": "var electronicSealWidget = this.getWidgetRef('radio104093')\nif (value === 1) {\n  electronicSealWidget.setHidden(false)\n} else {\n  electronicSealWidget.setHidden(true)\n}",
+        "onChange": "var electronicSealWidget = this.getWidgetRef('radio104093')\nif (value === 1) {\n  electronicSealWidget.setHidden(false)\n} else {\n  electronicSealWidget.setHidden(true)\n}\nconsole.log(this);",
         "onFocus": "",
         "onBlur": "",
         "onValidate": ""
@@ -247,7 +271,7 @@
     "dataSources": [],
     "onFormCreated": "",
     "onFormMounted": "",
-    "onFormDataChange": "",
+    "onFormDataChange": "console.log(123456)\nthis.$emit('changeSelectForm',1);",
     "onFormValidate": ""
   }
 }
