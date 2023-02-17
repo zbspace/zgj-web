@@ -43,6 +43,7 @@
         ></basicsInfo>
         <AssociationForm
           v-show="state.processTabs.checkedNode.index == '2'"
+          ref="refAssociationForm"
         ></AssociationForm>
         <VFlowDesign
           v-show="state.processTabs.checkedNode.index == '3'"
@@ -88,6 +89,7 @@
     }
   })
   const refVFlowDesign = ref(null)
+  const refAssociationForm = ref(null)
   // 点击切换选项
   const clickCutTabs = (data, item) => {
     data.forEach(element => {
@@ -733,6 +735,9 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    setTimeout(() => {
+      refAssociationForm.value.getInfoValue()
+    }, 1000)
   })
 </script>
 <style lang="scss" scoped>

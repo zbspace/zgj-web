@@ -13,12 +13,6 @@
           <el-form-item label="流程名称" required>
             <el-input v-model="form.ProcessName" placeholder="请输入" />
           </el-form-item>
-          <el-form-item label="流程类型">
-            <el-radio-group v-model="form.ProcessType">
-              <el-radio label="预设流程" />
-              <el-radio label="发起人自由流程" />
-            </el-radio-group>
-          </el-form-item>
           <el-form-item label="业务类型" required>
             <el-select v-model="form.businessType" placeholder="请选择">
               <el-option label="Zone one" value="shanghai" />
