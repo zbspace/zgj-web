@@ -1,9 +1,9 @@
 // 配置设计器初始化界面显示设置
 export const designerConfig = {
   // 是否显示语言切换菜单
-  languageMenu: true,
+  languageMenu: false,
   // 是否显示GitHub、文档等外部链接
-  externalLink: true,
+  externalLink: false,
   // 是否显示表单模板
   formTemplates: true,
   // 是否禁止修改唯一名称
@@ -19,9 +19,9 @@ export const designerConfig = {
   // 是否显示导出JSON器按钮
   exportJsonButton: true,
   // 是否显示导出代码按钮
-  exportCodeButton: true,
+  exportCodeButton: false,
   // 是否显示生成SFC按钮
-  generateSFCButton: true,
+  generateSFCButton: false,
   // 工具按钮栏最大宽度（单位px）
   // 如新增按钮后不可见，请调大
   // 如右侧空白区域过大，请调小
@@ -39,5 +39,5 @@ export const designerConfig = {
   // 设置自定义产品标题（仅Pro）
   productTitle: '',
   // 是否显示顶部LOGO条（仅Pro）
-  logoHeader: true
+  logoHeader: false
 }

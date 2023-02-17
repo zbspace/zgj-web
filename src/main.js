@@ -4,7 +4,6 @@ import App from './App.vue'
 import router from './router'
 
 import i18n from '@/utils/i18n'
-// import { createPinia } from 'pinia'
 import store from './store'
 
 import '@/assets/fonts/font.css'
@@ -14,8 +13,6 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 
 import VForm3 from 'vform-jy'
-import 'vform-jy/dist/designer.style.css'
-
 import '@/utils/SvgIconPack'
 
 // 全局自定义组件

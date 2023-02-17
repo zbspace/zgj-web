@@ -40,7 +40,7 @@
       <div class="formBase" v-show="!isShowFrom">
         <div class="formBase-bg">
           <div class="form-title">请填写如下基础信息</div>
-          <v-form-render
+          <!-- <v-form-render
             :form-json="formJson"
             :form-data="formData"
             :option-data="optionData"
@@ -48,10 +48,18 @@
             @buttonClick="clickSelect"
             @changeSelectForm="fromSelect"
           >
-          </v-form-render>
+          </v-form-render> -->
+          <JyVform
+            ref="vFormRef"
+            mode="render"
+            :formJson="formJson"
+            :formData="formData"
+            :optionData="optionData"
+            @buttonClick="clickSelect"
+          />
         </div>
       </div>
-      <jy-vform ref="vformRef" v-show="isShowFrom" />
+      <jy-vform ref="vformRef" v-show="isShowFrom" style="margin-top: 48px" />
 
       <!-- <template #footer>
         <el-button @click="cancel"> 取消 </el-button>
