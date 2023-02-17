@@ -16,7 +16,7 @@ const routes = {
       path: 'home',
       name: 'SystemHome',
       meta: { title: '首页', authRequired: true },
-      component: async () => await import('@/views/system/home/index.vue')
+      component: () => import('@/views/system/home/index.vue')
     },
     // 个人中心
     {

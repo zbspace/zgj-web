@@ -1,7 +1,7 @@
 <template>
   <div class="custom-tabs" :class="border ? 'tabs-border' : ''">
     <div v-for="(item, index) in props.label" :key="index">
-      <el-badge is-dot class="share-dot">
+      <el-badge is-dot class="share-dot" :hidden="hiddenBadge">
         <div
           :class="props.active === item.value ? 'actived' : ''"
           class="item"
@@ -28,6 +28,10 @@
       }
     },
     border: {
+      type: Boolean,
+      default: true
+    },
+    hiddenBadge: {
       type: Boolean,
       default: true
     }

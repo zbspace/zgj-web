@@ -209,7 +209,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    z-index: 10;
+    z-index: 100;
     background: #ffffff;
     padding: 0 24px;
     /* 投影/默认 */

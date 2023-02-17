@@ -51,7 +51,6 @@
     toolbox: {
       top: 4,
       show: true,
-      orient: 'vertical',
       feature: {
         restore: {},
         saveAsImage: {}

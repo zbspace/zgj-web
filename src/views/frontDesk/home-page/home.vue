@@ -260,15 +260,15 @@
         },
         {
           label: '已审批',
-          name: '3'
+          name: '4'
         },
         {
           label: '已确认',
-          name: '3'
+          name: '5'
         },
         {
           label: '已处理',
-          name: '3'
+          name: '6'
         }
       ]
     },
@@ -545,7 +545,7 @@
               top: 0rem;
               @include mixin-padding(16);
               color: var(--color-text-3);
-              height: 72px;
+              height: 38px;
               display: flex;
               align-items: center;
             }
@@ -588,6 +588,7 @@
                   color: var(--color-text-1);
                 }
                 .flow-list-li-desc-jues {
+                  margin-top: 0.2rem;
                   .label {
                     color: var(--color-text-2);
                     font-size: var(--font-size-caption);
@@ -608,10 +609,13 @@
                 flex-flow: wrap;
                 width: 9rem;
                 .label {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
                   color: var(--Info-6);
                   font-size: var(--font-size-caption);
                   background-color: var(--Info-1);
-                  margin: 0% 0.2rem 0% 0rem;
+                  // margin: 0% 0.2rem 0% 0rem;
                   padding: 0.2rem 0.2rem;
                   box-sizing: border-box;
                   width: 4rem;
@@ -619,6 +623,7 @@
                   border-radius: var(--border-radius-4);
                 }
                 .time {
+                  margin-top: 0.2rem;
                   width: 100%;
                   text-align: right;
                   color: var(--color-text-3);
@@ -658,6 +663,12 @@
                 }
                 .fast-icon {
                   margin-right: 0.3rem;
+                  width: 1rem;
+                  height: 1rem;
+                  .iconpark-icon {
+                    width: 1rem;
+                    height: 1rem;
+                  }
                 }
               }
             }
@@ -675,7 +686,7 @@
               top: 0rem;
               @include mixin-padding(16);
               color: var(--color-text-3);
-              height: 72px;
+              height: 38px;
               display: flex;
               align-items: center;
             }

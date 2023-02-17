@@ -29,7 +29,7 @@
           <el-form
             :model="form"
             label-width="80px"
-            :rules="rules"
+            :rules="form.rules"
             ref="ruleFormRef"
             status-icon
           >
@@ -115,7 +115,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive } from 'vue'
+  import { reactive, defineExpose } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
   const formLibraryJson = reactive({})
   const state = reactive({
@@ -153,20 +153,41 @@
     businessType: '',
     fileType: '',
     rangeApplication: '',
-    desc: ''
+    desc: '',
+    rules: [
+      {
+        required: true,
+        message: '新手机号不能为空',
+        trigger: 'blur'
+      }
+    ]
   })
   // 点击去创建
-  function clickEditForm() {
+  const clickEditForm = () => {
     state.currentState = '2'
   }
   // 点击重新选择
-  function clickReselect() {
+  const clickReselect = () => {
     state.currentState = '1'
   }
   // 点击编辑
-  function clickEdit() {
+  const clickEdit = () => {
     state.JyElMessageBox.show = true
   }
+  // 获取信息值
+  const getInfoValue = () => {
+    let SelectionForm = null
+    if (state.list.radio) {
+      SelectionForm = state.list.data[state.list.radio]
+    }
+    return {
+      SelectionForm
+    }
+  }
+  // 提供方法
+  defineExpose({
+    getInfoValue
+  })
 </script>
 <style lang="scss" scoped>
   .flowManage-Association-form {
