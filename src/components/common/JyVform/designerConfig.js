@@ -1,0 +1,43 @@
+// 配置设计器初始化界面显示设置
+export const designerConfig = {
+  // 是否显示语言切换菜单
+  languageMenu: true,
+  // 是否显示GitHub、文档等外部链接
+  externalLink: true,
+  // 是否显示表单模板
+  formTemplates: true,
+  // 是否禁止修改唯一名称
+  widgetNameReadonly: false,
+  // 是否显示组件事件属性折叠面板
+  eventCollapse: true,
+  // 是否显示清空设计器按钮
+  clearDesignerButton: true,
+  // 是否显示预览表单按钮
+  previewFormButton: true,
+  // 是否显示导入JSON按钮
+  importJsonButton: true,
+  // 是否显示导出JSON器按钮
+  exportJsonButton: true,
+  // 是否显示导出代码按钮
+  exportCodeButton: true,
+  // 是否显示生成SFC按钮
+  generateSFCButton: true,
+  // 工具按钮栏最大宽度（单位px）
+  // 如新增按钮后不可见，请调大
+  // 如右侧空白区域过大，请调小
+  toolbarMaxWidth: 420,
+  // 工具栏按钮最小宽度（单位px）
+  // 值必须小于toolbarMaxWidth
+  toolbarMinWidth: 300,
+  // 表单设计器预设CSS代码
+  presetCssCode: '',
+  // 表单设计器初始化自动清空内容
+  /* 如设置为true，则刷新页面时也会清空设计器画布区域，慎用！ */
+  resetFormJson: false,
+  // 设置自定义产品名称（仅Pro）
+  productName: '',
+  // 设置自定义产品标题（仅Pro）
+  productTitle: '',
+  // 是否显示顶部LOGO条（仅Pro）
+  logoHeader: true
+}
