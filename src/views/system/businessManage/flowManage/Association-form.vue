@@ -58,8 +58,12 @@
             :key="index"
           >
             <div class="info-list-box-redio">
-              <el-radio-group v-model="state.list.radio" class="ml-4">
-                <el-radio :label="index" size="large">
+              <el-radio-group
+                v-model="state.list.radio"
+                class="ml-4"
+                @change="redioChange"
+              >
+                <el-radio :label="item.label" size="large">
                   <span></span>
                 </el-radio>
               </el-radio-group>
@@ -124,16 +128,20 @@
       radio: '',
       data: [
         {
-          desc: '表单1表单1表单1表单1表单1表单1表单'
+          label: '1',
+          desc: '表单1表单1表单1表单1表单1表单1表单1'
         },
         {
-          desc: '表单1表单1表单1表单1表单1表单1表单'
+          label: '2',
+          desc: '表单1表单1表单1表单1表单1表单1表单2'
         },
         {
-          desc: '表单1表单1表单1表单1表单1表单1表单'
+          label: '3',
+          desc: '表单1表单1表单1表单1表单1表单1表单3'
         },
         {
-          desc: '表单1表单1表单1表单1表单1表单1表单'
+          label: '4',
+          desc: '表单1表单1表单1表单1表单1表单1表单4'
         }
       ]
     },
@@ -178,11 +186,20 @@
   const getInfoValue = () => {
     let SelectionForm = null
     if (state.list.radio) {
-      SelectionForm = state.list.data[state.list.radio]
+      state.list.data.map(item => {
+        if (item.label === state.list.radio) {
+          SelectionForm = item
+        }
+        return true
+      })
     }
     return {
       SelectionForm
     }
+  }
+  // 单选框发生变化
+  const redioChange = () => {
+    // console.log('--->', state.list.radio)
   }
   // 提供方法
   defineExpose({

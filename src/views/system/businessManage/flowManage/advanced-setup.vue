@@ -16,11 +16,7 @@
         <div class="time-Number">
           <span class="time-Number-text">超时</span>
           <div class="time-Number-input">
-            <el-input-number
-              v-model="state.overtimeNumber"
-              :min="0"
-              @change="handleChange"
-            />
+            <el-input-number v-model="state.overtimeNumber" :min="0" />
           </div>
           <span class="time-Number-text">小时</span>
         </div>
