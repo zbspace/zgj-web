@@ -358,7 +358,7 @@
             height: 32px;
             margin: 0 8px;
             text-align: center;
-            line-height: 16px;
+            line-height: 32px;
             font-size: 14px;
             border-radius: 4px;
           }

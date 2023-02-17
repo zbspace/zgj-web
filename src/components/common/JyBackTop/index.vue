@@ -65,6 +65,7 @@
       border-radius: 4px;
       margin-bottom: 14px;
       cursor: pointer;
+      line-height: 50px;
       .back-top-item-curtain {
         height: inherit;
         width: inherit;

@@ -10,7 +10,7 @@
       @after-leave="hidePop"
     >
       <template #reference>
-        <el-button class="btn-drown">
+        <el-button class="btn-drown" text>
           <img
             src="../../assets/images/navbar/application_icon.svg"
             :class="actived ? 'image' : ''"

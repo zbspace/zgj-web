@@ -9,23 +9,26 @@
       @after-leave="hidePop"
     >
       <template #reference>
-        <el-button
-          class="btn-drown"
-          @click="showNotifyPop = !showNotifyPop"
-          style="transform: rotateY(180deg); border: none; width: 24px"
-        >
-          <img
-            v-show="!showNotifyPop"
-            src="../../assets/images/navbar/notify_icon.svg"
-          />
-          <img
-            v-show="showNotifyPop"
-            src="../../assets/images/navbar/notify_select_icon.svg"
-          />
-          <span
-            class="position-absolute translate-middle p-1 bg-danger border border-light rounded-circle"
-          ></span>
-        </el-button>
+        <el-badge is-dot class="badge-item" :hidden="hiddenBadge">
+          <el-button
+            class="btn-drown"
+            text
+            @click="showNotifyPop = !showNotifyPop"
+            style="width: 28px; height: 28px"
+          >
+            <img
+              v-show="!showNotifyPop"
+              src="../../assets/images/navbar/notify_icon.svg"
+            />
+            <img
+              v-show="showNotifyPop"
+              src="../../assets/images/navbar/notify_select_icon.svg"
+            />
+            <span
+              class="position-absolute translate-middle p-1 bg-danger border border-light rounded-circle"
+            ></span>
+          </el-button>
+        </el-badge>
       </template>
 
       <!-- tabs -->
@@ -156,11 +159,20 @@
   const hidePop = () => {
     showNotifyPop.value = false
   }
+
+  const hiddenBadge = ref(false)
 </script>
 
 <style lang="scss" scoped>
   .message-container {
     margin: 0 10px;
+
+    .badge-item {
+      :deep(.is-dot) {
+        margin-right: 6px;
+        margin-top: 4px;
+      }
+    }
   }
   .nav-natify-tab {
     padding-top: 10px;

@@ -105,7 +105,7 @@ export default defineConfig((mode, command) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@import "@/style/index.scss";' // 注入全局样式变量（有性能问题，可优化）
+          additionalData: '@import "@/style/mixin.scss";' // 注入全局样式变量（有性能问题，可优化）
         },
         less: {
           javascriptEnabled: true

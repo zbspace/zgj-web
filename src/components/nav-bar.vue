@@ -1,258 +1,218 @@
 <template>
   <header id="page-topbar">
-    <div class="layout-width user-select">
-      <div class="navbar-header header-content">
-        <div class="d-flex">
-          <!-- LOGO -->
-          <div class="navbar-brand-box horizontal-logo logo-p-t">
-            <router-link to="/" class="logo logo-dark">
-              <span class="logo-sm">
-                <img src="@/assets/icon/logo.png" alt="" height="22" />
-              </span>
-              <span class="logo-lg">
-                <img src="@/assets/icon/logo.png" alt="" height="37" />
-              </span>
-            </router-link>
+    <div class="nav-bar-container header-content">
+      <!-- nav-left -->
+      <div class="nav-left">
+        <!-- logo -->
+        <router-link to="/" class="nav-logo">
+          <span class="logo-lg">
+            <img src="@/assets/icon/logo.png" alt="" height="37" />
+          </span>
+        </router-link>
 
-            <router-link to="/" class="logo logo-light">
-              <span class="logo-sm">
-                <img src="@/assets/icon/logo.png" alt="" height="22" />
-              </span>
-              <span class="logo-lg">
-                <img src="@/assets/icon/logo.png" alt="" height="17" />
-              </span>
-            </router-link>
-          </div>
+        <!-- 公司选择 -->
+        <el-button class="depart-dropdown" text>
+          <el-dropdown trigger="hover" :teleported="false">
+            <span class="el-dropdown-link">
+              上海建业科技股份有限公司
+              <el-icon class="el-icon--right">
+                <arrow-down />
+              </el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <div class="ap-enterprise">
+                  <div class="ap-enterprise-text">
+                    <div class="ap-enterprise-text-list"> 企业/组织/团队 </div>
+                  </div>
+                  <div class="ap-enterprise-cont">
+                    <el-dropdown-item>
+                      <div class="ap-enterprise-cont-list">
+                        上海建业科技股份有限公司
+                        <div class="defart-selected" />
+                      </div>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <div class="ap-enterprise-cont-list">
+                        杭州好运科技股份有限公司
+                      </div>
+                    </el-dropdown-item>
+                  </div>
+                </div>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </el-button>
+      </div>
 
-          <!-- 公司选择 -->
-          <form class="app-search d-none d-md-block">
-            <div class="ap-dropdown">
-              <el-dropdown trigger="click">
-                <span class="ap-dropdown-text">
-                  <span>上海建业科技股份有限公司</span>&nbsp;&nbsp;
-                  <i class="ri-arrow-down-s-line" />
-                </span>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <div class="ap-enterprise">
-                      <div class="ap-enterprise-text">
-                        <div class="ap-enterprise-text-list">
-                          企业/组织/团队
-                        </div>
-                      </div>
-                      <div class="ap-enterprise-cont">
-                        <el-dropdown-item>
-                          <div class="ap-enterprise-cont-list">
-                            上海建业科技股份有限公司
-                            <div class="defart-selected" />
-                          </div>
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                          <div class="ap-enterprise-cont-list">
-                            杭州好运科技股份有限公司
-                          </div>
-                        </el-dropdown-item>
-                      </div>
-                    </div>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+      <!-- nav-right -->
+      <div class="nav-right">
+        <!-- 系统 -->
+        <div class="ap-sys">
+          <div class="ap-sys-but" @click="changeSystemHome">
+            <div v-if="menusInfoStore.currentType === 'business'">
+              <svg class="ap-sys-but-icon">
+                <use href="#xitonghoutai"></use>
+              </svg>
+              <span class="ap-sys-but-text">{{
+                $t('t-back-system-platform')
+              }}</span>
             </div>
-          </form>
+
+            <div v-if="menusInfoStore.currentType === 'system'">
+              <svg class="ap-sys-but-icon">
+                <use href="#Property1yewuqiantai"></use>
+              </svg>
+              <span class="ap-sys-but-text">{{ $t('t-front-platform') }}</span>
+            </div>
+          </div>
         </div>
 
-        <div class="d-flex align-items-center">
-          <!-- 系统 -->
-          <div class="ap-sys">
-            <div class="ap-sys-but" @click="changeSystemHome">
-              <div v-if="menusInfoStore.currentType === 'business'">
-                <svg class="iconpark-icon ap-sys-but-icon">
-                  <use href="#xitonghoutai"></use>
-                </svg>
-                <span class="ap-sys-but-text">{{
-                  $t('t-back-system-platform')
-                }}</span>
+        <!-- 帮助 -->
+        <div ref="dropdownHelpRef">
+          <el-button class="btn-ghost" @click="showHelpPop = !showHelpPop" text>
+            <el-tooltip
+              effect="dark"
+              :content="$t('t-help-center')"
+              placement="bottom"
+              :show-arrow="true"
+            >
+              <div :class="showHelpPop ? '' : 'svg-img'" class="svg-img-hover">
+                <img src="../assets/images/navbar/help_select_icon.svg" />
+              </div>
+            </el-tooltip>
+          </el-button>
+        </div>
+
+        <!-- 信息 -->
+        <VMailNav />
+
+        <!-- 消息 -->
+        <VMessageNav />
+
+        <!-- 应用入口 -->
+        <VApplicationNav />
+
+        <!-- 用户信息 -->
+        <div>
+          <el-popover
+            placement="bottom"
+            :width="240"
+            trigger="hover"
+            :show-arrow="false"
+            :teleported="false"
+            @before-enter="showUserPop"
+            @after-leave="hideUserPop"
+          >
+            <template #reference>
+              <el-button class="ap-personalCenter">
+                <div class="ap-personalCenter-text">
+                  <span class="ap-personalCenter-name">春青</span>
+                  <img
+                    v-show="!showUserInfoPop"
+                    src="../assets/images/navbar/user_info_close.svg"
+                  />
+                  <img
+                    v-show="showUserInfoPop"
+                    src="../assets/images/navbar/user_info_open.svg"
+                  />
+                </div>
+              </el-button>
+            </template>
+
+            <div class="ap-personalCenterDropdown">
+              <div class="dropdown-box">
+                <div class="dropdown-name">
+                  <div class="dropdown-name-icon"> 春青 </div>
+                  <div class="dropdown-name-text">
+                    {{ accountInfoStore.name }}
+                  </div>
+                </div>
               </div>
 
-              <div v-if="menusInfoStore.currentType === 'system'">
-                <svg class="iconpark-icon ap-sys-but-icon">
-                  <use href="#Property1yewuqiantai"></use>
-                </svg>
-                <span class="ap-sys-but-text">{{
-                  $t('t-front-platform')
-                }}</span>
+              <div class="dropdown-list">
+                <div class="dropdown-list-li" @click="goPersonCenter">
+                  <img src="../assets/images/navbar/user_info_logo.svg" />
+                  <span class="dropdown-list-li-text">{{
+                    $t('t-zgj-person.center')
+                  }}</span>
+                </div>
+
+                <div class="dropdown-list-li" @click="changePassword">
+                  <img src="../assets/images/navbar/user_info_lock.svg" />
+                  <span class="dropdown-list-li-text">{{
+                    $t('t-zgj-index.updatePwd')
+                  }}</span>
+                </div>
+
+                <div class="dropdown-list-li" @click="openDownload">
+                  <img src="../assets/images/navbar/user_info_down.svg" />
+                  <span class="dropdown-list-li-text">{{
+                    $t('t-zgj-DownloadApp.Download')
+                  }}</span>
+                </div>
+
+                <el-popover
+                  trigger="hover"
+                  placement="left-start"
+                  :show-arrow="false"
+                  :close-delay="80"
+                  :teleported="false"
+                  @show="showPop"
+                  @hide="hidePop"
+                >
+                  <template #reference>
+                    <div
+                      class="dropdown-list-li"
+                      :class="showChanglanPop ? 'svg-hover' : ''"
+                      :style="{
+                        color: showChanglanPop
+                          ? '#D0963E'
+                          : 'rgba(0, 0, 0, 0.65)'
+                      }"
+                    >
+                      <img src="../assets/images/navbar/user_info_lan.svg" />
+
+                      <span class="dropdown-list-li-text">{{
+                        $t('t-zgj-changeLang')
+                      }}</span>
+                      <i class="ri-arrow-right-s-line" />
+                    </div>
+                  </template>
+                  <div class="popover-cont ap-personalCenterPopover">
+                    <div
+                      class="popover-cont-list"
+                      @click="setLanguage('ch')"
+                      :class="state.language === 'ch' ? 'popover-selected' : ''"
+                    >
+                      简体中文
+                    </div>
+                    <div
+                      class="popover-cont-list"
+                      @click="setLanguage('en')"
+                      :class="state.language === 'en' ? 'popover-selected' : ''"
+                    >
+                      English
+                    </div>
+                  </div>
+                </el-popover>
+
+                <div class="dropdown-list-li">
+                  <img src="../assets/images/navbar/user_info_iphone.svg" />
+                  <span class="dropdown-list-li-text">{{
+                    $t('t-zgj-mobile-app')
+                  }}</span>
+                </div>
+
+                <div class="dropdown-list-li" @click="handleLogout">
+                  <img src="../assets/images/navbar/user_info_layout.svg" />
+                  <span class="dropdown-list-li-text">{{
+                    $t('t-zgj-logout-user')
+                  }}</span>
+                </div>
               </div>
             </div>
-          </div>
-
-          <!-- 帮助 -->
-          <div ref="dropdownHelpRef">
-            <button
-              type="button"
-              class="btn btn-icon btn-topbar btn-ghost-secondary"
-              data-toggle="fullscreen"
-              @click="showHelpPop = !showHelpPop"
-              style="border: none; margin: 0 10px"
-            >
-              <el-tooltip
-                class="box-item"
-                effect="dark"
-                :content="$t('t-help-center')"
-                placement="bottom"
-                :show-arrow="true"
-              >
-                <div>
-                  <img
-                    v-show="showHelpPop"
-                    src="../assets/images/navbar/help_select_icon.svg"
-                  />
-                  <img
-                    v-show="!showHelpPop"
-                    src="../assets/images/navbar/help_icon.svg"
-                  />
-                </div>
-              </el-tooltip>
-            </button>
-          </div>
-
-          <!-- 信息 -->
-          <VMailNav />
-
-          <!-- 消息 -->
-          <VMessageNav />
-
-          <!-- 应用入口 -->
-          <VApplicationNav />
-
-          <!-- 用户信息 -->
-          <div>
-            <el-popover
-              placement="bottom"
-              :width="240"
-              trigger="hover"
-              :show-arrow="false"
-              @before-enter="showUserPop"
-              @after-leave="hideUserPop"
-            >
-              <template #reference>
-                <el-button class="btn-topbar ap-personalCenter">
-                  <div class="ap-personalCenter-text">
-                    <span class="ap-personalCenter-name">春青</span>
-                    <img
-                      v-show="!showUserInfoPop"
-                      src="../assets/images/navbar/user_info_close.svg"
-                    />
-                    <img
-                      v-show="showUserInfoPop"
-                      src="../assets/images/navbar/user_info_open.svg"
-                    />
-                  </div>
-                </el-button>
-              </template>
-
-              <div class="ap-personalCenterDropdown">
-                <div class="dropdown-box">
-                  <div class="dropdown-name">
-                    <div class="dropdown-name-icon"> 春青 </div>
-                    <div class="dropdown-name-text">
-                      {{ accountInfoStore.name }}
-                    </div>
-                  </div>
-                </div>
-
-                <div class="dropdown-list">
-                  <div class="dropdown-list-li" @click="goPersonCenter">
-                    <img src="../assets/images/navbar/user_info_logo.svg" />
-                    <span class="dropdown-list-li-text">{{
-                      $t('t-zgj-person.center')
-                    }}</span>
-                  </div>
-
-                  <div class="dropdown-list-li" @click="changePassword">
-                    <img src="../assets/images/navbar/user_info_lock.svg" />
-                    <span class="dropdown-list-li-text">{{
-                      $t('t-zgj-index.updatePwd')
-                    }}</span>
-                  </div>
-
-                  <div class="dropdown-list-li" @click="openDownload">
-                    <img src="../assets/images/navbar/user_info_down.svg" />
-                    <span class="dropdown-list-li-text">{{
-                      $t('t-zgj-DownloadApp.Download')
-                    }}</span>
-                  </div>
-
-                  <el-popover
-                    trigger="hover"
-                    placement="left-start"
-                    :show-arrow="false"
-                    :close-delay="80"
-                    :teleported="false"
-                    @before-enter="showPop"
-                    @after-leave="hidePop"
-                  >
-                    <template #reference>
-                      <div
-                        class="dropdown-list-li"
-                        :style="{
-                          color: showChanglanPop
-                            ? '#D0963E'
-                            : 'rgba(0, 0, 0, 0.65)'
-                        }"
-                      >
-                        <img
-                          src="../assets/images/navbar/user_info_lan.svg"
-                          v-if="!showChanglanPop"
-                        />
-                        <img
-                          src="../assets/images/navbar/user_info_lan_selected.svg"
-                          v-if="showChanglanPop"
-                        />
-                        <span class="dropdown-list-li-text">{{
-                          $t('t-zgj-changeLang')
-                        }}</span>
-                        <i class="ri-arrow-right-s-line" />
-                      </div>
-                    </template>
-                    <div class="popover-cont ap-personalCenterPopover">
-                      <div
-                        class="popover-cont-list"
-                        @click="setLanguage('ch')"
-                        :class="
-                          state.language === 'ch' ? 'popover-selected' : ''
-                        "
-                      >
-                        简体中文
-                      </div>
-                      <div
-                        class="popover-cont-list"
-                        @click="setLanguage('en')"
-                        :class="
-                          state.language === 'en' ? 'popover-selected' : ''
-                        "
-                      >
-                        English
-                      </div>
-                    </div>
-                  </el-popover>
-
-                  <div class="dropdown-list-li">
-                    <img src="../assets/images/navbar/user_info_iphone.svg" />
-                    <span class="dropdown-list-li-text">{{
-                      $t('t-zgj-mobile-app')
-                    }}</span>
-                  </div>
-
-                  <div class="dropdown-list-li" @click="handleLogout">
-                    <img src="../assets/images/navbar/user_info_layout.svg" />
-                    <span class="dropdown-list-li-text">{{
-                      $t('t-zgj-logout-user')
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-            </el-popover>
-          </div>
+          </el-popover>
         </div>
       </div>
     </div>
@@ -344,6 +304,7 @@
   import { useLanguageStore } from '@/store/language'
   import JyDialog from '@/components/common/JyDialog/index.vue'
   import VDownload from '../components/modules/downloadApp.vue'
+  import { ArrowDown } from '@element-plus/icons-vue'
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
   const languageStore = useLanguageStore()
@@ -373,6 +334,15 @@
     })
   })
 
+  // 用户信息弹框
+  const showUserInfoPop = ref(false)
+  const showUserPop = () => {
+    showUserInfoPop.value = true
+  }
+  const hideUserPop = () => {
+    showUserInfoPop.value = false
+  }
+
   // 帮助中心
   const dropdownHelpRef = ref(null)
   const showHelpPop = ref(false)
@@ -389,8 +359,8 @@
   const setLanguage = locale => {
     i18n.global.locale = locale
     state.language = locale
-    console.log(locale)
     languageStore.setLanguage(locale)
+    hideUserPop()
   }
   const showPop = () => {
     showChanglanPop.value = true
@@ -415,18 +385,10 @@
     router.push({ name: 'login-account' })
   }
 
-  // 用户信息弹框
-  const showUserInfoPop = ref(false)
-  const showUserPop = () => {
-    showUserInfoPop.value = true
-  }
-  const hideUserPop = () => {
-    showUserInfoPop.value = false
-  }
-
   // 个人中心
   const goPersonCenter = () => {
     router.push({ name: 'personally' })
+    hideUserPop()
   }
 
   // 修改密码弹框
@@ -434,6 +396,7 @@
 
   const changePassword = () => {
     showFormDialog.value = true
+    hideUserPop()
   }
 
   const onClose = value => {
@@ -460,249 +423,294 @@
   const showDialog = ref(false)
   const openDownload = () => {
     showDialog.value = true
+    hideUserPop()
   }
 </script>
 <style lang="scss" scoped>
-  .header-content {
-    min-width: 800px;
-  }
-
-  .nav-bar-iconpark {
-    font-size: 22px;
-  }
-
-  .dropdown-item {
+  .nav-bar-container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-  }
-
-  .ap-dropdown {
-    height: 100%;
-    display: flex;
-    align-items: center;
-
-    .ap-dropdown-text {
-      font-size: var(--font-size-title-1);
-      font-weight: var(--font-weight-700);
+    height: 64px;
+    // padding-left: 32px;
+    .nav-left {
       display: flex;
-      align-items: center;
-    }
-  }
 
-  .ap-sys {
-    margin-right: 1rem;
-
-    .ap-sys-but {
-      border-radius: var(--border-radius-4);
-      opacity: 1;
-      border: 1px solid var(--primary-6);
-      color: var(--primary-6);
-      padding: 0.3rem 0.8rem;
-      box-sizing: border-box;
-      cursor: pointer;
-
-      .ap-sys-but-icon {
-        width: 1.5rem;
-        height: 1.5rem;
-        margin-right: 0.3rem;
-        color: var(--primary-6);
+      .nav-logo {
+        margin: 0 16px 0 32px;
       }
-    }
-  }
+      .depart-dropdown {
+        margin: auto;
+        color: #303133;
 
-  .ap-personalCenter {
-    font-size: 14px;
-    width: 88px;
-    height: 42px;
-    border: none;
-    .ap-personalCenter-text {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-
-      .ap-personalCenter-name {
-        @include mixin-width(34);
-        @include mixin-height(34);
-        border-radius: var(--border-radius-4);
-        background-color: var(--primary-6);
-        color: var(--in-common-use-1);
-        // padding: 0.5rem 0.4rem;
-        box-sizing: border-box;
-        margin-right: 0.3rem;
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        font-size: var(--font-size-body-1);
+        .el-dropdown-link {
+          cursor: pointer;
+          color: #303133;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+        }
       }
 
-      img {
-        margin-left: 8px;
-      }
-    }
-  }
+      .ap-enterprise {
+        // padding: 1rem;
+        // width: 290px;
+        --el-dropdown-menuItem-hover-fill: transparent;
+        .ap-enterprise-text {
+          display: flex;
+          flex-flow: wrap;
+          justify-content: center;
 
-  .ap-personalCenterDropdown {
-    .dropdown-box {
-      box-sizing: border-box;
-    }
-
-    .dropdown-name {
-      height: 120px;
-      border-radius: var(--border-radius-4);
-      background-color: #f4f5f7;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      align-content: center;
-      justify-content: center;
-      flex-flow: wrap;
-      margin-bottom: 8px;
-
-      .dropdown-name-icon {
-        @include mixin-width(50);
-        @include mixin-height(50);
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        border-radius: var(--border-radius-4);
-        background-color: #e2b062;
-        color: var(--in-common-use-1);
-        margin-bottom: 0.5rem;
-      }
-
-      .dropdown-name-text {
-        width: 100%;
-        font-weight: var(--font-weight-500);
-        font-size: 16px;
-      }
-    }
-
-    .dropdown-list {
-      .dropdown-list-li {
-        position: relative;
-        padding: 0 8px;
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        color: rgba(0, 0, 0, 0.65);
-        overflow: hidden;
-
-        &:hover {
-          color: #d0963e !important;
-
-          img {
-            position: relative;
-            left: -80px;
-            filter: drop-shadow(#d0963e 80px 0);
+          .ap-enterprise-text-list {
+            width: 258px;
+            padding: 4px 24px;
+            cursor: pointer;
+            margin: 4px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: left;
           }
         }
 
-        i {
-          position: absolute;
-          right: 0;
-          top: 50%;
-          font-size: 18px;
-          transform: translateY(-50%);
+        .ap-enterprise-cont {
+          display: flex;
+          flex-flow: wrap;
+          justify-content: center;
+
+          .ap-enterprise-cont-list {
+            width: 258px;
+            padding: 0px 10px;
+            cursor: pointer;
+            margin: 4px;
+            line-height: 40px;
+            border-radius: 4px;
+            position: relative;
+            text-align: left;
+            color: rgba(0, 0, 0, 0.85);
+            font-weight: 400;
+          }
+
+          .defart-selected::after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 8px;
+            background: url(../assets/images/navbar/change_lan_icon.svg)
+              no-repeat center center;
+            background-size: 100%;
+          }
+
+          .ap-enterprise-cont-list:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+            color: var(--primary-6);
+          }
+        }
+      }
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      .ap-sys {
+        margin-right: 1rem;
+
+        .ap-sys-but {
+          border-radius: 4px;
+          opacity: 1;
+          border: 1px solid var(--primary-6);
+          color: var(--primary-6);
+          padding: 0.3rem 0.8rem;
+          box-sizing: border-box;
+          cursor: pointer;
+
+          .ap-sys-but-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.3rem;
+            color: var(--primary-6);
+          }
+
+          svg {
+            vertical-align: middle;
+          }
         }
       }
 
-      .dropdown-list-li-text {
-        font-family: 'PingFang SC';
-        font-style: normal;
-        font-weight: 400;
+      .btn-ghost {
+        width: 28px;
+        height: 28px;
+        margin: 0 8px;
+        .svg-img {
+          overflow: hidden;
+          img {
+            position: relative;
+            left: -80px;
+            filter: drop-shadow(rgba(#000000, 0.65) 80px 0);
+          }
+        }
+
+        .svg-img-hover {
+          height: 24px;
+        }
+      }
+      .ap-personalCenter {
         font-size: 14px;
-        line-height: 44px;
-        margin-left: 8px;
+        width: 88px;
+        height: 42px;
+        border: none;
+        --el-button-hover-bg-color: rgba(0, 0, 0, 0.04);
+        .ap-personalCenter-text {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+
+          .ap-personalCenter-name {
+            @include mixin-width(34);
+            @include mixin-height(34);
+            border-radius: 4px;
+            background-color: var(--primary-6);
+            color: var(--in-common-use-1);
+            // padding: 0.5rem 0.4rem;
+            box-sizing: border-box;
+            margin-right: 0.3rem;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            font-size: var(--font-size-body-1);
+          }
+
+          img {
+            margin-left: 8px;
+          }
+        }
       }
 
-      .dropdown-list-li:hover {
-        background: rgba(192, 196, 204, 0.19829);
+      .ap-personalCenterDropdown {
+        .dropdown-box {
+          box-sizing: border-box;
+        }
+
+        .dropdown-name {
+          height: 120px;
+          border-radius: 4px;
+          background-color: #f4f5f7;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          align-content: center;
+          justify-content: center;
+          flex-flow: wrap;
+          margin-bottom: 8px;
+
+          .dropdown-name-icon {
+            @include mixin-width(50);
+            @include mixin-height(50);
+            display: flex;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            border-radius: 4px;
+            background-color: #e2b062;
+            color: var(--in-common-use-1);
+            margin-bottom: 0.5rem;
+          }
+
+          .dropdown-name-text {
+            width: 100%;
+            font-weight: 500;
+            font-size: 16px;
+          }
+        }
+
+        .dropdown-list {
+          .dropdown-list-li {
+            position: relative;
+            padding: 0 8px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.65);
+            overflow: hidden;
+
+            &:hover {
+              color: #d0963e !important;
+
+              img {
+                position: relative;
+                left: -80px;
+                filter: drop-shadow(#d0963e 80px 0);
+              }
+            }
+
+            i {
+              position: absolute;
+              right: 0;
+              top: 50%;
+              font-size: 18px;
+              transform: translateY(-50%);
+            }
+          }
+
+          .svg-hover {
+            img {
+              position: relative;
+              left: -80px;
+              filter: drop-shadow(#d0963e 80px 0);
+            }
+          }
+
+          .dropdown-list-li-text {
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 44px;
+            margin-left: 8px;
+          }
+
+          .dropdown-list-li:hover {
+            background: rgba(192, 196, 204, 0.19829);
+          }
+        }
+      }
+
+      .ap-personalCenterPopover {
+        .popover-cont-list {
+          position: relative;
+          // width: 150px;
+          padding: 16px 24px;
+          cursor: pointer;
+        }
+
+        .popover-cont-list:hover {
+          background: rgba(192, 196, 204, 0.19829);
+          color: #d0963e;
+        }
+
+        .popover-selected::after {
+          content: '';
+          position: absolute;
+          right: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 12px;
+          height: 8px;
+          background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat
+            center center;
+          background-size: 100%;
+        }
       }
     }
   }
 
-  .ap-personalCenterPopover {
-    .popover-cont-list {
-      position: relative;
-      // width: 150px;
-      padding: 16px 24px;
-      cursor: pointer;
-    }
-
-    .popover-cont-list:hover {
-      background: rgba(192, 196, 204, 0.19829);
-      color: #d0963e;
-    }
-
-    .popover-selected::after {
-      content: '';
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 12px;
-      height: 8px;
-      background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat
-        center center;
-      background-size: 100%;
-    }
-  }
-
-  .ap-enterprise {
-    @include mixin-width(300);
-    // padding: 1rem;
-
-    .ap-enterprise-text {
-      display: flex;
-      flex-flow: wrap;
-      justify-content: center;
-
-      .ap-enterprise-text-list {
-        @include mixin-width(258);
-        padding: 0.4rem 0.5rem;
-        cursor: pointer;
-        margin: 0.2rem;
-        border-radius: var(--border-radius-4);
-        font-weight: var(--font-weight-600);
-        font-size: var(--font-size-body-2);
-      }
-    }
-
-    .ap-enterprise-cont {
-      display: flex;
-      flex-flow: wrap;
-      justify-content: center;
-
-      .ap-enterprise-cont-list {
-        @include mixin-width(258);
-        padding: 0.4rem 1rem;
-        cursor: pointer;
-        margin: 0.2rem;
-        border-radius: var(--border-radius-4);
-        position: relative;
-      }
-
-      .defart-selected::after {
-        content: '';
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 12px;
-        height: 8px;
-        background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat
-          center center;
-        background-size: 100%;
-      }
-
-      .ap-enterprise-cont-list:hover {
-        // background-color: var(--color-fill--2);
-        color: var(--primary-6);
-      }
-    }
+  .header-content {
+    min-width: 800px;
   }
 
   .from-label {
