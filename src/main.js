@@ -6,20 +6,17 @@ import i18n from './i18n'
 // import { createPinia } from 'pinia'
 import store from './store'
 
-/* 引入自定义全局变量 */
-// import './style/index.scss'
-
 import '@/assets/fonts/font.css'
-import '@/assets/scss/config/minimal/app.scss'
 
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 
+/* 引入自定义全局变量 */
+import './style/index.scss'
+
 import VForm3 from 'vform-jy'
 import 'vform-jy/dist/designer.style.css'
-// import VForm3 from '@/../lib/vform/designer.umd.js'
-// import '../lib/vform/designer.style.css'
 
 import '@/utils/SvgIconPack'
 

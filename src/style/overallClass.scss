@@ -1,8 +1,22 @@
 /* 
-用来设置预设好的class样式
+**自定义class样式
 */
 
+// .button-icon {
+//   margin-right: 0.5rem;
+// }
 
-.button-icon{
-    margin-right: 0.5rem;
+.drawer-class.el-drawer.rtl {
+  top: 65px !important;
+  height: auto !important;
+}
+
+.drawer-class.el-drawer {
+  box-shadow: none;
+  border-left: 1px solid #eee;
+  width: 540px !important;
+
+  .el-drawer__body {
+    padding: 0;
+  }
 }

@@ -1,23 +1,22 @@
 <template>
   <!-- 信息 -->
   <div style="margin: 0 12px" ref="dropdownMailRef">
-    <el-button
-      style="border: none; width: 24px"
-      @click="showMailPop = !showMailPop"
-    >
-      <img
-        v-show="!showMailPop"
-        src="../../assets/images/navbar/mail_icon.svg"
-      />
-      <img
-        v-show="showMailPop"
-        src="../../assets/images/navbar/mail_select_icon.svg"
-      />
-      <span
-        class="position-absolute topbar-badge cartitem-badge fs-10 translate-middle badge rounded-pill bg-danger"
-        >5</span
+    <el-badge :value="5" :hidden="hiddenBadge">
+      <el-button
+        text
+        style="width: 28px; height: 28px"
+        @click="showMailPop = !showMailPop"
       >
-    </el-button>
+        <img
+          v-show="!showMailPop"
+          src="../../assets/images/navbar/mail_icon.svg"
+        />
+        <img
+          v-show="showMailPop"
+          src="../../assets/images/navbar/mail_select_icon.svg"
+        />
+      </el-button>
+    </el-badge>
 
     <!-- 抽屉 -->
     <el-drawer
@@ -192,6 +191,7 @@
       maxHeight.value = window.innerHeight - 150
     })
   })
+  const hiddenBadge = ref(false)
 
   // 消息列表 - 待我确认
   const toBeConfirmedList = ref([
@@ -242,7 +242,6 @@
       padding: 0 24px;
       border-bottom: 1px solid rgba($color: #000000, $alpha: 0.06);
     }
-
     .msg-content {
       padding: 10px 24px 30px 24px;
       // overflow-y: scroll;
