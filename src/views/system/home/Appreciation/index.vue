@@ -40,6 +40,7 @@
       font-size: 16px;
       line-height: 24px;
       color: rgba(0, 0, 0, 0.85);
+      margin-bottom: 16px;
     }
     .list {
       display: flex;
