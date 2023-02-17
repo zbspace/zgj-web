@@ -45,11 +45,10 @@
 </template>
 
 <script setup>
-  import NavBar from '@/components/nav-bar'
   import Menus from '@/views/layout/Menu/index.vue'
   import Asides from '@/views/layout/Aside/index.vue'
-  // import RightBar from '@/components/right-bar'
   import RightBar from './RightBar'
+  import NavBar from './NavBar'
   import { useLayoutStore } from '@/store/layout'
   import { useMenusInfoStore } from '@/store/menus'
   import { ref } from 'vue'
