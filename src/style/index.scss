@@ -6,142 +6,35 @@
 
 body,
 #app {
-  /* #### 主色 */
-  --eq-primary-6: #d0963e;
-  --eq-primary-5: #d9ab5b;
-  --eq-primary-7: #af7427;
-  --eq-primary-4: #e3c07b;
-  --eq-primary-3: #ecd49d;
-  --eq-primary-2: #f6e8c1;
-  --eq-primary-1: #fffae8;
-  /* 成功色 */
-
-  --eq-success-6: #3ed096;
-  --eq-success-5: #5bd9a3;
-  --eq-success-7: #27af7d;
-  --eq-success-3: #9decc5;
-  --eq-success-2: #c1f6da;
-  --eq-success-1: #e8fff2;
-
-  /* 信息色 */
-
-  --eq-info-6: #3e78d0;
-  --eq-info-5: #5b92d9;
-  --eq-info-7: #2759af;
-  --eq-info-3: #9dc5ec;
-  --eq-info-2: #c1ddf6;
-  --eq-info-1: #e8f5ff;
-
-  /* #### 警告色 */
-
-  --eq-warning-6: #f7a54b;
-  --eq-warning-5: #f9b86a;
-  --eq-warning-7: #cc7b2f;
-  --eq-warning-3: #fcdca8;
-  --eq-warning-2: #fdebc8;
-  --eq-warning-1: #fff8e8;
-
-  /* #### 危险色 */
-
-  --eq-danger-6: #d04d3e;
-  --eq-danger-5: #d96c5b;
-  --eq-danger-7: #af3027;
-  --eq-danger-3: #ecad9d;
-  --eq-danger-2: #f6cec1;
-  --eq-danger-1: #ffeee8;
-
-  /* 辅助色 */
-
-  --eq-secondary-6: #878a99;
-  --eq-secondary-5: #9a9ead;
-  --eq-secondary-7: #595f86;
-  --eq-secondary-3: #c1c6d6;
-  --eq-secondary-2: #d4dbeb;
-  --eq-secondary-1: #e8f0ff;
-  /* 背景色 */
-  --eq-background-color-1: #f2f2f2;
-
-  /* 常用颜色 */
-  --eq-in-common-use-1: #ffffff;
-  --eq-in-common-use-2: #000000;
-  /* 描边色 */
-
-  --eq-color-border-1: rgba(0, 0, 0, 0.15);
-  --eq-color-border-2: rgba(0, 0, 0, 0.06);
-
-  /* #### 填充色 */
-  --eq-color-fill--1: rgba(0, 0, 0, 0.02);
-  --eq-color-fill--2: rgba(0, 0, 0, 0.04);
-  // 对应 --color-fill--1
-  --eq-color-fill--3: #fafafa;
-  --eq-color-fill--4: rgba(255, 255, 255, 0.6);
-  --eq-color-fill--5: #ffffff;
-
-  --eq-color-fill-85: rgba(0, 0, 0, 0.85);
-  --eq-color-fill-65: rgba(0, 0, 0, 0.65);
-  --eq-color-fill-45: rgba(0, 0, 0, 0.45);
-  --eq-color-fill-25: rgba(0, 0, 0, 0.25);
-
-  /* 文字颜色 */
-
-  --eq-color-text-1: rgba(0, 0, 0, 0.85);
-  --eq-color-text-2: rgba(0, 0, 0, 0.65);
-  --eq-color-text-3: rgba(0, 0, 0, 0.45);
-  --eq-color-text-4: rgba(0, 0, 0, 0.25);
-  --eq-color-text-6: #ffffff;
-
-  /* 补充颜色 */
-  --eq-color-Add-1: #c9cdd4;
-
-  /* 字体大小 */
-
-  --eq-font-size-body-2: 14px;
-  --eq-font-size-body-1: 12px;
-  --eq-font-size-caption: 12px;
-  --eq-font-size-title-1: 16px;
-  --eq-font-size-title-2: 22px;
-  --eq-font-size-title-3: 28px;
-
-  /* 字体粗细 */
-  --eq-font-weight-400: 400;
-  --eq-font-weight-500: 500;
-  --eq-font-weight-600: 600;
-  --eq-font-weight-700: 700;
-
-  /* 圆角 */
-  --eq-border-radius-4: 4px;
-  --eq-border-radius-2: 2px;
-}
-body,
-#app {
   --el-color-white: #ffffff;
   --el-color-black: #000000;
-  --el-color-primary: var(--eq-primary-6);
-  --el-color-primary-light-3: var(--eq-primary-5);
-  --el-color-primary-light-5: var(--eq-primary-4);
-  --el-color-primary-light-7: var(--eq-primary-3);
-  --el-color-primary-light-8: var(--eq-primary-2);
-  --el-color-primary-light-9: var(--eq-primary-1);
-  --el-color-success: var(--eq-success-6);
-  --el-color-success-light-3: var(--eq-success-5);
-  --el-color-success-light-5: var(--eq-success-4);
-  --el-color-success-light-7: var(--eq-success-3);
-  --el-color-success-light-8: var(--eq-success-2);
-  --el-color-success-light-9: var(--eq-success-1);
+  --el-color-primary: var(--jy-primary-6);
+  --el-color-primary-light-3: var(--jy-primary-5);
+  --el-color-primary-light-5: var(--jy-primary-4);
+  --el-color-primary-light-7: var(--jy-primary-3);
+  --el-color-primary-light-8: var(--jy-primary-2);
+  --el-color-primary-light-9: var(--jy-primary-1);
+  --el-color-primary-dark-2: var(--jy-primary-4);
+  --el-color-success: var(--jy-success-6);
+  --el-color-success-light-3: var(--jy-success-5);
+  --el-color-success-light-5: var(--jy-success-4);
+  --el-color-success-light-7: var(--jy-success-3);
+  --el-color-success-light-8: var(--jy-success-2);
+  --el-color-success-light-9: var(--jy-success-1);
   // --el-color-success-dark-2: #529b2e;
-  --el-color-warning: var(--eq-warning-6);
-  --el-color-warning-light-3: var(--eq-warning-5);
-  --el-color-warning-light-5: var(--eq-warning-4);
-  --el-color-warning-light-7: var(--eq-warning-3);
-  --el-color-warning-light-8: var(--eq-warning-2);
-  --el-color-warning-light-9: var(--eq-warning-1);
+  --el-color-warning: var(--jy-warning-6);
+  --el-color-warning-light-3: var(--jy-warning-5);
+  --el-color-warning-light-5: var(--jy-warning-4);
+  --el-color-warning-light-7: var(--jy-warning-3);
+  --el-color-warning-light-8: var(--jy-warning-2);
+  --el-color-warning-light-9: var(--jy-warning-1);
   // --el-color-warning-dark-2: #b88230;
-  --el-color-danger: var(--eq-danger-6);
-  --el-color-danger-light-3: var(--eq-danger-5);
-  --el-color-danger-light-5: var(--eq-danger-4);
-  --el-color-danger-light-7: var(--eq-danger-3);
-  --el-color-danger-light-8: var(--eq-danger-2);
-  --el-color-danger-light-9: var(--eq-danger-1);
+  --el-color-danger: var(--jy-danger-6);
+  --el-color-danger-light-3: var(--jy-danger-5);
+  --el-color-danger-light-5: var(--jy-danger-4);
+  --el-color-danger-light-7: var(--jy-danger-3);
+  --el-color-danger-light-8: var(--jy-danger-2);
+  --el-color-danger-light-9: var(--jy-danger-1);
   // --el-color-danger-dark-2: #c45656;
   --el-color-error: #f56c6c;
   --el-color-error-light-3: #f89898;
@@ -150,29 +43,29 @@ body,
   --el-color-error-light-8: #fde2e2;
   --el-color-error-light-9: #fef0f0;
   --el-color-error-dark-2: #c45656;
-  --el-color-info: var(--eq-info-6);
-  --el-color-info-light-3: var(--eq-info-5);
-  --el-color-info-light-5: var(--eq-info-4);
-  --el-color-info-light-7: var(--eq-info-3);
-  --el-color-info-light-8: var(--eq-info-2);
-  --el-color-info-light-9: var(--eq-info-1);
-  // --el-color-info-dark-2: var(--eq-info-1);
+  --el-color-info: var(--jy-info-6);
+  --el-color-info-light-3: var(--jy-info-5);
+  --el-color-info-light-5: var(--jy-info-4);
+  --el-color-info-light-7: var(--jy-info-3);
+  --el-color-info-light-8: var(--jy-info-2);
+  --el-color-info-light-9: var(--jy-info-1);
+  // --el-color-info-dark-2: var(--jy-info-1);
   --el-bg-color: #ffffff;
   --el-bg-color-page: #f2f3f5;
   --el-bg-color-overlay: #ffffff;
   --el-text-color-primary: #303133;
-  --el-text-color-regular: var(--eq-color-text-1);
+  --el-text-color-regular: var(--jy-color-text-1);
   --el-text-color-secondary: #909399;
   --el-text-color-placeholder: #a8abb2;
   --el-text-color-disabled: #c0c4cc;
   --el-border-color: #dcdfe6;
   --el-border-color-light: #e4e7ed;
   --el-border-color-lighter: #ebeef5;
-  --el-border-color-extra-light: var(--eq-primary-2);
+  --el-border-color-extra-light: var(--jy-primary-2);
   --el-border-color-dark: #d4d7de;
   --el-border-color-darker: #cdd0d6;
   --el-fill-color: #f0f2f5;
-  --el-fill-color-light: var(--eq-color-fill--2);
+  --el-fill-color-light: var(--jy-color-fill--2);
   --el-fill-color-lighter: #fafafa;
   --el-fill-color-extra-light: #fafcff;
   --el-fill-color-dark: #ebedf0;

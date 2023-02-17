@@ -109,3 +109,112 @@ body,
   --border-radius-4: 4px;
   --border-radius-2: 2px;
 }
+
+body,
+#app {
+  /* #### 主色 */
+  --jy-primary-6: #d0963e;
+  --jy-primary-5: #d9ab5b;
+  --jy-primary-7: #af7427;
+  --jy-primary-4: #e3c07b;
+  --jy-primary-3: #ecd49d;
+  --jy-primary-2: #f6e8c1;
+  --jy-primary-1: #fffae8;
+  /* 成功色 */
+
+  --jy-success-6: #3ed096;
+  --jy-success-5: #5bd9a3;
+  --jy-success-7: #27af7d;
+  --jy-success-3: #9decc5;
+  --jy-success-2: #c1f6da;
+  --jy-success-1: #e8fff2;
+
+  /* 信息色 */
+
+  --jy-info-6: #3e78d0;
+  --jy-info-5: #5b92d9;
+  --jy-info-7: #2759af;
+  --jy-info-3: #9dc5ec;
+  --jy-info-2: #c1ddf6;
+  --jy-info-1: #e8f5ff;
+
+  /* #### 警告色 */
+
+  --jy-warning-6: #f7a54b;
+  --jy-warning-5: #f9b86a;
+  --jy-warning-7: #cc7b2f;
+  --jy-warning-3: #fcdca8;
+  --jy-warning-2: #fdebc8;
+  --jy-warning-1: #fff8e8;
+
+  /* #### 危险色 */
+
+  --jy-danger-6: #d04d3e;
+  --jy-danger-5: #d96c5b;
+  --jy-danger-7: #af3027;
+  --jy-danger-3: #ecad9d;
+  --jy-danger-2: #f6cec1;
+  --jy-danger-1: #ffeee8;
+
+  /* 辅助色 */
+
+  --jy-secondary-6: #878a99;
+  --jy-secondary-5: #9a9ead;
+  --jy-secondary-7: #595f86;
+  --jy-secondary-3: #c1c6d6;
+  --jy-secondary-2: #d4dbeb;
+  --jy-secondary-1: #e8f0ff;
+  /* 背景色 */
+  --jy-background-color-1: #f2f2f2;
+
+  /* 常用颜色 */
+  --jy-in-common-use-1: #ffffff;
+  --jy-in-common-use-2: #000000;
+  /* 描边色 */
+
+  --jy-color-border-1: rgba(0, 0, 0, 0.15);
+  --jy-color-border-2: rgba(0, 0, 0, 0.06);
+
+  /* #### 填充色 */
+  --jy-color-fill--1: rgba(0, 0, 0, 0.02);
+  --jy-color-fill--2: rgba(0, 0, 0, 0.04);
+  // 对应 --color-fill--1
+  --jy-color-fill--3: #fafafa;
+  --jy-color-fill--4: rgba(255, 255, 255, 0.6);
+  --jy-color-fill--5: #ffffff;
+
+  --jy-color-fill-85: rgba(0, 0, 0, 0.85);
+  --jy-color-fill-65: rgba(0, 0, 0, 0.65);
+  --jy-color-fill-45: rgba(0, 0, 0, 0.45);
+  --jy-color-fill-25: rgba(0, 0, 0, 0.25);
+
+  /* 文字颜色 */
+
+  --jy-color-text-1: rgba(0, 0, 0, 0.85);
+  --jy-color-text-2: rgba(0, 0, 0, 0.65);
+  --jy-color-text-3: rgba(0, 0, 0, 0.45);
+  --jy-color-text-4: rgba(0, 0, 0, 0.25);
+  --jy-color-text-6: #ffffff;
+
+  /* 补充颜色 */
+  --jy-color-Add-1: #c9cdd4;
+
+  /* 字体大小 */
+
+  --jy-font-size-body-2: 14px;
+  --jy-font-size-body-1: 12px;
+  --jy-font-size-caption: 12px;
+  --jy-font-size-title-1: 16px;
+  --jy-font-size-title-2: 22px;
+  --jy-font-size-title-3: 28px;
+
+  /* 字体粗细 */
+  --jy-font-weight-400: 400;
+  --jy-font-weight-500: 500;
+  --jy-font-weight-600: 600;
+  --jy-font-weight-700: 700;
+
+  /* 圆角 */
+  --jy-border-radius-4: 4px;
+  --jy-border-radius-2: 2px;
+}
