@@ -78,7 +78,7 @@
               :show-arrow="true"
             >
               <div :class="showHelpPop ? '' : 'svg-img'" class="svg-img-hover">
-                <img src="../assets/images/navbar/help_select_icon.svg" />
+                <img src="@/assets/images/navbar/help_select_icon.svg" />
               </div>
             </el-tooltip>
           </el-button>
@@ -110,11 +110,11 @@
                   <span class="ap-personalCenter-name">春青</span>
                   <img
                     v-show="!showUserInfoPop"
-                    src="../assets/images/navbar/user_info_close.svg"
+                    src="@/assets/images/navbar/user_info_close.svg"
                   />
                   <img
                     v-show="showUserInfoPop"
-                    src="../assets/images/navbar/user_info_open.svg"
+                    src="@/assets/images/navbar/user_info_open.svg"
                   />
                 </div>
               </el-button>
@@ -132,21 +132,21 @@
 
               <div class="dropdown-list">
                 <div class="dropdown-list-li" @click="goPersonCenter">
-                  <img src="../assets/images/navbar/user_info_logo.svg" />
+                  <img src="@/assets/images/navbar/user_info_logo.svg" />
                   <span class="dropdown-list-li-text">{{
                     $t('t-zgj-person.center')
                   }}</span>
                 </div>
 
                 <div class="dropdown-list-li" @click="changePassword">
-                  <img src="../assets/images/navbar/user_info_lock.svg" />
+                  <img src="@/assets/images/navbar/user_info_lock.svg" />
                   <span class="dropdown-list-li-text">{{
                     $t('t-zgj-index.updatePwd')
                   }}</span>
                 </div>
 
                 <div class="dropdown-list-li" @click="openDownload">
-                  <img src="../assets/images/navbar/user_info_down.svg" />
+                  <img src="@/assets/images/navbar/user_info_down.svg" />
                   <span class="dropdown-list-li-text">{{
                     $t('t-zgj-DownloadApp.Download')
                   }}</span>
@@ -171,7 +171,7 @@
                           : 'rgba(0, 0, 0, 0.65)'
                       }"
                     >
-                      <img src="../assets/images/navbar/user_info_lan.svg" />
+                      <img src="@/assets/images/navbar/user_info_lan.svg" />
 
                       <span class="dropdown-list-li-text">{{
                         $t('t-zgj-changeLang')
@@ -198,14 +198,14 @@
                 </el-popover>
 
                 <div class="dropdown-list-li">
-                  <img src="../assets/images/navbar/user_info_iphone.svg" />
+                  <img src="@/assets/images/navbar/user_info_iphone.svg" />
                   <span class="dropdown-list-li-text">{{
                     $t('t-zgj-mobile-app')
                   }}</span>
                 </div>
 
                 <div class="dropdown-list-li" @click="handleLogout">
-                  <img src="../assets/images/navbar/user_info_layout.svg" />
+                  <img src="@/assets/images/navbar/user_info_layout.svg" />
                   <span class="dropdown-list-li-text">{{
                     $t('t-zgj-logout-user')
                   }}</span>
@@ -295,15 +295,15 @@
   import { onMounted, reactive, ref, watch } from 'vue'
   import i18n from '@/utils/i18n'
   import useClickQutside from '@/utils/hooks/useClickQutside.js'
-  import VApplicationNav from '../components/modules/applicationNav.vue'
-  import VMailNav from '../components/modules/mailNav.vue'
-  import VMessageNav from '../components/modules/messageNav.vue'
+  import VApplicationNav from '@/components/modules/applicationNav.vue'
+  import VMailNav from '@/components/modules/mailNav.vue'
+  import VMessageNav from '@/components/modules/messageNav.vue'
   import router from '@/router'
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
   import JyDialog from '@/components/common/JyDialog/index.vue'
-  import VDownload from '../components/modules/downloadApp.vue'
+  import VDownload from '@/components/modules/downloadApp.vue'
   import { ArrowDown } from '@element-plus/icons-vue'
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
@@ -499,7 +499,7 @@
             transform: translateY(-50%);
             width: 12px;
             height: 8px;
-            background: url(../assets/images/navbar/change_lan_icon.svg)
+            background: url(@/assets/images/navbar/change_lan_icon.svg)
               no-repeat center center;
             background-size: 100%;
           }
@@ -701,7 +701,7 @@
           transform: translateY(-50%);
           width: 12px;
           height: 8px;
-          background: url(../assets/images/navbar/change_lan_icon.svg) no-repeat
+          background: url(@/assets/images/navbar/change_lan_icon.svg) no-repeat
             center center;
           background-size: 100%;
         }
