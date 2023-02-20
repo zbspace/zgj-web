@@ -138,13 +138,11 @@
     isShowFrom.value = name > 0
     console.log(vFormRef)
   }
-  function fromSelect(value) {
-    console.log(value)
-    console.log(12345)
-  }
+
   const onLoaded = () => {
     vFormRef.value.setFormJson(formJson)
   }
+  const clickSelect = () => {}
   onMounted(() => {
     console.log(`the component is now mounted.`)
   })
