@@ -260,6 +260,7 @@
               color: rgba(0, 0, 0, 0.65);
 
               > h3 {
+                margin: 0 0 10px 0;
                 font-size: 14px;
                 color: rgba(0, 0, 0, 0.85);
                 font-style: normal;
