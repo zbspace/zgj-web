@@ -70,13 +70,21 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, onBeforeMount, onMounted, nextTick } from 'vue'
+  import {
+    ref,
+    reactive,
+    onBeforeMount,
+    onMounted,
+    nextTick,
+    inject
+  } from 'vue'
   import layout from './layout.vue'
   import basicsInfo from './basics-info.vue'
   import AssociationForm from './Association-form.vue'
   import VFlowDesign from './flow-design.vue'
   import advancedSetup from './advanced-setup.vue'
   const emit = defineEmits(['close', 'update:modelValue', 'clickCutTabs'])
+  const axios = inject('$axios')
   const state = reactive({
     processTabs: {
       checkedNode: {},
@@ -141,8 +149,12 @@
   }
   // 点击保存
   const clickSave = () => {
-    // console.log('--->', 123)
+    console.log('--->点击保存', 123)
     console.log('--->', refVFlowDesign.value.getValue())
+    // 发送api请求 保存流程设计
+    apiFlowAdd().then(result => {
+      console.log('--->', result)
+    })
   }
   // 设置流程模板默认数据
   const handleSetData = () => {
@@ -762,6 +774,38 @@
         return false
       }
     }
+  }
+
+  // 发送api请求 保存流程设计
+  const apiFlowAdd = () => {
+    return axios({
+      // 请求方式
+      method: 'POST',
+      // 请求的地址
+      url: '/flow/add',
+      // URL 中的查询参数
+      data: {
+        processName: '流程名称',
+        applyTypeId: '业务类型',
+        sealUseTypeId: '用印类型',
+        fileTypeId: '文件类型',
+        dataScope: [
+          {
+            scopeId: 'id',
+            scopeName: '管理员',
+            scopeType: 1
+          }
+        ],
+        remark: '流程说明',
+        formMessageId: '表单id',
+        isTimeoutRemind: 1,
+        remindDuration: 24,
+        autoDistinct: 0
+      }
+    }).then(result => {
+      console.log(result)
+      return result
+    })
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

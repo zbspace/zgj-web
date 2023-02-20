@@ -41,7 +41,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive } from 'vue'
+  import { reactive, defineExpose } from 'vue'
   const form = reactive({
     ProcessName: '',
     ProcessType: false,
@@ -65,6 +65,12 @@
         // trigger: 'change'
       }
     ]
+  })
+  const getFormValue = () => {
+    return form
+  }
+  defineExpose({
+    getFormValue
   })
 </script>
 <style lang="scss" scoped>

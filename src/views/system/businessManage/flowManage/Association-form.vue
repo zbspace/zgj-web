@@ -99,7 +99,7 @@
         <el-button @click="clickReselect">重新选择</el-button>
       </div>
     </div>
-    <!-- 新建弹框 -->
+    <!-- 编辑表单 -->
     <div>
       <JyElMessageBox
         v-model="state.JyElMessageBox.show"
@@ -119,8 +119,9 @@
   </div>
 </template>
 <script setup>
-  import { reactive, defineExpose } from 'vue'
+  import { reactive, defineExpose, inject } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
+  const axios = inject('$axios')
   const formLibraryJson = reactive({})
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
@@ -201,6 +202,7 @@
   const redioChange = () => {
     // console.log('--->', state.list.radio)
   }
+
   // 提供方法
   defineExpose({
     getInfoValue
