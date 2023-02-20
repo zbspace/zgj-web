@@ -56,6 +56,7 @@
             :formData="formData"
             :optionData="optionData"
             @buttonClick="clickSelect"
+            @on-loaded="onLoaded"
           />
         </div>
       </div>
@@ -140,6 +141,9 @@
   function fromSelect(value) {
     console.log(value)
     console.log(12345)
+  }
+  const onLoaded = () => {
+    vFormRef.value.setFormJson(formJson)
   }
   onMounted(() => {
     console.log(`the component is now mounted.`)

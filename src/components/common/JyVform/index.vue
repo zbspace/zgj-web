@@ -1,26 +1,24 @@
 <template>
-  <div>
-    <v-form-designer
-      ref="vFormRef"
-      v-if="!props.mode"
-      :banned-widgets="bannedWidgets"
-      :designer-config="designerConfig"
-      :hideModuleList="hideModuleList"
-      :prefabricationFieldList="prefabricationFieldList"
-    />
+  <v-form-designer
+    ref="vFormRef"
+    v-if="!props.mode"
+    :banned-widgets="bannedWidgets"
+    :designer-config="designerConfig"
+    :hideModuleList="hideModuleList"
+    :prefabricationFieldList="prefabricationFieldList"
+  />
 
-    <v-form-render
-      v-if="props.mode === 'render'"
-      :form-json="formJson"
-      :form-data="formData"
-      :option-data="optionData"
-      ref="vFormRef"
-      @changeSelectForm="changeSelectForm"
-      @formChange="formChange"
-      @appendButtonClick="appendButtonClick"
-      @buttonClick="buttonClick"
-    />
-  </div>
+  <v-form-render
+    v-if="props.mode === 'render'"
+    :form-json="formJson"
+    :form-data="formData"
+    :option-data="optionData"
+    ref="vFormRef"
+    @changeSelectForm="changeSelectForm"
+    @formChange="formChange"
+    @appendButtonClick="appendButtonClick"
+    @buttonClick="buttonClick"
+  />
 </template>
 
 <script setup>
@@ -80,7 +78,12 @@
     }
   })
 
-  const emit = defineEmits(['formChange', 'appendButtonClick', 'buttonClick'])
+  const emit = defineEmits([
+    'formChange',
+    'appendButtonClick',
+    'buttonClick',
+    'on-loaded' // vform加载完成
+  ])
 
   // ---------------------------------VFormDesigner api 通过组件实例调用---------------------------
   // 清空设计器画布
@@ -185,7 +188,9 @@
   }
 
   onMounted(() => {
+    console.log('--->', 'vform加载完成')
     vFormRef.value.addEC('JyVform', getCurrentInstance())
+    emit('on-loaded')
   })
 
   defineExpose({
