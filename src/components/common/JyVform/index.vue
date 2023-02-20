@@ -1,22 +1,24 @@
 <template>
-  <v-form-render
-    v-if="props.mode === 'render'"
-    :form-json="formJson"
-    :form-data="formData"
-    :option-data="optionData"
-    ref="vFormRef"
-    @formChange="formChange"
-    @appendButtonClick="appendButtonClick"
-    @buttonClick="buttonClick"
-  />
-  <v-form-designer
-    ref="vFormRef"
-    v-else
-    :banned-widgets="bannedWidgets"
-    :designer-config="designerConfig"
-    :hideModuleList="hideModuleList"
-    :prefabricationFieldList="prefabricationFieldList"
-  />
+  <div>
+    <v-form-render
+      v-if="props.mode === 'render'"
+      :form-json="formJson"
+      :form-data="formData"
+      :option-data="optionData"
+      ref="vFormRef"
+      @formChange="formChange"
+      @appendButtonClick="appendButtonClick"
+      @buttonClick="buttonClick"
+    />
+    <v-form-designer
+      ref="vFormRef"
+      v-else
+      :banned-widgets="bannedWidgets"
+      :designer-config="designerConfig"
+      :hideModuleList="hideModuleList"
+      :prefabricationFieldList="prefabricationFieldList"
+    />
+  </div>
 </template>
 
 <script setup>
