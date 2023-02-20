@@ -4,6 +4,7 @@
       @clickCutTabs="clickCutTabs"
       :tabsData="state.processTabs.data"
       @close="clickClose"
+      :beforeCutTabs="beforeCutTabs"
     >
       <template #backTitle>
         <span class="process-back-text">新增</span>
@@ -54,6 +55,18 @@
         ></advancedSetup>
       </template>
     </layout>
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -86,19 +99,21 @@
           label: '高级设置'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   const refVFlowDesign = ref(null)
   const refAssociationForm = ref(null)
   // 点击切换选项
   const clickCutTabs = (data, item) => {
-    if (item.index === '3') {
-      const InfoValue = refAssociationForm.value.getInfoValue()
-      console.log('--->', InfoValue)
-      if (!InfoValue.SelectionForm) {
-        return
-      }
-    }
     data.forEach(element => {
       element.checked = false
     })
@@ -734,6 +749,19 @@
       },
       update: true
     })
+  }
+  // 切换tabs之前
+  const beforeCutTabs = (data, item) => {
+    if (item.index === '3') {
+      const InfoValue = refAssociationForm.value.getInfoValue()
+      console.log('--->', InfoValue)
+      if (!InfoValue.SelectionForm) {
+        state.JyElMessageBox.header.data = '提示？'
+        state.JyElMessageBox.content.data = '请选择表单'
+        state.JyElMessageBox.show = true
+        return false
+      }
+    }
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

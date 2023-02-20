@@ -70,6 +70,13 @@
       default: () => {
         return []
       }
+    },
+    // 切换tabs之前调用函数
+    beforeCutTabs: {
+      type: Function,
+      default: () => {
+        return true
+      }
     }
   })
   const state = reactive({
@@ -99,7 +106,7 @@
   })
 
   // 初始化数据
-  function initProps() {
+  const initProps = () => {
     // console.log('--->', 'initProps')
     const dispose = state.props
     for (const key in props) {
@@ -113,7 +120,12 @@
     // console.log('--->', props, dispose)
   }
   // 点击切换选项
-  function clickCutTabs(data, item) {
+  const clickCutTabs = (data, item) => {
+    const beforeCutTabs = state.props.beforeCutTabs(data, item)
+    console.log('--->', beforeCutTabs)
+    if (beforeCutTabs === false) {
+      return
+    }
     data.forEach(element => {
       element.checked = false
     })
@@ -121,9 +133,14 @@
     emit('clickCutTabs', data, item)
   }
   // 点击关闭弹框
-  function clickClose() {
+  const clickClose = () => {
     emit('close')
   }
+  // // 切换弹窗之前的回调函数
+  // const beforeCutTabs = fun => {
+  //   const back = fun()
+  //   // if()
+  // }
 
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);

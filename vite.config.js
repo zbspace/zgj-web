@@ -114,7 +114,7 @@ export default defineConfig((mode, command) => {
     },
     optimizeDeps: {
       include: [
-        '@/../lib/vform/designer.umd.js',
+        // '@/../lib/vform/designer.umd.js',
         'ant-design-vue',
         'ant-design-vue/es',
         'vuedraggable'

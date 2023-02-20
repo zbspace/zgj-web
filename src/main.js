@@ -4,8 +4,9 @@ import App from './App.vue'
 import router from './router'
 
 import i18n from '@/utils/i18n'
-// import { createPinia } from 'pinia'
 import store from './store'
+// api 全局配置
+import axios from '@/utils/axios/request'
 
 import '@/assets/fonts/font.css'
 
@@ -14,8 +15,6 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 
 import VForm3 from 'vform-jy'
-import 'vform-jy/dist/designer.style.css'
-
 import '@/utils/SvgIconPack'
 
 // 全局自定义组件
@@ -35,6 +34,7 @@ import commonFun from '@/utils/common'
     .use(i18n)
     .use(ElementPlus, { locale: zhCn })
     .use(VForm3)
+    .provide('$axios', axios)
     .provide('commonFun', commonFun)
     .mount('#app')
   requireComp(app)
