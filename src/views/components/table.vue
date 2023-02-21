@@ -175,7 +175,7 @@
       display: flex;
       // justify-content: space-around;
       // text-align: center;
-      color: var(--jy-Info-6);
+      color: var(--jy-info-6);
 
       .rankDisplayData-node {
         cursor: pointer;

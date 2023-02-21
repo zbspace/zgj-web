@@ -1553,7 +1553,7 @@
               label: '印章名称',
               value: 'Kevin_预发_57420F【简称_9290_2.3.1】',
               subStyle: {
-                color: 'var(--jy-Info-6)'
+                color: 'var(--jy-info-6)'
               },
               subText: '查看在柜状态'
             },
@@ -1799,7 +1799,7 @@
               label: '印模',
               value: '查看',
               valStyle: {
-                color: 'var(--jy-Info-7)'
+                color: 'var(--jy-info-7)'
               }
             },
             {

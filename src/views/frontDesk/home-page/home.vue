@@ -612,9 +612,9 @@
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  color: var(--jy-Info-6);
+                  color: var(--jy-info-6);
                   font-size: var(--jy-font-size-caption);
-                  background-color: var(--jy-Info-1);
+                  background-color: var(--jy-info-1);
                   // margin: 0% 0.2rem 0% 0rem;
                   padding: 0.2rem 0.2rem;
                   box-sizing: border-box;

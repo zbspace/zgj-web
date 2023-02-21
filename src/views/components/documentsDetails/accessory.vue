@@ -133,17 +133,17 @@
           justify-content: space-between;
 
           .ap-box-cont-caozuo-yulan {
-            color: var(--jy-Warning-6);
+            color: var(--jy-warning-6);
           }
 
           .ap-box-cont-caozuo-xiazai {
             margin-left: 0.5rem;
-            color: var(--jy-Info-6);
+            color: var(--jy-info-6);
           }
 
           .ap-box-cont-caozuo-dayin {
             margin-left: 0.5rem;
-            color: var(--jy-Info-6);
+            color: var(--jy-info-6);
 
             .ap-box-cont-caozuo-dayin-image {
               margin-right: 0.3rem;

@@ -290,7 +290,7 @@
           padding: 0% 0.5rem;
         }
         .popover-cont-list-li-but {
-          color: var(--jy-Info-6);
+          color: var(--jy-info-6);
           width: 3rem;
           cursor: pointer;
         }

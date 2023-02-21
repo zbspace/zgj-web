@@ -54,7 +54,7 @@
 
     :deep(.ap-box) {
       .el-breadcrumb__inner {
-        color: var(--jy-Secondary-5);
+        color: var(--jy-secondary-5);
       }
     }
   }

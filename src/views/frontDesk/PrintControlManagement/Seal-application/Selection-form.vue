@@ -202,8 +202,8 @@
         align-items: center;
         padding: 0.5rem;
         box-sizing: border-box;
-        background-color: var(--jy-Info-1);
-        border: 1px solid var(--jy-Info-3);
+        background-color: var(--jy-info-1);
+        border: 1px solid var(--jy-info-3);
         border-radius: var(--jy-border-radius-2);
         position: relative;
         margin-bottom: 1rem;
@@ -215,7 +215,7 @@
         .ap-cont-info-caozuo {
           position: absolute;
           right: 0.5rem;
-          color: var(--jy-Info-6);
+          color: var(--jy-info-6);
         }
       }
 
@@ -293,7 +293,7 @@
             position: absolute;
             top: 1rem;
             right: 0%;
-            color: var(--jy-Info-6);
+            color: var(--jy-info-6);
             display: flex;
             cursor: pointer;
             .text {
@@ -360,9 +360,9 @@
               color: var(--jy-color-text-2);
             }
             .shiyong {
-              color: var(--jy-Info-6);
-              background-color: var(--jy-Info-1);
-              border-color: var(--jy-Info-1);
+              color: var(--jy-info-6);
+              background-color: var(--jy-info-1);
+              border-color: var(--jy-info-1);
             }
           }
         }

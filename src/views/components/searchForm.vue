@@ -715,7 +715,7 @@
       .unfold {
         display: flex;
         align-items: center;
-        color: var(--jy-Info-6);
+        color: var(--jy-info-6);
         cursor: pointer;
         margin-right: 0.5rem;
 

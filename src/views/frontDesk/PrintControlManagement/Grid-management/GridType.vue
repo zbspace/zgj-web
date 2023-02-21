@@ -161,7 +161,7 @@
           // console.log({ row, column, rowIndex, columnIndex });
           // if (column.property == "2") {
           //     return {
-          //         "color": "var(--jy-Info-6)",
+          //         "color": "var(--jy-info-6)",
           //         "cursor": "pointer",
           //     }
           // }

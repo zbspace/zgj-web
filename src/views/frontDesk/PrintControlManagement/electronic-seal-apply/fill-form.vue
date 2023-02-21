@@ -717,7 +717,7 @@
               padding: 1rem;
               box-sizing: border-box;
               background-color: var(--jy-color-fill--2);
-              color: var(--jy-Info-6);
+              color: var(--jy-info-6);
               margin-right: 1rem;
 
               .Signature-content-box-list-file-icon {

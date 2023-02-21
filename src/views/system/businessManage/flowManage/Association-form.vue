@@ -250,10 +250,10 @@
     }
 
     .info-remind {
-      background: var(--jy-Warning-1);
+      background: var(--jy-warning-1);
       /* 警告 Warning/禁用 */
 
-      border: 1px solid var(--jy-Warning-3);
+      border: 1px solid var(--jy-warning-3);
       border-radius: var(--jy-border-radius-2);
       padding: 1rem;
       margin-top: 1rem;
