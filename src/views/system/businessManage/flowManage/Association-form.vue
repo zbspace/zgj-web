@@ -119,9 +119,8 @@
   </div>
 </template>
 <script setup>
-  import { reactive, defineExpose, inject } from 'vue'
+  import { reactive, defineExpose } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-  const axios = inject('$axios')
   const formLibraryJson = reactive({})
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
