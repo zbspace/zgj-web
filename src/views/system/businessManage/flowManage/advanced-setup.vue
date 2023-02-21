@@ -48,10 +48,10 @@
     width: 90%;
     height: calc(95% - 1rem);
     margin-top: 1rem;
-    background-color: var(--color-fill--5);
+    background-color: var(--jy-color-fill--5);
     display: flex;
     justify-content: center;
-    color: var(--color-text-1);
+    color: var(--jy-color-text-1);
     .info-box {
       width: auto;
       margin: 0% auto;

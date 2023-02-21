@@ -175,7 +175,7 @@
       display: flex;
       // justify-content: space-around;
       // text-align: center;
-      color: var(--Info-6);
+      color: var(--jy-Info-6);
 
       .rankDisplayData-node {
         cursor: pointer;
@@ -190,37 +190,37 @@
     }
 
     th {
-      font-weight: var(--font-weight-400);
+      font-weight: var(--jy-font-weight-400);
     }
 
     :deep {
       .el-table thead {
-        color: var(--color-text-1);
-        font-size: var(--font-size-body-2);
-        font-weight: var(--font-weight-400);
+        color: var(--jy-color-text-1);
+        font-size: var(--jy-font-size-body-2);
+        font-weight: var(--jy-font-weight-400);
       }
 
       .el-checkbox__input.is-checked .el-checkbox__inner {
-        background-color: var(--primary-6);
-        border-color: var(--primary-6);
+        background-color: var(--jy-primary-6);
+        border-color: var(--jy-primary-6);
       }
 
       .el-checkbox__inner:hover {
-        border-color: var(--primary-6);
+        border-color: var(--jy-primary-6);
       }
 
       .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-        background-color: var(--primary-6);
-        border-color: var(--primary-6);
+        background-color: var(--jy-primary-6);
+        border-color: var(--jy-primary-6);
       }
       .el-table__body tr.hover-row.current-row > td,
       .el-table__body tr.hover-row.el-table__row--striped.current-row > td,
       .el-table__body tr.hover-row.el-table__row--striped > td,
       .el-table__body tr.hover-row > td {
-        background-color: var(--background-color-1);
+        background-color: var(--jy-background-color-1);
       }
       .el-table tbody tr:hover > td {
-        background-color: var(--background-color-1);
+        background-color: var(--jy-background-color-1);
       }
     }
   }

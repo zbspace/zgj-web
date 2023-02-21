@@ -832,7 +832,7 @@
       .process-save-down {
         margin-right: 0.5rem;
         .process-save-down-text {
-          color: var(--danger-6);
+          color: var(--jy-danger-6);
           cursor: pointer;
         }
       }
@@ -840,12 +840,12 @@
   }
   .popover-cont {
     padding: 0.5rem;
-    color: var(--color-text-1);
+    color: var(--jy-color-text-1);
     .popover-cont-title {
-      font-size: var(--font-size-title-1);
+      font-size: var(--jy-font-size-title-1);
     }
     .popover-cont-subTitle {
-      color: var(--color-text-3);
+      color: var(--jy-color-text-3);
       margin-top: 0.8rem;
     }
     .popover-cont-list {
@@ -861,12 +861,12 @@
           width: 4rem;
         }
         .popover-cont-list-li-desc {
-          color: var(--color-text-3);
+          color: var(--jy-color-text-3);
           width: calc(100% - 7rem);
           padding: 0% 0.5rem;
         }
         .popover-cont-list-li-but {
-          color: var(--Info-6);
+          color: var(--jy-Info-6);
           width: 3rem;
           cursor: pointer;
         }

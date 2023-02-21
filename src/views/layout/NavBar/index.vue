@@ -506,7 +506,7 @@
 
           .ap-enterprise-cont-list:hover {
             background-color: rgba(0, 0, 0, 0.04);
-            color: var(--primary-6);
+            color: var(--jy-primary-6);
           }
         }
       }
@@ -521,8 +521,8 @@
         .ap-sys-but {
           border-radius: 4px;
           opacity: 1;
-          border: 1px solid var(--primary-6);
-          color: var(--primary-6);
+          border: 1px solid var(--jy-primary-6);
+          color: var(--jy-primary-6);
           padding: 0.3rem 0.8rem;
           box-sizing: border-box;
           cursor: pointer;
@@ -531,7 +531,7 @@
             width: 1.5rem;
             height: 1.5rem;
             margin-right: 0.3rem;
-            color: var(--primary-6);
+            color: var(--jy-primary-6);
           }
 
           svg {
@@ -572,8 +572,8 @@
             @include mixin-width(34);
             @include mixin-height(34);
             border-radius: 4px;
-            background-color: var(--primary-6);
-            color: var(--in-common-use-1);
+            background-color: var(--jy-primary-6);
+            color: var(--jy-in-common-use-1);
             // padding: 0.5rem 0.4rem;
             box-sizing: border-box;
             margin-right: 0.3rem;
@@ -581,7 +581,7 @@
             align-items: center;
             align-content: center;
             justify-content: center;
-            font-size: var(--font-size-body-1);
+            font-size: var(--jy-font-size-body-1);
           }
 
           img {
@@ -616,7 +616,7 @@
             justify-content: center;
             border-radius: 4px;
             background-color: #e2b062;
-            color: var(--in-common-use-1);
+            color: var(--jy-in-common-use-1);
             margin-bottom: 0.5rem;
           }
 

@@ -79,15 +79,15 @@
     width: 90%;
     height: calc(95% - 1rem);
     margin-top: 1rem;
-    background-color: var(--color-fill--5);
+    background-color: var(--jy-color-fill--5);
     .info-box {
       width: 50%;
       margin: 0% auto;
       text-align: center;
       .info-title {
         margin-top: 3rem;
-        font-size: var(--font-size-title-2);
-        color: var(--color-text-1);
+        font-size: var(--jy-font-size-title-2);
+        color: var(--jy-color-text-1);
       }
       .info-from {
         margin-top: 1.5rem;

@@ -581,13 +581,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '2') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-Info-6)',
               cursor: 'pointer'
             }
           }
@@ -1074,19 +1074,19 @@
       state.componentsTable.defaultAttribute = {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '2') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-Info-6)',
               cursor: 'pointer'
             }
           }
           if (column.property === '7') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-Info-6)',
               cursor: 'pointer'
             }
           }
