@@ -1,4 +1,4 @@
-$html-font-size: 16;
+$html-font-size: 14;
 
 @mixin mixin-font-size($px) {
   font-size: $px / $html-font-size * 1rem;
@@ -57,9 +57,7 @@ $html-font-size: 16;
 
 @mixin mixin-padding-leftSp($px) {
   $padding: $px / $html-font-size * 1rem;
-  padding-left: calc(
-    constant(safe-area-inset-left) + $padding
-  ); //如果未竖屏时为0
+  padding-left: calc(constant(safe-area-inset-left) + $padding ); //如果未竖屏时为0
   padding-left: calc(env(safe-area-inset-left) + $padding); //如果未竖屏时为0
   box-sizing: border-box;
 }
@@ -70,9 +68,7 @@ $html-font-size: 16;
 
 @mixin mixin-padding-rightSp($px) {
   $padding: $px / $html-font-size * 1rem;
-  padding-right: calc(
-    constant(safe-area-inset-right) + $padding
-  ); //如果未竖屏时为0
+  padding-right: calc(constant(safe-area-inset-right) + $padding ); //如果未竖屏时为0
   padding-right: calc(env(safe-area-inset-right) + $padding); //如果未竖屏时为0
   box-sizing: border-box;
 }
@@ -83,12 +79,8 @@ $html-font-size: 16;
 
 @mixin mixin-padding-topSp($px) {
   $padding: $px / $html-font-size * 1rem;
-  padding-top: calc(
-    constant(safe-area-inset-top) + $padding
-  ); //为导航栏+状态栏的高度 88px
-  padding-top: calc(
-    env(safe-area-inset-top) + $padding
-  ); //为导航栏+状态栏的高度 88px
+  padding-top: calc(constant(safe-area-inset-top) + $padding ); //为导航栏+状态栏的高度 88px
+  padding-top: calc(env(safe-area-inset-top) + $padding ); //为导航栏+状态栏的高度 88px
   box-sizing: border-box;
 }
 
@@ -98,12 +90,8 @@ $html-font-size: 16;
 
 @mixin mixin-padding-bottomSp($px) {
   $padding: $px / $html-font-size * 1rem;
-  padding-bottom: calc(
-    constant(safe-area-inset-bottom) + $padding
-  ); //为导航栏+状态栏的高度 88px
-  padding-bottom: calc(
-    env(safe-area-inset-bottom) + $padding
-  ); //为导航栏+状态栏的高度 88px
+  padding-bottom: calc(constant(safe-area-inset-bottom) + $padding ); //为导航栏+状态栏的高度 88px
+  padding-bottom: calc(env(safe-area-inset-bottom) + $padding ); //为导航栏+状态栏的高度 88px
   box-sizing: border-box;
 }
 
