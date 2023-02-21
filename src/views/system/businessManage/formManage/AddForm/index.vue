@@ -242,6 +242,7 @@
     .formBase-bg {
       width: 495px;
       margin: 0 auto;
+      padding-top: 52px;
     }
 
     .form-title {
