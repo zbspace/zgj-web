@@ -56,10 +56,17 @@
             :formData="formData"
             :optionData="optionData"
             @buttonClick="clickSelect"
+            @on-loaded="onLoaded"
+            key="1"
           />
         </div>
       </div>
-      <jy-vform ref="vformRef" v-show="isShowFrom" style="margin-top: 48px" />
+      <jy-vform
+        ref="vformRef"
+        v-show="isShowFrom"
+        style="margin-top: 48px"
+        key="2"
+      />
 
       <!-- <template #footer>
         <el-button @click="cancel"> 取消 </el-button>
@@ -137,10 +144,11 @@
     isShowFrom.value = name > 0
     console.log(vFormRef)
   }
-  function fromSelect(value) {
-    console.log(value)
-    console.log(12345)
+
+  const onLoaded = () => {
+    vFormRef.value.setFormJson(formJson)
   }
+  const clickSelect = () => {}
   onMounted(() => {
     console.log(`the component is now mounted.`)
   })
