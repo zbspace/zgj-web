@@ -39,69 +39,95 @@
     <div class="l-u-inpt">
       <!-- ① - 验证码 -->
       <div class="login-input" v-if="state.active === state.lists[0].value">
-        <el-input
-          v-model="state.inputPhone"
-          :placeholder="state.placeholderPhone"
-          size="large"
-          class="l-inpt"
-          clearable
+        <el-form
+          label-position="left"
+          ref="loginformCodeRef"
+          label-width="1"
+          :model="codeLoginForm"
+          hide-required-asterisk
+          :rules="codeRules"
         >
-          <template #prepend>
-            <el-select
-              v-model="state.select"
-              placeholder="+86"
-              style="width: 80px"
+          <el-form-item prop="inputPhone" class="l-inpt">
+            <el-input
+              v-model.number="codeLoginForm.inputPhone"
+              :placeholder="state.placeholderPhone"
               size="large"
+              clearable
             >
-              <el-option label="+86" value="1" />
-            </el-select>
-          </template>
-        </el-input>
+              <template #prepend>
+                <el-select
+                  v-model="state.select"
+                  placeholder="+86"
+                  style="width: 80px"
+                  size="large"
+                >
+                  <el-option label="+86" value="1" />
+                </el-select>
+              </template>
+            </el-input>
+          </el-form-item>
 
-        <div class="l-code">
-          <el-input
-            v-model="state.inputCode"
-            :placeholder="state.placeholderCode"
-            size="large"
-            clearable
-          >
-          </el-input>
+          <el-form-item prop="inputCode">
+            <div class="l-code">
+              <el-input
+                v-model.number="codeLoginForm.inputCode"
+                :placeholder="state.placeholderCode"
+                size="large"
+                clearable
+              />
 
-          <VerificationBtn></VerificationBtn>
-        </div>
+              <VerificationBtn :customStyle="customStyle" />
+            </div>
+          </el-form-item>
+        </el-form>
       </div>
 
       <!-- ② - 重置密码 -->
       <div class="login-input" v-if="state.active === state.lists[1].value">
-        <el-input
-          v-model="state.inputAccount"
-          :placeholder="state.placeholderPassword"
-          size="large"
-          clearable
-          class="l-inpt l-code-inpt"
+        <el-form
+          label-position="left"
+          ref="loginformPassRef"
+          label-width="1"
+          :model="passLoginForm"
+          hide-required-asterisk
+          :rules="passRules"
         >
-          <template #prefix>
-            <div class="icon">
-              <img src="../../../assets/images/login/l_password_icon.svg" />
-            </div>
-          </template>
-        </el-input>
+          <el-form-item prop="inputAccount" class="l-inpt">
+            <el-input
+              v-model="passLoginForm.inputAccount"
+              :placeholder="state.placeholderPassword"
+              size="large"
+              clearable
+              class="l-code-inpt"
+            >
+              <template #prefix>
+                <div class="icon">
+                  <img src="../../../assets/images/login/l_password_icon.svg" />
+                </div>
+              </template>
+            </el-input>
+          </el-form-item>
 
-        <div class="l-code">
-          <el-input
-            v-model="state.inputPassword"
-            :placeholder="state.placeholderPasswordAgain"
-            size="large"
-            :type="state.showPass ? 'text' : 'password'"
-            class="l-code-inpt"
-          >
-            <template #prefix>
-              <div class="icon">
-                <img src="../../../assets/images/login/l_password_icon.svg" />
-              </div>
-            </template>
-          </el-input>
-        </div>
+          <el-form-item prop="inputPassword">
+            <div class="l-code">
+              <el-input
+                v-model="passLoginForm.inputPassword"
+                :placeholder="state.placeholderPasswordAgain"
+                size="large"
+                :type="state.showPass ? 'text' : 'password'"
+                class="l-code-inpt"
+              >
+                <template #prefix>
+                  <div class="icon">
+                    <img
+                      src="../../../assets/images/login/l_password_icon.svg"
+                    />
+                  </div>
+                </template>
+              </el-input>
+            </div>
+          </el-form-item>
+        </el-form>
       </div>
 
       <!-- ③ - 重置完成 -->
@@ -117,7 +143,7 @@
       <el-button
         type="primary"
         class="btn"
-        @click="state.active = 2"
+        @click="goNext"
         v-if="state.active === state.lists[0].value"
       >
         {{ $t('t-zgj-next') }}
@@ -125,7 +151,7 @@
       <el-button
         type="primary"
         class="btn"
-        @click="state.active = 3"
+        @click="goConfirm"
         v-if="state.active === state.lists[1].value"
       >
         {{ $t('t-zgj-operation.submit') }}
@@ -146,14 +172,10 @@
   import VSteps from '../components/VSteps.vue'
   import VerificationBtn from '../components/VerificationBtn.vue'
   import i18n from '@/utils/i18n'
-  import { reactive, watch } from 'vue'
-
+  import { reactive, watch, ref } from 'vue'
+  import { ElMessage } from 'element-plus'
   const state = reactive({
     active: 1,
-    inputPhone: null,
-    inputCode: null,
-    inputAccount: null,
-    inputPassword: null,
     placeholderPhone: null,
     placeholderCode: null,
     placeholderPassword: null,
@@ -189,9 +211,103 @@
     },
     { immediate: true, deep: true }
   )
+
+  // 验证手机号
+  const codeLoginForm = reactive({
+    inputPhone: null,
+    inputCode: null
+  })
+
+  const validatePhone = (rule, value, callback) => {
+    const reg = /^1[3-9]\d{9}$/
+    if (reg.test(value)) {
+      callback()
+    } else {
+      callback(new Error('手机号格式不正确'))
+    }
+  }
+  const codeRules = {
+    inputPhone: [
+      { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+      {
+        type: 'number',
+        message: '请输入正确的格式',
+        trigger: ['blur', 'change']
+      },
+      { validator: validatePhone, trigger: 'blur' }
+    ],
+    inputCode: [
+      {
+        required: true,
+        message: '请输入验证码',
+        trigger: ['blur', 'change']
+      },
+      {
+        type: 'number',
+        message: '请输入正确的格式',
+        trigger: ['blur', 'change']
+      }
+    ]
+  }
+
+  const loginformCodeRef = ref(null)
+  // 下一步
+  const goNext = () => {
+    loginformCodeRef.value.validate(valid => {
+      if (valid) {
+        state.active = 2
+      } else {
+        ElMessage.warning('请正确填写信息')
+      }
+    })
+  }
+
+  // 重置密码
+  const passLoginForm = reactive({
+    inputAccount: null,
+    inputPassword: null
+  })
+
+  const validateSamePass = (rule, value, callback) => {
+    if (value !== passLoginForm.inputAccount) {
+      callback(new Error('两次输入密码不一致'))
+    } else {
+      callback()
+    }
+  }
+  const passRules = {
+    inputAccount: [
+      { required: true, message: '请输入新密码', trigger: ['blur', 'change'] }
+    ],
+    inputPassword: [
+      {
+        required: true,
+        message: '请再次输入新密码',
+        trigger: ['blur', 'change']
+      },
+      { validator: validateSamePass, trigger: 'blur' }
+    ]
+  }
+
+  const goConfirm = () => {
+    passLoginForm.value.validate(valid => {
+      if (valid) {
+        state.active = 3
+      } else {
+        ElMessage.warning('请正确填写信息')
+      }
+    })
+  }
+
+  const customStyle = {
+    height: '48px'
+  }
 </script>
 
 <style scoped lang="scss">
+  .el-input {
+    --el-component-size-large: 48px;
+  }
   .update-password {
     position: absolute;
     top: 0;
@@ -239,12 +355,12 @@
       height: 168px;
 
       .l-inpt {
-        margin-bottom: 20px;
+        padding-bottom: 20px;
       }
 
       .l-code {
         display: flex;
-
+        width: 100%;
         .btn {
           font-size: 16px;
           color: #fafafa;

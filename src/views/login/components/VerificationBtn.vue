@@ -64,11 +64,8 @@
       font-size: 16px;
       color: #fafafa;
       width: 150px;
-      height: 48px;
       border-radius: 4px;
       text-align: center;
-      line-height: 44px;
-      background: #d0963e;
       margin-left: 10px;
     }
   }

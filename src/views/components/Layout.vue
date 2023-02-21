@@ -192,7 +192,8 @@
 
     .ap-box-cont {
       display: flex;
-      width: calc(100% + 1rem);
+      width: 100%;
+      // width: calc(100% + 1rem);
       padding-right: 1rem;
       flex-grow: 1;
       overflow: auto;

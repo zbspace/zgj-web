@@ -231,80 +231,6 @@
   }
   // 静态数据
   const state = reactive({
-    // lists: [
-    //   // {
-    //   //   id: 1,
-    //   //   dataType: 1,
-    //   //   parentId: 0,
-    //   //   labelName: '建业科技'
-    //   // },
-    //   {
-    //     id: 2,
-    //     dataType: 2,
-    //     parentId: 0,
-    //     labelName: '研发中心'
-    //   },
-    //   {
-    //     id: 3,
-    //     dataType: 2,
-    //     parentId: 2,
-    //     labelName: '交付中心'
-    //   },
-    //   {
-    //     id: 4,
-    //     dataType: 2,
-    //     parentId: 2,
-    //     labelName: '技术中心'
-    //   },
-    //   {
-    //     id: 5,
-    //     dataType: 2,
-    //     parentId: 0,
-    //     labelName: '建业科技测试中心'
-    //   },
-    //   {
-    //     id: 6,
-    //     dataType: 2,
-    //     parentId: 0,
-    //     labelName: '财务部'
-    //   },
-    //   {
-    //     id: 7,
-    //     dataType: 2,
-    //     parentId: 6,
-    //     labelName: '会计'
-    //   },
-    //   {
-    //     id: 8,
-    //     dataType: 2,
-    //     parentId: 6,
-    //     labelName: '出纳'
-    //   },
-    //   {
-    //     id: 9,
-    //     dataType: 2,
-    //     parentId: 8,
-    //     labelName: '出纳-test1'
-    //   },
-    //   {
-    //     id: 10,
-    //     dataType: 2,
-    //     parentId: 8,
-    //     labelName: '出纳-test2'
-    //   },
-    //   {
-    //     id: 11,
-    //     dataType: 2,
-    //     parentId: 5,
-    //     labelName: '测试-test1'
-    //   },
-    //   {
-    //     id: 12,
-    //     dataType: 2,
-    //     parentId: 5,
-    //     labelName: '测试-test2'
-    //   }
-    // ]
     lists: testData
   })
 
@@ -367,7 +293,7 @@
           const findChildren = forFn(data.children, id)
           if (findChildren) return findChildren
         }
-        path.pop()
+        path.pop() // 非常牛批的点
       }
     }
     forFn(attr, attrId)
@@ -422,7 +348,7 @@
       partItems: 0,
       selectedItems: 0
     })
-    function handleParentStatus(val) {
+    function handleParentStatusFn(val) {
       val.forEach(item => {
         objItem.value.allItems++
         if (item.selectedStatus === 0) {
@@ -437,7 +363,7 @@
       })
     }
 
-    handleParentStatus(data.children)
+    handleParentStatusFn(data.children)
     if (objItem.value.allItems === objItem.value.nullItems) {
       return 0
     } else if (objItem.value.allItems === objItem.value.selectedItems) {
