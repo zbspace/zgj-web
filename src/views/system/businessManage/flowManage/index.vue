@@ -649,7 +649,7 @@
         align-items: center;
 
         .title-more-add {
-          margin-right: 0.5rem;
+          // margin-right: 0.5rem;
           height: 100%;
           display: flex;
           align-items: center;

@@ -1,11 +1,8 @@
-// base
-@import './base.scss';
-
 // 变量
 @import './variable.scss';
 
-// 全局 class 样式
-@import './overallClass.scss';
-
 // 全局 element 变量重定向
 @import './element-variables.scss';
+
+// 全局 class 样式
+@import './overallClass.scss';

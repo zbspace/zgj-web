@@ -2,9 +2,22 @@
 **全局class样式
 */
 
-// .button-icon {
-//   margin-right: 0.5rem;
-// }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
 
 .drawer-class.el-drawer.rtl {
   top: 65px !important;
@@ -19,4 +32,8 @@
   .el-drawer__body {
     padding: 0;
   }
+}
+
+.el-table .cell {
+  padding: 0 12px;
 }
