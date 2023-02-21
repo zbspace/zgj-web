@@ -1,8 +1,5 @@
 /**
  * 通用请求工具类封装
- *
- * @author fengshuonan
- * @date 2022/4/8 10:47
  */
 import request from '@/utils/request'
 import { getToken } from '@/utils/token-util'
@@ -10,9 +7,6 @@ import { getToken } from '@/utils/token-util'
 export default class RequestUtil {
   /**
    * get请求
-   *
-   * @author fengshuonan
-   * @date 2022/4/8 10:50
    */
   static async get(url, params) {
     if (params === undefined) {
@@ -24,9 +18,6 @@ export default class RequestUtil {
 
   /**
    * get请求并获取数据
-   *
-   * @author fengshuonan
-   * @date 2022/4/8 10:50
    */
   static async getAndLoadData(url, params) {
     const result = await this.get(url, params)
@@ -35,9 +26,6 @@ export default class RequestUtil {
 
   /**
    * post请求
-   *
-   * @author fengshuonan
-   * @date 2022/4/8 10:50
    */
   static async post(url, params) {
     if (params === undefined) {
@@ -49,9 +37,6 @@ export default class RequestUtil {
 
   /**
    * post请求并获取数据
-   *
-   * @author fengshuonan
-   * @date 2022/4/8 10:50
    */
   static async postAndLoadData(url, params) {
     const result = await this.post(url, params)
@@ -60,9 +45,6 @@ export default class RequestUtil {
 
   /**
    * 封装downLoad请求
-   *
-   * @author fengshuonan
-   * @date 2021/4/2 16:13
    */
   static downLoad(url, params) {
     if (params === undefined) {

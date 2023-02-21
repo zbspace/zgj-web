@@ -2,22 +2,21 @@
  * axios 实例
  */
 import axios from 'axios'
-import { message } from 'ant-design-vue'
-import { API_BASE_PREFIX, TOKEN_HEADER_NAME } from '@/config/setting'
+import { ElMessage } from 'element-plus'
+import { API_BASE_PREFIX, TOKEN_HEADER_NAME } from './constants.js'
 import { getToken, setToken } from './token-util'
 
 const service = axios.create({
-  baseURL: API_BASE_PREFIX
+  baseURL: API_BASE_PREFIX,
+  timeout: 5000
 })
 
 /**
  * 处理错误响应
  */
 const processErrorResponse = function (response) {
-  // 如果是非B0301，则提示错误信息
-  if (response.data.code !== 'B0301') {
-    message.error(response.data.message)
-  }
+  // 提示错误信息
+  ElMessage.error(response.data.message)
   return Promise.reject(response.data)
 }
 

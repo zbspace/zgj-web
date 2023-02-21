@@ -2,7 +2,6 @@
 用来重定义变量  element
 */
 
-
 body,
 #app {
   --el-color-white: #ffffff;
@@ -87,6 +86,8 @@ body,
   --el-border-width: 1px;
   --el-border-style: solid;
   --el-border-color-hover: var(--el-text-color-disabled);
-  --el-border: var(--el-border-width) var(--el-border-style) var(--el-border-color);
+  --el-border: var(--el-border-width) var(--el-border-style)
+    var(--el-border-color);
   --el-svg-monochrome-grey: var(--el-border-color);
+  --el-font-weight-primary: var(--jy-font-weight-400);
 }
