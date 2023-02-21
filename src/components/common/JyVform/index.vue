@@ -1,26 +1,28 @@
 <template>
-  <v-form-render
-    v-if="props.mode === 'render'"
-    :form-json="formJson"
-    :form-data="formData"
-    :option-data="optionData"
-    ref="vFormRef"
-    @formChange="formChange"
-    @appendButtonClick="appendButtonClick"
-    @buttonClick="buttonClick"
-  />
-  <v-form-designer
-    ref="vFormRef"
-    v-else
-    :banned-widgets="bannedWidgets"
-    :designer-config="designerConfig"
-    :hideModuleList="hideModuleList"
-    :prefabricationFieldList="prefabricationFieldList"
-  />
+  <div>
+    <v-form-render
+      v-if="props.mode === 'render'"
+      :form-json="formJson"
+      :form-data="formData"
+      :option-data="optionData"
+      ref="vFormRef"
+      @formChange="formChange"
+      @appendButtonClick="appendButtonClick"
+      @buttonClick="buttonClick"
+    />
+    <v-form-designer
+      ref="vFormRef"
+      v-else
+      :bannedWidgets="getBannedWidgets"
+      :designer-config="designerConfig"
+      :hideModuleList="hideModuleList"
+      :prefabricationFieldList="prefabricationFieldList"
+    />
+  </div>
 </template>
 
 <script setup>
-  import { ref, onMounted, getCurrentInstance } from 'vue'
+  import { ref, onMounted, getCurrentInstance, computed } from 'vue'
   import { designerConfig } from './designerConfig'
   const vFormRef = ref(null)
 
@@ -31,11 +33,17 @@
       default: ''
     },
 
+    // 业务类型 用印申请 、其他
+    businessType: {
+      type: String,
+      default: ''
+    },
+
     // 禁止设计器显示指定的组件
     bannedWidgets: {
-      type: Object,
+      type: Array,
       default: () => {
-        return [] // ['table', 'rate', 'switch']
+        return [] // ['table', 'rate', 'switch'] 自定义组件的type
       }
     },
 
@@ -83,6 +91,27 @@
     'on-loaded' // vform加载完成
   ])
 
+  // 类型
+  const getBannedWidgets = computed(() => {
+    return props.bannedWidgets.length
+      ? props.bannedWidgets
+      : props.businessType
+      ? []
+      : [
+          'sealName',
+          'contactUnit',
+          'usesealBesides',
+          'normalSealNum',
+          'remoteSeal',
+          'videoSeal',
+          'sealFile',
+          'seamingSeal',
+          'limitTimeSeal',
+          'limitAddressSeal',
+          'uploadFile'
+        ]
+  })
+
   // ---------------------------------VFormDesigner api 通过组件实例调用---------------------------
   // 清空设计器画布
   const clearDesigner = () => {
@@ -125,8 +154,8 @@
     return res
   }
   // 获取表单数据对象
-  const getFormData = () => {
-    return vFormRef.value.getFormData()
+  const getFormData = async () => {
+    return await vFormRef.value.getFormData()
   }
   // 设置表单数据对象
   const setFormData = data => {

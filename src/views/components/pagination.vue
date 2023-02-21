@@ -10,6 +10,7 @@
           v-bind="state.props.sizeAttribute"
           @size-change="sizeChange"
           @current-change="currentChange"
+          :page-sizes="[10, 50, 100]"
         >
           <slot></slot>
         </el-pagination>
@@ -136,14 +137,14 @@
       align-items: center;
       .ap-desc-text {
         margin-right: 0.5rem;
-        color: var(--color-text-1);
+        color: var(--jy-color-text-1);
       }
     }
     /* 分页 */
     :deep {
       .el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
-        background-color: var(--primary-6);
-        color: var(--in-common-use-1);
+        background-color: var(--jy-primary-6);
+        color: var(--jy-in-common-use-1);
       }
 
       .el-pagination.is-background .el-pager li {
@@ -151,7 +152,7 @@
       }
 
       .el-pagination.is-background .el-pager li:hover {
-        background-color: var(--color-fill--2);
+        background-color: var(--jy-color-fill--2);
       }
 
       .el-pagination.is-background .btn-prev:disabled {
@@ -173,7 +174,7 @@
         background-color: rgba($color: #000000, $alpha: 0);
       }
       .el-pagination button:hover {
-        color: var(--primary-6);
+        color: var(--jy-primary-6);
       }
     }
   }

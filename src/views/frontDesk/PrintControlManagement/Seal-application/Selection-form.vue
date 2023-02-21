@@ -202,9 +202,9 @@
         align-items: center;
         padding: 0.5rem;
         box-sizing: border-box;
-        background-color: var(--Info-1);
-        border: 1px solid var(--Info-3);
-        border-radius: var(--border-radius-2);
+        background-color: var(--jy-Info-1);
+        border: 1px solid var(--jy-Info-3);
+        border-radius: var(--jy-border-radius-2);
         position: relative;
         margin-bottom: 1rem;
 
@@ -215,15 +215,15 @@
         .ap-cont-info-caozuo {
           position: absolute;
           right: 0.5rem;
-          color: var(--Info-6);
+          color: var(--jy-Info-6);
         }
       }
 
       .ap-cont-title {
         display: flex;
         justify-content: center;
-        font-size: var(--font-size-title-1);
-        font-weight: var(--font-weight-600);
+        font-size: var(--jy-font-size-title-1);
+        font-weight: var(--jy-font-weight-600);
         margin-bottom: 1rem;
       }
 
@@ -231,7 +231,7 @@
         display: flex;
         justify-content: center;
         margin-bottom: 1rem;
-        color: var(--color-text-2);
+        color: var(--jy-color-text-2);
       }
 
       .ap-cont-liuc {
@@ -267,9 +267,9 @@
           display: flex;
           flex-flow: wrap;
           justify-content: center;
-          border: 1px solid var(--color-border-1);
-          border-radius: var(--border-radius-4);
-          background-color: var(--color-fill--1);
+          border: 1px solid var(--jy-color-border-1);
+          border-radius: var(--jy-border-radius-4);
+          background-color: var(--jy-color-fill--1);
           position: relative;
 
           .ap-cont-liebiao-list-back {
@@ -283,7 +283,7 @@
           .ap-cont-liebiao-list-desc {
             width: 100%;
             margin-bottom: 0.5rem;
-            color: var(--color-text-1);
+            color: var(--jy-color-text-1);
           }
 
           .ap-cont-liebiao-list-but {
@@ -293,7 +293,7 @@
             position: absolute;
             top: 1rem;
             right: 0%;
-            color: var(--Info-6);
+            color: var(--jy-Info-6);
             display: flex;
             cursor: pointer;
             .text {
@@ -319,8 +319,8 @@
     .optional-module {
       .optional-module-list {
         display: flex;
-        border: 1px solid var(--color-border-1);
-        border-radius: var(--border-radius-4);
+        border: 1px solid var(--jy-color-border-1);
+        border-radius: var(--jy-border-radius-4);
         margin: 1rem 0rem;
         padding: 1rem;
         box-sizing: border-box;
@@ -332,13 +332,13 @@
           margin-bottom: 0.5rem;
           .optional-module-list-title-desc {
             width: calc(100% - 10rem);
-            color: var(--color-text-1);
+            color: var(--jy-color-text-1);
           }
           .optional-module-list-title-time {
             width: 10rem;
             text-align: right;
-            color: var(--color-text-3);
-            font-size: var(--font-size-body-1);
+            color: var(--jy-color-text-3);
+            font-size: var(--jy-font-size-body-1);
           }
         }
         .optional-module-list-desc {
@@ -347,22 +347,22 @@
           justify-content: space-between;
           .optional-module-list-desc-text {
             width: calc(100% - 10rem);
-            color: var(--color-text-3);
+            color: var(--jy-color-text-3);
           }
           .optional-module-list-desc-but {
             display: flex;
             .button {
               padding: 0.2rem 1rem;
-              border-radius: var(--border-radius-2);
-              border: 1px solid var(--color-border-1);
-              font-size: var(--font-size-body-1);
+              border-radius: var(--jy-border-radius-2);
+              border: 1px solid var(--jy-color-border-1);
+              font-size: var(--jy-font-size-body-1);
               margin-left: 0.5rem;
-              color: var(--color-text-2);
+              color: var(--jy-color-text-2);
             }
             .shiyong {
-              color: var(--Info-6);
-              background-color: var(--Info-1);
-              border-color: var(--Info-1);
+              color: var(--jy-Info-6);
+              background-color: var(--jy-Info-1);
+              border-color: var(--jy-Info-1);
             }
           }
         }

@@ -156,7 +156,7 @@
       }
 
       .dropdown-list-cont:hover {
-        background-color: var(--color-fill--2);
+        background-color: var(--jy-color-fill--2);
         color: #d0963e;
       }
     }

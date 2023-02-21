@@ -37,18 +37,9 @@
           <el-button class="save-btn" @click="submitForm">保存</el-button>
         </div>
       </div>
-      <div class="formBase" v-show="!isShowFrom">
+      <div class="formBase" v-if="!isShowFrom">
         <div class="formBase-bg">
           <div class="form-title">请填写如下基础信息</div>
-          <!-- <v-form-render
-            :form-json="formJson"
-            :form-data="formData"
-            :option-data="optionData"
-            ref="vFormRef"
-            @buttonClick="clickSelect"
-            @changeSelectForm="fromSelect"
-          >
-          </v-form-render> -->
           <JyVform
             ref="vFormRef"
             mode="render"
@@ -57,15 +48,12 @@
             :optionData="optionData"
             @buttonClick="clickSelect"
             @on-loaded="onLoaded"
+            businessType="1"
           />
         </div>
       </div>
-      <jy-vform ref="vformRef" v-show="isShowFrom" style="margin-top: 48px" />
-
-      <!-- <template #footer>
-        <el-button @click="cancel"> 取消 </el-button>
-        <el-button type="primary" @click="handleSubmit"> 确定 </el-button>
-      </template> -->
+      <!-- 表单设计 -->
+      <JyVform ref="vformRef" v-if="isShowFrom" style="margin-top: 48px" />
     </el-dialog>
   </div>
 </template>
@@ -134,9 +122,9 @@
     emit('update:modelValue', false)
     emit('formClose', false)
   }
-  function handleChange(name) {
+  async function handleChange(name) {
+    console.log('-------', await vFormRef.value.getFormData())
     isShowFrom.value = name > 0
-    console.log(vFormRef)
   }
 
   const onLoaded = () => {

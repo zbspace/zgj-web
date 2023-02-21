@@ -158,8 +158,8 @@
       @include mixin-padding-left(20);
       @include mixin-padding-right(20);
       box-sizing: border-box;
-      border-radius: var(--border-radius-4);
-      background-color: var(--in-common-use-1);
+      border-radius: var(--jy-border-radius-4);
+      background-color: var(--jy-in-common-use-1);
       // margin-top: 18px;
       position: relative;
     }
@@ -172,7 +172,7 @@
       width: 100%;
       padding: 0rem 0 0.5rem 0;
       box-sizing: border-box;
-      font-size: var(--font-size-title-2);
+      font-size: var(--jy-font-size-title-2);
       @include mixin-padding-right(0);
       box-sizing: border-box;
     }
@@ -224,7 +224,7 @@
         height: 100%;
       }
 
-      border-right: 1px solid var(--color-border-2);
+      border-right: 1px solid var(--jy-color-border-2);
     }
 
     .ap-box-cutOffRule {

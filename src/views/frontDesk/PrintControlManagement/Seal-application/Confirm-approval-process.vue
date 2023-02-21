@@ -238,12 +238,12 @@
   })
   const refFillFormInformation = ref(null)
 
-  //点击返回上一页
+  // 点击返回上一页
   function clickBackPage() {
     commonFun.routerPage(router, -1)
   }
 
-  //点击提交
+  // 点击提交
   function clickSubmit() {
     commonFun.routerPage(router, {
       // path: "/frontDesk/PrintControlManagement/Seal-application/accomplish"
@@ -311,15 +311,15 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              background-color: var(--color-fill--3);
-              color: var(--color-text-3);
-              border-radius: var(--border-radius-2);
+              background-color: var(--jy-color-fill--3);
+              color: var(--jy-color-text-3);
+              border-radius: var(--jy-border-radius-2);
               margin-right: 0.5rem;
             }
 
             .custom-buzhou-list-desc-text {
-              font-size: var(--font-size-title-1);
-              color: var(--color-text-3);
+              font-size: var(--jy-font-size-title-1);
+              color: var(--jy-color-text-3);
             }
           }
 
@@ -332,16 +332,16 @@
         }
 
         .indexActive {
-          background-color: var(--primary-6) !important;
-          color: var(--in-common-use-1) !important;
+          background-color: var(--jy-primary-6) !important;
+          color: var(--jy-in-common-use-1) !important;
         }
 
         .textActive {
-          color: var(--color-text-1) !important;
+          color: var(--jy-color-text-1) !important;
         }
 
         .font-color-45 {
-          color: var(--color-text-3) !important;
+          color: var(--jy-color-text-3) !important;
         }
       }
 
@@ -361,8 +361,8 @@
               height: 15rem;
               align-self: flex-start;
               width: 13rem;
-              border: 1px solid var(--color-border-1);
-              background-color: var(--color-fill--1);
+              border: 1px solid var(--jy-color-border-1);
+              background-color: var(--jy-color-fill--1);
               padding: 1rem;
               box-sizing: border-box;
 
@@ -371,7 +371,7 @@
                 justify-content: center;
                 height: 2rem;
                 align-items: center;
-                font-size: var(--font-size-title-1);
+                font-size: var(--jy-font-size-title-1);
 
                 .PrintingProcess-content-list-cont-title-img {
                   margin-right: 0.5rem;
@@ -408,8 +408,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border-top: 1px solid var(--color-border-2);
-      background-color: var(--in-common-use-1);
+      border-top: 1px solid var(--jy-color-border-2);
+      background-color: var(--jy-in-common-use-1);
       z-index: 999;
       .ap-fixed-save-icon {
         .iconpark-icon {

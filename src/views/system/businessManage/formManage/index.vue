@@ -71,20 +71,20 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 新增表单 -->
-    <AddFrom v-model="dialogVisible" />
+    <AddFrom v-model="dialogVisible" v-if="dialogVisible" />
   </div>
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { reactive, ref, defineAsyncComponent } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import AddFrom from './AddForm'
   import componentsBatch from '@/views/components/batch.vue'
+  const AddFrom = defineAsyncComponent(() => import('./AddForm'))
 
   const dialogVisible = ref(false)
   const state = reactive({
@@ -373,13 +373,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '2') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-Info-6)',
               cursor: 'pointer'
             }
           }

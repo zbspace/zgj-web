@@ -65,7 +65,7 @@
 
 <style lang="scss" scoped>
   .layout-container {
-    background-color: var(--background-color-1);
+    background-color: var(--jy-background-color-1);
 
     :deep(.el-header) {
       background: #ffffff;

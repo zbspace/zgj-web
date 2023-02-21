@@ -221,8 +221,8 @@
           }
         }
         .dialog-header-cont {
-          color: var(--color-text-1);
-          font-size: var(--font-size-title-1);
+          color: var(--jy-color-text-1);
+          font-size: var(--jy-font-size-title-1);
         }
         .dialog-header-remove {
           position: absolute;
@@ -241,7 +241,7 @@
         padding: 0rem 2.5rem;
         box-sizing: border-box;
         flex-grow: 1;
-        color: var(--color-text-2);
+        color: var(--jy-color-text-2);
       }
       .dialog-footer {
         padding: 1rem 2rem;
@@ -251,7 +251,7 @@
       }
       .cut-off-rule {
         width: 100%;
-        border-bottom: 1px solid var(--color-border-2);
+        border-bottom: 1px solid var(--jy-color-border-2);
       }
       .center-content {
         text-align: center;

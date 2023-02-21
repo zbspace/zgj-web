@@ -2,9 +2,21 @@
 **全局class样式
 */
 
-// .button-icon {
-//   margin-right: 0.5rem;
-// }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
 
 .drawer-class.el-drawer.rtl {
   top: 65px !important;
@@ -56,3 +68,35 @@
 :deep(input::-ms-input-placeholder) {
   color: #c0c4cc;
 }
+.el-table .cell {
+  padding: 0 12px;
+}
+
+// body {
+//   --vz-body-color: var(--color-text-1);
+//   --vz-body-font-size: var(--font-size-body-2);
+// }
+
+// .el-button {
+//   --el-button-text-color: var(--color-text-2);
+// }
+
+// .el-pager li {
+//   --el-pagination-button-color: var(--color-text-1);
+// }
+
+// .el-pagination__jump {
+//   --el-text-color-regular: var(--color-text-1);
+// }
+
+// .el-input__inner {
+//   --el-input-text-color: var(--color-text-1);
+// }
+
+// .el-button.is-disabled {
+//   --el-button-disabled-text-color: var(--color-text-3);
+// }
+
+// .el-tree {
+//   --el-tree-text-color: var(--color-text-1);
+// }
