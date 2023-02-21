@@ -213,9 +213,9 @@
     width: 90%;
     height: calc(95% - 1rem);
     margin-top: 1rem;
-    background-color: var(--color-fill--5);
+    background-color: var(--jy-color-fill--5);
     position: relative;
-    color: var(--color-text-1);
+    color: var(--jy-color-text-1);
 
     .choice {
       width: 100%;
@@ -229,8 +229,8 @@
 
       .info-title {
         padding-top: 3rem;
-        font-size: var(--font-size-title-2);
-        color: var(--color-text-1);
+        font-size: var(--jy-font-size-title-2);
+        color: var(--jy-color-text-1);
       }
 
       .info-from {
@@ -246,15 +246,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-top: 1px solid var(--color-border-2);
+      border-top: 1px solid var(--jy-color-border-2);
     }
 
     .info-remind {
-      background: var(--Warning-1);
+      background: var(--jy-Warning-1);
       /* 警告 Warning/禁用 */
 
-      border: 1px solid var(--Warning-3);
-      border-radius: var(--border-radius-2);
+      border: 1px solid var(--jy-Warning-3);
+      border-radius: var(--jy-border-radius-2);
       padding: 1rem;
       margin-top: 1rem;
       text-align: left;
@@ -262,7 +262,7 @@
       .info-remind-title {
         display: flex;
         align-items: center;
-        font-size: var(--font-size-title-1);
+        font-size: var(--jy-font-size-title-1);
 
         .info-remind-title-icon {
           margin-right: 0.5rem;
@@ -279,7 +279,7 @@
       .info-remind-p {
         padding: 0.2rem 1.8rem;
         box-sizing: border-box;
-        color: var(--color-text-3);
+        color: var(--jy-color-text-3);
       }
     }
 
@@ -317,8 +317,8 @@
         text-align: left;
         padding: 0.7rem 1rem;
         box-sizing: border-box;
-        background: var(--color-fill--2);
-        border-radius: var(--border-radius-2);
+        background: var(--jy-color-fill--2);
+        border-radius: var(--jy-border-radius-2);
         box-sizing: border-box;
         margin: 0.5rem 0rem;
         cursor: pointer;
@@ -355,24 +355,24 @@
 
     // 已启用
     .Have-been-enabled {
-      background: var(--success-1);
+      background: var(--jy-success-1);
       /* 成功 Success/常规 */
-      border: 1px solid var(--success-6);
-      border-radius: var(--border-radius-2);
-      font-size: var(--font-size-caption);
-      color: var(--success-6);
+      border: 1px solid var(--jy-success-6);
+      border-radius: var(--jy-border-radius-2);
+      font-size: var(--jy-font-size-caption);
+      color: var(--jy-success-6);
       padding: 0.1rem 0.2rem;
       box-sizing: border-box;
     }
 
     // 禁用
     .disabled {
-      background: var(--color-fill--2);
+      background: var(--jy-color-fill--2);
       /* 成功 Success/常规 */
-      border: 1px solid var(--color-border-1);
-      border-radius: var(--border-radius-2);
-      font-size: var(--font-size-caption);
-      color: var(--color-text-2);
+      border: 1px solid var(--jy-color-border-1);
+      border-radius: var(--jy-border-radius-2);
+      font-size: var(--jy-font-size-caption);
+      color: var(--jy-color-text-2);
       padding: 0.1rem 0.2rem;
       box-sizing: border-box;
     }

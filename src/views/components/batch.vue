@@ -253,7 +253,7 @@
       align-content: flex-end;
       .ap-box-left {
         .el-button {
-          font-size: var(--font-size-caption);
+          font-size: var(--jy-font-size-caption);
         }
       }
       .ap-box-right {

@@ -331,13 +331,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-Info-6)',
               cursor: 'pointer'
             }
           }
@@ -380,7 +380,7 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭
+  // 点击关闭
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }

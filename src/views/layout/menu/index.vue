@@ -209,7 +209,7 @@
       transform: rotate(180deg);
       cursor: pointer;
       &:hover {
-        color: var(--primary-6);
+        color: var(--jy-primary-6);
       }
     }
     :deep(.el-menu) {
@@ -220,10 +220,10 @@
         border-left: 4px solid #d0963e;
         span,
         .iconpark-icon {
-          color: var(--primary-6);
+          color: var(--jy-primary-6);
         }
         .name-front {
-          background-color: var(--primary-6);
+          background-color: var(--jy-primary-6);
         }
       }
       .el-menu-item:not(.is-active) {
@@ -263,10 +263,10 @@
           transition: none;
           span,
           .iconpark-icon {
-            color: var(--primary-6) !important;
+            color: var(--jy-primary-6) !important;
           }
           .name-front {
-            background-color: var(--primary-6) !important;
+            background-color: var(--jy-primary-6) !important;
           }
         }
       }
@@ -286,7 +286,7 @@
             transition: none;
             span,
             .iconpark-icon {
-              color: var(--primary-6) !important;
+              color: var(--jy-primary-6) !important;
             }
           }
         }
@@ -319,7 +319,7 @@
         border-left: 0;
         span,
         .iconpark-icon {
-          color: var(--primary-6);
+          color: var(--jy-primary-6);
         }
       }
       .el-menu-item {
@@ -353,7 +353,7 @@
           border-left: 0;
           span,
           .iconpark-icon {
-            color: var(--primary-6);
+            color: var(--jy-primary-6);
           }
         }
       }
@@ -370,7 +370,7 @@
             border-left: 0;
             span,
             .iconpark-icon {
-              color: var(--primary-6);
+              color: var(--jy-primary-6);
             }
           }
         }

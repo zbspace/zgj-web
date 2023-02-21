@@ -447,13 +447,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property == '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-Info-6)',
               cursor: 'pointer'
             }
           }
@@ -588,18 +588,18 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '处理') {
       fromState.show = true
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection

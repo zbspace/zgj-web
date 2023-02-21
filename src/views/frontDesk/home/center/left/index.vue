@@ -82,16 +82,16 @@
         .el-tabs__nav {
           .el-tabs__item {
             &:hover {
-              color: var(--primary-6);
+              color: var(--jy-primary-6);
             }
           }
 
           .is-active {
-            color: var(--primary-6);
+            color: var(--jy-primary-6);
           }
 
           .el-tabs__active-bar {
-            background-color: var(--primary-6);
+            background-color: var(--jy-primary-6);
           }
         }
       }

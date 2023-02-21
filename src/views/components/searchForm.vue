@@ -663,7 +663,7 @@
         position: relative;
         @include mixin-padding-right(10);
         box-sizing: border-box;
-        color: var(--color-text-1);
+        color: var(--jy-color-text-1);
 
         .ap-box-label-necessary {
           color: red;
@@ -715,7 +715,7 @@
       .unfold {
         display: flex;
         align-items: center;
-        color: var(--Info-6);
+        color: var(--jy-Info-6);
         cursor: pointer;
         margin-right: 0.5rem;
 
@@ -734,13 +734,13 @@
     }
 
     .border-bottom {
-      border-bottom: 1px solid var(--color-border-2);
+      border-bottom: 1px solid var(--jy-color-border-2);
     }
 
     .custom-button {
       & {
-        border: 1px dashed var(--color-border-1);
-        border-radius: var(--border-radius-2);
+        border: 1px dashed var(--jy-color-border-1);
+        border-radius: var(--jy-border-radius-2);
         width: auto;
         display: flex;
         justify-content: center;
@@ -749,7 +749,7 @@
         @include mixin-padding-bottom(5);
         @include mixin-padding-right(16);
         @include mixin-padding-left(16);
-        font-size: var(--font-size-body-1);
+        font-size: var(--jy-font-size-body-1);
         position: relative;
       }
       .custom-button-checkIcon {
@@ -760,8 +760,8 @@
       }
     }
     .checked {
-      border: 1px solid var(--primary-6);
-      color: var(--primary-6);
+      border: 1px solid var(--jy-primary-6);
+      color: var(--jy-primary-6);
       .custom-button-checkIcon {
         display: inline-block;
       }
@@ -821,7 +821,7 @@
       }
 
       .button-contBox :hover {
-        background-color: var(--primary-2);
+        background-color: var(--jy-primary-2);
       }
 
       .button-contBox {
@@ -851,7 +851,7 @@
       }
 
       .button-contBox :hover {
-        background-color: var(--primary-2);
+        background-color: var(--jy-primary-2);
       }
 
       .button-contBox {
@@ -881,30 +881,30 @@
       input::-webkit-input-placeholder {
         /* WebKit browsers */
         // color: #9c9c9c;
-        font-size: var(--font-size-caption);
+        font-size: var(--jy-font-size-caption);
       }
 
       input:-moz-placeholder {
         /* Mozilla Firefox 4 to 18 */
         // color: #9c9c9c;
-        font-size: var(--font-size-caption);
+        font-size: var(--jy-font-size-caption);
       }
 
       input::-moz-placeholder {
         /* Mozilla Firefox 19+ */
         // color: #9c9c9c;
-        font-size: var(--font-size-caption);
+        font-size: var(--jy-font-size-caption);
       }
 
       input::-ms-input-placeholder {
         /* Internet Explorer 10+ */
         // color: #9c9c9c;
-        font-size: var(--font-size-caption);
+        font-size: var(--jy-font-size-caption);
       }
 
       .el-checkbox__label {
-        font-size: var(--font-size-body-2);
-        color: var(--color-text-1);
+        font-size: var(--jy-font-size-body-2);
+        color: var(--jy-color-text-1);
       }
     }
   }

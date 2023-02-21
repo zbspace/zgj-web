@@ -1077,7 +1077,7 @@
               iconPath: yuanLvSvg,
               iconStyle: {},
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             }
           ]
@@ -1370,7 +1370,7 @@
               'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
                 return {
-                  background: 'var(--color-fill--1)'
+                  background: 'var(--jy-color-fill--1)'
                 }
               }
             }
@@ -1539,7 +1539,7 @@
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--color-fill--1)'
+              background: 'var(--jy-color-fill--1)'
             }
           }
         }
@@ -1553,7 +1553,7 @@
               label: '印章名称',
               value: 'Kevin_预发_57420F【简称_9290_2.3.1】',
               subStyle: {
-                color: 'var(--Info-6)'
+                color: 'var(--jy-Info-6)'
               },
               subText: '查看在柜状态'
             },
@@ -1573,7 +1573,7 @@
               value: '已失效',
               iconPathValue: yuanHuiSvg,
               style: {
-                color: 'var(--color-text-3)'
+                color: 'var(--jy-color-text-3)'
               }
             }
           ],
@@ -1759,7 +1759,7 @@
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--color-fill--1)'
+              background: 'var(--jy-color-fill--1)'
             }
           }
         }
@@ -1792,14 +1792,14 @@
               iconPath: yuanLvSvg,
               iconStyle: {},
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
               label: '印模',
               value: '查看',
               valStyle: {
-                color: 'var(--Info-7)'
+                color: 'var(--jy-Info-7)'
               }
             },
             {
@@ -1978,7 +1978,7 @@
               value: '状态',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2035,7 +2035,7 @@
               value: '启用',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2138,7 +2138,7 @@
               value: '启用',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2210,8 +2210,8 @@
               value: '开',
               subValue: '静默3分钟后休眠',
               subValueStyle: {
-                color: 'var(--color-text-3)',
-                fontSize: 'var(--font-size-caption)'
+                color: 'var(--jy-color-text-3)',
+                fontSize: 'var(--jy-font-size-caption)'
               }
             }
           ]
@@ -2243,7 +2243,7 @@
               value: '启用',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2349,7 +2349,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2419,7 +2419,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2514,7 +2514,7 @@
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--color-fill--1)'
+              background: 'var(--jy-color-fill--1)'
             }
           }
         }
@@ -2549,7 +2549,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2611,7 +2611,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2666,7 +2666,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2720,7 +2720,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2890,7 +2890,7 @@
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--color-fill--1)'
+              background: 'var(--jy-color-fill--1)'
             }
           }
         }
@@ -3188,7 +3188,7 @@
       justify-content: space-between;
 
       .title-name-span {
-        font-size: var(--font-size-title-2);
+        font-size: var(--jy-font-size-title-2);
       }
 
       .title-cion-img {
@@ -3216,7 +3216,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        border-bottom: 1px solid var(--color-border-2);
+        border-bottom: 1px solid var(--jy-color-border-2);
 
         .ap-Tabs-sub-icon {
           margin-right: 0.5rem;
@@ -3243,7 +3243,7 @@
       }
 
       .ap-cont-box-title {
-        border-bottom: 1px solid var(--color-border-2);
+        border-bottom: 1px solid var(--jy-color-border-2);
         padding: 0rem 0 0rem 0.8rem;
         box-sizing: border-box;
         background: url(../../assets/svg/shuxian-after.svg) no-repeat left
@@ -3254,8 +3254,8 @@
         height: 2.3rem;
 
         .ap-cont-box-title-label {
-          font-size: var(--font-size-title-1);
-          font-weight: var(--font-weight-400);
+          font-size: var(--jy-font-size-title-1);
+          font-weight: var(--jy-font-weight-400);
         }
 
         .ap-cont-box-title-xiazai {
@@ -3267,7 +3267,7 @@
           }
 
           .ap-cont-box-title-xiazai-text {
-            color: var(--color-text-2);
+            color: var(--jy-color-text-2);
           }
         }
 
@@ -3308,7 +3308,7 @@
                 width: 4.5rem;
                 display: flex;
                 justify-content: flex-end;
-                color: var(--color-text-3);
+                color: var(--jy-color-text-3);
               }
 
               .sealDetails-basic-information-list-value {
@@ -3339,7 +3339,7 @@
                 width: 7rem;
                 display: flex;
                 justify-content: flex-end;
-                color: var(--color-text-3);
+                color: var(--jy-color-text-3);
               }
 
               .sealDetails-basic-information-list-value {
@@ -3370,7 +3370,7 @@
                 width: 7rem;
                 display: flex;
                 justify-content: flex-end;
-                color: var(--color-text-3);
+                color: var(--jy-color-text-3);
               }
 
               .sealDetails-basic-information-list-value {
@@ -3389,12 +3389,12 @@
           align-items: center;
 
           .ap-cont-ma-text {
-            color: var(--color-text-3);
+            color: var(--jy-color-text-3);
           }
 
           .ap-cont-ma-value {
-            color: var(--primary-6);
-            font-size: var(--font-size-title-2);
+            color: var(--jy-primary-6);
+            font-size: var(--jy-font-size-title-2);
           }
         }
 
@@ -3466,8 +3466,8 @@
                     bottom: 0%;
                     text-align: center;
                     width: 100%;
-                    background-color: var(--color-fill-65);
-                    color: var(--in-common-use-1);
+                    background-color: var(--jy-color-fill-65);
+                    color: var(--jy-in-common-use-1);
                     height: 2rem;
                     display: flex;
                     align-items: center;
@@ -3491,7 +3491,7 @@
                       width: 4.5rem;
                       display: flex;
                       justify-content: flex-end;
-                      color: var(--color-text-3);
+                      color: var(--jy-color-text-3);
                     }
 
                     .SealInformation-details-image-cont-list-cont-list-subValue {
@@ -3505,7 +3505,7 @@
                       }
 
                       .SealInformation-details-image-cont-list-cont-list-subValue-text {
-                        color: var(--danger-6);
+                        color: var(--jy-danger-6);
                       }
                     }
                   }

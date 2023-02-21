@@ -267,13 +267,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-Info-6)',
               cursor: 'pointer'
             }
           }
@@ -463,7 +463,7 @@
         align-items: center;
         width: 60%;
         margin: 1rem 0;
-        color: var(--color-text-2);
+        color: var(--jy-color-text-2);
       }
     }
     .custom-table {
@@ -484,32 +484,32 @@
         .licenseInfo-title-cont {
           padding: 1rem;
           box-sizing: border-box;
-          background-color: var(--color-fill--2);
-          border-radius: var(--border-radius-4);
+          background-color: var(--jy-color-fill--2);
+          border-radius: var(--jy-border-radius-4);
           .licenseInfo-title-cont-title {
-            font-size: var(--font-size-body-2);
+            font-size: var(--jy-font-size-body-2);
           }
           .licenseInfo-title-cont-v {
             padding: 0.5rem 0;
             box-sizing: border-box;
-            font-size: var(--font-size-title-3);
+            font-size: var(--jy-font-size-title-3);
             font-weight: 500;
           }
           .licenseInfo-title-cont-desc {
-            color: var(--color-text-3);
+            color: var(--jy-color-text-3);
           }
         }
       }
       .licenseInfo-authorization {
         .licenseInfo-authorization-title {
-          color: var(--color-text-1);
+          color: var(--jy-color-text-1);
           margin-bottom: 0.5rem;
         }
         .licenseInfo-authorization-cont {
           padding: 1rem;
           box-sizing: border-box;
-          border-radius: var(--border-radius-4);
-          border: 1px solid var(--color-border-1);
+          border-radius: var(--jy-border-radius-4);
+          border: 1px solid var(--jy-color-border-1);
           .licenseInfo-authorization-cont-list {
             display: flex;
             padding: 0.5rem 0rem;
@@ -517,10 +517,10 @@
             .licenseInfo-authorization-cont-list-label {
               width: 10rem;
               text-align: right;
-              color: var(--color-text-3);
+              color: var(--jy-color-text-3);
             }
             .licenseInfo-authorization-cont-list-value {
-              color: var(--color-text-1);
+              color: var(--jy-color-text-1);
             }
           }
         }
