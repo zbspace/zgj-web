@@ -120,7 +120,7 @@
         margin: 0.8rem 0rem;
 
         .ap-box-cont-desc {
-          width: calc(100% - 10rem);
+          width: calc(100% - 12rem);
 
           .ap-box-cont-desc-name {
             margin-right: 0.5rem;
@@ -128,7 +128,7 @@
         }
 
         .ap-box-cont-caozuo {
-          width: 10rem;
+          width: 12rem;
           display: flex;
           justify-content: space-between;
 

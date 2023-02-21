@@ -41,6 +41,7 @@
       <template #content>
         <basicsInfo
           v-show="state.processTabs.checkedNode.index == '1'"
+          ref="refBasicsInfo"
         ></basicsInfo>
         <AssociationForm
           v-show="state.processTabs.checkedNode.index == '2'"
@@ -52,6 +53,7 @@
         ></VFlowDesign>
         <advancedSetup
           v-show="state.processTabs.checkedNode.index == '4'"
+          ref="refAdvancedSetup"
         ></advancedSetup>
       </template>
     </layout>
@@ -93,6 +95,10 @@
     // // 加载失败时使用的组件
     // errorComponent: ErrorComponent
   })
+  const refVFlowDesign = ref(null)
+  const refAssociationForm = ref(null)
+  const refBasicsInfo = ref(null)
+  const refAdvancedSetup = ref(null)
   const state = reactive({
     processTabs: {
       checkedNode: {},
@@ -126,8 +132,6 @@
       }
     }
   })
-  const refVFlowDesign = ref(null)
-  const refAssociationForm = ref(null)
   // 点击切换选项
   const clickCutTabs = (data, item) => {
     data.forEach(element => {
@@ -157,8 +161,13 @@
   }
   // 点击保存
   const clickSave = () => {
-    console.log('--->点击保存', 123)
-    console.log('--->', refVFlowDesign.value.getValue())
+    console.log('--->点击保存')
+    console.log('--->refVFlowDesign', refVFlowDesign.value.getValue())
+    console.log('--->refBasicsInfo', refBasicsInfo.value.getFormValue())
+    console.log(
+      '--->refAssociationForm',
+      refAssociationForm.value.getInfoValue()
+    )
     // 发送api请求 保存流程设计
     apiFlowAdd().then(result => {
       console.log('--->', result)
