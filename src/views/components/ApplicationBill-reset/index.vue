@@ -36,21 +36,13 @@
           </svg>
           <div style="margin-left: 6px">智能用印</div>
         </div>
-        <div class="confirm btn" @click="submitForm">提交</div>
+        <el-button class="confirm btn" @click="submitForm">提交</el-button>
       </div>
 
       <!-- content -->
       <div class="inner-page-content">
         <div class="l-title">基本信息</div>
         <div class="base-info">
-          <v-form-render
-            :form-json="formJson"
-            :form-data="formData"
-            :option-data="optionData"
-            ref="vFormRef"
-            @buttonClick="clickSelect"
-          >
-          </v-form-render>
           <JyVform
             ref="vFormRef"
             mode="render"
@@ -58,6 +50,7 @@
             :formData="formData"
             :optionData="optionData"
             @buttonClick="clickSelect"
+            @on-loaded="onLoaded"
           />
         </div>
         <div class="l-title">审批流程</div>
@@ -118,6 +111,9 @@
   // select25439
   function clickSelect(buttonWidget) {
     console.log(buttonWidget)
+  }
+  const onLoaded = () => {
+    vFormRef.value.setFormJson(formJson)
   }
 </script>
 
