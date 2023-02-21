@@ -96,7 +96,7 @@
 </template>
 
 <script setup>
-  import { reactive, inject, onBeforeMount, onMounted } from 'vue'
+  import { reactive, onBeforeMount, onMounted, defineAsyncComponent } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
@@ -104,9 +104,14 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import newlyIncreased from './newly-increased.vue'
+  // import newlyIncreased from './newly-increased.vue'
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
-  const axios = inject('$axios')
+  import { flow as apiFlow } from '@/api/system-backstage/business-manage/flow-management'
+  import { form as apiForm } from '@/api/system-backstage/business-manage/form-management'
+  // 异步组件
+  const newlyIncreased = defineAsyncComponent(() =>
+    import('./newly-increased.vue')
+  )
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -502,27 +507,15 @@
   }
   // 发送api请求 查询表单树解构
   const listApplyTypeTreeApi = () => {
-    return axios({
-      // 请求方式
-      method: 'get',
-      // 请求的地址
-      url: '/form/listApplyTypeTree',
-      // URL 中的查询参数
-      params: {}
-    }).then(result => {
+    return apiForm.listApplyTypeTree({}).then(result => {
       console.log(result)
       return result
     })
   }
   // 发送api请求 流程列表
   const flowPageApi = () => {
-    return axios({
-      // 请求方式
-      method: 'get',
-      // 请求的地址
-      url: '/flow/page',
-      // URL 中的查询参数
-      params: {
+    return apiFlow
+      .page({
         keyword: '',
         status: '',
         updateStartTime: '',
@@ -531,143 +524,113 @@
         fileTypeId: '',
         relationForm: '',
         sealUseTypeId: ''
-      }
-    }).then(result => {
-      console.log(result)
-      return result
-    })
+      })
+      .then(result => {
+        console.log(result)
+        return result
+      })
   }
   // 发送api请求 删除流程
   const flowDeleteApi = () => {
-    return axios({
-      // 请求方式
-      method: 'post',
-      // 请求的地址
-      url: '/flow/delete',
-      // 请求体 中的查询参数
-      data: {
+    return apiFlow
+      .delete({
         processId: ''
-      }
-    }).then(result => {
-      console.log(result)
-      return result
-    })
+      })
+      .then(result => {
+        console.log(result)
+        return result
+      })
   }
   // 发送api请求 启用/停用
   const flowEnableApi = () => {
-    return axios({
-      // 请求方式
-      method: 'post',
-      // 请求的地址
-      url: '/flow/enable',
-      // 请求体 中的查询参数
-      data: {
+    return apiFlow
+      .enable({
         processId: '',
         processStatus: ''
-      }
-    }).then(result => {
-      console.log(result)
-      return result
-    })
+      })
+      .then(result => {
+        console.log(result)
+        return result
+      })
   }
   // 发送api请求 复制流程
   const flowCopyApi = () => {
-    return axios({
-      // 请求方式
-      method: 'post',
-      // 请求的地址
-      url: '/flow/copy',
-      // 请求体 中的查询参数
-      data: {
+    return apiFlow
+      .copy({
         processId: '',
         processName: ''
-      }
-    }).then(result => {
-      console.log(result)
-      return result
-    })
+      })
+      .then(result => {
+        console.log(result)
+        return result
+      })
   }
   // 发送api请求 批量删除
   const batchDeleteApi = () => {
-    return axios({
-      // 请求方式
-      method: 'post',
-      // 请求的地址
-      url: '/flow/batchDelete',
-      // 请求体 中的查询参数
-      data: [
+    return apiFlow
+      .batchDelete([
         {
           processId: '主键'
         },
         {
           processId: '主键'
         }
-      ]
-    }).then(result => {
-      console.log(result)
-      return result
-    })
+      ])
+      .then(result => {
+        console.log(result)
+        return result
+      })
   }
   // 发送api请求 批量启用
   const batachEnableApi = () => {
-    return axios({
-      // 请求方式
-      method: 'post',
-      // 请求的地址
-      url: '/flow/batachEnable',
-      // 请求体 中的查询参数
-      data: [
+    return apiFlow
+      .batachEnable([
         {
           processId: '主键'
         },
         {
           processId: '主键'
         }
-      ]
-    }).then(result => {
-      console.log(result)
-      return result
-    })
+      ])
+      .then(result => {
+        console.log(result)
+        return result
+      })
   }
   // 发送api请求 批量停用
   const batachDisableApi = () => {
-    return axios({
-      // 请求方式
-      method: 'post',
-      // 请求的地址
-      url: '/flow/batachDisable',
-      // 请求体 中的查询参数
-      data: [
+    return apiFlow
+      .batachDisable([
         {
           processId: '主键'
         },
         {
           processId: '主键'
         }
-      ]
-    }).then(result => {
-      console.log(result)
-      return result
-    })
+      ])
+      .then(result => {
+        console.log(result)
+        return result
+      })
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 发送api请求 查询表单树解构
-    listApplyTypeTreeApi()
-    // 发送api请求 流程列表
-    flowPageApi()
-    // 发送api请求 删除流程
-    flowDeleteApi()
-    // 发送api请求 启用/停用
-    flowEnableApi()
-    // 发送api请求 复制流程
-    flowCopyApi()
-    // 发送api请求 批量删除
-    batchDeleteApi()
-    // 发送api请求 批量启用
-    batachEnableApi()
-    // 发送api请求 批量停用
-    batachDisableApi()
+    // listApplyTypeTreeApi()
+    // // 发送api请求 流程列表
+    // flowPageApi()
+    // // 发送api请求 删除流程
+    // flowDeleteApi()
+    // // 发送api请求 启用/停用
+    // flowEnableApi()
+    // // 发送api请求 复制流程
+    // flowCopyApi()
+    // // 发送api请求 批量删除
+    // batchDeleteApi()
+    // // 发送api请求 批量启用
+    // batachEnableApi()
+    // // 发送api请求 批量停用
+    // batachDisableApi()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -686,7 +649,7 @@
         align-items: center;
 
         .title-more-add {
-          margin-right: 0.5rem;
+          // margin-right: 0.5rem;
           height: 100%;
           display: flex;
           align-items: center;

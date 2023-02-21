@@ -76,15 +76,23 @@
     onBeforeMount,
     onMounted,
     nextTick,
-    inject
+    defineAsyncComponent
   } from 'vue'
   import layout from './layout.vue'
   import basicsInfo from './basics-info.vue'
   import AssociationForm from './Association-form.vue'
-  import VFlowDesign from './flow-design.vue'
+  // import VFlowDesign from './flow-design.vue'
   import advancedSetup from './advanced-setup.vue'
+  import { flow as apiFlow } from '@/api/system-backstage/business-manage/flow-management'
   const emit = defineEmits(['close', 'update:modelValue', 'clickCutTabs'])
-  const axios = inject('$axios')
+  // 异步组件
+  const VFlowDesign = defineAsyncComponent({
+    loader: () => import('./flow-design.vue')
+    // // 加载异步组件时使用的组件
+    // loadingComponent: LoadingComponent,
+    // // 加载失败时使用的组件
+    // errorComponent: ErrorComponent
+  })
   const state = reactive({
     processTabs: {
       checkedNode: {},
@@ -778,13 +786,8 @@
 
   // 发送api请求 保存流程设计
   const apiFlowAdd = () => {
-    return axios({
-      // 请求方式
-      method: 'POST',
-      // 请求的地址
-      url: '/flow/add',
-      // URL 中的查询参数
-      data: {
+    return apiFlow
+      .add({
         processName: '流程名称',
         applyTypeId: '业务类型',
         sealUseTypeId: '用印类型',
@@ -801,11 +804,11 @@
         isTimeoutRemind: 1,
         remindDuration: 24,
         autoDistinct: 0
-      }
-    }).then(result => {
-      console.log(result)
-      return result
-    })
+      })
+      .then(result => {
+        console.log(result)
+        return result
+      })
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

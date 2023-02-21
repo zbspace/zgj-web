@@ -5,8 +5,6 @@ import router from './router'
 
 import i18n from '@/utils/i18n'
 import store from './store'
-// api 全局配置
-import axios from '@/utils/axios/request'
 
 import '@/assets/fonts/font.css'
 
@@ -34,7 +32,6 @@ import commonFun from '@/utils/common'
     .use(i18n)
     .use(ElementPlus, { locale: zhCn })
     .use(VForm3)
-    .provide('$axios', axios)
     .provide('commonFun', commonFun)
     .mount('#app')
   requireComp(app)
