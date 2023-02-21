@@ -1,5 +1,4 @@
 import { createWebHistory, createRouter } from 'vue-router'
-// import axios from 'axios';
 import routes from './routes'
 // import appConfig from "../../app.config";
 import { useAccountInfoStore } from '@/store/accountInfo'
