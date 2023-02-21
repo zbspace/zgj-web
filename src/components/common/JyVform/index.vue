@@ -17,6 +17,7 @@
       :designer-config="designerConfig"
       :hideModuleList="hideModuleList"
       :prefabricationFieldList="prefabricationFieldList"
+      :templateList="templateList"
     />
   </div>
 </template>
@@ -33,7 +34,7 @@
       default: ''
     },
 
-    // 业务类型 用印申请 、其他
+    // 业务类型  默认用印申请 、其他
     businessType: {
       type: String,
       default: ''
@@ -81,6 +82,21 @@
     prefabricationFieldList: {
       type: Array,
       default: () => []
+    },
+
+    // 模板list
+    templateList: {
+      type: Array,
+      default: () => [
+        // {
+        //   title: '单列表单',
+        //   imgUrl:
+        //     'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+        //   jsonUrl:
+        //     'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/json1.txt',
+        //   description: '表单模板详细说明...'
+        // }
+      ]
     }
   })
 

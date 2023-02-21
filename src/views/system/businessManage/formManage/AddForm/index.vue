@@ -48,7 +48,6 @@
             :optionData="optionData"
             @buttonClick="clickSelect"
             @on-loaded="onLoaded"
-            businessType="1"
           />
         </div>
       </div>
@@ -79,7 +78,6 @@
         // Form Validation OK
         if (isShowFrom.value) {
           alert(JSON.stringify(formData))
-          showFormDialog.value = false
         } else {
           isShowFrom.value = true
         }
