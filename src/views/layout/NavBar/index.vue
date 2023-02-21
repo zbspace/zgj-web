@@ -403,7 +403,7 @@
     showFormDialog.value = false
   }
 
-  const loginform = reactive({
+  const loginform = ref({
     username: '',
     password: ''
   })

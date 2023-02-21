@@ -16,7 +16,7 @@
       :collapse-transition="false"
       class="el-menu-vertical-demo"
     >
-      <template v-for="item in getMenus">
+      <template v-for="(item, j) in getMenus" :key="j">
         <el-sub-menu
           :index="item.to"
           :key="item.to"

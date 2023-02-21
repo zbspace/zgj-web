@@ -71,20 +71,20 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 新增表单 -->
-    <AddFrom v-model="dialogVisible" />
+    <AddFrom v-model="dialogVisible" v-if="dialogVisible" />
   </div>
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { reactive, ref, defineAsyncComponent } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import AddFrom from './AddForm'
   import componentsBatch from '@/views/components/batch.vue'
+  const AddFrom = defineAsyncComponent(() => import('./AddForm'))
 
   const dialogVisible = ref(false)
   const state = reactive({
