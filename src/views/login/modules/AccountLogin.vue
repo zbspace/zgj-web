@@ -22,84 +22,111 @@
       <div class="login-content">
         <!-- 输入框 - 验证码 -->
         <div class="login-input" v-if="state.activeCodeLogin">
-          <el-input
-            v-model="state.inputPhone"
-            :placeholder="state.placeholderPhone"
-            size="large"
-            class="l-inpt"
-            clearable
+          <el-form
+            label-position="left"
+            ref="loginformCodeRef"
+            label-width="1"
+            :model="codeLoginForm"
+            hide-required-asterisk
+            :rules="codeRules"
           >
-            <template #prepend>
-              <el-select
-                v-model="state.select"
-                placeholder="+86"
-                style="width: 80px"
+            <el-form-item prop="inputPhone" class="l-inpt">
+              <el-input
+                v-model="codeLoginForm.inputPhone"
+                :placeholder="state.placeholderPhone"
                 size="large"
+                clearable
               >
-                <el-option label="+86" value="1" />
-              </el-select>
-            </template>
-          </el-input>
+                <template #prepend>
+                  <el-select
+                    v-model="state.select"
+                    placeholder="+86"
+                    style="width: 80px"
+                    size="large"
+                  >
+                    <el-option label="+86" value="1" />
+                  </el-select>
+                </template>
+              </el-input>
+            </el-form-item>
 
-          <div class="l-code">
-            <el-input
-              v-model="state.inputCode"
-              :placeholder="state.placeholderCode"
-              size="large"
-              clearable
-            />
+            <el-form-item prop="inputCode">
+              <div class="l-code">
+                <el-input
+                  v-model="codeLoginForm.inputCode"
+                  :placeholder="state.placeholderCode"
+                  size="large"
+                  clearable
+                />
 
-            <VerificationBtn />
-          </div>
+                <VerificationBtn :customStyle="customStyle" />
+              </div>
+            </el-form-item>
+          </el-form>
         </div>
 
         <!-- 输入框 - 密码 -->
         <div v-else class="login-input">
-          <el-input
-            v-model="state.inputAccount"
-            :placeholder="state.placeholderCodeAndAccount"
-            size="large"
-            clearable
-            class="l-inpt l-code-inpt"
+          <el-form
+            label-position="left"
+            ref="loginformAccountRef"
+            label-width="1"
+            :model="accountLoginForm"
+            hide-required-asterisk
+            :rules="accountRules"
           >
-            <template #prefix>
-              <div class="icon">
-                <img src="../../../assets/images/login/l_user_icon.svg" />
-              </div>
-            </template>
-          </el-input>
+            <el-form-item prop="inputAccount">
+              <el-input
+                v-model="accountLoginForm.inputAccount"
+                :placeholder="state.placeholderCodeAndAccount"
+                size="large"
+                clearable
+                class="l-code-inpt"
+              >
+                <template #prefix>
+                  <div class="icon">
+                    <img src="../../../assets/images/login/l_user_icon.svg" />
+                  </div>
+                </template>
+              </el-input>
+            </el-form-item>
 
-          <div class="l-code">
-            <el-input
-              v-model="state.inputPassword"
-              :placeholder="state.placeholderPassword"
-              size="large"
-              :type="state.showPass ? 'text' : 'password'"
-              class="l-code-inpt"
-            >
-              <template #prefix>
-                <div class="icon">
-                  <img src="../../../assets/images/login/l_password_icon.svg" />
-                </div>
-              </template>
-
-              <template #suffix>
-                <div
-                  class="open-pass"
-                  @click="state.showPass = !state.showPass"
+            <el-form-item prop="inputPassword">
+              <div class="l-code">
+                <el-input
+                  v-model="accountLoginForm.inputPassword"
+                  :placeholder="state.placeholderPassword"
+                  size="large"
+                  :type="state.showPass ? 'text' : 'password'"
+                  class="l-code-inpt"
                 >
-                  <img
-                    v-if="state.showPass"
-                    src="../../../assets/images/login/l_open_pass.svg"
-                  />
-                  <img
-                    v-else
-                    src="../../../assets/images/login/l_close_pass.svg"
-                  />
-                </div>
-              </template>
-            </el-input>
-          </div>
+                  <template #prefix>
+                    <div class="icon">
+                      <img
+                        src="../../../assets/images/login/l_password_icon.svg"
+                      />
+                    </div>
+                  </template>
+
+                  <template #suffix>
+                    <div
+                      class="open-pass"
+                      @click="state.showPass = !state.showPass"
+                    >
+                      <img
+                        v-if="state.showPass"
+                        src="../../../assets/images/login/l_open_pass.svg"
+                      />
+                      <img
+                        v-else
+                        src="../../../assets/images/login/l_close_pass.svg"
+                      />
+                    </div>
+                  </template>
+                </el-input>
+              </div>
+            </el-form-item>
+          </el-form>
 
           <!-- 记住账号 -->
           <div class="remember-password">
@@ -156,7 +183,7 @@
       </div>
 
       <!-- 注册 -->
-      <div class="l-registe">
+      <div class="l-registe" v-if="false">
         <span>{{ $t('t-no-account') }}?</span>
         <span class="item" @click="state.ImmediateRegisterDialog = true">{{
           $t('t-immediate-register')
@@ -200,23 +227,20 @@
 </template>
 <script setup>
   import i18n from '@/utils/i18n'
-  import { reactive, watch, onMounted } from 'vue'
+  import { reactive, watch, onMounted, ref } from 'vue'
   import router from '../../../router/index'
   import VerificationBtn from '../components/VerificationBtn.vue'
   import UpdagePasswordDialog from './UpdagePasswordDialog.vue'
   import ImmediateRegister from './Register.vue'
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useRoute } from 'vue-router'
+  import { ElMessage } from 'element-plus'
   const accountInfo = useAccountInfoStore()
   const route = useRoute()
   const state = reactive({
     activeCodeLogin: false, // 验证码登录
-    protocal: false, // 协议
+    protocal: true, // 协议
     rememberPas: false, // 记住密码
-    inputPhone: null,
-    inputCode: null,
-    inputAccount: null,
-    inputPassword: null,
     placeholderPhone: null,
     placeholderCode: null,
     placeholderCodeAndAccount: null,
@@ -226,7 +250,41 @@
     showUpdateDialog: false,
     ImmediateRegisterDialog: false
   })
+  const validatePhone = (rule, value, callback) => {
+    const reg = /^1[3-9]\d{9}$/
+    if (reg.test(value)) {
+      callback()
+    } else {
+      callback(new Error('手机号格式不正确'))
+    }
+  }
+  const codeLoginForm = reactive({
+    inputPhone: null,
+    inputCode: null
+  })
+  const codeRules = {
+    inputPhone: [
+      { required: true, message: '请输入手机号', trigger: 'blur' },
+      { validator: validatePhone, trigger: 'blur' }
+    ],
+    inputCode: [
+      { required: true, message: '请输入验证码', trigger: 'blur' },
+      {
+        type: 'number',
+        message: '请输入正确的格式',
+        trigger: ['blur', 'change']
+      }
+    ]
+  }
 
+  const accountLoginForm = reactive({
+    inputAccount: null,
+    inputPassword: null
+  })
+  const accountRules = {
+    inputAccount: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+    inputPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+  }
   // 监听 语言切换
   watch(
     () => i18n.global.locale,
@@ -244,17 +302,19 @@
   )
 
   onMounted(() => {
-    state.inputAccount = '156666666666'
-    state.inputPassword = '666666'
+    accountLoginForm.inputAccount = '156666666666'
+    accountLoginForm.inputPassword = '666666'
   })
 
   // 监听 tabs 切换
   const changeTabs = val => {
     state.activeCodeLogin = val
   }
-
+  const loginformCodeRef = ref(null)
+  const loginformAccountRef = ref(null)
   // 打开 重置密码
   const getUpdateDialog = () => {
+    loginformAccountRef.value.clearValidate()
     state.showUpdateDialog = true
   }
 
@@ -265,17 +325,45 @@
   }
 
   const login = () => {
-    // 存储登录用户信息
-    accountInfo.setAccountInfo({ name: 'xxx', token: 'xxx' })
-    let redirect = route.query.redirect || '/frontDesk/home'
-    if (typeof redirect !== 'string') {
-      redirect = '/frontDesk/home'
+    if (!state.protocal) {
+      ElMessage.warning('请选择协议')
+      return
     }
-    router.replace(redirect)
+    // 验证码登录验证
+    const formRef = ref(null)
+    formRef.value = state.activeCodeLogin
+      ? loginformCodeRef.value
+      : loginformAccountRef.value
+
+    formRef.value.validate(valid => {
+      if (valid) {
+        // 存储登录用户信息
+        accountInfo.setAccountInfo({ name: 'xxx', token: 'xxx' })
+        let redirect = route.query.redirect || '/frontDesk/home'
+        if (typeof redirect !== 'string') {
+          redirect = '/frontDesk/home'
+        }
+        ElMessage.success('登录成功')
+        router.replace(redirect)
+      } else {
+        ElMessage.warning('请正确填写')
+        return false
+      }
+    })
+  }
+
+  const customStyle = {
+    height: '48px'
   }
 </script>
 
 <style scoped lang="scss">
+  .el-input {
+    --el-component-size-large: 48px;
+  }
+  .el-input__wrapper {
+    height: 48px;
+  }
   .account-login-box {
     padding: 80px 0 30px;
 
@@ -315,21 +403,18 @@
       height: 168px;
 
       .l-inpt {
-        margin-bottom: 20px;
+        padding-bottom: 20px;
       }
 
       .l-code {
         display: flex;
+        width: 100%;
 
         .btn {
           font-size: 16px;
           color: #fafafa;
           width: 180px;
-          height: 44px;
           border-radius: 2px;
-          text-align: center;
-          line-height: 44px;
-          background: #d0963e;
           margin-left: 10px;
         }
       }
@@ -416,7 +501,6 @@
         border-radius: 2px;
         text-align: center;
         line-height: 44px;
-        background: #d0963e;
       }
     }
 

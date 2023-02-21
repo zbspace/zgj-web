@@ -190,8 +190,8 @@
   .container-login {
     height: 100vh;
     width: 100vw;
-    min-width: 1000px;
-    min-height: 800px;
+    // min-width: 1000px;
+    // min-height: 800px;
     padding: 30px 40px 20px 60px;
     background: #f5f6f7;
 
@@ -410,7 +410,7 @@
       right: 0;
       bottom: 0;
       // height: 530px;
-      height: 480px;
+      height: 450px;
       width: 504px;
       background: #ffffff;
       border: 1px solid #f0f0f0;

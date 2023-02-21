@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" id="app">
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" />
