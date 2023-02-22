@@ -38,7 +38,15 @@
               </template>
               <template #content>
                 <div style="height: 1000px">
-                  <FlowDesign ref="refVFlowDesign" top="60" />
+                  <VFlowDesign
+                    ref="refVFlowDesign"
+                    :defaultAttribute="{
+                      readable: true,
+                      mapable: false,
+                      // scroll: false,
+                      top: '100'
+                    }"
+                  ></VFlowDesign>
                 </div>
               </template>
             </documentsDetailsPortion>
@@ -151,8 +159,8 @@
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
   import flowJson from '@/views/jyGunsJson/flow'
   // 异步组件
-  const FlowDesign = defineAsyncComponent({
-    loader: () => import('@/components/FlowDesign/index.vue')
+  const VFlowDesign = defineAsyncComponent({
+    loader: () => import('@/views/components/FlowDesign/index.vue')
     // // 加载异步组件时使用的组件
     // loadingComponent: LoadingComponent,
     // // 加载失败时使用的组件
@@ -274,9 +282,9 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
     setTimeout(() => {
-      console.log('--->', refVFlowDesign.value.handleSetData)
+      // console.log('--->', refVFlowDesign.value.handleSetData)
       refVFlowDesign.value.handleSetData(flowJson)
-    }, 3000)
+    }, 1000)
   })
 </script>
 <style lang="scss" scoped>
