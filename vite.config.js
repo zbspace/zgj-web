@@ -12,15 +12,23 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import { resolve } from 'path'
 
 const projectRootDir = resolve(__dirname)
-// https://vitejs.dev/config/
+
 export default defineConfig((mode, command) => {
   const isBuild = command === 'build'
   // eslint-disable-next-line no-unused-vars
   const env = loadEnv(mode, process.cwd())
   return {
-    envDir: './config', // 环境变量路径
+    base: '/',
+    // envDir: './config', // 环境变量路径
     server: {
-      host: '0.0.0.0'
+      host: '0.0.0.0',
+      proxy: {
+        '/api': {
+          target: env.VITE_API_URL,
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api/, '')
+        }
+      }
     },
     plugins: [
       vue({

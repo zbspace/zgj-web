@@ -5,7 +5,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { API_BASE_PREFIX, TOKEN_HEADER_NAME } from './constants.js'
 import { getToken, setToken } from './token-util'
-
+console.log(API_BASE_PREFIX)
 const service = axios.create({
   baseURL: API_BASE_PREFIX,
   timeout: 5000
