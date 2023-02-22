@@ -85,7 +85,7 @@
   import AssociationForm from './Association-form.vue'
   // import VFlowDesign from './flow-design.vue'
   import advancedSetup from './advanced-setup.vue'
-  import { flow as apiFlow } from '@/api/system-backstage/business-manage/flow-management'
+  import apiFlow from '@/api/system/flowManagement'
 
   import flowJson from '@/views/jyGunsJson/flow'
   const emit = defineEmits(['close', 'update:modelValue', 'clickCutTabs'])

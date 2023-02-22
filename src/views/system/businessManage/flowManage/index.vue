@@ -106,8 +106,8 @@
   import componentsBatch from '@/views/components/batch.vue'
   // import newlyIncreased from './newly-increased.vue'
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
-  import { flow as apiFlow } from '@/api/system-backstage/business-manage/flow-management'
-  import { form as apiForm } from '@/api/system-backstage/business-manage/form-management'
+  import apiFlow from '@/api/system/flowManagement'
+  import apiForm from '@/api/system/formManagement'
   // 异步组件
   const newlyIncreased = defineAsyncComponent(() =>
     import('./newly-increased.vue')
