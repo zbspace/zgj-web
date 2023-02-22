@@ -15,6 +15,5 @@ const formPage = {
 }
 
 export default {
-  'get|/form/page': formPage,
-  '/form/list': formPage
+  'get|/api/form/page': formPage
 }

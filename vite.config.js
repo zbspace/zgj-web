@@ -20,7 +20,14 @@ export default defineConfig((mode, command) => {
   return {
     envDir: './config', // 环境变量路径
     server: {
-      host: '0.0.0.0'
+      host: '0.0.0.0',
+      proxy: {
+        '/api': {
+          target: 'http://10.0.3.81:8080',
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api/, '')
+        }
+      }
     },
     plugins: [
       vue({
