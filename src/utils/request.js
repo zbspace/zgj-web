@@ -43,14 +43,20 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   res => {
     // 请求成功，token自动续期
-    if (res.data?.code === '00000') {
-      const token = res.headers[TOKEN_HEADER_NAME.toLowerCase()]
-      if (token) {
-        setToken(token)
+    const { status, data } = res
+    // 浏览器响应成功
+    if (status === 200) {
+      // 后台响应成功
+      if (data.code === 200) {
+        // const token = res.headers[TOKEN_HEADER_NAME.toLowerCase()]
+        // if (token) {
+        //   setToken(token)
+        // }
+        return data
+      } else {
+        // 响应错误
       }
-      return res
     }
-
     return processErrorResponse(res)
   },
   error => {

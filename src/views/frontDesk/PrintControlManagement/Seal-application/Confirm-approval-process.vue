@@ -37,7 +37,17 @@
                 <div>审批流程</div>
               </template>
               <template #content>
-                <div style="height: 100px"> </div>
+                <div style="height: 1000px">
+                  <VFlowDesign
+                    ref="refVFlowDesign"
+                    :defaultAttribute="{
+                      readable: true,
+                      mapable: false,
+                      scroll: false,
+                      top: '100'
+                    }"
+                  ></VFlowDesign>
+                </div>
               </template>
             </documentsDetailsPortion>
           </div>
@@ -51,6 +61,7 @@
                   <div
                     class="PrintingProcess-content-list"
                     v-for="(item, index) in state.cache.PrintingProcess.list"
+                    :key="index"
                   >
                     <div class="PrintingProcess-content-list-cont">
                       <div class="PrintingProcess-content-list-cont-title">
@@ -66,7 +77,8 @@
                       </div>
                       <div
                         class="PrintingProcess-content-list-cont-list"
-                        v-for="node in item.list"
+                        v-for="(node, num) in item.list"
+                        :key="num"
                       >
                         <div class="PrintingProcess-content-list-cont-list-name"
                           >{{ node.name }}
@@ -136,7 +148,8 @@
     onBeforeMount,
     onMounted,
     inject,
-    ref
+    ref,
+    defineAsyncComponent
   } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
@@ -144,6 +157,15 @@
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
   import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
+  import flowJson from '@/views/jyGunsJson/flow'
+  // 异步组件
+  const VFlowDesign = defineAsyncComponent({
+    loader: () => import('@/views/components/FlowDesign/index.vue')
+    // // 加载异步组件时使用的组件
+    // loadingComponent: LoadingComponent,
+    // // 加载失败时使用的组件
+    // errorComponent: ErrorComponent
+  })
   const props = defineProps({
     // 处理类型
     type: {
@@ -154,6 +176,7 @@
   const router = useRouter()
   const commonFun = inject('commonFun')
   const emit = defineEmits([])
+  const refVFlowDesign = ref(null)
   const state = reactive({
     cache: {
       flowList: [
@@ -258,6 +281,10 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    setTimeout(() => {
+      // console.log('--->', refVFlowDesign.value.handleSetData)
+      refVFlowDesign.value.handleSetData(flowJson)
+    }, 1000)
   })
 </script>
 <style lang="scss" scoped>
@@ -358,9 +385,9 @@
             align-items: center;
 
             .PrintingProcess-content-list-cont {
-              height: 15rem;
+              height: 17rem;
               align-self: flex-start;
-              width: 13rem;
+              width: 15rem;
               border: 1px solid var(--jy-color-border-1);
               background-color: var(--jy-color-fill--1);
               padding: 1rem;

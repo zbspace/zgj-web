@@ -1,7 +1,7 @@
 // api 全局配置
 import request from '@/utils/request'
 // 流程管理
-const api = null
+const api = {}
 
 // 流程列表
 api.page = params => {

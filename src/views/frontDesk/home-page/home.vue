@@ -543,11 +543,13 @@
               position: absolute;
               right: 0%;
               top: 0rem;
-              @include mixin-padding(16);
+              // @include mixin-padding(16);
               color: var(--jy-color-text-3);
               height: 38px;
               display: flex;
               align-items: center;
+              @include mixin-margin-top(16);
+              @include mixin-margin-right(16);
             }
             .flow-list-li {
               display: flex;
@@ -685,11 +687,13 @@
               position: absolute;
               right: 0%;
               top: 0rem;
-              @include mixin-padding(16);
+              // @include mixin-padding(16);
               color: var(--jy-color-text-3);
               height: 38px;
               display: flex;
               align-items: center;
+              @include mixin-margin-top(16);
+              @include mixin-margin-right(16);
             }
             .list {
               display: flex;

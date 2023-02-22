@@ -740,9 +740,9 @@
             align-items: center;
 
             .PrintingProcess-content-list-cont {
-              height: 15rem;
+              height: 17rem;
               align-self: flex-start;
-              width: 13rem;
+              width: 15rem;
               border: 1px solid var(--jy-color-border-1);
               background-color: var(--jy-color-fill--1);
               padding: 1rem;
