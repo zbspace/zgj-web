@@ -37,7 +37,7 @@
                 <div>审批流程</div>
               </template>
               <template #content>
-                <div style="height: 100px">
+                <div style="height: 1000px">
                   <FlowDesign ref="refVFlowDesign" top="60" />
                 </div>
               </template>
@@ -274,8 +274,9 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
     setTimeout(() => {
+      console.log('--->', refVFlowDesign.value.handleSetData)
       refVFlowDesign.value.handleSetData(flowJson)
-    }, 5000)
+    }, 3000)
   })
 </script>
 <style lang="scss" scoped>
