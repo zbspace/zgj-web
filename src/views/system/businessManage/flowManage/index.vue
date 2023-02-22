@@ -104,14 +104,14 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  // import newlyIncreased from './newly-increased.vue'
+  import newlyIncreased from './newly-increased.vue'
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
   import apiFlow from '@/api/system/flowManagement'
   import apiForm from '@/api/system/formManagement'
   // 异步组件
-  const newlyIncreased = defineAsyncComponent(() =>
-    import('./newly-increased.vue')
-  )
+  // const newlyIncreased = defineAsyncComponent(() =>
+  //   import('./newly-increased.vue')
+  // )
   const state = reactive({
     componentsSearchForm: {
       style: {
