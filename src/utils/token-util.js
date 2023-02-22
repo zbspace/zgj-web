@@ -1,7 +1,7 @@
 /**
  * token 操作封装
  */
-import { TOKEN_STORE_NAME } from '@/config/setting'
+import { TOKEN_STORE_NAME } from './constants.js'
 
 /**
  * 获取缓存的 token

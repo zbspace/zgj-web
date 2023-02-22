@@ -54,16 +54,14 @@
               <svg class="ap-sys-but-icon">
                 <use href="#xitonghoutai"></use>
               </svg>
-              <span class="ap-sys-but-text">{{
-                $t('t-back-system-platform')
-              }}</span>
+              <span>{{ $t('t-back-system-platform') }}</span>
             </div>
 
             <div v-if="menusInfoStore.currentType === 'system'">
               <svg class="ap-sys-but-icon">
                 <use href="#Property1yewuqiantai"></use>
               </svg>
-              <span class="ap-sys-but-text">{{ $t('t-front-platform') }}</span>
+              <span>{{ $t('t-front-platform') }}</span>
             </div>
           </div>
         </div>
@@ -526,7 +524,6 @@
           padding: 0.3rem 0.8rem;
           box-sizing: border-box;
           cursor: pointer;
-
           .ap-sys-but-icon {
             width: 1.5rem;
             height: 1.5rem;
