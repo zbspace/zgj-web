@@ -3,6 +3,15 @@ import request from '@/utils/request'
 // 流程管理
 const api = {}
 
+api.test = params => {
+  return request({
+    method: 'GET',
+    url: '/category/list',
+    params
+  })
+}
+
+// ================
 // 流程列表
 api.page = params => {
   return request({
