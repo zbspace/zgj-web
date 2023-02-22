@@ -83,14 +83,15 @@
   import layout from './layout.vue'
   import basicsInfo from './basics-info.vue'
   import AssociationForm from './Association-form.vue'
-  // import VFlowDesign from './flow-design.vue'
+  // import VFlowDesign from '@/components/FlowDesign/index.vue'
   import advancedSetup from './advanced-setup.vue'
-  import apiFlow from '@/api/system/flowManagement/index'
+  import apiFlow from '@/api/system/flowManagement'
+
   import flowJson from '@/views/jyGunsJson/flow'
   const emit = defineEmits(['close', 'update:modelValue', 'clickCutTabs'])
   // 异步组件
   const VFlowDesign = defineAsyncComponent({
-    loader: () => import('./flow-design.vue')
+    loader: () => import('@/components/FlowDesign/index.vue')
     // // 加载异步组件时使用的组件
     // loadingComponent: LoadingComponent,
     // // 加载失败时使用的组件
