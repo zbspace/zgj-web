@@ -71,7 +71,11 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 新增表单 -->
-    <AddFrom v-model="dialogVisible" v-if="dialogVisible" />
+    <AddFrom
+      v-model="dialogVisible"
+      v-if="dialogVisible"
+      @close="dialogVisible = false"
+    />
   </div>
 </template>
 
