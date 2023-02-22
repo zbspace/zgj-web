@@ -43,7 +43,7 @@
                     :defaultAttribute="{
                       readable: true,
                       mapable: false,
-                      // scroll: false,
+                      scroll: false,
                       top: '100'
                     }"
                   ></VFlowDesign>
