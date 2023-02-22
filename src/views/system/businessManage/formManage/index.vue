@@ -71,7 +71,11 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 新增表单 -->
-    <AddFrom v-model="dialogVisible" v-if="dialogVisible" />
+    <AddFrom
+      v-model="dialogVisible"
+      v-if="dialogVisible"
+      @close="dialogVisible = false"
+    />
   </div>
 </template>
 
@@ -84,7 +88,12 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import api from '@/api/system/formManagement'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
+
+  api.formPage().then(res => {
+    console.log(res)
+  })
 
   const dialogVisible = ref(false)
   const state = reactive({

@@ -104,14 +104,14 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import newlyIncreased from './newly-increased.vue'
+  // import newlyIncreased from './newly-increased.vue'
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
-  import apiFlow from '@/api/system/flowManagement/index'
-  import apiForm from '@/api/system/formManagement/index'
+  import apiFlow from '@/api/system/flowManagement'
+  import apiForm from '@/api/system/formManagement'
   // 异步组件
-  // const newlyIncreased = defineAsyncComponent(() =>
-  //   import('./newly-increased.vue')
-  // )
+  const newlyIncreased = defineAsyncComponent(() =>
+    import('./newly-increased.vue')
+  )
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -265,14 +265,14 @@
           fixed: true
         },
         {
-          prop: '1',
+          prop: 'formName',
           label: '流程名称',
           sortable: true,
           'min-width': 150,
           fixed: true
         },
         {
-          prop: '2',
+          prop: 'applyTypeName',
           label: '业务类型',
           sortable: true,
           'min-width': 150
@@ -284,19 +284,19 @@
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'relationFlow',
           label: '状态',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'createUserName',
           label: '创建人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '7',
+          prop: 'modifyDatetime',
           label: '更新时间',
           sortable: true,
           width: 180
@@ -393,7 +393,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '1') {
+          if (column.property === 'formName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -497,7 +497,7 @@
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
     console.log(row, column, cell, event)
-    if (column.property === '1') {
+    if (column.property === 'formName') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -527,6 +527,7 @@
       })
       .then(result => {
         console.log(result)
+        state.componentsTable.data = result.data
         return result
       })
   }
@@ -616,9 +617,9 @@
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 发送api请求 查询表单树解构
-    // listApplyTypeTreeApi()
-    // // 发送api请求 流程列表
-    // flowPageApi()
+    listApplyTypeTreeApi()
+    // 发送api请求 流程列表
+    flowPageApi()
     // // 发送api请求 删除流程
     // flowDeleteApi()
     // // 发送api请求 启用/停用

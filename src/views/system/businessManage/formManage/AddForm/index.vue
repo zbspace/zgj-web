@@ -6,88 +6,70 @@
       fullscreen
       class="add-form-dialog"
     >
-      <div class="form-header">
-        <div class="backPrev" @click="backPrev">
-          <svg class="iconpark-icon">
-            <use href="#Vector8Stroke"></use>
-          </svg>
-          {{ props.formId ? '编辑' : '新增' }}
-        </div>
-        <div>
-          <el-tabs class="demo-tabs" @tab-change="handleChange">
-            <el-tab-pane>
-              <template #label>
-                <span class="custom-tabs-label">
-                  <div class="order">1</div>
-                  <span>基础信息</span>
-                </span>
-              </template>
-            </el-tab-pane>
-            <el-tab-pane>
-              <template #label>
-                <span class="custom-tabs-label">
-                  <div class="order">2</div>
-                  <span>表单设计</span>
-                </span>
-              </template>
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-        <div>
-          <el-button class="save-btn" @click="submitForm">保存</el-button>
-        </div>
-      </div>
-      <div class="formBase" v-if="!isShowFrom">
-        <div class="formBase-bg">
-          <div class="form-title">请填写如下基础信息</div>
+      <layout
+        @clickCutTabs="clickCutTabs"
+        :tabsData="state.processTabs.data"
+        @close="clickClose"
+        :beforeCutTabs="beforeCutTabs"
+      >
+        <template #backTitle>
+          <span class="process-back-text">新增</span>
+        </template>
+        <template #subTitle>
+          <div class="process-save">
+            <el-button
+              class="process-save-but"
+              type="primary"
+              @click="clickSave"
+            >
+              保存
+            </el-button>
+          </div>
+        </template>
+        <template #content>
+          <div class="formBase" v-if="state.processTabs.checkedNode.index == 1">
+            <div class="formBase-bg">
+              <div class="form-title">请填写如下基础信息</div>
+              <JyVform
+                ref="vFormRef"
+                mode="render"
+                :formJson="formJson"
+                :formData="formData"
+                :optionData="optionData"
+                @buttonClick="clickSelect"
+                @on-loaded="onLoaded"
+              />
+            </div>
+          </div>
+          <!-- 表单设计 -->
           <JyVform
-            ref="vFormRef"
-            mode="render"
-            :formJson="formJson"
-            :formData="formData"
-            :optionData="optionData"
-            @buttonClick="clickSelect"
-            @on-loaded="onLoaded"
+            ref="vformRef"
+            v-if="state.processTabs.checkedNode.index == 2"
+            style="margin-top: 0; width: 100%"
           />
-        </div>
-      </div>
-      <!-- 表单设计 -->
-      <JyVform ref="vformRef" v-if="isShowFrom" style="margin-top: 48px" />
+        </template>
+      </layout>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-  import { ref, reactive, computed, onMounted } from 'vue'
+  import {
+    ref,
+    reactive,
+    computed,
+    onMounted,
+    onBeforeMount,
+    nextTick
+  } from 'vue'
   import { ElMessage } from 'element-plus'
+  import layout from '@/views/system/businessManage/flowManage/layout.vue'
   import formStepJson from '@/views/addDynamicFormJson/formStep'
   const vformRef = ref(null)
-  const isShowFrom = ref(false)
   const formJson = reactive(formStepJson)
   const formData = reactive({})
   const optionData = reactive({})
   const vFormRef = ref(null)
-  const submitForm = type => {
-    if (!type) {
-      vFormRef.value.resetForm()
-      return
-    }
-    vFormRef.value
-      .getFormData()
-      .then(formData => {
-        // Form Validation OK
-        if (isShowFrom.value) {
-          alert(JSON.stringify(formData))
-        } else {
-          isShowFrom.value = true
-        }
-      })
-      .catch(error => {
-        // Form Validation failed
-
-        ElMessage.error(error)
-      })
-  }
   const props = defineProps({
     formId: {
       type: String,
@@ -98,7 +80,24 @@
       default: false
     }
   })
-
+  const emit = defineEmits(['update:modelValue', 'close'])
+  const state = reactive({
+    processTabs: {
+      checkedNode: {},
+      data: [
+        {
+          index: '1',
+          label: '基础信息',
+          checked: true
+        },
+        {
+          index: '2',
+          label: '表单设计'
+        }
+      ]
+    },
+    isShowFrom: false
+  })
   const isVisible = computed({
     get() {
       return props.modelValue
@@ -107,28 +106,65 @@
       emit('update:modelValue', value)
     }
   })
+  const submitForm = type => {
+    if (!type) {
+      vFormRef.value.resetForm()
+      return
+    }
+    vFormRef.value
+      .getFormData()
+      .then(formData => {
+        // Form Validation OK
+        if (state.isShowFrom.value) {
+          alert(JSON.stringify(formData))
+        } else {
+          state.isShowFrom.value = true
+        }
+      })
+      .catch(error => {
+        // Form Validation failed
 
-  const emit = defineEmits(['update:modelValue', 'formClose'])
-  const cancel = () => {
-    emit('update:modelValue', false)
+        ElMessage.error(error)
+      })
   }
-  const handleSubmit = () => {
-    emit('update:modelValue', true)
-    console.log('vform--->', vformRef.value.getFormJson())
+  // 点击切换选项
+  const clickCutTabs = (data, item) => {
+    data.forEach(element => {
+      element.checked = false
+    })
+    item.checked = true
+    console.log(data)
+    // 处理选项
+    disCutTabs()
   }
-  function backPrev() {
-    emit('update:modelValue', false)
-    emit('formClose', false)
+  // 处理选项
+  const disCutTabs = () => {
+    state.processTabs.data.forEach(item => {
+      if (item.checked) {
+        state.processTabs.checkedNode = item
+      }
+    })
+    if (state.processTabs.checkedNode.index === '3') {
+      nextTick(() => {
+        // 设置表单模板默认数据
+      })
+    }
   }
-  async function handleChange(name) {
-    console.log('-------', await vFormRef.value.getFormData())
-    isShowFrom.value = name > 0
+  // 点击关闭弹框
+  const clickClose = () => {
+    emit('close')
   }
-
+  // 点击保存
+  const clickSave = () => {}
   const onLoaded = () => {
     vFormRef.value.setFormJson(formJson)
   }
   const clickSelect = () => {}
+  onBeforeMount(() => {
+    // console.log(`the component is now onBeforeMount.`)
+    // 处理选项
+    disCutTabs()
+  })
   onMounted(() => {
     console.log(`the component is now mounted.`)
   })
@@ -136,7 +172,6 @@
 
 <style lang="scss" scoped>
   :deep(.add-form-dialog) {
-    padding-top: 16px;
     background: #f2f2f2;
 
     .el-dialog__header {

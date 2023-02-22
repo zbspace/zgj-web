@@ -1,11 +1,17 @@
 <template>
   <div class="contanier-flow">
-    <FlowDesign ref="flowDesign" top="60" />
+    <FlowDesign ref="flowDesign" top="100" v-bind="props.defaultAttribute" />
   </div>
 </template>
 
 <script setup>
-  import { ref, onMounted, defineExpose, defineAsyncComponent } from 'vue'
+  import {
+    defineProps,
+    ref,
+    onMounted,
+    defineExpose,
+    defineAsyncComponent
+  } from 'vue'
   // import FlowDesign from '@/components/FlowDesign/index.vue'
   // 异步组件
   const FlowDesign = defineAsyncComponent({
@@ -17,6 +23,20 @@
   })
   // 子组件
   const flowDesign = ref(null)
+  const props = defineProps({
+    // 处理类型
+    type: {
+      type: String,
+      default: '0'
+    },
+    // 默认属性
+    defaultAttribute: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  })
   // 触发保存
   const handleSave = () => {
     return flowDesign.value.handleSave()
@@ -31,7 +51,8 @@
     return flowDesign.value.getValue()
   }
   onMounted(() => {
-    // console.log('--->', 123);
+    console.log('--->', 123)
+    console.log('--->', props)
   })
   defineExpose({
     handleSave,

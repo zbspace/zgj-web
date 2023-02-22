@@ -2,7 +2,7 @@
 import request from '@/utils/request'
 // 用印申请
 
-const api = null
+const api = {}
 // 流程列表
 api.add = data => {
   return request({

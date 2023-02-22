@@ -12,7 +12,7 @@ api.listApplyTypeTree = params => {
 }
 
 // 表单列表
-api.page = params => {
+api.formPage = params => {
   return request({
     method: 'GET',
     url: '/form/page',
