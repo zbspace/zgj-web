@@ -621,6 +621,7 @@
                   width: 4rem;
                   text-align: center;
                   border-radius: var(--jy-border-radius-4);
+                  cursor: pointer;
                 }
                 .time {
                   margin-top: 0.2rem;
@@ -849,6 +850,7 @@
               .module-box-title-cut-but {
                 margin-left: 1rem;
                 color: var(--jy-color-text-3);
+                cursor: pointer;
               }
               .checked {
                 color: var(--jy-primary-6);
