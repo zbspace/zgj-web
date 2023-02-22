@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 用印申请
 export class sealApply {
   /**
-   * 流程列表
+   * 用印申请新增
    */
 
   static add(params) {
