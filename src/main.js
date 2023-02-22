@@ -22,6 +22,8 @@ import './style/flow/index.less' // 流程样式
 import './style/index.scss'
 // 全局自定义公共方法
 import commonFun from '@/utils/common'
+// 运行mock
+import './mock/index'
 ;(async () => {
   const app = createApp(App)
   app
