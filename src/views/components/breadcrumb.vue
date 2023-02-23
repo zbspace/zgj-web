@@ -10,13 +10,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   const props = defineProps({
     // 标识
     refs: {

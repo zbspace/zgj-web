@@ -69,13 +69,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../table'
   const props = defineProps({
     // 标识

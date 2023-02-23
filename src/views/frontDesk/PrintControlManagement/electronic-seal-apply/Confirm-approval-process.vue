@@ -72,15 +72,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    inject,
-    ref
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsTable from '@/views/components/table.vue'

@@ -280,7 +280,7 @@
    *  }]
    */
 
-  import { defineEmits, defineProps, ref, defineExpose, watch } from 'vue'
+  import { ref, watch } from 'vue'
 
   const emits = defineEmits(['update:lists', 'open'])
 

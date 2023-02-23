@@ -41,14 +41,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    onBeforeMount,
-    onMounted,
-    defineEmits,
-    defineProps,
-    watch
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, watch } from 'vue'
   const emit = defineEmits([
     'close',
     'update:modelValue',

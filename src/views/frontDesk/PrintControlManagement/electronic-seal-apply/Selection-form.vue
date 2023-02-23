@@ -98,14 +98,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    inject
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   const props = defineProps({

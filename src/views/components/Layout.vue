@@ -68,7 +68,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, defineProps, onBeforeMount, onMounted } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   const props = defineProps({
     // 标识
     refs: {

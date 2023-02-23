@@ -7,7 +7,7 @@
         :style="{
           width: width + 'px',
           margin: '0 auto',
-          display: visible ? '' : 'none',
+          display: visible ? '' : 'none'
         }"
         @mousemove="handleDragMove"
         @mouseup="handleDragEnd"
@@ -29,13 +29,13 @@
           :className="sliderClass"
           :style="{
             pointerEvents: isLoading ? 'none' : 'auto',
-            width: width + 'px',
+            width: width + 'px'
           }"
         >
           <div
             className="sliderMask"
             :style="{
-              width: sliderLeft > 0 ? sliderLeft + 8 + 'px' : sliderLeft + 'px',
+              width: sliderLeft > 0 ? sliderLeft + 8 + 'px' : sliderLeft + 'px'
             }"
           >
             <div
@@ -60,7 +60,7 @@
           :style="{
             width: width + 'px',
             height: height + 'px',
-            display: isLoading ? '' : 'none',
+            display: isLoading ? '' : 'none'
           }"
         >
           <div className="loadingIcon"></div>
@@ -70,7 +70,10 @@
 
       <!-- footer -->
       <div class="vertify-footer">
-        <img class="image" src="../../assets/images/login/close_circle_line.svg" />
+        <img
+          class="image"
+          src="../../assets/images/login/close_circle_line.svg"
+        />
         <img
           @click="handleRefresh"
           src="../../assets/images/login/refresh_line.svg"
@@ -82,50 +85,50 @@
 </template>
 
 <script setup>
-  import { getRandomNumberByRange, sum, square } from "./tool"
-  import { ref, watch, onMounted, defineEmits, defineProps } from "vue"
+  import { getRandomNumberByRange, sum, square } from './tool'
+  import { ref, watch, onMounted } from 'vue'
   // interface VertifyType {
   //   spliced: boolean;
   //   verified: boolean; // 简单验证拖动轨迹，为零时表示Y轴上下没有波动，可能非人为操作
   //   left: number; // 滑块的移动位置
   //   destX: number; // 滑块的目标位置
   // }
-  defineEmits(["click"])
+  defineEmits(['click'])
 
   const props = defineProps({
     width: {
       type: Number,
-      default: 270,
+      default: 270
     },
     height: {
       type: Number,
-      default: 160,
+      default: 160
     },
     visible: {
       type: Boolean,
       default: () => {
         return true
-      },
+      }
     },
     refreshIcon: {
       type: String,
-      default: "http://cdn.dooring.cn/dr/icon12.png",
+      default: 'http://cdn.dooring.cn/dr/icon12.png'
     },
     l: {
       type: Number,
-      default: 42,
+      default: 42
     },
     r: {
       type: Number,
-      default: 9,
+      default: 9
     },
     imgUrl: {
       type: String,
-      default: "",
+      default: ''
     },
     text: {
       type: String,
-      default: "拖动滑块完成拼图",
+      default: '拖动滑块完成拼图'
     },
     /**
      * @description   拖拽滑块时的回调, 参数为当前滑块拖拽的距离
@@ -156,7 +159,7 @@
      * @description   刷新时回调
      * @default       ():void => {}
      */
-    onRefresh: () => {},
+    onRefresh: () => {}
   })
 
   // eslint-disable-next-line vue/no-setup-props-destructure
@@ -173,12 +176,12 @@
     onFail,
     onSuccess,
     onCustomVertify,
-    onDraw,
+    onDraw
   } = props
 
   const isLoading = ref(false)
   const sliderLeft = ref(0)
-  const sliderClass = ref("sliderContainer")
+  const sliderClass = ref('sliderContainer')
   const textTip = ref(text)
   const canvasRef = ref(null)
   const blockRef = ref(null)
@@ -202,27 +205,33 @@
     ctx.arc(x + r - 2, y + l / 2, r + 0.4, 2.76 * PI, 1.24 * PI, true)
     ctx.lineTo(x, y)
     ctx.lineWidth = 2
-    ctx.fillStyle = "rgba(255, 255, 255, 0.7)"
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.7)"
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)'
     ctx.stroke()
-    ctx.globalCompositeOperation = "destination-over"
-    operation === "fill" ? ctx.fill() : ctx.clip()
+    ctx.globalCompositeOperation = 'destination-over'
+    operation === 'fill' ? ctx.fill() : ctx.clip()
   }
 
   const getRandomImgSrc = () => {
-    return imgUrl || `https://picsum.photos/id/${getRandomNumberByRange(0, 1084)}/${width}/${height}`
+    return (
+      imgUrl ||
+      `https://picsum.photos/id/${getRandomNumberByRange(
+        0,
+        1084
+      )}/${width}/${height}`
+    )
   }
 
-  const createImg = (onload) => {
+  const createImg = onload => {
     const img = new Image()
-    img.crossOrigin = "Anonymous"
+    img.crossOrigin = 'Anonymous'
     img.onload = onload
     img.onerror = () => {
       img.setSrc(getRandomImgSrc()) // 图片加载失败的时候重新加载其他图片
     }
 
-    img.setSrc = (src) => {
-      const isIE = window.navigator.userAgent.indexOf("Trident") > -1
+    img.setSrc = src => {
+      const isIE = window.navigator.userAgent.indexOf('Trident') > -1
       if (isIE) {
         // IE浏览器无法通过img.crossOrigin跨域，使用ajax获取图片blob然后转为dataURL显示
         const xhr = new XMLHttpRequest()
@@ -233,8 +242,8 @@
             img.src = e.target.result
           }
         }
-        xhr.open("GET", src)
-        xhr.responseType = "blob"
+        xhr.open('GET', src)
+        xhr.responseType = 'blob'
         xhr.send()
       } else img.src = src
     }
@@ -243,14 +252,14 @@
     return img
   }
 
-  const draw = (img) => {
-    const canvasCtx = canvasRef.value.getContext("2d")
-    const blockCtx = blockRef.value.getContext("2d")
+  const draw = img => {
+    const canvasCtx = canvasRef.value.getContext('2d')
+    const blockCtx = blockRef.value.getContext('2d')
     // 随机位置创建拼图形状
     xRef.value = getRandomNumberByRange(L + 10, width - (L + 10))
     yRef.value = getRandomNumberByRange(10 + r * 2, height - (L + 10))
-    drawPath(canvasCtx, xRef.value, yRef.value, "fill")
-    drawPath(blockCtx, xRef.value, yRef.value, "clip")
+    drawPath(canvasCtx, xRef.value, yRef.value, 'fill')
+    drawPath(blockCtx, xRef.value, yRef.value, 'clip')
 
     // 画入图片
     canvasCtx.drawImage(img, 0, 0, width, height)
@@ -271,13 +280,13 @@
     imgRef.value = img
   }
   const reset = () => {
-    const canvasCtx = canvasRef.value.getContext("2d")
-    const blockCtx = blockRef.value.getContext("2d")
+    const canvasCtx = canvasRef.value.getContext('2d')
+    const blockCtx = blockRef.value.getContext('2d')
     // 重置样式
     sliderLeft.value = 0
-    sliderClass.value = "sliderContainer"
+    sliderClass.value = 'sliderContainer'
     blockRef.value.width = width
-    blockRef.value.style.left = 0 + "px"
+    blockRef.value.style.left = 0 + 'px'
 
     // 清空画布
     canvasCtx.clearRect(0, 0, width, height)
@@ -292,20 +301,20 @@
 
   const handleRefresh = () => {
     reset()
-    typeof onRefresh === "function" && onRefresh()
+    typeof onRefresh === 'function' && onRefresh()
   }
 
   const verify = () => {
     const arr = trailRef.value // 拖动时y轴的移动距离
     const average = arr.reduce(sum) / arr.length
-    const deviations = arr.map((x) => x - average)
+    const deviations = arr.map(x => x - average)
     const stddev = Math.sqrt(deviations.map(square).reduce(sum) / arr.length)
     const left = parseInt(blockRef.value.style.left)
     return {
       spliced: Math.abs(left - xRef.value) < 10,
       verified: stddev !== 0, // 简单验证拖动轨迹，为零时表示Y轴上下没有波动，可能非人为操作
       left,
-      destX: xRef.value,
+      destX: xRef.value
     }
   }
 
@@ -315,7 +324,7 @@
     isMouseDownRef.value = true
   }
 
-  const handleDragMove = (e) => {
+  const handleDragMove = e => {
     if (!isMouseDownRef.value) return false
     e.preventDefault()
     const eventX = e.clientX || e.touches[0].clientX
@@ -325,32 +334,34 @@
     if (moveX < 0 || moveX + 38 >= width) return false
     sliderLeft.value = moveX
     const blockLeft = ((width - 40 - 20) / (width - 40)) * moveX
-    blockRef.value.style.left = blockLeft + "px"
+    blockRef.value.style.left = blockLeft + 'px'
 
-    sliderClass.value = "sliderContainer sliderContainer_active"
+    sliderClass.value = 'sliderContainer sliderContainer_active'
     trailRef.value.push(moveY)
     onDraw && onDraw(blockLeft)
   }
 
-  const handleDragEnd = (e) => {
+  const handleDragEnd = e => {
     if (!isMouseDownRef.value) return false
     isMouseDownRef.value = false
     const eventX = e.clientX || e.changedTouches[0].clientX
     if (eventX === originXRef.value) return false
-    sliderClass.value = "sliderContainer"
-    const { spliced, verified } = onCustomVertify ? onCustomVertify(verify()) : verify()
+    sliderClass.value = 'sliderContainer'
+    const { spliced, verified } = onCustomVertify
+      ? onCustomVertify(verify())
+      : verify()
     if (spliced) {
       if (verified) {
-        sliderClass.value = "sliderContainer sliderContainer_success"
-        typeof onSuccess === "function" && onSuccess()
+        sliderClass.value = 'sliderContainer sliderContainer_success'
+        typeof onSuccess === 'function' && onSuccess()
       } else {
-        sliderClass.value = "sliderContainer sliderContainer_fail"
-        textTip.value = "请再试一次"
+        sliderClass.value = 'sliderContainer sliderContainer_fail'
+        textTip.value = '请再试一次'
         reset()
       }
     } else {
-      sliderClass.value = "sliderContainer sliderContainer_fail"
-      typeof onFail === "function" && onFail()
+      sliderClass.value = 'sliderContainer sliderContainer_fail'
+      typeof onFail === 'function' && onFail()
       setTimeout(reset.bind(this), 1000)
     }
   }

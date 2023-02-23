@@ -27,8 +27,6 @@
 <script setup>
   import {
     // reactive,
-    defineProps,
-    defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'

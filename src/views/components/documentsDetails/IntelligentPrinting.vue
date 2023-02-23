@@ -95,14 +95,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    watch
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, watch } from 'vue'
   const props = defineProps({
     // 标识
     refs: {

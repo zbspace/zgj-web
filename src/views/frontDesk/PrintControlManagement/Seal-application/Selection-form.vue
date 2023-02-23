@@ -141,7 +141,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, defineProps, onBeforeMount, onMounted, inject } from 'vue'
+  import { ref, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
