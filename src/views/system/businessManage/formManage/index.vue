@@ -466,8 +466,12 @@
           name: 'Form-Details'
         },
         {
-          label: '流程记录',
+          label: '操作记录',
           name: 'operating-record'
+        },
+        {
+          label: '历史版本',
+          name: 'Process-Version'
         }
       ]
     }
@@ -545,15 +549,19 @@
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
+    // console.log(row, column, cell, event)
     if (column.property === 'formName') {
       state.componentsDocumentsDetails.show = true
     }
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(cell)
-    if (cell.name === '申请转办') {
+    if (cell.name === '修改') {
+      console.log(111)
+      dialogVisible.value = true
+    }
+    if (cell.name === '修改') {
+      console.log(111)
     }
   }
   // 点击关闭
