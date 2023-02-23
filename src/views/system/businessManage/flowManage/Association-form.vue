@@ -112,7 +112,7 @@
         <AddFrom
           :formId="'12345667'"
           v-model="state.JyElMessageBox.show"
-          @formClose="state.JyElMessageBox.show = false"
+          @close="state.JyElMessageBox.show = false"
         />
       </JyElMessageBox>
     </div>
