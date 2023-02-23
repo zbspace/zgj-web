@@ -50,6 +50,7 @@
         <VFlowDesign
           v-show="state.processTabs.checkedNode.index == '3'"
           ref="refVFlowDesign"
+          @onMountedCallBack="onMountedCallBack"
         ></VFlowDesign>
         <advancedSetup
           v-show="state.processTabs.checkedNode.index == '4'"
@@ -150,12 +151,6 @@
         state.processTabs.checkedNode = item
       }
     })
-    if (state.processTabs.checkedNode.index === '3') {
-      nextTick(() => {
-        // 设置流程模板默认数据
-        handleSetData()
-      })
-    }
   }
   // 点击关闭弹框
   const clickClose = () => {
@@ -191,6 +186,12 @@
         return false
       }
     }
+  }
+
+  // 组件加载完成回调
+  const onMountedCallBack = () => {
+    // 设置流程模板默认数据
+    handleSetData()
   }
 
   // 发送api请求 保存流程设计
