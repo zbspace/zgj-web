@@ -79,7 +79,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({
     cache: {
@@ -167,15 +166,12 @@
 
   // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
   // 点击提交
   function clickSubmit() {
-    commonFun.routerPage(router, {
-      // path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
-      name: 'ESelectionFillForm'
-    })
+    router.push({ name: 'ESelectionFillForm' })
   }
 
   onBeforeMount(() => {

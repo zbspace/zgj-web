@@ -46,6 +46,7 @@
                       scroll: false,
                       top: '100'
                     }"
+                    @onMountedCallBack="onMountedCallBack"
                   ></VFlowDesign>
                 </div>
               </template>
@@ -174,7 +175,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const refVFlowDesign = ref(null)
   const state = reactive({
@@ -263,17 +263,17 @@
 
   // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
   // 点击提交
   function clickSubmit() {
-    commonFun.routerPage(router, {
-      // path: "/frontDesk/PrintControlManagement/Seal-application/accomplish"
-      name: 'Accomplish'
-    })
+    router.push({ name: 'Accomplish' })
   }
-
+  // 组件加载完成回调
+  const onMountedCallBack = () => {
+    refVFlowDesign.value.handleSetData(flowJson)
+  }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // vFormLibraryRef.value.resetForm()
@@ -281,10 +281,6 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
-    setTimeout(() => {
-      // console.log('--->', refVFlowDesign.value.handleSetData)
-      refVFlowDesign.value.handleSetData(flowJson)
-    }, 1000)
   })
 </script>
 <style lang="scss" scoped>

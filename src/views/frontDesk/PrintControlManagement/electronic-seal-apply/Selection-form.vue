@@ -116,16 +116,12 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({})
 
   // 点击列表按钮
   function clickListBut() {
-    commonFun.routerPage(router, {
-      // path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
-      name: 'ESelectionFillForm'
-    })
+    router.push({ name: 'ESelectionFillForm' })
   }
 
   onBeforeMount(() => {
