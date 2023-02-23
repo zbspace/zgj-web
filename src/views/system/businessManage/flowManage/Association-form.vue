@@ -228,6 +228,9 @@
     .exhibition {
       width: 100%;
       height: 100%;
+      .info-box {
+        width: 100%;
+      }
     }
 
     .info-box {
