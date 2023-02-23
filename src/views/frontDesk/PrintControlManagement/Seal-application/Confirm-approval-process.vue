@@ -46,6 +46,7 @@
                       scroll: false,
                       top: '100'
                     }"
+                    @onMountedCallBack="onMountedCallBack"
                   ></VFlowDesign>
                 </div>
               </template>
@@ -269,7 +270,10 @@
   function clickSubmit() {
     router.push({ name: 'Accomplish' })
   }
-
+  // 组件加载完成回调
+  const onMountedCallBack = () => {
+    refVFlowDesign.value.handleSetData(flowJson)
+  }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // vFormLibraryRef.value.resetForm()
@@ -277,10 +281,6 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
-    setTimeout(() => {
-      // console.log('--->', refVFlowDesign.value.handleSetData)
-      refVFlowDesign.value.handleSetData(flowJson)
-    }, 1000)
   })
 </script>
 <style lang="scss" scoped>

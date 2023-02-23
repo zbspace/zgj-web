@@ -84,13 +84,13 @@
         <el-button type="primary" v-else @click="clickEditForm">确定</el-button>
       </div>
     </div>
-    <div class="add" v-if="state.currentState === '2'">
-      <div>
+    <div class="exhibition" v-if="state.currentState === '2'">
+      <div class="info-box">
         <v-form-render
-          :form-json="formLibraryJson"
-          :form-data="formLibraryData"
-          :option-data="optionLibraryData"
-          ref="vFormLibraryRef"
+          :form-json="FillFormInformationSeal"
+          :form-data="state.SealformData"
+          :option-data="state.SealoptionData"
+          ref="refFillFormInformation"
         >
         </v-form-render>
       </div>
@@ -112,16 +112,18 @@
         <AddFrom
           :formId="'12345667'"
           v-model="state.JyElMessageBox.show"
-          @formClose="state.JyElMessageBox.show = false"
+          @close="state.JyElMessageBox.show = false"
         />
       </JyElMessageBox>
     </div>
   </div>
 </template>
 <script setup>
-  import { reactive, defineExpose } from 'vue'
+  import { reactive, defineExpose, ref } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-  const formLibraryJson = reactive({})
+  import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
+  import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
+  const refFillFormInformation = ref(null)
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
@@ -153,7 +155,9 @@
       content: {
         data: ''
       }
-    }
+    },
+    SealformData: {},
+    SealoptionData: {}
   })
   const form = reactive({
     ProcessName: '',
@@ -218,6 +222,10 @@
     color: var(--jy-color-text-1);
 
     .choice {
+      width: 100%;
+      height: 100%;
+    }
+    .exhibition {
       width: 100%;
       height: 100%;
     }

@@ -65,6 +65,8 @@
   import { ElMessage } from 'element-plus'
   import layout from '@/views/system/businessManage/flowManage/layout.vue'
   import formStepJson from '@/views/addDynamicFormJson/formStep'
+
+  formStepJson.widgetList[1].options.defaultValue = 2
   const vformRef = ref(null)
   const formJson = reactive(formStepJson)
   const formData = reactive({})
