@@ -87,10 +87,10 @@
     <div class="add" v-if="state.currentState === '2'">
       <div>
         <v-form-render
-          :form-json="formLibraryJson"
-          :form-data="formLibraryData"
-          :option-data="optionLibraryData"
-          ref="vFormLibraryRef"
+          :form-json="FillFormInformationSeal"
+          :form-data="state.cache.SealformData"
+          :option-data="state.cache.SealoptionData"
+          ref="refFillFormInformation"
         >
         </v-form-render>
       </div>
@@ -119,9 +119,11 @@
   </div>
 </template>
 <script setup>
-  import { reactive, defineExpose } from 'vue'
+  import { reactive, defineExpose, ref } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-  const formLibraryJson = reactive({})
+  import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
+  import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
+  const refFillFormInformation = ref(null)
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
@@ -153,7 +155,8 @@
       content: {
         data: ''
       }
-    }
+    },
+    SealoptionData: {}
   })
   const form = reactive({
     ProcessName: '',
