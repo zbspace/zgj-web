@@ -15,10 +15,9 @@ const projectRootDir = resolve(__dirname)
 
 export default defineConfig((mode, command) => {
   const isBuild = command === 'build'
-  // eslint-disable-next-line no-unused-vars
   const env = loadEnv(mode, process.cwd())
   return {
-    // envDir: './config', // 环境变量路径
+    envDir: './config', // 环境变量路径
     server: {
       host: '0.0.0.0',
       proxy: {
