@@ -48,10 +48,10 @@ service.interceptors.response.use(
     if (status === 200) {
       // 后台响应成功
       if (data.code === 200) {
-        // const token = res.headers[TOKEN_HEADER_NAME.toLowerCase()]
-        // if (token) {
-        //   setToken(token)
-        // }
+        const token = res.headers[TOKEN_HEADER_NAME.toLowerCase()]
+        if (token) {
+          setToken(token)
+        }
         return data
       } else {
         // 响应错误

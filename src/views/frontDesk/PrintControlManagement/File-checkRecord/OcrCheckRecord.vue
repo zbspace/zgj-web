@@ -80,7 +80,6 @@
   } else {
     // 用印后文件核验
   }
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({
     checkStep: {
@@ -356,7 +355,7 @@
 
   // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
   function tabChange(activeName) {

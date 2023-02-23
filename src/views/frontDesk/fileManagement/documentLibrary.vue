@@ -166,7 +166,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const showFormDialog = ref(false)
   const formJson = reactive(FormJson)
   const formData = reactive({})
@@ -810,7 +809,7 @@
 
   // 点击下载记录
   function clickDownloadRecord() {
-    commonFun.routerPage(router, {
+    router.push({
       path: '/frontDesk/fileManagement/downloadRecord'
     })
   }

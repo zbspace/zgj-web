@@ -20,8 +20,6 @@ import './style/flow/index.less' // 流程样式
 
 /* 引入自定义全局变量 */
 import './style/index.scss'
-// 全局自定义公共方法
-import commonFun from '@/utils/common'
 // 运行mock
 import './mock/index'
 ;(async () => {
@@ -32,7 +30,6 @@ import './mock/index'
     .use(i18n)
     .use(ElementPlus, { locale: zhCn })
     .use(VForm3)
-    .provide('commonFun', commonFun)
     .mount('#app')
   requireComp(app)
   requireAntIcons(app)

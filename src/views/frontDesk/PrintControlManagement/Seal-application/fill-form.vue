@@ -103,7 +103,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({
     cache: {
@@ -129,15 +128,12 @@
 
   // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
   // 点击下一步
   function clickNextStep() {
-    commonFun.routerPage(router, {
-      // path: "/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process"
-      name: 'ConfirmApprovalProcess'
-    })
+    router.push({ name: 'ConfirmApprovalProcess' })
   }
 
   onBeforeMount(() => {
