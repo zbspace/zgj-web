@@ -509,6 +509,23 @@
   const listApplyTypeTreeApi = () => {
     return apiForm.listApplyTypeTree({}).then(result => {
       console.log(result)
+      const listApplyTypeTree = []
+      const applyTypeId = []
+      result.data.forEach(element => {
+        element.label = element.applyTypeName
+        if (element.parent_id === '') {
+          element.children = []
+          listApplyTypeTree.push(element)
+          applyTypeId.push(element.applyTypeId)
+        }
+      })
+      result.data.forEach(element => {
+        const index = applyTypeId.indexOf(element.parent_id)
+        if (index > -1) {
+          listApplyTypeTree[index].children.push(element)
+        }
+      })
+      state.componentsTree.data = listApplyTypeTree
       return result
     })
   }

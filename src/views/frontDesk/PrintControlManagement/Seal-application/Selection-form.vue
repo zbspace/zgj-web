@@ -141,7 +141,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, defineProps, onBeforeMount, onMounted, inject } from 'vue'
+  import { ref, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
@@ -154,11 +154,10 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const showFormDialog = ref(false)
   // 点击列表按钮
   function clickListBut(n) {
-    commonFun.routerPage(router, {
+    router.push({
       name: 'selectionForms',
       params: { id: n }
     })
@@ -271,7 +270,7 @@
           border-radius: var(--jy-border-radius-4);
           background-color: var(--jy-color-fill--1);
           position: relative;
-
+          overflow: hidden;
           .ap-cont-liebiao-list-back {
             width: 10rem;
             height: 10rem;

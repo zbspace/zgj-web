@@ -16,6 +16,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickSubmit="getFormPage"
           >
           </componentsSearchForm>
         </div>
@@ -35,6 +36,7 @@
           <componentsTree
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
+            @node-click="clickTreeNode"
           >
           </componentsTree>
         </div>
@@ -48,6 +50,7 @@
             :header="state.componentsTable.header"
             :isSelection="true"
             @cellClick="cellClick"
+            @custom-click="customClick"
           >
           </componentsTable>
         </div>
@@ -80,7 +83,7 @@
 </template>
 
 <script setup>
-  import { reactive, ref, defineAsyncComponent } from 'vue'
+  import { reactive, ref, defineAsyncComponent, onBeforeMount } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
@@ -90,11 +93,6 @@
   import componentsBatch from '@/views/components/batch.vue'
   import api from '@/api/system/formManagement'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
-
-  api.formPage().then(res => {
-    console.log(res)
-  })
-
   const dialogVisible = ref(false)
   const state = reactive({
     componentsSearchForm: {
@@ -249,20 +247,20 @@
           align: 'center'
         },
         {
-          prop: '1',
+          prop: 'formName',
           label: '表单名称',
           sortable: true,
           'min-width': 150,
           fixed: true
         },
         {
-          prop: '2',
+          prop: 'applyTypeName',
           label: '业务类型',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'sealUseTypeName',
           label: '用印类型',
           sortable: true,
           'min-width': 150
@@ -274,19 +272,19 @@
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'relationFlow',
           label: '状态',
           width: 90,
           sortable: true
         },
         {
-          prop: '6',
+          prop: 'createUserName',
           label: '创建人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '7',
+          prop: 'modifyDatetime',
           label: '更新时间',
           width: 190,
           sortable: true
@@ -317,66 +315,66 @@
         }
       ],
       data: [
-        {
-          0: 1,
-          1: '小黄文件',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '停用',
-          6: '小白',
-          7: '2022/10/30 15:00:00'
-        },
-        {
-          0: 1,
-          1: '小黄文件',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '停用',
-          6: '小白',
-          7: '2022/10/30 15:00:00'
-        },
-        {
-          0: 1,
-          1: '小黄文件',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '停用',
-          6: '小白',
-          7: '2022/10/30 15:00:00'
-        },
-        {
-          0: 1,
-          1: '小黄文件',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '停用',
-          6: '小白',
-          7: '2022/10/30 15:00:00'
-        },
-        {
-          0: 1,
-          1: '小黄文件',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '停用',
-          6: '小白',
-          7: '2022/10/30 15:00:00'
-        },
-        {
-          0: 1,
-          1: '小黄文件',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '停用',
-          6: '小白',
-          7: '2022/10/30 15:00:00'
-        }
+        // {
+        //   0: 1,
+        //   1: '小黄文件',
+        //   2: '用印申请',
+        //   3: '电子签章',
+        //   4: '文件类型',
+        //   5: '停用',
+        //   6: '小白',
+        //   7: '2022/10/30 15:00:00'
+        // },
+        // {
+        //   0: 1,
+        //   1: '小黄文件',
+        //   2: '用印申请',
+        //   3: '电子签章',
+        //   4: '文件类型',
+        //   5: '停用',
+        //   6: '小白',
+        //   7: '2022/10/30 15:00:00'
+        // },
+        // {
+        //   0: 1,
+        //   1: '小黄文件',
+        //   2: '用印申请',
+        //   3: '电子签章',
+        //   4: '文件类型',
+        //   5: '停用',
+        //   6: '小白',
+        //   7: '2022/10/30 15:00:00'
+        // },
+        // {
+        //   0: 1,
+        //   1: '小黄文件',
+        //   2: '用印申请',
+        //   3: '电子签章',
+        //   4: '文件类型',
+        //   5: '停用',
+        //   6: '小白',
+        //   7: '2022/10/30 15:00:00'
+        // },
+        // {
+        //   0: 1,
+        //   1: '小黄文件',
+        //   2: '用印申请',
+        //   3: '电子签章',
+        //   4: '文件类型',
+        //   5: '停用',
+        //   6: '小白',
+        //   7: '2022/10/30 15:00:00'
+        // },
+        // {
+        //   0: 1,
+        //   1: '小黄文件',
+        //   2: '用印申请',
+        //   3: '电子签章',
+        //   4: '文件类型',
+        //   5: '停用',
+        //   6: '小白',
+        //   7: '2022/10/30 15:00:00'
+        // }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
@@ -386,7 +384,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '2') {
+          if (column.property === 'formName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -413,43 +411,43 @@
 
     componentsTree: {
       data: [
-        {
-          label: '用印申请',
-          children: [
-            {
-              label: '用印申请'
-            },
-            {
-              label: '转办申请'
-            },
-            {
-              label: '重置用印申请'
-            }
-          ]
-        },
-        {
-          label: '印章申请',
-          children: [
-            {
-              label: '刻章申请'
-            },
-            {
-              label: '停用申请'
-            },
-            {
-              label: '启用申请'
-            },
-            {
-              label: '销毁申请'
-            },
-            {
-              label: '变更申请'
-            },
-            {
-              label: '换章申请'
-            }
-          ]
-        }
+        // {
+        //   label: '用印申请',
+        //   children: [
+        //     {
+        //       label: '用印申请'
+        //     },
+        //     {
+        //       label: '转办申请'
+        //     },
+        //     {
+        //       label: '重置用印申请'
+        //     }
+        //   ]
+        // },
+        // {
+        //   label: '印章申请',
+        //   children: [
+        //     {
+        //       label: '刻章申请'
+        //     },
+        //     {
+        //       label: '停用申请'
+        //     },
+        //     {
+        //       label: '启用申请'
+        //     },
+        //     {
+        //       label: '销毁申请'
+        //     },
+        //     {
+        //       label: '变更申请'
+        //     },
+        //     {
+        //       label: '换章申请'
+        //     }
+        //   ]
+        // }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
@@ -468,17 +466,102 @@
           name: 'Form-Details'
         },
         {
-          label: '流程记录',
+          label: '操作记录',
           name: 'operating-record'
+        },
+        {
+          label: '历史版本',
+          name: 'Process-Version'
         }
       ]
     }
   })
+  // 点击树节点
+  function clickTreeNode(data) {
+    console.log(data)
+    getFormPage()
+  }
+  // 请求表单树
+  function getListApplyTypeTree() {
+    api.listApplyTypeTree().then(res => {
+      console.log(res)
+      const { code, data } = res
+      if (code === 200) {
+        const listApplyTypeTree = []
+        const applyTypeId = []
+        data.forEach(element => {
+          element.label = element.applyTypeName
+          if (element.parent_id === '') {
+            element.children = []
+            listApplyTypeTree.push(element)
+            applyTypeId.push(element.applyTypeId)
+          }
+        })
+        data.forEach(element => {
+          const index = applyTypeId.indexOf(element.parent_id)
+          if (index > -1) {
+            listApplyTypeTree[index].children.push(element)
+          }
+        })
+        state.componentsTree.data = listApplyTypeTree
+      }
+    })
+  }
+  // 请求表单列表
+  function getFormPage() {
+    const searchData = state.componentsSearchForm.data
+    const queryParams = {
+      keyword: '',
+      updateStartTime: '',
+      updateEndTime: '',
+      applyTypeId: '',
+      sealUseTypeId: '',
+      relationFlow: ''
+    }
+    searchData.map((item, index) => {
+      switch (item.label) {
+        case '关键词':
+          queryParams.keyword = item.value
+          break
+        case '状态':
+          queryParams.relationFlow = item.value
+          break
+        case '更新时间':
+          queryParams.updateStartTime = item.value && item.value[0]
+          queryParams.updateEndTime = item.value && item.value[1]
+          break
+        case '业务类型':
+          queryParams.applyTypeId = item.value
+          break
+        case '用印类型':
+          queryParams.sealUseTypeId = item.value
+          break
+      }
+    })
+    console.log(queryParams)
+    api.formPage(queryParams).then(res => {
+      console.log(res)
+      const { code, data } = res
+      if (code === 200) {
+        state.componentsTable.data = data
+      }
+    })
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
-    if (column.property === '2') {
+    // console.log(row, column, cell, event)
+    if (column.property === 'formName') {
       state.componentsDocumentsDetails.show = true
+    }
+  }
+  // 点击表格按钮
+  function customClick(row, column, cell, event) {
+    if (cell.name === '修改') {
+      console.log(111)
+      dialogVisible.value = true
+    }
+    if (cell.name === '修改') {
+      console.log(111)
     }
   }
   // 点击关闭
@@ -488,6 +571,12 @@
   function showAddForm() {
     dialogVisible.value = true
   }
+  onBeforeMount(() => {
+    // console.log(`the component is now onBeforeMount.`)
+    // 加载表单列表
+    getListApplyTypeTree()
+    getFormPage()
+  })
 </script>
 
 <style lang="scss" scoped>

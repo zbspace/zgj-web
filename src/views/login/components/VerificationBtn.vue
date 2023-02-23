@@ -18,7 +18,7 @@
   /**
    * timer: 剩余时间
    */
-  import { reactive, watch, defineProps } from 'vue'
+  import { reactive, watch } from 'vue'
   import { ElMessage } from 'element-plus'
   import i18n from '@/utils/i18n'
   const props = defineProps({

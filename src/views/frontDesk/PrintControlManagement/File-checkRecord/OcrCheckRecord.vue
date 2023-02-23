@@ -52,15 +52,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    inject,
-    ref
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   import documentsDetailsPortion from '../../../components/documentsDetails/portion.vue'
@@ -80,7 +72,6 @@
   } else {
     // 用印后文件核验
   }
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({
     checkStep: {
@@ -356,7 +347,7 @@
 
   // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
   function tabChange(activeName) {

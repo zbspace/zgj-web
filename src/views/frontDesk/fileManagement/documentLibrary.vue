@@ -136,15 +136,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    ref,
-    inject
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
@@ -166,7 +158,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const showFormDialog = ref(false)
   const formJson = reactive(FormJson)
   const formData = reactive({})
@@ -810,7 +801,7 @@
 
   // 点击下载记录
   function clickDownloadRecord() {
-    commonFun.routerPage(router, {
+    router.push({
       path: '/frontDesk/fileManagement/downloadRecord'
     })
   }
