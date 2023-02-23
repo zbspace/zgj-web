@@ -90,10 +90,6 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import api from '@/api/system/formManagement'
-  import axios from 'axios'
-  axios.get('/api/category/list').then(res => {
-    console.log(res)
-  })
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const dialogVisible = ref(false)
   const state = reactive({
