@@ -16,5 +16,6 @@ const page = {
 }
 
 export default {
-  'get|/api/flow/page': page
+  'get|/api/flow/page': page,
+  '/api/form/list': page
 }

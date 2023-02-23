@@ -56,5 +56,6 @@ const listApplyTypeTree = {
 }
 export default {
   'get|/api/form/page': formPage,
+  '/api/form/list': formPage,
   'get|/api/form/listApplyTypeTree': listApplyTypeTree
 }

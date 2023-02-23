@@ -201,7 +201,7 @@
     },
     // 属性
     defaultAttribute: {
-      type: Array,
+      type: Object,
       default: () => {
         return {}
       }
