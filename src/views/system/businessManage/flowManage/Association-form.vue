@@ -84,12 +84,12 @@
         <el-button type="primary" v-else @click="clickEditForm">确定</el-button>
       </div>
     </div>
-    <div class="add" v-if="state.currentState === '2'">
-      <div>
+    <div class="exhibition" v-if="state.currentState === '2'">
+      <div class="info-box">
         <v-form-render
           :form-json="FillFormInformationSeal"
-          :form-data="state.cache.SealformData"
-          :option-data="state.cache.SealoptionData"
+          :form-data="state.SealformData"
+          :option-data="state.SealoptionData"
           ref="refFillFormInformation"
         >
         </v-form-render>
@@ -156,6 +156,7 @@
         data: ''
       }
     },
+    SealformData: {},
     SealoptionData: {}
   })
   const form = reactive({
@@ -221,6 +222,10 @@
     color: var(--jy-color-text-1);
 
     .choice {
+      width: 100%;
+      height: 100%;
+    }
+    .exhibition {
       width: 100%;
       height: 100%;
     }
