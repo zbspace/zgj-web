@@ -52,7 +52,7 @@
   dependencies:
     "color" "^3.1.3"
 
-"@arco-design/web-vue@^2.38.3", "@arco-design/web-vue@^2.42.1":
+"@arco-design/web-vue@^2.42.1":
   "integrity" "sha512-zzXmayX/DIJiPuxIntj3KJrLe6VrFoX6ixpmbrLl7SAnoecGAMSXnaAy6sw0xOybrZid3ytYEzAuqTI/p9aOQw=="
   "resolved" "https://registry.npmjs.org/@arco-design/web-vue/-/web-vue-2.42.1.tgz"
   "version" "2.42.1"
@@ -1774,15 +1774,6 @@
     "normalize-path" "^3.0.0"
     "picomatch" "^2.0.4"
 
-"aos@^2.3.4":
-  "integrity" "sha512-zh/ahtR2yME4I51z8IttIt4lC1Nw0ktsFtmeDzID1m9naJnWXhCoARaCgNOGXb5CLy3zm+wqmRAEgMYB5E2HUw=="
-  "resolved" "https://registry.npmjs.org/aos/-/aos-2.3.4.tgz"
-  "version" "2.3.4"
-  dependencies:
-    "classlist-polyfill" "^1.0.3"
-    "lodash.debounce" "^4.0.6"
-    "lodash.throttle" "^4.0.1"
-
 "argparse@^2.0.1":
   "integrity" "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="
   "resolved" "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz"
@@ -2090,11 +2081,6 @@
     "snake-case" "^3.0.4"
     "tslib" "^2.0.3"
 
-"chart.js@^3.7.0":
-  "integrity" "sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w=="
-  "resolved" "https://registry.npmjs.org/chart.js/-/chart.js-3.9.1.tgz"
-  "version" "3.9.1"
-
 "china-area-data@^5.0.1":
   "integrity" "sha512-BQDPpiv5Nn+018ekcJK2oSD9PAD+E1bvXB0wgabc//dFVS/KvRqCgg0QOEUt3vBkx9XzB5a9BmkJCEZDBxVjVw=="
   "resolved" "https://registry.npmjs.org/china-area-data/-/china-area-data-5.0.1.tgz"
@@ -2124,21 +2110,6 @@
   "integrity" "sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg=="
   "resolved" "https://registry.npmjs.org/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz"
   "version" "1.0.3"
-
-"classlist-polyfill@^1.0.3":
-  "integrity" "sha512-GzIjNdcEtH4ieA2S8NmrSxv7DfEV5fmixQeyTmqmRmRJPGpRBaSnA2a0VrCjyT8iW8JjEdMbKzDotAJf+ajgaQ=="
-  "resolved" "https://registry.npmjs.org/classlist-polyfill/-/classlist-polyfill-1.2.0.tgz"
-  "version" "1.2.0"
-
-"classnames@^2.2.5":
-  "integrity" "sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw=="
-  "resolved" "https://registry.npmjs.org/classnames/-/classnames-2.3.2.tgz"
-  "version" "2.3.2"
-
-"click-outside-vue3@^4.0.1":
-  "integrity" "sha512-sbplNecrup5oGqA3o4bo8XmvHRT6q9fvw21Z67aDbTqB9M6LF7CuYLTlLvNtOgKU6W3zst5H5zJuEh4auqA34g=="
-  "resolved" "https://registry.npmjs.org/click-outside-vue3/-/click-outside-vue3-4.0.1.tgz"
-  "version" "4.0.1"
 
 "clipboard@^2.0.8":
   "integrity" "sha512-C+0bbOqkezLIsmWSvlsXS0Q0bmkugu7jcfMIACB+RDEntIzQIkdr148we28AfSloQLRdZlYL/QYyrq05j/3Faw=="
@@ -2271,7 +2242,7 @@
   "resolved" "https://registry.npmjs.org/core-js/-/core-js-2.6.12.tgz"
   "version" "2.6.12"
 
-"core-js@^3.1.3", "core-js@^3.15.1", "core-js@^3.27.2", "core-js@^3.6.5":
+"core-js@^3.15.1", "core-js@^3.27.2", "core-js@^3.6.5":
   "integrity" "sha512-9ashVQskuh5AZEZ1JdQWp1GqSoC1e1G87MzRqg2gIfVAQ7Qn9K+uFj8EcniUFA4P2NLZfV+TOlX1SzoKfo+s7w=="
   "resolved" "https://registry.npmjs.org/core-js/-/core-js-3.27.2.tgz"
   "version" "3.27.2"
@@ -2964,14 +2935,6 @@
   "version" "1.15.0"
   dependencies:
     "reusify" "^1.0.4"
-
-"feather-icons@^4.28.0":
-  "integrity" "sha512-Y7VqN9FYb8KdaSF0qD1081HCkm0v4Eq/fpfQYQnubpqi0hXx14k+gF9iqtRys1SIcTEi97xDi/fmsPFZ8xo0GQ=="
-  "resolved" "https://registry.npmjs.org/feather-icons/-/feather-icons-4.29.0.tgz"
-  "version" "4.29.0"
-  dependencies:
-    "classnames" "^2.2.5"
-    "core-js" "^3.1.3"
 
 "file-entry-cache@^6.0.1":
   "integrity" "sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg=="
@@ -3689,7 +3652,7 @@
   "resolved" "https://registry.npmjs.org/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz"
   "version" "3.0.0"
 
-"lodash.debounce@^4.0.6", "lodash.debounce@^4.0.8":
+"lodash.debounce@^4.0.8":
   "integrity" "sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow=="
   "resolved" "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
   "version" "4.0.8"
@@ -3713,11 +3676,6 @@
   "version" "4.2.0"
   dependencies:
     "lodash._reinterpolate" "^3.0.0"
-
-"lodash.throttle@^4.0.1":
-  "integrity" "sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ=="
-  "resolved" "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz"
-  "version" "4.1.1"
 
 "lodash@*", "lodash@^4.17.21":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
@@ -3780,11 +3738,6 @@
   dependencies:
     "pify" "^4.0.1"
     "semver" "^5.6.0"
-
-"maska@^1.5.0":
-  "integrity" "sha512-zDalYGEVjQvnmedj6Yaae532g1RQVKppX8w4+L4q5HPuTUCJew/YDtTsKto4ReYSk5+nfacGyyz067o7qo4xTQ=="
-  "resolved" "https://registry.npmjs.org/maska/-/maska-1.5.2.tgz"
-  "version" "1.5.2"
 
 "memoize-one@^6.0.0":
   "integrity" "sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw=="
@@ -3904,11 +3857,6 @@
   "version" "1.1.0"
   dependencies:
     "commander" "*"
-
-"moment@^2.29.1":
-  "integrity" "sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w=="
-  "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
-  "version" "2.29.4"
 
 "mri@^1.2.0":
   "integrity" "sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA=="

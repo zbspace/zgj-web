@@ -990,6 +990,11 @@
       type: String,
       default: '0'
     },
+    // v-model
+    modelValue: {
+      type: Boolean,
+      default: false
+    },
     // 展示权限
     visible: {
       type: Array,
@@ -1014,7 +1019,8 @@
       }
     }
   })
-  const emit = defineEmits(['clickClose'])
+  console.log('--->', props)
+  const emit = defineEmits(['clickClose', 'update:modelValue'])
   const state = reactive({
     cache: {
       // 用印详情
@@ -2930,7 +2936,7 @@
       }
     },
     drawer: {
-      show: true,
+      show: false,
       size: '50%',
       FullScreenStatus: 0
     },
@@ -3117,8 +3123,14 @@
     }
   })
   // 初始化数据
-  function initData() {
-    state.drawer.show = props.show
+  const initData = () => {
+    state.drawer.show = false
+    if (props.show) {
+      state.drawer.show = props.show
+    }
+    if (props.modelValue) {
+      state.drawer.show = props.modelValue
+    }
     state.componentsTabs.data = props.visible
     if (props.activeName) {
       state.componentsTabs.activeName = props.activeName
@@ -3127,7 +3139,7 @@
     } else {
       state.componentsTabs.activeName = ''
     }
-    // console.log(state.componentsTabs.activeName)
+    // console.log(props.show, props.modelValue, state.drawer.show)
     // visible: [
     //         {
     //             label: '用印详情',
@@ -3138,22 +3150,23 @@
     //     ]
   }
   // 点击全屏
-  function ClickOnFullScreen() {
+  const ClickOnFullScreen = () => {
     state.drawer.size = '100%'
     state.drawer.FullScreenStatus = 1
   }
   // 点击关闭全屏
-  function ClickCloseFullScreen() {
+  const ClickCloseFullScreen = () => {
     state.drawer.size = '50%'
     state.drawer.FullScreenStatus = 0
   }
   // 点击关闭
-  function clickClose() {
+  const clickClose = () => {
     state.drawer.show = false
+    emit('update:modelValue', state.drawer.show)
     emit('clickClose', state.drawer.show)
   }
   // 切换选项
-  function tabChange(activeName) {
+  const tabChange = activeName => {
     state.componentsTabs.activeName = activeName
   }
   onBeforeMount(() => {
@@ -3164,14 +3177,10 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
-  watch(
-    () => [props.show],
-    (newValue, oldValue) => {
-      // console.log(newValue, oldValue);
-      // 初始化数据
-      initData()
-    }
-  )
+  watch(props, (newValue, oldValue) => {
+    // console.log(newValue, oldValue);
+    initData()
+  })
 </script>
 <style lang="scss" scoped>
   .components-documentsDetails {

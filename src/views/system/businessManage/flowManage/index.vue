@@ -71,7 +71,7 @@
     <!-- 流程详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
-        :show="state.componentsDocumentsDetails.show"
+        v-model="state.componentsDocumentsDetails.show"
         :visible="state.componentsDocumentsDetails.visible"
         @clickClose="clickClose"
       >
@@ -496,14 +496,15 @@
   })
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
-    console.log(row, column, cell, event)
+    // console.log(row, column, cell, event)
     if (column.property === 'formName') {
       state.componentsDocumentsDetails.show = true
     }
   }
   // 点击关闭
   const clickClose = () => {
-    state.componentsDocumentsDetails.show = false
+    console.log('--->', state.componentsDocumentsDetails.show)
+    // state.componentsDocumentsDetails.show = false
   }
   // 发送api请求 查询表单树解构
   const listApplyTypeTreeApi = () => {
