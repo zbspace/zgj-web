@@ -154,11 +154,10 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const showFormDialog = ref(false)
   // 点击列表按钮
   function clickListBut(n) {
-    commonFun.routerPage(router, {
+    router.push({
       name: 'selectionForms',
       params: { id: n }
     })

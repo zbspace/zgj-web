@@ -18,7 +18,6 @@ export default defineConfig((mode, command) => {
   // eslint-disable-next-line no-unused-vars
   const env = loadEnv(mode, process.cwd())
   return {
-    base: '/',
     // envDir: './config', // 环境变量路径
     server: {
       host: '0.0.0.0',

@@ -174,7 +174,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const refVFlowDesign = ref(null)
   const state = reactive({
@@ -263,15 +262,12 @@
 
   // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
   // 点击提交
   function clickSubmit() {
-    commonFun.routerPage(router, {
-      // path: "/frontDesk/PrintControlManagement/Seal-application/accomplish"
-      name: 'Accomplish'
-    })
+    router.push({ name: 'Accomplish' })
   }
 
   onBeforeMount(() => {
