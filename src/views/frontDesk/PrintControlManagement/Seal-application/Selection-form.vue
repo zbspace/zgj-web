@@ -270,7 +270,7 @@
           border-radius: var(--jy-border-radius-4);
           background-color: var(--jy-color-fill--1);
           position: relative;
-
+          overflow: hidden;
           .ap-cont-liebiao-list-back {
             width: 10rem;
             height: 10rem;
