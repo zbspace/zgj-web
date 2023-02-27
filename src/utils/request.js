@@ -4,7 +4,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { API_BASE_PREFIX, TOKEN_HEADER_NAME } from './constants.js'
-import { getToken } from './token-util'
+import { useAccountInfoStore } from '@/store/accountInfo'
 
 const service = axios.create({
   baseURL: API_BASE_PREFIX,
@@ -16,7 +16,7 @@ const service = axios.create({
  */
 const processErrorResponse = function (response) {
   // 提示错误信息
-  ElMessage.error(response.data.msg)
+  ElMessage.error(response ? response.data.msg : '请求错误')
   return Promise.reject(response.data)
 }
 
@@ -25,10 +25,10 @@ const processErrorResponse = function (response) {
  */
 service.interceptors.request.use(
   config => {
+    const accountInfo = useAccountInfoStore()
     // 添加 token 到 header
-    const token = getToken()
-    if (token && config.headers) {
-      config.headers.common[TOKEN_HEADER_NAME] = token
+    if (accountInfo.token && config.headers) {
+      config.headers[TOKEN_HEADER_NAME] = accountInfo.token
     }
     return config
   },

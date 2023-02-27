@@ -350,32 +350,40 @@
         router.replace(redirect)
         ElMessage.success('登录成功')
         // 账号密码登录
-        //   loginApi
-        //     .loginByAccount({
-        //       accountNo: accountLoginForm.accountNo,
-        //       accountPass: md5(accountLoginForm.accountPass)
-        //     })
-        //     .then(res => {
-        //       if (res.success) {
-        //         // 存储登录用户信息
-        //         accountInfo.setToken({
-        //           token: res.data.tokenValue
+        // loginApi
+        //   .loginByAccount({
+        //     accountNo: accountLoginForm.accountNo,
+        //     accountPass: md5(accountLoginForm.accountPass)
+        //   })
+        //   .then(res => {
+        //     if (res.success) {
+        //       // 存储登录用户信息
+        //       accountInfo.setToken({
+        //         token: res.data.tokenValue
+        //       })
+        //       accountInfo.setUserName('曹春青')
+
+        //       // 获取用户企业列表
+        //       loginApi
+        //         .tenantInfoList()
+        //         .then(res => {
+        //           if (!res.success) return false
+        //           let redirect = route.query.redirect || '/frontDesk/home'
+        //           if (typeof redirect !== 'string') {
+        //             redirect = '/frontDesk/home'
+        //           }
+        //           router.replace(redirect)
+        //           ElMessage.success('登录成功')
         //         })
-        //         accountInfo.setUserName('曹春青')
-        //         let redirect = route.query.redirect || '/frontDesk/home'
-        //         if (typeof redirect !== 'string') {
-        //           redirect = '/frontDesk/home'
-        //         }
-        //         router.replace(redirect)
-        //         ElMessage.success('登录成功')
-        //       }
-        //     })
-        //     .catch(err => {
-        //       console.log(err, '==')
-        //     })
-        // } else {
-        //   ElMessage.warning('请正确填写')
-        //   return false
+        //         .catch(() => {})
+        //     }
+        //   })
+        //   .catch(err => {
+        //     console.log(err, '==')
+        //   })
+      } else {
+        ElMessage.warning('请正确填写')
+        return false
       }
     })
   }

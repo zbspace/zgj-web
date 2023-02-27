@@ -8,13 +8,13 @@ export const LANGUAGE = 'language'
 export const API_BASE_PREFIX = import.meta.env.VITE_API_PREFIX
 
 // token 传递的 header 名称
-export const TOKEN_HEADER_NAME = 'Authorization'
+export const TOKEN_HEADER_NAME = 'zgj-token'
 
 // 不需要登录的路由
 export const WHITE_LIST = ['/login']
 
 // token 存储的名称
-export const TOKEN_STORE_NAME = 'access_token'
+export const TOKEN_STORE_NAME = 'zgj-token'
 
 // 登录接口-是否需要rsa加密
 export const IS_NEED_RSA = true

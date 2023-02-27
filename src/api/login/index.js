@@ -10,4 +10,13 @@ api.loginByAccount = data => {
     data
   })
 }
+
+// 获取登录用户企业列表
+api.tenantInfoList = params => {
+  return request({
+    method: 'GET',
+    url: '/base/tenantInfoList',
+    params
+  })
+}
 export default api
