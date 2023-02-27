@@ -105,7 +105,9 @@
             <template #reference>
               <el-button class="ap-personalCenter">
                 <div class="ap-personalCenter-text">
-                  <span class="ap-personalCenter-name">春青</span>
+                  <span class="ap-personalCenter-name">{{
+                    accountInfoStore.userName.substr(1)
+                  }}</span>
                   <img
                     v-show="!showUserInfoPop"
                     src="@/assets/images/navbar/user_info_close.svg"
@@ -121,9 +123,11 @@
             <div class="ap-personalCenterDropdown">
               <div class="dropdown-box">
                 <div class="dropdown-name">
-                  <div class="dropdown-name-icon"> 春青 </div>
+                  <div class="dropdown-name-icon">
+                    {{ accountInfoStore.userName.substr(1) }}
+                  </div>
                   <div class="dropdown-name-text">
-                    {{ accountInfoStore.name }}
+                    {{ accountInfoStore.userName }}
                   </div>
                 </div>
               </div>
@@ -378,7 +382,7 @@
 
   // 退出登录
   const handleLogout = () => {
-    accountInfoStore.setAccountInfo(null)
+    accountInfoStore.setToken(null)
     // 跳转到登录页
     router.push({ name: 'login-account' })
   }
