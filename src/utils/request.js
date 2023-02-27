@@ -4,8 +4,8 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { API_BASE_PREFIX, TOKEN_HEADER_NAME } from './constants.js'
-import { getToken } from './token-util'
-
+import { getToken, setToken } from './token-util'
+console.log(API_BASE_PREFIX)
 const service = axios.create({
   baseURL: API_BASE_PREFIX,
   timeout: 5000
@@ -16,7 +16,7 @@ const service = axios.create({
  */
 const processErrorResponse = function (response) {
   // 提示错误信息
-  ElMessage.error(response.data.msg)
+  ElMessage.error(response.data.message)
   return Promise.reject(response.data)
 }
 
@@ -42,15 +42,22 @@ service.interceptors.request.use(
  */
 service.interceptors.response.use(
   res => {
+    // 请求成功，token自动续期
     const { status, data } = res
+    // 浏览器响应成功
     if (status === 200) {
+      // 后台响应成功
       if (data.code === 200) {
+        const token = res.headers[TOKEN_HEADER_NAME.toLowerCase()]
+        if (token) {
+          setToken(token)
+        }
         return data
       } else {
-        return processErrorResponse(res)
+        // 响应错误
       }
     }
-    return res
+    return processErrorResponse(res)
   },
   error => {
     // 处理响应错误

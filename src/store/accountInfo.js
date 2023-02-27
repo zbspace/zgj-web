@@ -1,29 +1,20 @@
 import { defineStore } from 'pinia'
 /**
- * 账号信息 - 账号密码、用户信息-用户名等
- * token
+ * 账号信息
  */
 export const useAccountInfoStore = defineStore({
   id: 'accountInfo',
   state: () => {
     return {
-      accountNo: '',
-      accountPass: '',
-      token: '',
-      userName: ''
+      name: '',
+      token: ''
     }
   },
   getters: {},
   actions: {
-    setToken(attr) {
-      this.token = attr ? attr.token : ''
-    },
-    setAccountAndPassword(accountInfo) {
-      this.accountNo = accountInfo ? accountInfo.accountNo : ''
-      this.accountPass = accountInfo ? accountInfo.accountPass : ''
-    },
-    setUserName(name) {
-      this.userName = name || ''
+    setAccountInfo(accountInfo) {
+      this.name = accountInfo ? accountInfo.name : ''
+      this.token = accountInfo ? accountInfo.token : ''
     }
   },
   // 开启数据缓存

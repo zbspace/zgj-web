@@ -75,9 +75,9 @@
             hide-required-asterisk
             :rules="accountRules"
           >
-            <el-form-item prop="accountNo">
+            <el-form-item prop="inputAccount">
               <el-input
-                v-model="accountLoginForm.accountNo"
+                v-model="accountLoginForm.inputAccount"
                 :placeholder="state.placeholderCodeAndAccount"
                 size="large"
                 clearable
@@ -91,10 +91,10 @@
               </el-input>
             </el-form-item>
 
-            <el-form-item prop="accountPass">
+            <el-form-item prop="inputPassword">
               <div class="l-code">
                 <el-input
-                  v-model="accountLoginForm.accountPass"
+                  v-model="accountLoginForm.inputPassword"
                   :placeholder="state.placeholderPassword"
                   size="large"
                   :type="state.showPass ? 'text' : 'password'"
@@ -235,8 +235,6 @@
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useRoute } from 'vue-router'
   import { ElMessage } from 'element-plus'
-  import md5 from 'js-md5'
-  import loginApi from '@/api/login'
   const accountInfo = useAccountInfoStore()
   const route = useRoute()
   const state = reactive({
@@ -280,12 +278,12 @@
   }
 
   const accountLoginForm = reactive({
-    accountNo: null,
-    accountPass: null
+    inputAccount: null,
+    inputPassword: null
   })
   const accountRules = {
-    accountNo: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-    accountPass: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+    inputAccount: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+    inputPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }]
   }
   // 监听 语言切换
   watch(
@@ -304,8 +302,8 @@
   )
 
   onMounted(() => {
-    accountLoginForm.accountNo = 'a001'
-    accountLoginForm.accountPass = '666666'
+    accountLoginForm.inputAccount = '156666666666'
+    accountLoginForm.inputPassword = '666666'
   })
 
   // 监听 tabs 切换
@@ -339,43 +337,17 @@
 
     formRef.value.validate(valid => {
       if (valid) {
-        accountInfo.setToken({
-          token: 'test'
-        })
-        accountInfo.setUserName('曹春青')
+        // 存储登录用户信息
+        accountInfo.setAccountInfo({ name: 'xxx', token: 'xxx' })
         let redirect = route.query.redirect || '/frontDesk/home'
         if (typeof redirect !== 'string') {
           redirect = '/frontDesk/home'
         }
-        router.replace(redirect)
         ElMessage.success('登录成功')
-        // 账号密码登录
-        //   loginApi
-        //     .loginByAccount({
-        //       accountNo: accountLoginForm.accountNo,
-        //       accountPass: md5(accountLoginForm.accountPass)
-        //     })
-        //     .then(res => {
-        //       if (res.success) {
-        //         // 存储登录用户信息
-        //         accountInfo.setToken({
-        //           token: res.data.tokenValue
-        //         })
-        //         accountInfo.setUserName('曹春青')
-        //         let redirect = route.query.redirect || '/frontDesk/home'
-        //         if (typeof redirect !== 'string') {
-        //           redirect = '/frontDesk/home'
-        //         }
-        //         router.replace(redirect)
-        //         ElMessage.success('登录成功')
-        //       }
-        //     })
-        //     .catch(err => {
-        //       console.log(err, '==')
-        //     })
-        // } else {
-        //   ElMessage.warning('请正确填写')
-        //   return false
+        router.replace(redirect)
+      } else {
+        ElMessage.warning('请正确填写')
+        return false
       }
     })
   }
@@ -383,19 +355,6 @@
   const customStyle = {
     height: '48px'
   }
-
-  // 监听 记住密码
-  watch(
-    () => state.rememberPas,
-    val => {
-      val
-        ? accountInfo.setAccountAndPassword({
-            accountNo: accountLoginForm.accountNo,
-            accountPass: md5(accountLoginForm.accountPass)
-          })
-        : accountInfo.setAccountAndPassword(null)
-    }
-  )
 </script>
 
 <style scoped lang="scss">

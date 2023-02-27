@@ -17,7 +17,7 @@ export default defineConfig((mode, command) => {
   const isBuild = command === 'build'
   const env = loadEnv(mode, process.cwd())
   return {
-    // envDir: './config', // 环境变量路径
+    envDir: './config', // 环境变量路径
     server: {
       host: '0.0.0.0',
       proxy: {

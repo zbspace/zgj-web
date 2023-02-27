@@ -17,4 +17,4 @@ export const WHITE_LIST = ['/login']
 export const TOKEN_STORE_NAME = 'access_token'
 
 // 登录接口-是否需要rsa加密
-export const IS_NEED_RSA = true
+export const IS_NEED_RSA = false
