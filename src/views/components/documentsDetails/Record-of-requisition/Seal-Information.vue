@@ -238,7 +238,7 @@
                 display: flex;
 
                 .SealInformation-details-image-cont-list-cont-list-label {
-                  width: 4.5rem;
+                  width: 5rem;
                   display: flex;
                   justify-content: flex-end;
                   color: var(--jy-color-text-3);

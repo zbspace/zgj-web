@@ -1019,7 +1019,7 @@
       }
     }
   })
-  console.log('--->', props)
+  // console.log('--->', props)
   const emit = defineEmits(['clickClose', 'update:modelValue'])
   const state = reactive({
     cache: {
@@ -3148,6 +3148,16 @@
     //             layout: [],
     //         },
     //     ]
+
+    props.visible.forEach(element => {
+      if (element.name === 'Details-of-Printing') {
+        // 处理 用印详情 Details-of-Printing
+        disDetailsaOfPrinting(element)
+      } else if (element.name === 'Form-Details') {
+        // 处理 表单详情 Form-Details
+        disFormDetails(element)
+      }
+    })
   }
   // 点击全屏
   const ClickOnFullScreen = () => {
@@ -3169,6 +3179,43 @@
   const tabChange = activeName => {
     state.componentsTabs.activeName = activeName
   }
+  // 处理 用印详情 Details-of-Printing
+  const disDetailsaOfPrinting = element => {
+    // 基本信息
+    if (element.basicInformation && element.basicInformation.data) {
+      state.DetailsaOfPrinting.basicInformation.data =
+        element.basicInformation.data
+    }
+    // 附件 用印文件
+    if (element.accessory && element.accessory.printedData) {
+      state.DetailsaOfPrinting.accessory.printedData =
+        element.accessory.printedData
+    }
+    // 附件 补充文件
+    if (element.accessory && element.accessory.additionalData) {
+      state.DetailsaOfPrinting.accessory.additionalData =
+        element.accessory.additionalData
+    }
+    // 智能用印
+    if (element.IntelligentPrinting && element.IntelligentPrinting.data) {
+      state.DetailsaOfPrinting.IntelligentPrinting.data =
+        element.IntelligentPrinting.data
+    }
+    // 文件归档
+    if (element.archiveInformation && element.archiveInformation.data) {
+      state.DetailsaOfPrinting.archiveInformation.data =
+        element.archiveInformation.data
+    }
+
+    // 未写完
+  }
+  // 处理 表单详情 Form-Details
+  const disFormDetails = element => {
+    if (element.data) {
+      state.FormDetails.basicInformation.data = element.data
+    }
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化数据
