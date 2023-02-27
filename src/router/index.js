@@ -1,6 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import routes from './routes'
-// import appConfig from "../../app.config";
 import { useAccountInfoStore } from '@/store/accountInfo'
 import { useMenusInfoStore } from '@/store/menus'
 
@@ -28,7 +27,7 @@ router.beforeEach((routeTo, routeFrom) => {
   }
 
   const accountInfoStore = useAccountInfoStore()
-  if (routeTo.meta.authRequired && !accountInfoStore.name) {
+  if (routeTo.meta.authRequired && !accountInfoStore.token) {
     // 此路由需要授权，请检查是否已登录
     // 如果没有，则重定向到登录页面
     return {
