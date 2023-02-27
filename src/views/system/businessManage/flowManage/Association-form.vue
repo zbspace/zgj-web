@@ -119,7 +119,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, defineExpose, ref } from 'vue'
+  import { reactive, ref } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
   import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'

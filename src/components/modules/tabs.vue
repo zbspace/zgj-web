@@ -14,7 +14,6 @@
 </template>
 
 <script setup>
-  import { defineProps, defineEmits } from 'vue'
   const emit = defineEmits(['update:active'])
   const props = defineProps({
     active: {

@@ -136,15 +136,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    ref,
-    inject
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'

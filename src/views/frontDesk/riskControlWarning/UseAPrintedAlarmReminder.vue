@@ -91,14 +91,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'

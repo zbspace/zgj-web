@@ -189,7 +189,7 @@
   /**
    * selectedStatus 0(未选中) 1（部分） 2（全部）
    */
-  import { defineProps, defineEmits, reactive, ref, watch } from 'vue'
+  import { reactive, ref, watch } from 'vue'
   import { treeDataTranslate } from '@/utils/hooks/handleTreeData.js'
   import { Search, ArrowRight } from '@element-plus/icons-vue'
   import KDialog from '@/views/components/modules/kdialog.vue'

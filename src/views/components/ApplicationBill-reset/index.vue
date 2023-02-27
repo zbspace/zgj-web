@@ -64,8 +64,6 @@
   import {
     ref,
     reactive,
-    defineProps,
-    defineEmits,
     onBeforeMount,
     onMounted,
     watch

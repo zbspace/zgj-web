@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-  import { defineProps, ref, onMounted, defineExpose, defineEmits } from 'vue'
+  import { ref, onMounted } from 'vue'
   import FlowDesign from '@/components/FlowDesign/index.vue'
   // // 异步组件
   // const FlowDesign = defineAsyncComponent({
