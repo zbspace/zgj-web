@@ -122,14 +122,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    ref
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'

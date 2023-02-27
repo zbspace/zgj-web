@@ -98,14 +98,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    inject
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   const props = defineProps({
@@ -116,16 +109,12 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({})
 
   // 点击列表按钮
   function clickListBut() {
-    commonFun.routerPage(router, {
-      // path: "/frontDesk/PrintControlManagement/electronic-seal-apply/fill-form"
-      name: 'ESelectionFillForm'
-    })
+    router.push({ name: 'ESelectionFillForm' })
   }
 
   onBeforeMount(() => {
@@ -224,7 +213,7 @@
           border: 1px solid var(--jy-color-border-1);
           border-radius: var(--jy-border-radius-4);
           background-color: var(--jy-color-fill--1);
-
+          overflow: hidden;
           .ap-cont-liebiao-list-back {
             width: 10rem;
             height: 10rem;

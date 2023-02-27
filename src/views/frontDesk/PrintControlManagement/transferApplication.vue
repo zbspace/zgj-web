@@ -3,13 +3,7 @@
 </template>
 
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   import ApplicationBillReset from '@/views/components/ApplicationBill-reset/index.vue'
   import { useRouter } from 'vue-router'
   const router = useRouter()

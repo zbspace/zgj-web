@@ -104,7 +104,7 @@
     </div>
 </template>
 <script setup>
-import { reactive, defineProps, onBeforeMount, onMounted } from "vue"
+import { reactive, onBeforeMount, onMounted } from "vue"
 import componentsTable from "./table"
 import componentsSearchForm from "./searchForm"
 import componentsTree from "./tree"

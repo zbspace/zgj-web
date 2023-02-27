@@ -41,15 +41,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    inject,
-    ref
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   import componentsTable from '../../../components/table'
@@ -62,7 +54,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({
     outSealList: {
@@ -174,7 +165,7 @@
 
   // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
   function tabChange(activeName) {

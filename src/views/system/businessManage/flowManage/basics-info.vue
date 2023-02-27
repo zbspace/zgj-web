@@ -41,7 +41,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, defineExpose } from 'vue'
+  import { reactive } from 'vue'
   const form = reactive({
     ProcessName: '',
     ProcessType: false,

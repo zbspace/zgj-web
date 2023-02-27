@@ -175,7 +175,6 @@
 <script setup>
   import {
     reactive,
-    defineProps,
     // defineEmits,
     onBeforeMount,
     onMounted,
@@ -201,7 +200,7 @@
     },
     // 属性
     defaultAttribute: {
-      type: Array,
+      type: Object,
       default: () => {
         return {}
       }

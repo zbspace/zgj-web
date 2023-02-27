@@ -36,6 +36,7 @@
           <componentsTree
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
+            @node-click="clickTreeNode"
           >
           </componentsTree>
         </div>
@@ -49,6 +50,7 @@
             :header="state.componentsTable.header"
             :isSelection="true"
             @cellClick="cellClick"
+            @custom-click="customClick"
           >
           </componentsTable>
         </div>
@@ -90,10 +92,6 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import api from '@/api/system/formManagement'
-  import axios from 'axios'
-  axios.get('/api/category/list').then(res => {
-    console.log(res)
-  })
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const dialogVisible = ref(false)
   const state = reactive({
@@ -413,43 +411,43 @@
 
     componentsTree: {
       data: [
-        {
-          label: '用印申请',
-          children: [
-            {
-              label: '用印申请'
-            },
-            {
-              label: '转办申请'
-            },
-            {
-              label: '重置用印申请'
-            }
-          ]
-        },
-        {
-          label: '印章申请',
-          children: [
-            {
-              label: '刻章申请'
-            },
-            {
-              label: '停用申请'
-            },
-            {
-              label: '启用申请'
-            },
-            {
-              label: '销毁申请'
-            },
-            {
-              label: '变更申请'
-            },
-            {
-              label: '换章申请'
-            }
-          ]
-        }
+        // {
+        //   label: '用印申请',
+        //   children: [
+        //     {
+        //       label: '用印申请'
+        //     },
+        //     {
+        //       label: '转办申请'
+        //     },
+        //     {
+        //       label: '重置用印申请'
+        //     }
+        //   ]
+        // },
+        // {
+        //   label: '印章申请',
+        //   children: [
+        //     {
+        //       label: '刻章申请'
+        //     },
+        //     {
+        //       label: '停用申请'
+        //     },
+        //     {
+        //       label: '启用申请'
+        //     },
+        //     {
+        //       label: '销毁申请'
+        //     },
+        //     {
+        //       label: '变更申请'
+        //     },
+        //     {
+        //       label: '换章申请'
+        //     }
+        //   ]
+        // }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
@@ -468,29 +466,80 @@
           name: 'Form-Details'
         },
         {
-          label: '流程记录',
+          label: '操作记录',
           name: 'operating-record'
+        },
+        {
+          label: '历史版本',
+          name: 'Process-Version'
         }
       ]
     }
   })
+  // 点击树节点
+  function clickTreeNode(data) {
+    console.log(data)
+    getFormPage()
+  }
+  // 请求表单树
+  function getListApplyTypeTree() {
+    api.listApplyTypeTree().then(res => {
+      console.log(res)
+      const { code, data } = res
+      if (code === 200) {
+        const listApplyTypeTree = []
+        const applyTypeId = []
+        data.forEach(element => {
+          element.label = element.applyTypeName
+          if (element.parent_id === '') {
+            element.children = []
+            listApplyTypeTree.push(element)
+            applyTypeId.push(element.applyTypeId)
+          }
+        })
+        data.forEach(element => {
+          const index = applyTypeId.indexOf(element.parent_id)
+          if (index > -1) {
+            listApplyTypeTree[index].children.push(element)
+          }
+        })
+        state.componentsTree.data = listApplyTypeTree
+      }
+    })
+  }
   // 请求表单列表
   function getFormPage() {
     const searchData = state.componentsSearchForm.data
-    console.log(state.componentsSearchForm.data)
-    // let queryParams = {
-    //   keyword: '',
-    //   updateStartTime: '',
-    //   updateEndTime: '',
-    //   applyTypeId: '',
-    //   sealUseTypeId: '',
-    //   relationFlow: ''
-    // }
-    // searchData.map((item,index) => {
-    //   switch (item.label)
-    //     case:"关键词"
-    // })
-    api.formPage().then(res => {
+    const queryParams = {
+      keyword: '',
+      updateStartTime: '',
+      updateEndTime: '',
+      applyTypeId: '',
+      sealUseTypeId: '',
+      relationFlow: ''
+    }
+    searchData.map((item, index) => {
+      switch (item.label) {
+        case '关键词':
+          queryParams.keyword = item.value
+          break
+        case '状态':
+          queryParams.relationFlow = item.value
+          break
+        case '更新时间':
+          queryParams.updateStartTime = item.value && item.value[0]
+          queryParams.updateEndTime = item.value && item.value[1]
+          break
+        case '业务类型':
+          queryParams.applyTypeId = item.value
+          break
+        case '用印类型':
+          queryParams.sealUseTypeId = item.value
+          break
+      }
+    })
+    console.log(queryParams)
+    api.formPage(queryParams).then(res => {
       console.log(res)
       const { code, data } = res
       if (code === 200) {
@@ -500,9 +549,19 @@
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
+    // console.log(row, column, cell, event)
     if (column.property === 'formName') {
       state.componentsDocumentsDetails.show = true
+    }
+  }
+  // 点击表格按钮
+  function customClick(row, column, cell, event) {
+    if (cell.name === '修改') {
+      console.log(111)
+      dialogVisible.value = true
+    }
+    if (cell.name === '修改') {
+      console.log(111)
     }
   }
   // 点击关闭
@@ -515,6 +574,7 @@
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 加载表单列表
+    getListApplyTypeTree()
     getFormPage()
   })
 </script>

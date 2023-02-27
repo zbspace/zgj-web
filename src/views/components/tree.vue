@@ -27,8 +27,6 @@
 <script setup>
   import {
     // reactive,
-    defineProps,
-    defineEmits,
     onBeforeMount,
     onMounted
   } from 'vue'
@@ -94,7 +92,8 @@
 
   // 点击自定义节点
   function clickTreeNode(node, data) {
-    console.log(node, data)
+    // console.log(node, data)
+    // emit('node-click', data)
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

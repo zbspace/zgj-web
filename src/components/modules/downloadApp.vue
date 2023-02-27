@@ -33,7 +33,7 @@
 
 <script setup>
   import Kdialog from '@/views/components/modules/kdialog.vue'
-  import { defineProps, defineEmits, computed } from 'vue'
+  import { computed } from 'vue'
 
   const props = defineProps({
     modelValue: {

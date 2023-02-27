@@ -72,15 +72,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    inject,
-    ref
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsTable from '@/views/components/table.vue'
@@ -96,7 +88,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({
     cache: {
@@ -270,15 +261,12 @@
 
   // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
   // 点击提交
   function clickSubmit() {
-    commonFun.routerPage(router, {
-      // path: "/frontDesk/PrintControlManagement/electronic-seal-apply/accomplish"
-      name: 'ESelectionAccomplish'
-    })
+    router.push({ name: 'ESelectionAccomplish' })
   }
 
   onBeforeMount(() => {
