@@ -384,12 +384,12 @@
   const handleLogout = () => {
     accountInfoStore.setToken(null)
     // 跳转到登录页
-    router.push({ name: 'login-account' })
+    router.replace({ path: '/login/account' })
   }
 
   // 个人中心
   const goPersonCenter = () => {
-    router.push({ name: 'personally' })
+    router.push({ path: '/personally' })
     hideUserPop()
   }
 

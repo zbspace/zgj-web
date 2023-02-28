@@ -16,7 +16,9 @@ const service = axios.create({
  */
 const processErrorResponse = function (response) {
   // 提示错误信息
-  ElMessage.error(response ? response.data.msg : '请求错误')
+  ElMessage.error(
+    response ? response.data.msg || response.data.message : '请求错误'
+  )
   return Promise.reject(response.data)
 }
 
@@ -54,6 +56,9 @@ service.interceptors.response.use(
   },
   error => {
     // 处理响应错误
+    // if (error.response.status === 404) {
+    //   // 请求路径未找到
+    // }
     return processErrorResponse(error.response)
   }
 )

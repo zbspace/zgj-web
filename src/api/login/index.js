@@ -15,7 +15,7 @@ api.loginByAccount = data => {
 api.tenantInfoList = params => {
   return request({
     method: 'GET',
-    url: '/base/tenantInfoList',
+    url: '/user/tenantInfoList',
     params
   })
 }
