@@ -5,7 +5,9 @@
         <div class="title">
           <div>业务规则管理</div>
           <div>
-            <el-button type="primary">+ 新建</el-button>
+            <el-button type="primary" @click="showFormDialog = true"
+              >+ 新建</el-button
+            >
           </div>
         </div>
       </template>
@@ -60,17 +62,66 @@
       >
       </componentsDocumentsDetails>
     </div>
+
+    <!-- 业务规则弹框 -->
+    <KDialog
+      @update:show="showFormDialog = $event"
+      :show="showFormDialog"
+      title="新增业务规则"
+      :centerBtn="true"
+      :confirmText="$t('t-zgj-operation.submit')"
+      :concelText="$t('t-zgj-operation.cancel')"
+      :width="1000"
+      :height="600"
+      @close="submitForm"
+    >
+      <v-form-render
+        :form-json="formJson"
+        :form-data="formData"
+        :option-data="optionData"
+        ref="vFormRef"
+      >
+      </v-form-render>
+    </KDialog>
   </div>
 </template>
 
 <script setup>
-  import { reactive } from 'vue'
+  import { reactive, ref } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import KDialog from '@/views/components/modules/kdialog.vue'
+  import FormJson from '@/views/addDynamicFormJson/documentType.json'
+  import { ElMessage } from 'element-plus'
+
+  const formJson = reactive(FormJson)
+  const formData = reactive({})
+  const optionData = reactive({})
+  const showFormDialog = ref(false)
+
+  const vFormRef = ref(null)
+  const submitForm = type => {
+    if (!type) {
+      vFormRef.value.resetForm()
+      return
+    }
+    vFormRef.value
+      .getFormData()
+      .then(formData => {
+        // Form Validation OK
+        alert(JSON.stringify(formData))
+        showFormDialog.value = false
+      })
+      .catch(error => {
+        // Form Validation failed
+
+        ElMessage.error(error)
+      })
+  }
 
   const state = reactive({
     componentsSearchForm: {
