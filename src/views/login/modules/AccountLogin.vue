@@ -228,17 +228,32 @@
 <script setup>
   import i18n from '@/utils/i18n'
   import { reactive, watch, onMounted, ref } from 'vue'
-  import router from '../../../router/index'
   import VerificationBtn from '../components/VerificationBtn.vue'
   import UpdagePasswordDialog from './UpdagePasswordDialog.vue'
   import ImmediateRegister from './Register.vue'
   import { useAccountInfoStore } from '@/store/accountInfo'
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { ElMessage } from 'element-plus'
   import md5 from 'js-md5'
   import loginApi from '@/api/login'
   const accountInfo = useAccountInfoStore()
   const route = useRoute()
+  const router = useRouter()
+  // eslint-disable-next-line no-unused-vars
+  const props = defineProps({
+    modelValue: {
+      type: Boolean,
+      default: false
+    },
+    departLists: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  })
+
+  const emits = defineEmits(['update:modelValue', 'update:departLists'])
   const state = reactive({
     activeCodeLogin: false, // 验证码登录
     protocal: true, // 协议
@@ -252,41 +267,14 @@
     showUpdateDialog: false,
     ImmediateRegisterDialog: false
   })
-  const validatePhone = (rule, value, callback) => {
-    const reg = /^1[3-9]\d{9}$/
-    if (reg.test(value)) {
-      callback()
-    } else {
-      callback(new Error('手机号格式不正确'))
-    }
-  }
-  const codeLoginForm = reactive({
-    inputPhone: null,
-    inputCode: null
-  })
-  const codeRules = {
-    inputPhone: [
-      { required: true, message: '请输入手机号', trigger: 'blur' },
-      { validator: validatePhone, trigger: 'blur' }
-    ],
-    inputCode: [
-      { required: true, message: '请输入验证码', trigger: 'blur' },
-      {
-        type: 'number',
-        message: '请输入正确的格式',
-        trigger: ['blur', 'change']
-      }
-    ]
-  }
 
-  const accountLoginForm = reactive({
-    accountNo: null,
-    accountPass: null
+  const rulesTips = reactive({
+    codeRulesPhoneMsg: null,
+    codeRulesCodeMsg: null,
+    accountRulesNo: null,
+    accountRulesPass: null
   })
-  const accountRules = {
-    accountNo: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-    accountPass: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-  }
+
   // 监听 语言切换
   watch(
     () => i18n.global.locale,
@@ -299,9 +287,70 @@
         't-zgj-person.PleaseAccount'
       )
       state.placeholderPassword = i18n.global.t('t-zgj-password.required')
+
+      rulesTips.codeRulesPhoneMsg = i18n.global.t('t-zgj-login-iphone-num')
+      rulesTips.codeRulesCodeMsg = i18n.global.t('t-zgj-login-veritify-code')
+      rulesTips.accountRulesNo = i18n.global.t('t-zgj-login-account-num')
+      rulesTips.accountRulesPass = i18n.global.t('t-zgj-login-account-pwd')
     },
     { immediate: true, deep: true }
   )
+
+  const validatePhone = (rule, value, callback) => {
+    const reg = /^1[3-9]\d{9}$/
+    if (reg.test(value)) {
+      callback()
+    } else {
+      callback(new Error('手机号格式不正确'))
+    }
+  }
+  const codeLoginForm = reactive({
+    inputPhone: null,
+    inputCode: null
+  })
+  const codeRules = reactive({
+    inputPhone: [
+      {
+        required: true,
+        message: rulesTips.codeRulesPhoneMsg,
+        trigger: 'blur'
+      },
+      { validator: validatePhone, trigger: 'blur' }
+    ],
+    inputCode: [
+      {
+        required: true,
+        message: rulesTips.codeRulesCodeMsg,
+        trigger: 'blur'
+      },
+      {
+        type: 'number',
+        message: '验证码错误',
+        trigger: ['blur', 'change']
+      }
+    ]
+  })
+
+  const accountLoginForm = reactive({
+    accountNo: null,
+    accountPass: null
+  })
+  const accountRules = reactive({
+    accountNo: [
+      {
+        required: true,
+        message: rulesTips.accountRulesNo,
+        trigger: 'blur'
+      }
+    ],
+    accountPass: [
+      {
+        required: true,
+        message: rulesTips.accountRulesPass,
+        trigger: 'blur'
+      }
+    ]
+  })
 
   onMounted(() => {
     accountLoginForm.accountNo = 'a001'
@@ -339,48 +388,69 @@
 
     formRef.value.validate(valid => {
       if (valid) {
-        accountInfo.setToken({
-          token: 'test'
-        })
-        accountInfo.setUserName('曹春青')
-        let redirect = route.query.redirect || '/frontDesk/home'
-        if (typeof redirect !== 'string') {
-          redirect = '/frontDesk/home'
-        }
-        router.replace(redirect)
-        ElMessage.success('登录成功')
-        // 账号密码登录
-        // loginApi
-        //   .loginByAccount({
-        //     accountNo: accountLoginForm.accountNo,
-        //     accountPass: md5(accountLoginForm.accountPass)
-        //   })
-        //   .then(res => {
-        //     if (res.success) {
-        //       // 存储登录用户信息
-        //       accountInfo.setToken({
-        //         token: res.data.tokenValue
-        //       })
-        //       accountInfo.setUserName('曹春青')
+        const flag = ref(true)
+        if (flag.value) {
+          emits('update:modelValue', true)
+          emits('update:departLists', [
+            {
+              id: 1,
+              tenantName: '上海建业信息科技股份有限公司'
+            },
+            {
+              id: 2,
+              tenantName: '建业科技测试部'
+            }
+          ])
+          accountInfo.setToken({
+            token: 'test'
+          })
+          accountInfo.setUserName('曹春青')
+          // let redirect = route.query.redirect || '/frontDesk/home'
+          // if (typeof redirect !== 'string') {
+          //   redirect = '/frontDesk/home'
+          // }
+          // router.replace(redirect)
+          // ElMessage.success('登录成功')
+        } else {
+          // 账号密码登录
+          loginApi
+            .loginByAccount({
+              accountNo: accountLoginForm.accountNo,
+              accountPass: md5(accountLoginForm.accountPass)
+            })
+            .then(res => {
+              if (res.success) {
+                // 存储登录用户信息
+                accountInfo.setToken({
+                  token: res.data.tokenValue
+                })
+                accountInfo.setUserName('曹春青')
 
-        //       // 获取用户企业列表
-        //       loginApi
-        //         .tenantInfoList()
-        //         .then(res => {
-        //           if (!res.success) return false
-        //           let redirect = route.query.redirect || '/frontDesk/home'
-        //           if (typeof redirect !== 'string') {
-        //             redirect = '/frontDesk/home'
-        //           }
-        //           router.replace(redirect)
-        //           ElMessage.success('登录成功')
-        //         })
-        //         .catch(() => {})
-        //     }
-        //   })
-        //   .catch(err => {
-        //     console.log(err, '==')
-        //   })
+                // 获取用户企业列表
+                loginApi
+                  .tenantInfoList()
+                  .then(res => {
+                    if (!res.success) return false
+
+                    if (res.data && res.data.length <= 0) {
+                      let redirect = route.query.redirect || '/frontDesk/home'
+                      if (typeof redirect !== 'string') {
+                        redirect = '/frontDesk/home'
+                      }
+                      router.replace(redirect)
+                      ElMessage.success('登录成功')
+                      return
+                    }
+                    emits('update:modelValue', true)
+                    emits('update:departLists', res.data)
+                  })
+                  .catch(() => {})
+              }
+            })
+            .catch(err => {
+              console.log(err, '==')
+            })
+        }
       } else {
         ElMessage.warning('请正确填写')
         return false

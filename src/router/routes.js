@@ -19,7 +19,7 @@ export default [
   // 章管家
   {
     path: '/login/account',
-    name: 'login-account',
+    name: 'LoginAccount',
     meta: { title: 'login-account', authRequired: false },
     component: () => import('../views/login/account')
     // component: () => import("../views/login/accountDemo")

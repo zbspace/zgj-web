@@ -28,6 +28,7 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            :loading="loading"
             :header="state.componentsTable.header"
             :isSelection="true"
           >
@@ -39,6 +40,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @current-change="currentPageChange"
+          @size-change="sizeChange"
         >
         </componentsPagination>
       </template>
@@ -55,14 +58,16 @@
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import logs from '@/api/system/logManagement'
   const showDepPerDialog = ref(false)
+  const loading = ref(false)
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -143,87 +148,37 @@
     componentsTable: {
       header: [
         {
-          prop: '1',
-          label: '操作人',
+          prop: 'accountId',
+          label: '账号ID',
           sortable: true,
           'min-width': 120
         },
         {
-          prop: '2',
-          label: '所属部门',
+          prop: 'accountNo',
+          label: '账号',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
-          label: '操作时间',
+          prop: 'organName',
+          label: '组织机构名称',
           sortable: true,
           'min-width': 180
         },
         {
-          prop: '4',
-          label: '操作页面',
+          prop: 'appVersion',
+          label: '应用版本号',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
-          label: '操作说明',
+          prop: 'deviceType',
+          label: '设备类型',
           sortable: true,
           'min-width': 180
         }
       ],
-      data: [
-        {
-          1: '郭光林',
-          2: '软件部',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        },
-        {
-          1: '郭光林',
-          2: '建业科技',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        },
-        {
-          1: '郭光林',
-          2: '建业科技',
-          3: '2023-01-05 13:57:17',
-          4: '用印申请',
-          5: '新增用印申请：010501'
-        },
-        {
-          1: '李慧斌',
-          2: '软件部',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        },
-        {
-          1: '郭光林',
-          2: '产品研发中心',
-          3: '2023-01-05 13:57:17',
-          4: '用印申请',
-          5: '新增用印申请：010501'
-        },
-        {
-          1: '李慧斌',
-          2: '软件部',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        },
-        {
-          1: '李慧斌',
-          2: '软件部',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -235,14 +190,14 @@
 
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
+        total: 0,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
@@ -255,6 +210,38 @@
       showDepPerDialog.value = true
     }
   }
+
+  const flowPageApi = () => {
+    loading.value = true
+    return logs
+      .systemOperation({
+        keyword: '',
+        pageNo: state.componentsPagination.data.index,
+        pageSize: state.componentsPagination.data.pageNumber
+      })
+      .then(result => {
+        console.log(result)
+        state.componentsTable.data = result.data.records
+        state.componentsPagination.data.amount = result.data.total
+        state.componentsPagination.defaultAttribute.total = result.data.total
+        loading.value = false
+        return result
+      })
+  }
+
+  const currentPageChange = e => {
+    state.componentsPagination.data.index = e
+    flowPageApi()
+  }
+
+  const sizeChange = e => {
+    state.componentsPagination.data.pageNumber = e
+    flowPageApi()
+  }
+
+  onBeforeMount(() => {
+    flowPageApi()
+  })
 </script>
 
 <style lang="scss" scoped></style>

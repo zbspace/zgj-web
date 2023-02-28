@@ -2,6 +2,7 @@
   <div class="components-table">
     <el-table
       v-bind="props.defaultAttribute"
+      v-loading="loading"
       :refs="refs"
       :data="props.data"
       style="width: 100%"
@@ -103,6 +104,10 @@
     type: {
       type: String,
       default: '0'
+    },
+    loading: {
+      type: Boolean,
+      default: false
     },
     // 表头数据
     header: {
