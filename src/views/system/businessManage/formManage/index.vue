@@ -79,6 +79,19 @@
       v-if="dialogVisible"
       @close="dialogVisible = false"
     />
+    <!-- 弹窗提示 -->
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        {{ state.JyElMessageBox.header.data }}
+      </template>
+      <template #content>
+        {{ state.JyElMessageBox.content.data }}
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 
@@ -294,7 +307,7 @@
           prop: '8',
           label: '操作',
           fixed: 'right',
-          width: 320,
+          width: 280,
           rankDisplayData: [
             {
               name: '修改'
@@ -455,7 +468,9 @@
         'show-checkbox': false,
         'default-expand-all': true,
         'expand-on-click-node': false,
-        'check-strictly': true
+        'check-strictly': true,
+        'highlight-current':true,
+        'auto-expand-parent':true
       }
     },
     componentsDocumentsDetails: {
@@ -474,6 +489,15 @@
           name: 'Process-Version'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   // 点击树节点
@@ -540,10 +564,12 @@
     })
     console.log(queryParams)
     api.formPage(queryParams).then(res => {
-      console.log(res)
+      console.log('表格数据',res)
       const { code, data } = res
       if (code === 200) {
         state.componentsTable.data = data
+        state.componentsPagination.data.amount = data.length
+        state.componentsPagination.defaultAttribute.total = data.length
       }
     })
   }
@@ -556,12 +582,31 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
+    console.log(cell)
     if (cell.name === '修改') {
       console.log(111)
       dialogVisible.value = true
     }
-    if (cell.name === '修改') {
-      console.log(111)
+    if (cell.name === '删除') {
+      console.log('删除')
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data =
+        '删除此条记录？'
+      state.JyElMessageBox.show = true
+    }
+    if (cell.name === '启用') {
+      console.log('启用')
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data =
+        '启用此条记录？'
+      state.JyElMessageBox.show = true
+    }
+    if (cell.name === '复制') {
+      console.log('复制')
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data =
+        '复制此条记录？'
+      state.JyElMessageBox.show = true
     }
   }
   // 点击关闭
