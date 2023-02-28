@@ -183,18 +183,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          fixed: true
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center',
-          fixed: true
-        },
-        {
           prop: '2',
           label: '部门名称',
           sortable: true,
@@ -251,7 +239,6 @@
       ],
       data: [
         {
-          0: 1,
           1: 'TradeCode21',
           2: '建业科技',
           3: '往往',
@@ -269,7 +256,6 @@
           6: '牛牛'
         },
         {
-          0: 1,
           1: 'TradeCode21',
           2: '建业科技',
           3: '往往',
@@ -278,7 +264,6 @@
           6: '牛牛'
         },
         {
-          0: 1,
           1: 'TradeCode21',
           2: '建业科技',
           3: '往往',
@@ -287,7 +272,6 @@
           6: '牛牛'
         },
         {
-          0: 1,
           1: 'TradeCode21',
           2: '建业科技',
           3: '往往',
@@ -296,7 +280,6 @@
           6: '牛牛'
         },
         {
-          0: 1,
           1: 'TradeCode21',
           2: '建业科技',
           3: '往往',

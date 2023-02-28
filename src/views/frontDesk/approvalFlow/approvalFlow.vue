@@ -48,6 +48,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            isSelection
             @selection-change="selectionChange"
             @custom-click="customClick"
           >
@@ -288,15 +289,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '流程名称',
           sortable: true,
@@ -522,15 +514,6 @@
     if (activeName === '1') {
       state.componentsTable.header = [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '流程名称',
           sortable: true,
@@ -640,15 +623,6 @@
       ]
     } else if (activeName === '2') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '流程名称',

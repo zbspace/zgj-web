@@ -34,7 +34,7 @@
               :defaultAttribute="state.componentsTable.defaultAttribute"
               :data="state.componentsTable.data"
               :header="state.componentsTable.header"
-              :isSelection="true"
+              :isSelection="false"
               @cellClick="cellClick"
               @custom-click="customClick"
             >
@@ -111,7 +111,6 @@
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
   // import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import { ElMessageBox } from 'element-plus'
 
   import KDialog from '@/views/components/modules/kdialog.vue'
   const state = reactive({
@@ -221,13 +220,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center',
-          fixed: true
-        },
-        {
           prop: '1',
           label: 'license密钥',
           sortable: true,
@@ -251,13 +243,11 @@
       ],
       data: [
         {
-          0: 1,
           1: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
           2: '王往',
           3: '2022-12-26 18:00:00'
         },
         {
-          0: 1,
           1: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
           2: '里斯',
           3: '2022-12-26 18:00:00'

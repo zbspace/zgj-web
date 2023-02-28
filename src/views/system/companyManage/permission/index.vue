@@ -110,7 +110,6 @@
   import componentsLayout from '@/views/components/Layout'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import { ElMessageBox } from 'element-plus'
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -169,18 +168,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          fixed: true
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center',
-          fixed: true
-        },
-        {
           prop: '1',
           label: '角色编码',
           sortable: true,
@@ -224,31 +211,26 @@
       ],
       data: [
         {
-          0: 1,
           1: '20221230201717551429',
           2: '测试角色',
           3: '36'
         },
         {
-          0: 2,
           1: '20221230201717551429',
           2: '二级管理员',
           3: '36'
         },
         {
-          0: 3,
           1: '20221230201717551429',
           2: '印章管理员',
           3: '36'
         },
         {
-          0: 4,
           1: '20221230201717551429',
           2: '测试角色',
           3: '306'
         },
         {
-          0: 5,
           1: '20221230201717551429',
           2: '印章管理员',
           3: '34'

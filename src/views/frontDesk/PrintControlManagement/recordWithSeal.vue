@@ -72,6 +72,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -457,16 +458,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '单据编号',
           sortable: true,
@@ -831,16 +822,6 @@
     if (activeName === '1') {
       state.componentsTable.header = [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '单据编号',
           sortable: true,
@@ -905,7 +886,6 @@
       ]
       state.componentsTable.data = [
         {
-          0: 1,
           1: 'zsz009',
           2: '测试文件01',
           3: '普通智能印章',
@@ -916,7 +896,6 @@
           8: '审批已完成'
         },
         {
-          0: 2,
           1: 'zsz011',
           2: '测试文件05',
           3: '智能印章',
@@ -927,7 +906,6 @@
           8: '审批已完成'
         },
         {
-          0: 3,
           1: 'zsz019',
           2: '测试文件12',
           3: '普通智能印章',
@@ -938,7 +916,6 @@
           8: '待审批'
         },
         {
-          0: 4,
           1: 'zsz009',
           2: '测试文件03',
           3: '智能印章',
@@ -949,7 +926,6 @@
           8: '审批已完成'
         },
         {
-          0: 5,
           1: 'zsz012',
           2: '测试文件08',
           3: '普通智能印章',

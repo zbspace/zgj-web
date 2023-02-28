@@ -188,13 +188,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          fixed: true,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '模版名称',
           sortable: true,
@@ -252,7 +245,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -262,7 +254,6 @@
           7: '备注'
         },
         {
-          0: 2,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -272,7 +263,6 @@
           7: '备注'
         },
         {
-          0: 3,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -282,7 +272,6 @@
           7: '备注'
         },
         {
-          0: 4,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -292,7 +281,6 @@
           7: '备注'
         },
         {
-          0: 5,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -377,7 +365,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     console.log(row, column, cell, event)
-    if (column.property == '1') {
+    if (column.property === '1') {
       state.componentsDocumentsDetails.show = true
     }
   }

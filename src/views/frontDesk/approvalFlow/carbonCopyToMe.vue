@@ -49,6 +49,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            isSelection
             @selection-change="selectionChange"
           >
           </componentsTable>
@@ -226,11 +227,6 @@
     },
     componentsTable: {
       header: [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '流程主题',

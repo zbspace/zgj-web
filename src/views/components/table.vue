@@ -12,6 +12,15 @@
       @row-click="rowClick"
       class="ap-table"
     >
+      <el-table-column v-if="isSelection" type="selection" width="50" />
+      <el-table-column
+        label="序号"
+        type="index"
+        width="55"
+        fixed="left"
+        align="center"
+        v-if="isNo"
+      />
       <!-- 列表内容 -->
       <el-table-column
         v-bind="item"
@@ -113,6 +122,11 @@
     isSelection: {
       type: Boolean,
       default: false
+    },
+    // 是否序号
+    isNo: {
+      type: Boolean,
+      default: true
     },
     // 默认属性
     defaultAttribute: {

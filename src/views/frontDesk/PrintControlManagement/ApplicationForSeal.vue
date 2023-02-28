@@ -67,6 +67,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -352,16 +353,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '单据编码',
           sortable: true,
@@ -433,7 +424,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '107873',
           2: '测试类型',
           3: '【智】测试专用章-自动版-Joel-243（全称）',
@@ -444,7 +434,6 @@
           8: '2022-11-30 12:00:08'
         },
         {
-          0: 2,
           1: '107873',
           2: '测试类型',
           3: '【智】研发-易全程二代',
@@ -455,7 +444,6 @@
           8: '2022-11-30 12:00:08'
         },
         {
-          0: 3,
           1: '107878',
           2: '测试类型',
           3: '测试印章',
@@ -466,7 +454,6 @@
           8: '2022-11-30 12:00:08'
         },
         {
-          0: 4,
           1: '107673',
           2: '测试类型',
           3: '【智】测试专用章-自动版-Joel-243（全称）',
@@ -477,7 +464,6 @@
           8: '2022-11-30 09:00:10'
         },
         {
-          0: 5,
           1: '107872',
           2: '测试',
           3: '测试章',
@@ -488,7 +474,6 @@
           8: '2022-11-30 12:00:08'
         },
         {
-          0: 6,
           1: '107876',
           2: '测试类型',
           3: '测试专用章-自动版-243',

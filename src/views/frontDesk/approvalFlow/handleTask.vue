@@ -253,11 +253,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '任务单据名称',
           sortable: true,
@@ -493,11 +488,6 @@
     if (activeName == '1') {
       state.componentsTable.header = [
         {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '任务单据名称',
           sortable: true,
@@ -591,11 +581,6 @@
       ]
     } else if (activeName == '2') {
       state.componentsTable.header = [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '任务单据名称',

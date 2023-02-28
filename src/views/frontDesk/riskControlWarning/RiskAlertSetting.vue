@@ -36,7 +36,6 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
-            :isSelection="true"
             @custom-click="customClick"
           >
           </componentsTable>
@@ -180,11 +179,6 @@
     },
     componentsTable: {
       header: [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '风险分类',
@@ -409,11 +403,6 @@
     if (activeName == '1') {
       state.componentsTable.header = [
         {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '风险分类',
           sortable: true,
@@ -528,11 +517,6 @@
       ]
     } else if (activeName == '2' || activeName == '3') {
       state.componentsTable.header = [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '2',
           label: '风险项',
