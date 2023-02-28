@@ -427,7 +427,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     console.log(row, column, cell, event)
-    if (column.property == '1') {
+    if (column.property === '1') {
       state.componentsDocumentsDetails.show = true
     }
   }

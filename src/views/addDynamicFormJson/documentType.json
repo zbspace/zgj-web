@@ -157,7 +157,7 @@
           "widgetList": [
             {
               "key": 69878,
-              "type": "input",
+              "type": "select",
               "alias": "",
               "icon": "text-field",
               "formItemFlag": true,
@@ -165,7 +165,6 @@
                 "name": "input36698",
                 "label": "使用范围",
                 "labelAlign": "",
-                "type": "text",
                 "defaultValue": "",
                 "placeholder": "请选择",
                 "columnWidth": "200px",
@@ -176,9 +175,35 @@
                 "disabled": false,
                 "hidden": false,
                 "clearable": true,
-                "showPassword": false,
-                "required": false,
-                "requiredHint": "",
+                "filterable": false,
+                "allowCreate": false,
+                "remote": false,
+                "automaticDropdown": false,
+                "multiple": false,
+                "multipleLimit": 0,
+                "optionItems": [
+                  {
+                    "value": "1",
+                    "label": "社会人"
+                  },
+                  {
+                    "value": "2",
+                    "label": "高中"
+                  },
+                  {
+                    "value": "3",
+                    "label": "大学"
+                  },
+                  {
+                    "value": "4",
+                    "label": "研究生"
+                  },
+                  {
+                    "value": "5",
+                    "label": "博士及以上"
+                  }
+                ],
+                "required": true,
                 "validation": "",
                 "validationHint": "",
                 "customClass": [],
