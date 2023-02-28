@@ -107,7 +107,6 @@
   import componentsLayout from '@/views/components/Layout'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import { ElMessageBox } from 'element-plus'
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -176,18 +175,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          fixed: true
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center',
-          fixed: true
-        },
-        {
           prop: '2',
           label: '企业名称',
           sortable: true,
@@ -244,7 +231,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '001',
           2: '复旦',
           3: '厨房',
@@ -253,7 +239,6 @@
           6: '备注'
         },
         {
-          0: 1,
           1: '001',
           2: '北大',
           3: '厨房',
@@ -262,7 +247,6 @@
           6: '备注'
         },
         {
-          0: 1,
           1: '001',
           2: '清华',
           3: '厨房',
@@ -271,7 +255,6 @@
           6: '备注'
         },
         {
-          0: 1,
           1: '001',
           2: '南大',
           3: '厨房',
@@ -280,7 +263,6 @@
           6: '备注'
         },
         {
-          0: 1,
           1: '001',
           2: '人大',
           3: '厨房',
@@ -289,7 +271,6 @@
           6: '备注'
         },
         {
-          0: 1,
           1: '001',
           2: '哈工大',
           3: '厨房',

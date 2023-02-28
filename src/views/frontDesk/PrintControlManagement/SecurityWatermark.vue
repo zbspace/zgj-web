@@ -36,6 +36,7 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            isSelection
             :header="state.componentsTable.header"
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -237,15 +238,6 @@
     },
     componentsTable: {
       header: [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据编号',
@@ -526,15 +518,6 @@
     // console.log(activeName);
     if (activeName == '1') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据编号',

@@ -43,6 +43,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
           >
@@ -229,15 +230,6 @@
     },
     componentsTable: {
       header: [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据名称',
@@ -500,15 +492,6 @@
     if (activeName == '1') {
       state.componentsTable.header = [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '单据名称',
           sortable: true,
@@ -608,15 +591,6 @@
       ]
     } else if (activeName == '2') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据名称',

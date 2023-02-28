@@ -263,6 +263,7 @@
                   class="upload-file-item"
                   v-for="(item, index) in state.componentsArchiveForm
                     .supplemenFiles"
+                  :key="index"
                 >
                   <div class="file-name" :title="item.name">{{
                     item.name
@@ -509,16 +510,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '单据编号',
           sortable: true,
@@ -568,7 +559,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '011105',
           2: '5417692443',
           3: '普通智能用印',
@@ -776,16 +766,6 @@
     // console.log(activeName);
     if (activeName === '1') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
         {
           prop: '1',
           label: '单据编号',

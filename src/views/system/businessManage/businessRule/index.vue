@@ -25,9 +25,10 @@
 
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button>批量删除</el-button>
-            <el-button>批量停用</el-button>
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -38,8 +39,11 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
-            :isSelection="true"
+            isSelection
+            isNo
             @cellClick="cellClick"
+            @custom-click="customClick"
+            @selection-change="selectionChange"
           >
           </componentsTable>
         </div>
@@ -249,17 +253,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          fixed: true
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          fixed: true
-        },
-        {
           prop: '1',
           label: '业务规则名称',
           sortable: true,
@@ -274,38 +267,70 @@
         },
         {
           prop: '3',
-          label: '业务类型',
+          label: '一盖一码',
           sortable: true,
-          'min-width': 150
+          align: 'center',
+          width: 120
         },
         {
           prop: '4',
-          label: '文件类型',
+          label: '远程盖章',
           sortable: true,
-          'min-width': 150
+          align: 'center',
+          width: 120
         },
         {
           prop: '5',
-          label: '状态',
+          label: '骑缝盖章',
           sortable: true,
-          'min-width': 150
+          align: 'center',
+          width: 120
         },
         {
           prop: '6',
-          label: '创建时间',
+          label: '批量盖章',
           sortable: true,
-          width: 180
+          align: 'center',
+          width: 120
         },
         {
           prop: '7',
-          label: '创建人',
+          label: '智感盖章',
           sortable: true,
-          'min-width': 150
+          align: 'center',
+          width: 120
         },
         {
           prop: '8',
+          label: '盖后自动存档',
+          sortable: true,
+          align: 'center',
+          width: 160
+        },
+        {
+          prop: '9',
+          label: '防伪水印验证',
+          sortable: false,
+          align: 'center',
+          'min-width': 140
+        },
+        {
+          prop: '10',
+          label: '创建时间',
+          sortable: true,
+          align: 'center',
+          width: 170
+        },
+        {
+          prop: '11',
+          label: '创建人',
+          align: 'center',
+          'min-width': 150
+        },
+        {
+          prop: '12',
           label: '操作',
-          width: 320,
+          width: 180,
           fixed: 'right',
           rankDisplayData: [
             {
@@ -315,67 +340,79 @@
               name: '删除'
             },
             {
-              name: '启用'
+              name: '上移'
             },
             {
-              name: '复制'
-            },
-            {
-              name: '关联文件类型'
+              name: '下移'
             }
           ]
         }
       ],
       data: [
         {
-          0: 1,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '2022/10/30 15:00:00',
-          7: '小红'
+          1: '业务规则1',
+          2: '202302280001',
+          3: '是',
+          4: '否',
+          5: '是',
+          6: '是',
+          7: '否',
+          8: '是',
+          9: '盖中 盖后 归档中',
+          10: '2022/10/30 15:00:00',
+          11: '小红'
         },
         {
-          0: 2,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '2022/10/30 15:00:00',
-          7: '小红'
+          1: '业务规则2',
+          2: '202302280002',
+          3: '否',
+          4: '是',
+          5: '否',
+          6: '否',
+          7: '否',
+          8: '是',
+          9: '盖中 盖后 归档中',
+          10: '2022/10/30 15:00:00',
+          11: '小红'
         },
         {
-          0: 3,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '2022/10/30 15:00:00',
-          7: '小红'
+          1: '业务规则3',
+          2: '202302280003',
+          3: '是',
+          4: '是',
+          5: '否',
+          6: '是',
+          7: '是',
+          8: '是',
+          9: '盖中 盖后 归档中',
+          10: '2022/10/30 15:00:00',
+          11: '小红'
         },
         {
-          0: 4,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '2022/10/30 15:00:00',
-          7: '小红'
+          1: '业务规则4',
+          2: '202302280004',
+          3: '是',
+          4: '是',
+          5: '否',
+          6: '是',
+          7: '否',
+          8: '否',
+          9: '盖中 盖后 归档中',
+          10: '2022/10/30 15:00:00',
+          11: '小红'
         },
         {
-          0: 5,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '2022/10/30 15:00:00',
-          7: '小红'
+          1: '业务规则5',
+          2: '202302280005',
+          3: '是',
+          4: '是',
+          5: '否',
+          6: '是',
+          7: '否',
+          8: '是',
+          9: '盖中 盖后 归档中',
+          10: '2022/10/30 15:00:00',
+          11: '小红'
         }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -395,7 +432,17 @@
         }
       }
     },
-
+    componentsBatch: {
+      selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
+      data: [
+        {
+          name: '批量删除'
+        }
+      ]
+    },
     componentsPagination: {
       data: {
         amount: 400,
@@ -431,9 +478,30 @@
       state.componentsDocumentsDetails.show = true
     }
   }
+  function customClick(row, column, cell, event) {
+    console.log(cell.name)
+    if (cell.name === '修改') {
+      showFormDialog.value = true
+    }
+    if (cell.name === '删除') {
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
+      state.JyElMessageBox.show = true
+    }
+  }
   // 点击关闭
   function clickClose() {
     state.componentsDocumentsDetails.show = false
+  }
+  // 当选择项发生变化时会触发该事件
+  function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
   }
 </script>
 

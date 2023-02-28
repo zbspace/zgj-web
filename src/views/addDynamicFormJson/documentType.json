@@ -102,7 +102,7 @@
                 "labelWidth": null,
                 "labelHidden": false,
                 "readonly": false,
-                "disabled": false,
+                "disabled": true,
                 "hidden": false,
                 "clearable": true,
                 "showPassword": false,

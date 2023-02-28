@@ -43,6 +43,7 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            isSelection
             :header="state.componentsTable.header"
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -253,11 +254,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '单据编号',
           sortable: true,
@@ -344,7 +340,7 @@
           1: '989117',
           2: '测试专用章-李慧斌',
           3: '测试专用',
-          4: '测试专用章',
+          4: '989117',
           5: '989117',
           6: '3',
           7: '7',
@@ -356,7 +352,7 @@
           1: '989117',
           2: '测试专用章-汤博',
           3: '测试专用',
-          4: '测试专用章',
+          4: '989117',
           5: '989117',
           6: '3',
           7: '7',
@@ -368,7 +364,7 @@
           1: '989117',
           2: '测试专用章-李慧斌',
           3: '测试专用',
-          4: '测试专用章',
+          4: '989117',
           5: '989117',
           6: '3',
           7: '7',
@@ -597,10 +593,6 @@
     // console.log(activeName);
     if (activeName === '1') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
         {
           prop: '1',
           label: '单据编号',
