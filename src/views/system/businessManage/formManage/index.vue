@@ -304,13 +304,7 @@
               name: '删除'
             },
             {
-              name: '启用'
-            },
-            {
               name: '复制'
-            },
-            {
-              name: '关联文件类型'
             }
           ]
         }
@@ -516,14 +510,14 @@
     }
     if (cell.name === '删除') {
       console.log('删除')
-      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.header.data = '删除'
       state.JyElMessageBox.content.data =
-        '删除此条记录？'
+        '请问确定要删除该表单吗？'
       state.JyElMessageBox.show = true
     }
     if (cell.name === '启用') {
       console.log('启用')
-      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.header.data = '启用'
       state.JyElMessageBox.content.data =
         '启用此条记录？'
       state.JyElMessageBox.show = true
