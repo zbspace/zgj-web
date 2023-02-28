@@ -3,12 +3,11 @@
     <div class="ap-desc">
       <div class="ap-desc-text">
         共 {{ props.data.amount }} 条记录 第 {{ props.data.index }} /
-        {{ Math.ceil(props.data.amount / pageSize) }} 页
+        {{ Math.ceil(props.data.amount / props.data.pageNumber) }} 页
       </div>
       <div>
         <el-pagination
           v-bind="state.props.sizeAttribute"
-          v-model.page-size="pageSize"
           @size-change="sizeChange"
           @current-change="currentChange"
           :page-sizes="[10, 50, 100]"
@@ -29,7 +28,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   const props = defineProps({
     // 标识
     refs: {
@@ -57,7 +56,6 @@
     }
   })
   const emit = defineEmits(['size-change', 'current-change'])
-  const pageSize = ref(10)
   const state = reactive({
     props: {
       defaultAttribute: {},
@@ -105,7 +103,6 @@
   //
   function sizeChange(val) {
     // console.log(val);
-    pageSize.value = val
     emit('size-change', val)
   }
   //
