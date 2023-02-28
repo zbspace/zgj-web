@@ -121,7 +121,11 @@
                 <div class="fast-cont">
                   <div class="fast-cont-title">快捷申请用印 </div>
                   <div class="fast-cont-but">
-                    <el-button type="primary" class="fast-button">
+                    <el-button
+                      type="primary"
+                      class="fast-button"
+                      @click="toYongyin"
+                    >
                       <i class="fast-icon">
                         <svg class="iconpark-icon">
                           <use href="#shenqing-yongyin"></use>
@@ -235,6 +239,7 @@
   } from 'vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsTabs from '@/views/components/tabs.vue'
+  import { useRouter } from 'vue-router'
   // const props = defineProps({
   //   // 处理类型
   //   type: {
@@ -243,6 +248,7 @@
   //   }
   // })
   // const emit = defineEmits([])
+  const router = useRouter()
   const state = reactive({
     componentsTabs: {
       data: [
@@ -452,6 +458,9 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
+  function toYongyin() {
+    router.push({ name: 'SelectionForm' })
+  }
 </script>
 <style lang="scss" scoped>
   .frontDesk-home-page-home {

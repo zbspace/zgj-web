@@ -10,7 +10,7 @@
       </template>
       <template #custom>
         <div class="custom">
-          <div class="ap-cont-info">
+          <!-- <div class="ap-cont-info">
             <div class="ap-cont-info-icon">
               <img
                 class="ap-cont-info-icon-img"
@@ -22,7 +22,7 @@
               有已发起意外退出的用印申请【上海科创招投标建筑制材专属项目合同】
             </div>
             <div class="ap-cont-info-caozuo"> 继续完成用印申请 </div>
-          </div>
+          </div> -->
           <div class="ap-cont-title"> 请选择所需表单 </div>
           <div class="ap-cont-desc">
             请根据以下步骤完善表单内容及确认审批流程

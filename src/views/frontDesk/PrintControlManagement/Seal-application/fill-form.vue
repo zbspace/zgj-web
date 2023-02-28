@@ -233,7 +233,7 @@
       align-items: center;
       border-top: 1px solid var(--jy-color-border-2);
       background-color: var(--jy-in-common-use-1);
-      z-index: 999;
+      z-index: 9;
     }
   }
 </style>

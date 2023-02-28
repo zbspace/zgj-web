@@ -49,7 +49,7 @@
     position: fixed;
     bottom: 220px;
     right: 48px;
-    z-index: 10;
+    z-index: 9;
     .iconpark-icon {
       width: 20px;
       height: 20px;
