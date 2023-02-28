@@ -983,6 +983,11 @@
       type: String,
       default: '0'
     },
+    // v-model
+    modelValue: {
+      type: Boolean,
+      default: false
+    },
     // 展示权限
     visible: {
       type: Array,
@@ -1007,7 +1012,8 @@
       }
     }
   })
-  const emit = defineEmits(['clickClose'])
+  // console.log('--->', props)
+  const emit = defineEmits(['clickClose', 'update:modelValue'])
   const state = reactive({
     cache: {
       // 用印详情
@@ -2923,7 +2929,7 @@
       }
     },
     drawer: {
-      show: true,
+      show: false,
       size: '50%',
       FullScreenStatus: 0
     },
@@ -3110,8 +3116,14 @@
     }
   })
   // 初始化数据
-  function initData() {
-    state.drawer.show = props.show
+  const initData = () => {
+    state.drawer.show = false
+    if (props.show) {
+      state.drawer.show = props.show
+    }
+    if (props.modelValue) {
+      state.drawer.show = props.modelValue
+    }
     state.componentsTabs.data = props.visible
     if (props.activeName) {
       state.componentsTabs.activeName = props.activeName
@@ -3120,7 +3132,7 @@
     } else {
       state.componentsTabs.activeName = ''
     }
-    // console.log(state.componentsTabs.activeName)
+    // console.log(props.show, props.modelValue, state.drawer.show)
     // visible: [
     //         {
     //             label: '用印详情',
@@ -3129,26 +3141,74 @@
     //             layout: [],
     //         },
     //     ]
+
+    props.visible.forEach(element => {
+      if (element.name === 'Details-of-Printing') {
+        // 处理 用印详情 Details-of-Printing
+        disDetailsaOfPrinting(element)
+      } else if (element.name === 'Form-Details') {
+        // 处理 表单详情 Form-Details
+        disFormDetails(element)
+      }
+    })
   }
   // 点击全屏
-  function ClickOnFullScreen() {
+  const ClickOnFullScreen = () => {
     state.drawer.size = '100%'
     state.drawer.FullScreenStatus = 1
   }
   // 点击关闭全屏
-  function ClickCloseFullScreen() {
+  const ClickCloseFullScreen = () => {
     state.drawer.size = '50%'
     state.drawer.FullScreenStatus = 0
   }
   // 点击关闭
-  function clickClose() {
+  const clickClose = () => {
     state.drawer.show = false
+    emit('update:modelValue', state.drawer.show)
     emit('clickClose', state.drawer.show)
   }
   // 切换选项
-  function tabChange(activeName) {
+  const tabChange = activeName => {
     state.componentsTabs.activeName = activeName
   }
+  // 处理 用印详情 Details-of-Printing
+  const disDetailsaOfPrinting = element => {
+    // 基本信息
+    if (element.basicInformation && element.basicInformation.data) {
+      state.DetailsaOfPrinting.basicInformation.data =
+        element.basicInformation.data
+    }
+    // 附件 用印文件
+    if (element.accessory && element.accessory.printedData) {
+      state.DetailsaOfPrinting.accessory.printedData =
+        element.accessory.printedData
+    }
+    // 附件 补充文件
+    if (element.accessory && element.accessory.additionalData) {
+      state.DetailsaOfPrinting.accessory.additionalData =
+        element.accessory.additionalData
+    }
+    // 智能用印
+    if (element.IntelligentPrinting && element.IntelligentPrinting.data) {
+      state.DetailsaOfPrinting.IntelligentPrinting.data =
+        element.IntelligentPrinting.data
+    }
+    // 文件归档
+    if (element.archiveInformation && element.archiveInformation.data) {
+      state.DetailsaOfPrinting.archiveInformation.data =
+        element.archiveInformation.data
+    }
+
+    // 未写完
+  }
+  // 处理 表单详情 Form-Details
+  const disFormDetails = element => {
+    if (element.data) {
+      state.FormDetails.basicInformation.data = element.data
+    }
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化数据
@@ -3157,14 +3217,10 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
-  watch(
-    () => [props.show],
-    (newValue, oldValue) => {
-      // console.log(newValue, oldValue);
-      // 初始化数据
-      initData()
-    }
-  )
+  watch(props, (newValue, oldValue) => {
+    // console.log(newValue, oldValue);
+    initData()
+  })
 </script>
 <style lang="scss" scoped>
   .components-documentsDetails {

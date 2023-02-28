@@ -92,6 +92,7 @@
       type: String,
       default: '0'
     },
+    // v-model
     modelValue: {
       type: Boolean,
       default: false
