@@ -119,13 +119,15 @@
       :height="600"
       @close="submitLibraryForm"
     >
-      <v-form-render
-        :form-json="formLibraryJson"
-        :form-data="formLibraryData"
-        :option-data="optionLibraryData"
+      <JyVform
         ref="vFormLibraryRef"
-      >
-      </v-form-render>
+        mode="render"
+        :formJson="formLibraryJson"
+        :formData="formLibraryData"
+        :optionData="optionLibraryData"
+        @buttonClick="clickSelect"
+        @on-loaded="onLoaded"
+      />
     </KDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
