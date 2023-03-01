@@ -3,7 +3,7 @@
     <div class="ap-desc">
       <div class="ap-desc-text">
         共 {{ props.data.amount }} 条记录 第 {{ props.data.index }} /
-        {{ Math.ceil(props.data.amount / props.data.pageNumber) }} 页
+        {{ Math.ceil(props.data.amount / props.data.pageNumber) || 1 }} 页
       </div>
       <div>
         <el-pagination

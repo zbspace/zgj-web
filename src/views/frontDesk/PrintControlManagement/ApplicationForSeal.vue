@@ -175,6 +175,7 @@
   const vFormLibraryRef = ref(null)
   const showDepPerDialog = ref(false)
   const submitLibraryForm = type => {
+    console.log(type)
     if (!type) {
       vFormLibraryRef.value.resetForm()
       return
