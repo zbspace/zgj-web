@@ -18,7 +18,7 @@
             alt=""
             v-if="!data.children || data.children.length === 0"
           />
-          <span>{{ data.label }}</span>
+          <span>{{ data[props.defaultProps.label] }}</span>
         </span>
       </template>
     </el-tree>

@@ -66,6 +66,8 @@
           <componentsTree
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
+            :defaultProps="state.componentsTree.defaultProps"
+            :loading="loading"
           >
           </componentsTree>
         </div>
@@ -76,6 +78,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -88,6 +91,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @current-change="currentPageChange"
+          @size-change="sizeChange"
         >
         </componentsPagination>
       </template>
@@ -153,6 +158,8 @@
   import KDialog from '@/views/components/modules/kdialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import { ElMessage } from 'element-plus'
+  import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
+  import libraryApis from '@/api/frontDesk/sealManage/libraryOfSeals'
   // const props = defineProps({
   //   // 处理类型
   //   type: {
@@ -166,6 +173,7 @@
   const optionLibraryData = reactive({})
   const vFormLibraryRef = ref(null)
   const showLibraryDialog = ref(false)
+  const loading = ref(false)
 
   const submitLibraryForm = type => {
     if (!type) {
@@ -347,7 +355,7 @@
     componentsTable: {
       header: [
         {
-          prop: '1',
+          prop: 'sealName',
           label: '印章名称',
           sortable: true,
           'min-width': 210,
@@ -366,7 +374,7 @@
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'keepUserName',
           label: '保管人',
           sortable: true,
           'min-width': 150
@@ -403,62 +411,7 @@
           ]
         }
       ],
-      data: [
-        {
-          0: 1,
-          1: '二代章_新结构_全称',
-          2: '公章',
-          3: '正常',
-          4: '岳海涛',
-          5: '测试部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 2,
-          1: '二代章_新结构_全称',
-          2: '公章',
-          3: '正常',
-          4: '岳海涛',
-          5: '测试部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 3,
-          1: '二代章_新结构_全称',
-          2: '测试章',
-          3: '正常',
-          4: '肖世康',
-          5: '技术部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 4,
-          1: '【智】测试专用章-自动版-Joel-243（全称）',
-          2: '公章',
-          3: '正常',
-          4: '汤博',
-          5: '技术部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 5,
-          1: '【智】研发-易全程二代',
-          2: '合同章',
-          3: '正常',
-          4: '岳海涛',
-          5: '测试部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 6,
-          1: '二代章_新结构_全称',
-          2: '公章',
-          3: '正常',
-          4: '周斌',
-          5: '技术部',
-          6: '2022-08-23 18:00:08'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -467,7 +420,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '1') {
+          if (column.property === 'sealName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -477,82 +430,33 @@
       }
     },
     componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': true,
         'show-checkbox': false,
         'default-expand-all': true,
         'expand-on-click-node': false,
-        'check-strictly': true
+        'check-strictly': true,
+        'highlight-current': true,
+        'node-key': 'sealTypeId',
+        'current-node-key': 'all'
+      },
+      defaultProps: {
+        label: 'sealTypeName',
+        children: 'children'
       }
     },
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
+        total: 0,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
@@ -609,7 +513,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property === '1') {
+    if (column.property === 'sealName') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -646,8 +550,49 @@
     }
   }
 
+  const typeList = () => {
+    typeApis.list({ searchKey: '' }).then(res => {
+      console.log(res)
+      state.componentsTree.data = [
+        {
+          sealTypeId: 'all',
+          sealTypeName: '印章类型',
+          children: res.data
+        }
+      ]
+    })
+  }
+
+  const librarySealPage = () => {
+    loading.value = true
+    libraryApis
+      .page({
+        current: state.componentsPagination.data.index,
+        size: state.componentsPagination.data.pageNumber
+      })
+      .then(result => {
+        console.log(result)
+        state.componentsTable.data = result.data.records
+        state.componentsPagination.data.amount = result.data.total
+        state.componentsPagination.defaultAttribute.total = result.data.total
+        loading.value = false
+      })
+  }
+
+  const currentPageChange = e => {
+    state.componentsPagination.data.index = e
+    librarySealPage()
+  }
+
+  const sizeChange = e => {
+    state.componentsPagination.data.pageNumber = e
+    librarySealPage()
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    typeList()
+    librarySealPage()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

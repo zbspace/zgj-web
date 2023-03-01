@@ -30,6 +30,7 @@
             :data="state.componentsTable.data"
             :loading="loading"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
           >
           </componentsTable>
@@ -211,7 +212,7 @@
     }
   }
 
-  const flowPageApi = () => {
+  const systemLogPageApi = () => {
     loading.value = true
     return logs
       .systemOperation({
@@ -231,16 +232,16 @@
 
   const currentPageChange = e => {
     state.componentsPagination.data.index = e
-    flowPageApi()
+    systemLogPageApi()
   }
 
   const sizeChange = e => {
     state.componentsPagination.data.pageNumber = e
-    flowPageApi()
+    systemLogPageApi()
   }
 
   onBeforeMount(() => {
-    flowPageApi()
+    systemLogPageApi()
   })
 </script>
 
