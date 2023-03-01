@@ -119,7 +119,7 @@
       :height="600"
       @close="submitLibraryForm"
     >
-      <JyVform
+      <!-- <JyVform
         ref="vFormLibraryRef"
         mode="render"
         :formJson="formLibraryJson"
@@ -127,7 +127,87 @@
         :optionData="optionLibraryData"
         @buttonClick="clickSelect"
         @on-loaded="onLoaded"
-      />
+      /> -->
+      <el-form :model="state.form" :rules="state.rules" label-width="100px">
+        <el-form-item label="印章全称" prop="sealName">
+          <el-input v-model="state.form.sealName" />
+        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12" prop="sealNo">
+            <el-form-item label="印章编码">
+              <el-input v-model="state.form.sealNo" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" prop="sealTypeId">
+            <el-form-item label="印章类型">
+              <el-input v-model="state.form.sealTypeId" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12" prop="sealAlias">
+            <el-form-item label="印章简称">
+              <el-input v-model="state.form.sealAlias" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="所属单位" prop="subOrganId">
+              <el-input v-model="state.form.subOrganId" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="管理人" prop="manageUserId">
+              <el-input v-model="state.form.manageUserId" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="管理部门" prop="manageOrganId">
+              <el-input v-model="state.form.manageOrganId" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="保管人" prop="keepUserId">
+              <el-input v-model="state.form.keepUserId" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="保管部门" prop="keepOrganId">
+              <el-input v-model="state.form.keepOrganId" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="是否外显" prop="extShow">
+              <el-input v-model="state.form.extShow" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="印章状态" prop="sealState">
+              <el-input v-model="state.form.sealState" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="硬件版本号" prop="hardwareVersionId">
+              <el-input v-model="state.form.hardwareVersionId" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="固件版本号" prop="firmwareVersionId">
+              <el-input v-model="state.form.firmwareVersionId" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="制度链接" prop="bylawsUrl">
+          <el-input v-model="state.form.bylawsUrl" />
+        </el-form-item>
+      </el-form>
     </KDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
@@ -198,6 +278,34 @@
 
   // const emit = defineEmits([])
   const state = reactive({
+    form: {
+      sealNo: '',
+      sealName: '',
+      sealAlias: '',
+      sealTypeId: '',
+      subOrganId: '',
+      manageUserId: '',
+      manageOrganId: '',
+      keepUserId: '',
+      keepOrganId: '',
+      extShow: '',
+      sealState: '',
+      hardwareVersionId: '',
+      firmwareVersionId: '',
+      bylawsUrl: '',
+      sealExplain: '',
+      stampAttachments: ''
+    },
+    rules: {
+      sealName: [
+        {
+          required: true,
+          message: '请输入印章全称',
+          trigger: 'blur'
+        },
+        { min: 2, message: '印章全称必须大于2个字符', trigger: 'blur' }
+      ]
+    },
     componentsTabs: {
       data: [
         {
