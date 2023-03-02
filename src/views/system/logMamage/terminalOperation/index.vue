@@ -39,6 +39,7 @@
             :defaultAttribute="state.componentsWorkbenchTable.defaultAttribute"
             :data="state.componentsWorkbenchTable.data"
             :header="state.componentsWorkbenchTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
             v-if="activeName === 'first'"

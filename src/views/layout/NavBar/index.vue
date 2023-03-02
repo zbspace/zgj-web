@@ -307,6 +307,8 @@
   import JyDialog from '@/components/common/JyDialog/index.vue'
   import VDownload from '@/components/modules/downloadApp.vue'
   import { ArrowDown } from '@element-plus/icons-vue'
+  import loginApi from '@/api/login'
+  import { ElMessage } from 'element-plus'
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
   const languageStore = useLanguageStore()
@@ -382,9 +384,14 @@
 
   // 退出登录
   const handleLogout = () => {
-    accountInfoStore.setToken(null)
-    // 跳转到登录页
-    router.replace({ path: '/login/account' })
+    loginApi.logOut().then(res => {
+      if (res.success) {
+        accountInfoStore.setToken(null)
+        // 跳转到登录页
+        router.replace({ path: '/login/account' })
+        ElMessage.success('退出登录！')
+      }
+    })
   }
 
   // 个人中心

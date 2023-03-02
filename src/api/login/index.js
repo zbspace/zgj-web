@@ -19,4 +19,14 @@ api.tenantInfoList = params => {
     params
   })
 }
+
+// 退出登录
+api.logOut = data => {
+  return request({
+    method: 'POST',
+    url: '/user/logout',
+    data
+  })
+}
+
 export default api

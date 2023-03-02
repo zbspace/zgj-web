@@ -27,6 +27,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -37,6 +38,7 @@
           <componentsBatch
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
+            @clickBatchButton="clickBatchButton"
           >
           </componentsBatch>
         </div>
@@ -48,10 +50,18 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
+            :loading="loading"
             isSelection
             @selection-change="selectionChange"
             @custom-click="customClick"
           >
+            <template #custom_intelligentCount="scope">
+              <span>{{ scope.value }}枚</span>
+            </template>
+            <template #custom_ordinaryCount="scope">
+              <span>{{ scope.value }}枚</span>
+            </template>
           </componentsTable>
         </div>
       </template>
@@ -59,6 +69,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @current-change="currentPageChange"
+          @size-change="sizeChange"
         >
         </componentsPagination>
       </template>
@@ -88,6 +100,7 @@
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      @confirmClick="confirmClick"
     >
       <template #header>
         {{ state.JyElMessageBox.header.data }}
@@ -100,7 +113,7 @@
 </template>
 <script setup>
   import {
-    // ref,
+    ref,
     reactive,
     // defineProps,
     // defineEmits,
@@ -109,7 +122,6 @@
   } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  // import componentsTree from '../../components/tree'
   // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
@@ -117,7 +129,9 @@
   import componentsBatch from '@/views/components/batch.vue'
   import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
   import KDialog from '@/views/components/modules/kdialog.vue'
-  import { ElMessageBox } from 'element-plus'
+  import { ElMessage } from 'element-plus'
+  import apis from '@/api/frontDesk/sealManage/typeOfSeal'
+  import dayjs from 'dayjs'
   // const props = defineProps({
   //   // 处理类型
   //   type: {
@@ -134,7 +148,9 @@
     vFormLibraryRef: 'vFormLibraryRef',
     showDialog: false
   })
-  // const vFormLibraryRef = ref(null)
+  const vFormLibraryRef = ref(null)
+  const loading = ref(false)
+  const sealTypeId = ref(null)
 
   // const emit = defineEmits([])
   const state = reactive({
@@ -165,13 +181,13 @@
       },
       data: [
         {
-          id: 'name',
+          id: 'searchKey',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '请输入'
+            placeholder: '请输入印章类型名称或编码'
           }
         },
         {
@@ -222,43 +238,47 @@
     componentsTable: {
       header: [
         {
-          prop: '1',
+          prop: 'sealTypeNo',
           label: '印章类型编码',
           sortable: true,
           'min-width': 180
         },
         {
-          prop: '2',
+          prop: 'sealTypeName',
           label: '印章类型名称',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'readme',
           label: '描述',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'intelligentCount',
           label: '智能印章',
+          align: 'center',
+          customDisplayType: 'custom',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'ordinaryCount',
           label: '普通印章',
+          align: 'center',
+          customDisplayType: 'custom',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'createUserName',
           label: '创建人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '7',
+          prop: 'createDatetime',
           label: '创建时间',
           sortable: true,
           'min-width': 180
@@ -278,53 +298,7 @@
           ]
         }
       ],
-      data: [
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        },
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        },
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        },
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        },
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -333,83 +307,16 @@
         }
       }
     },
-    componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': false,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
-      }
-    },
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
+        total: 0,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
@@ -435,6 +342,7 @@
       },
       data: [
         {
+          id: 'deleteMore',
           name: '批量删除'
         }
       ]
@@ -449,25 +357,54 @@
       }
     }
   })
-  function clickEditor(editor) {
-    fromState.title = editor
+  function clickEditor(title, column) {
+    fromState.title = title
+    vFormLibraryRef.value.resetForm()
+    if (title === '新增') {
+      fromState.formJson.widgetList[0].options.defaultValue =
+        dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+    } else {
+      if (column) {
+        fromState.formJson.widgetList.forEach(i => {
+          i.options.defaultValue = column[i.id]
+        })
+      }
+    }
     fromState.showDialog = true
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
+    console.log(JSON.stringify(cell))
     if (cell.name === '修改') {
-      clickEditor(cell.name)
+      sealTypeId.value = column.sealTypeId
+      clickEditor(cell.name, column)
     }
     if (cell.name === '删除') {
+      sealTypeId.value = column.sealTypeId
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
     }
   }
 
+  const confirmClick = () => {
+    apis
+      .delete({
+        ids:
+          sealTypeId.value ||
+          state.componentsBatch.selectionData.map(i => i.sealTypeId).join(',')
+      })
+      .then(res => {
+        state.JyElMessageBox.show = false
+        reloadData()
+      })
+      .catch(() => {
+        sealTypeId.value = null
+      })
+  }
+
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
-    //    console.log(selection);
     state.componentsBatch.selectionData = selection
     if (state.componentsBatch.selectionData.length > 0) {
       state.componentsBatch.defaultAttribute.disabled = false
@@ -476,8 +413,97 @@
     }
   }
 
+  function clickBatchButton(item) {
+    if (item.id === 'deleteMore') {
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请问确定要删除吗？'
+      state.JyElMessageBox.show = true
+    }
+  }
+
+  const submitLibraryForm = type => {
+    if (!type) {
+      sealTypeId.value = null
+      vFormLibraryRef.value.resetForm()
+      return
+    }
+    vFormLibraryRef.value
+      .getFormData()
+      .then(formData => {
+        if (sealTypeId.value) {
+          apis
+            .edit({
+              ...{
+                sealTypeId: sealTypeId.value
+              },
+              ...formData
+            })
+            .then(res => {
+              sealTypeId.value = null
+              fromState.showDialog = false
+              reloadData()
+            })
+        } else {
+          apis.add(formData).then(res => {
+            sealTypeId.value = null
+            fromState.showDialog = false
+            reloadData()
+          })
+        }
+      })
+      .catch(error => {
+        // Form Validation failed
+        ElMessage.error(error)
+      })
+  }
+
+  const clickSubmit = item => {
+    if (item.id === 'reset') {
+      state.componentsSearchForm.data.forEach(item => {
+        delete item.value
+      })
+    }
+    reloadData()
+  }
+
+  const reloadData = () => {
+    state.componentsTable.data = []
+    state.componentsPagination.data.index = 1
+    flowPageApi()
+  }
+
+  const flowPageApi = () => {
+    loading.value = true
+    return apis
+      .page({
+        searchKey: state.componentsSearchForm.data[0].value,
+        current: state.componentsPagination.data.index,
+        size: state.componentsPagination.data.pageNumber,
+        createDate: state.componentsSearchForm.data[1].value
+      })
+      .then(result => {
+        console.log(result)
+        state.componentsTable.data = result.data.records
+        state.componentsPagination.data.amount = result.data.total
+        state.componentsPagination.defaultAttribute.total = result.data.total
+        loading.value = false
+        return result
+      })
+  }
+
+  const currentPageChange = e => {
+    state.componentsPagination.data.index = e
+    flowPageApi()
+  }
+
+  const sizeChange = e => {
+    state.componentsPagination.data.pageNumber = e
+    flowPageApi()
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    flowPageApi()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

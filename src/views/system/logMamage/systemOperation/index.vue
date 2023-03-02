@@ -30,6 +30,7 @@
             :data="state.componentsTable.data"
             :loading="loading"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
           >
           </componentsTable>
@@ -86,7 +87,7 @@
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '请输入'
+            placeholder: '请输入操作人/操作模块/操作内容'
           }
         },
         {
@@ -148,32 +149,32 @@
     componentsTable: {
       header: [
         {
-          prop: 'accountId',
-          label: '账号ID',
-          sortable: true,
-          'min-width': 120
-        },
-        {
           prop: 'accountNo',
-          label: '账号',
+          label: '操作人',
           sortable: true,
           'min-width': 150
         },
         {
           prop: 'organName',
-          label: '组织机构名称',
+          label: '所在部门',
           sortable: true,
           'min-width': 180
         },
         {
-          prop: 'appVersion',
-          label: '应用版本号',
+          prop: 'createTime',
+          label: '操作时间',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: 'deviceType',
-          label: '设备类型',
+          prop: 'module',
+          label: '操作模块',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'contentType',
+          label: '操作内容',
           sortable: true,
           'min-width': 180
         }
@@ -211,7 +212,7 @@
     }
   }
 
-  const flowPageApi = () => {
+  const systemLogPageApi = () => {
     loading.value = true
     return logs
       .systemOperation({
@@ -231,16 +232,16 @@
 
   const currentPageChange = e => {
     state.componentsPagination.data.index = e
-    flowPageApi()
+    systemLogPageApi()
   }
 
   const sizeChange = e => {
     state.componentsPagination.data.pageNumber = e
-    flowPageApi()
+    systemLogPageApi()
   }
 
   onBeforeMount(() => {
-    flowPageApi()
+    systemLogPageApi()
   })
 </script>
 

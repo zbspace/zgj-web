@@ -50,6 +50,7 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            :paginationData="state.componentsPagination.data"
             :header="state.componentsTable.header"
             :isSelection="true"
             @cellClick="cellClick"
@@ -484,8 +485,8 @@ import { functions } from 'lodash'
         'default-expand-all': true,
         'expand-on-click-node': false,
         'check-strictly': true,
-        'highlight-current':true,
-        'auto-expand-parent':true
+        'highlight-current': true,
+        'auto-expand-parent': true
       }
     },
     componentsDocumentsDetails: {
@@ -601,7 +602,7 @@ import { functions } from 'lodash'
     })
     console.log(queryParams)
     api.formPage(queryParams).then(res => {
-      console.log('表格数据',res)
+      console.log('表格数据', res)
       const { code, data } = res
       if (code === 200) {
         state.componentsTable.data = data
@@ -635,8 +636,7 @@ import { functions } from 'lodash'
     if (cell.name === '删除') {
       console.log('删除')
       state.JyElMessageBox.header.data = '删除'
-      state.JyElMessageBox.content.data =
-        '请问确定要删除该表单吗？'
+      state.JyElMessageBox.content.data = '请问确定要删除该表单吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.data.tableId = column.formMessageId
     }
