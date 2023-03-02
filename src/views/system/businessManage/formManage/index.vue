@@ -17,6 +17,7 @@
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
             @clickSubmit="getFormPage"
+            @click="clearFormPage"
           >
           </componentsSearchForm>
         </div>
@@ -24,9 +25,11 @@
 
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button>批量删除</el-button>
-            <el-button>批量停用</el-button>
+          <componentsBatch 
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+            @clickBatchButton="batchDel"
+            >
           </componentsBatch>
         </div>
       </template>
@@ -51,6 +54,7 @@
             :isSelection="true"
             @cellClick="cellClick"
             @custom-click="customClick"
+            @selection-change="selectionChange"
           >
           </componentsTable>
         </div>
@@ -60,6 +64,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @size-change="sizeChange"
+          @current-change="currentChange"
         >
         </componentsPagination>
       </template>
@@ -77,6 +83,8 @@
     <AddFrom
       v-model="dialogVisible"
       v-if="dialogVisible"
+      :addTitle="addFormtitle"
+      :columnData = "state.JyElMessageBox.data"
       @close="dialogVisible = false"
     />
     <!-- 弹窗提示 -->
@@ -86,10 +94,81 @@
       :defaultAttribute="{}"
     >
       <template #header>
-        {{ state.JyElMessageBox.header.data }}
+         <div class="header-div">
+              <img :src='state.JyElMessageBox.header.icon' alt="" />
+              <span>{{ state.JyElMessageBox.header.data }}</span>
+          </div>
       </template>
       <template #content>
-        {{ state.JyElMessageBox.content.data }}
+        <div class="content-div">{{ state.JyElMessageBox.content.data }}</div>
+      </template>
+      <template #footer>
+        <el-button type="primary" @click="submitDel"> 提交 </el-button>
+          <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
+      </template>
+    </JyElMessageBox>
+    <!-- 复制表单提示 -->
+    <JyElMessageBox
+      v-model="state.showFormDialog.show"
+      :show="state.showFormDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+         {{ state.showFormDialog.header.data }}
+      </template>
+      <template #content>
+        <el-form
+          label-position="left"
+          label-width="100px"
+          :model="state.copyTable"
+          hide-required-asterisk
+        >
+          <el-form-item
+            prop="tableName"
+            :rules="[
+              {
+                required: true,
+                message: '表单名称不能为空',
+                trigger: 'blur'
+              }
+            ]"
+          >
+            <template #label>
+              <div class="from-label">表单名称</div>
+            </template>
+            <el-input
+              v-model="state.copyTable.tableName"
+              placeholder="请输入"
+              style="width: 210px"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </template>
+      <template #footer>
+        <el-button type="primary" @click="submitCopyTabel"> 提交 </el-button>
+          <el-button @click="closeCopyTabel">取消</el-button>
+      </template>
+    </JyElMessageBox>
+    <!-- 批量操作弹框提示 -->
+    <JyElMessageBox
+      v-model="state.showToastDialog.show"
+      :show="state.showToastDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+              <img :src='state.showToastDialog.header.icon' alt="" />
+              <span>{{ state.showToastDialog.header.data }}</span>
+            </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <p v-for="item in state.componentsBatch.selectionData" :key="item"  class="scrollbar-demo-item">{{ item.formName }}</p>
+        </el-scrollbar>
+      </template>
+      <template #footer>
+          <el-button @click="closeBatchTabel">知道了</el-button>
       </template>
     </JyElMessageBox>
   </div>
@@ -105,8 +184,10 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import api from '@/api/system/formManagement'
+import { functions } from 'lodash'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const dialogVisible = ref(false)
+  const addFormtitle = ref('')
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -244,7 +325,9 @@
         }
       ]
     },
-
+    copyTable: {
+      tableName:''
+    },
     componentsTable: {
       header: [
         {
@@ -295,7 +378,7 @@
           prop: '8',
           label: '操作',
           fixed: 'right',
-          width: 280,
+          width: 150,
           rankDisplayData: [
             {
               name: '修改'
@@ -327,7 +410,18 @@
         }
       }
     },
-
+    
+    componentsBatch: {
+      selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
+      data: [
+        {
+          name: '批量删除'
+        }
+      ]
+    },
     componentsPagination: {
       data: {
         amount: 400,
@@ -414,7 +508,29 @@
     JyElMessageBox: {
       show: false,
       header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
         data: ''
+      },
+      data: {
+      }
+    },
+    showFormDialog: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
+    },
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
       },
       content: {
         data: ''
@@ -494,6 +610,10 @@
       }
     })
   }
+  //清除筛选条件
+  function clearFormPage() {
+    console.log('清除筛选项')
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event)
@@ -504,9 +624,13 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(cell)
+    console.log(row)
+    console.log(column)
     if (cell.name === '修改') {
-      console.log(111)
+      console.log('修改')
       dialogVisible.value = true
+      addFormtitle.value = '修改'
+      state.JyElMessageBox.data = column
     }
     if (cell.name === '删除') {
       console.log('删除')
@@ -514,28 +638,83 @@
       state.JyElMessageBox.content.data =
         '请问确定要删除该表单吗？'
       state.JyElMessageBox.show = true
-    }
-    if (cell.name === '启用') {
-      console.log('启用')
-      state.JyElMessageBox.header.data = '启用'
-      state.JyElMessageBox.content.data =
-        '启用此条记录？'
-      state.JyElMessageBox.show = true
+      state.JyElMessageBox.data.tableId = column.formMessageId
     }
     if (cell.name === '复制') {
-      console.log('复制')
-      state.JyElMessageBox.header.data = '提示？'
-      state.JyElMessageBox.content.data =
-        '复制此条记录？'
-      state.JyElMessageBox.show = true
+      // console.log('复制')
+      state.showFormDialog.header.data = '表单复制'
+      state.copyTable.tableName = `${column.formName}-副本`
+        state.showFormDialog.show = true;
     }
   }
-  // 点击关闭
+  // 删除提交
+  function submitDel() {
+    console.log('提交删除')
+    let data = {
+      formMessageId:state.JyElMessageBox.data.tableId
+    }
+    api.formPage(data).then(res =>{
+        if(res.code==200){
+          console.log('删除成功')
+          getFormPage();
+        }
+    })
+    state.JyElMessageBox.show = false
+  }
+  // 批量删除
+  function batchDel() {
+    console.log(state.componentsBatch.selectionData)
+    state.showToastDialog.header.data = '批量删除'
+    state.showToastDialog.content.data = '已选中以下表单，请问确定要批量删除吗？'
+    state.showToastDialog.show = true;
+    state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+      console.log('批量删除')
+  }
+  //关闭表单复制弹窗
+  function closeBatchTabel() {
+    state.showToastDialog.show = false
+  }
+  //关闭表单复制弹窗
+  function closeCopyTabel() {
+    state.showFormDialog.show = false
+  }
+  //提交表单名称
+  function submitCopyTabel() {
+    console.log(state.copyTable.tableName)
+    console.log("提交表单")
+    state.showFormDialog.show = false
+  }
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
+  // 当选择项发生变化时会触发该事件
+  function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
+  }
+  // 分页页数变化
+  function currentChange(data) {
+      console.log(data)
+      state.componentsPagination.index = data;
+      getFormPage()
+  }
+  // 每页请求数量变化
+  function sizeChange(data) {
+      console.log(data)
+      state.componentsPagination.pageNumber = data;
+      getFormPage()
+  }
+  //打开新增
   function showAddForm() {
     dialogVisible.value = true
+    addFormtitle.value = '新建'
+    state.JyElMessageBox.data= {}
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -550,5 +729,39 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  .header-div {
+          display: flex;
+          align-items: center;
+        }
+        img {
+          width: 21px;
+          margin-right: 18px;
+        }
+        span {
+          font-family: 'PingFang SC';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          color: rgba(0, 0, 0, 0.85);
+        }
+  .content-div {
+      padding-left:40px;
+      margin-bottom:10px;
+      font-size:16px; 
+  }
+  .scrollbar {
+    padding:0 20px;
+    .scrollbar-demo-item {
+      display: flex;align-items: center;
+      justify-content: center;
+      height: 50px;
+      margin: 20px;
+      text-align: center;
+      border-radius: 4px;
+      background: var(--el-color-primary-light-9);
+      color: var(--el-color-primary);      
+    }
   }
 </style>

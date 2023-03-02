@@ -21,7 +21,7 @@ api.formPage = params => {
 }
 
 // 新增表单
-api.page = data => {
+api.formAdd = data => {
   return request({
     method: 'POST',
     url: '/form/add',
@@ -30,7 +30,7 @@ api.page = data => {
 }
 
 // 编辑表单
-api.page = data => {
+api.formEdit = data => {
   return request({
     method: 'POST',
     url: '/form/edit',
@@ -39,7 +39,7 @@ api.page = data => {
 }
 
 // 删除表单
-api.page = data => {
+api.formDelete = data => {
   return request({
     method: 'POST',
     url: '/form/delete',
