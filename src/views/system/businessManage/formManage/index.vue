@@ -47,6 +47,7 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            :paginationData="state.componentsPagination.data"
             :header="state.componentsTable.header"
             :isSelection="true"
             @cellClick="cellClick"
@@ -390,8 +391,8 @@
         'default-expand-all': true,
         'expand-on-click-node': false,
         'check-strictly': true,
-        'highlight-current':true,
-        'auto-expand-parent':true
+        'highlight-current': true,
+        'auto-expand-parent': true
       }
     },
     componentsDocumentsDetails: {
@@ -485,7 +486,7 @@
     })
     console.log(queryParams)
     api.formPage(queryParams).then(res => {
-      console.log('表格数据',res)
+      console.log('表格数据', res)
       const { code, data } = res
       if (code === 200) {
         state.componentsTable.data = data
@@ -511,22 +512,19 @@
     if (cell.name === '删除') {
       console.log('删除')
       state.JyElMessageBox.header.data = '删除'
-      state.JyElMessageBox.content.data =
-        '请问确定要删除该表单吗？'
+      state.JyElMessageBox.content.data = '请问确定要删除该表单吗？'
       state.JyElMessageBox.show = true
     }
     if (cell.name === '启用') {
       console.log('启用')
       state.JyElMessageBox.header.data = '启用'
-      state.JyElMessageBox.content.data =
-        '启用此条记录？'
+      state.JyElMessageBox.content.data = '启用此条记录？'
       state.JyElMessageBox.show = true
     }
     if (cell.name === '复制') {
       console.log('复制')
       state.JyElMessageBox.header.data = '提示？'
-      state.JyElMessageBox.content.data =
-        '复制此条记录？'
+      state.JyElMessageBox.content.data = '复制此条记录？'
       state.JyElMessageBox.show = true
     }
   }

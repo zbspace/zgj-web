@@ -37,6 +37,7 @@
             isSelection
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             @selection-change="selectionChange"
           >
           </componentsTable>

@@ -36,6 +36,7 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            :paginationData="state.componentsPagination.data"
             isSelection
             :header="state.componentsTable.header"
             @cellClick="cellClick"

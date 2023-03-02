@@ -21,7 +21,15 @@
         fixed="left"
         align="center"
         v-if="isNo"
-      />
+      >
+        <template #default="scope">
+          <span>{{
+            (props.paginationData.index - 1) * props.paginationData.pageNumber +
+            scope.$index +
+            1
+          }}</span>
+        </template>
+      </el-table-column>
       <!-- 列表内容 -->
       <el-table-column
         v-bind="item"
@@ -142,6 +150,13 @@
       default: () => {
         return {}
       }
+    },
+    // 分页属性
+    paginationData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   })
   const emit = defineEmits([
@@ -184,6 +199,7 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    console.log(JSON.parse(JSON.stringify(props.paginationData)))
   })
 </script>
 <style lang="scss" scoped>

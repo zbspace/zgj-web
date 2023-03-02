@@ -7,7 +7,7 @@ const api = {}
 api.page = params => {
   return request({
     method: 'GET',
-    url: '/sealType/page',
+    url: '/sealInfo/page',
     params
   })
 }
