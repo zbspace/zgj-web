@@ -133,62 +133,151 @@
           <el-input v-model="state.form.sealName" />
         </el-form-item>
         <el-row :gutter="20">
-          <el-col :span="12" prop="sealNo">
-            <el-form-item label="印章编码">
+          <el-col :span="12">
+            <el-form-item label="印章编码" prop="sealNo">
               <el-input v-model="state.form.sealNo" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" prop="sealTypeId">
-            <el-form-item label="印章类型">
-              <el-input v-model="state.form.sealTypeId" />
+          <el-col :span="12">
+            <el-form-item label="印章类型" prop="sealTypeId">
+              <el-select
+                style="width: 100%"
+                v-model="state.form.sealTypeId"
+                filterable
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12" prop="sealAlias">
-            <el-form-item label="印章简称">
+          <el-col :span="12">
+            <el-form-item label="印章简称" prop="sealAlias">
               <el-input v-model="state.form.sealAlias" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="所属单位" prop="subOrganId">
-              <el-input v-model="state.form.subOrganId" />
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.sealAlias"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="管理人" prop="manageUserId">
-              <el-input v-model="state.form.manageUserId" />
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.sealAlias"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="管理部门" prop="manageOrganId">
-              <el-input v-model="state.form.manageOrganId" />
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.sealAlias"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="保管人" prop="keepUserId">
-              <el-input v-model="state.form.keepUserId" />
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.sealAlias"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="保管部门" prop="keepOrganId">
-              <el-input v-model="state.form.keepOrganId" />
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.sealAlias"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="是否外显" prop="extShow">
-              <el-input v-model="state.form.extShow" />
+              <el-radio-group v-model="state.form.extShow">
+                <el-radio :label="1" size="large">是</el-radio>
+                <el-radio :label="2" size="large">否</el-radio>
+              </el-radio-group>
+              <span class="waixian">外显是指在其他业务系统上显示的标识</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="印章状态" prop="sealState">
-              <el-input v-model="state.form.sealState" />
+              <el-radio-group v-model="state.form.sealState" class="ml-4">
+                <el-radio :label="1" size="large">正常</el-radio>
+                <el-radio :label="2" size="large">停用</el-radio>
+                <el-radio :label="3" size="large">已销毁</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
@@ -205,8 +294,55 @@
           </el-col>
         </el-row>
         <el-form-item label="制度链接" prop="bylawsUrl">
-          <el-input v-model="state.form.bylawsUrl" />
+          <el-input
+            v-model="state.form.bylawsUrl"
+            placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
+          />
         </el-form-item>
+        <el-form-item label="备注" prop="bylawsUrl">
+          <el-input
+            v-model="state.form.bylawsUrl"
+            placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
+          />
+        </el-form-item>
+        <el-form-item
+          label="印模"
+          prop="stampAttachments"
+          style="margin-top: 10px"
+        >
+          <el-upload
+            v-model:file-list="fileList"
+            class="upload-demo"
+            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            :on-change="handleChange"
+          >
+            <div class="btnContainer">
+              <el-button type="primary" text size="small">
+                <el-icon :size="14"> <Paperclip /> </el-icon>
+                <span style="margin-left: 5px">添加印模</span>
+              </el-button>
+            </div>
+          </el-upload>
+        </el-form-item>
+        <!-- <el-form-item
+          label="印章可见范围"
+          prop="stampAttachments"
+          style="margin-top: 10px"
+        >
+          <el-upload
+            v-model:file-list="fileList"
+            class="upload-demo"
+            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            :on-change="handleChange"
+          >
+            <div class="btnContainer">
+              <el-button type="primary" text size="small">
+                <el-icon :size="14"> <Paperclip /> </el-icon>
+                <span style="margin-left: 5px">添加印模</span>
+              </el-button>
+            </div>
+          </el-upload>
+        </el-form-item> -->
       </el-form>
     </KDialog>
     <!-- 人员选择  -->
@@ -227,6 +363,7 @@
     onMounted,
     ref
   } from 'vue'
+  import { Paperclip } from '@element-plus/icons-vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -236,7 +373,6 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import LibraryJson from '@/views/addDynamicFormJson/LibraryOfSeals.json'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import { ElMessage } from 'element-plus'
@@ -250,11 +386,8 @@
   //   }
   // })
   // 印章库 新增弹框
-  const formLibraryJson = reactive(LibraryJson)
-  const formLibraryData = reactive({})
-  const optionLibraryData = reactive({})
   const vFormLibraryRef = ref(null)
-  const showLibraryDialog = ref(false)
+  const showLibraryDialog = ref(true)
   const loading = ref(false)
 
   const submitLibraryForm = type => {
@@ -288,8 +421,8 @@
       manageOrganId: '',
       keepUserId: '',
       keepOrganId: '',
-      extShow: '',
-      sealState: '',
+      extShow: 1,
+      sealState: 1,
       hardwareVersionId: '',
       firmwareVersionId: '',
       bylawsUrl: '',
@@ -304,6 +437,69 @@
           trigger: 'blur'
         },
         { min: 2, message: '印章全称必须大于2个字符', trigger: 'blur' }
+      ],
+      sealNo: [
+        {
+          required: true,
+          message: '请输入印章编码',
+          trigger: 'blur'
+        }
+      ],
+      sealTypeId: [
+        {
+          required: true,
+          message: '请选择印章类型',
+          trigger: 'blur'
+        }
+      ],
+      sealAlias: [
+        {
+          required: true,
+          message: '请输入印章简称',
+          trigger: 'blur'
+        }
+      ],
+      manageUserId: [
+        {
+          required: true,
+          message: '请选择管理人',
+          trigger: 'blur'
+        }
+      ],
+      manageOrganId: [
+        {
+          required: true,
+          message: '请选择管理部门',
+          trigger: 'blur'
+        }
+      ],
+      keepUserId: [
+        {
+          required: true,
+          message: '请选择保管人',
+          trigger: 'blur'
+        }
+      ],
+      keepOrganId: [
+        {
+          required: true,
+          message: '请选择保管部门',
+          trigger: 'blur'
+        }
+      ],
+      extShow: [
+        {
+          required: true,
+          message: '请选择是否外显',
+          trigger: 'blur'
+        }
+      ],
+      sealState: [
+        {
+          required: true,
+          message: '请选择印章状态',
+          trigger: 'blur'
+        }
       ]
     },
     componentsTabs: {
@@ -745,5 +941,29 @@
         @include mixin-margin-right(12);
       }
     }
+  }
+
+  .waixian {
+    margin-left: 25px;
+    font-size: 13px;
+    color: #666666;
+  }
+</style>
+<style lang="scss">
+  .upload-demo {
+    width: 100%;
+    box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color))
+      inset;
+    border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+    min-height: 100px;
+
+    .el-upload {
+      width: 100%;
+    }
+  }
+
+  .btnContainer {
+    width: 100%;
+    border-bottom: 1px solid var(--el-border-color);
   }
 </style>

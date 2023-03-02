@@ -21,3 +21,30 @@ p {
   fill: var(--el-color-primary);
   margin-left: 0.3rem;
 }
+
+.select-box-contBox {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .ap-box-contBox-icon {
+    position: absolute;
+    right: 0.8rem;
+    cursor: pointer;
+    height: 50%;
+    display: flex;
+    align-items: center;
+
+    .ap-box-contBox-icon-img {
+      height: 100%;
+    }
+  }
+
+  :deep {
+    .el-input__inner {
+      padding-right: 1.5rem;
+      box-sizing: border-box;
+    }
+  }
+}
