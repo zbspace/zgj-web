@@ -33,7 +33,7 @@
           >
             <div class="formBase-bg">
               <div class="form-title">请填写如下基础信息</div>
-              <JyVform
+              <!-- <JyVform
                 ref="vFormRef"
                 mode="render"
                 :formJson="formJson"
@@ -41,14 +41,50 @@
                 :optionData="optionData"
                 @buttonClick="clickSelect"
                 @on-loaded="onLoaded"
-              />
+              /> -->
+              <el-form
+                ref="formRef"
+                :model="formData"
+                label-width="120px"
+                :rules="rules"
+              >
+                <el-form-item prop="formName" label="表单名称">
+                  <el-input v-model="formData.formName" />
+                </el-form-item>
+
+                <el-form-item label="业务类型" prop="regioapplyTypeIdn">
+                  <el-select
+                    v-model="formData.regioapplyTypeIdn"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      :label="item.applyTypeName"
+                      :value="item.applyTypeId"
+                      v-for="item in optionData"
+                      :key="item.applyTypeId"
+                    />
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="用印类型">
+                  <el-radio-group v-model="formData.sealUseTypeId">
+                    <el-radio label="1">物理用印</el-radio>
+                    <el-radio label="2">电子签章</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+
+                <el-form-item label="表单说明">
+                  <el-input v-model="formData.readme" type="textarea" />
+                </el-form-item>
+              </el-form>
             </div>
           </div>
           <!-- 表单设计 -->
           <JyVform
             ref="vformRef"
-            v-show="state.processTabs.checkedNode.index == 2"
+            v-if="state.processTabs.checkedNode.index == 2"
             style="margin-top: 0; width: 100%"
+            :businessType="formData.regioapplyTypeIdn.split('-')[0]"
           />
         </template>
       </layout>
@@ -71,10 +107,51 @@
 
   const vformRef = ref(null)
   const formJson = reactive(formStepJson)
-  const formData = reactive({})
-  const optionData = reactive({})
+  const formData = reactive({
+    formName: '',
+    applyTypeId: '001',
+    sealUseTypeId: '2',
+    readme: '',
+    formInfo: '["cs":"12345"]'
+  })
+  const optionData = reactive([
+    {
+      applyTypeId: '1',
+      applyTypeName: '用印申请',
+      parent_id: ''
+    },
+    {
+      applyTypeId: '1-1',
+      applyTypeName: '用印申请',
+      parent_id: '1'
+    },
+    {
+      applyTypeId: '1-2',
+      applyTypeName: '转办申请',
+      parent_id: '1'
+    },
+    {
+      applyTypeId: '1-3',
+      applyTypeName: '重置用印申请',
+      parent_id: '1'
+    },
+    {
+      applyTypeId: '2',
+      applyTypeName: '印章申请',
+      parent_id: ''
+    },
+    {
+      applyTypeId: '2-1',
+      applyTypeName: '刻章申请',
+      parent_id: '2'
+    },
+    {
+      applyTypeId: '2-2',
+      applyTypeName: '停用申请',
+      parent_id: '2'
+    }
+  ])
   const vFormRef = ref(null)
-  const Validation = ref(false)
   const props = defineProps({
     addTitle: {
       type: String,
@@ -82,7 +159,7 @@
     },
     columnData: {
       type: Object,
-      default: null
+      default: () => {}
     },
     formId: {
       type: String,
@@ -119,6 +196,23 @@
       emit('update:modelValue', value)
     }
   })
+
+  const rules = {
+    formName: [
+      {
+        required: true,
+        message: '请输入',
+        trigger: 'blur'
+      }
+    ],
+    regioapplyTypeIdn: [
+      {
+        required: true,
+        message: '请选择',
+        trigger: 'change'
+      }
+    ]
+  }
   const submitForm = type => {
     console.log(type)
     if (!type) {
@@ -130,29 +224,17 @@
       .then(formData => {
         console.log('formData', formData)
         // Form Validation OK
-        console.log(JSON.stringify(formData))
+        alert(JSON.stringify(formData))
         // if (state.isShowFrom) {
         // } else {
         //   state.isShowFrom = true
         // }
-        Validation.value = true
       })
-      .catch(() => {
+      .catch(error => {
         // Form Validation failed
-        // console.log(error)
-        ElMessage.error('表单基础信息未填写完成')
-        state.processTabs.checkedNode = state.processTabs.data[0]
-        state.processTabs.checkedNode.checked = true
-        state.processTabs.data[1].checked = false
-        Validation.value = false
+
+        ElMessage.error(error)
       })
-  }
-  const beforeCutTabs = (data, item) => {
-    // console.log('item', item)
-    // console.log('submitForm', Validation.value)
-    // if (!Validation.value) {
-    //   return false
-    // }
   }
   // 点击切换选项
   const clickCutTabs = (data, item) => {
@@ -160,7 +242,7 @@
       element.checked = false
     })
     item.checked = true
-    console.log('formData', formData)
+    console.log(data)
     // 处理选项
     disCutTabs()
   }
@@ -198,26 +280,21 @@
     // console.log(`the component is now onBeforeMount.`)
     // 处理选项
     if (props.columnData.formMessageId > 0) {
-      if (props.addTitle !== '复制') {
-        formStepJson.widgetList[1].options.disabled = true
-        formStepJson.widgetList[2].options.disabled = true
-      } else {
-        formStepJson.widgetList[1].options.disabled = false
-        formStepJson.widgetList[2].options.disabled = false
-      }
+      formStepJson.widgetList[1].options.disabled = true
+      formStepJson.widgetList[2].options.disabled = true
       formStepJson.widgetList[0].options.defaultValue =
         props.columnData.formName
       // formStepJson.widgetList[1].options.defaultValue = 2
       try {
         formStepJson.widgetList[1].options.optionItems.forEach(v => {
-          if (v.label === props.columnData.applyTypeName) {
+          if (v.label == props.columnData.applyTypeName) {
             formStepJson.widgetList[1].options.defaultValue = v.value
           }
         })
       } catch (error) {}
       try {
         formStepJson.widgetList[2].options.optionItems.forEach(v => {
-          if (v.label === props.columnData.sealUseTypeName) {
+          if (v.label == props.columnData.sealUseTypeName) {
             formStepJson.widgetList[2].options.defaultValue = v.value
           }
         })
