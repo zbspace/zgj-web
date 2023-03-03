@@ -59,6 +59,7 @@
                       :value="item.applyTypeId"
                       v-for="item in optionData"
                       :key="item.applyTypeId"
+                      :disabled="!item.parent_id"
                     />
                   </el-select>
                 </el-form-item>

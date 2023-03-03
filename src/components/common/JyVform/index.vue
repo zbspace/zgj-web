@@ -111,7 +111,7 @@
   const getBannedWidgets = computed(() => {
     return props.bannedWidgets.length
       ? props.bannedWidgets
-      : props.businessType !== '1'
+      : props.businessType === '1'
       ? []
       : [
           'sealName',
