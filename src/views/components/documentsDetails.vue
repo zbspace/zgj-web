@@ -3124,7 +3124,7 @@
     if (props.modelValue) {
       state.drawer.show = props.modelValue
     }
-    state.drawer.show = true
+    // state.drawer.show = true
     state.componentsTabs.data = props.visible
     if (props.activeName) {
       state.componentsTabs.activeName = props.activeName
