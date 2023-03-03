@@ -3177,9 +3177,42 @@
       } else if (element.name === 'SmartSeal-Cabinet-Details') {
         // 处理 智能印章柜详情 SmartSeal-Cabinet-Details
         disSmartSealCabinetDetails(element)
+      } else if (element.name === 'transfer-Application-Details') {
+        // 处理 转办申请详情 transfer-Application-Details
+        disTransferApplicationDetails(element)
+      } else if (element.name === 'Reset-Application-Details') {
+        // 处理 重置申请详情 Reset-Application-Details
+        disResetApplicationDetails(element)
+      } else if (element.name === 'Process-Details') {
+        // 处理 流程详情 Process-Details
+        disProcessDetails(element)
+      } else if (element.name === 'Process-Version') {
+        // 处理 流程版本 Process-Version
+        disProcessVersion(element)
       } else if (element.name === 'Form-Details') {
         // 处理 表单详情 Form-Details
         disFormDetails(element)
+      } else if (element.name === 'Business-Rule-Details') {
+        // 处理 业务规则详情 Business-Rule-Details
+        disBusinessRuleDetails(element)
+      } else if (element.name === 'Notification-Event-Details') {
+        // 处理 通知事件详情 Notification-Event-Details
+        disNotificationEventDetails(element)
+      } else if (element.name === 'Template-Details') {
+        // 处理 模板详情 Template-Details
+        disTemplateDetails(element)
+      } else if (element.name === 'Current-Business-Details') {
+        // 处理 往来企业详情 Current-Business-Details
+        disCurrentBusinessDetails(element)
+      } else if (element.name === 'Unit-Department-Details') {
+        // 处理 单位与部门详情 Unit-Department-Details
+        disUnitDepartmentDetails(element)
+      } else if (element.name === 'organization-Person') {
+        // 处理 组织人员 organization-Person
+        disOrganizationPerson(element)
+      } else if (element.name === 'Staff-Details') {
+        // 处理 员工详情 Staff-Details
+        disStaffDetails(element)
       }
     })
   }
@@ -3384,12 +3417,91 @@
         element['basicInformation-data']
     }
   }
-  // 处理 表单详情 Form-Details
-  const disFormDetails = element => {
-    if (element.data) {
-      state.cache.FormDetails.data = element.data
+  // 处理 转办申请详情 transfer-Application-Details
+  const disTransferApplicationDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.transferApplicationDetails.basicInformation.data =
+        element['basicInformation-data']
     }
   }
+  // 处理 重置申请详情 Reset-Application-Details
+  const disResetApplicationDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.ResetApplicationDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 流程详情 Process-Details
+  const disProcessDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.ProcessDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 流程版本 Process-Version
+  const disProcessVersion = element => {
+    if (element.data) {
+      state.cache.ProcessVersion.header = element.header
+      state.cache.ProcessVersion.data = element.data
+    }
+  }
+  // 处理 表单详情 Form-Details
+  const disFormDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.FormDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 业务规则详情 Business-Rule-Details
+  const disBusinessRuleDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.BusinessRuleDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 通知事件详情 Notification-Event-Details
+  const disNotificationEventDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.NotificationEventDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 模板详情 Template-Details
+  const disTemplateDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.TemplateDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 往来企业详情 Current-Business-Details
+  const disCurrentBusinessDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.CurrentBusinessDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 单位与部门详情 Unit-Department-Details
+  const disUnitDepartmentDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.UnitDepartmentDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 组织人员 organization-Person
+  const disOrganizationPerson = element => {
+    if (element.data) {
+      state.cache.organizationPerson.header = element.header
+      state.cache.organizationPerson.data = element.data
+    }
+  }
+  // 处理 员工详情 Staff-Details
+  const disStaffDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.StaffDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  //
 
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
