@@ -16,8 +16,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
-            @clickSubmit="getFormPage"
-            @click="clearFormPage"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -25,11 +24,11 @@
 
       <template #batch>
         <div class="batch">
-          <componentsBatch 
+          <componentsBatch
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
             @clickBatchButton="batchDel"
-            >
+          >
           </componentsBatch>
         </div>
       </template>
@@ -53,6 +52,7 @@
             :paginationData="state.componentsPagination.data"
             :header="state.componentsTable.header"
             :isSelection="true"
+            :loading="state.componentsTable.loading"
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -82,11 +82,11 @@
     </div>
     <!-- 新增表单 -->
     <AddFrom
-      v-model="dialogVisible"
-      v-if="dialogVisible"
-      :addTitle="addFormtitle"
-      :columnData = "state.JyElMessageBox.data"
-      @close="dialogVisible = false"
+      v-model="state.componentsAddForm.dialogVisible"
+      v-if="state.componentsAddForm.dialogVisible"
+      :addTitle="state.componentsAddForm.addTitle"
+      :columnData="state.componentsAddForm.data"
+      @close="state.componentsAddForm.dialogVisible = false"
     />
     <!-- 弹窗提示 -->
     <JyElMessageBox
@@ -95,17 +95,17 @@
       :defaultAttribute="{}"
     >
       <template #header>
-         <div class="header-div">
-              <img :src='state.JyElMessageBox.header.icon' alt="" />
-              <span>{{ state.JyElMessageBox.header.data }}</span>
-          </div>
+        <div class="header-div">
+          <img :src="state.JyElMessageBox.header.icon" alt="" />
+          <span>{{ state.JyElMessageBox.header.data }}</span>
+        </div>
       </template>
       <template #content>
         <div class="content-div">{{ state.JyElMessageBox.content.data }}</div>
       </template>
       <template #footer>
         <el-button type="primary" @click="submitDel"> 提交 </el-button>
-          <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
+        <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
       </template>
     </JyElMessageBox>
     <!-- 复制表单提示 -->
@@ -115,17 +115,18 @@
       :defaultAttribute="{}"
     >
       <template #header>
-         {{ state.showFormDialog.header.data }}
+        {{ state.showFormDialog.header.data }}
       </template>
       <template #content>
         <el-form
+          ref="formRef"
           label-position="left"
           label-width="100px"
-          :model="state.copyTable"
+          :model="state.componentsAddForm.data"
           hide-required-asterisk
         >
           <el-form-item
-            prop="tableName"
+            prop="formName"
             :rules="[
               {
                 required: true,
@@ -138,7 +139,7 @@
               <div class="from-label">表单名称</div>
             </template>
             <el-input
-              v-model="state.copyTable.tableName"
+              v-model="state.componentsAddForm.data.formName"
               placeholder="请输入"
               style="width: 210px"
             ></el-input>
@@ -147,7 +148,7 @@
       </template>
       <template #footer>
         <el-button type="primary" @click="submitCopyTabel"> 提交 </el-button>
-          <el-button @click="closeCopyTabel">取消</el-button>
+        <el-button @click="closeCopyTabel">取消</el-button>
       </template>
     </JyElMessageBox>
     <!-- 批量操作弹框提示 -->
@@ -158,18 +159,39 @@
     >
       <template #header>
         <div class="header-div">
-              <img :src='state.showToastDialog.header.icon' alt="" />
-              <span>{{ state.showToastDialog.header.data }}</span>
-            </div>
+          <img :src="state.showToastDialog.header.icon" alt="" />
+          <span>{{ state.showToastDialog.header.data }}</span>
+        </div>
       </template>
       <template #content>
         <div class="content-div">{{ state.showToastDialog.content.data }}</div>
         <el-scrollbar class="scrollbar" max-height="200px">
-          <p v-for="item in state.componentsBatch.selectionData" :key="item"  class="scrollbar-demo-item">{{ item.formName }}</p>
+          <p
+            v-for="item in state.componentsBatch.selectionData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{ item.formName }}</p
+          >
         </el-scrollbar>
       </template>
       <template #footer>
-          <el-button @click="closeBatchTabel">知道了</el-button>
+        <div v-if="state.componentsBatch.butDatas.length > 1">
+          <el-button
+            v-for="item in state.componentsBatch.butDatas"
+            :key="item.name"
+            :type="item.type"
+            @click="closeBatchTabel"
+            >{{ item.name }}</el-button
+          >
+        </div>
+        <div v-else>
+          <el-button
+            v-for="item in state.componentsBatch.butDatas"
+            :key="item.name"
+            @click="item.clickName"
+            >{{ item.name }}</el-button
+          >
+        </div>
       </template>
     </JyElMessageBox>
   </div>
@@ -185,11 +207,13 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import api from '@/api/system/formManagement'
-import { functions } from 'lodash'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
-  const dialogVisible = ref(false)
-  const addFormtitle = ref('')
   const state = reactive({
+    componentsAddForm: {
+      dialogVisible: false,
+      addTitle: '新增',
+      data: {}
+    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -326,9 +350,6 @@ import { functions } from 'lodash'
         }
       ]
     },
-    copyTable: {
-      tableName:''
-    },
     componentsTable: {
       header: [
         {
@@ -409,9 +430,10 @@ import { functions } from 'lodash'
             }
           }
         }
-      }
+      },
+      loading: true
     },
-    
+
     componentsBatch: {
       selectionData: [],
       defaultAttribute: {
@@ -420,6 +442,13 @@ import { functions } from 'lodash'
       data: [
         {
           name: '批量删除'
+        }
+      ],
+      butDatas: [
+        {
+          name: '知道了',
+          type: '',
+          clickName: closeBatchTabel
         }
       ]
     },
@@ -515,8 +544,7 @@ import { functions } from 'lodash'
       content: {
         data: ''
       },
-      data: {
-      }
+      data: {}
     },
     showFormDialog: {
       show: false,
@@ -570,7 +598,7 @@ import { functions } from 'lodash'
     })
   }
   // 请求表单列表
-  function getFormPage() {
+  const getFormPage = () => {
     const searchData = state.componentsSearchForm.data
     const queryParams = {
       keyword: '',
@@ -602,39 +630,50 @@ import { functions } from 'lodash'
     })
     console.log(queryParams)
     api.formPage(queryParams).then(res => {
-      console.log('表格数据', res)
       const { code, data } = res
+      console.log(res)
       if (code === 200) {
         state.componentsTable.data = data
         state.componentsPagination.data.amount = data.length
         state.componentsPagination.defaultAttribute.total = data.length
+        state.componentsTable.loading = false
       }
     })
   }
-  //清除筛选条件
-  function clearFormPage() {
-    console.log('清除筛选项')
+  // 筛选条件按钮
+  const clickSubmit = (item, index) => {
+    console.log(item)
+    if (item.id === 'reset') {
+      state.componentsSearchForm.data.forEach(v => {
+        delete v.value
+      })
+    }
+    getFormPage()
   }
   // 点击表格单元格
-  function cellClick(row, column, cell, event) {
+  const cellClick = (row, column, cell, event) => {
     // console.log(row, column, cell, event)
     if (column.property === 'formName') {
       state.componentsDocumentsDetails.show = true
     }
   }
+
+  // 打开新增
+  function showAddForm() {
+    state.componentsAddForm.dialogVisible = true
+    state.componentsAddForm.addTitle = '新建'
+    state.componentsAddForm.data = {}
+  }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(cell)
-    console.log(row)
-    console.log(column)
+    console.log('row', column)
     if (cell.name === '修改') {
       console.log('修改')
-      dialogVisible.value = true
-      addFormtitle.value = '修改'
-      state.JyElMessageBox.data = column
+      state.componentsAddForm.dialogVisible = true
+      state.componentsAddForm.addTitle = '修改'
+      state.componentsAddForm.data = column
     }
     if (cell.name === '删除') {
-      console.log('删除')
       state.JyElMessageBox.header.data = '删除'
       state.JyElMessageBox.content.data = '请问确定要删除该表单吗？'
       state.JyElMessageBox.show = true
@@ -643,46 +682,68 @@ import { functions } from 'lodash'
     if (cell.name === '复制') {
       // console.log('复制')
       state.showFormDialog.header.data = '表单复制'
-      state.copyTable.tableName = `${column.formName}-副本`
-        state.showFormDialog.show = true;
+      state.showFormDialog.show = true
+      state.componentsAddForm.data = JSON.parse(JSON.stringify(column))
+      state.componentsAddForm.data.formName = `${column.formName}-副本`
     }
   }
   // 删除提交
   function submitDel() {
     console.log('提交删除')
-    let data = {
-      formMessageId:state.JyElMessageBox.data.tableId
+    const data = {
+      formMessageId: state.JyElMessageBox.data.tableId
     }
-    api.formPage(data).then(res =>{
-        if(res.code==200){
-          console.log('删除成功')
-          getFormPage();
-        }
+    api.formPage(data).then(res => {
+      if (res.code === 200) {
+        console.log('删除成功')
+        getFormPage()
+      }
     })
     state.JyElMessageBox.show = false
   }
   // 批量删除
   function batchDel() {
-    console.log(state.componentsBatch.selectionData)
     state.showToastDialog.header.data = '批量删除'
-    state.showToastDialog.content.data = '已选中以下表单，请问确定要批量删除吗？'
-    state.showToastDialog.show = true;
-    state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
-      console.log('批量删除')
+    state.showToastDialog.content.data =
+      '已选中以下表单，请问确定要批量删除吗？'
+    state.showToastDialog.show = true
+    // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+    state.componentsBatch.butDatas = [
+      {
+        name: '确定',
+        type: 'primary'
+      },
+      {
+        name: '取消',
+        type: ''
+      }
+    ]
+    console.log('批量删除')
   }
-  //关闭表单复制弹窗
+  // 关闭表单复制弹窗
   function closeBatchTabel() {
     state.showToastDialog.show = false
   }
-  //关闭表单复制弹窗
+  // 关闭表单复制弹窗
   function closeCopyTabel() {
     state.showFormDialog.show = false
   }
-  //提交表单名称
+  const formRef = ref(null)
+  // 提交表单名称
   function submitCopyTabel() {
-    console.log(state.copyTable.tableName)
-    console.log("提交表单")
-    state.showFormDialog.show = false
+    console.log('复制表单')
+    console.log(formRef)
+    formRef.value.validate(valid => {
+      console.log(valid)
+      if (valid) {
+        state.showFormDialog.show = false
+        state.componentsAddForm.dialogVisible = true
+        state.componentsAddForm.addTitle = '复制'
+      } else {
+        // ElMessage.warning('表单名称不能为空')
+        return false
+      }
+    })
   }
   // 点击关闭详情
   function clickClose() {
@@ -700,21 +761,15 @@ import { functions } from 'lodash'
   }
   // 分页页数变化
   function currentChange(data) {
-      console.log(data)
-      state.componentsPagination.index = data;
-      getFormPage()
+    console.log(data)
+    state.componentsPagination.index = data
+    getFormPage()
   }
   // 每页请求数量变化
   function sizeChange(data) {
-      console.log(data)
-      state.componentsPagination.pageNumber = data;
-      getFormPage()
-  }
-  //打开新增
-  function showAddForm() {
-    dialogVisible.value = true
-    addFormtitle.value = '新建'
-    state.JyElMessageBox.data= {}
+    console.log(data)
+    state.componentsPagination.pageNumber = data
+    getFormPage()
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -731,37 +786,38 @@ import { functions } from 'lodash'
     justify-content: space-between;
   }
   .header-div {
-          display: flex;
-          align-items: center;
-        }
-        img {
-          width: 21px;
-          margin-right: 18px;
-        }
-        span {
-          font-family: 'PingFang SC';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 24px;
-          color: rgba(0, 0, 0, 0.85);
-        }
+    display: flex;
+    align-items: center;
+  }
+  img {
+    width: 21px;
+    margin-right: 18px;
+  }
+  span {
+    font-family: 'PingFang SC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.85);
+  }
   .content-div {
-      padding-left:40px;
-      margin-bottom:10px;
-      font-size:16px; 
+    padding-left: 40px;
+    margin-bottom: 10px;
+    font-size: 16px;
   }
   .scrollbar {
-    padding:0 20px;
+    padding: 0 20px;
     .scrollbar-demo-item {
-      display: flex;align-items: center;
+      display: flex;
+      align-items: center;
       justify-content: center;
       height: 50px;
       margin: 20px;
       text-align: center;
       border-radius: 4px;
       background: var(--el-color-primary-light-9);
-      color: var(--el-color-primary);      
+      color: var(--el-color-primary);
     }
   }
 </style>
