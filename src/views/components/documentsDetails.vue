@@ -3124,6 +3124,7 @@
     if (props.modelValue) {
       state.drawer.show = props.modelValue
     }
+    state.drawer.show = true
     state.componentsTabs.data = props.visible
     if (props.activeName) {
       state.componentsTabs.activeName = props.activeName
@@ -3146,6 +3147,36 @@
       if (element.name === 'Details-of-Printing') {
         // 处理 用印详情 Details-of-Printing
         disDetailsaOfPrinting(element)
+      } else if (element.name === 'approval-process') {
+        // 处理 审批流程 approval-process
+        disApprovalProcess(element)
+      } else if (element.name === 'operating-record') {
+        // 处理 操作记录 operating-record
+        disOperatingRecord(element)
+      } else if (element.name === 'Record-of-requisition') {
+        // 处理 领用记录 Record-of-requisition
+        disRecordOfRequisition(element)
+      } else if (element.name === 'Record-of-custody') {
+        // 处理 保管记录 Record-of-custody
+        disRecordOfCustody(element)
+      } else if (element.name === 'Particulars-of-Seal') {
+        // 处理 印章详情 Particulars-of-Seal
+        disParticularsOfSeal(element)
+      } else if (element.name === 'Details-of-Document') {
+        // 处理 文件详情 Details-of-Document
+        disDetailsOfDocument(element)
+      } else if (element.name === 'Seal-Application-Details') {
+        // 处理 印章申请详情 Seal-Application-Details
+        disSealApplicationDetails(element)
+      } else if (element.name === 'Workbench-Details') {
+        // 处理 工作台详情 Workbench-Details
+        disWorkbenchDetails(element)
+      } else if (element.name === 'SmartSeal-Box-Detail') {
+        // 处理 智能印章盒详情 SmartSeal-Box-Detail
+        disSmartSealBoxDetails(element)
+      } else if (element.name === 'SmartSeal-Cabinet-Details') {
+        // 处理 智能印章柜详情 SmartSeal-Cabinet-Details
+        disSmartSealCabinetDetails(element)
       } else if (element.name === 'Form-Details') {
         // 处理 表单详情 Form-Details
         disFormDetails(element)
@@ -3174,38 +3205,189 @@
   }
   // 处理 用印详情 Details-of-Printing
   const disDetailsaOfPrinting = element => {
+    const DetailsaOfPrinting = state.cache.DetailsaOfPrinting
+    // console.log('--->', DetailsaOfPrinting)
+
     // 基本信息
+    if (element.basicInformation && element.basicInformation.show === true) {
+      DetailsaOfPrinting.basicInformation.show = true
+    } else {
+      DetailsaOfPrinting.basicInformation.show = false
+    }
     if (element.basicInformation && element.basicInformation.data) {
-      state.DetailsaOfPrinting.basicInformation.data =
-        element.basicInformation.data
+      DetailsaOfPrinting.basicInformation.data = element.basicInformation.data
     }
+
     // 附件 用印文件
-    if (element.accessory && element.accessory.printedData) {
-      state.DetailsaOfPrinting.accessory.printedData =
-        element.accessory.printedData
+    if (element.accessory && element.accessory.show === true) {
+      DetailsaOfPrinting.accessory.show = true
+    } else {
+      DetailsaOfPrinting.accessory.show = false
     }
+    if (element.accessory && element.accessory.printedData) {
+      DetailsaOfPrinting.accessory.printedData = element.accessory.printedData
+    }
+
     // 附件 补充文件
     if (element.accessory && element.accessory.additionalData) {
-      state.DetailsaOfPrinting.accessory.additionalData =
+      DetailsaOfPrinting.accessory.additionalData =
         element.accessory.additionalData
     }
+
     // 智能用印
+    if (
+      element.IntelligentPrinting &&
+      element.IntelligentPrinting.show === true
+    ) {
+      DetailsaOfPrinting.IntelligentPrinting.show = true
+    } else {
+      DetailsaOfPrinting.IntelligentPrinting.show = false
+    }
     if (element.IntelligentPrinting && element.IntelligentPrinting.data) {
-      state.DetailsaOfPrinting.IntelligentPrinting.data =
+      DetailsaOfPrinting.IntelligentPrinting.data =
         element.IntelligentPrinting.data
     }
+
     // 文件归档
+    if (
+      element.archiveInformation &&
+      element.archiveInformation.show === true
+    ) {
+      DetailsaOfPrinting.archiveInformation.show = true
+    } else {
+      DetailsaOfPrinting.archiveInformation.show = false
+    }
     if (element.archiveInformation && element.archiveInformation.data) {
-      state.DetailsaOfPrinting.archiveInformation.data =
+      DetailsaOfPrinting.archiveInformation.data =
         element.archiveInformation.data
     }
 
-    // 未写完
+    // 文件核验
+    if (
+      element.fileocrInformation &&
+      element.fileocrInformation.show === true
+    ) {
+      DetailsaOfPrinting.fileocrInformation.show = true
+    } else {
+      DetailsaOfPrinting.fileocrInformation.show = false
+    }
+    if (element.fileocrInformation && element.fileocrInformation.data) {
+      DetailsaOfPrinting.fileocrInformation.data =
+        element.fileocrInformation.data
+    }
+
+    // 电子签章
+    if (element.sdigitalSeal && element.sdigitalSeal.show === true) {
+      DetailsaOfPrinting.sdigitalSeal.show = true
+    } else {
+      DetailsaOfPrinting.sdigitalSeal.show = false
+    }
+    if (element.sdigitalSeal && element.sdigitalSeal.signatoryData) {
+      DetailsaOfPrinting.sdigitalSeal.signatoryData =
+        element.sdigitalSeal.signatoryData
+    }
+    if (element.sdigitalSeal && element.sdigitalSeal.signatoryFileData) {
+      DetailsaOfPrinting.sdigitalSeal.signatoryFileData =
+        element.sdigitalSeal.signatoryFileData
+    }
+    if (element.sdigitalSeal && element.sdigitalSeal.alreadySignatoryFileData) {
+      DetailsaOfPrinting.sdigitalSeal.alreadySignatoryFileData =
+        element.sdigitalSeal.alreadySignatoryFileData
+    }
+  }
+  // 处理 审批流程 approval-process
+  const disApprovalProcess = element => {
+    if (element.data) {
+      state.cache.approvalProcess.data = element.data
+    }
+  }
+  // 处理 操作记录 operating-record
+  const disOperatingRecord = element => {
+    if (element.data) {
+      state.cache.operatingRecord.header = element.header
+      state.cache.operatingRecord.data = element.data
+    }
+  }
+  // 处理 领用记录 Record-of-requisition
+  const disRecordOfRequisition = element => {
+    if (element['SealInformation-data']) {
+      state.cache.RecordOfRequisition.SealInformation.data =
+        element['SealInformation-data']
+    }
+    if (element['SealInformation-imageData']) {
+      state.cache.RecordOfRequisition.SealInformation.imageData =
+        element['SealInformation-imageData']
+    }
+  }
+  // 处理 保管记录 Record-of-custody
+  const disRecordOfCustody = element => {
+    if (element.data) {
+      state.cache.RecordOfCustody.header = element.header
+      state.cache.RecordOfCustody.data = element.data
+    }
+  }
+  // 处理 印章详情 Particulars-of-Seal
+  const disParticularsOfSeal = element => {
+    if (element.data) {
+      state.cache.basicInformation.data = element.data
+    }
+  }
+  // 处理 文件详情 Details-of-Document
+  const disDetailsOfDocument = element => {
+    if (element['basicInformation-data']) {
+      state.cache.DetailsOfDocument.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 印章申请详情 Seal-Application-Details
+  const disSealApplicationDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.SealApplicationDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+    if (element['SealInformation-data']) {
+      state.cache.SealApplicationDetails.SealInformation.data =
+        element['SealInformation-data']
+    }
+    if (element['ManagementInformation-data']) {
+      state.cache.SealApplicationDetails.ManagementInformation.data =
+        element['ManagementInformation-data']
+    }
+  }
+  // 处理 工作台详情 Workbench-Details
+  const disWorkbenchDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.WorkbenchDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+    if (element['configuration-data']) {
+      state.cache.WorkbenchDetails.configuration.data =
+        element['configuration-data']
+    }
+  }
+
+  // 处理 智能印章盒详情 SmartSeal-Box-Detail
+  const disSmartSealBoxDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.SmartSealBoxDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+    if (element['configuration-data']) {
+      state.cache.SmartSealBoxDetails.configuration.data =
+        element['configuration-data']
+    }
+  }
+  // 处理 智能印章柜详情 SmartSeal-Cabinet-Details
+  const disSmartSealCabinetDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.SmartSealCabinetDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
   }
   // 处理 表单详情 Form-Details
   const disFormDetails = element => {
     if (element.data) {
-      state.FormDetails.basicInformation.data = element.data
+      state.cache.FormDetails.data = element.data
     }
   }
 
