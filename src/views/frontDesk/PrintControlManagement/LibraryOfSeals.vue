@@ -7,9 +7,7 @@
           印章库
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showLibraryDialog = true"
-                >+ 增加</el-button
-              >
+              <el-button type="primary" @click="add">+ 增加</el-button>
             </div>
             <div class="title-more-down">
               <el-dropdown>
@@ -24,7 +22,7 @@
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>印章解绑</el-dropdown-item>
+                    <!-- <el-dropdown-item>印章解绑</el-dropdown-item> -->
                     <el-dropdown-item>导入</el-dropdown-item>
                     <el-dropdown-item>导出台账</el-dropdown-item>
                     <el-dropdown-item>查看已删除的印章</el-dropdown-item>
@@ -48,6 +46,7 @@
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
             @clickElement="clickElement"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -68,6 +67,7 @@
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="state.componentsTree.defaultProps"
             :loading="loading"
+            @current-change="currentChange"
           >
           </componentsTree>
         </div>
@@ -76,6 +76,8 @@
         <div>
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
+            refs="tables"
+            ref="table"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
@@ -83,6 +85,7 @@
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
+            @sort-change="sortChange"
           >
           </componentsTable>
         </div>
@@ -128,14 +131,19 @@
         @buttonClick="clickSelect"
         @on-loaded="onLoaded"
       /> -->
-      <el-form :model="state.form" :rules="state.rules" label-width="100px">
+      <el-form
+        :model="state.form"
+        :rules="state.rules"
+        ref="vFormLibraryRef"
+        label-width="100px"
+      >
         <el-form-item label="印章全称" prop="sealName">
           <el-input v-model="state.form.sealName" />
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="印章编码" prop="sealNo">
-              <el-input v-model="state.form.sealNo" />
+              <el-input v-model="state.form.sealNo" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -146,10 +154,10 @@
                 filterable
               >
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="(item, index) in state.typeList"
+                  :key="index"
+                  :label="item.sealTypeName"
+                  :value="item.sealTypeId"
                 />
               </el-select>
             </el-form-item>
@@ -167,11 +175,19 @@
                 <el-input
                   class="ap-box-contBox-input width-100"
                   readonly
-                  v-model="state.form.sealAlias"
+                  v-model="state.form.subOrganId"
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.subOrganName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('subOrgan')"
+                    ><CircleClose
+                  /></el-icon>
                   <img
+                    @click="chooseOrgan('subOrgan')"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -188,11 +204,19 @@
                 <el-input
                   class="ap-box-contBox-input width-100"
                   readonly
-                  v-model="state.form.sealAlias"
+                  v-model="state.form.manageUserName"
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.manageUserName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('manageUser')"
+                    ><CircleClose
+                  /></el-icon>
                   <img
+                    @click="chooseOrgan('manageUser')"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -207,11 +231,19 @@
                 <el-input
                   class="ap-box-contBox-input width-100"
                   readonly
-                  v-model="state.form.sealAlias"
+                  v-model="state.form.manageOrganName"
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.manageOrganName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('manageOrgan')"
+                    ><CircleClose
+                  /></el-icon>
                   <img
+                    @click="chooseOrgan('manageOrgan')"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -228,11 +260,19 @@
                 <el-input
                   class="ap-box-contBox-input width-100"
                   readonly
-                  v-model="state.form.sealAlias"
+                  v-model="state.form.keepOrganName"
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.keepOrganName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('keepUser')"
+                    ><CircleClose
+                  /></el-icon>
                   <img
+                    @click="chooseOrgan('keepUser')"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -247,14 +287,20 @@
                 <el-input
                   class="ap-box-contBox-input width-100"
                   readonly
-                  v-model="state.form.sealAlias"
+                  v-model="state.form.keepOrganName"
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.keepOrganName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('keepOrgan')"
+                    ><CircleClose
+                  /></el-icon>
                   <img
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
-                    alt=""
                   />
                 </div>
               </div>
@@ -284,24 +330,27 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="硬件版本号" prop="hardwareVersionId">
-              <el-input v-model="state.form.hardwareVersionId" />
+              <el-input v-model="state.form.hardwareVersionId" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="固件版本号" prop="firmwareVersionId">
-              <el-input v-model="state.form.firmwareVersionId" />
+              <el-input v-model="state.form.firmwareVersionId" clearable />
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="制度链接" prop="bylawsUrl">
           <el-input
             v-model="state.form.bylawsUrl"
+            clearable
             placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
           />
         </el-form-item>
-        <el-form-item label="备注" prop="bylawsUrl">
+        <el-form-item label="备注" prop="sealExplain">
           <el-input
-            v-model="state.form.bylawsUrl"
+            v-model="state.form.sealExplain"
+            :rows="4"
+            type="textarea"
             placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
           />
         </el-form-item>
@@ -363,7 +412,7 @@
     onMounted,
     ref
   } from 'vue'
-  import { Paperclip } from '@element-plus/icons-vue'
+  import { Paperclip, CircleClose } from '@element-plus/icons-vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -378,39 +427,39 @@
   import { ElMessage } from 'element-plus'
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
   import libraryApis from '@/api/frontDesk/sealManage/libraryOfSeals'
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
-  // 印章库 新增弹框
-  const vFormLibraryRef = ref(null)
-  const showLibraryDialog = ref(true)
-  const loading = ref(false)
+  import dayjs from 'dayjs'
 
+  // 印章库 新增弹框
+  const showLibraryDialog = ref(false)
+  const loading = ref(false)
+  const vFormLibraryRef = ref(null)
+  const depChoose = ref(null)
+  const orderBy = ref(null)
+  const table = ref(null)
+
+  const add = () => {
+    vFormLibraryRef.value.resetFields()
+    state.form.sealNo =
+      dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+    showLibraryDialog.value = true
+  }
   const submitLibraryForm = type => {
     if (!type) {
-      vFormLibraryRef.value.resetForm()
       return
     }
-    vFormLibraryRef.value
-      .getFormData()
-      .then(formData => {
-        // Form Validation OK
-        alert(JSON.stringify(formData))
-        showLibraryDialog.value = false
-      })
-      .catch(error => {
-        // Form Validation failed
-        ElMessage.error(error)
-      })
+    vFormLibraryRef.value.validate(valid => {
+      if (valid) {
+        console.log(state.form)
+      } else {
+        ElMessage.error('校验失败')
+      }
+    })
   }
   const showDepPerDialog = ref(false)
 
   // const emit = defineEmits([])
   const state = reactive({
+    typeList: [],
     form: {
       sealNo: '',
       sealName: '',
@@ -421,6 +470,7 @@
       manageOrganId: '',
       keepUserId: '',
       keepOrganId: '',
+      keepOrganName: '',
       extShow: 1,
       sealState: 1,
       hardwareVersionId: '',
@@ -434,57 +484,57 @@
         {
           required: true,
           message: '请输入印章全称',
-          trigger: 'blur'
+          trigger: 'change'
         },
-        { min: 2, message: '印章全称必须大于2个字符', trigger: 'blur' }
+        { min: 2, message: '印章全称必须大于2个字符', trigger: 'change' }
       ],
       sealNo: [
         {
           required: true,
           message: '请输入印章编码',
-          trigger: 'blur'
+          trigger: 'change'
         }
       ],
       sealTypeId: [
         {
           required: true,
           message: '请选择印章类型',
-          trigger: 'blur'
+          trigger: 'change'
         }
       ],
       sealAlias: [
         {
           required: true,
           message: '请输入印章简称',
-          trigger: 'blur'
+          trigger: 'change'
         }
       ],
       manageUserId: [
         {
           required: true,
           message: '请选择管理人',
-          trigger: 'blur'
+          trigger: 'change'
         }
       ],
       manageOrganId: [
         {
           required: true,
           message: '请选择管理部门',
-          trigger: 'blur'
+          trigger: 'change'
         }
       ],
       keepUserId: [
         {
           required: true,
           message: '请选择保管人',
-          trigger: 'blur'
+          trigger: 'change'
         }
       ],
       keepOrganId: [
         {
           required: true,
           message: '请选择保管部门',
-          trigger: 'blur'
+          trigger: 'change'
         }
       ],
       extShow: [
@@ -529,7 +579,7 @@
       },
       data: [
         {
-          id: 'name',
+          id: 'searchKey',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -539,9 +589,10 @@
           }
         },
         {
-          id: 'picker',
+          id: 'createDate',
           label: '创建时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -552,7 +603,7 @@
           style: {}
         },
         {
-          id: 'derivable',
+          id: 'keepUserIds',
           label: '保管人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -561,7 +612,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'keepOrganIds',
           label: '保管部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -570,36 +621,41 @@
           }
         },
         {
-          id: 'shenqingr',
+          id: 'sealStatus',
           label: '印章状态',
           type: 'checkButton',
           data: [
             {
-              name: '正常  '
+              id: '1',
+              name: '正常'
             },
             {
+              id: '2',
               name: '停用'
             },
             {
+              id: '3',
               name: '已销毁'
             }
           ]
         },
         {
-          id: 'shenqingr',
+          id: 'sealCategory',
           label: '印章种类',
           type: 'checkButton',
           data: [
             {
+              id: '0',
               name: '普通印章'
             },
             {
+              id: '1',
               name: '智能印章'
             }
           ]
         },
         {
-          id: 'wdyy',
+          id: 'takeOut',
           label: '',
           type: 'checkbox',
           checkbox: [
@@ -613,7 +669,7 @@
           ]
         },
         {
-          id: 'wdyy',
+          id: 'onlyMyself',
           label: '',
           type: 'checkbox',
           checkbox: [
@@ -663,38 +719,38 @@
         {
           prop: 'sealName',
           label: '印章名称',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 210,
           'show-overflow-tooltip': true
         },
         {
           prop: '2',
           label: '印章类型',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
           prop: '3',
           label: '印章状态',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
           prop: 'keepUserName',
           label: '保管人',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
           prop: '5',
           label: '保管部门',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
           prop: '6',
           label: '创建时间',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 180
         },
 
@@ -725,7 +781,6 @@
           background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === 'sealName') {
             return {
               color: 'var(--jy-info-6)',
@@ -751,7 +806,8 @@
       defaultProps: {
         label: 'sealTypeName',
         children: 'children'
-      }
+      },
+      value: ''
     },
     componentsPagination: {
       data: {
@@ -848,17 +904,46 @@
     }
   }
 
+  // 自定义排序
+  function sortChange(orderBack) {
+    console.log(JSON.parse(JSON.stringify(orderBack)))
+    orderBy.value = orderBack
+    reloadData()
+  }
+
   // 点击搜索表单
   function clickElement(item, index) {
-    // console.log(item, index)
+    console.log(JSON.parse(JSON.stringify(item)))
     if (item.type === 'derivable') {
       showDepPerDialog.value = true
     }
   }
 
+  const clickSubmit = item => {
+    if (item.id === 'reset') {
+      table.value.clearSorts()
+      state.componentsSearchForm.data.forEach(item => {
+        if (item.type === 'checkButton') {
+          item.data.forEach(i => {
+            delete i.checked
+          })
+        } else if (item.type === 'checkbox') {
+          console.log(JSON.parse(JSON.stringify(item.checkbox)))
+          item.checkbox.forEach(i => {
+            i.value = false
+          })
+          console.log(JSON.parse(JSON.stringify(item.checkbox)))
+        } else {
+          delete item.value
+        }
+      })
+    }
+    reloadData()
+  }
+
   const typeList = () => {
     typeApis.list({ searchKey: '' }).then(res => {
-      console.log(res)
+      state.typeList = res.data
       state.componentsTree.data = [
         {
           sealTypeId: 'all',
@@ -869,15 +954,65 @@
     })
   }
 
+  const chooseOrgan = type => {
+    depChoose.value = type
+    showDepPerDialog.value = true
+  }
+
+  const clear = type => {
+    state.form[type + 'Id'] = ''
+    state.form[type + 'Name'] = ''
+  }
+
+  const reloadData = () => {
+    state.componentsPagination.data.index = 1
+    state.componentsTable.data = []
+    state.componentsPagination.data.amount = 0
+    librarySealPage()
+  }
+
   const librarySealPage = () => {
     loading.value = true
+    const params = {}
+    state.componentsSearchForm.data.forEach(item => {
+      if (item.type === 'checkButton') {
+        params[item.id] = item.data
+          .filter(i => i.checked)
+          .map(i => i.id)
+          .join(',')
+      } else if (item.type === 'checkbox') {
+        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
+      } else if (item.type === 'picker') {
+        if (item.pickerType === 'date') {
+          params[item.id] = item.value
+            ? item.value
+                .map(i => dayjs(i).format('YYYY-MM-DD HH:mm:ss'))
+                .join(',')
+            : ''
+        }
+      } else {
+        params[item.id] = item.value
+      }
+    })
     libraryApis
       .page({
-        current: state.componentsPagination.data.index,
-        size: state.componentsPagination.data.pageNumber
+        ...{
+          current: state.componentsPagination.data.index,
+          size: state.componentsPagination.data.pageNumber,
+          delFlag: 0,
+          sorts: orderBy.value
+            ? orderBy.value.prop +
+              ' ' +
+              (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
+            : '',
+          sealTypeIds:
+            state.componentsTree.value === 'all'
+              ? ''
+              : state.componentsTree.value
+        },
+        ...params
       })
       .then(result => {
-        console.log(result)
         state.componentsTable.data = result.data.records
         state.componentsPagination.data.amount = result.data.total
         state.componentsPagination.defaultAttribute.total = result.data.total
@@ -893,6 +1028,11 @@
   const sizeChange = e => {
     state.componentsPagination.data.pageNumber = e
     librarySealPage()
+  }
+
+  const currentChange = e => {
+    state.componentsTree.value = e.sealTypeId
+    reloadData()
   }
 
   onBeforeMount(() => {

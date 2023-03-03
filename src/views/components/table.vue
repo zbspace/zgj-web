@@ -3,7 +3,7 @@
     <el-table
       v-bind="props.defaultAttribute"
       v-loading="loading"
-      :refs="refs"
+      ref="tableRefs"
       :data="props.data"
       style="width: 100%"
       @select="select"
@@ -11,6 +11,7 @@
       @selection-change="selectionChange"
       @cell-click="cellClick"
       @row-click="rowClick"
+      @sort-change="sortChange"
       class="ap-table"
     >
       <el-table-column v-if="isSelection" type="selection" width="50" />
@@ -102,9 +103,14 @@
 <script setup>
   import {
     // reactive,
+    ref,
+    defineExpose,
     onBeforeMount,
     onMounted
   } from 'vue'
+  defineExpose({
+    clearSorts
+  })
   const props = defineProps({
     // 标识
     refs: {
@@ -164,9 +170,16 @@
     'select-all',
     'selection-change',
     'cell-click',
+    'sort-change',
     'row-click',
     'custom-click'
   ])
+
+  const tableRefs = ref(null)
+
+  function clearSorts() {
+    tableRefs.value.clearSort()
+  }
   //   const state = reactive({})
   // console.log(props.defaultAttribute);
   // 	当用户手动勾选数据行的 Checkbox 时触发的事件
@@ -184,6 +197,10 @@
   //	当某个单元格被点击时会触发该事件
   function cellClick(row, column, cell, event) {
     emit('cell-click', row, column, cell, event)
+  }
+  // 自定义排序
+  function sortChange(column) {
+    emit('sort-change', column)
   }
   //	当某个单元格被点击时会触发该事件
   function rowClick(row, column, event) {
