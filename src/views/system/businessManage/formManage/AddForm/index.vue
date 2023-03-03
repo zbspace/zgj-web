@@ -13,7 +13,7 @@
         :beforeCutTabs="beforeCutTabs"
       >
         <template #backTitle>
-          <span class="process-back-text">{{ addTitle }}</span>
+          <span class="process-back-text">{{ props.addTitle }}</span>
         </template>
         <template #subTitle>
           <div class="process-save">
@@ -27,7 +27,10 @@
           </div>
         </template>
         <template #content>
-          <div class="formBase" v-if="state.processTabs.checkedNode.index == 1">
+          <div
+            class="formBase"
+            v-show="state.processTabs.checkedNode.index == 1"
+          >
             <div class="formBase-bg">
               <div class="form-title">请填写如下基础信息</div>
               <!-- <JyVform
