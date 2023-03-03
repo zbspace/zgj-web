@@ -49,12 +49,15 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            refs="tables"
+            ref="table"
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
             :loading="loading"
             isSelection
             @selection-change="selectionChange"
             @custom-click="customClick"
+            @sort-change="sortChange"
           >
             <template #custom_intelligentCount="scope">
               <span>{{ scope.value }}枚</span>
@@ -151,6 +154,8 @@
   const vFormLibraryRef = ref(null)
   const loading = ref(false)
   const sealTypeId = ref(null)
+  const orderBy = ref(null)
+  const table = ref(null)
 
   // const emit = defineEmits([])
   const state = reactive({
@@ -191,9 +196,10 @@
           }
         },
         {
-          id: 'picker',
+          id: 'createDate',
           label: '创建时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -374,7 +380,6 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(JSON.stringify(cell))
     if (cell.name === '修改') {
       sealTypeId.value = column.sealTypeId
       clickEditor(cell.name, column)
@@ -459,6 +464,7 @@
 
   const clickSubmit = item => {
     if (item.id === 'reset') {
+      table.value.clearSorts()
       state.componentsSearchForm.data.forEach(item => {
         delete item.value
       })
@@ -472,22 +478,54 @@
     flowPageApi()
   }
 
+  // 自定义排序
+  function sortChange(orderBack) {
+    console.log(JSON.parse(JSON.stringify(orderBack)))
+    orderBy.value = orderBack
+    reloadData()
+  }
+
   const flowPageApi = () => {
     loading.value = true
-    return apis
+    const params = {}
+    state.componentsSearchForm.data.forEach(item => {
+      if (item.type === 'checkButton') {
+        params[item.id] = item.data
+          .filter(i => i.checked)
+          .map(i => i.id)
+          .join(',')
+      } else if (item.type === 'checkbox') {
+        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
+      } else if (item.type === 'picker') {
+        if (item.pickerType === 'date') {
+          params[item.id] = item.value
+            ? item.value
+                .map(i => dayjs(i).format('YYYY-MM-DD HH:mm:ss'))
+                .join(',')
+            : ''
+        }
+      } else {
+        params[item.id] = item.value
+      }
+    })
+    apis
       .page({
-        searchKey: state.componentsSearchForm.data[0].value,
-        current: state.componentsPagination.data.index,
-        size: state.componentsPagination.data.pageNumber,
-        createDate: state.componentsSearchForm.data[1].value
+        ...{
+          current: state.componentsPagination.data.index,
+          size: state.componentsPagination.data.pageNumber,
+          sorts: orderBy.value
+            ? orderBy.value.prop +
+              ' ' +
+              (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
+            : ''
+        },
+        ...params
       })
       .then(result => {
-        console.log(result)
         state.componentsTable.data = result.data.records
         state.componentsPagination.data.amount = result.data.total
         state.componentsPagination.defaultAttribute.total = result.data.total
         loading.value = false
-        return result
       })
   }
 

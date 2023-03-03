@@ -35,6 +35,7 @@
                   class="width-100"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
+                  clearable
                   @input="getCurrentValue(item, index)"
                 />
               </div>
@@ -81,13 +82,15 @@
                   class="width-100"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
+                  clearable
+                  :multiple="item.defaultAttribute.multiple"
                   @change="getCurrentValue(item, index)"
                 >
                   <el-option
                     v-for="data in item.options"
-                    :key="data.value"
-                    :label="data.label"
-                    :value="data.value"
+                    :key="data[item.optionValue]"
+                    :label="data[item.optionLabel]"
+                    :value="data[item.optionValue]"
                   />
                 </el-select>
               </div>
