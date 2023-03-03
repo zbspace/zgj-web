@@ -355,6 +355,7 @@
 
           .btn {
             min-width: 60px;
+            padding: 0 10px;
             height: 32px;
             margin: 0 8px;
             text-align: center;
