@@ -109,10 +109,9 @@
 
   // 类型
   const getBannedWidgets = computed(() => {
-    return []
     return props.bannedWidgets.length
       ? props.bannedWidgets
-      : props.businessType
+      : props.businessType !== '1'
       ? []
       : [
           'sealName',
