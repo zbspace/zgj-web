@@ -112,6 +112,31 @@
         {{ state.JyElMessageBox.content.data }}
       </template>
     </JyElMessageBox>
+    <!-- 批量操作弹框提示 -->
+    <JyElMessageBox
+      v-model="state.showToastDialog.show"
+      :show="state.showToastDialog.show"
+      :defaultAttribute="{}"
+      @confirmClick="confirmClick"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.showToastDialog.header.icon" alt="" />
+          <span>{{ state.showToastDialog.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <p
+            v-for="item in state.componentsBatch.selectionData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{ item.sealTypeName }}</p
+          >
+        </el-scrollbar>
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -205,7 +230,13 @@
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': disabledDate,
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         }
@@ -361,6 +392,16 @@
       content: {
         data: ''
       }
+    },
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
     }
   })
   function clickEditor(title, column) {
@@ -392,7 +433,12 @@
     }
   }
 
+  function disabledDate(time) {
+    return time.getTime() > Date.now() - 8.64e7 // 如果没有后面的-8.64e7就是不可以选择今天的
+  }
+
   const confirmClick = () => {
+    console.log(111)
     apis
       .delete({
         ids:
@@ -401,6 +447,7 @@
       })
       .then(res => {
         state.JyElMessageBox.show = false
+        state.showToastDialog.show = false
         reloadData()
       })
       .catch(() => {
@@ -420,9 +467,10 @@
 
   function clickBatchButton(item) {
     if (item.id === 'deleteMore') {
-      state.JyElMessageBox.header.data = '提示？'
-      state.JyElMessageBox.content.data = '请问确定要删除吗？'
-      state.JyElMessageBox.show = true
+      state.showToastDialog.header.data = '批量删除？'
+      state.showToastDialog.content.data =
+        '已选中以下表单，请问确定要批量删除吗？'
+      state.showToastDialog.show = true
     }
   }
 
@@ -497,12 +545,9 @@
       } else if (item.type === 'checkbox') {
         params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
       } else if (item.type === 'picker') {
-        if (item.pickerType === 'date') {
-          params[item.id] = item.value
-            ? item.value
-                .map(i => dayjs(i).format('YYYY-MM-DD HH:mm:ss'))
-                .join(',')
-            : ''
+        if (item.pickerType === 'date' && item.value) {
+          params[item.id] =
+            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
         }
       } else {
         params[item.id] = item.value

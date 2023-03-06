@@ -48,3 +48,44 @@ p {
     }
   }
 }
+
+.header-div {
+  display: flex;
+  align-items: center;
+}
+
+.header-div img {
+  width: 21px;
+  margin-right: 18px;
+}
+
+.header-div span {
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.content-div {
+  padding-left: 40px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.scrollbar {
+  padding: 0 20px;
+
+  .scrollbar-demo-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 4px;
+    background: var(--el-color-primary-light-9);
+    color: var(--el-color-primary);
+  }
+}
