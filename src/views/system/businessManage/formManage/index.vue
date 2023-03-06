@@ -39,6 +39,7 @@
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             @node-click="clickTreeNode"
+            @current-change="treeCurrentChange"
           >
           </componentsTree>
         </div>
@@ -199,6 +200,7 @@
   import api from '@/api/system/formManagement'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const applyTypeId = ref(2)
+  const refTree = ref(null)
   const state = reactive({
     componentsAddForm: {
       dialogVisible: false,
@@ -514,7 +516,7 @@
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
-        'check-on-click-node': true,
+        'check-on-click-node': false,
         'show-checkbox': false,
         'default-expand-all': true,
         'expand-on-click-node': false,
@@ -573,8 +575,9 @@
     }
   })
   // 点击树节点
-  function clickTreeNode(data) {
-    console.log('树节点', data)
+  function clickTreeNode(data, node) {
+    console.log('ref', refTree.value)
+    console.log('树节点node', node)
     applyTypeId.value = data.applyTypeId
     if (data.applyTypePid === '5' || data.applyTypeName === '印章申请') {
       state.componentsTable.header = [
@@ -802,18 +805,7 @@
       ]
     }
     if (data.applyTypePid === null) {
-      // applyTypeId.value = data.children[0].applyTypeId
-      // componentsTree.defaultAttribute = {
-      //   'check-on-click-node': true,
-      //   'show-checkbox': false,
-      //   'default-expand-all': true,
-      //   'expand-on-click-node': false,
-      //   'check-strictly': true,
-      //   'highlight-current': true,
-      //   'node-key': 'applyTypeId',
-      //   'current-node-key': applyTypeId.value
-      // }
-      return
+      applyTypeId.value = data.children[0].applyTypeId
     }
     getFormPage()
   }
@@ -829,6 +821,7 @@
           element.label = element.applyTypeName
           if (element.applyTypePid === null) {
             element.children = []
+            element.disabled = false
             listApplyTypeTree.push(element)
             applyTypeId.push(element.applyTypeId)
           }

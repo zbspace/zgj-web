@@ -55,8 +55,7 @@ const formPage = {
       relationFlow: '是',
       createUserName: '管理员',
       modifyDatetime: '2023-02-14 12:00:05'
-    }
-    ,
+    },
     {
       formMessageId: '7',
       formName: 'XXX文件类7',
@@ -65,8 +64,7 @@ const formPage = {
       relationFlow: '是',
       createUserName: '管理员',
       modifyDatetime: '2023-02-14 12:00:05'
-    }
-    ,
+    },
     {
       formMessageId: '8',
       formName: 'XXX文件类8',
@@ -75,9 +73,8 @@ const formPage = {
       relationFlow: '是',
       createUserName: '管理员',
       modifyDatetime: '2023-02-14 12:00:05'
-    }
+    },
 
-    ,
     {
       formMessageId: '9',
       formName: 'XXX文件类9',
@@ -86,8 +83,7 @@ const formPage = {
       relationFlow: '是',
       createUserName: '管理员',
       modifyDatetime: '2023-02-14 12:00:05'
-    }
-    ,
+    },
     {
       formMessageId: '10',
       formName: 'XXX文件类10',
@@ -96,8 +92,7 @@ const formPage = {
       relationFlow: '是',
       createUserName: '管理员',
       modifyDatetime: '2023-02-14 12:00:05'
-    }
-    ,
+    },
     {
       formMessageId: '11',
       formName: 'XXX文件类11',
@@ -106,8 +101,7 @@ const formPage = {
       relationFlow: '是',
       createUserName: '管理员',
       modifyDatetime: '2023-02-14 12:00:05'
-    }
-    ,
+    },
     {
       formMessageId: '12',
       formName: 'XXX文件类12',
@@ -116,8 +110,7 @@ const formPage = {
       relationFlow: '是',
       createUserName: '管理员',
       modifyDatetime: '2023-02-14 12:00:05'
-    }
-    ,
+    },
     {
       formMessageId: '13',
       formName: 'XXX文件类13',
@@ -126,10 +119,9 @@ const formPage = {
       relationFlow: '是',
       createUserName: '管理员',
       modifyDatetime: '2023-02-14 12:00:05'
-    }
+    },
 
-    ,
-    { 
+    {
       formMessageId: '14',
       formName: 'XXX文件类14',
       applyTypeName: '用印申请',
@@ -182,6 +174,6 @@ const listApplyTypeTree = {
   ]
 }
 export default {
-  'get|/api/form/page': formPage,
-  'get|/api/form/listApplyTypeTree': listApplyTypeTree
+  // 'get|/api/form/page': formPage,
+  // 'get|/api/form/listApplyTypeTree': listApplyTypeTree
 }
