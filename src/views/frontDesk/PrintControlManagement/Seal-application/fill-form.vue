@@ -38,13 +38,13 @@
               </template>
               <template #content>
                 <div>
-                  <v-form-render
-                    :form-json="FillFormInformation"
-                    :form-data="state.cache.formData"
-                    :option-data="state.cache.optionData"
-                    ref="refFillFormInformation"
-                  >
-                  </v-form-render>
+                  <JyVform
+                    ref="vFormRef"
+                    mode="render"
+                    :formJson="FillFormInformation"
+                    :formData="state.cache.formData"
+                    :optionData="state.cache.optionData"
+                  />
                 </div>
               </template>
             </documentsDetailsPortion>
@@ -56,13 +56,14 @@
               </template>
               <template #content>
                 <div>
-                  <v-form-render
-                    :form-json="FillFormInformationSeal"
-                    :form-data="state.cache.SealformData"
-                    :option-data="state.cache.SealoptionData"
+                  <JyVform
+                    mode="render"
+                    :formJson="FillFormInformationSeal"
+                    :formData="state.cache.SealformData"
+                    :optionData="state.cache.SealoptionData"
                     ref="refFillFormInformation"
                   >
-                  </v-form-render>
+                  </JyVform>
                 </div>
               </template>
             </documentsDetailsPortion>
@@ -87,15 +88,15 @@
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
   import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
   const router = useRouter()
-  const emit = defineEmits([])
+  // const emit = defineEmits([])
   const state = reactive({
     cache: {
       flowList: [
@@ -235,5 +236,10 @@
       background-color: var(--jy-in-common-use-1);
       z-index: 9;
     }
+  }
+</style>
+<style>
+  .upload-demo {
+    text-align: left;
   }
 </style>

@@ -63,23 +63,23 @@
 <script setup>
   import {
     ref,
-    reactive,
-    onBeforeMount,
-    onMounted,
-    watch
+    reactive
+    // onBeforeMount,
+    // onMounted,
+    // watch
   } from 'vue'
   import ResetFromJson from '@/views/addDynamicFormJson/ResetForm'
   import { useRouter } from 'vue-router'
-  import { ElMessage, ElMessageBox } from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import componentsLayout from '@/views/components/Layout.vue'
   const router = useRouter()
-  const props = defineProps({
-    // 展示权限
-    resetData: {
-      type: Object,
-      default: {}
-    }
-  })
+  // const props = defineProps({
+  //   // 展示权限
+  //   resetData: {
+  //     type: Object,
+  //     default: {}
+  //   }
+  // })
   const state = reactive({
     selectPerson: false
   })
@@ -97,7 +97,7 @@
       .then(formData => {
         // Form Validation OK
         alert(JSON.stringify(formData))
-        showFormDialog.value = false
+        // showFormDialog.value = false
       })
       .catch(error => {
         // Form Validation failed
