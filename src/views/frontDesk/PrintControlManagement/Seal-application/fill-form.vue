@@ -31,43 +31,14 @@
               :data="state.cache.flowList"
             ></SealApplicationStep>
           </div>
-          <div>
-            <documentsDetailsPortion>
-              <template #title>
-                <div>基本信息</div>
-              </template>
-              <template #content>
-                <div>
-                  <JyVform
-                    ref="vFormRef"
-                    mode="render"
-                    :formJson="FillFormInformation"
-                    :formData="state.cache.formData"
-                    :optionData="state.cache.optionData"
-                  />
-                </div>
-              </template>
-            </documentsDetailsPortion>
-          </div>
-          <div>
-            <documentsDetailsPortion>
-              <template #title>
-                <div>用印信息</div>
-              </template>
-              <template #content>
-                <div>
-                  <JyVform
-                    mode="render"
-                    :formJson="FillFormInformationSeal"
-                    :formData="state.cache.SealformData"
-                    :optionData="state.cache.SealoptionData"
-                    ref="refFillFormInformation"
-                  >
-                  </JyVform>
-                </div>
-              </template>
-            </documentsDetailsPortion>
-          </div>
+          <JyVform
+            mode="render"
+            :formJson="FillFormInformation"
+            :formData="state.cache.formData"
+            :optionData="state.cache.optionData"
+            ref="refFillFormInformation"
+          >
+          </JyVform>
         </div>
       </template>
       <template #fixed>
@@ -86,7 +57,8 @@
   import componentsLayout from '../../../components/Layout.vue'
   import documentsDetailsPortion from '../../../components/documentsDetails/portion.vue'
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
-  import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
+  // import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
+  import FillFormInformation from '@/views/system/businessManage//formManage/AddForm/templates/template7'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
   // const props = defineProps({
   //   // 处理类型
@@ -125,8 +97,13 @@
   }
 
   // 点击下一步
-  function clickNextStep() {
-    router.push({ name: 'ConfirmApprovalProcess' })
+  async function clickNextStep() {
+    try {
+      await refFillFormInformation.value.getFormData()
+      router.push({ name: 'ConfirmApprovalProcess' })
+    } catch (error) {
+      console.log('--->', error)
+    }
   }
 
   onBeforeMount(() => {
@@ -163,8 +140,8 @@
       // padding-right: 1.25rem;
       box-sizing: border-box;
       text-align: center;
+      padding: 36px;
       padding-bottom: 4rem;
-
       .custom-buzhou {
         display: flex;
         justify-content: center;
