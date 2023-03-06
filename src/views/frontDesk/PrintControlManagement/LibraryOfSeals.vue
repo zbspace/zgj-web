@@ -724,13 +724,13 @@
           'show-overflow-tooltip': true
         },
         {
-          prop: '2',
+          prop: 'sealTypeName',
           label: '印章类型',
           sortable: 'custom',
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'sealStatus',
           label: '印章状态',
           sortable: 'custom',
           'min-width': 150
@@ -742,13 +742,13 @@
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'keepOrganName',
           label: '保管部门',
           sortable: 'custom',
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'createDatetime',
           label: '创建时间',
           sortable: 'custom',
           'min-width': 180

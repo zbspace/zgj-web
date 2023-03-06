@@ -25,7 +25,10 @@
       >
         <template #default="scope">
           <span>{{
-            (props.paginationData.index - 1) * props.paginationData.pageNumber +
+            (props.paginationData.index
+              ? (props.paginationData.index - 1) *
+                props.paginationData.pageNumber
+              : 0) +
             scope.$index +
             1
           }}</span>

@@ -19,14 +19,6 @@ api.queryIsMustUpload = data => {
     params: data
   })
 }
-// 智能用印列表
-api.intellectPage = data => {
-  return request({
-    method: 'GET',
-    url: '/sealApply/intellect/page',
-    params: data
-  })
-}
 // 保存模板
 api.templateAdd = data => {
   return request({
