@@ -47,12 +47,12 @@
       <template #table>
         <div>
           <componentsTable
+            :loading="state.componentsTable.loading"
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :paginationData="state.componentsPagination.data"
             :header="state.componentsTable.header"
             :isSelection="true"
-            :loading="state.componentsTable.loading"
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -175,23 +175,13 @@
         </el-scrollbar>
       </template>
       <template #footer>
-        <div v-if="state.componentsBatch.butDatas.length > 1">
-          <el-button
-            v-for="item in state.componentsBatch.butDatas"
-            :key="item.name"
-            :type="item.type"
-            @click="closeBatchTabel"
-            >{{ item.name }}</el-button
-          >
-        </div>
-        <div v-else>
-          <el-button
-            v-for="item in state.componentsBatch.butDatas"
-            :key="item.name"
-            @click="item.clickName"
-            >{{ item.name }}</el-button
-          >
-        </div>
+        <el-button
+          v-for="item in state.componentsBatch.butDatas"
+          :key="item.name"
+          :type="item.type"
+          @click="item.clickName"
+          >{{ item.name }}</el-button
+        >
       </template>
     </JyElMessageBox>
   </div>
@@ -208,6 +198,7 @@
   import componentsBatch from '@/views/components/batch.vue'
   import api from '@/api/system/formManagement'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
+  const applyTypeId = ref(2)
   const state = reactive({
     componentsAddForm: {
       dialogVisible: false,
@@ -217,16 +208,15 @@
     componentsSearchForm: {
       style: {
         lineStyle: {
-          width: '30%'
+          width: 'calc(100% / 3)'
         },
         labelStyle: {
           width: '100px'
         }
       },
-
       data: [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -242,68 +232,7 @@
           ]
         },
         {
-          id: 'name',
-          label: '状态',
-          type: 'select',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
-        },
-        {
-          id: 'picker',
-          label: '更新时间',
-          type: 'picker',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'daterange',
-            'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
-          },
-          style: {}
-        },
-        {
-          id: 'name',
-          label: '业务类型',
-          type: 'select',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
-        },
-        {
-          id: 'name',
-          label: '文件类型',
-          type: 'select',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
-        },
-        {
-          id: 'name',
+          id: 'applyTypeName',
           label: '用印类型',
           type: 'select',
           inCommonUse: true,
@@ -313,11 +242,98 @@
           },
           options: [
             {
-              value: '1',
-              label: '全部'
+              sealUseTypeId: '1',
+              sealUseTypeIdLabel: '物理用印'
+            },
+            {
+              sealUseTypeId: '2',
+              sealUseTypeIdLabel: '电子签章'
             }
-          ]
+          ],
+          optionLabel: 'sealUseTypeIdLabel',
+          optionValue: 'sealUseTypeId'
+        },
+        // {
+        //   id: 'name',
+        //   label: '状态',
+        //   type: 'select',
+        //   inCommonUse: true,
+        //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        //   defaultAttribute: {
+        //     placeholder: '请选择'
+        //   },
+        //   options: [
+        //     {
+        //       value: '1',
+        //       label: '全部'
+        //     }
+        //   ]
+        // },
+        {
+          id: 'modifyDatetime',
+          label: '更新时间',
+          type: 'picker',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        // {
+        //   id: 'sealUseTypeName',
+        //   label: '业务类型',
+        //   type: 'select',
+        //   inCommonUse: true,
+        //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        //   defaultAttribute: {
+        //     placeholder: '请选择'
+        //   },
+        //   options: [
+        //     {
+        //       value: '1',
+        //       label: '全部'
+        //     }
+        //   ]
+        // },
+        {
+          id: 'modifyDatetime',
+          label: '是否关联流程',
+          type: 'select',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '请选择'
+          },
+          options: [
+            {
+              relationFlow: '1',
+              relationFlowLabel: '是'
+            },
+            {
+              relationFlow: '2',
+              relationFlowLabel: '否'
+            }
+          ],
+          optionLabel: 'relationFlowLabel',
+          optionValue: 'relationFlow'
         }
+        // {
+        //   id: 'name',
+        //   label: '文件类型',
+        //   type: 'select',
+        //   inCommonUse: true,
+        //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        //   defaultAttribute: {
+        //     placeholder: '请选择'
+        //   },
+        //   options: [
+        //     {
+        //       value: '1',
+        //       label: '全部'
+        //     }
+        //   ]
+        // }
       ],
       butData: [
         {
@@ -372,18 +388,6 @@
           'min-width': 150
         },
         {
-          prop: '4',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'relationFlow',
-          label: '状态',
-          width: 90,
-          sortable: true
-        },
-        {
           prop: 'createUserName',
           label: '创建人',
           sortable: true,
@@ -431,7 +435,7 @@
           }
         }
       },
-      loading: true
+      loading: false
     },
 
     componentsBatch: {
@@ -453,10 +457,11 @@
       ]
     },
     componentsPagination: {
+      show: false,
       data: {
-        amount: 400,
+        amount: 10,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
@@ -515,7 +520,8 @@
         'expand-on-click-node': false,
         'check-strictly': true,
         'highlight-current': true,
-        'auto-expand-parent': true
+        'node-key': 'applyTypeId',
+        'current-node-key': '2'
       }
     },
     componentsDocumentsDetails: {
@@ -568,7 +574,247 @@
   })
   // 点击树节点
   function clickTreeNode(data) {
-    console.log(data)
+    console.log('树节点', data)
+    applyTypeId.value = data.applyTypeId
+    if (data.applyTypePid === '5' || data.applyTypeName === '印章申请') {
+      state.componentsTable.header = [
+        {
+          prop: 'formName',
+          label: '表单名称',
+          sortable: true,
+          'min-width': 150,
+          fixed: true
+        },
+        {
+          prop: 'applyTypeName',
+          label: '业务类型',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: 'createUserName',
+          label: '创建人',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: 'modifyDatetime',
+          label: '更新时间',
+          width: 190,
+          sortable: true
+        },
+
+        {
+          prop: '8',
+          label: '操作',
+          fixed: 'right',
+          width: 150,
+          rankDisplayData: [
+            {
+              name: '修改'
+            },
+            {
+              name: '删除'
+            },
+            {
+              name: '复制'
+            }
+          ]
+        }
+      ]
+      state.componentsSearchForm.data = [
+        {
+          id: 'keyword',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '表单名称/创建人'
+          },
+          options: [
+            {
+              value: '1',
+              label: '全部'
+            }
+          ]
+        },
+        {
+          id: 'modifyDatetime',
+          label: '更新时间',
+          type: 'picker',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'modifyDatetime',
+          label: '是否关联流程',
+          type: 'select',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '请选择'
+          },
+          options: [
+            {
+              relationFlow: '1',
+              relationFlowLabel: '是'
+            },
+            {
+              relationFlow: '2',
+              relationFlowLabel: '否'
+            }
+          ],
+          optionLabel: 'relationFlowLabel',
+          optionValue: 'relationFlow'
+        }
+      ]
+    } else {
+      state.componentsTable.header = [
+        {
+          prop: 'formName',
+          label: '表单名称',
+          sortable: true,
+          'min-width': 150,
+          fixed: true
+        },
+        {
+          prop: 'applyTypeName',
+          label: '业务类型',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: 'sealUseTypeName',
+          label: '用印类型',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: 'createUserName',
+          label: '创建人',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: 'modifyDatetime',
+          label: '更新时间',
+          width: 190,
+          sortable: true
+        },
+
+        {
+          prop: '8',
+          label: '操作',
+          fixed: 'right',
+          width: 150,
+          rankDisplayData: [
+            {
+              name: '修改'
+            },
+            {
+              name: '删除'
+            },
+            {
+              name: '复制'
+            }
+          ]
+        }
+      ]
+      state.componentsSearchForm.data = [
+        {
+          id: 'keyword',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '表单名称/创建人'
+          },
+          options: [
+            {
+              value: '1',
+              label: '全部'
+            }
+          ]
+        },
+        {
+          id: 'applyTypeName',
+          label: '用印类型',
+          type: 'select',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '请选择'
+          },
+          options: [
+            {
+              sealUseTypeId: '1',
+              sealUseTypeIdLabel: '物理用印'
+            },
+            {
+              sealUseTypeId: '2',
+              sealUseTypeIdLabel: '电子签章'
+            }
+          ],
+          optionLabel: 'sealUseTypeIdLabel',
+          optionValue: 'sealUseTypeId'
+        },
+        {
+          id: 'modifyDatetime',
+          label: '更新时间',
+          type: 'picker',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'daterange',
+            'start-placeholder': '开始时间',
+            'end-placeholder': '结束时间'
+          },
+          style: {}
+        },
+        {
+          id: 'modifyDatetime',
+          label: '是否关联流程',
+          type: 'select',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '请选择'
+          },
+          options: [
+            {
+              relationFlow: '1',
+              relationFlowLabel: '是'
+            },
+            {
+              relationFlow: '2',
+              relationFlowLabel: '否'
+            }
+          ],
+          optionLabel: 'relationFlowLabel',
+          optionValue: 'relationFlow'
+        }
+      ]
+    }
+    if (data.applyTypePid === null) {
+      // applyTypeId.value = data.children[0].applyTypeId
+      // componentsTree.defaultAttribute = {
+      //   'check-on-click-node': true,
+      //   'show-checkbox': false,
+      //   'default-expand-all': true,
+      //   'expand-on-click-node': false,
+      //   'check-strictly': true,
+      //   'highlight-current': true,
+      //   'node-key': 'applyTypeId',
+      //   'current-node-key': applyTypeId.value
+      // }
+      return
+    }
     getFormPage()
   }
   // 请求表单树
@@ -581,19 +827,23 @@
         const applyTypeId = []
         data.forEach(element => {
           element.label = element.applyTypeName
-          if (element.parent_id === '') {
+          if (element.applyTypePid === null) {
             element.children = []
             listApplyTypeTree.push(element)
             applyTypeId.push(element.applyTypeId)
           }
         })
+        console.log(applyTypeId)
         data.forEach(element => {
-          const index = applyTypeId.indexOf(element.parent_id)
+          const index = applyTypeId.indexOf(element.applyTypePid)
           if (index > -1) {
             listApplyTypeTree[index].children.push(element)
           }
         })
         state.componentsTree.data = listApplyTypeTree
+        applyTypeId.value = state.componentsTree.data[0].children[0].applyTypeId
+        console.log('applyTypeId.value', applyTypeId.value)
+        getFormPage()
       }
     })
   }
@@ -608,6 +858,7 @@
       sealUseTypeId: '',
       relationFlow: ''
     }
+    queryParams.applyTypeId = applyTypeId.value
     searchData.map((item, index) => {
       switch (item.label) {
         case '关键词':
@@ -620,24 +871,26 @@
           queryParams.updateStartTime = item.value && item.value[0]
           queryParams.updateEndTime = item.value && item.value[1]
           break
-        case '业务类型':
-          queryParams.applyTypeId = item.value
-          break
         case '用印类型':
           queryParams.sealUseTypeId = item.value
           break
       }
     })
-    console.log(queryParams)
+    queryParams.current = state.componentsPagination.index || 1
+    queryParams.size = state.componentsPagination.pageNumber || 10
+    console.log('queryParams', queryParams)
+    state.componentsTable.loading = true
     api.formPage(queryParams).then(res => {
       const { code, data } = res
       console.log(res)
       if (code === 200) {
-        state.componentsTable.data = data
-        state.componentsPagination.data.amount = data.length
-        state.componentsPagination.defaultAttribute.total = data.length
-        state.componentsTable.loading = false
+        state.componentsTable.data = data.records
+        state.componentsPagination.data.amount = data.total
+        state.componentsPagination.data.pageNumber = data.size
+        state.componentsPagination.defaultAttribute.total = data.total
       }
+      console.log('loading', state.componentsTable.loading)
+      state.componentsTable.loading = false
     })
   }
   // 筛选条件按钮
@@ -711,15 +964,19 @@
     state.componentsBatch.butDatas = [
       {
         name: '确定',
-        type: 'primary'
+        type: 'primary',
+        clickName: sureBatchDel
       },
       {
         name: '取消',
-        type: ''
+        type: '',
+        clickName: closeBatchTabel
       }
     ]
     console.log('批量删除')
   }
+  // 确定批量删除
+  const sureBatchDel = () => {}
   // 关闭表单复制弹窗
   function closeBatchTabel() {
     state.showToastDialog.show = false
@@ -775,7 +1032,7 @@
     // console.log(`the component is now onBeforeMount.`)
     // 加载表单列表
     getListApplyTypeTree()
-    getFormPage()
+    // getFormPage()
   })
 </script>
 
