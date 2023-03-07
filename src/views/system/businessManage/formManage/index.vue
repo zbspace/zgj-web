@@ -199,6 +199,7 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import api from '@/api/system/formManagement'
+  import dayjs from 'dayjs'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const applyTypeId = ref(2)
   const refTree = ref(null)
@@ -277,6 +278,7 @@
           id: 'modifyDatetime',
           label: '更新时间',
           type: 'picker',
+          pickerType: 'date',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
@@ -675,7 +677,6 @@
           width: 190,
           sortable: true
         },
-
         {
           prop: '8',
           label: '操作',
@@ -712,7 +713,7 @@
           ]
         },
         {
-          id: 'applyTypeName',
+          id: 'sealUseTypeId',
           label: '用印类型',
           type: 'select',
           inCommonUse: true,
@@ -746,7 +747,7 @@
           style: {}
         },
         {
-          id: 'modifyDatetime',
+          id: 'relationFlow',
           label: '是否关联流程',
           type: 'select',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -808,46 +809,33 @@
   // 请求表单列表
   const getFormPage = () => {
     const searchData = state.componentsSearchForm.data
-    const queryParams = {
-      keyword: '',
-      updateStartTime: '',
-      updateEndTime: '',
-      applyTypeId: '',
-      sealUseTypeId: '',
-      relationFlow: ''
-    }
+    const queryParams = {}
     queryParams.applyTypeId = applyTypeId.value
-    searchData.map((item, index) => {
-      switch (item.label) {
-        case '关键词':
-          queryParams.keyword = item.value
-          break
-        case '状态':
-          queryParams.relationFlow = item.value
-          break
-        case '更新时间':
-          queryParams.updateStartTime = item.value && item.value[0]
-          queryParams.updateEndTime = item.value && item.value[1]
-          break
-        case '用印类型':
-          queryParams.sealUseTypeId = item.value
-          break
+    searchData.forEach(item => {
+      if (item.type === 'picker') {
+        if (item.pickerType === 'date') {
+          if (item.value) {
+            queryParams.updateStartTime = dayjs(item.value[0]).format(
+              'YYYY-MM-DD HH:mm:ss'
+            )
+            queryParams.updateEndTime = dayjs(item.value[1]).format(
+              'YYYY-MM-DD HH:mm:ss'
+            )
+          }
+        }
+      } else {
+        queryParams[item.id] = item.value
       }
     })
     queryParams.current = state.componentsPagination.index || 1
     queryParams.size = state.componentsPagination.pageNumber || 10
-    console.log('queryParams', queryParams)
     state.componentsTable.loading = true
     api.formPage(queryParams).then(res => {
-      const { code, data } = res
       console.log(res)
-      if (code === 200) {
-        state.componentsTable.data = data.records
-        state.componentsPagination.data.amount = data.total
-        state.componentsPagination.data.pageNumber = data.size
-        state.componentsPagination.defaultAttribute.total = data.total
-      }
-      console.log('loading', state.componentsTable.loading)
+      state.componentsTable.data = res.data.records
+      state.componentsPagination.data.amount = res.data.total
+      state.componentsPagination.data.pageNumber = res.data.size
+      state.componentsPagination.defaultAttribute.total = res.data.total
       state.componentsTable.loading = false
     })
   }
@@ -877,7 +865,6 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log('row', column)
     if (cell.name === '修改') {
       state.componentsAddForm.dialogVisible = true
       state.componentsAddForm.addTitle = '修改'
@@ -901,10 +888,27 @@
     const data = {
       formMessageId: state.JyElMessageBox.data.tableId
     }
-    api.formPage(data).then(res => {
-      if (res.code === 200) {
-        console.log('删除成功')
-        getFormPage()
+    api.relationContractType(data).then(res => {
+      console.log(res)
+      if (res.data.length > 0) {
+        state.showToastDialog.header.data = '删除'
+        state.showToastDialog.content.data =
+          '当前表单关联了以下流程，不允许删除'
+        state.showToastDialog.show = true
+        state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+        state.componentsBatch.butDatas = [
+          {
+            name: '知道了',
+            type: 'primary',
+            clickName: closeBatchTabel
+          }
+        ]
+      } else {
+        api.formPage(data).then(res => {
+          if (res.code === 200) {
+            getFormPage()
+          }
+        })
       }
     })
     state.JyElMessageBox.show = false
@@ -939,10 +943,31 @@
       idObj.formMessageId = v.formMessageId
       idList.push(idObj)
     })
-    api.batchDelete(idList).then(res => {
+    api.relationContractType(idList).then(res => {
       if (res.code === 200) {
+        if (res.data.length > 0) {
+          state.showToastDialog.header.data = '删除'
+          state.showToastDialog.content.data =
+            '选中的以下表单已关联了流程，不允许删除'
+          state.showToastDialog.show = true
+          state.showToastDialog.header.icon =
+            '/src/assets/svg/common/danger.svg'
+          state.componentsBatch.butDatas = [
+            {
+              name: '知道了',
+              type: 'primary',
+              clickName: closeBatchTabel
+            }
+          ]
+        } else {
+          api.batchDelete(idList).then(res => {
+            if (res.code === 200) {
+              getFormPage()
+            }
+          })
+        }
+      } else {
         console.log(res)
-        getFormPage()
       }
     })
   }

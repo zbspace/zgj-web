@@ -15,7 +15,7 @@
                 <el-button>
                   <img
                     class="button-icon"
-                    src="../../../assets/svg/gengduo-caozuo.svg"
+                    src="@/assets/svg/gengduo-caozuo.svg"
                     alt=""
                     srcset=""
                   />
@@ -26,6 +26,7 @@
                     <el-dropdown-item
                       v-for="(item, index) in state.componentsTitle.more.data"
                       :key="index"
+                      @click="moreClick(item)"
                     >
                       {{ item.name }}
                     </el-dropdown-item>
@@ -39,7 +40,7 @@
       <template #tabs>
         <div>
           <componentsTabs
-            activeName="1"
+            activeName="0"
             :data="state.componentsTabs.data"
             @tab-change="tabChange"
           >
@@ -53,6 +54,7 @@
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
             @clickElement="clickElement"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -76,6 +78,7 @@
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
+            :loading="state.componentsTable.loading"
           >
           </componentsTable>
         </div>
@@ -214,7 +217,7 @@
                 <div class="view-file" v-if="item.type == 2">
                   <div class="upload-file">
                     <div v-if="item.isArchived">
-                      <img src="../../../assets/svg/upload/icon-pdf.svg" />{{
+                      <img src="@/assets/svg/upload/icon-pdf.svg" />{{
                         item.archiveAttachmentFileName
                       }}（{{ item.fileSize }}）
                     </div>
@@ -299,71 +302,48 @@
     onBeforeMount,
     onMounted
   } from 'vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
-  // import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
+  import componentsTable from '@/views/components/table'
+  import componentsSearchForm from '@/views/components/searchForm'
+  // import componentsTree from '.@/views/components/tree'
+  // import componentsBreadcrumb from '@/views/components/breadcrumb'
+  import componentsPagination from '@/views/components/pagination.vue'
+  import componentsTabs from '@/views/components/tabs.vue'
+  import componentsLayout from '@/views/components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import componentsDocumentsDetails from '../../components/documentsDetails.vue'
+  import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import { useRouter } from 'vue-router'
+  import api from '@/api/frontDesk/printControl/archive'
+  import dayjs from 'dayjs'
   const router = useRouter()
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
-  // const emit = defineEmits([])
   const showDepPerDialog = ref(false)
+  const archiveStatus = ref(0)
   const dialogData = reactive({
     show: false,
     title: '文件归档'
   })
-  // const vFormLibraryRef = ref(null)
-  // const submitLibraryForm = (type) => {
-  //     if (!type) {
-  //         vFormLibraryRef.value.resetForm();
-  //         return
-  //     }
-  //     vFormLibraryRef.value.getFormData().then(formData => {
-  //         alert(JSON.stringify(formData))
-  //         fromState.showDialog = false
-  //     }).catch(error => {
-  //         // Form Validation failed
-  //         ElMessage.error(error)
-  //     })
-  // }
   const state = reactive({
     cache: {},
     componentsTitle: {
       more: {
-        data: [
-          {
-            name: ''
-          }
-        ]
+        data: []
       }
     },
     componentsTabs: {
       data: [
         {
           label: '待归档',
-          name: '1'
+          name: '0'
         },
         {
           label: '归档中',
-          name: '2'
+          name: '1'
         },
         {
           label: '已归档',
-          name: '3'
+          name: '2'
         }
       ]
     },
@@ -391,6 +371,7 @@
           id: 'picker',
           label: '申请时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -440,6 +421,7 @@
           id: 'picker',
           label: '归档时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -511,37 +493,37 @@
     componentsTable: {
       header: [
         {
-          prop: '1',
+          prop: 'sealApplyNo',
           label: '单据编号',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '2',
+          prop: 'sealApplyName',
           label: '单据名称',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'fileTypeName',
           label: '用印文件类型',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'applyUserName',
           label: '申请人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'applyOrganName',
           label: '申请部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'applyDate',
           label: '申请时间',
           sortable: true,
           'min-width': 180
@@ -583,7 +565,8 @@
             }
           }
         }
-      }
+      },
+      loading: false
     },
     componentsTree: {
       data: [
@@ -750,6 +733,59 @@
       supplemenFiles: []
     }
   })
+  const moreClick = item => {
+    console.log(item)
+  }
+  // 操作查询、重置按钮
+  const clickSubmit = (item, index) => {
+    console.log(item)
+    if (item.id === 'reset') {
+      state.componentsSearchForm.data.forEach(element => {
+        delete element.value
+      })
+    }
+    getArchivePage()
+  }
+  // 查询列表
+  const getArchivePage = () => {
+    state.componentsTable.loading = true
+    const searchData = state.componentsSearchForm.data
+    const queryParams = {}
+    searchData.forEach(item => {
+      if (item.type === 'checkButton') {
+        queryParams[item.id] = item.data
+          .filter(i => i.checked)
+          .map(i => i.id)
+          .join(',')
+      } else if (item.type === 'checkbox') {
+        queryParams[item.id] = item.checkbox[0].value
+          ? item.checkbox[0].value
+          : ''
+      } else if (item.type === 'picker') {
+        if (item.pickerType === 'date') {
+          console.log('itemdate', item)
+          queryParams[item.id] = item.value
+            ? item.value
+                .map(i => dayjs(i).format('YYYY-MM-DD HH:mm:ss'))
+                .join(',')
+            : ''
+        }
+      } else {
+        queryParams[item.id] = item.value
+      }
+    })
+    queryParams.archiveStatus = archiveStatus.value
+    queryParams.current = state.componentsPagination.index || 1
+    queryParams.size = state.componentsPagination.pageNumber || 10
+    api.archivePage(queryParams).then(res => {
+      console.log(res)
+      state.componentsTable.data = res.data.records
+      state.componentsPagination.data.amount = res.data.total
+      state.componentsPagination.data.pageNumber = res.data.size
+      state.componentsPagination.defaultAttribute.total = res.data.total
+      state.componentsTable.loading = false
+    })
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -764,41 +800,51 @@
 
   // 切换分页
   function tabChange(activeName) {
-    // console.log(activeName);
-    if (activeName === '1') {
+    archiveStatus.value = activeName
+    if (activeName === '0') {
       state.componentsTable.header = [
         {
-          prop: '1',
+          width: 50,
+          type: 'selection'
+        },
+        {
+          prop: '0',
+          label: '序号',
+          width: 60,
+          align: 'center'
+        },
+        {
+          prop: 'sealApplyNo',
           label: '单据编号',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '2',
+          prop: 'sealApplyName',
           label: '单据名称',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'fileTypeName',
           label: '用印文件类型',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'applyUserName',
           label: '申请人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'applyOrganName',
           label: '申请部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'applyDate',
           label: '申请时间',
           sortable: true,
           'min-width': 180
@@ -862,7 +908,7 @@
           6: '2022-10-30  15:00:00'
         }
       ]
-    } else if (activeName === '2') {
+    } else if (activeName === '1') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -875,49 +921,49 @@
           align: 'center'
         },
         {
-          prop: '1',
+          prop: 'sealApplyNo',
           label: '单据编号',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '2',
+          prop: 'sealApplyName',
           label: '单据名称',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'fileTypeName',
           label: '用印文件类型',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'applyUserName',
           label: '申请人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'applyOrganName',
           label: '申请部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'applyDate',
           label: '申请时间',
           sortable: true,
           'min-width': 180
         },
         {
-          prop: '7',
+          prop: 'signFileCount',
           label: '用印文件数',
           sortable: true,
           'min-width': 180
         },
         {
-          prop: '8',
+          prop: 'archivedFileCount',
           label: '已归档文件数',
           sortable: true,
           'min-width': 180
@@ -934,36 +980,36 @@
           ]
         }
       ]
-      state.componentsTable.data = [
-        {
-          0: 1,
-          1: '011105',
-          2: '5417692443',
-          3: '普通智能用印',
-          4: '汤博',
-          5: '建业科技',
-          6: '2022-10-30  15:00:00'
-        },
-        {
-          0: 2,
-          1: '011106',
-          2: '5417612443',
-          3: '普通智能用印',
-          4: '肖世康',
-          5: '技术中心',
-          6: '2022-10-12  15:10:00'
-        },
-        {
-          0: 3,
-          1: '011102',
-          2: '5417692498',
-          3: '普通智能用印',
-          4: '郭光林',
-          5: '研发中心',
-          6: '2022-10-30  08:00:12'
-        }
-      ]
-    } else if (activeName === '3') {
+      // state.componentsTable.data = [
+      //   {
+      //     0: 1,
+      //     1: '011105',
+      //     2: '5417692443',
+      //     3: '普通智能用印',
+      //     4: '汤博',
+      //     5: '建业科技',
+      //     6: '2022-10-30  15:00:00'
+      //   },
+      //   {
+      //     0: 2,
+      //     1: '011106',
+      //     2: '5417612443',
+      //     3: '普通智能用印',
+      //     4: '肖世康',
+      //     5: '技术中心',
+      //     6: '2022-10-12  15:10:00'
+      //   },
+      //   {
+      //     0: 3,
+      //     1: '011102',
+      //     2: '5417692498',
+      //     3: '普通智能用印',
+      //     4: '郭光林',
+      //     5: '研发中心',
+      //     6: '2022-10-30  08:00:12'
+      //   }
+      // ]
+    } else if (activeName === '2') {
       state.componentsTable.header = [
         {
           width: 50,
@@ -976,37 +1022,37 @@
           align: 'center'
         },
         {
-          prop: '1',
+          prop: 'sealApplyNo',
           label: '单据编号',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '2',
+          prop: 'sealApplyName',
           label: '单据名称',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'fileTypeName',
           label: '用印文件类型',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'applyUserName',
           label: '申请人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'applyOrganName',
           label: '申请部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'archiveDatetime',
           label: '归档时间',
           sortable: true,
           'min-width': 180
@@ -1015,7 +1061,18 @@
           prop: '7',
           label: '文件下载',
           sortable: true,
-          'min-width': 150
+          'min-width': 150,
+          rankDisplayData: [
+            {
+              name: '用印前'
+            },
+            {
+              name: '用印中'
+            },
+            {
+              name: '用印后'
+            }
+          ]
         },
         {
           prop: 'caozuo',
@@ -1032,26 +1089,26 @@
           ]
         }
       ]
-      state.componentsTable.data = [
-        {
-          0: 1,
-          1: '011105',
-          2: '5417692443',
-          3: '普通智能用印',
-          4: '汤博',
-          5: '建业科技',
-          6: '2022-10-30  15:00:00'
-        },
-        {
-          0: 2,
-          1: '011106',
-          2: '5417612443',
-          3: '普通智能用印',
-          4: '肖世康',
-          5: '技术中心',
-          6: '2022-10-12  15:10:00'
-        }
-      ]
+      // state.componentsTable.data = [
+      //   {
+      //     0: 1,
+      //     1: '011105',
+      //     2: '5417692443',
+      //     3: '普通智能用印',
+      //     4: '汤博',
+      //     5: '建业科技',
+      //     6: '2022-10-30  15:00:00'
+      //   },
+      //   {
+      //     0: 2,
+      //     1: '011106',
+      //     2: '5417612443',
+      //     3: '普通智能用印',
+      //     4: '肖世康',
+      //     5: '技术中心',
+      //     6: '2022-10-12  15:10:00'
+      //   }
+      // ]
       state.componentsTable.defaultAttribute = {
         stripe: true,
         'header-cell-style': {
@@ -1076,11 +1133,11 @@
     }
 
     // 更多操作
-    if (activeName === '1') {
+    if (activeName === '0') {
+      state.componentsTitle.more.data = []
+    } else if (activeName === '1') {
       state.componentsTitle.more.data = []
     } else if (activeName === '2') {
-      state.componentsTitle.more.data = []
-    } else if (activeName === '3') {
       state.componentsTitle.more.data = [
         {
           name: '文件打包下载'
@@ -1092,10 +1149,10 @@
     }
 
     // 搜索条件
-    if (activeName === '1' || activeName === '2') {
+    if (activeName === '0' || activeName === '1') {
       state.componentsSearchForm.data = [
         {
-          id: 'name',
+          id: 'searchKey',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -1105,9 +1162,10 @@
           }
         },
         {
-          id: 'picker',
+          id: 'applyDate',
           label: '申请时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -1118,7 +1176,7 @@
           style: {}
         },
         {
-          id: 'derivable',
+          id: 'fileTypeIds',
           label: '文件类型',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1127,7 +1185,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'applyUserIds',
           label: '申请人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1136,7 +1194,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'applyOrganIds',
           label: '申请部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1145,7 +1203,7 @@
           }
         },
         {
-          id: 'wdyy',
+          id: 'onlyMyself',
           label: '',
           type: 'checkbox',
           checkbox: [
@@ -1159,10 +1217,10 @@
           ]
         }
       ]
-    } else if (activeName === '3') {
+    } else if (activeName === '2') {
       state.componentsSearchForm.data = [
         {
-          id: 'name',
+          id: 'searchKey',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -1172,9 +1230,10 @@
           }
         },
         {
-          id: 'picker',
+          id: 'applyDate',
           label: '申请时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -1185,7 +1244,7 @@
           style: {}
         },
         {
-          id: 'derivable',
+          id: 'fileTypeIds',
           label: '文件类型',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1194,7 +1253,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'applyUserIds',
           label: '申请人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1203,7 +1262,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'applyOrganIds',
           label: '申请部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1212,7 +1271,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'relatedCompanyIds',
           label: '往来单位',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1221,9 +1280,10 @@
           }
         },
         {
-          id: 'picker',
+          id: 'archiveDate',
           label: '归档时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -1234,7 +1294,7 @@
           style: {}
         },
         {
-          id: 'derivable',
+          id: 'sealIds',
           label: '选择印章',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -1243,7 +1303,7 @@
           }
         },
         {
-          id: 'wdyy',
+          id: 'sealUseStatus',
           label: '用印状态',
           type: 'checkButton',
           data: [
@@ -1256,7 +1316,7 @@
           ]
         },
         {
-          id: 'wdyy',
+          id: 'onlyMyself',
           label: '',
           type: 'checkbox',
           checkbox: [
@@ -1271,9 +1331,10 @@
         }
       ]
     }
+    getArchivePage()
   }
   // 点击表格按钮
-  function customClick(row, column, cell, event) {
+  const customClick = (row, column, cell, event) => {
     if (cell.name === '文件归档') {
       dialogData.show = true
     }
@@ -1289,7 +1350,7 @@
     }
   }
   // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
+  const selectionChange = selection => {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection
     if (state.componentsBatch.selectionData.length > 0) {
@@ -1298,7 +1359,6 @@
       state.componentsBatch.defaultAttribute.disabled = true
     }
   }
-
   // 点击搜索表单
   function clickElement(item, index) {
     // console.log(item, index)
@@ -1315,7 +1375,8 @@
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 切换分页
-    tabChange('1')
+    // 获取列表
+    getArchivePage()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
