@@ -66,7 +66,6 @@
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="state.componentsTree.defaultProps"
-            :loading="loading"
             @current-change="currentChange"
           >
           </componentsTree>
@@ -82,6 +81,7 @@
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
             isSelection
+            :loading="loading"
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -598,7 +598,13 @@
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': disabledDate,
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         },
@@ -872,6 +878,9 @@
       ]
     }
   })
+  function disabledDate(time) {
+    return time.getTime() > Date.now() - 8.64e7 // 如果没有后面的-8.64e7就是不可以选择今天的
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -951,6 +960,7 @@
           children: res.data
         }
       ]
+      console.log(JSON.parse(JSON.stringify(state.componentsTree.data)))
     })
   }
 
@@ -983,12 +993,9 @@
       } else if (item.type === 'checkbox') {
         params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
       } else if (item.type === 'picker') {
-        if (item.pickerType === 'date') {
-          params[item.id] = item.value
-            ? item.value
-                .map(i => dayjs(i).format('YYYY-MM-DD HH:mm:ss'))
-                .join(',')
-            : ''
+        if (item.pickerType === 'date' && item.value) {
+          params[item.id] =
+            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
         }
       } else {
         params[item.id] = item.value
@@ -1002,7 +1009,7 @@
           delFlag: 0,
           sorts: orderBy.value
             ? orderBy.value.prop +
-              ' ' +
+              ',' +
               (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
             : '',
           sealTypeIds:

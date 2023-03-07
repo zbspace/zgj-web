@@ -16,7 +16,7 @@
                 <el-button>
                   <img
                     class="button-icon"
-                    src="../../../assets/svg/gengduo-caozuo.svg"
+                    src="@/assets/svg/gengduo-caozuo.svg"
                     alt=""
                     srcset=""
                   />
@@ -93,6 +93,7 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -123,6 +124,7 @@
       >
       </v-form-render>
     </KDialog>
+
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
@@ -137,21 +139,23 @@
     </JyElMessageBox>
   </div>
 </template>
+
 <script setup>
-  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
+  import { reactive, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
+  import componentsTable from '@/views/components/table'
+  import componentsSearchForm from '@/views/components/searchForm'
+  import componentsTree from '@/views/components/tree'
+  import componentsPagination from '@/views/components/pagination.vue'
+  import componentsTabs from '@/views/components/tabs.vue'
+  import componentsLayout from '@/views/components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import componentsDocumentsDetails from '../../components/documentsDetails.vue'
+  import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import FormJson from '@/views/addDynamicFormJson/documentLibrary.json'
-  import { ElMessage, ElMessageBox } from 'element-plus'
+  import { ElMessage } from 'element-plus'
+  import API from '@/api/frontDesk/fileManage'
+
   const props = defineProps({
     // 处理类型
     type: {
@@ -792,6 +796,13 @@
     }
   }
 
+  const getTreeList = async () => {
+    try {
+      const res = await API.getTreeList()
+      console.log('--->', res)
+    } catch (error) {}
+  }
+
   // 点击下载记录
   function clickDownloadRecord() {
     router.push({
@@ -799,13 +810,11 @@
     })
   }
 
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
   onMounted(() => {
-    // console.log(`the component is now mounted.`)
+    getTreeList()
   })
 </script>
+
 <style lang="scss" scoped>
   .fileManagement-documentLibrary {
     margin: 0%;

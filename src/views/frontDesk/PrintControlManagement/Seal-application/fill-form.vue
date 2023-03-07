@@ -58,17 +58,17 @@
   import documentsDetailsPortion from '../../../components/documentsDetails/portion.vue'
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
   // import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
-  import FillFormInformation from '@/views/system/businessManage//formManage/AddForm/templates/template7'
+  import FillFormInformation from '@/views/system/businessManage/formManage/AddForm/templates/template7'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+  // const props = defineProps({
+  //   // 处理类型
+  //   type: {
+  //     type: String,
+  //     default: '0'
+  //   }
+  // })
   const router = useRouter()
-  const emit = defineEmits([])
+  // const emit = defineEmits([])
   const state = reactive({
     cache: {
       flowList: [
@@ -213,5 +213,10 @@
       background-color: var(--jy-in-common-use-1);
       z-index: 9;
     }
+  }
+</style>
+<style>
+  .upload-demo {
+    text-align: left;
   }
 </style>

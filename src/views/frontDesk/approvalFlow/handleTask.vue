@@ -217,7 +217,10 @@
               label: '任务类型2',
               value: '2'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         }
       ],
       butData: [
