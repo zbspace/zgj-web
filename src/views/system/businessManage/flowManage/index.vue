@@ -22,6 +22,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -29,10 +30,10 @@
 
       <template #batch>
         <div class="batch">
-          <componentsBatch>
-            <el-button>批量删除</el-button>
-            <el-button>批量启用</el-button>
-            <el-button>批量停用</el-button>
+          <componentsBatch
+            :data="state.componentsBatch.data"
+            :defaultAttribute="state.componentsBatch.defaultAttribute"
+          >
           </componentsBatch>
         </div>
       </template>
@@ -42,6 +43,8 @@
           <componentsTree
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
+            :defaultProps="state.componentsTree.defaultProps"
+            @current-change="currentChange"
           >
           </componentsTree>
         </div>
@@ -51,11 +54,17 @@
         <div>
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
+            refs="tables"
+            ref="table"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
             :isSelection="true"
+            :loading="loading"
             @cellClick="cellClick"
+            @custom-click="customClick"
+            @selection-change="selectionChange"
+            @sort-change="sortChange"
           >
           </componentsTable>
         </div>
@@ -65,6 +74,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @current-change="currentPageChange"
+          @size-change="sizeChange"
         >
         </componentsPagination>
       </template>
@@ -97,7 +108,13 @@
 </template>
 
 <script setup>
-  import { reactive, onBeforeMount, onMounted, defineAsyncComponent } from 'vue'
+  import {
+    reactive,
+    onBeforeMount,
+    onMounted,
+    defineAsyncComponent,
+    ref
+  } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
@@ -113,6 +130,11 @@
   const newlyIncreased = defineAsyncComponent(() =>
     import('./newly-increased.vue')
   )
+
+  const loading = ref(false)
+  const table = ref(null)
+  const orderBy = ref(null)
+
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -126,7 +148,7 @@
 
       data: [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -142,9 +164,11 @@
           ]
         },
         {
-          id: 'name',
+          id: 'status',
           label: '状态',
           type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -171,9 +195,11 @@
           style: {}
         },
         {
-          id: 'name',
+          id: 'applyTypeId',
           label: '业务类型',
           type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -187,10 +213,12 @@
           ]
         },
         {
-          id: 'name',
+          id: 'fileTypeId',
           label: '文件类型',
           type: 'select',
           inCommonUse: true,
+          optionLabel: 'label',
+          optionValue: 'value',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择'
@@ -203,9 +231,11 @@
           ]
         },
         {
-          id: 'name',
+          id: 'relationForm',
           label: '用印类型',
           type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -313,62 +343,7 @@
           ]
         }
       ],
-      data: [
-        {
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -389,67 +364,54 @@
 
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
+        total: 0,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
     },
 
     componentsTree: {
-      data: [
-        {
-          label: '用印申请',
-          children: [
-            {
-              label: '用印申请'
-            },
-            {
-              label: '转办申请'
-            },
-            {
-              label: '重置用印申请'
-            }
-          ]
-        },
-        {
-          label: '印章申请',
-          children: [
-            {
-              label: '刻章申请'
-            },
-            {
-              label: '停用申请'
-            },
-            {
-              label: '启用申请'
-            },
-            {
-              label: '销毁申请'
-            },
-            {
-              label: '变更申请'
-            },
-            {
-              label: '换章申请'
-            }
-          ]
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': true,
         'show-checkbox': false,
         'default-expand-all': true,
         'expand-on-click-node': false,
-        'check-strictly': true
-      }
+        'check-strictly': true,
+        'highlight-current': true,
+        'node-key': 'applyTypeId',
+        'current-node-key': '2'
+      },
+      defaultProps: {
+        label: 'applyTypeName',
+        children: 'children'
+      },
+      value: '2'
+    },
+    componentsBatch: {
+      selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
+      data: [
+        {
+          name: '批量删除'
+        },
+        {
+          name: '批量启用'
+        },
+        {
+          name: '批量停用'
+        }
+      ]
     },
     componentsDocumentsDetails: {
       show: false,
@@ -492,129 +454,202 @@
   }
   // 发送api请求 查询表单树解构
   const listApplyTypeTreeApi = () => {
-    return apiForm.listApplyTypeTree({}).then(result => {
-      console.log(result)
+    apiForm.listApplyTypeTree({}).then(result => {
       const listApplyTypeTree = []
-      const applyTypeId = []
       result.data.forEach(element => {
-        element.label = element.applyTypeName
-        if (element.parent_id === '') {
+        if (!element.applyTypePid) {
           element.children = []
           listApplyTypeTree.push(element)
-          applyTypeId.push(element.applyTypeId)
-        }
-      })
-      result.data.forEach(element => {
-        const index = applyTypeId.indexOf(element.parent_id)
-        if (index > -1) {
-          listApplyTypeTree[index].children.push(element)
+        } else {
+          const index = listApplyTypeTree.findIndex(
+            i => i.applyTypeId === element.applyTypePid
+          )
+          if (index > -1) {
+            listApplyTypeTree[index].children.push(element)
+          }
         }
       })
       state.componentsTree.data = listApplyTypeTree
-      return result
     })
   }
+
+  // 当选择项发生变化时会触发该事件
+  function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
+  }
+
+  // 筛选条件按钮
+  const clickSubmit = (item, index) => {
+    if (item.id === 'reset') {
+      table.value.clearSorts()
+      state.componentsSearchForm.data.forEach(item => {
+        if (item.type === 'checkButton') {
+          item.data.forEach(i => {
+            delete i.checked
+          })
+        } else if (item.type === 'checkbox') {
+          console.log(JSON.parse(JSON.stringify(item.checkbox)))
+          item.checkbox.forEach(i => {
+            i.value = false
+          })
+          console.log(JSON.parse(JSON.stringify(item.checkbox)))
+        } else {
+          delete item.value
+        }
+      })
+    }
+    reloadData()
+  }
+
+  // 自定义排序
+  function sortChange(orderBack) {
+    console.log(JSON.parse(JSON.stringify(orderBack)))
+    orderBy.value = orderBack
+    reloadData()
+  }
+
+  const reloadData = () => {
+    state.componentsPagination.data.index = 1
+    state.componentsTable.data = []
+    state.componentsPagination.data.amount = 0
+    flowPageApi()
+  }
+
   // 发送api请求 流程列表
   const flowPageApi = () => {
-    return apiFlow
+    loading.value = true
+    const params = {}
+    state.componentsSearchForm.data.forEach(item => {
+      if (item.type === 'checkButton') {
+        params[item.id] = item.data
+          .filter(i => i.checked)
+          .map(i => i.id)
+          .join(',')
+      } else if (item.type === 'checkbox') {
+        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
+      } else if (item.type === 'picker') {
+        if (item.value) {
+          params[item.id] =
+            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
+        }
+      } else {
+        params[item.id] = item.value
+      }
+    })
+    apiFlow
       .page({
-        keyword: '',
-        status: '',
-        updateStartTime: '',
-        updateEndTime: '',
-        applyTypeId: '',
-        fileTypeId: '',
-        relationForm: '',
-        sealUseTypeId: ''
-      })
-      .then(result => {
-        console.log(result)
-        state.componentsTable.data = result.data
-        return result
-      })
-  }
-  // 发送api请求 删除流程
-  const flowDeleteApi = () => {
-    return apiFlow
-      .delete({
-        processId: ''
-      })
-      .then(result => {
-        console.log(result)
-        return result
-      })
-  }
-  // 发送api请求 启用/停用
-  const flowEnableApi = () => {
-    return apiFlow
-      .enable({
-        processId: '',
-        processStatus: ''
-      })
-      .then(result => {
-        console.log(result)
-        return result
-      })
-  }
-  // 发送api请求 复制流程
-  const flowCopyApi = () => {
-    return apiFlow
-      .copy({
-        processId: '',
-        processName: ''
-      })
-      .then(result => {
-        console.log(result)
-        return result
-      })
-  }
-  // 发送api请求 批量删除
-  const batchDeleteApi = () => {
-    return apiFlow
-      .batchDelete([
-        {
-          processId: '主键'
+        ...{
+          current: state.componentsPagination.data.index,
+          size: state.componentsPagination.data.pageNumber,
+          sealUseTypeId: state.componentsTree.value,
+          sorts: orderBy.value
+            ? orderBy.value.prop +
+              ',' +
+              (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
+            : ''
         },
-        {
-          processId: '主键'
-        }
-      ])
+        ...params
+      })
       .then(result => {
         console.log(result)
-        return result
+        state.componentsTable.data = result.data.records
+        state.componentsPagination.data.amount = result.data.total
+        state.componentsPagination.defaultAttribute.total = result.data.total
+        loading.value = false
       })
   }
-  // 发送api请求 批量启用
-  const batachEnableApi = () => {
-    return apiFlow
-      .batachEnable([
-        {
-          processId: '主键'
-        },
-        {
-          processId: '主键'
-        }
-      ])
-      .then(result => {
-        console.log(result)
-        return result
-      })
-  }
-  // 发送api请求 批量停用
-  const batachDisableApi = () => {
-    return apiFlow
-      .batachDisable([
-        {
-          processId: '主键'
-        },
-        {
-          processId: '主键'
-        }
-      ])
-      .then(result => {
-        console.log(result)
-        return result
-      })
+  // // 发送api请求 删除流程
+  // const flowDeleteApi = () => {
+  //   return apiFlow
+  //     .delete({
+  //       processId: ''
+  //     })
+  //     .then(result => {
+  //       console.log(result)
+  //       return result
+  //     })
+  // }
+  // // 发送api请求 启用/停用
+  // const flowEnableApi = () => {
+  //   return apiFlow
+  //     .enable({
+  //       processId: '',
+  //       processStatus: ''
+  //     })
+  //     .then(result => {
+  //       console.log(result)
+  //       return result
+  //     })
+  // }
+  // // 发送api请求 复制流程
+  // const flowCopyApi = () => {
+  //   return apiFlow
+  //     .copy({
+  //       processId: '',
+  //       processName: ''
+  //     })
+  //     .then(result => {
+  //       console.log(result)
+  //       return result
+  //     })
+  // }
+  // // 发送api请求 批量删除
+  // const batchDeleteApi = () => {
+  //   return apiFlow
+  //     .batchDelete([
+  //       {
+  //         processId: '主键'
+  //       },
+  //       {
+  //         processId: '主键'
+  //       }
+  //     ])
+  //     .then(result => {
+  //       console.log(result)
+  //       return result
+  //     })
+  // }
+  // // 发送api请求 批量启用
+  // const batachEnableApi = () => {
+  //   return apiFlow
+  //     .batachEnable([
+  //       {
+  //         processId: '主键'
+  //       },
+  //       {
+  //         processId: '主键'
+  //       }
+  //     ])
+  //     .then(result => {
+  //       console.log(result)
+  //       return result
+  //     })
+  // }
+  // // 发送api请求 批量停用
+  // const batachDisableApi = () => {
+  //   return apiFlow
+  //     .batachDisable([
+  //       {
+  //         processId: '主键'
+  //       },
+  //       {
+  //         processId: '主键'
+  //       }
+  //     ])
+  //     .then(result => {
+  //       console.log(result)
+  //       return result
+  //     })
+  // }
+  const currentChange = e => {
+    state.componentsTree.value = e.applyTypeId
+    reloadData()
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

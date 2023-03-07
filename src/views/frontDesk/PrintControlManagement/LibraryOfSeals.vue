@@ -66,7 +66,6 @@
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="state.componentsTree.defaultProps"
-            :loading="loading"
             @current-change="currentChange"
           >
           </componentsTree>
@@ -82,6 +81,7 @@
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
             isSelection
+            :loading="loading"
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -960,6 +960,7 @@
           children: res.data
         }
       ]
+      console.log(JSON.parse(JSON.stringify(state.componentsTree.data)))
     })
   }
 
