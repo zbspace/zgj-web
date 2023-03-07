@@ -13,7 +13,7 @@ const routes = {
         authRequired: true
       },
       component: () =>
-        import('@/views/frontDesk/fileManagement/documentLibrary.vue')
+        import('@/views/frontDesk/fileManagement/documentLibrary')
     },
     {
       path: 'downloadRecord',
