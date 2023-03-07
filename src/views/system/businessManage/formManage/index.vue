@@ -914,7 +914,6 @@
   function customClick(row, column, cell, event) {
     console.log('row', column)
     if (cell.name === '修改') {
-      console.log('修改')
       state.componentsAddForm.dialogVisible = true
       state.componentsAddForm.addTitle = '修改'
       state.componentsAddForm.data = column
@@ -926,7 +925,6 @@
       state.JyElMessageBox.data.tableId = column.formMessageId
     }
     if (cell.name === '复制') {
-      // console.log('复制')
       state.showFormDialog.header.data = '表单复制'
       state.showFormDialog.show = true
       state.componentsAddForm.data = JSON.parse(JSON.stringify(column))
@@ -935,7 +933,6 @@
   }
   // 删除提交
   function submitDel() {
-    console.log('提交删除')
     const data = {
       formMessageId: state.JyElMessageBox.data.tableId
     }
@@ -969,7 +966,21 @@
     console.log('批量删除')
   }
   // 确定批量删除
-  const sureBatchDel = () => {}
+  const sureBatchDel = () => {
+    const list = state.componentsBatch.selectionData
+    const idList = []
+    const idObj = { formMessageId: '' }
+    list.forEach(v => {
+      idObj.formMessageId = v.formMessageId
+      idList.push(idObj)
+    })
+    api.batchDelete(idList).then(res => {
+      if (res.code === 200) {
+        console.log(res)
+        getFormPage()
+      }
+    })
+  }
   // 关闭表单复制弹窗
   function closeBatchTabel() {
     state.showToastDialog.show = false
@@ -982,7 +993,6 @@
   // 提交表单名称
   function submitCopyTabel() {
     console.log('复制表单')
-    console.log(formRef)
     formRef.value.validate(valid => {
       console.log(valid)
       if (valid) {
