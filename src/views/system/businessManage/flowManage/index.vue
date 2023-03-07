@@ -195,24 +195,6 @@
           style: {}
         },
         {
-          id: 'applyTypeId',
-          label: '业务类型',
-          type: 'select',
-          optionLabel: 'label',
-          optionValue: 'value',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
-        },
-        {
           id: 'fileTypeId',
           label: '文件类型',
           type: 'select',

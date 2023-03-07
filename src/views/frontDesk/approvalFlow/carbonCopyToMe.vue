@@ -180,7 +180,10 @@
               label: '启用申请',
               value: '6'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         },
         {
           id: 'picker',

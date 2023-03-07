@@ -235,7 +235,10 @@
               label: '启用申请',
               value: '6'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         },
         {
           id: 'derivable',
@@ -811,7 +814,10 @@
               label: '启用申请',
               value: '6'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         },
         {
           id: 'derivable',
@@ -870,7 +876,10 @@
               label: '状态2',
               value: '2'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         },
         {
           id: 'derivable',
@@ -910,7 +919,10 @@
               label: '启用申请',
               value: '6'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         },
         {
           id: 'derivable',
