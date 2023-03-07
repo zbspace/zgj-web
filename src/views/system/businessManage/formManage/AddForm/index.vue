@@ -54,14 +54,13 @@
                       :value="item.applyTypeId"
                       v-for="item in optionData"
                       :key="item.applyTypeId"
-                      :disabled="!item.parent_id"
                     />
                   </el-select>
                 </el-form-item>
 
                 <el-form-item
                   label="用印类型"
-                  v-if="formData.applyTypeId.split('-')[0] === '1'"
+                  v-if="formData.applyTypeId === '1'"
                 >
                   <el-radio-group v-model="formData.sealUseTypeId">
                     <el-radio label="1">物理用印</el-radio>
@@ -114,66 +113,40 @@
 
   const vformRef = ref(null)
   const formData = reactive({
-    formName: '',
-    applyTypeId: '1-1',
-    sealUseTypeId: '2',
-    readme: '',
-    formInfo: '["cs":"12345"]'
+    applyTypeId: '2',
+    applyTypePid: '1',
+    applyTypeNo: '001001',
+    applyTypeName: '用印申请',
+    applyTypeNameI18n: 'seal apply use',
+    applyTypeGroup: '1',
+    hardType: null
   })
-  const optionData = reactive([
-    {
-      applyTypeId: '1',
-      applyTypeName: '用印申请',
-      parent_id: ''
-    },
-    {
-      applyTypeId: '1-1',
-      applyTypeName: '用印申请',
-      parent_id: '1'
-    },
-    {
-      applyTypeId: '1-2',
-      applyTypeName: '转办申请',
-      parent_id: '1'
-    },
-    {
-      applyTypeId: '1-3',
-      applyTypeName: '重置用印申请',
-      parent_id: '1'
-    },
-    {
-      applyTypeId: '2',
-      applyTypeName: '印章申请',
-      parent_id: ''
-    },
-    {
-      applyTypeId: '2-1',
-      applyTypeName: '刻章申请',
-      parent_id: '2'
-    },
-    {
-      applyTypeId: '2-2',
-      applyTypeName: '停用申请',
-      parent_id: '2'
-    }
-  ])
+
   const formRef = ref(null)
   const props = defineProps({
     addTitle: {
       type: String,
       default: ''
     },
+
     columnData: {
       type: Object,
       default: () => {}
     },
+
     formId: {
       type: String,
       default: ''
     },
+
     modelValue: {
       type: Boolean,
       default: false
+    },
+
+    optionData: {
+      type: Array,
+      default: () => []
     }
   })
   const emit = defineEmits(['update:modelValue', 'close'])
@@ -203,6 +176,10 @@
     set(value) {
       emit('update:modelValue', value)
     }
+  })
+
+  const optionData = computed(() => {
+    return props.optionData.filter(v => v.applyTypePid)
   })
 
   const prefabricationFieldList = ref(['sealName'])

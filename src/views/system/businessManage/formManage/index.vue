@@ -88,6 +88,7 @@
       :addTitle="state.componentsAddForm.addTitle"
       :columnData="state.componentsAddForm.data"
       @close="state.componentsAddForm.dialogVisible = false"
+      :optionData="optionData"
     />
     <!-- 弹窗提示 -->
     <JyElMessageBox
@@ -201,6 +202,7 @@
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const applyTypeId = ref(2)
   const refTree = ref(null)
+  const optionData = ref([])
   const state = reactive({
     componentsAddForm: {
       dialogVisible: false,
@@ -475,45 +477,7 @@
     },
 
     componentsTree: {
-      data: [
-        // {
-        //   label: '用印申请',
-        //   children: [
-        //     {
-        //       label: '用印申请'
-        //     },
-        //     {
-        //       label: '转办申请'
-        //     },
-        //     {
-        //       label: '重置用印申请'
-        //     }
-        //   ]
-        // },
-        // {
-        //   label: '印章申请',
-        //   children: [
-        //     {
-        //       label: '刻章申请'
-        //     },
-        //     {
-        //       label: '停用申请'
-        //     },
-        //     {
-        //       label: '启用申请'
-        //     },
-        //     {
-        //       label: '销毁申请'
-        //     },
-        //     {
-        //       label: '变更申请'
-        //     },
-        //     {
-        //       label: '换章申请'
-        //     }
-        //   ]
-        // }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': false,
@@ -817,6 +781,7 @@
       if (code === 200) {
         const listApplyTypeTree = []
         const applyTypeId = []
+        optionData.value = data
         data.forEach(element => {
           element.label = element.applyTypeName
           if (element.applyTypePid === null) {
