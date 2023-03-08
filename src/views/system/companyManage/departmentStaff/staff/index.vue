@@ -6,11 +6,11 @@
           <div>员工管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
+              <el-button type="primary" @click="showStaffDialog = true"
                 >+ 新建</el-button
               >
             </div>
-            <div class="title-more-down">
+            <!-- <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
                 <el-button>
                   <img
@@ -28,7 +28,7 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            </div>
+            </div> -->
           </div>
         </div>
       </template>
@@ -87,6 +87,175 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+    <!-- 新增员工 -->
+    <KDialog
+      @update:show="showStaffDialog = $event"
+      :show="showStaffDialog"
+      title="新增"
+      :centerBtn="true"
+      :confirmText="$t('t-zgj-operation.submit')"
+      :concelText="$t('t-zgj-operation.cancel')"
+      @close="submitStaffForm"
+    >
+      <el-form
+        :model="state.componentsAddForm.formData"
+        :rules="state.componentsAddForm.formRules"
+        ref="vFormStaffRef"
+        label-width="100px"
+      >
+        <el-form-item label="姓名" prop="userName">
+          <el-input v-model="state.componentsAddForm.formData.userName" />
+        </el-form-item>
+        <el-form-item label="帐号" prop="userName">
+          <el-input v-model="state.componentsAddForm.formData.accountNo" />
+        </el-form-item>
+        <el-form-item label="手机号" prop="userTel">
+          <el-input v-model="state.componentsAddForm.formData.userTel" />
+        </el-form-item>
+        <el-form-item label="所属部门" prop="hostOrganId">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="state.componentsAddForm.formData.hostOrganId"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="state.componentsAddForm.formData.hostOrganId"
+                @click="clear('hostOrganId')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('hostOrganId')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="兼职部门" prop="partTimeOrganIds">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="state.componentsAddForm.formData.partTimeOrganIds"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="state.componentsAddForm.formData.partTimeOrganIds"
+                @click="clear('partTimeOrganIds')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('partTimeOrganIds')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="兼职部门" prop="partTimeOrganIds">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="state.componentsAddForm.formData.partTimeOrganIds"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="state.componentsAddForm.formData.partTimeOrganIds"
+                @click="clear('partTimeOrganIds')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('partTimeOrganIds')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="职位" prop="userTitle">
+          <el-input v-model="state.componentsAddForm.formData.userTitle" />
+        </el-form-item>
+        <el-form-item label="邮箱" prop="userMail">
+          <el-input v-model="state.componentsAddForm.formData.userMail" />
+        </el-form-item>
+        <el-form-item label="工号" prop="userNo">
+          <el-input v-model="state.componentsAddForm.formData.userNo" />
+        </el-form-item>
+        <el-form-item label="主管" prop="directLeaderUserId">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="state.componentsAddForm.formData.directLeaderUserId"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="state.componentsAddForm.formData.directLeaderUserId"
+                @click="clear('directLeaderUserId')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('directLeaderUserId')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="角色" prop="roleIds">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="state.componentsAddForm.formData.roleIds"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="state.componentsAddForm.formData.roleIds"
+                @click="clear('roleIds')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('roleIds')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="企业微信ID" prop="qweiNo">
+              <el-input v-model="state.componentsAddForm.formData.qweiNo" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="钉钉ID" prop="dingdingNo">
+              <el-input v-model="state.componentsAddForm.formData.dingdingNo" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+    >
+    </kDepartOrPersonVue>
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -100,7 +269,8 @@
 </template>
 
 <script setup>
-  import { reactive } from 'vue'
+  import { ref, reactive } from 'vue'
+  import { Paperclip, CircleClose } from '@element-plus/icons-vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
@@ -108,8 +278,69 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import KDialog from '@/views/components/modules/kdialog.vue'
 
+  const showStaffDialog = ref(false)
+  const showDepPerDialog = ref(false)
+  const vFormStaffRef = ref(null)
+  const depChoose = ref(null)
   const state = reactive({
+    componentsAddForm: {
+      formData: {
+        userName: '',
+        accountNo: '',
+        userTel: '',
+        hostOrganId: '',
+        partTimeOrganIds: [],
+        userTitle: '',
+        userMail: '',
+        roleIds: [],
+        qweiNo: '',
+        dingdingNo: '',
+        userNo: '',
+        directLeaderUserId: '',
+        userFaceId: '',
+        readme: ''
+      },
+      formRules: {
+        userName: [
+          {
+            required: true,
+            message: '请输入姓名',
+            trigger: 'change'
+          }
+        ],
+        accountNo: [
+          {
+            required: true,
+            message: '请输入帐号',
+            trigger: 'change'
+          }
+        ],
+        userTel: [
+          {
+            required: true,
+            message: '请选择印章类型',
+            trigger: 'change'
+          },
+          { min: 11, type: 'number', message: '手机号必须为11位数字' }
+        ],
+        hostOrganId: [
+          {
+            required: true,
+            message: '请选择所属部门',
+            trigger: 'change'
+          }
+        ],
+        roleIds: [
+          {
+            required: true,
+            message: '请选择角色',
+            trigger: 'change'
+          }
+        ]
+      }
+    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -122,7 +353,7 @@
 
       data: [
         {
-          id: 'name',
+          id: 'keyWord',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -132,7 +363,7 @@
           }
         },
         {
-          id: 'name',
+          id: 'status',
           label: '状态',
           type: 'select',
           inCommonUse: true,
@@ -142,7 +373,7 @@
           }
         },
         {
-          id: 'name',
+          id: 'faceState',
           label: '人脸状态',
           type: 'select',
           inCommonUse: true,
@@ -363,6 +594,16 @@
       ]
     }
   })
+  // 清除部门信息
+  const clear = type => {
+    state.componentsAddForm.formData[type + 'Id'] = ''
+    state.componentsAddForm.formData[type + 'Name'] = ''
+  }
+  // 选择部门弹窗
+  const chooseOrgan = type => {
+    depChoose.value = type
+    showDepPerDialog.value = true
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -385,6 +626,9 @@
       state.componentsBatch.defaultAttribute.disabled = true
     }
   }
+  const submitStaffForm = () => {
+    showStaffDialog.value = false
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -392,5 +636,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .title-more {
+      display: flex;
+      .title-more-down {
+        margin-left: 5px;
+      }
+    }
   }
 </style>
