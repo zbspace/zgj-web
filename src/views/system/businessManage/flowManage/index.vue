@@ -213,8 +213,26 @@
           ]
         },
         {
-          id: 'relationForm',
+          id: 'sealUseTypeId',
           label: '用印类型',
+          type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '请选择'
+          },
+          options: [
+            {
+              value: '1',
+              label: '全部'
+            }
+          ]
+        },
+        {
+          id: 'relationForm',
+          label: '关联表单名称',
           type: 'select',
           optionLabel: 'label',
           optionValue: 'value',
@@ -529,7 +547,7 @@
         ...{
           current: state.componentsPagination.data.index,
           size: state.componentsPagination.data.pageNumber,
-          sealUseTypeId: state.componentsTree.value,
+          applyTypeId: state.componentsTree.value,
           sorts: orderBy.value
             ? orderBy.value.prop +
               ',' +
