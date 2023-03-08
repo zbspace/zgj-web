@@ -7,7 +7,7 @@
     "lint": "vue-cli-service lint",
     "dev": "vite",
     "preview": "vite preview",
-    "build": "node ./node_modules/vite/bin/vite.js build --mode production"
+    "build": "node --max_old_space_size=4096 ./node_modules/vite/bin/vite.js build --mode production"
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
