@@ -26,6 +26,13 @@ export default [
   },
 
   {
+    path: '/test',
+    name: 'Test',
+    meta: { title: 'Test', authRequired: false },
+    component: () => import('../views/test')
+  },
+
+  {
     path: '/components/template',
     name: 'components-template',
     meta: { title: 'components-template', authRequired: true },
