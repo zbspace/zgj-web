@@ -60,7 +60,7 @@
 
                 <el-form-item
                   label="用印类型"
-                  v-if="formData.applyTypeId === '1'"
+                  v-if="formData.applyTypeId === '2'"
                 >
                   <el-radio-group v-model="formData.sealUseTypeId">
                     <el-radio label="1">物理用印</el-radio>
@@ -86,7 +86,7 @@
             ref="vformRef"
             v-if="state.processTabs.checkedNode.index === '2'"
             style="margin-top: 0; width: 100%"
-            :businessType="formData.applyTypeId.split('-')[0]"
+            :businessType="formData.applyTypeId"
             :templateList="templateList"
             :prefabricationFieldList="prefabricationFieldList"
             @on-loaded="onLoaded"

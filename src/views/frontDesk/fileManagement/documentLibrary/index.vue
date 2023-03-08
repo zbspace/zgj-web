@@ -154,7 +154,7 @@
   import KDialog from '@/views/components/modules/kdialog.vue'
   import FormJson from '@/views/addDynamicFormJson/documentLibrary.json'
   import { ElMessage } from 'element-plus'
-  import API from '@/api/frontDesk/fileManage'
+  import { fileManageService } from '@/api/frontDesk/fileManage'
 
   const props = defineProps({
     // 处理类型
@@ -798,7 +798,7 @@
 
   const getTreeList = async () => {
     try {
-      const res = await API.getTreeList()
+      const res = await fileManageService.getTreeList()
       console.log('--->', res)
     } catch (error) {}
   }
