@@ -79,7 +79,7 @@
 
 <script setup>
   import { ref, watch } from 'vue'
-  import useClickQutside from '@/utils/hooks/useClickQutside.js'
+  import useClickQutside from '@/utils/useClickQutside.js'
   import VTabs from './tabs.vue'
   const dropdownNotifyRef = ref(null)
   const showNotifyPop = ref(false)

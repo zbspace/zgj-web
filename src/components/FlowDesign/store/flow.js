@@ -2,7 +2,7 @@
  * 存放审批流程数据
  */
 import { defineStore } from 'pinia'
-import Request from '@/utils/request-util'
+import Request from '@/utils/requestUtil'
 import html2canvas from 'html2canvas'
 import { getStartNode, addCondition } from '../data/load-node-data'
 import {

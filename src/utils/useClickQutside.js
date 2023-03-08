@@ -1,8 +1,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const useClickOutside = (elementRef) => {
+const useClickOutside = elementRef => {
   const isClickOutside = ref(false)
-  const handler = (e) => {
+  const handler = e => {
     if (elementRef.value) {
       if (elementRef.value.contains(e.target)) {
         isClickOutside.value = false

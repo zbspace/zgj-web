@@ -130,7 +130,7 @@
 
       <div class="depart-cont">
         <div v-for="(item, i) in departLists" :key="i">
-          <div class="column" @click="goHome">
+          <div class="column" @click="goHome(item.tenantId)">
             <svg
               width="16"
               height="14"
@@ -181,8 +181,9 @@
   import I18n from '@/utils/i18n'
   import { reactive, onMounted, ref, watch, onBeforeUnmount } from 'vue'
   import VAccountLogin from './modules/AccountLogin.vue'
-  import useClickQutside from '@/utils/hooks/useClickQutside.js'
+  import useClickQutside from '@/utils/useClickQutside.js'
   import { useRouter, useRoute } from 'vue-router'
+  import loginApi from '@/api/login'
   const router = useRouter()
   const route = useRoute()
 
@@ -239,12 +240,14 @@
     state.scanCodeError = false
   }
 
-  const goHome = () => {
-    let redirect = route.query.redirect || '/frontDesk/home'
-    if (typeof redirect !== 'string') {
-      redirect = '/frontDesk/home'
-    }
-    router.replace(redirect)
+  const goHome = tenantId => {
+    loginApi.chooseOrgan(tenantId).then(res => {
+      let redirect = route.query.redirect || '/frontDesk/home'
+      if (typeof redirect !== 'string') {
+        redirect = '/frontDesk/home'
+      }
+      router.replace(redirect)
+    })
   }
   onMounted(() => {})
 

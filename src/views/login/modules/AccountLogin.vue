@@ -388,7 +388,7 @@
 
     formRef.value.validate(valid => {
       if (valid) {
-        const flag = ref(true)
+        const flag = ref(false)
         if (flag.value) {
           emits('update:modelValue', true)
           emits('update:departLists', [
@@ -432,15 +432,15 @@
                   .then(res => {
                     if (!res.success) return false
 
-                    if (res.data && res.data.length <= 0) {
-                      let redirect = route.query.redirect || '/frontDesk/home'
-                      if (typeof redirect !== 'string') {
-                        redirect = '/frontDesk/home'
-                      }
-                      router.replace(redirect)
-                      ElMessage.success('登录成功')
-                      return
-                    }
+                    // if (res.data && res.data.length <= 0) {
+                    //   let redirect = route.query.redirect || '/frontDesk/home'
+                    //   if (typeof redirect !== 'string') {
+                    //     redirect = '/frontDesk/home'
+                    //   }
+                    //   router.replace(redirect)
+                    //   ElMessage.success('登录成功')
+                    //   return
+                    // }
                     emits('update:modelValue', true)
                     emits('update:departLists', res.data)
                   })
