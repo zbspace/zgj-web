@@ -8,29 +8,60 @@
           label-width="120px"
           :rules="rules"
           ref="ruleFormRef"
-          status-icon
         >
-          <el-form-item label="流程名称" required>
-            <el-input v-model="form.ProcessName" placeholder="请输入" />
+          <el-form-item label="流程名称" prop="processName">
+            <el-input
+              v-model="form.processName"
+              placeholder="请输入"
+              clearable
+            />
           </el-form-item>
-          <el-form-item label="业务类型" required>
-            <el-select v-model="form.businessType" placeholder="请选择">
+          <el-form-item label="业务类型" prop="applyTypeId">
+            <el-tree-select
+              clearable
+              v-model="form.applyTypeId"
+              :data="props.businessList"
+              :render-after-expand="false"
+              highlight-current
+              accordion
+              node-key="applyTypeId"
+              :props="{
+                label: 'applyTypeName',
+                children: 'children'
+              }"
+            />
+          </el-form-item>
+          <el-form-item
+            label="用印类型"
+            prop="sealUseTypeId"
+            v-if="form.applyTypeId === '2'"
+          >
+            <el-radio-group v-model="form.sealUseTypeId">
+              <el-radio :label="1" size="large">物理用印</el-radio>
+              <el-radio :label="2" size="large">电子签章</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            label="文件类型"
+            prop="fileTypeIds"
+            v-if="form.applyTypeId === '2'"
+          >
+            <el-select
+              v-model="form.fileTypeIds"
+              multiple
+              placeholder="请选择"
+              clearable
+            >
               <el-option label="Zone one" value="shanghai" />
               <el-option label="Zone two" value="beijing" />
             </el-select>
           </el-form-item>
-          <el-form-item label="文件类型" required>
-            <el-select v-model="form.fileType" placeholder="请选择">
-              <el-option label="Zone one" value="shanghai" />
-              <el-option label="Zone two" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="流程适用范围" required>
-            <el-input v-model="form.rangeApplication" />
+          <el-form-item label="流程适用范围" prop="dataScope">
+            <el-input v-model="form.dataScope" />
           </el-form-item>
           <el-form-item label="流程说明">
             <el-input
-              v-model="form.desc"
+              v-model="form.remark"
               type="textarea"
               placeholder="请输入"
             />
@@ -42,27 +73,56 @@
 </template>
 <script setup>
   import { reactive } from 'vue'
+  const props = defineProps({
+    businessList: {
+      type: Array,
+      default: () => {
+        return [] // ['table', 'rate', 'switch'] 自定义组件的type
+      }
+    }
+  })
   const form = reactive({
-    ProcessName: '',
-    ProcessType: false,
-    businessType: '',
-    fileType: '',
-    rangeApplication: '',
-    desc: ''
+    processName: '',
+    applyTypeId: '2',
+    sealUseTypeId: 1,
+    fileTypeIds: [],
+    dataScope: [],
+    remark: ''
   })
   const rules = reactive({
-    name: [
+    processName: [
       {
-        required: true
-        // message: '名称为空，请填写',
-        // trigger: 'blur'
+        required: true,
+        message: '请填写流程名称',
+        trigger: 'change'
       }
     ],
-    region: [
+    applyTypeId: [
       {
-        required: true
-        // message: '类型为空，请选择',
-        // trigger: 'change'
+        required: true,
+        message: '请选择业务类型',
+        trigger: 'change'
+      }
+    ],
+    sealUseTypeId: [
+      {
+        required: true,
+        message: '请选择用印类型',
+        trigger: 'change'
+      }
+    ],
+    fileTypeIds: [
+      {
+        required: true,
+        message: '请选择文件类型',
+        trigger: 'change'
+      }
+    ],
+    dataScope: [
+      {
+        required: true,
+        message: '请选择流程适用范围',
+        trigger: 'change'
       }
     ]
   })

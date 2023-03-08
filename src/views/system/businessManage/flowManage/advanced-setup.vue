@@ -10,13 +10,17 @@
             </i>
           </div>
           <div class="time-eminder-switch">
-            <el-switch v-model="state.TimeoutReminder" />
+            <el-switch
+              v-model="form.isTimeoutRemind"
+              :active-value="1"
+              :inactive-value="0"
+            />
           </div>
         </div>
         <div class="time-Number">
           <span class="time-Number-text">超时</span>
           <div class="time-Number-input">
-            <el-input-number v-model="state.overtimeNumber" :min="0" />
+            <el-input-number v-model="form.remindDuration" :min="0" />
           </div>
           <span class="time-Number-text">小时</span>
         </div>
@@ -24,10 +28,10 @@
       <div class="deWeight">
         <span class="deWeight-text">审批人自动去重</span>
         <div class="deWeight-radio">
-          <el-radio-group v-model="state.deWeight">
-            <el-radio :label="1">不去重</el-radio>
-            <el-radio :label="2">出现多次时，仅保留第一次</el-radio>
-            <el-radio :label="3">在连续出现时，仅保留第一次</el-radio>
+          <el-radio-group v-model="form.autoDistinct">
+            <el-radio :label="0">不去重</el-radio>
+            <el-radio :label="1">出现多次时，仅保留第一次</el-radio>
+            <el-radio :label="2">在连续出现时，仅保留第一次</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -36,10 +40,10 @@
 </template>
 <script setup>
   import { reactive } from 'vue'
-  const state = reactive({
-    TimeoutReminder: false,
-    overtimeNumber: 0,
-    deWeight: 1
+  const form = reactive({
+    isTimeoutRemind: 1,
+    remindDuration: 24,
+    autoDistinct: 0
   })
 </script>
 <style lang="scss" scoped>

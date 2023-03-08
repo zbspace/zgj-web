@@ -100,6 +100,7 @@
         }"
       >
         <newlyIncreased
+          :businessList="state.componentsTree.data"
           @close="state.JyElMessageBox.show = false"
         ></newlyIncreased>
       </AntModalBox>
@@ -226,7 +227,11 @@
           options: [
             {
               value: '1',
-              label: '全部'
+              label: '物理用印'
+            },
+            {
+              value: '2',
+              label: '电子签章'
             }
           ]
         },
