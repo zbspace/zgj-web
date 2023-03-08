@@ -5,7 +5,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { API_BASE_PREFIX, TOKEN_HEADER_NAME } from './constants.js'
 import { useAccountInfoStore } from '@/store/accountInfo'
-
+import router from '@/router/index'
 const service = axios.create({
   baseURL: API_BASE_PREFIX,
   timeout: 5000
@@ -15,6 +15,12 @@ const service = axios.create({
  * 处理错误响应
  */
 const processErrorResponse = function (response) {
+  // null ？
+  if (response.data && response.data.code === 401) {
+    ElMessage.error('登录超时，请重新登录')
+    router.replace({ name: 'LoginAccount', redircet: '' })
+    return Promise.reject(response || response.data)
+  }
   // 提示错误信息
   ElMessage.error(
     response ? response.data.msg || response.data.message : '请求错误'
@@ -56,10 +62,9 @@ service.interceptors.response.use(
   },
   error => {
     // 处理响应错误
-    // if (error.response.status === 404) {
-    //   // 请求路径未找到
-    // }
-    return processErrorResponse(error.response)
+    ElMessage.error(error ? error.msg || error.message : '请求错误')
+    router.replace({ name: 'LoginAccount', redircet: '' })
+    // return processErrorResponse(error.message)
   }
 )
 

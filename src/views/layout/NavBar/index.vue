@@ -296,7 +296,7 @@
 <script setup>
   import { onMounted, reactive, ref, watch } from 'vue'
   import i18n from '@/utils/i18n'
-  import useClickQutside from '@/utils/hooks/useClickQutside.js'
+  import useClickQutside from '@/utils/useClickQutside.js'
   import VApplicationNav from '@/components/modules/applicationNav.vue'
   import VMailNav from '@/components/modules/mailNav.vue'
   import VMessageNav from '@/components/modules/messageNav.vue'

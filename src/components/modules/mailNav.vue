@@ -168,7 +168,7 @@
 
 <script setup>
   import { ref, watch, onMounted } from 'vue'
-  import useClickQutside from '@/utils/hooks/useClickQutside.js'
+  import useClickQutside from '@/utils/useClickQutside.js'
 
   const dropdownMailRef = ref(null)
   const showMailPop = ref(false)

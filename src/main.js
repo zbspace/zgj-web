@@ -11,17 +11,17 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 
 import VForm3 from 'vform-jy'
-import '@/utils/SvgIconPack'
+import '@/utils/svgIconPack'
 
 // 全局自定义组件
 import { requireComp } from '@/components/index'
-import { requireAntIcons } from '@/utils/ant-icons'
+import { requireAntIcons } from '@/utils/antIcons'
 import './style/flow/index.less' // 流程样式
 
 /* 引入自定义全局变量 */
 import './style/index.scss'
 // 运行mock
-import './mock/index'
+// import './mock/index'
 ;(async () => {
   const app = createApp(App)
   app

@@ -84,12 +84,12 @@
 
         <!-- select-list -->
         <div class="select-list user-select">
-          <kTree
+          <KTree
             :lists="treeColumnData"
             @update:lists="treeColumnData = $event"
             @open="openInner"
             ref="UpdateSonFun"
-          ></kTree>
+          ></KTree>
         </div>
       </div>
 
@@ -190,10 +190,10 @@
    * selectedStatus 0(未选中) 1（部分） 2（全部）
    */
   import { reactive, ref, watch } from 'vue'
-  import { treeDataTranslate } from '@/utils/hooks/handleTreeData.js'
+  import { treeDataTranslate } from '@/utils/handleTreeData.js'
   import { Search, ArrowRight } from '@element-plus/icons-vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
-  import kTree from './kTree.vue'
+  import KTree from './KTree.vue'
   import VTabs from '@/components/modules/tabs.vue'
   import testData from './test.js'
   const emits = defineEmits(['update:show'])

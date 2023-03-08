@@ -23,10 +23,17 @@ api.tenantInfoList = params => {
 // 退出登录
 api.logOut = data => {
   return request({
-    method: 'POST',
-    url: '/user/logout',
+    method: 'GET',
+    url: '/logout',
     data
   })
 }
 
+// 选择企业登录
+api.chooseOrgan = params => {
+  return request({
+    method: 'GET',
+    url: `/user/setLoginTenant/${params}`
+  })
+}
 export default api
