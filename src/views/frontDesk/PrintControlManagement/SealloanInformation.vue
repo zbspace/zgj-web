@@ -7,7 +7,11 @@
       </template>
       <template #tabs>
         <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
+          <componentsTabs
+            :activeName="currentType"
+            :data="state.componentsTabs.data"
+            @tab-change="tabChange"
+          >
           </componentsTabs>
         </div>
       </template>
@@ -18,6 +22,7 @@
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
             @clickElement="clickElement"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -31,11 +36,16 @@
         <div>
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
+            refs="tables"
+            ref="table"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
-            :isSelection="true"
+            :paginationData="state.componentsPagination.data"
+            :loading="loading"
+            :isSelection="false"
             @cellClick="cellClick"
             @custom-click="customClick"
+            @sort-change="sortChange"
           >
           </componentsTable>
         </div>
@@ -44,6 +54,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @current-change="currentPageChange"
+          @size-change="sizeChange"
         >
         </componentsPagination>
       </template>
@@ -70,13 +82,16 @@
       @close="submitLibraryForm"
       :key="fromState.title"
     >
-      <v-form-render
-        :form-json="fromState.formJson"
-        :form-data="fromState.formJson"
-        :option-data="fromState.optionData"
+      <JyVform
+        :formJson="fromState.formJson"
+        :formData="fromState.formJson"
+        :optionData="fromState.optionData"
         :ref="fromState.vFormLibraryRef"
+        mode="render"
+        @buttonClick="clickSelect"
+        @on-loaded="onLoaded"
       >
-      </v-form-render>
+      </JyVform>
     </KDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
@@ -85,6 +100,34 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+    <!-- 历史记录 -->
+    <KDialog
+      @update:show="historyState.showDialog = $event"
+      :show="historyState.showDialog"
+      :title="historyState.title"
+      :footer="false"
+      :width="1000"
+      :height="600"
+      :key="historyState.title"
+    >
+      <componentsTable
+        :defaultAttribute="state.historyTable.defaultAttribute"
+        :data="state.historyTable.data"
+        :header="state.historyTable.header"
+        :paginationData="state.historyPagination.data"
+        :loading="historyLoading"
+        :isSelection="false"
+      >
+      </componentsTable>
+      <componentsPagination
+        :data="state.historyPagination.data"
+        :defaultAttribute="state.historyPagination.defaultAttribute"
+        @current-change="historyCurrentPageChange"
+        @size-change="historySizeChange"
+        style="margin-top: 15px"
+      >
+      </componentsPagination>
+    </KDialog>
   </div>
 </template>
 <script setup>
@@ -98,19 +141,20 @@
   } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  // import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
-  import componentsDocumentsDetails from '../../components/documentsDetails.vue'
+  import componentsPagination from '../../components/pagination'
+  import componentsTabs from '../../components/tabs'
+  import componentsLayout from '../../components/Layout'
+  import componentsBatch from '@/views/components/batch'
+  import componentsDocumentsDetails from '../../components/documentsDetails'
   import { ElMessage } from 'element-plus'
   import SealLendingJson from '@/views/addDynamicFormJson/SealLending.json'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import { useRouter } from 'vue-router'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
-  const router = useRouter()
+  import KDialog from '@/views/components/modules/kdialog'
+  // import { useRouter } from 'vue-router'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson'
+  import apis from '@/api/frontDesk/sealManage/sealloanInformation'
+  import typeOfSeal from '@/api/frontDesk/sealManage/typeOfSeal'
+  import dayjs from 'dayjs'
+  // const router = useRouter()
   // const props = defineProps({
   //   // 处理类型
   //   type: {
@@ -127,8 +171,20 @@
     vFormLibraryRef: 'vFormLibraryRef',
     showDialog: false
   })
+  // 历史记录
+  const historyState = reactive({
+    title: '历史记录',
+    showDialog: false
+  })
   const vFormLibraryRef = ref(null)
   const showDepPerDialog = ref(false)
+  const loading = ref(false)
+  const historyLoading = ref(false)
+  const orderBy = ref(null)
+  const table = ref(null)
+  const currentId = ref(null)
+  const currentType = ref(1)
+
   const submitLibraryForm = type => {
     if (!type) {
       vFormLibraryRef.value.resetForm()
@@ -152,11 +208,11 @@
       data: [
         {
           label: '待归还的印章',
-          name: '1'
+          name: 1
         },
         {
           label: '已归还的印章',
-          name: '2'
+          name: 2
         }
       ]
     },
@@ -171,7 +227,7 @@
       },
       data: [
         {
-          id: 'name',
+          id: 'searchKey',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -181,9 +237,10 @@
           }
         },
         {
-          id: 'picker',
+          id: 'outDate',
           label: '外带时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -194,16 +251,20 @@
           style: {}
         },
         {
-          id: 'name',
+          id: 'sealTypeIds',
           label: '印章类型',
-          type: 'derivable',
+          type: 'select',
+          options: [],
+          optionLabel: 'sealTypeName',
+          optionValue: 'sealTypeId',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+印章类型'
+            placeholder: '请选择印章类型',
+            multiple: true
           }
         },
         {
-          id: 'name',
+          id: 'custodianId',
           label: '保管人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -212,7 +273,7 @@
           }
         },
         {
-          id: 'name',
+          id: 'custodianDeptId',
           label: '保管部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -221,7 +282,7 @@
           }
         },
         {
-          id: 'name',
+          id: 'outUserId',
           label: '外借人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -230,7 +291,7 @@
           }
         },
         {
-          id: 'name',
+          id: 'outUserDeptId',
           label: '外借部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -273,51 +334,51 @@
     componentsTable: {
       header: [
         {
-          prop: '1',
+          prop: 'sealName',
           label: '印章名称',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
-          prop: '2',
+          prop: 'sealTypeName',
           label: '印章类型',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'custodianName',
           label: '保管人',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'custodianDeptName',
           label: '保管部门',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'outUserName',
           label: '外借人',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'outUserDeptName',
           label: '外借部门',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
-          prop: '7',
+          prop: 'outDatetime',
           label: '外借时间',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 200
         },
         {
-          prop: '8',
+          prop: 'outLocation',
           label: '外借地点',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 200
         },
         {
@@ -328,64 +389,17 @@
           width: 180,
           rankDisplayData: [
             {
+              id: 'guihuan',
               name: '归还'
             },
             {
+              id: 'history',
               name: '查看历史记录'
             }
           ]
         }
       ],
-      data: [
-        {
-          0: '1',
-          1: '测试章',
-          2: '往往',
-          3: '公章',
-          4: '往往',
-          5: '建业科技测试部',
-          6: '建业科技研发中心',
-          7: '2022-12-20 15:00:00',
-          8: '上海市静安区',
-          9: '上海市静安区'
-        },
-        {
-          0: '1',
-          1: '测试章',
-          2: '往往',
-          3: '公章',
-          4: '往往',
-          5: '建业科技测试部',
-          6: '建业科技研发中心',
-          7: '2022-12-20 15:00:00',
-          8: '上海市静安区',
-          9: '上海市静安区'
-        },
-        {
-          0: '1',
-          1: '测试章',
-          2: '往往',
-          3: '公章',
-          4: '往往',
-          5: '建业科技测试部',
-          6: '建业科技研发中心',
-          7: '2022-12-20 15:00:00',
-          8: '上海市静安区',
-          9: '上海市静安区'
-        },
-        {
-          0: '1',
-          1: '测试章',
-          2: '往往',
-          3: '公章',
-          4: '往往',
-          5: '建业科技测试部',
-          6: '建业科技研发中心',
-          7: '2022-12-20 15:00:00',
-          8: '上海市静安区',
-          9: '上海市静安区'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -394,7 +408,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '1') {
+          if (column.property === 'sealName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -403,99 +417,68 @@
         }
       }
     },
-    componentsTree: {
-      data: [
-        {
-          label: 'Level one 1',
-          children: [
-            {
-              label: 'Level two 1-1',
-              children: [
-                {
-                  label: 'Level three 1-1-1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'Level one 2',
-          children: [
-            {
-              label: 'Level two 2-1',
-              children: [
-                {
-                  label: 'Level three 2-1-1'
-                }
-              ]
-            },
-            {
-              label: 'Level two 2-2',
-              children: [
-                {
-                  label: 'Level three 2-2-1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'Level one 3',
-          children: [
-            {
-              label: 'Level two 3-1',
-              children: [
-                {
-                  label: 'Level three 3-1-1'
-                }
-              ]
-            },
-            {
-              label: 'Level two 3-2',
-              children: [
-                {
-                  label: 'Level three 3-2-1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': true,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
-      }
-    },
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
+        total: 0,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
     },
-    componentsBreadcrumb: {
-      data: [
+    historyTable: {
+      header: [
         {
-          name: 'ceshi'
+          prop: 'outUserName',
+          label: '外借人'
         },
         {
-          name: 'ceshi'
+          prop: 'takeUserName',
+          label: '取章人'
+        },
+        {
+          prop: 'outDatetime',
+          label: '外带时间'
+        },
+        {
+          prop: 'outLocation',
+          label: '外带地址'
+        },
+        {
+          prop: 'returnUserName',
+          label: '归还人'
+        },
+        {
+          prop: 'returnDatetime',
+          label: '归还时间'
         }
       ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
-        separator: '/'
+        stripe: true,
+        'header-cell-style': {
+          background: 'var(--jy-color-fill--3)'
+        }
+      }
+    },
+    historyPagination: {
+      data: {
+        amount: 0,
+        index: 1,
+        pageNumber: 10
+      },
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        layout: 'prev, pager, next, jumper',
+        total: 0,
+        'page-sizes': [10, 100, 200, 300, 400],
+        background: true
       }
     },
     componentsDocumentsDetails: {
@@ -519,7 +502,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property === '1') {
+    if (column.property === 'sealName') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -529,16 +512,19 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    if (cell.name === '归还') {
-      fromState.title = '归还'
+    if (cell.id === 'guihuan') {
+      fromState.title = cell.name
       fromState.showDialog = true
       fromState.formJson = SealLendingJson
-    }
-    if (cell.name === '查看历史记录') {
-      router.push({
-        // path: '/frontDesk/SealloanInnerPage'
-        name: 'SealloanInnerPage'
-      })
+    } else if (cell.id === 'history') {
+      console.log(JSON.parse(JSON.stringify(column)))
+      historyState.showDialog = true
+      currentId.value = column.sealId
+      historyPageApi()
+      // router.push({
+      //   // path: '/frontDesk/SealloanInnerPage'
+      //   name: 'SealloanInnerPage'
+      // })
     }
   }
 
@@ -550,9 +536,148 @@
     }
   }
 
+  const tabChange = type => {
+    currentType.value = type
+    reloadData()
+  }
+
+  const clickSubmit = item => {
+    if (item.id === 'reset') {
+      table.value.clearSorts()
+      state.componentsSearchForm.data.forEach(item => {
+        if (item.type === 'checkButton') {
+          item.data.forEach(i => {
+            delete i.checked
+          })
+        } else if (item.type === 'checkbox') {
+          console.log(JSON.parse(JSON.stringify(item.checkbox)))
+          item.checkbox.forEach(i => {
+            i.value = false
+          })
+          console.log(JSON.parse(JSON.stringify(item.checkbox)))
+        } else {
+          delete item.value
+        }
+      })
+    }
+    reloadData()
+  }
+
+  const reloadData = () => {
+    state.componentsTable.data = []
+    state.componentsPagination.data.index = 1
+    sealLoanInformationPageApi()
+  }
+
+  // 自定义排序
+  function sortChange(orderBack) {
+    console.log(JSON.parse(JSON.stringify(orderBack)))
+    orderBy.value = orderBack
+    reloadData()
+  }
+
+  const sealLoanInformationPageApi = () => {
+    loading.value = true
+    const params = {}
+    state.componentsSearchForm.data.forEach(item => {
+      if (item.type === 'checkButton') {
+        params[item.id] = item.data
+          .filter(i => i.checked)
+          .map(i => i.id)
+          .join(',')
+      } else if (item.type === 'checkbox') {
+        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
+      } else if (item.type === 'picker') {
+        if (item.pickerType === 'date') {
+          console.log(JSON.stringify(item))
+          params[item.id] = item.value
+            ? item.value
+                .map(i => dayjs(i).format('YYYY-MM-DD HH:mm:ss'))
+                .join(',')
+            : ''
+        }
+      } else if (item.type === 'select') {
+        params[item.id] = item.value ? item.value.join(',') : ''
+      } else {
+        params[item.id] = item.value
+      }
+      console.log(params)
+    })
+    apis
+      .page({
+        ...{
+          current: state.componentsPagination.data.index,
+          size: state.componentsPagination.data.pageNumber,
+          sorts: orderBy.value
+            ? orderBy.value.prop +
+              ' ' +
+              (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
+            : ''
+        },
+        ...params
+      })
+      .then(result => {
+        state.componentsTable.data = result.data.records
+        state.componentsPagination.data.amount = result.data.total
+        state.componentsPagination.defaultAttribute.total = result.data.total
+        loading.value = false
+      })
+  }
+
+  const currentPageChange = e => {
+    state.componentsPagination.data.index = e
+    sealLoanInformationPageApi()
+  }
+
+  const sizeChange = e => {
+    state.componentsPagination.data.pageNumber = e
+    sealLoanInformationPageApi()
+  }
+
+  const historyPageApi = () => {
+    historyLoading.value = true
+    apis
+      .history({
+        id: currentId.value,
+        current: state.historyPagination.data.index,
+        size: state.historyPagination.data.pageNumber
+      })
+      .then(
+        result => {
+          state.historyTable.data = result.data.records
+          state.historyPagination.data.amount = result.data.total
+          state.historyPagination.defaultAttribute.total = result.data.total
+          historyLoading.value = false
+        },
+        () => {
+          historyLoading.value = false
+        }
+      )
+  }
+
+  const historyCurrentPageChange = e => {
+    state.historyPagination.data.index = e
+    historyPageApi()
+  }
+
+  const historySizeChange = e => {
+    state.historyPagination.data.pageNumber = e
+    historyPageApi()
+  }
+
+  const typeOfSealList = () => {
+    typeOfSeal.list({ searchKey: '' }).then(res => {
+      console.log(res)
+      state.componentsSearchForm.data[2].options = res.data
+    })
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    sealLoanInformationPageApi()
+    typeOfSealList()
   })
+
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })

@@ -39,6 +39,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             v-if="state.activeName === '1'"
           >
@@ -48,6 +49,7 @@
             :defaultAttribute="state.componentsErrorTable.defaultAttribute"
             :data="state.componentsErrorTable.data"
             :header="state.componentsErrorTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             v-if="state.activeName === '2'"
           >

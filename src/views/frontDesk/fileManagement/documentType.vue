@@ -7,7 +7,7 @@
           <div>文件类型</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
+              <el-button type="primary" @click="dialogVisible = true"
                 >+ 增加</el-button
               >
             </div>
@@ -55,6 +55,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -71,6 +72,7 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -81,26 +83,6 @@
       </componentsDocumentsDetails>
     </div>
 
-    <!-- 动态表单 -->
-    <KDialog
-      @update:show="showFormDialog = $event"
-      :show="showFormDialog"
-      title="新增工作台"
-      :centerBtn="true"
-      :confirmText="$t('t-zgj-operation.submit')"
-      :concelText="$t('t-zgj-operation.cancel')"
-      :width="1000"
-      :height="600"
-      @close="submitForm"
-    >
-      <v-form-render
-        :form-json="formJson"
-        :form-data="formData"
-        :option-data="optionData"
-        ref="vFormRef"
-      >
-      </v-form-render>
-    </KDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -108,6 +90,7 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
@@ -121,56 +104,63 @@
       </template>
     </JyElMessageBox>
   </div>
+
+  <!-- 新增文件类型 -->
+  <JyDialog title="新增文件类型" v-model="dialogVisible">
+    <el-form
+      ref="formRef"
+      :model="formData"
+      :rules="rules"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="文件类型编码" prop="fileTypeNo">
+        <el-input v-model="formData.fileTypeNo" />
+      </el-form-item>
+      <el-form-item label="文件类型名称" prop="fileTypeName">
+        <el-input v-model="formData.fileTypeName" />
+      </el-form-item>
+      <el-form-item label="文件类型字号" prop="fileTypeSn">
+        <el-input v-model="formData.fileTypeSn" />
+      </el-form-item>
+      <el-form-item label="上级文件夹" prop="fileTypePid">
+        <el-input v-model="formData.fileTypePid" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button type="primary" @click="submit">提交</el-button>
+      <el-button @click="calcel">取消</el-button>
+    </template>
+  </JyDialog>
 </template>
+
 <script setup>
-  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
+  import { reactive, onMounted, ref } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import FormJson from '@/views/addDynamicFormJson/documentType.json'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+
   const showDepPerDialog = ref(false)
   const showFormDialog = ref(false)
-  const formJson = reactive(FormJson)
-  const formData = reactive({})
-  const optionData = reactive({})
-  const dialogVisible = ref(false)
-  const vFormRef = ref(null)
-  const submitForm = type => {
-    if (!type) {
-      vFormRef.value.resetForm()
-      return
-    }
-    vFormRef.value
-      .getFormData()
-      .then(formData => {
-        // Form Validation OK
-        alert(JSON.stringify(formData))
-        showFormDialog.value = false
-      })
-      .catch(error => {
-        // Form Validation failed
+  const formRef = ref(null)
+  const formData = reactive({
+    fileTypeNo: '',
+    fileTypeName: '',
+    fileTypeSn: '',
+    fileTypePid: ''
+  })
+  const dialogVisible = ref(true)
 
-        ElMessage.error(error)
-      })
+  const rules = {
+    fileTypeName: [{ required: true, message: '请输入', trigger: 'blur' }]
   }
 
-  const emit = defineEmits([])
   const state = reactive({
     componentsTabs: {
       data: [
@@ -388,7 +378,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property == '1') {
+          if (column.property === '1') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -532,10 +522,22 @@
       }
     }
   })
+
+  const submit = async () => {
+    try {
+      await formRef.value.validate()
+    } catch (error) {}
+    dialogVisible.value = false
+  }
+
+  const calcel = () => {
+    dialogVisible.value = false
+  }
+
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property == '1') {
+    if (column.property === '1') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -543,13 +545,14 @@
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
+
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(cell.name)
     if (cell.name === '修改') {
       showFormDialog.value = true
     }
-    if (cell.name == '删除') {
+    if (cell.name === '删除') {
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
       state.JyElMessageBox.show = true
@@ -572,13 +575,9 @@
     }
   }
 
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
+  onMounted(() => {})
 </script>
+
 <style lang="scss" scoped>
   .fileManagement-documentType {
     margin: 0%;

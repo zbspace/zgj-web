@@ -45,6 +45,7 @@
             :data="state.componentsTable.data"
             isSelection
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"

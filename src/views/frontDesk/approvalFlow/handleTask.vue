@@ -44,6 +44,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -216,7 +217,10 @@
               label: '任务类型2',
               value: '2'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         }
       ],
       butData: [

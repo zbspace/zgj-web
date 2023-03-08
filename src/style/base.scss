@@ -21,3 +21,71 @@ p {
   fill: var(--el-color-primary);
   margin-left: 0.3rem;
 }
+
+.select-box-contBox {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .ap-box-contBox-icon {
+    position: absolute;
+    right: 0.8rem;
+    cursor: pointer;
+    height: 50%;
+    display: flex;
+    align-items: center;
+
+    .ap-box-contBox-icon-img {
+      height: 100%;
+    }
+  }
+
+  :deep {
+    .el-input__inner {
+      padding-right: 1.5rem;
+      box-sizing: border-box;
+    }
+  }
+}
+
+.header-div {
+  display: flex;
+  align-items: center;
+}
+
+.header-div img {
+  width: 21px;
+  margin-right: 18px;
+}
+
+.header-div span {
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.content-div {
+  padding-left: 40px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.scrollbar {
+  padding: 0 20px;
+
+  .scrollbar-demo-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 4px;
+    background: var(--el-color-primary-light-9);
+    color: var(--el-color-primary);
+  }
+}

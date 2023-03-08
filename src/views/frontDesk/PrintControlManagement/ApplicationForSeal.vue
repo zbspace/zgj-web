@@ -67,6 +67,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -175,6 +176,7 @@
   const vFormLibraryRef = ref(null)
   const showDepPerDialog = ref(false)
   const submitLibraryForm = type => {
+    console.log(type)
     if (!type) {
       vFormLibraryRef.value.resetForm()
       return

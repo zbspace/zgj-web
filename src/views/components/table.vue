@@ -3,7 +3,7 @@
     <el-table
       v-bind="props.defaultAttribute"
       v-loading="loading"
-      :refs="refs"
+      ref="tableRefs"
       :data="props.data"
       style="width: 100%"
       @select="select"
@@ -11,6 +11,7 @@
       @selection-change="selectionChange"
       @cell-click="cellClick"
       @row-click="rowClick"
+      @sort-change="sortChange"
       class="ap-table"
     >
       <el-table-column v-if="isSelection" type="selection" width="50" />
@@ -21,7 +22,18 @@
         fixed="left"
         align="center"
         v-if="isNo"
-      />
+      >
+        <template #default="scope">
+          <span>{{
+            (props.paginationData.index
+              ? (props.paginationData.index - 1) *
+                props.paginationData.pageNumber
+              : 0) +
+            scope.$index +
+            1
+          }}</span>
+        </template>
+      </el-table-column>
       <!-- 列表内容 -->
       <el-table-column
         v-bind="item"
@@ -40,7 +52,10 @@
           v-else-if="item.customDisplayType == 'custom'"
         >
           <div class="custom" :index="scope.$index">
-            <slot :name="'custom_' + item.prop"></slot>
+            <slot
+              :name="'custom_' + item.prop"
+              :value="scope.row[item.prop]"
+            ></slot>
           </div>
         </template>
         <!-- 自定义内容显示 -->
@@ -91,9 +106,14 @@
 <script setup>
   import {
     // reactive,
+    ref,
+    defineExpose,
     onBeforeMount,
     onMounted
   } from 'vue'
+  defineExpose({
+    clearSorts
+  })
   const props = defineProps({
     // 标识
     refs: {
@@ -139,6 +159,13 @@
       default: () => {
         return {}
       }
+    },
+    // 分页属性
+    paginationData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   })
   const emit = defineEmits([
@@ -146,9 +173,16 @@
     'select-all',
     'selection-change',
     'cell-click',
+    'sort-change',
     'row-click',
     'custom-click'
   ])
+
+  const tableRefs = ref(null)
+
+  function clearSorts() {
+    tableRefs.value.clearSort()
+  }
   //   const state = reactive({})
   // console.log(props.defaultAttribute);
   // 	当用户手动勾选数据行的 Checkbox 时触发的事件
@@ -167,6 +201,10 @@
   function cellClick(row, column, cell, event) {
     emit('cell-click', row, column, cell, event)
   }
+  // 自定义排序
+  function sortChange(column) {
+    emit('sort-change', column)
+  }
   //	当某个单元格被点击时会触发该事件
   function rowClick(row, column, event) {
     emit('row-click', row, column, event)
@@ -181,6 +219,7 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    console.log(JSON.parse(JSON.stringify(props.paginationData)))
   })
 </script>
 <style lang="scss" scoped>

@@ -34,6 +34,7 @@
               :defaultAttribute="state.componentsTable.defaultAttribute"
               :data="state.componentsTable.data"
               :header="state.componentsTable.header"
+              :paginationData="state.componentsPagination.data"
               :isSelection="false"
               @cellClick="cellClick"
               @custom-click="customClick"
@@ -275,7 +276,7 @@
       data: {
         amount: 400,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {

@@ -1,0 +1,439 @@
+{
+  "widgetList": [
+    {
+      "key": 58016,
+      "type": "static-text",
+      "icon": "static-text",
+      "formItemFlag": false,
+      "options": {
+        "name": "statictext58387",
+        "columnWidth": "200px",
+        "hidden": false,
+        "textContent": "基础信息",
+        "customClass": [],
+        "onCreated": "",
+        "onMounted": "",
+        "label": "static-text"
+      },
+      "id": "statictext58387"
+    },
+    {
+      "key": 109691,
+      "type": "grid",
+      "alias": "",
+      "category": "container",
+      "icon": "grid",
+      "cols": [
+        {
+          "type": "grid-col",
+          "category": "container",
+          "icon": "grid-col",
+          "internal": true,
+          "widgetList": [
+            {
+              "key": 94960,
+              "type": "input",
+              "alias": "",
+              "icon": "text-field",
+              "formItemFlag": true,
+              "options": {
+                "name": "input51855",
+                "label": "单据编号",
+                "labelAlign": "",
+                "type": "text",
+                "defaultValue": "",
+                "placeholder": "",
+                "columnWidth": "200px",
+                "size": "",
+                "labelWidth": null,
+                "labelHidden": false,
+                "readonly": false,
+                "disabled": true,
+                "hidden": false,
+                "clearable": true,
+                "showPassword": false,
+                "required": false,
+                "requiredHint": "",
+                "validation": "",
+                "validationHint": "",
+                "customClass": [],
+                "labelIconClass": null,
+                "labelIconPosition": "rear",
+                "labelTooltip": null,
+                "minLength": null,
+                "maxLength": null,
+                "showWordLimit": false,
+                "prefixIcon": "",
+                "suffixIcon": "",
+                "appendButton": false,
+                "appendButtonDisabled": false,
+                "buttonIcon": "custom-search",
+                "onCreated": "",
+                "onMounted": "",
+                "onInput": "",
+                "onChange": "",
+                "onFocus": "",
+                "onBlur": "",
+                "onValidate": "",
+                "onAppendButtonClick": ""
+              },
+              "id": "input51855"
+            }
+          ],
+          "options": {
+            "name": "gridCol45358",
+            "hidden": false,
+            "span": 12,
+            "offset": 0,
+            "push": 0,
+            "pull": 0,
+            "responsive": false,
+            "md": 12,
+            "sm": 12,
+            "xs": 12,
+            "customClass": []
+          },
+          "id": "grid-col-45358"
+        },
+        {
+          "type": "grid-col",
+          "category": "container",
+          "icon": "grid-col",
+          "internal": true,
+          "widgetList": [
+            {
+              "key": 94960,
+              "type": "input",
+              "alias": "",
+              "icon": "text-field",
+              "formItemFlag": true,
+              "options": {
+                "name": "input100400",
+                "label": "单据名称",
+                "labelAlign": "",
+                "type": "text",
+                "defaultValue": "",
+                "placeholder": "",
+                "columnWidth": "200px",
+                "size": "",
+                "labelWidth": null,
+                "labelHidden": false,
+                "readonly": false,
+                "disabled": false,
+                "hidden": false,
+                "clearable": true,
+                "showPassword": false,
+                "required": true,
+                "requiredHint": "22",
+                "validation": "",
+                "validationHint": "",
+                "customClass": "",
+                "labelIconClass": null,
+                "labelIconPosition": "rear",
+                "labelTooltip": null,
+                "minLength": null,
+                "maxLength": null,
+                "showWordLimit": false,
+                "prefixIcon": "",
+                "suffixIcon": "",
+                "appendButton": false,
+                "appendButtonDisabled": false,
+                "buttonIcon": "custom-search",
+                "onCreated": "",
+                "onMounted": "",
+                "onInput": "",
+                "onChange": "",
+                "onFocus": "",
+                "onBlur": "",
+                "onValidate": "",
+                "onAppendButtonClick": ""
+              },
+              "id": "input100400"
+            }
+          ],
+          "options": {
+            "name": "gridCol73060",
+            "hidden": false,
+            "span": 12,
+            "offset": 0,
+            "push": 0,
+            "pull": 0,
+            "responsive": false,
+            "md": 12,
+            "sm": 12,
+            "xs": 12,
+            "customClass": ""
+          },
+          "id": "grid-col-73060"
+        }
+      ],
+      "options": {
+        "name": "grid54592",
+        "hidden": false,
+        "gutter": 12,
+        "colHeight": null,
+        "customClass": []
+      },
+      "id": "grid54592"
+    },
+    {
+      "key": 58016,
+      "type": "static-text",
+      "icon": "static-text",
+      "formItemFlag": false,
+      "options": {
+        "name": "statictext54934",
+        "columnWidth": "200px",
+        "hidden": false,
+        "textContent": "用印信息",
+        "customClass": [],
+        "onCreated": "",
+        "onMounted": "",
+        "label": "static-text"
+      },
+      "id": "statictext54934"
+    },
+    {
+      "key": 89202,
+      "type": "sealName",
+      "icon": "sealName",
+      "formItemFlag": true,
+      "options": {
+        "name": "sealName",
+        "label": "sealname",
+        "labelAlign": "right",
+        "defaultValue": [
+          {
+            "seal": "",
+            "sealId": "",
+            "routineSeal": "",
+            "sealRequiredTextShow": false,
+            "routineSealRequiredTextShow": false
+          }
+        ],
+        "placeholder": "",
+        "columnWidth": "200px",
+        "labelWidth": "",
+        "labelHidden": false,
+        "size": "default",
+        "readonly": false,
+        "disabled": false,
+        "hidden": false,
+        "required": true,
+        "clearable": true,
+        "requiredHint": "",
+        "customClass": [],
+        "onChange": "",
+        "filedList": [
+          {
+            "seal": "",
+            "sealId": "",
+            "routineSeal": "",
+            "sealRequiredTextShow": false,
+            "routineSealRequiredTextShow": false
+          }
+        ]
+      },
+      "id": "sealName"
+    },
+    {
+      "key": 109691,
+      "type": "grid",
+      "alias": "",
+      "category": "container",
+      "icon": "grid",
+      "cols": [
+        {
+          "type": "grid-col",
+          "category": "container",
+          "icon": "grid-col",
+          "internal": true,
+          "widgetList": [
+            {
+              "key": 94960,
+              "type": "input",
+              "alias": "",
+              "icon": "text-field",
+              "formItemFlag": true,
+              "options": {
+                "name": "input83948",
+                "label": "文件份数",
+                "labelAlign": "",
+                "type": "text",
+                "defaultValue": "",
+                "placeholder": "",
+                "columnWidth": "200px",
+                "size": "",
+                "labelWidth": null,
+                "labelHidden": false,
+                "readonly": false,
+                "disabled": false,
+                "hidden": false,
+                "clearable": true,
+                "showPassword": false,
+                "required": true,
+                "requiredHint": "11",
+                "validation": "number",
+                "validationHint": "",
+                "customClass": [],
+                "labelIconClass": null,
+                "labelIconPosition": "rear",
+                "labelTooltip": null,
+                "minLength": null,
+                "maxLength": null,
+                "showWordLimit": false,
+                "prefixIcon": "",
+                "suffixIcon": "",
+                "appendButton": false,
+                "appendButtonDisabled": false,
+                "buttonIcon": "custom-search",
+                "onCreated": "",
+                "onMounted": "",
+                "onInput": "",
+                "onChange": "",
+                "onFocus": "",
+                "onBlur": "",
+                "onValidate": "",
+                "onAppendButtonClick": ""
+              },
+              "id": "input83948"
+            }
+          ],
+          "options": {
+            "name": "gridCol87784",
+            "hidden": false,
+            "span": 12,
+            "offset": 0,
+            "push": 0,
+            "pull": 0,
+            "responsive": false,
+            "md": 12,
+            "sm": 12,
+            "xs": 12,
+            "customClass": []
+          },
+          "id": "grid-col-87784"
+        },
+        {
+          "type": "grid-col",
+          "category": "container",
+          "icon": "grid-col",
+          "internal": true,
+          "widgetList": [
+            {
+              "key": 92935,
+              "type": "select",
+              "icon": "select-field",
+              "formItemFlag": true,
+              "options": {
+                "name": "select66229",
+                "label": "文件类型",
+                "labelAlign": "",
+                "defaultValue": 1,
+                "placeholder": "",
+                "columnWidth": "200px",
+                "size": "",
+                "labelWidth": null,
+                "labelHidden": false,
+                "disabled": false,
+                "hidden": false,
+                "clearable": true,
+                "filterable": false,
+                "allowCreate": false,
+                "remote": false,
+                "automaticDropdown": false,
+                "multiple": false,
+                "multipleLimit": 0,
+                "dsEnabled": false,
+                "dsName": "",
+                "dataSetName": "",
+                "labelKey": "label",
+                "valueKey": "value",
+                "optionItems": [
+                  {
+                    "label": "select 1",
+                    "value": 1
+                  },
+                  {
+                    "label": "select 2",
+                    "value": 2
+                  },
+                  {
+                    "label": "select 3",
+                    "value": 3
+                  }
+                ],
+                "required": true,
+                "requiredHint": "22",
+                "validation": "",
+                "validationHint": "",
+                "fieldLinkage": [
+                  {
+                    "value": "1",
+                    "linkages": []
+                  },
+                  {
+                    "value": "2",
+                    "linkages": []
+                  }
+                ],
+                "customClass": [],
+                "labelIconClass": null,
+                "labelIconPosition": "rear",
+                "labelTooltip": null,
+                "onCreated": "",
+                "onMounted": "",
+                "onRemoteQuery": "",
+                "onChange": "",
+                "onFocus": "",
+                "onBlur": "",
+                "onValidate": ""
+              },
+              "id": "select66229"
+            }
+          ],
+          "options": {
+            "name": "gridCol99745",
+            "hidden": false,
+            "span": 12,
+            "offset": 0,
+            "push": 0,
+            "pull": 0,
+            "responsive": false,
+            "md": 12,
+            "sm": 12,
+            "xs": 12,
+            "customClass": []
+          },
+          "id": "grid-col-99745"
+        }
+      ],
+      "options": {
+        "name": "grid99383",
+        "hidden": false,
+        "gutter": 12,
+        "colHeight": null,
+        "customClass": []
+      },
+      "id": "grid99383"
+    }
+  ],
+  "formConfig": {
+    "modelName": "formData",
+    "refName": "vForm",
+    "rulesName": "rules",
+    "labelWidth": 88,
+    "labelPosition": "left",
+    "size": "",
+    "labelAlign": "label-right-align",
+    "cssCode": "",
+    "customClass": [],
+    "functions": "",
+    "layoutType": "PC",
+    "jsonVersion": 3,
+    "dataSources": [],
+    "onFormCreated": "",
+    "onFormMounted": "",
+    "onFormDataChange": ""
+  }
+}

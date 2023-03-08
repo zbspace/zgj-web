@@ -2,7 +2,11 @@
 <template>
   <div class="Record-of-requisition-Seal-Information">
     <div class="SealInformation-details SealInformation">
-      <div class="SealInformation-details-list" v-for="item in props.data">
+      <div
+        class="SealInformation-details-list"
+        v-for="(item, index) in props.data"
+        :key="index"
+      >
         <div class="SealInformation-details-list-cont">
           <div class="SealInformation-details-list-cont-icon">
             <img
@@ -50,7 +54,8 @@
         <div class="SealInformation-details-image-cont">
           <div
             class="SealInformation-details-image-cont-list"
-            v-for="item in props.imageData.data"
+            v-for="(item, index) in props.imageData.data"
+            :key="index"
           >
             <div class="SealInformation-details-image-cont-list-img">
               <img
@@ -70,7 +75,8 @@
             <div class="SealInformation-details-image-cont-list-cont">
               <div
                 class="SealInformation-details-image-cont-list-cont-list"
-                v-for="data in item.list"
+                v-for="(data, num) in item.list"
+                :key="num"
               >
                 <div
                   class="SealInformation-details-image-cont-list-cont-list-label"
@@ -105,7 +111,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted } from 'vue'
+  import { onBeforeMount, onMounted } from 'vue'
   const props = defineProps({
     // 标识
     refs: {
@@ -120,16 +126,20 @@
     // 用印文件
     data: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 补充文件
     imageData: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     }
   })
-  const emit = defineEmits([])
-  const state = reactive({})
+  // const emit = defineEmits([])
+  // const state = reactive({})
 
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

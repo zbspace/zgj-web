@@ -37,6 +37,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -102,7 +103,7 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import { useRouter } from 'vue-router'
-  import { UploadFilled } from '@element-plus/icons-vue'
+  // import { UploadFilled } from '@element-plus/icons-vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
   import fileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   const router = useRouter()

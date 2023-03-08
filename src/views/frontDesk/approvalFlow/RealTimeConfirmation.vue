@@ -43,6 +43,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -184,6 +185,8 @@
           id: 'wjlx',
           label: '发起类型',
           type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
           inCommonUse: true,
           options: [
             {
@@ -194,7 +197,10 @@
               label: '实时视频盖章',
               value: '3'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         }
       ],
       butData: [

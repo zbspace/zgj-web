@@ -42,6 +42,7 @@
         <basicsInfo
           v-show="state.processTabs.checkedNode.index == '1'"
           ref="refBasicsInfo"
+          :businessList="props.businessList"
         ></basicsInfo>
         <AssociationForm
           v-show="state.processTabs.checkedNode.index == '2'"
@@ -78,7 +79,6 @@
     reactive,
     onBeforeMount,
     onMounted,
-    nextTick,
     defineAsyncComponent
   } from 'vue'
   import layout from './layout.vue'
@@ -97,6 +97,14 @@
     // loadingComponent: LoadingComponent,
     // // 加载失败时使用的组件
     // errorComponent: ErrorComponent
+  })
+  const props = defineProps({
+    businessList: {
+      type: Array,
+      default: () => {
+        return [] // ['table', 'rate', 'switch'] 自定义组件的type
+      }
+    }
   })
   const refVFlowDesign = ref(null)
   const refAssociationForm = ref(null)

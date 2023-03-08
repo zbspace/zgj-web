@@ -78,6 +78,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @cellClick="cellClick"
           >

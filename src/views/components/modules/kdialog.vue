@@ -20,6 +20,7 @@
     >
       <!-- header -->
       <div
+        ref="header"
         class="header-custom"
         :style="{ cursor: handelScreen ? '' : 'move' }"
       >
@@ -255,28 +256,31 @@
   }
 
   const dialogEl = ref(null)
+  const header = ref(null)
   const commonEvent = e => {
-    const X = e.clientX - dialogEl.value.offsetLeft
-    const Y = e.clientY - dialogEl.value.offsetTop
-    const move = e => {
-      dialogEl.value.style.left = e.clientX - X + 'px'
-      dialogEl.value.style.top = e.clientY - Y + 'px'
+    if (props.draggable) {
+      const X = e.clientX - dialogEl.value.offsetLeft
+      const Y = e.clientY - dialogEl.value.offsetTop
+      const move = e => {
+        dialogEl.value.style.left = e.clientX - X + 'px'
+        dialogEl.value.style.top = e.clientY - Y + 'px'
+      }
+      document.addEventListener('mousemove', move)
+      document.addEventListener('mouseup', () => {
+        document.removeEventListener('mousemove', move)
+      })
     }
-    document.addEventListener('mousemove', move)
-    document.addEventListener('mouseup', () => {
-      document.removeEventListener('mousemove', move)
-    })
   }
   onMounted(() => {
-    props.draggable && dialogEl.value.addEventListener('mousedown', commonEvent)
+    props.draggable && header.value.addEventListener('mousedown', commonEvent)
   })
 
   watch(
     () => handelScreen.value,
     val => {
       !val
-        ? dialogEl.value.addEventListener('mousedown', commonEvent)
-        : dialogEl.value.removeEventListener('mousedown', commonEvent)
+        ? header.value.addEventListener('mousedown', commonEvent)
+        : header.value.removeEventListener('mousedown', commonEvent)
     }
   )
 </script>
@@ -355,6 +359,7 @@
 
           .btn {
             min-width: 60px;
+            padding: 0 10px;
             height: 32px;
             margin: 0 8px;
             text-align: center;

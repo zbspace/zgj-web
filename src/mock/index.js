@@ -10,7 +10,7 @@ let configArray = []
 
 // 使用webpack的require.context()遍历所有mock文件
 const files = import.meta.globEager('./*.js')
-console.log(files)
+// console.log(files)
 for (const key in files) {
   if (key !== './index.js') {
     configArray = configArray.concat(files[key].default)

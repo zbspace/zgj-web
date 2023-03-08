@@ -10,10 +10,9 @@
         @clickCutTabs="clickCutTabs"
         :tabsData="state.processTabs.data"
         @close="clickClose"
-        :beforeCutTabs="beforeCutTabs"
       >
         <template #backTitle>
-          <span class="process-back-text">新增</span>
+          <span class="process-back-text">{{ props.addTitle }}</span>
         </template>
         <template #subTitle>
           <div class="process-save">
@@ -27,25 +26,70 @@
           </div>
         </template>
         <template #content>
-          <div class="formBase" v-if="state.processTabs.checkedNode.index == 1">
+          <div
+            class="formBase"
+            v-show="state.processTabs.checkedNode.index == 1"
+          >
             <div class="formBase-bg">
               <div class="form-title">请填写如下基础信息</div>
-              <JyVform
-                ref="vFormRef"
-                mode="render"
-                :formJson="formJson"
-                :formData="formData"
-                :optionData="optionData"
-                @buttonClick="clickSelect"
-                @on-loaded="onLoaded"
-              />
+              <el-form
+                ref="formRef"
+                :model="formData"
+                label-width="120px"
+                :rules="rules"
+              >
+                <el-form-item prop="formName" label="表单名称">
+                  <el-input v-model="formData.formName" />
+                </el-form-item>
+
+                <el-form-item label="业务类型" prop="applyTypeId">
+                  <el-select
+                    v-model="formData.applyTypeId"
+                    placeholder="请选择"
+                    @change="onChange"
+                    style="width: 430px"
+                  >
+                    <el-option
+                      :label="item.applyTypeName"
+                      :value="item.applyTypeId"
+                      v-for="item in optionData"
+                      :key="item.applyTypeId"
+                    />
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item
+                  label="用印类型"
+                  v-if="formData.applyTypeId === '2'"
+                >
+                  <el-radio-group v-model="formData.sealUseTypeId">
+                    <el-radio label="1">物理用印</el-radio>
+                    <el-radio label="2">电子签章</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+
+                <el-form-item label="表单说明">
+                  <el-input
+                    v-model="formData.readme"
+                    type="textarea"
+                    maxlength="100"
+                    show-word-limit
+                    placeholder="请输入"
+                  />
+                </el-form-item>
+              </el-form>
             </div>
           </div>
+
           <!-- 表单设计 -->
           <JyVform
             ref="vformRef"
-            v-if="state.processTabs.checkedNode.index == 2"
+            v-if="state.processTabs.checkedNode.index === '2'"
             style="margin-top: 0; width: 100%"
+            :businessType="formData.applyTypeId"
+            :templateList="templateList"
+            :prefabricationFieldList="prefabricationFieldList"
+            @on-loaded="onLoaded"
           />
         </template>
       </layout>
@@ -54,32 +98,55 @@
 </template>
 
 <script setup>
-  import {
-    ref,
-    reactive,
-    computed,
-    onMounted,
-    onBeforeMount,
-    nextTick
-  } from 'vue'
+  import { ref, reactive, computed, onMounted, nextTick } from 'vue'
   import { ElMessage } from 'element-plus'
-  import layout from '@/views/system/businessManage/flowManage/layout.vue'
-  import formStepJson from '@/views/addDynamicFormJson/formStep'
+  import layout from '@/views/system/businessManage/flowManage/layout'
+  // import template1 from './templates/template1'
+  import template2 from './templates/template2'
+  // import template3 from './templates/template3'
+  // import template4 from './templates/template4'
+  // import template5 from './templates/template5'
+  // import template6 from './templates/template6'
+  import template7 from './templates/template7'
+  // import template8 from './templates/template8'
+  // import template9 from './templates/template9'
 
-  formStepJson.widgetList[1].options.defaultValue = 2
   const vformRef = ref(null)
-  const formJson = reactive(formStepJson)
-  const formData = reactive({})
-  const optionData = reactive({})
-  const vFormRef = ref(null)
+  const formData = reactive({
+    applyTypeId: '2',
+    applyTypePid: '1',
+    applyTypeNo: '001001',
+    applyTypeName: '用印申请',
+    applyTypeNameI18n: 'seal apply use',
+    applyTypeGroup: '1',
+    hardType: null
+  })
+
+  const formRef = ref(null)
   const props = defineProps({
+    addTitle: {
+      type: String,
+      default: ''
+    },
+
+    columnData: {
+      type: Object,
+      default: () => {}
+    },
+
     formId: {
       type: String,
       default: ''
     },
+
     modelValue: {
       type: Boolean,
       default: false
+    },
+
+    optionData: {
+      type: Array,
+      default: () => []
     }
   })
   const emit = defineEmits(['update:modelValue', 'close'])
@@ -94,12 +161,14 @@
         },
         {
           index: '2',
-          label: '表单设计'
+          label: '表单设计',
+          checked: false
         }
       ]
     },
     isShowFrom: false
   })
+
   const isVisible = computed({
     get() {
       return props.modelValue
@@ -108,37 +177,62 @@
       emit('update:modelValue', value)
     }
   })
-  const submitForm = type => {
-    if (!type) {
-      vFormRef.value.resetForm()
-      return
-    }
-    vFormRef.value
-      .getFormData()
-      .then(formData => {
-        // Form Validation OK
-        if (state.isShowFrom.value) {
-          alert(JSON.stringify(formData))
-        } else {
-          state.isShowFrom.value = true
-        }
-      })
-      .catch(error => {
-        // Form Validation failed
 
-        ElMessage.error(error)
-      })
+  const optionData = computed(() => {
+    return props.optionData.filter(v => v.applyTypePid)
+  })
+
+  const prefabricationFieldList = ref(['sealName'])
+
+  const templateList = ref([
+    {
+      title: '用印申请',
+      imgUrl:
+        'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+      jsonUrl: JSON.stringify(template7),
+      description: '用印申请'
+    }
+  ])
+
+  const rules = {
+    formName: [
+      {
+        required: true,
+        message: '请输入',
+        trigger: 'blur'
+      }
+    ],
+    applyTypeId: [
+      {
+        required: true,
+        message: '请选择',
+        trigger: 'change'
+      }
+    ]
   }
+
+  const onChange = businessType => {
+    getTemplateList(businessType)
+  }
+
   // 点击切换选项
-  const clickCutTabs = (data, item) => {
-    data.forEach(element => {
-      element.checked = false
-    })
-    item.checked = true
-    console.log(data)
-    // 处理选项
-    disCutTabs()
+  const clickCutTabs = async (data, item) => {
+    try {
+      if (item.index === '2') {
+        await formRef.value.validate()
+      }
+      data.forEach(element => {
+        element.checked = false
+      })
+      item.checked = true
+      // 处理选项
+      disCutTabs()
+    } catch (error) {
+      state.processTabs.data[1].checked = false
+      state.processTabs.data[0].checked = true
+    }
   }
+
   // 处理选项
   const disCutTabs = () => {
     state.processTabs.data.forEach(item => {
@@ -149,26 +243,64 @@
     if (state.processTabs.checkedNode.index === '3') {
       nextTick(() => {
         // 设置表单模板默认数据
+        console.log('nextTick')
       })
     }
   }
+
   // 点击关闭弹框
   const clickClose = () => {
     emit('close')
   }
+
   // 点击保存
-  const clickSave = () => {}
-  const onLoaded = () => {
-    vFormRef.value.setFormJson(formJson)
+  const clickSave = async () => {
+    try {
+      const res = await vformRef.value.getFormData()
+      console.log('--->', res)
+    } catch (error) {
+      ElMessage.error(error)
+    }
   }
-  const clickSelect = () => {}
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-    // 处理选项
-    disCutTabs()
-  })
+
+  // 获取模板list
+  const getTemplateList = async businessType => {
+    switch (businessType) {
+      case '1-1': // 用印申请
+        templateList.value = [
+          {
+            title: '用印申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(template7),
+            description: '用印申请'
+          }
+        ]
+        prefabricationFieldList.value = ['sealName']
+        break
+      case '2-1': // 转办申请
+        templateList.value = [
+          {
+            title: '转办申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(template2),
+            description: '转办申请'
+          }
+        ]
+        prefabricationFieldList.value = ['applicantInfo']
+        break
+      default:
+        break
+    }
+  }
+
+  const onLoaded = async () => {
+    vformRef.value.setFormJson(templateList.value[0].jsonUrl)
+  }
+
   onMounted(() => {
-    console.log(`the component is now mounted.`)
+    disCutTabs()
   })
 </script>
 

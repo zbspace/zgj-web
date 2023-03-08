@@ -49,6 +49,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             isSelection
             @selection-change="selectionChange"
           >
@@ -179,7 +180,10 @@
               label: '启用申请',
               value: '6'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         },
         {
           id: 'picker',

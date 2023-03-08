@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue'
 
 export function requireComp(app) {
+  // -------------------------- common -------------------------------
   app.component(
     'JyEcharts',
     defineAsyncComponent(() => import('./common/JyEcharts/index.vue'))
@@ -43,5 +44,15 @@ export function requireComp(app) {
   app.component(
     'JyVertifyBox',
     defineAsyncComponent(() => import('./common/JyVertifyBox/index.vue'))
+  )
+  app.component(
+    'JyPagination',
+    defineAsyncComponent(() => import('./common/JyPagination/index.vue'))
+  )
+
+  // -------------------------- business -------------------------------
+  app.component(
+    'JySelectSeal',
+    defineAsyncComponent(() => import('./business/JySelectSeal/index.vue'))
   )
 }

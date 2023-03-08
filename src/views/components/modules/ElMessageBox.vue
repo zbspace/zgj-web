@@ -58,7 +58,7 @@
           v-if="state.props['showFooter']"
         >
           <slot name="footer">
-            <el-button type="primary">确定</el-button>
+            <el-button type="primary" @click="clickSure">确定</el-button>
             <el-button @click="clickClose">取消</el-button>
           </slot>
         </div>
@@ -142,7 +142,7 @@
       }
     }
   })
-  const emit = defineEmits(['close', 'update:modelValue'])
+  const emit = defineEmits(['close', 'confirmClick', 'update:modelValue'])
   // 初始化 props
   function initProps() {
     // console.log('--->', 'initProps')
@@ -168,6 +168,9 @@
   // 点击关闭弹框
   function clickClose() {
     state.props.modelValue = false
+  }
+  function clickSure() {
+    emit('confirmClick', state.props.modelValue)
   }
   // 点击关闭后回调
   function closeCallBack() {

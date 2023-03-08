@@ -25,6 +25,8 @@
 <script setup>
   import { ref, onMounted, getCurrentInstance, computed } from 'vue'
   import { designerConfig } from './designerConfig'
+  // 模板
+
   const vFormRef = ref(null)
 
   const props = defineProps({
@@ -111,7 +113,7 @@
   const getBannedWidgets = computed(() => {
     return props.bannedWidgets.length
       ? props.bannedWidgets
-      : props.businessType
+      : props.businessType === '2'
       ? []
       : [
           'sealName',
@@ -171,7 +173,11 @@
   }
   // 获取表单数据对象
   const getFormData = async () => {
-    return await vFormRef.value.getFormData()
+    try {
+      return vFormRef.value.getFormData()
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
   // 设置表单数据对象
   const setFormData = data => {

@@ -64,12 +64,11 @@
                 @change="redioChange"
               >
                 <el-radio :label="item.label" size="large">
-                  <span></span>
+                  <div class="info-list-box-text">
+                    {{ item.desc }}
+                  </div>
                 </el-radio>
               </el-radio-group>
-            </div>
-            <div class="info-list-box-text">
-              {{ item.desc }}
             </div>
             <div class="info-list-box-but">
               <div class="Have-been-enabled">已启用</div>
@@ -121,7 +120,7 @@
 <script setup>
   import { reactive, ref } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-  import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
+  // import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
   const refFillFormInformation = ref(null)
   const state = reactive({
@@ -205,7 +204,7 @@
   const redioChange = () => {
     // console.log('--->', state.list.radio)
   }
-  const formLibraryData = reactive({})
+  // const formLibraryData = reactive({})
   // 提供方法
   defineExpose({
     getInfoValue
@@ -335,7 +334,7 @@
         cursor: pointer;
 
         .info-list-box-redio {
-          width: 1rem;
+          // width: 1rem;
           display: flex;
           justify-content: center;
           align-items: center;
