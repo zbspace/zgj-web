@@ -102,10 +102,11 @@
     </div>
     <!-- 文件归档弹窗 -->
     <KDialog
-      @update:show="dialogData.show = $event"
+      @update:show="confirmFileAchive"
       :show="dialogData.show"
       title="文件归档"
       :oneBtn="false"
+      :draggable="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
     >
@@ -223,20 +224,23 @@
                     </div>
                     <div v-else>
                       <svg class="iconpark-icon">
-                        <use href="#folder"></use></svg
-                      >{{ item.archiveAttachmentFileName }}
+                        <use href="#folder"></use>
+                      </svg>
+                      {{ item.archiveAttachmentFileName }}
                     </div>
                   </div>
                   <div class="archive-status">
                     <div class="archive-status-item" v-if="item.isArchived">
                       <svg class="iconpark-icon">
-                        <use href="#finished"></use></svg
-                      >完成归档
+                        <use href="#finished"></use>
+                      </svg>
+                      完成归档
                     </div>
                     <div class="archive-status-item" v-else>
                       <svg class="iconpark-icon">
-                        <use href="#waiting-arvhices"></use></svg
-                      >归档中（其他终端）
+                        <use href="#waiting-arvhices"></use>
+                      </svg>
+                      归档中（其他终端）
                     </div>
                   </div>
                 </div>
@@ -258,8 +262,9 @@
               >
                 <template #trigger>
                   <svg class="iconpark-icon">
-                    <use href="#upload-file"></use></svg
-                  >添加附件
+                    <use href="#upload-file"></use>
+                  </svg>
+                  添加附件
                 </template>
               </el-upload>
               <div class="upload-files-list">
@@ -418,7 +423,7 @@
           }
         },
         {
-          id: 'picker',
+          id: 'archiveDate',
           label: '归档时间',
           type: 'picker',
           pickerType: 'date',
@@ -558,7 +563,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '2') {
+          if (column.property === 'sealApplyName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -733,6 +738,10 @@
       supplemenFiles: []
     }
   })
+  const confirmFileAchive = data => {
+    dialogData.show = false
+    console.log(state.componentsArchiveForm)
+  }
   const moreClick = item => {
     console.log(item)
   }
@@ -788,8 +797,8 @@
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    // console.log(row, column, cell, event);
-    if (column.property === '2') {
+    console.log(row, column, cell, event)
+    if (column.property === 'sealApplyName') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -1116,7 +1125,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '2') {
+          if (column.property === 'sealApplyName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'

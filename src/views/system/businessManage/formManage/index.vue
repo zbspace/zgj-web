@@ -833,6 +833,12 @@
     api.formPage(queryParams).then(res => {
       console.log(res)
       state.componentsTable.data = res.data.records
+      // 处理后台返回时间带T
+      state.componentsTable.data.forEach(item => {
+        item.modifyDatetime = dayjs(item.modifyDatetime).format(
+          'YYYY-MM-DD HH:mm:ss'
+        )
+      })
       state.componentsPagination.data.amount = res.data.total
       state.componentsPagination.data.pageNumber = res.data.size
       state.componentsPagination.defaultAttribute.total = res.data.total
