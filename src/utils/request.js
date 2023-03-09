@@ -62,7 +62,7 @@ service.interceptors.response.use(
   },
   error => {
     // 处理响应错误
-    return processErrorResponse(error.message)
+    return processErrorResponse(error.response)
   }
 )
 
