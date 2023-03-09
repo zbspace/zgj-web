@@ -62,9 +62,7 @@ service.interceptors.response.use(
   },
   error => {
     // 处理响应错误
-    ElMessage.error(error ? error.msg || error.message : '请求错误')
-    router.replace({ name: 'LoginAccount', redircet: '' })
-    // return processErrorResponse(error.message)
+    return processErrorResponse(error.message)
   }
 )
 
