@@ -1,3 +1,10 @@
+<!--
+* @Descripttion 员工管理
+* @FileName index.vue
+* @Author Guanpf
+* @LastEditTime 2023-03-09 10:22:26
+!-->
+//
 <template>
   <div>
     <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
@@ -279,6 +286,7 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
 
   const showStaffDialog = ref(false)
   const showDepPerDialog = ref(false)
@@ -291,10 +299,10 @@
         accountNo: '',
         userTel: '',
         hostOrganId: '',
-        partTimeOrganIds: [],
+        partTimeOrganIds: '',
         userTitle: '',
         userMail: '',
-        roleIds: [],
+        roleIds: '',
         qweiNo: '',
         dingdingNo: '',
         userNo: '',
