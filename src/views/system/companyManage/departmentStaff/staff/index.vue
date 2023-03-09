@@ -102,6 +102,8 @@
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
+      :width="1000"
+      :height="600"
       @close="submitStaffForm"
     >
       <el-form
@@ -111,13 +113,22 @@
         label-width="100px"
       >
         <el-form-item label="姓名" prop="userName">
-          <el-input v-model="state.componentsAddForm.formData.userName" />
+          <el-input
+            v-model="state.componentsAddForm.formData.userName"
+            placeholder="请输入姓名"
+          />
         </el-form-item>
         <el-form-item label="帐号" prop="userName">
-          <el-input v-model="state.componentsAddForm.formData.accountNo" />
+          <el-input
+            v-model="state.componentsAddForm.formData.accountNo"
+            placeholder="请输入帐号"
+          />
         </el-form-item>
         <el-form-item label="手机号" prop="userTel">
-          <el-input v-model="state.componentsAddForm.formData.userTel" />
+          <el-input
+            v-model="state.componentsAddForm.formData.userTel"
+            placeholder="请输入手机号"
+          />
         </el-form-item>
         <el-form-item label="所属部门" prop="hostOrganId">
           <div class="select-box-contBox">
@@ -189,13 +200,22 @@
           </div>
         </el-form-item>
         <el-form-item label="职位" prop="userTitle">
-          <el-input v-model="state.componentsAddForm.formData.userTitle" />
+          <el-input
+            v-model="state.componentsAddForm.formData.userTitle"
+            placeholder="请输入职位"
+          />
         </el-form-item>
         <el-form-item label="邮箱" prop="userMail">
-          <el-input v-model="state.componentsAddForm.formData.userMail" />
+          <el-input
+            v-model="state.componentsAddForm.formData.userMail"
+            placeholder="请输入邮箱"
+          />
         </el-form-item>
         <el-form-item label="工号" prop="userNo">
-          <el-input v-model="state.componentsAddForm.formData.userNo" />
+          <el-input
+            v-model="state.componentsAddForm.formData.userNo"
+            placeholder="请输入工号"
+          />
         </el-form-item>
         <el-form-item label="主管" prop="directLeaderUserId">
           <div class="select-box-contBox">
@@ -246,12 +266,51 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="企业微信ID" prop="qweiNo">
-              <el-input v-model="state.componentsAddForm.formData.qweiNo" />
+              <el-input
+                v-model="state.componentsAddForm.formData.qweiNo"
+                placeholder="请输入企业微信ID"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="钉钉ID" prop="dingdingNo">
-              <el-input v-model="state.componentsAddForm.formData.dingdingNo" />
+              <el-input
+                v-model="state.componentsAddForm.formData.dingdingNo"
+                placeholder="请输入钉钉ID"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="人脸照片" prop="userFaceId">
+              <el-upload
+                class="avatar-uploader"
+                action=""
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img
+                  v-if="state.componentsAddForm.formData.userFaceUrl"
+                  :src="state.componentsAddForm.formData.userFaceUrl"
+                  class="avatar"
+                />
+                <i v-else class="el-icon-plus avatar-uploader-icon">+</i>
+                <template #tip>
+                  <div class="el-upload__tip">只能上传 jpg、jpeg、png 文件</div>
+                </template>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="备注" prop="readme">
+              <el-input
+                type="textarea"
+                :rows="7"
+                v-model="state.componentsAddForm.formData.readme"
+                placehoder="请输入备注"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -287,6 +346,7 @@
   import componentsBatch from '@/views/components/batch.vue'
   import KDialog from '@/views/components/modules/kdialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import FileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
 
   const showStaffDialog = ref(false)
   const showDepPerDialog = ref(false)
@@ -612,6 +672,24 @@
     depChoose.value = type
     showDepPerDialog.value = true
   }
+  // 上传图片
+  const handleAvatarSuccess = (res, file) => {
+    console.log(res, file)
+  }
+  // 上传图片前处理
+  const beforeAvatarUpload = file => {
+    console.log(file)
+    const isJPG = file.type === 'image/jpeg'
+    const isLt2M = file.size / 1024 / 1024 < 2
+
+    if (!isJPG) {
+      this.$message.error('上传头像图片只能是 JPG 格式!')
+    }
+    if (!isLt2M) {
+      this.$message.error('上传头像图片大小不能超过 2MB!')
+    }
+    return isJPG && isLt2M
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -650,5 +728,32 @@
         margin-left: 5px;
       }
     }
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+    border: 1px dashed;
+    border-radius: 10px;
+    background-color: #e8f0ff;
+    font-style: inherit;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 </style>
