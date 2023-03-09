@@ -160,7 +160,7 @@
   import { useRouter } from 'vue-router'
   import KDialog from '@/views/components/modules/KDialog.vue'
 
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import dialogProcessJson from '@/views/addDynamicFormJson/ProcessStopJson.json'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
 

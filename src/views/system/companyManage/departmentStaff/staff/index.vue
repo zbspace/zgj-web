@@ -346,7 +346,7 @@
   import componentsBatch from '@/views/components/batch.vue'
   import FileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   import KDialog from '@/views/components/modules/KDialog.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
 
   const showStaffDialog = ref(false)
   const showDepPerDialog = ref(false)

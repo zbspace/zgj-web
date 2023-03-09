@@ -114,7 +114,7 @@
   import KDialog from '@/views/components/modules/KDialog.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import RealTimeConfirmlJson from '@/views/addDynamicFormJson/RealTimeConfirm.json'
-  import kDepartOrPersonVue from '../../components/modules/KDepartOrPersonDialog '
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   const props = defineProps({
     // 处理类型
     type: {

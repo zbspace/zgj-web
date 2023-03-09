@@ -130,7 +130,7 @@
   import KDialog from '@/views/components/modules/KDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/WorkbenchManagement.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   // const props = defineProps({
   //   // 处理类型
   //   type: {

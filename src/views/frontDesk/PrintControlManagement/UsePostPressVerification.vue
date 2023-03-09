@@ -104,7 +104,7 @@
   import KDialog from '@/views/components/modules/KDialog.vue'
   import { useRouter } from 'vue-router'
   // import { UploadFilled } from '@element-plus/icons-vue'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import fileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   const router = useRouter()
   // const props = defineProps({

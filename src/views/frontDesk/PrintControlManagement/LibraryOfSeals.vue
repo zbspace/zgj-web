@@ -423,7 +423,7 @@
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import KDialog from '@/views/components/modules/KDialog.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
   import libraryApis from '@/api/frontDesk/sealManage/libraryOfSeals'

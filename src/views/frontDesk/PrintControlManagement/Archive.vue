@@ -318,7 +318,7 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import KDialog from '@/views/components/modules/KDialog.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'
   import api from '@/api/frontDesk/printControl/archive'
   import dayjs from 'dayjs'

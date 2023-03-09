@@ -94,7 +94,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'
   const router = useRouter()
