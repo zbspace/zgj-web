@@ -2800,7 +2800,7 @@
           title: '基本信息',
           show: true,
           labelStyle: {
-            width: '4.5rem'
+            width: '80px'
           },
           data: [
             {

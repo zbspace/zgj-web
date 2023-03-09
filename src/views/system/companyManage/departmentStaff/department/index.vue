@@ -7,7 +7,7 @@
           <div class="title-more">
             <div class="title-more-add">
               <el-button type="primary" @click="showFormDialog = true"
-                >+ 新增子部门</el-button
+                >+ 新增部门</el-button
               >
             </div>
             <div class="title-more-down">
@@ -38,6 +38,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -76,11 +77,17 @@
         <div>
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
+            refs="tables"
+            ref="table"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
             :isSelection="true"
+            :loading="loading"
             @cellClick="cellClick"
+            @custom-click="customClick"
+            @selection-change="selectionChange"
+            @sort-change="sortChange"
           >
           </componentsTable>
         </div>
@@ -103,18 +110,130 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 新增部门 -->
+    <KDialog
+      @update:show="showFormDialog = $event"
+      :show="showFormDialog"
+      title="新增"
+      :centerBtn="true"
+      :confirmText="$t('t-zgj-operation.submit')"
+      :concelText="$t('t-zgj-operation.cancel')"
+      :width="800"
+      :height="600"
+      @close="submitLibraryForm"
+    >
+      <el-form
+        :model="form"
+        :rules="rules"
+        ref="vFormLibraryRef"
+        label-width="80px"
+      >
+        <el-form-item label="部门名称" prop="organName">
+          <el-input v-model="form.organName" clearable />
+        </el-form-item>
+        <el-form-item label="组织类型" prop="organTypeNo">
+          <el-radio-group v-model="form.organTypeNo">
+            <el-radio :label="1" size="large">部门</el-radio>
+            <el-radio :label="2" size="large">单位</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="部门编码" prop="organNo">
+          <el-input v-model="form.organNo" clearable />
+        </el-form-item>
+        <el-form-item label="上级部门" prop="organPid">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="form.organPid"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="form.organPid"
+                style="margin-right: 5px"
+                color="#aaaaaa"
+                @click="clear('keepUser')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('keepUser')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="部门领导" prop="leaderUserId">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="form.leaderUserId"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="form.leaderUserId"
+                style="margin-right: 5px"
+                color="#aaaaaa"
+                @click="clear('keepUser')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('keepUser')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="备注" prop="readme">
+          <el-input v-model="form.readme" type="textarea" clearable />
+        </el-form-item>
+      </el-form>
+    </KDialog>
   </div>
 </template>
 
 <script setup>
-  import { reactive } from 'vue'
+  import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsTree from '@/views/components/tree'
+  import KDialog from '@/views/components/modules/kdialog.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import { ElMessage } from 'element-plus'
+  import department from '@/api/system/companyManagement/department'
+
+  const showFormDialog = ref(false)
+  const vFormLibraryRef = ref(null)
+  const loading = ref(false)
+  const table = ref(null)
+  const orderBy = ref(null)
+
+  const form = reactive({
+    organNo: '',
+    organName: '',
+    organTypeNo: 1,
+    organPid: '',
+    leaderUserId: '',
+    readme: ''
+  })
+  const rules = reactive({
+    organName: [
+      {
+        required: true,
+        message: '请输入印章全称',
+        trigger: 'change'
+      }
+    ]
+  })
 
   const state = reactive({
     componentsSearchForm: {
@@ -129,7 +248,7 @@
 
       data: [
         {
-          id: 'name',
+          id: 'keyWord',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -139,10 +258,20 @@
           }
         },
         {
-          id: 'name',
+          id: 'status',
           label: '状态',
           type: 'select',
           inCommonUse: true,
+          options: [
+            {
+              label: '启用',
+              value: 1
+            },
+            {
+              label: '停用',
+              value: 2
+            }
+          ],
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择'
@@ -186,38 +315,33 @@
         {
           prop: '2',
           label: '部门名称',
-          sortable: true,
           'min-width': 150,
           fixed: true
         },
         {
           prop: '1',
           label: '部门编码',
-          sortable: true,
           'min-width': 150
         },
         {
           prop: '3',
           label: '组织类型',
-          sortable: true,
           'min-width': 150
         },
         {
           prop: '4',
           label: '部门人数',
-          sortable: true,
+          sortable: 'custom',
           'min-width': 150
         },
         {
           prop: '5',
           label: '部门主管',
-          sortable: true,
           'min-width': 150
         },
         {
           prop: '6',
           label: '上级组织',
-          sortable: true,
           'min-width': 150
         },
         {
@@ -230,7 +354,10 @@
               name: '修改'
             },
             {
-              name: '删除'
+              name: '上移'
+            },
+            {
+              name: '下移'
             },
             {
               name: '停用'
@@ -238,57 +365,7 @@
           ]
         }
       ],
-      data: [
-        {
-          1: 'TradeCode21',
-          2: '建业科技',
-          3: '往往',
-          4: 22,
-          5: '小红',
-          6: '牛牛'
-        },
-        {
-          0: 1,
-          1: 'TradeCode21',
-          2: '建业科技',
-          3: '往往',
-          4: 22,
-          5: '小红',
-          6: '牛牛'
-        },
-        {
-          1: 'TradeCode21',
-          2: '建业科技',
-          3: '往往',
-          4: 22,
-          5: '小红',
-          6: '牛牛'
-        },
-        {
-          1: 'TradeCode21',
-          2: '建业科技',
-          3: '往往',
-          4: 22,
-          5: '小红',
-          6: '牛牛'
-        },
-        {
-          1: 'TradeCode21',
-          2: '建业科技',
-          3: '往往',
-          4: 22,
-          5: '小红',
-          6: '牛牛'
-        },
-        {
-          1: 'TradeCode21',
-          2: '建业科技',
-          3: '往往',
-          4: 22,
-          5: '小红',
-          6: '牛牛'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -297,7 +374,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '2') {
+          if (column.property === 'organName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -309,14 +386,14 @@
 
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
+        total: 0,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
@@ -387,9 +464,6 @@
         },
         {
           name: '批量删除'
-        },
-        {
-          name: '批量重置密码'
         }
       ]
     }
@@ -401,10 +475,111 @@
       state.componentsDocumentsDetails.show = true
     }
   }
+  // 当选择项发生变化时会触发该事件
+  function selectionChange(selection) {
+    //    console.log(selection);
+    state.componentsBatch.selectionData = selection
+    if (state.componentsBatch.selectionData.length > 0) {
+      state.componentsBatch.defaultAttribute.disabled = false
+    } else {
+      state.componentsBatch.defaultAttribute.disabled = true
+    }
+  }
+  const clickSubmit = item => {
+    if (item.id === 'reset') {
+      table.value.clearSorts()
+      state.componentsSearchForm.data.forEach(item => {
+        if (item.type === 'checkButton') {
+          item.data.forEach(i => {
+            delete i.checked
+          })
+        } else if (item.type === 'checkbox') {
+          console.log(JSON.parse(JSON.stringify(item.checkbox)))
+          item.checkbox.forEach(i => {
+            i.value = false
+          })
+          console.log(JSON.parse(JSON.stringify(item.checkbox)))
+        } else {
+          delete item.value
+        }
+      })
+    }
+    reloadData()
+  }
+  // 自定义排序
+  function sortChange(orderBack) {
+    console.log(JSON.parse(JSON.stringify(orderBack)))
+    // orderBy.value = orderBack
+    // reloadData()
+  }
   // 点击关闭
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
+  const reloadData = () => {
+    state.componentsPagination.data.index = 1
+    state.componentsTable.data = []
+    state.componentsPagination.data.amount = 0
+    departPage()
+  }
+  const departPage = () => {
+    loading.value = true
+    const params = {}
+    state.componentsSearchForm.data.forEach(item => {
+      if (item.type === 'checkButton') {
+        params[item.id] = item.data
+          .filter(i => i.checked)
+          .map(i => i.id)
+          .join(',')
+      } else if (item.type === 'checkbox') {
+        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
+      } else if (item.type === 'picker') {
+        if (item.pickerType === 'date' && item.value) {
+          params[item.id] =
+            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
+        }
+      } else {
+        params[item.id] = item.value
+      }
+    })
+    department
+      .page({
+        pageNo: state.componentsPagination.data.index,
+        pageSize: state.componentsPagination.data.pageNumber,
+        sorts: orderBy.value
+          ? orderBy.value.prop +
+            ',' +
+            (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
+          : ''
+      })
+      .then(
+        result => {
+          state.componentsTable.data = result.data.records
+          state.componentsPagination.data.amount = result.data.total
+          state.componentsPagination.defaultAttribute.total = result.data.total
+          loading.value = false
+        },
+        () => {
+          loading.value = false
+        }
+      )
+  }
+  const submitLibraryForm = type => {
+    if (!type) {
+      return
+    }
+    vFormLibraryRef.value.validate(valid => {
+      if (valid) {
+        console.log(form)
+      } else {
+        ElMessage.error('校验失败')
+      }
+    })
+  }
+  onBeforeMount(() => {
+    // console.log(`the component is now onBeforeMount.`)
+    departPage()
+  })
 </script>
 
 <style lang="scss" scoped>
