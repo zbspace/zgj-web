@@ -561,13 +561,18 @@
         },
         ...params
       })
-      .then(result => {
-        console.log(result)
-        state.componentsTable.data = result.data.records
-        state.componentsPagination.data.amount = result.data.total
-        state.componentsPagination.defaultAttribute.total = result.data.total
-        loading.value = false
-      })
+      .then(
+        result => {
+          console.log(result)
+          state.componentsTable.data = result.data.records
+          state.componentsPagination.data.amount = result.data.total
+          state.componentsPagination.defaultAttribute.total = result.data.total
+          loading.value = false
+        },
+        () => {
+          loading.value = false
+        }
+      )
   }
   // // 发送api请求 删除流程
   // const flowDeleteApi = () => {
