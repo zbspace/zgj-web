@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 消息Navbar
+* @FileName messageNav.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-09 14:10:33
+!-->
 <template>
   <div class="message-container">
     <el-popover
@@ -18,11 +24,11 @@
           >
             <img
               v-show="!showNotifyPop"
-              src="../../assets/images/navbar/notify_icon.svg"
+              src="@/assets/images/navbar/notify_icon.svg"
             />
             <img
               v-show="showNotifyPop"
-              src="../../assets/images/navbar/notify_select_icon.svg"
+              src="@/assets/images/navbar/notify_select_icon.svg"
             />
             <span
               class="position-absolute translate-middle p-1 bg-danger border border-light rounded-circle"
@@ -80,7 +86,7 @@
 <script setup>
   import { ref, watch } from 'vue'
   import useClickQutside from '@/utils/useClickQutside.js'
-  import VTabs from './tabs.vue'
+  import VTabs from '@/components/modules/tabs.vue'
   const dropdownNotifyRef = ref(null)
   const showNotifyPop = ref(false)
   const isClickOutsideNotify = useClickQutside(dropdownNotifyRef)

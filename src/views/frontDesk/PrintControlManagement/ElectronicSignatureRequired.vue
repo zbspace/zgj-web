@@ -91,7 +91,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
   // const props = defineProps({
   //   // 处理类型
   //   type: {

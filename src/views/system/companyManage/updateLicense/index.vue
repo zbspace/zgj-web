@@ -113,7 +113,7 @@
   import componentsLayout from '@/views/components/Layout'
   // import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
 
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   const state = reactive({
     cache: {
       setLicense: '',

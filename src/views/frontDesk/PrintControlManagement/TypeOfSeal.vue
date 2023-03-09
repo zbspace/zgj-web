@@ -156,7 +156,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   import { ElMessage } from 'element-plus'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'

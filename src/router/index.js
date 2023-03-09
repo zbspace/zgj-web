@@ -2,7 +2,8 @@ import { createWebHistory, createRouter } from 'vue-router'
 import routes from './routes'
 import { useAccountInfoStore } from '@/store/accountInfo'
 import { useMenusInfoStore } from '@/store/menus'
-
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -15,6 +16,14 @@ const router = createRouter({
       return { top: 0, left: 0 }
     }
   }
+})
+
+NProgress.configure({
+  easing: 'ease', // 动画方式
+  speed: 500, // 递增进度条的速度
+  showSpinner: false, // 是否显示加载ico
+  trickleSpeed: 200, // 自动递增间隔
+  minimum: 0.3 // 初始化时的最小百分比
 })
 
 router.beforeEach((routeTo, routeFrom) => {
@@ -36,6 +45,7 @@ router.beforeEach((routeTo, routeFrom) => {
       query: { redirect: routeTo.fullPath }
     }
   }
+  NProgress.start()
 })
 
 router.beforeResolve(async (routeTo, routeFrom, next) => {
@@ -59,8 +69,10 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
   } catch (error) {
     return
   }
-  // document.title = routeTo.meta.title + ' | ' + appConfig.title;
   next()
 })
 
+router.afterEach(() => {
+  NProgress.done()
+})
 export default router

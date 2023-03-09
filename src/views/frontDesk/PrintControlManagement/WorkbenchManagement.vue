@@ -127,10 +127,10 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/WorkbenchManagement.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
   // const props = defineProps({
   //   // 处理类型
   //   type: {

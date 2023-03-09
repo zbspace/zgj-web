@@ -144,7 +144,7 @@
   import { ref, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   // eslint-disable-next-line no-unused-vars
   const props = defineProps({
     // 处理类型
