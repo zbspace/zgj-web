@@ -195,6 +195,13 @@
         </el-form-item>
       </el-form>
     </KDialog>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 
@@ -202,16 +209,18 @@
   import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
-  import componentsPagination from '@/views/components/pagination.vue'
-  import componentsLayout from '@/views/components/Layout.vue'
+  import componentsPagination from '@/views/components/pagination'
+  import componentsLayout from '@/views/components/Layout'
   import componentsTree from '@/views/components/tree'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import componentsBatch from '@/views/components/batch.vue'
+  import KDialog from '@/views/components/modules/kdialog'
+  import componentsDocumentsDetails from '@/views/components/documentsDetails'
+  import componentsBatch from '@/views/components/batch'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
   import department from '@/api/system/companyManagement/department'
 
   const showFormDialog = ref(false)
+  const showDepPerDialog = ref(false)
   const vFormLibraryRef = ref(null)
   const loading = ref(false)
   const table = ref(null)
@@ -563,6 +572,9 @@
           loading.value = false
         }
       )
+  }
+  const chooseOrgan = type => {
+    showDepPerDialog.value = true
   }
   const submitLibraryForm = type => {
     if (!type) {
