@@ -23,7 +23,9 @@ const processErrorResponse = function (response) {
   }
   // 提示错误信息
   ElMessage.error(
-    response ? response.data.msg || response.data.message : '请求错误'
+    response
+      ? response.data.msg || response.data.message || '服务器打盹了，请稍后再试'
+      : '服务器打盹了，请稍后再试'
   )
   return Promise.reject(response.data)
 }

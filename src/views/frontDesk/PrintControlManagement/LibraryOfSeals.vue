@@ -1019,12 +1019,17 @@
         },
         ...params
       })
-      .then(result => {
-        state.componentsTable.data = result.data.records
-        state.componentsPagination.data.amount = result.data.total
-        state.componentsPagination.defaultAttribute.total = result.data.total
-        loading.value = false
-      })
+      .then(
+        result => {
+          state.componentsTable.data = result.data.records
+          state.componentsPagination.data.amount = result.data.total
+          state.componentsPagination.defaultAttribute.total = result.data.total
+          loading.value = false
+        },
+        () => {
+          loading.value = false
+        }
+      )
   }
 
   const currentPageChange = e => {
