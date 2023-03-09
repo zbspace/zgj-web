@@ -18,7 +18,7 @@
         <div class="ios box">
           <div class="code"></div>
           <div class="title" v-if="false">
-            <img src="../../assets/images/login/ios_down.svg" />
+            <img src="@/assets/images/login/ios_down.svg" />
             <div>{{ $t('t-zgj-DownloadApp.IOS') }}</div>
           </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="android box" v-if="false">
           <div class="code"></div>
           <div class="title">
-            <img src="../../assets/images/login/android_down.svg" />
+            <img src="@/assets/images/login/android_down.svg" />
             <div>{{ $t('t-zgj-DownloadApp.Android') }}</div>
           </div>
         </div>
