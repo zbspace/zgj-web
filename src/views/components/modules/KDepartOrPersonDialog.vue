@@ -192,7 +192,7 @@
    * apiModule: api对应的模块
    */
   import { ref } from 'vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   import VTabs from '@/components/modules/tabs.vue'
   import KDepartTab from './modules/KDepartTab.vue'
   const emits = defineEmits(['update:show'])

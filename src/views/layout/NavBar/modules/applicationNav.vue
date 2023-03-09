@@ -1,5 +1,10 @@
+<!--
+* @Descripttion 应用入口
+* @FileName applicationNav.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-09 14:09:32
+!-->
 <template>
-  <!-- 应用入口 -->
   <div class="application-drown">
     <el-popover
       placement="bottom"
@@ -12,7 +17,7 @@
       <template #reference>
         <el-button class="btn-drown" text>
           <img
-            src="../../assets/images/navbar/application_icon.svg"
+            src="@/assets/images/navbar/application_icon.svg"
             :class="actived ? 'image' : ''"
           />
         </el-button>
@@ -42,11 +47,11 @@
 <script setup>
   import { reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import icon1 from '@/assets/svg/more-Seal-Application.svg'
-  import icon2 from '@/assets/svg/more-my-Seal-Application.svg'
-  import icon3 from '@/assets/svg/more-file-document.svg'
-  import icon4 from '@/assets/svg/more-Application-Seal.svg'
-  import icon5 from '@/assets/svg/more-document-library.svg'
+  import icon1 from '@/assets/images/navbar/more-Seal-Application.svg'
+  import icon2 from '@/assets/images/navbar/more-my-Seal-Application.svg'
+  import icon3 from '@/assets/images/navbar/more-file-document.svg'
+  import icon4 from '@/assets/images/navbar/more-Application-Seal.svg'
+  import icon5 from '@/assets/images/navbar/more-document-library.svg'
   const state = reactive({
     appEntrance: [
       {

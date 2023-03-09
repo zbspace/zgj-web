@@ -256,7 +256,7 @@
   import componentsPagination from '../../../components/pagination.vue'
   import componentsTabs from '../../../components/tabs.vue'
   import componentsLayout from '../../../components/Layout.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import componentsDocumentsDetails from '../../../components/documentsDetails.vue'

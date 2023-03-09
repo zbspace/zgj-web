@@ -111,10 +111,10 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import RealTimeConfirmlJson from '@/views/addDynamicFormJson/RealTimeConfirm.json'
-  import kDepartOrPersonVue from '../../components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '../../components/modules/KDepartOrPersonDialog '
   const props = defineProps({
     // 处理类型
     type: {

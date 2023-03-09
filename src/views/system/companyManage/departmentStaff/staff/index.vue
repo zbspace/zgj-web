@@ -285,8 +285,8 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
 
   const showStaffDialog = ref(false)
   const showDepPerDialog = ref(false)

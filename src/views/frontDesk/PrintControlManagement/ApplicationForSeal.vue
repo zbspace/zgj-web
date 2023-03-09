@@ -156,8 +156,8 @@
   import { ElMessage, ElMessageBox } from 'element-plus'
   import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
   import StampChangeJson from '@/views/addDynamicFormJson/StampChange.json'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog '
   // const props = defineProps({
   //   // 处理类型
   //   type: {

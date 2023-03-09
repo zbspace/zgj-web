@@ -1,5 +1,10 @@
+<!--
+* @Descripttion 信息Navbar
+* @FileName mailNav.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-09 14:10:11
+!-->
 <template>
-  <!-- 信息 -->
   <div style="margin: 0 12px" ref="dropdownMailRef">
     <el-badge :value="5" :hidden="hiddenBadge">
       <el-button
@@ -7,13 +12,10 @@
         style="width: 28px; height: 28px"
         @click="showMailPop = !showMailPop"
       >
-        <img
-          v-show="!showMailPop"
-          src="../../assets/images/navbar/mail_icon.svg"
-        />
+        <img v-show="!showMailPop" src="@/assets/images/navbar/mail_icon.svg" />
         <img
           v-show="showMailPop"
-          src="../../assets/images/navbar/mail_select_icon.svg"
+          src="@/assets/images/navbar/mail_select_icon.svg"
         />
       </el-button>
     </el-badge>
@@ -65,7 +67,7 @@
               <div class="title">{{ $t('t-to-be-confirm') }}</div>
               <div class="view-more"
                 >{{ $t('t-view-more')
-                }}<img src="../../assets/images/navbar/nav_msg_more.svg"
+                }}<img src="@/assets/images/navbar/nav_msg_more.svg"
               /></div>
             </div>
 
@@ -99,7 +101,7 @@
               <div class="title">{{ $t('t-to-be-approval') }}</div>
               <div class="view-more"
                 >{{ $t('t-view-more')
-                }}<img src="../../assets/images/navbar/nav_msg_more.svg"
+                }}<img src="@/assets/images/navbar/nav_msg_more.svg"
               /></div>
             </div>
 
@@ -133,7 +135,7 @@
               <div class="title">{{ $t('t-to-be-handle') }}</div>
               <div class="view-more"
                 >{{ $t('t-view-more')
-                }}<img src="../../assets/images/navbar/nav_msg_more.svg"
+                }}<img src="@/assets/images/navbar/nav_msg_more.svg"
               /></div>
             </div>
 

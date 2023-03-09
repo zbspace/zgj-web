@@ -1,3 +1,9 @@
+<!--
+* @Descripttion NavBar
+* @FileName index.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-09 14:08:17
+!-->
 <template>
   <header id="page-topbar">
     <div class="nav-bar-container header-content">
@@ -297,15 +303,16 @@
   import { onMounted, reactive, ref, watch } from 'vue'
   import i18n from '@/utils/i18n'
   import useClickQutside from '@/utils/useClickQutside.js'
-  import VApplicationNav from '@/components/modules/applicationNav.vue'
-  import VMailNav from '@/components/modules/mailNav.vue'
-  import VMessageNav from '@/components/modules/messageNav.vue'
+  import VApplicationNav from './modules/applicationNav.vue'
+  import VMailNav from './modules/mailNav.vue'
+  import VMessageNav from './modules/messageNav.vue'
+  import VDownload from './modules/downloadApp.vue'
   import router from '@/router'
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
   import JyDialog from '@/components/common/JyDialog/index.vue'
-  import VDownload from '@/components/modules/downloadApp.vue'
+
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'
   import { ElMessage } from 'element-plus'
