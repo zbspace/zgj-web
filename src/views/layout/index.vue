@@ -53,7 +53,7 @@
   import { useMenusInfoStore } from '@/store/menus'
   import { setWaterMark } from '@/utils/water'
   import dayjs from 'dayjs'
-  import { ref, onUpdated } from 'vue'
+  import { ref, onMounted, onUpdated } from 'vue'
 
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()
@@ -63,6 +63,13 @@
   const scrollToTop = () => {
     contentRef.value.setScrollTop(0)
   }
+  onMounted(() => {
+    const text =
+      JSON.parse(localStorage.getItem('accountInfo')).userName +
+      ' ' +
+      dayjs().format('YYYY-MM-DD HH:mm:ss')
+    setWaterMark(text)
+  })
   onUpdated(() => {
     const text =
       JSON.parse(localStorage.getItem('accountInfo')).userName +

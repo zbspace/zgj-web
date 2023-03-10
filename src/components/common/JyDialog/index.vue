@@ -1,12 +1,21 @@
+<!--
+* @Descripttion index.vue
+* @FileName index.vue
+* @Author zb
+* @LastEditTime 2023-03-09 13:47:26
+!-->
 <template>
-  <div class="jy-dialog">
+  <div>
     <el-dialog
       v-model="isVisible"
       :width="width"
-      center
-      align-center
       destroy-on-close
       @closed="closed"
+      @opened="opened"
+      class="jy-dialog"
+      :class="[`mode-${props.mode}`]"
+      center
+      :append-to-body="appendToBody"
     >
       <template #header>
         <slot name="title">
@@ -42,10 +51,23 @@
     modelValue: {
       type: Boolean,
       default: false
+    },
+    mode: {
+      type: Number,
+      default: 0
+    },
+    appendToBody: {
+      type: Boolean,
+      default: false
     }
   })
 
-  const emit = defineEmits(['update:modelValue', 'on-confirm', 'on-closed'])
+  const emit = defineEmits([
+    'update:modelValue',
+    'on-confirm',
+    'on-closed',
+    'on-opened'
+  ])
 
   const isVisible = computed({
     get() {
@@ -64,11 +86,15 @@
   const closed = () => {
     emit('on-closed')
   }
+
+  const opened = () => {
+    emit('on-opened')
+  }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .jy-dialog {
-    :deep(.el-dialog) {
+    &.mode-0 {
       .el-dialog__header {
         padding-top: 40px;
         font-weight: 400;
@@ -77,10 +103,30 @@
         text-align: center;
         color: rgba(0, 0, 0, 0.85);
         padding-bottom: 32px;
+        display: block !important;
       }
       .el-dialog__body {
         padding: 0 64px;
         min-height: 200px;
+      }
+    }
+    &.mode-1 {
+      .el-dialog__header {
+        font-family: 'PingFang SC';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: #333333;
+        padding: 16px 24px;
+        margin: 0;
+        text-align: left;
+        display: block !important;
+      }
+      .el-dialog__body {
+        padding: 24px;
+        min-height: 200px;
+        border: 1px solid #f0f0f0;
       }
     }
   }

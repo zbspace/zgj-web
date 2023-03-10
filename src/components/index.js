@@ -49,10 +49,18 @@ export function requireComp(app) {
     'JyPagination',
     defineAsyncComponent(() => import('./common/JyPagination/index.vue'))
   )
+  app.component(
+    'JyTable',
+    defineAsyncComponent(() => import('./common/JyTable/index.vue'))
+  )
 
   // -------------------------- business -------------------------------
   app.component(
     'JySelectSeal',
     defineAsyncComponent(() => import('./business/JySelectSeal/index.vue'))
+  )
+  app.component(
+    'JyRelatedCompany',
+    defineAsyncComponent(() => import('./business/JyRelatedCompany/index.vue'))
   )
 }

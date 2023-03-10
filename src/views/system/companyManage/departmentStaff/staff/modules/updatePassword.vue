@@ -32,19 +32,15 @@
         :model="state.formData"
         :rules="state.formRules"
         ref="passwordForm"
+        label-width="100"
       >
-        <el-form-item
-          label="重置方式"
-          prop="resetType"
-          @change="resetChange"
-          label-width="80"
-        >
+        <el-form-item label="重置方式" prop="resetType" @change="resetChange">
           <el-radio-group v-model="state.formData.resetType">
             <el-radio label="手动输入" value="1"></el-radio>
             <el-radio label="随机生成" value="2"></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="新密码" label-width="100" prop="newPassword">
+        <el-form-item label="新密码" prop="newPassword">
           <el-row :gutter="10">
             <el-col :span="state.formData.resetType === '随机生成' ? 22 : 24">
               <el-input

@@ -11,7 +11,7 @@ export class FeatchSealInfo {
   sealStatus = ''
   sealCategory = ''
   onlyMyself = '' // 本人保管印章
-  takeOut = false // 外带印章
+  takeOut = '' // 外带印章
 }
 
 // 印章类型-searchInfo

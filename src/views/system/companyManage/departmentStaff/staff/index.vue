@@ -385,7 +385,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, onBeforeMount } from 'vue'
   import { CircleClose, Plus } from '@element-plus/icons-vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
@@ -396,9 +396,10 @@
   import componentsBatch from '@/views/components/batch.vue'
   import KDialog from '@/views/components/modules/KDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  import UpdatePassword from './childrenComponents/updatePassword.vue'
-  import UploadFace from './childrenComponents/uploadFace.vue'
+  import UpdatePassword from './modules/updatePassword.vue'
+  import UploadFace from './modules/uploadFace.vue'
   import { ElMessage } from 'element-plus'
+  import api from '@/api/system/companyManagement/departmentStaff'
 
   const showStaffDialog = ref(false)
   const showDepPerDialog = ref(false)
@@ -407,6 +408,7 @@
   const showPass = ref(false)
   const title = ref('修改密码')
   const showUpload = ref(false)
+  const organId = ref(false)
   const state = reactive({
     JyElMessageBox: {
       show: false,
@@ -501,6 +503,18 @@
           label: '状态',
           type: 'select',
           inCommonUse: true,
+          options: [
+            {
+              status: '0',
+              statusLabel: '停用'
+            },
+            {
+              status: '1',
+              statusLabel: '启用'
+            }
+          ],
+          optionLabel: 'statusLabel',
+          optionValue: 'status',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择'
@@ -511,13 +525,25 @@
           label: '人脸状态',
           type: 'select',
           inCommonUse: true,
+          options: [
+            {
+              faceState: '0',
+              faceStateLabel: '未绑定'
+            },
+            {
+              faceState: '1',
+              faceStateLabel: '已绑定'
+            }
+          ],
+          optionLabel: 'faceStateLabel',
+          optionValue: 'faceState',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择'
           }
         },
         {
-          id: 'name',
+          id: 'organId',
           label: '所属部门',
           type: 'select',
           inCommonUse: true,
@@ -734,6 +760,26 @@
       ]
     }
   })
+  // 获取表格列表
+  const getFormPage = () => {
+    const searchData = state.componentsSearchForm.data
+    const queryParams = {}
+    queryParams.organId = organId.value
+    searchData.forEach(item => {
+      queryParams[item.id] = item.value
+    })
+    queryParams.pageNo = state.componentsPagination.index || 1
+    queryParams.pageSize = state.componentsPagination.pageNumber || 10
+    state.componentsTable.loading = true
+    api.page(queryParams).then(res => {
+      console.log(res)
+      state.componentsTable.data = res.data.rows
+      state.componentsPagination.data.amount = res.data.totalRows
+      state.componentsPagination.data.pageNumber = res.data.totalPage
+      state.componentsPagination.defaultAttribute.total = res.data.totalRows
+      state.componentsTable.loading = false
+    })
+  }
   // 提交密码
   const confirmPass = data => {
     showPass.value = false
@@ -861,6 +907,7 @@
       state.componentsBatch.defaultAttribute.disabled = true
     }
   }
+  // 提交新增表单
   const submitStaffForm = data => {
     if (!data) {
       return
@@ -874,7 +921,12 @@
     })
     showStaffDialog.value = false
   }
+  // 提交弹窗
   const submitElMessageBox = type => {}
+  // 初始化
+  onBeforeMount(() => {
+    getFormPage()
+  })
 </script>
 
 <style lang="scss" scoped>

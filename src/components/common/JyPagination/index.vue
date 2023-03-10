@@ -1,15 +1,17 @@
 <template>
-  <div>
+  <div class="jy-pagination">
     <el-pagination
       :current-page="props.page"
       :page-size="props.pageSize"
       background
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
+      layout="total, sizes,slot, prev, pager, next, jumper"
+      :total="props.total"
       :page-sizes="[10, 20, 30, 40, 50, 100]"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
-    />
+    >
+      <div class="slot-block">&emsp;</div>
+    </el-pagination>
   </div>
 </template>
 
@@ -55,8 +57,18 @@
 </script>
 
 <style lang="scss" scoped>
-  .el-pagination {
-    display: flex;
-    justify-content: flex-end;
+  .jy-pagination {
+    padding: 12px 0;
+    :deep(.el-pagination) {
+      display: flex;
+      justify-content: flex-start;
+      position: relative;
+      .slot-block {
+        flex: 1;
+      }
+      .el-pagination__total {
+        position: left 0;
+      }
+    }
   }
 </style>
