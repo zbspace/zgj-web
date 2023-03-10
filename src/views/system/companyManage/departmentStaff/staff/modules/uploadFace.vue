@@ -84,7 +84,7 @@
       type: Boolean,
       default: false
     },
-    userIds: {
+    userId: {
       type: Array,
       default: () => {
         return []

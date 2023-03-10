@@ -44,6 +44,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -77,6 +78,7 @@
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
+            :lading="state.componentsTable.loading"
             isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -90,6 +92,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @size-change="sizeChange"
+          @current-change="currentChange"
         >
         </componentsPagination>
       </template>
@@ -369,7 +373,8 @@
     <UpdatePassword
       v-model="showPass"
       :show="showPass"
-      :title="title"
+      :title="passTitle"
+      :userIds="state.componentsBatch.userIds"
       @on-confirm="confirmPass"
       @on-cancel="closePass"
     >
@@ -377,6 +382,7 @@
     <UploadFace
       v-model="showUpload"
       :show="showUpload"
+      :userId="state.componentsBatch.userIds[0]"
       @on-confirm="confirmUpload"
       @on-cancel="closeUpload"
     >
@@ -406,7 +412,7 @@
   const formStaffRef = ref(null)
   const depChoose = ref(null)
   const showPass = ref(false)
-  const title = ref('修改密码')
+  const passTitle = ref('修改密码')
   const showUpload = ref(false)
   const organId = ref(false)
   const state = reactive({
@@ -650,6 +656,7 @@
       ],
       data: [
         {
+          userId: '1',
           userName: '小红',
           accountNo: '1666',
           hostOrganName: '往往',
@@ -673,7 +680,8 @@
             }
           }
         }
-      }
+      },
+      laoding: false
     },
 
     componentsPagination: {
@@ -757,9 +765,20 @@
         {
           name: '批量重置密码'
         }
-      ]
+      ],
+      userIds: []
     }
   })
+  // 筛选条件按钮
+  const clickSubmit = (item, index) => {
+    console.log(item)
+    if (item.id === 'reset') {
+      state.componentsSearchForm.data.forEach(v => {
+        delete v.value
+      })
+    }
+    getFormPage()
+  }
   // 获取表格列表
   const getFormPage = () => {
     const searchData = state.componentsSearchForm.data
@@ -782,6 +801,7 @@
   }
   // 提交密码
   const confirmPass = data => {
+    console.log(data)
     showPass.value = false
   }
   // 关闭密码弹窗
@@ -833,12 +853,16 @@
   // 批量操作
   const clickBatchButton = (item, index) => {
     const list = state.componentsBatch.selectionData
+    console.log('list', list)
     console.log(list[0])
     let nameList = ''
     const nameArr = []
+    const nameIdArr = []
     list.forEach(el => {
       nameArr.push(`[${el.userName}]`)
+      nameIdArr.push(el.userId)
     })
+    state.componentsBatch.userIds = nameIdArr
     nameList = nameArr.join('、')
     if (item.name === '批量停用') {
       state.JyElMessageBox.header.data = '批量停用'
@@ -859,6 +883,7 @@
       state.JyElMessageBox.type = '批量删除'
     }
     if (item.name === '批量重置密码') {
+      passTitle.value = '批量重置密码'
       showPass.value = true
     }
   }
@@ -869,7 +894,10 @@
     }
   }
   const customClick = (row, colum, cell, event) => {
+    const nameIdArr = []
     console.log(colum)
+    nameIdArr.push(colum.userId)
+    state.componentsBatch.userIds = nameIdArr
     if (cell.name === '修改') {
       showStaffDialog.value = true
     }
@@ -879,6 +907,12 @@
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '停用'
     }
+    if (cell.name === '启用') {
+      state.JyElMessageBox.header.data = '启用'
+      state.JyElMessageBox.content.data = '确认要启用该员工吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '启用'
+    }
     if (cell.name === '删除') {
       state.JyElMessageBox.header.data = '删除'
       state.JyElMessageBox.content.data = '确认要删除该员工吗？'
@@ -886,12 +920,51 @@
       state.JyElMessageBox.type = '删除'
     }
     if (cell.name === '修改密码') {
+      passTitle.value = '重置密码'
       showPass.value = true
     }
     if (cell.name === '设置人脸') {
       showUpload.value = true
     }
   }
+  // 提交弹窗
+  const submitElMessageBox = type => {
+    console.log(state.componentsBatch.userIds)
+    const singleData = {
+      userId: state.componentsBatch.userIds[0]
+    }
+    const batchData = {
+      userIds: state.componentsBatch.userIds
+    }
+    if (type === '停用') {
+      singleOpt(type, api.userDisable(singleData))
+    }
+    if (type === '启用') {
+      singleOpt(type, api.userEnable(singleData))
+    }
+    if (type === '删除') {
+      singleOpt(type, api.userDelete(singleData))
+    }
+    if (type === '批量停用') {
+      singleOpt(type, api.userBatchDisable(batchData))
+    }
+    if (type === '批量启用') {
+      singleOpt(type, api.userBatchEnable(batchData))
+    }
+    if (type === '批量删除') {
+      singleOpt(type, api.userBatchDelete(batchData))
+    }
+  }
+  // 员工操作
+  const singleOpt = (typeName, apiName) => {
+    apiName.then(res => {
+      if (res.data.code === 200) {
+        console.log(typeName)
+      }
+    })
+  }
+  // 批量操作
+  const batchOpt = (typeName, urlName) => {}
   // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
@@ -915,17 +988,28 @@
     formStaffRef.value.validate(valid => {
       if (valid) {
         console.log(state.componentsAddForm.formData)
+        api.formAdd().then(res => {})
       } else {
         ElMessage.error('校验失败')
       }
     })
     showStaffDialog.value = false
   }
-  // 提交弹窗
-  const submitElMessageBox = type => {}
+  // 分页页数变化
+  const currentChange = data => {
+    console.log(data)
+    state.componentsPagination.index = data
+    getFormPage()
+  }
+  // 每页请求数量变化
+  const sizeChange = data => {
+    console.log(data)
+    state.componentsPagination.pageNumber = data
+    getFormPage()
+  }
   // 初始化
   onBeforeMount(() => {
-    getFormPage()
+    // getFormPage()
   })
 </script>
 
