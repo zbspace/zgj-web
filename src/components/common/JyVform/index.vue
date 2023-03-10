@@ -9,6 +9,7 @@
       @formChange="formChange"
       @appendButtonClick="appendButtonClick"
       @buttonClick="buttonClick"
+      :fileTypeList="fileTypeList"
     />
     <v-form-designer
       ref="vFormRef"
@@ -18,16 +19,23 @@
       :hideModuleList="hideModuleList"
       :prefabricationFieldList="prefabricationFieldList"
       :templateList="templateList"
+      :fileTypeList="fileTypeList"
     />
+
+    <JySelectSeal v-model="visible" />
   </div>
 </template>
 
 <script setup>
-  import { ref, onMounted, getCurrentInstance, computed } from 'vue'
+  import { ref, onMounted, getCurrentInstance, computed, provide } from 'vue'
   import { designerConfig } from './designerConfig'
-  // 模板
+  import { useVformInfoStore } from '@/store/vform'
+  const vformInfoStore = useVformInfoStore()
 
   const vFormRef = ref(null)
+  const visible = ref(true)
+
+  provide('showSelectSeal')
 
   const props = defineProps({
     // 模式： 默认为设计模式  render渲染
@@ -100,6 +108,17 @@
         // }
       ]
     }
+
+    // 文件类型list
+    // fileTypeList: {
+    //   type: Array,
+    //   default: () => [
+    //     // {
+    //     //   "fileTypeId": "1",
+    //     //   "fileTypeName": ""
+    //     // }
+    //   ]
+    // }
   })
 
   const emit = defineEmits([
@@ -128,6 +147,11 @@
           'limitAddressSeal',
           'uploadFile'
         ]
+  })
+
+  // 文件类型
+  const fileTypeList = computed(() => {
+    return vformInfoStore.fileTypeList || []
   })
 
   // ---------------------------------VFormDesigner api 通过组件实例调用---------------------------
@@ -235,11 +259,21 @@
   const getFormJson = () => {
     return vFormRef.value.getFormJson() || ''
   }
+  // ---------------------------------business---------------------------------------------
+  /**
+   * 显示印章选择dialog
+   */
+  const showSelectSeal = () => {
+    visible.value = true
+  }
+
+  // ---------------------------------business end-----------------------------------------
 
   onMounted(() => {
     console.log('--->', 'vform加载完成')
     vFormRef.value.addEC('JyVform', getCurrentInstance())
     emit('on-loaded')
+    vformInfoStore.setFileTypeList()
   })
 
   defineExpose({
