@@ -110,16 +110,15 @@
   import template7 from './templates/template7'
   // import template8 from './templates/template8'
   // import template9 from './templates/template9'
+  import formManageService from '@/api/system/formManagement'
 
   const vformRef = ref(null)
-  const formData = reactive({
+  const formData = ref({
+    formName: '',
     applyTypeId: '2',
-    applyTypePid: '1',
-    applyTypeNo: '001001',
-    applyTypeName: '用印申请',
-    applyTypeNameI18n: 'seal apply use',
-    applyTypeGroup: '1',
-    hardType: null
+    sealUseTypeId: '1',
+    readme: '',
+    formInfo: ''
   })
 
   const formRef = ref(null)
@@ -256,8 +255,16 @@
   // 点击保存
   const clickSave = async () => {
     try {
-      const res = await vformRef.value.getFormData()
-      console.log('--->', res)
+      const formInfo = await vformRef.value.getFormJson()
+      await formManageService.formAdd({
+        formName: formData.value.formName,
+        applyTypeId: formData.value.applyTypeId,
+        sealUseTypeId: formData.value.sealUseTypeId,
+        readme: formData.value.readme,
+        formInfo: JSON.stringify(formInfo)
+      })
+      isVisible.value = false
+      ElMessage.success('表单添加成功')
     } catch (error) {
       ElMessage.error(error)
     }

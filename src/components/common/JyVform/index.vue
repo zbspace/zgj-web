@@ -20,22 +20,19 @@
       :prefabricationFieldList="prefabricationFieldList"
       :templateList="templateList"
       :fileTypeList="fileTypeList"
+      :admin="admin"
     />
 
-    <JySelectSeal v-model="visible" />
+    <!-- <JySelectSeal v-model="visible" /> -->
   </div>
 </template>
 
 <script setup>
-  import { ref, onMounted, getCurrentInstance, computed, provide } from 'vue'
+  import { ref, onMounted, getCurrentInstance, computed } from 'vue'
   import { designerConfig } from './designerConfig'
   import { useVformInfoStore } from '@/store/vform'
   const vformInfoStore = useVformInfoStore()
-
   const vFormRef = ref(null)
-  const visible = ref(true)
-
-  provide('showSelectSeal')
 
   const props = defineProps({
     // 模式： 默认为设计模式  render渲染
@@ -107,18 +104,13 @@
         //   description: '表单模板详细说明...'
         // }
       ]
-    }
+    },
 
-    // 文件类型list
-    // fileTypeList: {
-    //   type: Array,
-    //   default: () => [
-    //     // {
-    //     //   "fileTypeId": "1",
-    //     //   "fileTypeName": ""
-    //     // }
-    //   ]
-    // }
+    // 用户类型 root能看见所有功能
+    userType: {
+      type: String,
+      default: ''
+    }
   })
 
   const emit = defineEmits([
@@ -260,12 +252,6 @@
     return vFormRef.value.getFormJson() || ''
   }
   // ---------------------------------business---------------------------------------------
-  /**
-   * 显示印章选择dialog
-   */
-  const showSelectSeal = () => {
-    visible.value = true
-  }
 
   // ---------------------------------business end-----------------------------------------
 
