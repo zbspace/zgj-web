@@ -148,9 +148,7 @@
                   <span>&ensp;&ensp;提醒周期&ensp;&ensp;</span>
                   <el-input-number
                     v-model="passwordData.passRemindNum"
-                    :min="1"
-                    :max="31"
-                    @change="handleChange"
+                    :min="0"
                   />
                   <span>&ensp;&ensp;天</span>
                 </div>
@@ -192,7 +190,6 @@
                 v-model="passwordData.passLength"
                 :min="1"
                 :max="32"
-                @change="handleChange"
               />
               <span class="color-black-045">&ensp;位</span>
             </el-form-item>
@@ -263,10 +260,10 @@
     }
   ])
   const oldPasswordData = ref({
-    passInitModfiy: '1',
-    passLow: '1',
-    passRemind: '1',
-    passRemindNum: 30,
+    passInitModfiy: '0',
+    passLow: '0',
+    passRemind: '0',
+    passRemindNum: 0,
     passwordRules: ['passUppercase', 'passLowercase', 'passNum'],
     passLength: 6,
     passInit: '666666'
@@ -374,10 +371,6 @@
   const onClickCancelPasswordSetting = () => {
     passwordRuleFormRef.value.resetFields()
     editPasswordSetting.value = !editPasswordSetting.value
-  }
-
-  const handleChange = () => {
-    //
   }
 </script>
 
