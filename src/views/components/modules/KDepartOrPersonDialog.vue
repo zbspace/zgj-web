@@ -22,33 +22,33 @@
             :border="false"
           ></VTabs>
         </div>
+        <div v-if="firstShow">
+          <KDepartTab
+            ref="kdepart"
+            :initQueryParams="queryParams"
+            :apiModule="apiModule"
+            :selectedDepart="selectedDepart"
+            @update:selectedDepart="selectedDepart = $event"
+            v-show="active === 'organ'"
+          ></KDepartTab>
 
-        <KDepartTab
-          ref="kdepart"
-          :initQueryParams="queryParams"
-          :apiModule="apiModule"
-          :selectedDepart="selectedDepart"
-          @update:selectedDepart="selectedDepart = $event"
-          v-if="organTabShow && active === 'organ'"
-        ></KDepartTab>
-
-        <KUserTab
-          ref="kuser"
-          :initQueryParams="queryParams"
-          :apiModule="apiModule"
-          :selectedUser="selectedUser"
-          @update:selectedUser="selectedUser = $event"
-          v-if="userTabShow && active === 'user'"
-        ></KUserTab>
+          <KUserTab
+            ref="kuser"
+            :initQueryParams="queryParams"
+            :apiModule="apiModule"
+            :selectedUser="selectedUser"
+            @update:selectedUser="selectedUser = $event"
+            v-show="active === 'user'"
+          ></KUserTab>
+        </div>
       </div>
 
       <!-- right -->
       <div class="selection-right user-select">
         <div class="select-right-column c-p">
-          <div class="clear-n"
-            >已选（部门:{{ selectedDepart.length }} 角色:{{
-              selectedUser.length
-            }}）
+          <div class="clear-n">
+            已选：{{ selectedDepart.length }} 个部门，
+            {{ selectedUser.length }}名成员
           </div>
           <div class="select-close clear-t" @click="clearSelected">清空 </div>
         </div>
@@ -258,9 +258,6 @@
     }
   })
 
-  const organTabShow = ref(false)
-  const userTabShow = ref(false)
-  const roleTabShow = ref(false)
   // 消息 tabs
   const active = ref(props.activeTab || props.tabsShow[0])
 
@@ -294,26 +291,7 @@
   const selectedDepart = ref([])
   const selectedUser = ref([])
 
-  const handleInitActiveTab = () => {
-    switch (active.value) {
-      case 'organ':
-        organTabShow.value = true
-        userTabShow.value = true
-        roleTabShow.value = true
-        break
-      case 'user':
-        organTabShow.value = true
-        userTabShow.value = true
-        roleTabShow.value = true
-        break
-      case 'role':
-        organTabShow.value = true
-        userTabShow.value = true
-        roleTabShow.value = true
-        break
-    }
-  }
-
+  const firstShow = ref(false)
   // 获取选中数据 - 修改时
   if (props.editDeploy) {
     const resultSelected = params => {
@@ -332,10 +310,10 @@
     resultSelected(props.queryParams[paramsKey]).then(res => {
       selectedDepart.value = res.data.organs
       selectedUser.value = res.data.users
-      handleInitActiveTab()
+      firstShow.value = true
     })
   } else {
-    handleInitActiveTab()
+    firstShow.value = true
   }
 
   if (props.searchSelected.length > 0) {
@@ -350,14 +328,14 @@
   const kuser = ref(null)
   // 清空选中项
   const clearSelected = () => {
-    active.value === 'organ' && kdepart.value.clearSelected()
-    active.value === 'user' && kuser.value.clearSelected()
+    kdepart.value.clearSelected()
+    kuser.value.clearSelected()
   }
 
   // 取消选中项
   const concelSelected = attr => {
-    active.value === 'organ' && kdepart.value.concelSelected(attr)
-    active.value === 'user' && kuser.value.concelSelected(attr)
+    kdepart.value.concelSelected(attr)
+    kuser.value.concelSelected(attr)
   }
 
   // 监听 向下包含 切换
