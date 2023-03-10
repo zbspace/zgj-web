@@ -14,9 +14,9 @@
 </template>
 
 <script setup>
-  import Top from './Top'
-  import Centers from './Center'
-  import Bottom from './Bottom'
+  import Top from './top'
+  import Centers from './center'
+  import Bottom from './bottom'
   import componentsLayout from '@/views/components/Layout.vue'
 </script>
 
