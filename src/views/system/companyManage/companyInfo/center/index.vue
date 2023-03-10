@@ -26,7 +26,7 @@
                 <div v-else>
                   <el-input
                     v-model="baseInfoData.tenantPm"
-                    style="width: 126px"
+                    style="width: 180px"
                     placeholder="请输入"
                   />
                 </div>
@@ -40,7 +40,7 @@
                 <div v-else>
                   <el-input
                     v-model="baseInfoData.tenantPmTel"
-                    style="width: 126px"
+                    style="width: 180px"
                     placeholder="请输入"
                   />
                 </div>
@@ -54,7 +54,7 @@
                 <div v-else>
                   <el-input
                     v-model="baseInfoData.domainName"
-                    style="width: 126px"
+                    style="width: 180px"
                     placeholder="请输入"
                   />
                 </div>

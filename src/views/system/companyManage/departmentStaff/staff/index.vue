@@ -13,9 +13,7 @@
           <div>员工管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showStaffDialog = true"
-                >+ 新建</el-button
-              >
+              <el-button type="primary" @click="addStaff">+ 新建</el-button>
             </div>
             <!-- <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
@@ -66,6 +64,7 @@
           <componentsBatch
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
+            @clickBatchButton="clickBatchButton"
           >
           </componentsBatch>
         </div>
@@ -80,6 +79,7 @@
             :paginationData="state.componentsPagination.data"
             isSelection
             @cellClick="cellClick"
+            @custom-click="customClick"
             @selection-change="selectionChange"
           >
           </componentsTable>
@@ -109,7 +109,7 @@
       <el-form
         :model="state.componentsAddForm.formData"
         :rules="state.componentsAddForm.formRules"
-        ref="vFormStaffRef"
+        ref="formStaffRef"
         label-width="100px"
       >
         <el-form-item label="姓名" prop="userName">
@@ -286,19 +286,29 @@
             <el-form-item label="人脸照片" prop="userFaceId">
               <el-upload
                 class="avatar-uploader"
-                action=""
+                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
                 :show-file-list="false"
+                list-type="picture-card"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
               >
+                <el-input
+                  type="hidden"
+                  v-model="state.componentsAddForm.formData.userFaceId"
+                />
                 <img
                   v-if="state.componentsAddForm.formData.userFaceUrl"
                   :src="state.componentsAddForm.formData.userFaceUrl"
                   class="avatar"
                 />
-                <i v-else class="el-icon-plus avatar-uploader-icon">+</i>
+                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
                 <template #tip>
-                  <div class="el-upload__tip">只能上传 jpg、jpeg、png 文件</div>
+                  <div class="el-upload__tip"
+                    >1.支持上传JPG/JPEG/PNG格式的人脸图片，大小不超过5M</div
+                  >
+                  <div class="el-upload__tip"
+                    >2.请尽量保证人脸图形完整清晰，没有遮挡</div
+                  >
                 </template>
               </el-upload>
             </el-form-item>
@@ -331,12 +341,52 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 弹窗提示 -->
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.JyElMessageBox.header.icon" alt="" />
+          <span>{{ state.JyElMessageBox.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.JyElMessageBox.content.data }}</div>
+      </template>
+      <template #footer>
+        <el-button
+          type="primary"
+          @click="submitElMessageBox(state.JyElMessageBox.type)"
+        >
+          提交
+        </el-button>
+        <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
+      </template>
+    </JyElMessageBox>
+    <UpdatePassword
+      v-model="showPass"
+      :show="showPass"
+      :title="title"
+      @on-confirm="confirmPass"
+      @on-cancel="closePass"
+    >
+    </UpdatePassword>
+    <UploadFace
+      v-model="showUpload"
+      :show="showUpload"
+      @on-confirm="confirmUpload"
+      @on-cancel="closeUpload"
+    >
+    </UploadFace>
   </div>
 </template>
 
 <script setup>
-  import { ref, reactive } from 'vue'
-  import { Paperclip, CircleClose } from '@element-plus/icons-vue'
+  import { ref, reactive, onBeforeMount } from 'vue'
+  import { CircleClose, Plus } from '@element-plus/icons-vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
@@ -344,15 +394,33 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import FileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   import KDialog from '@/views/components/modules/KDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import UpdatePassword from './modules/updatePassword.vue'
+  import UploadFace from './modules/uploadFace.vue'
+  import { ElMessage } from 'element-plus'
+  import api from '@/api/system/companyManagement/departmentStaff'
 
   const showStaffDialog = ref(false)
   const showDepPerDialog = ref(false)
-  const vFormStaffRef = ref(null)
+  const formStaffRef = ref(null)
   const depChoose = ref(null)
+  const showPass = ref(false)
+  const title = ref('修改密码')
+  const showUpload = ref(false)
+  const organId = ref(false)
   const state = reactive({
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '删除'
+    },
     componentsAddForm: {
       formData: {
         userName: '',
@@ -388,10 +456,10 @@
         userTel: [
           {
             required: true,
-            message: '请选择印章类型',
+            message: '请输入手机号',
             trigger: 'change'
-          },
-          { min: 11, type: 'number', message: '手机号必须为11位数字' }
+          }
+          // { min: 11, type: 'number', message: '手机号必须为11位数字' }
         ],
         hostOrganId: [
           {
@@ -435,6 +503,18 @@
           label: '状态',
           type: 'select',
           inCommonUse: true,
+          options: [
+            {
+              status: '0',
+              statusLabel: '停用'
+            },
+            {
+              status: '1',
+              statusLabel: '启用'
+            }
+          ],
+          optionLabel: 'statusLabel',
+          optionValue: 'status',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择'
@@ -445,13 +525,25 @@
           label: '人脸状态',
           type: 'select',
           inCommonUse: true,
+          options: [
+            {
+              faceState: '0',
+              faceStateLabel: '未绑定'
+            },
+            {
+              faceState: '1',
+              faceStateLabel: '已绑定'
+            }
+          ],
+          optionLabel: 'faceStateLabel',
+          optionValue: 'faceState',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择'
           }
         },
         {
-          id: 'name',
+          id: 'organId',
           label: '所属部门',
           type: 'select',
           inCommonUse: true,
@@ -496,40 +588,46 @@
     componentsTable: {
       header: [
         {
-          prop: '1',
+          prop: 'userName',
           label: '姓名',
           sortable: true,
           flex: true,
           'min-width': 150
         },
         {
-          prop: '2',
+          prop: 'accountNo',
           label: '账号',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'hostOrganName',
           label: '所属部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'userTitle',
           label: '职位',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'faceState',
           label: '人脸状态',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'status',
+          label: '状态',
+          sortable: true,
+          'min-width': 150
+        },
+        {
+          prop: '1',
           label: '操作',
-          flex: 'right',
+          fixed: 'right',
           width: 320,
           rankDisplayData: [
             {
@@ -552,12 +650,12 @@
       ],
       data: [
         {
-          1: '小红',
-          2: '1666',
-          3: '往往',
-          4: '科员',
-          5: '启用',
-          6: ''
+          userName: '小红',
+          accountNo: '1666',
+          hostOrganName: '往往',
+          userTitle: '科员',
+          faceState: '启用',
+          status: '启用'
         }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -568,7 +666,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '1') {
+          if (column.property === 'userName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -662,6 +760,48 @@
       ]
     }
   })
+  // 获取表格列表
+  const getFormPage = () => {
+    const searchData = state.componentsSearchForm.data
+    const queryParams = {}
+    queryParams.organId = organId.value
+    searchData.forEach(item => {
+      queryParams[item.id] = item.value
+    })
+    queryParams.pageNo = state.componentsPagination.index || 1
+    queryParams.pageSize = state.componentsPagination.pageNumber || 10
+    state.componentsTable.loading = true
+    api.page(queryParams).then(res => {
+      console.log(res)
+      state.componentsTable.data = res.data.rows
+      state.componentsPagination.data.amount = res.data.totalRows
+      state.componentsPagination.data.pageNumber = res.data.totalPage
+      state.componentsPagination.defaultAttribute.total = res.data.totalRows
+      state.componentsTable.loading = false
+    })
+  }
+  // 提交密码
+  const confirmPass = data => {
+    showPass.value = false
+  }
+  // 关闭密码弹窗
+  const closePass = data => {
+    showPass.value = false
+  }
+  // 提交人脸
+  const confirmUpload = data => {
+    showUpload.value = false
+  }
+  // 关闭人脸弹窗
+  const closeUpload = data => {
+    showUpload.value = false
+  }
+
+  // 新增员工
+  const addStaff = () => {
+    formStaffRef.value.resetFields()
+    showStaffDialog.value = true
+  }
   // 清除部门信息
   const clear = type => {
     state.componentsAddForm.formData[type + 'Id'] = ''
@@ -690,11 +830,66 @@
     }
     return isJPG && isLt2M
   }
+  // 批量操作
+  const clickBatchButton = (item, index) => {
+    const list = state.componentsBatch.selectionData
+    console.log(list[0])
+    let nameList = ''
+    const nameArr = []
+    list.forEach(el => {
+      nameArr.push(`[${el.userName}]`)
+    })
+    nameList = nameArr.join('、')
+    if (item.name === '批量停用') {
+      state.JyElMessageBox.header.data = '批量停用'
+      state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量停用吗？`
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '批量停用'
+    }
+    if (item.name === '批量启用') {
+      state.JyElMessageBox.header.data = '批量启用'
+      state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量启用吗？`
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '批量启用'
+    }
+    if (item.name === '批量删除') {
+      state.JyElMessageBox.header.data = '批量删除'
+      state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量删除吗？`
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '批量删除'
+    }
+    if (item.name === '批量重置密码') {
+      showPass.value = true
+    }
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    // console.log(row, column, cell, event);
-    if (column.property === '1') {
+    if (column.property === 'userName') {
       state.componentsDocumentsDetails.show = true
+    }
+  }
+  const customClick = (row, colum, cell, event) => {
+    console.log(colum)
+    if (cell.name === '修改') {
+      showStaffDialog.value = true
+    }
+    if (cell.name === '停用') {
+      state.JyElMessageBox.header.data = '停用'
+      state.JyElMessageBox.content.data = '确认要停用该员工吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '停用'
+    }
+    if (cell.name === '删除') {
+      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.content.data = '确认要删除该员工吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '删除'
+    }
+    if (cell.name === '修改密码') {
+      showPass.value = true
+    }
+    if (cell.name === '设置人脸') {
+      showUpload.value = true
     }
   }
   // 点击关闭详情
@@ -712,9 +907,26 @@
       state.componentsBatch.defaultAttribute.disabled = true
     }
   }
-  const submitStaffForm = () => {
+  // 提交新增表单
+  const submitStaffForm = data => {
+    if (!data) {
+      return
+    }
+    formStaffRef.value.validate(valid => {
+      if (valid) {
+        console.log(state.componentsAddForm.formData)
+      } else {
+        ElMessage.error('校验失败')
+      }
+    })
     showStaffDialog.value = false
   }
+  // 提交弹窗
+  const submitElMessageBox = type => {}
+  // 初始化
+  onBeforeMount(() => {
+    getFormPage()
+  })
 </script>
 
 <style lang="scss" scoped>
@@ -729,31 +941,7 @@
       }
     }
   }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409eff;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 150px;
-    height: 150px;
-    line-height: 150px;
-    text-align: center;
-    border: 1px dashed;
-    border-radius: 10px;
-    background-color: #e8f0ff;
-    font-style: inherit;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
+  .el-upload__tip {
+    margin: 0;
   }
 </style>

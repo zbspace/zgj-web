@@ -40,6 +40,9 @@ service.interceptors.request.use(
     if (accountInfo.token && config.headers) {
       config.headers[TOKEN_HEADER_NAME] = accountInfo.token
     }
+    if (config.isForm) {
+      config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+    }
     return config
   },
   error => {
