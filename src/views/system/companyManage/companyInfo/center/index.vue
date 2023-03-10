@@ -233,9 +233,9 @@
   const passwordRuleFormRef = ref(null)
   const changeSAVisible = ref(false)
   const oldBaseInfoData = ref({
-    tenantPmTel: '123',
-    tenantPm: 'aaa',
-    domainName: 'xxx'
+    tenantPmTel: '章管家',
+    tenantPm: '18888888888',
+    domainName: 'zhangin.com'
   })
   const baseInfoData = ref(null)
   const adminInfo = ref({

@@ -3,6 +3,8 @@ import routes from './routes'
 import { useAccountInfoStore } from '@/store/accountInfo'
 import { useMenusInfoStore } from '@/store/menus'
 import NProgress from 'nprogress'
+import { setWaterMark, removeWatermark } from '@/utils/water'
+import dayjs from 'dayjs'
 import 'nprogress/nprogress.css'
 const router = createRouter({
   history: createWebHistory(),
@@ -68,6 +70,17 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
     }
   } catch (error) {
     return
+  }
+  removeWatermark()
+  if (
+    routeTo.path.indexOf('/login/') === -1 &&
+    localStorage.getItem('watermark') === '1'
+  ) {
+    const text =
+      JSON.parse(localStorage.getItem('accountInfo')).userName +
+      ' ' +
+      dayjs().format('YYYY-MM-DD HH:mm:ss')
+    setWaterMark(text)
   }
   next()
 })
