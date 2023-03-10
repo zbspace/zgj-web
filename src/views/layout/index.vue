@@ -45,13 +45,15 @@
 </template>
 
 <script setup>
-  import Menus from '@/views/layout/Menu/index.vue'
+  import Menus from '@/views/layout/menu/index'
   import Asides from '@/views/layout/Aside/index.vue'
   import RightBar from './RightBar'
   import NavBar from './NavBar'
   import { useLayoutStore } from '@/store/layout'
   import { useMenusInfoStore } from '@/store/menus'
-  import { ref } from 'vue'
+  import { setWaterMark } from '@/utils/water'
+  import dayjs from 'dayjs'
+  import { ref, onUpdated } from 'vue'
 
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()
@@ -61,6 +63,13 @@
   const scrollToTop = () => {
     contentRef.value.setScrollTop(0)
   }
+  onUpdated(() => {
+    const text =
+      JSON.parse(localStorage.getItem('accountInfo')).userName +
+      ' ' +
+      dayjs().format('YYYY-MM-DD HH:mm:ss')
+    setWaterMark(text)
+  })
 </script>
 
 <style lang="scss" scoped>

@@ -342,6 +342,7 @@
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'
   import { ElMessage } from 'element-plus'
+  import { removeWatermark } from '@/utils/water'
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
   const languageStore = useLanguageStore()
@@ -480,6 +481,7 @@
         localStorage.setItem('accountInfo', accountInfo)
         // 跳转到登录页
         router.replace({ path: '/login/account' })
+        removeWatermark()
         ElMessage.success('退出登录！')
       }
     })
