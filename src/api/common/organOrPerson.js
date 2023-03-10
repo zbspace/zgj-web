@@ -26,7 +26,14 @@ api = {
         url: '/role/getRoleSubOrganAndUserInfoList',
         data
       })
-    }
+    },
+    selected: id => {
+      return request({
+        method: 'GET',
+        url: `/role/getRoleRelationInfo/${id}`
+      })
+    },
+    key: 'roleId'
   }
 }
 export default api

@@ -50,7 +50,7 @@
         @open="openInner"
         @emitsDemo="emitsDemo"
         :departRoot="departRoot"
-        tabActive="organ"
+        tabActive="user"
       ></KTreeModel>
     </div>
   </div>
@@ -62,7 +62,7 @@
    * includeChild 向下包含 Boolean
    * apiModule: api对应的模块
    * initQueryParams 初始化参数
-   * selectedDepart 选中项
+   * selectedUser 选中项
    */
   import { reactive, ref, computed } from 'vue'
   import {
@@ -78,7 +78,7 @@
       type: String,
       default: ''
     },
-    selectedDepart: {
+    selectedUser: {
       type: Array,
       default: () => {
         return []
@@ -91,14 +91,14 @@
       }
     }
   })
-  const emits = defineEmits(['update:selectedDepart'])
+  const emits = defineEmits(['update:selectedUser'])
 
   const selectedData = computed({
     get() {
-      return JSON.parse(JSON.stringify(props.selectedDepart))
+      return JSON.parse(JSON.stringify(props.selectedUser))
     },
     set(val) {
-      emits('update:selectedDepart', val)
+      emits('update:selectedUser', val)
     }
   })
 
@@ -131,7 +131,7 @@
   const resultOrgan = params => {
     return new Promise((resolve, reject) => {
       Api[props.apiModule]
-        .organ(params)
+        .user(params)
         .then(res => {
           resolve(res)
         })
@@ -189,12 +189,15 @@
         item.selectedStatus = 2
       })
       const arr = []
-      attr.forEach(item => {
-        arr.push(item.id)
-      })
+      attr
+        .filter(val => val.type === 'user')
+        .forEach(item => {
+          arr.push(item.id)
+        })
+
       selectedData.value = selectedData.value
         .filter(item => !arr.includes(item.id))
-        .concat(attr)
+        .concat(attr.filter(val => val.type === 'user'))
     }
   }
 
