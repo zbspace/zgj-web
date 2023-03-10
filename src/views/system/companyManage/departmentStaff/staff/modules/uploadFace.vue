@@ -1,5 +1,5 @@
 <!--
-* @Descripttion 修改员工密码
+* @Descripttion 员工上传人脸照片
 * @FileName updatePassword.vue
 * @Author Guanpf
 * @LastEditTime 2023-03-09 15:32:49
