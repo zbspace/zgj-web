@@ -77,6 +77,7 @@
   import { ref, reactive, computed } from 'vue'
   import { ElMessage } from 'element-plus'
   import { Refresh } from '@element-plus/icons-vue'
+  import api from '@/api/system/companyManagement/departmentStaff'
   const passwordForm = ref(null)
   const props = defineProps({
     show: {
@@ -141,10 +142,24 @@
   }
   const comifrm = value => {
     console.log(passwordForm)
+    const queryData = {}
+    queryData.newPassword = passwordForm.value.newPassword
     passwordForm.value.validate(valid => {
       if (valid) {
-        console.log('修改成功')
-        emit('on-confirm', value)
+        if (props.title === '重置密码') {
+          emit('on-confirm', props.title)
+          queryData.userId = props.userIds[0]
+          // api.userResetPassword(queryData).then(res => {
+          //   console.log(res)
+          // })
+        }
+        if (props.title === '批量重置密码') {
+          queryData.userId = props.userIds
+          emit('on-confirm', props.title)
+          // api.userBatchResetPassword(queryData).then(res => {
+          //   console.log(res)
+          // })
+        }
       } else {
         ElMessage.error('请输入新密码')
       }
