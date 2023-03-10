@@ -438,7 +438,6 @@
   }
 
   const confirmClick = () => {
-    console.log(111)
     apis
       .delete({
         ids:

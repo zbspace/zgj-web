@@ -238,6 +238,7 @@
 
   const goHome = tenantId => {
     loginApi.chooseOrgan(tenantId).then(res => {
+      localStorage.setItem('tenantId', Number(tenantId))
       let redirect = route.query.redirect || '/frontDesk/home'
       if (typeof redirect !== 'string') {
         redirect = '/frontDesk/home'
