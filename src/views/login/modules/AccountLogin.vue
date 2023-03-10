@@ -405,12 +405,6 @@
             token: 'test'
           })
           accountInfo.setUserName('曹春青')
-          // let redirect = route.query.redirect || '/frontDesk/home'
-          // if (typeof redirect !== 'string') {
-          //   redirect = '/frontDesk/home'
-          // }
-          // router.replace(redirect)
-          // ElMessage.success('登录成功')
         } else {
           // 账号密码登录
           loginApi
@@ -456,7 +450,6 @@
             })
         }
       } else {
-        ElMessage.warning('请正确填写')
         return false
       }
     })
