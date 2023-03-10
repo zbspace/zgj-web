@@ -115,7 +115,7 @@ api.userFaceImport = data => {
     data
   })
 }
-// 部门员工熟状态请求
+// 部门员工树状态
 api.userTreeMenu = data => {
   return request({
     method: 'GET',

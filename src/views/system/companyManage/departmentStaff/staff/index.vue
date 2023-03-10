@@ -1007,9 +1007,15 @@
     state.componentsPagination.pageNumber = data
     getFormPage()
   }
+  const getUserTreeMenu = () => {
+    api.userTreeMenu().then(res => {
+      console.log(res)
+    })
+  }
   // 初始化
   onBeforeMount(() => {
     // getFormPage()
+    getUserTreeMenu()
   })
 </script>
 
