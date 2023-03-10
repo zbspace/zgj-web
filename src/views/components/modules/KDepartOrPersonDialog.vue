@@ -25,15 +25,31 @@
 
         <KDepartTab
           ref="kdepart"
+          :initQueryParams="queryParams"
+          :apiModule="apiModule"
           :selectedDepart="selectedDepart"
           @update:selectedDepart="selectedDepart = $event"
+          v-if="organTabShow && active === 'organ'"
         ></KDepartTab>
+
+        <KUserTab
+          ref="kuser"
+          :initQueryParams="queryParams"
+          :apiModule="apiModule"
+          :selectedUser="selectedUser"
+          @update:selectedUser="selectedUser = $event"
+          v-if="userTabShow && active === 'user'"
+        ></KUserTab>
       </div>
 
       <!-- right -->
       <div class="selection-right user-select">
         <div class="select-right-column c-p">
-          <div class="clear-n">已选（{{ selectedDepart.length }}）</div>
+          <div class="clear-n"
+            >已选（部门:{{ selectedDepart.length }} 角色:{{
+              selectedUser.length
+            }}）
+          </div>
           <div class="select-close clear-t" @click="clearSelected">清空 </div>
         </div>
 
@@ -65,7 +81,7 @@
           </div>
           <div style="display: flex; height: 25px">
             <el-switch
-              v-model="item.included"
+              v-model="item.includeChild"
               v-if="item.haveChildren"
               style="margin-right: 12px"
               @change="changeSwitch($event, item)"
@@ -95,9 +111,8 @@
         <!-- 员工 -->
         <div
           class="select-right-column p"
-          v-for="(item, index) in selectedDepart"
+          v-for="(item, index) in selectedUser"
           :key="index"
-          v-show="false"
         >
           <div class="select-right-label">
             <div style="margin-right: 10px">
@@ -188,13 +203,20 @@
 <script setup>
   /**
    * selectedStatus 0(未选中) 2（全部）
-   * included 向下包含 Boolean
+   * includeChild 向下包含 Boolean
    * apiModule: api对应的模块
+   * queryParams: 请求参数
+   * editDeploy: 修改选中项时，初始化已选
+   * searchSelected: 高级搜索已选状态
+   * tabsShow ['organ', 'user', 'role'] 展示按照数字顺序排
+   * activeTab 选中tab
    */
-  import { ref } from 'vue'
+  import { ref, toRefs } from 'vue'
   import KDialog from '@/views/components/modules/KDialog.vue'
   import VTabs from '@/components/modules/tabs.vue'
   import KDepartTab from './modules/KDepartTab.vue'
+  import KUserTab from './modules/KUserTab.vue'
+  import Api from '@/api/common/organOrPerson'
   const emits = defineEmits(['update:show'])
 
   const props = defineProps({
@@ -205,11 +227,43 @@
     apiModule: {
       type: String,
       default: 'systemOrganOrPerson'
+    },
+    queryParams: {
+      type: Object,
+      default: () => {
+        return {
+          roleId: 'r1'
+        }
+      }
+    },
+    editDeploy: {
+      type: Boolean,
+      default: true
+    },
+    searchSelected: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    tabsShow: {
+      type: Array,
+      default: () => {
+        return ['organ', 'user']
+      }
+    },
+    activeTab: {
+      type: String,
+      default: ''
     }
   })
 
+  const organTabShow = ref(false)
+  const userTabShow = ref(false)
+  const roleTabShow = ref(false)
   // 消息 tabs
-  const active = ref('organ')
+  const active = ref(props.activeTab || props.tabsShow[0])
+
   const tabsLabel = ref([
     {
       name: 't-zgj-person.Role',
@@ -225,70 +279,85 @@
     }
   ])
 
+  // 按照参数排序
+  const labelCache = JSON.parse(JSON.stringify(tabsLabel.value))
+  tabsLabel.value = labelCache
+    .filter(item => props.tabsShow.includes(item.value))
+    .sort((prev, next) => {
+      return (
+        props.tabsShow.indexOf(prev.value) - props.tabsShow.indexOf(next.value)
+      )
+    })
+
+  // 选中数据
+  const allSelected = ref([])
+  const selectedDepart = ref([])
+  const selectedUser = ref([])
+
+  const handleInitActiveTab = () => {
+    switch (active.value) {
+      case 'organ':
+        organTabShow.value = true
+        userTabShow.value = true
+        roleTabShow.value = true
+        break
+      case 'user':
+        organTabShow.value = true
+        userTabShow.value = true
+        roleTabShow.value = true
+        break
+      case 'role':
+        organTabShow.value = true
+        userTabShow.value = true
+        roleTabShow.value = true
+        break
+    }
+  }
+
+  // 获取选中数据 - 修改时
+  if (props.editDeploy) {
+    const resultSelected = params => {
+      return new Promise((resolve, reject) => {
+        Api[props.apiModule]
+          .selected(params)
+          .then(res => {
+            resolve(res)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    }
+    const paramsKey = Api[props.apiModule].key
+    resultSelected(props.queryParams[paramsKey]).then(res => {
+      selectedDepart.value = res.data.organs
+      selectedUser.value = res.data.users
+      handleInitActiveTab()
+    })
+  } else {
+    handleInitActiveTab()
+  }
+
+  if (props.searchSelected.length > 0) {
+    allSelected.value = toRefs(props.searchSelected)
+  }
+
   // 关闭弹窗
   const closeDialog = () => {
     emits('update:show', false)
   }
   const kdepart = ref(null)
-  // 选中数据
-  const selectedDepart = ref([
-    {
-      id: 'o1',
-      pid: '-1',
-      name: '部门1',
-      sort: '1',
-      checked: true,
-      haveChildren: true,
-      type: 'organ',
-      selectedStatus: 2,
-      included: false,
-      disabled: false
-    },
-    {
-      id: 'o4',
-      pid: 'o1',
-      name: '部门1-1',
-      sort: '1',
-      checked: true,
-      haveChildren: true,
-      type: 'organ',
-      selectedStatus: 2,
-      included: true,
-      disabled: false
-    },
-    {
-      id: 'o2',
-      pid: '-1',
-      name: '部门2',
-      sort: '2',
-      checked: true,
-      haveChildren: false,
-      type: 'organ',
-      selectedStatus: 2,
-      included: false,
-      disabled: false
-    },
-    {
-      id: 'o3',
-      pid: '-1',
-      name: '部门3',
-      sort: '3',
-      checked: false,
-      haveChildren: false,
-      type: 'organ',
-      selectedStatus: 2,
-      included: false,
-      disabled: false
-    }
-  ])
+  const kuser = ref(null)
   // 清空选中项
   const clearSelected = () => {
-    kdepart.value.clearSelected()
+    active.value === 'organ' && kdepart.value.clearSelected()
+    active.value === 'user' && kuser.value.clearSelected()
   }
 
   // 取消选中项
   const concelSelected = attr => {
-    kdepart.value.concelSelected(attr)
+    active.value === 'organ' && kdepart.value.concelSelected(attr)
+    active.value === 'user' && kuser.value.concelSelected(attr)
   }
 
   // 监听 向下包含 切换
