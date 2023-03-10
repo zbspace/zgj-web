@@ -20,20 +20,24 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="超级管理员">
-              <span>李旺</span>
+              <span>{{ superAdminInfo.userName }}</span>
             </el-form-item>
             <el-form-item label="超级管理员账号">
-              <span>225487</span>
+              <span>{{ superAdminInfo.account }}</span>
             </el-form-item>
             <el-form-item label="超级管理员手机号">
-              <span>13780094758</span>
+              <span>{{ superAdminInfo.phone }}</span>
             </el-form-item>
             <el-form-item label="超级管理员邮箱号">
-              <span>13780094758@qq.com</span>
+              <span>{{ superAdminInfo.email }}</span>
             </el-form-item>
-            <el-form-item label="手机验证码" prop="vcode">
+            <el-form-item label="验证码" prop="vcode">
               <div class="vcode">
-                <el-input v-model="formData.vcode" />
+                <el-input
+                  v-model="formData.vcode"
+                  maxlength="6"
+                  oninput="value=value.replace(/^\.+|[^\d.]/g,'')"
+                />
                 <el-button
                   type="primary"
                   :disabled="countdownTime >= 0"
@@ -50,10 +54,10 @@
 
           <div v-if="step === 2">
             <el-form-item label="超级管理员">
-              <span>李旺</span>
+              <span>{{ superAdminInfo.userName }}</span>
             </el-form-item>
             <el-form-item label="超级管理员账号">
-              <span>225487</span>
+              <span>{{ superAdminInfo.account }}</span>
             </el-form-item>
             <el-form-item label="新的超管姓名" prop="name">
               <el-select style="width: 264px" v-model="formData.name">
@@ -114,15 +118,22 @@
     modelValue: {
       type: Boolean,
       default: false
+    },
+    superAdminInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   })
-  const emit = defineEmits(['update:modelValue'])
+  const emit = defineEmits(['update:modelValue', 'updateSuperAdminInfo'])
   const rules = reactive({
     vcode: [
       {
         required: true,
-        message: '验证码不能为空',
-        trigger: 'change'
+        message: '验证码是6位数字',
+        trigger: 'change',
+        pattern: /^\d{6}$/
       }
     ],
     name: [
@@ -161,7 +172,7 @@
           message: '超级管理员变更成功',
           type: 'success'
         })
-        showImgVCode()
+        emit('updateSuperAdminInfo')
       } else {
         console.log('error', fields)
       }
@@ -173,8 +184,6 @@
     step.value = 1
     formData.value = new SuperAdmin()
   }
-
-  const showImgVCode = () => {}
 
   const sendVCode = () => {
     countdownTime.value = 10

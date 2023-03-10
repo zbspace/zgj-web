@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 登录页面
+* @FileName account.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-09 11:33:37
+!-->
 <template>
   <div class="container-login">
     <!-- header -->
@@ -24,22 +30,12 @@
             <div class="qrcode">
               <div class="ios box">
                 <div class="code"></div>
-                <div class="title">
-                  <img src="../../assets/images/login/ios_down.svg" />
-                  <div>{{ $t('t-zgj-DownloadApp.IOS') }}</div>
-                </div>
-              </div>
-
-              <div class="android box">
-                <div class="code"></div>
-                <div class="title">
-                  <img src="../../assets/images/login/android_down.svg" />
-                  <div>{{ $t('t-zgj-DownloadApp.Android') }}</div>
-                </div>
               </div>
             </div>
-            <div class="tip">{{ $t('t-zgj-tips.downAppTips1') }}</div>
-            <div class="tip">{{ $t('t-zgj-tips.downAppTips2') }}</div>
+            <div class="tip">
+              {{ $t('t-zgj-tips.downAppTips1')
+              }}{{ $t('t-zgj-tips.downAppTips2') }}
+            </div>
           </div>
         </div>
 
@@ -242,6 +238,7 @@
 
   const goHome = tenantId => {
     loginApi.chooseOrgan(tenantId).then(res => {
+      localStorage.setItem('tenantId', Number(tenantId))
       let redirect = route.query.redirect || '/frontDesk/home'
       if (typeof redirect !== 'string') {
         redirect = '/frontDesk/home'
@@ -322,8 +319,8 @@
           .tooltip-down {
             position: absolute;
             top: 52px;
-            left: -280px;
-            width: 420px;
+            left: -220px;
+            width: 340px;
             background: #ffffff;
             border-radius: 4px;
             border: 1px solid #f0f0f0;
@@ -346,9 +343,9 @@
             }
 
             .qrcode {
-              display: flex;
-              justify-content: space-between;
-              padding: 20px 46px;
+              // display: flex;
+              // justify-content: space-between;
+              padding: 12px 26px;
 
               .box {
                 display: flex;
@@ -384,6 +381,7 @@
               letter-spacing: 0;
               text-align: center;
               line-height: 18px;
+              padding: 0px 8px 8px 8px;
             }
           }
         }

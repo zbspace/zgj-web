@@ -1,3 +1,9 @@
+<!--
+* @Descripttion NavBar
+* @FileName index.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-09 14:08:17
+!-->
 <template>
   <header id="page-topbar">
     <div class="nav-bar-container header-content">
@@ -12,10 +18,18 @@
 
         <!-- 公司选择 -->
         <el-button class="depart-dropdown" text>
-          <el-dropdown trigger="hover" :teleported="false">
+          <el-dropdown
+            trigger="hover"
+            :teleported="false"
+            @command="chooseDepart"
+            :disabled="state.departLists.length < 2"
+          >
             <span class="el-dropdown-link">
-              上海建业科技股份有限公司
-              <el-icon class="el-icon--right">
+              {{ state.currentDepart.tenantName }}
+              <el-icon
+                class="el-icon--right"
+                v-if="state.departLists.length > 1"
+              >
                 <arrow-down />
               </el-icon>
             </span>
@@ -26,15 +40,20 @@
                     <div class="ap-enterprise-text-list"> 企业/组织/团队 </div>
                   </div>
                   <div class="ap-enterprise-cont">
-                    <el-dropdown-item>
+                    <el-dropdown-item
+                      v-for="(item, index) in state.departLists"
+                      :command="item"
+                      :disabled="
+                        Number(item.tenantId) === Number(state.tenantId)
+                      "
+                      :key="index"
+                    >
                       <div class="ap-enterprise-cont-list">
-                        上海建业科技股份有限公司
-                        <div class="defart-selected" />
-                      </div>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                      <div class="ap-enterprise-cont-list">
-                        杭州好运科技股份有限公司
+                        {{ item.tenantName }}
+                        <div
+                          class="defart-selected"
+                          v-if="state.tenantId === Number(item.tenantId)"
+                        />
                       </div>
                     </el-dropdown-item>
                   </div>
@@ -291,21 +310,35 @@
     </template>
   </JyDialog>
   <VDownload v-model="showDialog"></VDownload>
+  <JyElMessageBox
+    v-model="state.JyElMessageBox.show"
+    :show="state.JyElMessageBox.show"
+    :defaultAttribute="{}"
+    @confirmClick="confirmClick"
+  >
+    <template #header>
+      {{ state.JyElMessageBox.header.data }}
+    </template>
+    <template #content>
+      {{ state.JyElMessageBox.content.data }}
+    </template>
+  </JyElMessageBox>
 </template>
 
 <script setup>
   import { onMounted, reactive, ref, watch } from 'vue'
   import i18n from '@/utils/i18n'
   import useClickQutside from '@/utils/useClickQutside.js'
-  import VApplicationNav from '@/components/modules/applicationNav.vue'
-  import VMailNav from '@/components/modules/mailNav.vue'
-  import VMessageNav from '@/components/modules/messageNav.vue'
+  import VApplicationNav from './modules/applicationNav.vue'
+  import VMailNav from './modules/mailNav.vue'
+  import VMessageNav from './modules/messageNav.vue'
+  import VDownload from './modules/downloadApp.vue'
   import router from '@/router'
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
   import JyDialog from '@/components/common/JyDialog/index.vue'
-  import VDownload from '@/components/modules/downloadApp.vue'
+
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'
   import { ElMessage } from 'element-plus'
@@ -317,15 +350,65 @@
     application: {
       CurrentSystemType: 'business' // business / system
     },
-    language: i18n.global.locale
+    language: i18n.global.locale,
+    departLists: JSON.parse(localStorage.getItem('departLists')),
+    tenantId: null,
+    currentDepart: {},
+    chooseTenant: {},
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
+    }
   })
+  console.log(localStorage.getItem('departLists'))
 
   const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
   if (CurrentSystemType) {
     state.application.CurrentSystemType = CurrentSystemType
   }
 
+  const getCurrentDepart = () => {
+    const departId = Number(localStorage.getItem('tenantId'))
+    state.tenantId = departId
+    if (departId) {
+      const index = state.departLists.findIndex(
+        i => Number(i.tenantId) === departId
+      )
+      if (index > -1) {
+        state.currentDepart = state.departLists[index]
+      }
+    }
+  }
+
+  const chooseDepart = e => {
+    console.log(e)
+    state.chooseTenant = e
+    state.JyElMessageBox.header.data = '确认切换企业？'
+    state.JyElMessageBox.content.data =
+      '是否确认切换企业，切换企业后未保存的数据将被清除，请谨慎操作'
+    state.JyElMessageBox.show = true
+  }
+
+  const confirmClick = () => {
+    loginApi.chooseOrgan(state.chooseTenant.tenantId).then(
+      () => {
+        localStorage.setItem('tenantId', Number(state.chooseTenant.tenantId))
+        state.JyElMessageBox.show = false
+        window.location.reload()
+      },
+      () => {
+        state.JyElMessageBox.show = false
+      }
+    )
+  }
+
   onMounted(() => {
+    getCurrentDepart()
     // 添加监听 滚动事件
     document.addEventListener('scroll', function () {
       const pageTopbar = document.getElementById('page-topbar')
@@ -387,6 +470,14 @@
     loginApi.logOut().then(res => {
       if (res.success) {
         accountInfoStore.setToken(null)
+        accountInfoStore.setUserName(null)
+        localStorage.removeItem('tenantId')
+        localStorage.removeItem('menusInfo')
+        localStorage.removeItem('departLists')
+        const accountInfo = JSON.parse(localStorage.getItem('accountInfo'))
+        accountInfo.token = ''
+        accountInfo.userName = ''
+        localStorage.setItem('accountInfo', accountInfo)
         // 跳转到登录页
         router.replace({ path: '/login/account' })
         ElMessage.success('退出登录！')

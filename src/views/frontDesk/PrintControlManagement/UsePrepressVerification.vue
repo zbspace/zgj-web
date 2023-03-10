@@ -100,8 +100,8 @@
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { useRouter } from 'vue-router'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   import { UploadFilled } from '@element-plus/icons-vue'
   import fileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   const router = useRouter()

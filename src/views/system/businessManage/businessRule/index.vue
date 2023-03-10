@@ -99,7 +99,7 @@
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import KDialog from '@/views/components/modules/KDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/documentType.json'
   import { ElMessage } from 'element-plus'
 

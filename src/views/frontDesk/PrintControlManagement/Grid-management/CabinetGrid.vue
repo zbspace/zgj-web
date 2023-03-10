@@ -35,8 +35,10 @@
                   </div>
                 </u>
                 <div class="grid-btns">
-                  <div class="check-button" @click="checkAll">一键盘点</div>
-                  <div class="grid-type" @click="goGridType">格口类型</div>
+                  <el-button type="primary" @click="checkAll"
+                    >一键盘点</el-button
+                  >
+                  <el-button @click="goGridType">格口类型</el-button>
                 </div>
               </div>
             </div>
@@ -249,29 +251,14 @@
 </template>
 <script setup>
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
-  import componentsTable from '../../../components/table'
-  import componentsSearchForm from '../../../components/searchForm'
-  import componentsTree from '../../../components/tree'
-  import componentsBreadcrumb from '../../../components/breadcrumb'
-  import componentsPagination from '../../../components/pagination.vue'
-  import componentsTabs from '../../../components/tabs.vue'
   import componentsLayout from '../../../components/Layout.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
   import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import componentsDocumentsDetails from '../../../components/documentsDetails.vue'
   import MouthStatus from '@/views/frontDesk/PrintControlManagement/Grid-management/components/MouthStatus'
-  import MouthCard from '@/views/frontDesk/PrintControlManagement/Grid-management/components/mouthCard'
   import { useRouter } from 'vue-router'
 
   const router = useRouter()
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+
   const state = reactive({
     lastCheckTime: '2022-12-26 12:00:00',
     terminalGrid: '243印章盒001',

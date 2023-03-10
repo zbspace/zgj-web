@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 下载app
+* @FileName downloadApp.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-09 14:09:56
+!-->
 <template>
   <Kdialog
     @update:show="showDialog = $event"
@@ -5,22 +11,22 @@
     title="下载章管家APP"
     :footer="false"
     :height="440"
-    :width="640"
+    :width="600"
   >
     <div class="tooltip-down">
       <div class="qrcode">
         <div class="ios box">
           <div class="code"></div>
-          <div class="title">
-            <img src="../../assets/images/login/ios_down.svg" />
+          <div class="title" v-if="false">
+            <img src="@/assets/images/login/ios_down.svg" />
             <div>{{ $t('t-zgj-DownloadApp.IOS') }}</div>
           </div>
         </div>
 
-        <div class="android box">
+        <div class="android box" v-if="false">
           <div class="code"></div>
           <div class="title">
-            <img src="../../assets/images/login/android_down.svg" />
+            <img src="@/assets/images/login/android_down.svg" />
             <div>{{ $t('t-zgj-DownloadApp.Android') }}</div>
           </div>
         </div>
@@ -32,7 +38,7 @@
 </template>
 
 <script setup>
-  import Kdialog from '@/views/components/modules/kdialog.vue'
+  import Kdialog from '@/views/components/modules/KDialog.vue'
   import { computed } from 'vue'
 
   const props = defineProps({
@@ -64,8 +70,8 @@
     padding: 8px 0;
 
     .qrcode {
-      display: flex;
-      justify-content: space-between;
+      // display: flex;
+      // justify-content: space-between;
       padding: 20px 46px 40px 46px;
 
       .box {
@@ -75,8 +81,8 @@
         align-items: center;
 
         .code {
-          width: 140px;
-          height: 140px;
+          width: 180px;
+          height: 180px;
           background: url(../../assets/images/login/test.png) no-repeat center
             center;
           background-size: 100%;

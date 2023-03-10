@@ -13,3 +13,9 @@
     name: 'App'
   }
 </script>
+
+<style lang="scss">
+  #nprogress .bar {
+    background: var(--jy-primary-6) !important;
+  }
+</style>

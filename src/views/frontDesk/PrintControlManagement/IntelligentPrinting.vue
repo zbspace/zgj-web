@@ -107,7 +107,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '../../components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPersonLazyLoad.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'
   const router = useRouter()
   // const props = defineProps({

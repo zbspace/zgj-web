@@ -443,6 +443,10 @@
                     // }
                     emits('update:modelValue', true)
                     emits('update:departLists', res.data)
+                    window.localStorage.setItem(
+                      'departLists',
+                      JSON.stringify(res.data)
+                    )
                   })
                   .catch(() => {})
               }

@@ -64,7 +64,7 @@
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import componentsBatch from '@/views/components/batch.vue'
   import logs from '@/api/system/logManagement'
   const showDepPerDialog = ref(false)

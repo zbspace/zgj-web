@@ -150,7 +150,7 @@
   import SealLendingJson from '@/views/addDynamicFormJson/SealLending.json'
   import KDialog from '@/views/components/modules/kdialog'
   // import { useRouter } from 'vue-router'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import apis from '@/api/frontDesk/sealManage/sealloanInformation'
   import typeOfSeal from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'

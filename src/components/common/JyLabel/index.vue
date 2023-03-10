@@ -8,7 +8,7 @@
           type="primary"
           style="height: 28px"
           v-if="props.btn"
-          @click="emit('on-click')"
+          @click="emit('on-click', props.btn)"
         >
           {{ props.btn }}
         </el-button>
