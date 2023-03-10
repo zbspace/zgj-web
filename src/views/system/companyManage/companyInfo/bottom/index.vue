@@ -82,8 +82,9 @@
     formData.append('type', 3)
     formData.append('pageWatermark', e)
     apis.updatePageSetting(tenantId.value, formData).then(
-      res => {
+      () => {
         pageWatermarkLoading.value = false
+        localStorage.setItem('watermark', e)
       },
       () => {
         pageWatermark.value = e === '1' ? '2' : '1'

@@ -8,7 +8,7 @@ import { useAccountInfoStore } from '@/store/accountInfo'
 import router from '@/router/index'
 const service = axios.create({
   baseURL: API_BASE_PREFIX,
-  timeout: 5000
+  timeout: 10000
 })
 
 /**

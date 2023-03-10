@@ -1,5 +1,6 @@
+let waterStr = ''
+const id = '1.23452384164.123412415'
 const setWatermark = str => {
-  const id = '1.23452384164.123412415'
   if (document.getElementById(id) !== null) {
     document.body.removeChild(document.getElementById(id))
   }
@@ -7,8 +8,8 @@ const setWatermark = str => {
   can.width = 400
   can.height = 300
   const cans = can.getContext('2d')
-  cans.rotate((-20 * Math.PI) / 180)
-  cans.font = '17px Vedana'
+  cans.rotate((-25 * Math.PI) / 180)
+  cans.font = '14px Vedana'
   cans.fillStyle = '#666666'
   cans.textAlign = 'center'
   cans.textBaseline = 'Middle'
@@ -27,16 +28,21 @@ const setWatermark = str => {
   document.body.appendChild(div)
   return id
 }
+
+window.onresize = () => {
+  if (document.getElementById(id) !== null) {
+    setWatermark(waterStr)}
+  }
 // 添加水印
-export const setWaterMark = str1 => {
-  let id = setWatermark(str1)
+export const setWaterMark = str => {
+  waterStr = str
+  let id = setWatermark(str)
   if (document.getElementById(id) === null) {
-    id = setWatermark(str1)
+    id = setWatermark(str)
   }
 }
 // 移除水印
 export const removeWatermark = () => {
-  const id = '1.23452384164.123412415'
   if (document.getElementById(id) !== null) {
     document.body.removeChild(document.getElementById(id))
   }
