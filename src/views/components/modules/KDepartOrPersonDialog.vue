@@ -4,6 +4,7 @@
     :show="props.show"
     :title="$t('t-zgj-list.SelectionDepartment')"
     @close="closeDialog"
+    @confirm="confirmDialog"
     :confirmText="$t('t-zgj-select.confirm')"
     :concelText="$t('t-zgj-operation.cancel')"
     centerBtn
@@ -25,7 +26,7 @@
         <div v-if="firstShow">
           <KDepartTab
             ref="kdepart"
-            :initQueryParams="queryParams"
+            :initQueryParams="props.queryParams"
             :apiModule="apiModule"
             :selectedDepart="selectedDepart"
             @update:selectedDepart="selectedDepart = $event"
@@ -34,7 +35,7 @@
 
           <KUserTab
             ref="kuser"
-            :initQueryParams="queryParams"
+            :initQueryParams="props.queryParams"
             :apiModule="apiModule"
             :selectedUser="selectedUser"
             @update:selectedUser="selectedUser = $event"
@@ -47,8 +48,13 @@
       <div class="selection-right user-select">
         <div class="select-right-column c-p">
           <div class="clear-n">
-            已选：{{ selectedDepart.length }} 个部门，
-            {{ selectedUser.length }}名成员
+            已选：
+            <span v-if="selectedDepart.length !== 0">
+              {{ selectedDepart.length }} 个部门，
+            </span>
+            <span v-if="selectedUser.length !== 0">
+              {{ selectedUser.length }}名成员，
+            </span>
           </div>
           <div class="select-close clear-t" @click="clearSelected">清空 </div>
         </div>
@@ -217,7 +223,8 @@
   import KDepartTab from './modules/KDepartTab.vue'
   import KUserTab from './modules/KUserTab.vue'
   import Api from '@/api/common/organOrPerson'
-  const emits = defineEmits(['update:show'])
+  import { ElMessage } from 'element-plus'
+  const emits = defineEmits(['update:show', 'update:searchSelected'])
 
   const props = defineProps({
     show: {
@@ -226,19 +233,17 @@
     },
     apiModule: {
       type: String,
-      default: 'systemOrganOrPerson'
+      default: ''
     },
     queryParams: {
       type: Object,
       default: () => {
-        return {
-          roleId: 'r1'
-        }
+        return {}
       }
     },
     editDeploy: {
       type: Boolean,
-      default: true
+      default: false
     },
     searchSelected: {
       type: Array,
@@ -249,7 +254,7 @@
     tabsShow: {
       type: Array,
       default: () => {
-        return ['organ', 'user']
+        return []
       }
     },
     activeTab: {
@@ -292,22 +297,22 @@
   const selectedUser = ref([])
 
   const firstShow = ref(false)
+  const apiInterface = (params, apiKey) => {
+    return new Promise((resolve, reject) => {
+      Api[props.apiModule]
+        [apiKey](params)
+        .then(res => {
+          resolve(res)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
   // 获取选中数据 - 修改时
   if (props.editDeploy) {
-    const resultSelected = params => {
-      return new Promise((resolve, reject) => {
-        Api[props.apiModule]
-          .selected(params)
-          .then(res => {
-            resolve(res)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    }
     const paramsKey = Api[props.apiModule].key
-    resultSelected(props.queryParams[paramsKey]).then(res => {
+    apiInterface(props.queryParams[paramsKey], 'selected').then(res => {
       selectedDepart.value = res.data.organs
       selectedUser.value = res.data.users
       firstShow.value = true
@@ -320,10 +325,6 @@
     allSelected.value = toRefs(props.searchSelected)
   }
 
-  // 关闭弹窗
-  const closeDialog = () => {
-    emits('update:show', false)
-  }
   const kdepart = ref(null)
   const kuser = ref(null)
   // 清空选中项
@@ -342,6 +343,41 @@
   const changeSwitch = (switchStatus, attr) => {
     kdepart.value.changeSwitch(switchStatus, attr)
   }
+
+  // 关闭弹窗
+  const closeDialog = () => {
+    emits('update:show', false)
+  }
+  // 导出数据
+  const changeResult = ref([])
+  const confirmDialog = () => {
+    const saveParams = {
+      ...props.queryParams,
+      organs: selectedDepart.value,
+      users: selectedUser.value
+    }
+    // 编辑
+    if (props.editDeploy) {
+      apiInterface(saveParams, 'save')
+        .then(res => {
+          ElMessage.success(res.msg || '操作成功')
+          emits('update:show', false)
+        })
+        .catch(() => {
+          // emits('update:show', false)
+        })
+      return
+    }
+
+    // 非编辑 - 导出（相应模式）
+    props.tabsShow.forEach(item => {
+      item === 'organ' &&
+        (changeResult.value = changeResult.value.concat(selectedDepart.value))
+      item === 'user' &&
+        (changeResult.value = changeResult.value.concat(selectedUser.value))
+    })
+    emits('update:searchSelected', changeResult.value)
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -351,7 +387,16 @@
   .selection-content {
     display: flex;
     height: 100%;
-
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      height: calc(100% + 24px);
+      width: 1px;
+      background: rgba($color: #000000, $alpha: 0.05);
+    }
     .selection-left {
       position: relative;
       flex: 1;

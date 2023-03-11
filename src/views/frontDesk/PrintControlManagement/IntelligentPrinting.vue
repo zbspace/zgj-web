@@ -74,6 +74,13 @@
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
+      :searchSelected="searchSelected"
+      @update:searchSelected="searchSelected = $event"
+      :queryParams="queryParams"
+      :tabsShow="tabsShow"
+      :activeTab="activeTab"
+      :apiModule="apiModule"
+      editDeploy
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
@@ -110,14 +117,7 @@
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'
   const router = useRouter()
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
-  // const emit = defineEmits([])
+
   const state = reactive({
     componentsTabs: {
       data: [
@@ -529,7 +529,15 @@
       'show-icon': false
     }
   })
+
+  // 测试权限弹框 Demo↓
   const showDepPerDialog = ref(false)
+  const searchSelected = ref([])
+  const queryParams = ref({ roleId: 'r1' })
+  const tabsShow = ref(['organ', 'user'])
+  const activeTab = ref('user')
+  const apiModule = ref('systemOrganOrPerson')
+  // 测试权限弹框 ↑
   const goInnerPage = (path, params) => {
     const routeObj = { path }
     if (params) {
