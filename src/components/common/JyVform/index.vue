@@ -23,7 +23,24 @@
       :admin="admin"
     />
 
-    <!-- <JySelectSeal v-model="visible" /> -->
+    <!-- 印章选择 -->
+    <JySelectSeal
+      v-model="sealSelectVisible"
+      v-if="sealSelectVisible"
+      @on-submit="submit"
+    />
+
+    <!-- 往来单位 -->
+    <JyRelatedCompany
+      v-model="relatedCompanyVisible"
+      v-if="relatedCompanyVisible"
+      @on-submit="submit"
+    />
+
+    <kDepartOrPersonVue
+      :show="agentManVisible"
+      @update:searchSelected="submit"
+    />
   </div>
 </template>
 
@@ -31,8 +48,14 @@
   import { ref, onMounted, getCurrentInstance, computed } from 'vue'
   import { designerConfig } from './designerConfig'
   import { useVformInfoStore } from '@/store/vform'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  const { proxy } = getCurrentInstance()
   const vformInfoStore = useVformInfoStore()
   const vFormRef = ref(null)
+  const sealSelectVisible = ref(false)
+  const relatedCompanyVisible = ref(false)
+  const agentManVisible = ref(true)
+  const curInstance = ref(null)
 
   const props = defineProps({
     // 模式： 默认为设计模式  render渲染
@@ -251,15 +274,43 @@
   const getFormJson = () => {
     return vFormRef.value.getFormJson() || ''
   }
-  // ---------------------------------business---------------------------------------------
 
+  // ---------------------------------business---------------------------------------------
+  // 给全局属性vform添加 属性和方法
+  const provideProperties = () => {
+    // 显示印章选择
+    proxy.$jyVform.showSelectSeal = instance => {
+      sealSelectVisible.value = true
+      curInstance.value = instance
+    }
+    // 显示往来单位选择
+    proxy.$jyVform.showRelatedCompany = instance => {
+      relatedCompanyVisible.value = true
+      curInstance.value = instance
+    }
+
+    // 员工选择
+    proxy.$jyVform.showSelectUser = instance => {
+      agentManVisible.value = true
+      curInstance.value = instance
+    }
+  }
+
+  // 通过vform中的实例调用方法
+  const submit = value => {
+    console.log('--->', value)
+    sealSelectVisible.value = false
+    relatedCompanyVisible.value = false
+    agentManVisible.value = false
+    curInstance.value.callBackFn(value)
+  }
   // ---------------------------------business end-----------------------------------------
 
   onMounted(() => {
     console.log('--->', 'vform加载完成')
-    vFormRef.value.addEC('JyVform', getCurrentInstance())
     emit('on-loaded')
     vformInfoStore.setFileTypeList()
+    provideProperties()
   })
 
   defineExpose({
