@@ -379,6 +379,7 @@
         (changeResult.value = changeResult.value.concat(selectedUser.value))
     })
     emits('update:searchSelected', changeResult.value)
+    emits('update:show', false)
   }
 </script>
 
