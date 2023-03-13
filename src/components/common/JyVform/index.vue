@@ -10,6 +10,7 @@
       @appendButtonClick="appendButtonClick"
       @buttonClick="buttonClick"
       :fileTypeList="fileTypeList"
+      :businessType="businessType"
     />
     <v-form-designer
       ref="vFormRef"
@@ -20,6 +21,7 @@
       :prefabricationFieldList="prefabricationFieldList"
       :templateList="templateList"
       :fileTypeList="fileTypeList"
+      :userType="userType"
     />
 
     <!-- 印章选择 -->

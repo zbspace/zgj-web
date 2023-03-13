@@ -106,6 +106,7 @@
     <div class="exhibition" v-if="state.currentState === '2'">
       <div class="info-box">
         <JyVform
+          mode="render"
           :formJson="FillFormInformationSeal"
           :formData="state.SealformData"
           :optionData="state.SealoptionData"
@@ -269,6 +270,7 @@
       height: 100%;
       .info-box {
         width: 100%;
+        padding: 20px;
       }
     }
 

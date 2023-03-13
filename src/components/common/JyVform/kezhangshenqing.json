@@ -88,7 +88,8 @@
             "routineSealRequiredTextShow": false
           }
         ],
-        "label": "sealname"
+        "label": "sealname",
+        "showSealType": true
       },
       "id": "sealName"
     }
