@@ -20,7 +20,6 @@
       :prefabricationFieldList="prefabricationFieldList"
       :templateList="templateList"
       :fileTypeList="fileTypeList"
-      :admin="admin"
     />
 
     <!-- 印章选择 -->
@@ -43,9 +42,10 @@
       @update:show="agentManVisible = $event"
       :searchSelected="[]"
       @update:searchSelected="submit"
-      :tabsShow="['user']"
+      :tabsShow="tabsShow"
       apiModule="systemOrganOrPerson"
       :queryParams="queryParams"
+      v-if="agentManVisible"
     />
   </div>
 </template>
@@ -72,6 +72,7 @@
   const curInstance = ref(null)
   const queryParams = { roleId: 'r1' }
   const prefabricationFieldList = ref([])
+  const tabsShow = ref([]) // 'organ', 'user'
 
   const props = defineProps({
     // 模式： 默认为设计模式  render渲染
@@ -130,21 +131,6 @@
       default: () => []
     },
 
-    // 模板list
-    templateList: {
-      type: Array,
-      default: () => [
-        // {
-        //   title: '单列表单',
-        //   imgUrl:
-        //     'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
-        //   jsonUrl:
-        //     'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/json1.txt',
-        //   description: '表单模板详细说明...'
-        // }
-      ]
-    },
-
     // 用户类型 root能看见所有功能
     userType: {
       type: String,
@@ -194,6 +180,7 @@
             description: '用印申请'
           }
         ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         prefabricationFieldList.value = ['sealName']
         break
       case '3': // 转办申请
@@ -202,10 +189,11 @@
             title: '转办申请',
             imgUrl:
               'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
-            jsonUrl: JSON.stringify(yysq),
+            jsonUrl: JSON.stringify(zbsq),
             description: '转办申请'
           }
         ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         prefabricationFieldList.value = ['applicantInfo']
         break
       case '4': // 重置申请
@@ -218,9 +206,23 @@
             description: '转办申请'
           }
         ]
-        prefabricationFieldList.value = ['status', 'sealName', '']
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        prefabricationFieldList.value = ['sealName']
         break
-      default: // 6刻章申请 7变更申请 停用申请 启用申请
+      case '7': // 变更申请
+        list = [
+          {
+            title: '变更申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(bgsq),
+            description: '变更申请'
+          }
+        ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        prefabricationFieldList.value = ['sealName', 'applicantInfo']
+        break
+      default: // 6刻章申请 停用申请 启用申请
         list = [
           {
             title: '刻章申请',
@@ -230,6 +232,7 @@
             description: '转办申请'
           }
         ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         prefabricationFieldList.value = ['sealName']
         break
     }
@@ -362,7 +365,9 @@
     }
 
     // 员工选择
-    proxy.$jyVform.showAgentMan = instance => {
+    proxy.$jyVform.showAgentMan = (instance, str) => {
+      tabsShow.value = []
+      tabsShow.value.push(str)
       agentManVisible.value = true
       curInstance.value = instance
     }

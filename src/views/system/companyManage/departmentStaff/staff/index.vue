@@ -101,7 +101,7 @@
     </componentsLayout>
     <!-- 新增员工 -->
     <KDialog
-      @update:show="showStaffDialog = $event"
+      @update:show="showDepPerDialog = $event"
       :show="showStaffDialog"
       title="新增"
       :centerBtn="true"
@@ -109,7 +109,8 @@
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
-      @close="submitStaffForm"
+      @confirm="submitStaffForm"
+      @close="showDepPerDialog = false"
     >
       <el-form
         :model="state.componentsAddForm.formData"
@@ -140,17 +141,21 @@
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="state.componentsAddForm.formData.hostOrganId"
+              v-model="state.componentsAddForm.formData.hostOrgan"
               placeholder="请选择"
             />
+            <el-input
+              type="hidden"
+              v-model="state.componentsAddForm.formData.hostOrganId"
+            ></el-input>
             <div class="ap-box-contBox-icon">
               <el-icon
-                v-if="state.componentsAddForm.formData.hostOrganId"
-                @click="clear('hostOrganId')"
+                v-if="state.componentsAddForm.formData.hostOrgan"
+                @click="clear('hostOrgan')"
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('hostOrganId')"
+                @click="chooseOrgan('hostOrgan')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -163,17 +168,24 @@
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
+              v-model="state.componentsAddForm.formData.partTimeOrgan"
+              placeholder="请选择"
+            />
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              type="hidden"
               v-model="state.componentsAddForm.formData.partTimeOrganIds"
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
               <el-icon
                 v-if="state.componentsAddForm.formData.partTimeOrganIds"
-                @click="clear('partTimeOrganIds')"
+                @click="clear('partTimeOrgan')"
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('partTimeOrganIds')"
+                @click="chooseOrgan('partTimeOrgan')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -204,17 +216,24 @@
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
+              v-model="state.componentsAddForm.formData.directLeaderUser"
+              placeholder="请选择"
+            />
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              type="hidden"
               v-model="state.componentsAddForm.formData.directLeaderUserId"
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
               <el-icon
                 v-if="state.componentsAddForm.formData.directLeaderUserId"
-                @click="clear('directLeaderUserId')"
+                @click="clear('directLeaderUser')"
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('directLeaderUserId')"
+                @click="chooseOrgan('directLeaderUser')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -227,17 +246,23 @@
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
+              v-model="state.componentsAddForm.formData.roles"
+              placeholder="请选择"
+            />
+            <el-input
+              class="ap-box-contBox-input width-100"
+              type="hidden"
               v-model="state.componentsAddForm.formData.roleIds"
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
               <el-icon
                 v-if="state.componentsAddForm.formData.roleIds"
-                @click="clear('roleIds')"
+                @click="clear('roles')"
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('roleIds')"
+                @click="chooseOrgan('roles')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -312,6 +337,9 @@
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
+      :tabsShow="['organ']"
+      @update:searchSelected="submitSelectDepart"
+      :searchSelected="searchSelected"
     >
     </kDepartOrPersonVue>
     <!-- 单据详情 -->
@@ -385,14 +413,30 @@
   import { ElMessage } from 'element-plus'
   import api from '@/api/system/companyManagement/departmentStaff'
 
+  // 显示新增员工弹窗
   const showStaffDialog = ref(false)
+  // 显示部门弹窗
   const showDepPerDialog = ref(false)
+  // 员工表单Ref
   const formStaffRef = ref(null)
   const depChoose = ref(null)
+  // 显示修改密码他创
   const showPass = ref(false)
   const passTitle = ref('修改密码')
+  // 显示重置人脸弹窗
   const showUpload = ref(false)
+  // 侧边栏树选中id
   const organId = ref(false)
+  // 部门弹窗选中信息
+  const searchSelected = ref([])
+  // 部门选中信息
+  const hostOrganSelected = ref([])
+  // 兼职部门选中信息
+  const partTimehostOrganSelected = ref([])
+  // 角色选中信息
+  const rolesSelected = ref([])
+  // 主管选中信息
+  const directLeaderUserSelected = ref([])
   const state = reactive({
     JyElMessageBox: {
       show: false,
@@ -411,14 +455,17 @@
         accountNo: '',
         userTel: '',
         hostOrganId: '',
+        hostOrgan: '',
         partTimeOrganIds: '',
         userTitle: '',
         userMail: '',
         roleIds: '',
+        roles: '',
         qweiNo: '',
         dingdingNo: '',
         userNo: '',
         directLeaderUserId: '',
+        directLeaderUser: '',
         userFaceId: '',
         readme: ''
       },
@@ -747,6 +794,7 @@
       userIds: []
     }
   })
+
   // 筛选条件按钮
   const clickSubmit = (item, index) => {
     console.log(item)
@@ -802,13 +850,74 @@
   }
   // 清除部门信息
   const clear = type => {
-    state.componentsAddForm.formData[type + 'Id'] = ''
-    state.componentsAddForm.formData[type + 'Name'] = ''
+    if (type === 'hostOrgan') {
+      hostOrganSelected.value = []
+      state.componentsAddForm.fromData.hostOrgan = ''
+      state.componentsAddForm.fromData.hostOrganId = ''
+    }
+    if (depChoose.value === 'partTimeOrgan') {
+      partTimehostOrganSelected.value = []
+      state.componentsAddForm.formData.partTimeOrganIds = ''
+      state.componentsAddForm.formData.partTimeOrgan = ''
+    }
+    if (depChoose.value === 'roles') {
+      rolesSelected.value = []
+      state.componentsAddForm.formData.roleIds = ''
+      state.componentsAddForm.formData.roles = ''
+    }
+    if (depChoose.value === 'directLeaderUser') {
+      directLeaderUserSelected.value = []
+      state.componentsAddForm.formData.directLeaderUserId = ''
+      state.componentsAddForm.formData.directLeaderUser = ''
+    }
   }
   // 选择部门弹窗
   const chooseOrgan = type => {
     depChoose.value = type
+    if (depChoose.value === 'hostOrgan') {
+      searchSelected.value = hostOrganSelected.value
+    }
+    if (depChoose.value === 'partTimeOrgan') {
+      searchSelected.value = partTimehostOrganSelected.value
+    }
+    if (depChoose.value === 'roles') {
+      searchSelected.value = rolesSelected.value
+    }
+    if (depChoose.value === 'directLeaderUser') {
+      searchSelected.value = directLeaderUserSelected.value
+    }
     showDepPerDialog.value = true
+  }
+
+  // 获取部门
+  const submitSelectDepart = item => {
+    const organIds = []
+    const organNames = []
+    item.forEach(el => {
+      organIds.push(el.id)
+      organNames.push(el.name)
+    })
+    if (depChoose.value === 'hostOrgan') {
+      hostOrganSelected.value = item
+      state.componentsAddForm.formData.hostOrgan = item[0].name
+      state.componentsAddForm.formData.hostOrganId = item[0].id
+    }
+    if (depChoose.value === 'partTimeOrgan') {
+      partTimehostOrganSelected.value = item
+      state.componentsAddForm.formData.partTimeOrganIds = organIds
+      state.componentsAddForm.formData.partTimeOrgan = organNames.join('、')
+    }
+    if (depChoose.value === 'roles') {
+      rolesSelected.value = item
+      state.componentsAddForm.formData.roleIds = organIds
+      state.componentsAddForm.formData.roles = organNames.join('、')
+    }
+    if (depChoose.value === 'directLeaderUser') {
+      directLeaderUserSelected.value = item
+      state.componentsAddForm.formData.directLeaderUserId = item[0].id
+      state.componentsAddForm.formData.directLeaderUser = item[0].name
+    }
+    showDepPerDialog.value = false
   }
   // 上传图片
   const handleAvatarSuccess = (res, file) => {
@@ -967,9 +1076,11 @@
   }
   // 提交新增表单
   const submitStaffForm = data => {
-    if (!data) {
-      return
-    }
+    console.log(data)
+    // if (!data) {
+    //   return false
+    // }
+    console.log(formStaffRef)
     formStaffRef.value.validate(valid => {
       if (valid) {
         console.log(state.componentsAddForm.formData)
@@ -978,7 +1089,9 @@
         ElMessage.error('校验失败')
       }
     })
-    showStaffDialog.value = false
+  }
+  const closeStaffFrom = () => {
+    showDepPerDialog.value = false
   }
   // 分页页数变化
   const currentChange = data => {
