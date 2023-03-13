@@ -1,0 +1,50 @@
+{
+  "widgetList": [
+    {
+      "key": 80173,
+      "type": "agentMan",
+      "icon": "agentMan",
+      "formItemFlag": true,
+      "options": {
+        "name": "agentMan",
+        "labelAlign": "right",
+        "type": "text",
+        "size": "",
+        "labelWidth": 100,
+        "readonly": false,
+        "disabled": false,
+        "hidden": false,
+        "clearable": true,
+        "labelHidden": true,
+        "required": true,
+        "requiredHint": "",
+        "defaultValue": {
+          "unitIds": "",
+          "unitNames": ""
+        },
+        "customClass": [],
+        "onChange": "",
+        "label": "agentman"
+      },
+      "id": "agentMan"
+    }
+  ],
+  "formConfig": {
+    "modelName": "formData",
+    "refName": "vForm",
+    "rulesName": "rules",
+    "labelWidth": 80,
+    "labelPosition": "left",
+    "size": "",
+    "labelAlign": "label-left-align",
+    "cssCode": "",
+    "customClass": [],
+    "functions": "",
+    "layoutType": "PC",
+    "jsonVersion": 3,
+    "dataSources": [],
+    "onFormCreated": "",
+    "onFormMounted": "",
+    "onFormDataChange": ""
+  }
+}

@@ -233,12 +233,14 @@
     },
     apiModule: {
       type: String,
-      default: ''
+      default: 'systemOrganOrPerson'
     },
     queryParams: {
       type: Object,
       default: () => {
-        return {}
+        return {
+          roleId: 'r1'
+        }
       }
     },
     editDeploy: {
@@ -254,7 +256,7 @@
     tabsShow: {
       type: Array,
       default: () => {
-        return []
+        return ['organ', 'user']
       }
     },
     activeTab: {

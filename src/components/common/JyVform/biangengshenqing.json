@@ -1,0 +1,185 @@
+{
+  "widgetList": [
+    {
+      "key": 33152,
+      "type": "input",
+      "alias": "",
+      "icon": "text-field",
+      "formItemFlag": true,
+      "options": {
+        "name": "input52014",
+        "label": "单据编号",
+        "labelAlign": "",
+        "type": "text",
+        "defaultValue": "",
+        "placeholder": "",
+        "columnWidth": "200px",
+        "size": "",
+        "labelWidth": null,
+        "labelHidden": false,
+        "readonly": false,
+        "disabled": true,
+        "hidden": false,
+        "clearable": true,
+        "showPassword": false,
+        "required": false,
+        "requiredHint": "",
+        "validation": "",
+        "validationHint": "",
+        "customClass": [],
+        "labelIconClass": null,
+        "labelIconPosition": "rear",
+        "labelTooltip": null,
+        "minLength": null,
+        "maxLength": null,
+        "showWordLimit": false,
+        "prefixIcon": "",
+        "suffixIcon": "",
+        "appendButton": false,
+        "appendButtonDisabled": false,
+        "buttonIcon": "custom-search",
+        "onCreated": "",
+        "onMounted": "",
+        "onInput": "",
+        "onChange": "",
+        "onFocus": "",
+        "onBlur": "",
+        "onValidate": "",
+        "onAppendButtonClick": ""
+      },
+      "id": "input52014"
+    },
+    {
+      "key": 30330,
+      "type": "sealName",
+      "icon": "sealName",
+      "formItemFlag": true,
+      "options": {
+        "name": "sealName",
+        "labelAlign": "right",
+        "defaultValue": [
+          {
+            "seal": "",
+            "sealId": "",
+            "routineSeal": "",
+            "sealRequiredTextShow": false,
+            "routineSealRequiredTextShow": false
+          }
+        ],
+        "placeholder": "",
+        "columnWidth": "200px",
+        "labelWidth": 100,
+        "labelHidden": false,
+        "size": "",
+        "readonly": false,
+        "disabled": false,
+        "hidden": false,
+        "required": true,
+        "clearable": true,
+        "requiredHint": "",
+        "customClass": [],
+        "onChange": "",
+        "filedList": [
+          {
+            "seal": "",
+            "sealId": "",
+            "routineSeal": "",
+            "sealRequiredTextShow": false,
+            "routineSealRequiredTextShow": false
+          }
+        ],
+        "label": "sealname"
+      },
+      "id": "sealName"
+    },
+    {
+      "key": 64862,
+      "type": "applicantInfo",
+      "icon": "applicantInfo",
+      "formItemFlag": true,
+      "options": {
+        "name": "applicantInfo",
+        "labelAlign": "right",
+        "type": "text",
+        "defaultValue": {
+          "applicant": "",
+          "department": ""
+        },
+        "placeholder": "",
+        "columnWidth": "200px",
+        "size": "default",
+        "labelWidth": 100,
+        "labelHidden": false,
+        "readonly": true,
+        "disabled": false,
+        "hidden": false,
+        "clearable": true,
+        "showPassword": false,
+        "filterable": false,
+        "required": true,
+        "requiredHint": "",
+        "validation": "",
+        "validationHint": "",
+        "dsEnabled": false,
+        "dsName": "",
+        "dataSetName": "",
+        "labelKey": "label",
+        "valueKey": "value",
+        "optionItems": [
+          {
+            "label": "select 1",
+            "value": 1
+          },
+          {
+            "label": "select 2",
+            "value": 2
+          },
+          {
+            "label": "select 3",
+            "value": 3
+          }
+        ],
+        "customClass": "",
+        "labelIconClass": null,
+        "labelIconPosition": "rear",
+        "labelTooltip": null,
+        "minLength": null,
+        "maxLength": null,
+        "showWordLimit": false,
+        "prefixIcon": "",
+        "suffixIcon": "",
+        "appendButton": false,
+        "appendButtonDisabled": false,
+        "buttonIcon": "custom-search",
+        "onCreated": "",
+        "onMounted": "",
+        "onInput": "",
+        "onChange": "",
+        "onFocus": "",
+        "onBlur": "",
+        "onValidate": "",
+        "onAppendButtonClick": "",
+        "label": "applicantinfo"
+      },
+      "id": "applicantInfo"
+    }
+  ],
+  "formConfig": {
+    "modelName": "formData",
+    "refName": "vForm",
+    "rulesName": "rules",
+    "labelWidth": 80,
+    "labelPosition": "left",
+    "size": "",
+    "labelAlign": "label-left-align",
+    "cssCode": "",
+    "customClass": "",
+    "functions": "",
+    "layoutType": "PC",
+    "jsonVersion": 3,
+    "dataSources": [],
+    "onFormCreated": "",
+    "onFormMounted": "",
+    "onFormDataChange": ""
+  }
+}
