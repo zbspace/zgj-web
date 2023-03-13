@@ -1,0 +1,191 @@
+{
+  "widgetList": [
+    {
+      "key": 106937,
+      "type": "textarea",
+      "icon": "textarea-field",
+      "formItemFlag": true,
+      "options": {
+        "name": "readme",
+        "label": "重置理由",
+        "labelAlign": "label-right-align",
+        "rows": 3,
+        "defaultValue": "",
+        "placeholder": "请输入",
+        "columnWidth": "200px",
+        "size": "",
+        "labelWidth": null,
+        "labelHidden": false,
+        "readonly": false,
+        "disabled": false,
+        "hidden": false,
+        "required": true,
+        "requiredHint": "请输入",
+        "validation": "",
+        "validationHint": "",
+        "customClass": [],
+        "labelIconClass": null,
+        "labelIconPosition": "rear",
+        "labelTooltip": null,
+        "minLength": null,
+        "maxLength": null,
+        "showWordLimit": false,
+        "onCreated": "",
+        "onMounted": "",
+        "onInput": "",
+        "onChange": "",
+        "onFocus": "",
+        "onBlur": "",
+        "onValidate": ""
+      },
+      "id": "textarea64277"
+    },
+    {
+      "key": 50790,
+      "type": "radio",
+      "icon": "radio-field",
+      "formItemFlag": true,
+      "options": {
+        "name": "status",
+        "label": "重置状态",
+        "labelAlign": "label-right-align",
+        "defaultValue": 1,
+        "columnWidth": "200px",
+        "size": "",
+        "displayStyle": "inline",
+        "buttonStyle": false,
+        "border": false,
+        "labelWidth": null,
+        "labelHidden": false,
+        "disabled": false,
+        "hidden": false,
+        "dsEnabled": false,
+        "dsName": "",
+        "dataSetName": "",
+        "labelKey": "label",
+        "valueKey": "value",
+        "optionItems": [
+          {
+            "label": "补盖或重盖",
+            "value": 1
+          },
+          {
+            "label": "完成盖章（待归档）",
+            "value": 2
+          }
+        ],
+        "fieldLinkage": [
+          {
+            "value": "1",
+            "linkages": [
+              {
+                "fieldName": "sealName",
+                "show": false
+              }
+            ]
+          },
+          {
+            "value": "2",
+            "linkages": [
+              {
+                "fieldName": "sealName",
+                "show": true
+              }
+            ]
+          }
+        ],
+        "required": false,
+        "requiredHint": "",
+        "validation": "",
+        "validationHint": "",
+        "customClass": "",
+        "labelIconClass": null,
+        "labelIconPosition": "rear",
+        "labelTooltip": null,
+        "onCreated": "",
+        "onMounted": "",
+        "onChange": "",
+        "onValidate": ""
+      },
+      "id": "radio73626"
+    },
+    {
+      "key": 104546,
+      "type": "static-text",
+      "icon": "static-text",
+      "formItemFlag": false,
+      "options": {
+        "name": "statictext76694",
+        "columnWidth": "200px",
+        "hidden": false,
+        "textContent": "需要补盖或重盖的印章",
+        "customClass": [],
+        "onCreated": "",
+        "onMounted": "",
+        "label": "static-text"
+      },
+      "id": "statictext76694"
+    },
+    {
+      "key": 30330,
+      "type": "sealName",
+      "icon": "sealName",
+      "formItemFlag": true,
+      "options": {
+        "name": "sealName",
+        "labelAlign": "right",
+        "defaultValue": [
+          {
+            "seal": "",
+            "sealId": "",
+            "routineSeal": "",
+            "sealRequiredTextShow": false,
+            "routineSealRequiredTextShow": false
+          }
+        ],
+        "placeholder": "",
+        "columnWidth": "200px",
+        "labelWidth": 100,
+        "labelHidden": false,
+        "size": "",
+        "readonly": false,
+        "disabled": false,
+        "hidden": false,
+        "required": true,
+        "clearable": true,
+        "requiredHint": "",
+        "customClass": "",
+        "onChange": "",
+        "filedList": [
+          {
+            "seal": "",
+            "sealId": "",
+            "routineSeal": "",
+            "sealRequiredTextShow": false,
+            "routineSealRequiredTextShow": false
+          }
+        ],
+        "label": "sealname"
+      },
+      "id": "sealName"
+    }
+  ],
+  "formConfig": {
+    "modelName": "formData",
+    "refName": "vForm",
+    "rulesName": "rules",
+    "labelWidth": 80,
+    "labelPosition": "left",
+    "size": "",
+    "labelAlign": "label-left-align",
+    "cssCode": "",
+    "customClass": "",
+    "functions": "",
+    "layoutType": "PC",
+    "jsonVersion": 3,
+    "dataSources": [],
+    "onFormCreated": "",
+    "onFormMounted": "",
+    "onFormDataChange": ""
+  }
+}

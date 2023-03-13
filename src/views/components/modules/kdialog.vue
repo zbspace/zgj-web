@@ -105,11 +105,12 @@
             <div
               class="confirm btn"
               @click.stop="handleShow(false, true, 'confrim')"
-              >{{ props.confirmText }}</div
             >
-            <div class="concel btn" @click.stop="handleShow(false, true)">{{
-              props.concelText
-            }}</div>
+              {{ props.confirmText }}
+            </div>
+            <div class="concel btn" @click.stop="handleShow(false, true)">
+              {{ props.concelText }}
+            </div>
           </div>
 
           <!-- 一个按钮 -->
@@ -118,9 +119,9 @@
             v-if="oneBtn"
             :class="!props.centerBtn ? 'one-btn' : 'two-btn'"
           >
-            <div class="confirm btn" @click.stop="handleShow(false, true)">{{
-              props.confirmText
-            }}</div>
+            <div class="confirm btn" @click.stop="handleShow(false, true)">
+              {{ props.confirmText }}
+            </div>
           </div>
         </div>
       </slot>
@@ -149,7 +150,7 @@
 
   fackClickOutSide()
 
-  const emit = defineEmits(['update:show', 'close'])
+  const emit = defineEmits(['update:show', 'close', 'confirm'])
   const props = defineProps({
     show: {
       type: Boolean,
@@ -234,19 +235,23 @@
     if (!modal) {
       return
     }
+    showDialog.value = val
     if (type === 'confrim') {
-      emit('close', true)
-      emit('update:show', true)
+      showDialog.value = !val
+      emit('confirm')
+      emit('update:show', false)
       return
     }
 
-    showDialog.value = val
     const timer = setTimeout(() => {
       clearTimeout(timer)
-      emit('update:show', val)
-      emit('close')
       showDialog.value = !val
-    }, 200)
+      const t2 = setTimeout(() => {
+        clearTimeout(t2)
+        emit('update:show', false)
+        emit('close')
+      }, 0)
+    }, 300)
   }
 
   // 监听全屏事件

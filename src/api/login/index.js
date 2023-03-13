@@ -36,4 +36,20 @@ api.chooseOrgan = params => {
     url: `/user/setLoginTenant/${params}`
   })
 }
+// 获取验证图片  以及token
+api.reqGet = params => {
+  return request({
+    url: '/login/getCaptchaInfo/blockPuzzle',
+    method: 'GET',
+    params
+  })
+}
+
+api.reqChecked = data => {
+  return request({
+    url: '/login/checkCaptcha',
+    method: 'POST',
+    data
+  })
+}
 export default api

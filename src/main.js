@@ -24,6 +24,7 @@ import './style/index.scss'
 // import './mock/index'
 ;(async () => {
   const app = createApp(App)
+  app.config.globalProperties.$jyVform = {}
   app
     .use(store)
     .use(router)

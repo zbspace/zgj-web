@@ -211,7 +211,7 @@
         </div>
       </div>
     </div>
-
+    <Verify captchaType="blockPuzzle" ref="verify"></Verify>
     <!-- 重置密码弹窗 -->
     <UpdagePasswordDialog
       v-if="state.showUpdateDialog"
@@ -227,18 +227,20 @@
 </template>
 <script setup>
   import i18n from '@/utils/i18n'
-  import { reactive, watch, onMounted, ref } from 'vue'
+  import { reactive, watch, onMounted, ref, getCurrentInstance } from 'vue'
   import VerificationBtn from '../components/VerificationBtn.vue'
   import UpdagePasswordDialog from './UpdagePasswordDialog.vue'
   import ImmediateRegister from './Register.vue'
   import { useAccountInfoStore } from '@/store/accountInfo'
-  import { useRoute, useRouter } from 'vue-router'
+  // import { useRoute, useRouter } from 'vue-router'
   import { ElMessage } from 'element-plus'
   import md5 from 'js-md5'
   import loginApi from '@/api/login'
+  // import Verify from '../components/verifition/Verify'
+  // const { proxy } = getCurrentInstance()
   const accountInfo = useAccountInfoStore()
-  const route = useRoute()
-  const router = useRouter()
+  // const route = useRoute()
+  // const router = useRouter()
   // eslint-disable-next-line no-unused-vars
   const props = defineProps({
     modelValue: {
@@ -274,6 +276,10 @@
     accountRulesNo: null,
     accountRulesPass: null
   })
+
+  // const useVerify = () => {
+  //   proxy.$refs.verify.show()
+  // }
 
   // 监听 语言切换
   watch(
@@ -376,6 +382,8 @@
   }
 
   const login = () => {
+    // useVerify()
+    // return false
     if (!state.protocal) {
       ElMessage.warning('请选择协议')
       return
