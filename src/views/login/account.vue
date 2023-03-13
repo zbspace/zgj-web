@@ -54,12 +54,12 @@
             class="tooltip-lan"
             :style="{ display: showChangeLanPop ? 'block' : 'none' }"
           >
-            <div class="item user-select" @click="changeLanguage('ch')"
-              >简体中文</div
-            >
-            <div class="item user-select" @click="changeLanguage('en')"
-              >English</div
-            >
+            <div class="item user-select" @click="changeLanguage('ch')">
+              简体中文
+            </div>
+            <div class="item user-select" @click="changeLanguage('en')">
+              English
+            </div>
           </div>
         </div>
       </div>
