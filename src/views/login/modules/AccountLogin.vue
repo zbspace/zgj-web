@@ -236,8 +236,8 @@
   import { ElMessage } from 'element-plus'
   import md5 from 'js-md5'
   import loginApi from '@/api/login'
-  import Verify from '../components/verifition/Verify'
-  const { proxy } = getCurrentInstance()
+  // import Verify from '../components/verifition/Verify'
+  // const { proxy } = getCurrentInstance()
   const accountInfo = useAccountInfoStore()
   // const route = useRoute()
   // const router = useRouter()
