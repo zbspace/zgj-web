@@ -2,7 +2,7 @@
   <div class="flow-row">
     <div class="flow-box" :class="{ 'flow-complete': node.nodeStatus == 2 }">
       <div class="flow-item" :class="{ 'flow-item-active': isActive }" @click="!props.readable && open(drawer, props.node)">
-        <div class="flow-node-box write" :class="{ 'has-error': props.node.error }">
+        <div class="flow-node-box" :class="{ write: !readable, 'has-error': props.node.error }">
           <div class="node-name" :class="nameClass(props.node, 'node-fill')">
             <EditName v-model="props.node.nodeName" />
             <img :src="writeIcon" style="margin-left: 10px" />

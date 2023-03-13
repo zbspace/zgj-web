@@ -62,7 +62,7 @@
   // 图标
   const { branchIcon } = useIcon()
   // 公共
-  const { drawerWidth, drawerBodyStyle, size, visible } = useCommon()
+  const { drawerWidth, drawerBodyStyle, visible } = useCommon()
   // Store
   // const flowStore = useFlowStore();
   // 子组件
@@ -75,23 +75,23 @@
 
   // 分支类型
   const branchTypesComputed = computed(() => nodeType => {
-    if (nodeType === 10) {
+    if (nodeType == 10) {
       return branchTypes
     } else {
-      return branchTypes.filter(f => f.value === 1)
+      return branchTypes.filter(f => f.value == 1)
     }
   })
 
   // 侧边头样式
   const headerStyle = computed(() => nodeType => {
-    if (nodeType === 10) {
+    if (nodeType == 10) {
       return {
-        background: 'linear-gradient(90.04deg,#ff4949 -16.37%,#ff4949 137.34%)',
+        background: 'linear-gradient(90.04deg,#ef8080 -16.37%,#f14343 137.34%)',
         'border-radius': '0px 0px 0 0'
       }
     } else {
       return {
-        background: 'linear-gradient(90.04deg,#955AF4 -16.37%,#F45AC3 137.34%)',
+        background: 'linear-gradient(90.04deg,#e2d9f1 -16.37%,#9d88bf 137.34%)',
         'border-radius': '0px 0px 0 0'
       }
     }
@@ -130,16 +130,16 @@
   const onSave = () => {
     // 更新节点显示信息
     let content = ''
-    if (node.value.attr.branchType === 1) {
+    if (node.value.attr.branchType == 1) {
       node.value.conditionGroup.forEach((group, j) => {
-        if (j !== 0) {
+        if (j != 0) {
           content += ' 或 \n'
         }
         if (group.conditions.length > 0) {
           group.conditions.forEach((condition, i) => {
             const conditionValueName = condition.conditionValueName[0]
             if (conditionValueName) {
-              if (i !== 0) {
+              if (i != 0) {
                 content += ' 且 \n'
               }
               content +=
@@ -177,3 +177,4 @@
     onSave
   })
 </script>
+Template

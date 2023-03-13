@@ -27,26 +27,20 @@
         <a-tab-pane forceRender key="2" tab="选项设置">
           <!-- 通知类型-->
           <FlowDrawerContent name="通知类型">
-            <a-checkbox-group v-model:value="props.node.notice.noticeType">
-              <a-row :gutter="[24, 24]">
-                <a-col :span="8" v-for="(notice, i) in notices" :key="i">
-                  <a-checkbox :value="notice.value">{{ notice.name }}</a-checkbox>
-                </a-col>
-              </a-row>
-            </a-checkbox-group>
+            <FlowNoticeSelect v-model="props.node.notice.noticeType" />
           </FlowDrawerContent>
-          <FlowDrawerContent v-if="props.node.notice.noticeType.includes(2)" name="外部手机号">
-            <AddButton title="添加手机号" />
-          </FlowDrawerContent>
-          <FlowDrawerContent v-if="props.node.notice.noticeType.includes(3)" name="外部邮箱账号">
+          <!-- <FlowDrawerContent v-if="noticeTypeComputed(props.node.notice.noticeType).includes(2)" name="外部邮箱账号">
             <AddButton title="添加邮箱" />
           </FlowDrawerContent>
+          <FlowDrawerContent v-if="noticeTypeComputed(props.node.notice.noticeType).includes(4)" name="外部手机号">
+            <AddButton title="添加手机号" />
+          </FlowDrawerContent> -->
         </a-tab-pane>
         <a-tab-pane forceRender key="3" tab="内容设置">
-          <FlowDrawerContent name="选择已审核模板">
+          <!-- <FlowDrawerContent name="选择已审核模板">
             <AddButton title="创建新模板" />
             <a-select :size="size" placeholder="请选择模板" class="w-fill" />
-          </FlowDrawerContent>
+          </FlowDrawerContent> -->
           <FlowDrawerContent name="主题">
             <a-input v-model="props.node.notice.noticeTitle" :size="size" :rows="4" placeholder="主题" />
           </FlowDrawerContent>
@@ -67,12 +61,13 @@ import useIcon from '../hooks/useIcon';
 import loadApproverData from '../data/load-approver-data';
 import EditName from '../common/EditName.vue';
 import FlowAuthForm from './FlowAuthForm.vue';
+import FlowNoticeSelect from '../common/FlowNoticeSelect.vue';
 import FlowCopyerSenior from './copyer/FlowCopyerSenior.vue';
 import FlowDrawerFooter from './FlowDrawerFooter.vue';
 // 图标
 const { noticeIcon } = useIcon();
 // 公共
-const { size, drawerWidth, drawerBodyStyle, visible } = useCommon();
+const { size, drawerWidth, drawerBodyStyle, visible, noticeTypeComputed } = useCommon();
 // 数据
 const { notices } = loadApproverData();
 // Store

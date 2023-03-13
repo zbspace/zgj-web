@@ -12,19 +12,23 @@
           <FlowEndNode :node="nodeData" :readable="readable" />
         </div>
       </div>
-      <!-- <FlowZoom v-if="!readable" v-model="zoomValue" :top="top" /> -->
+      <FlowZoom v-if="!readable" v-model="zoomValue" :top="top" />
       <FlowStatus v-if="readable" :navable="navable" :top="top" />
     </div>
-    <!-- <FlowHelper v-if="!readable" @import="handleImport" @export="handleExport" /> -->
+    <FlowHelper
+      v-if="!readable"
+      @import="handleImport"
+      @export="handleExport"
+    />
     <!-- 节点运行状态 -->
     <!-- <FlowMinMap v-if="mapable && !isMobile()" /> -->
   </div>
 </template>
 
 <script setup>
-  import { ref, reactive, computed, onMounted } from 'vue'
+  import { ref, reactive, toRaw, computed, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
-  // import useCommon from './hooks/useCommon'
+  import useCommon from './hooks/useCommon'
   import { downloadFile } from '@/utils/common-util'
   import { useFlowStore } from './store/flow'
   import { getStartNode } from './data/load-node-data'
@@ -33,13 +37,13 @@
   import FlowEndNode from './node/FlowEndNode.vue'
   import FlowNode from './node/FlowNode.vue'
   import FlowStatus from './panel/FlowStatus.vue'
-  // import FlowHelper from './panel/FlowHelper.vue'
-  // import FlowMinMap from './panel/FlowMinMap.vue'
+  import FlowHelper from './panel/FlowHelper.vue'
+  import FlowMinMap from './panel/FlowMinMap.vue'
 
   // 获取路由参数
   const route = useRoute()
   // 公共
-  // const { isMobile } = useCommon()
+  const { isMobile } = useCommon()
   // flowStore
   const flowStore = useFlowStore()
 
@@ -61,9 +65,7 @@
   const props = defineProps({
     node: {
       type: Object,
-      default: () => {
-        return getStartNode()
-      }
+      default: null
     },
     navable: {
       type: Boolean,
@@ -105,14 +107,13 @@
   // 默认初始数据
   // 通知数据
   const nodeData = computed(() => flowStore.node)
+  // console.log('nodeData', nodeData);
 
   // zoom样式
   const zoomStyle = computed(() => {
     flowStore.updateZoomValue(zoomValue.value)
     const zoom = zoomValue.value / 100
-    // eslint-disable-next-line no-unused-vars
     const left = zoomValue.value * 3
-    // eslint-disable-next-line no-unused-vars
     const top = 20
     return {
       zoom: zoomValue.value < 100 ? zoom : 0,
@@ -134,8 +135,14 @@
     }
     modelId.value = route.query.modelId
     definitionId.value = route.query.definitionId
-    // 初始化
-    handleSetData(props.node)
+    // 当默认初始化时
+    if (!props.node) {
+      // 当前模型是否为自由流程,则添加自由流程
+      // flowStore.initFreeFlow(modelId.value, definitionId.value);
+    } else {
+      // 初始化
+      handleSetData(props.node)
+    }
   })
 
   // 保存，触发save事件
@@ -163,7 +170,6 @@
    * 导入流程设计
    * @param value
    */
-  // eslint-disable-next-line no-unused-vars
   const handleImport = value => {
     const data = JSON.parse(value)
     if (data) {
@@ -183,7 +189,6 @@
   /**
    * 导出流程设计
    */
-  // eslint-disable-next-line no-unused-vars
   const handleExport = () => {
     const node = handleSave()
     const data = {
@@ -202,7 +207,7 @@
   const filterData = (jsonObj, columns) => {
     if (jsonObj !== null && typeof jsonObj === 'object') {
       Object.entries(jsonObj).forEach(([key, value]) => {
-        if (key === 'privileges') {
+        if (key == 'privileges') {
           const privileges = []
           columns.forEach(item => {
             const config = {

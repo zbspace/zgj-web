@@ -12,32 +12,29 @@
         @dragleave="ondragleave($event, props.node)"
         @dragend="ondragend($event, props.node)"
       >
-        <div
-          class="flow-node-box"
-          :class="{ approver: props.node.nodeType == 1 && !readable, transact: props.node.nodeType == 6 && !readable, 'has-error': props.node.error }"
-        >
-          <div class="node-name" :class="nameClass(props.node, props.node.nodeType == 1 ? 'node-sp' : 'node-transact')">
+        <div class="flow-node-box" :class="{ approver: !readable, 'has-error': props.node.error }">
+          <div class="node-name" :class="nameClass(props.node, 'node-sp')">
             <EditName v-model="props.node.nodeName" :node="props.node" />
             <img :src="props.node.nodeType == 1 ? approverIcon : writeIcon" style="margin-left: 10px" />
           </div>
           <!-- 节点内容 -->
           <FlowNodeContent :content="props.node.content" />
           <!-- 错误提示 -->
-          <exclamation-circle-outlined v-if="props.node.error" class="node-error" />
+          <!-- <exclamation-circle-outlined v-if="props.node.error" class="node-error" />
           <div v-if="!props.readable && !props.node.deletable" class="close-icon">
             <close-circle-outlined @click.stop="props.node.deletable = true" />
-          </div>
+          </div> -->
           <!-- <div class="flow-node-toolbar">
             <a-icon type="copy" @click.stop="props.node.deletable = true" />
           </div> -->
           <!-- 删除提示 -->
-          <DeleteConfirm :node="props.node" />
+          <!-- <DeleteConfirm :node="props.node" /> -->
         </div>
       </div>
       <!-- 如果子节点是意见分支,则只能添加一个意见分支 -->
-      <FlowAddNode :node="props.node" :nodeType="props.node.nodeType" :readable="props.readable || props.node.dragClass" />
+      <FlowAddNode :node="props.node" :nodeType="props.node.nodeType" :readable="true" />
       <!-- 拖拽操作 -->
-      <FlowDragTool v-model="props.node.dragTool" @close="v => (props.node.dragClass = v)" />
+      <!-- <FlowDragTool v-model="props.node.dragTool" @close="v => (props.node.dragClass = v)" /> -->
     </div>
     <FlowApprovalDrawer ref="drawer" :node="props.node" @close="isActive = false" @nodeUpdate="nodeUpdate" />
   </div>

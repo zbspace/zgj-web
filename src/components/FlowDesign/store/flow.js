@@ -1,18 +1,11 @@
 /**
  * 存放审批流程数据
  */
-import { defineStore } from 'pinia'
-import Request from '@/utils/requestUtil'
-import html2canvas from 'html2canvas'
-import { getStartNode, addCondition } from '../data/load-node-data'
-import {
-  addFlowNode,
-  updateFlowNode,
-  delFlowNode,
-  addFlowBranchNode,
-  delFlowBranchNode,
-  delTempNodes
-} from '../hooks/useNodeHelper'
+import { defineStore } from 'pinia';
+import Request from '@/utils/request-util';
+import html2canvas from 'html2canvas';
+import { getStartNode, addCondition, addFreeNode } from '../data/load-node-data';
+import { addFlowNode, updateFlowNode, delFlowNode, addFlowBranchNode, delFlowBranchNode, delTempNodes } from '../hooks/useNodeHelper';
 /**
  * 1. 定义容器、导出容器
  * 参数1：容器的ID，必须是唯一的，后面Pinia会把所有的容器挂载到根容器
@@ -46,6 +39,8 @@ export const useFlowStore = defineStore('flow', {
     modelId: null,
     // 定义ID
     definitionId: null,
+    // 流程形式
+    modelModality: 1,
     // 基础字段
     baseColumns: [],
     // 表单字段
@@ -77,9 +72,9 @@ export const useFlowStore = defineStore('flow', {
      */
     setNode(node) {
       if (node) {
-        this.node = node
+        this.node = node;
       } else {
-        this.node = getStartNode()
+        this.node = getStartNode();
       }
     },
 
@@ -90,38 +85,37 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/8/10 18:20
      */
     addNode(data) {
-      if (data.nodeType === 0) {
+      if (data.nodeType == 0) {
         //  开始
         if (Object.prototype.hasOwnProperty.call(this.node, 'nodeName')) {
           // 如果添加的是并行节点
-          if (data.addNode.nodeType === 9) {
-            data.addNode.childNode.childNode = this.node
-            data.addNode.childNode.childNode.nodePid =
-              data.addNode.childNode.nodeId
+          if (data.addNode.nodeType == 9) {
+            data.addNode.childNode.childNode = this.node;
+            data.addNode.childNode.childNode.nodePid = data.addNode.childNode.nodeId;
           } else {
-            data.addNode.childNode = this.node
-            data.addNode.childNode.nodePid = data.addNode.nodeId
+            data.addNode.childNode = this.node;
+            data.addNode.childNode.nodePid = data.addNode.nodeId;
           }
-          data.addNode.nodePid = 0
+          data.addNode.nodePid = 0;
         }
-        this.node = data.addNode
+        this.node = data.addNode;
       } else {
         if (data.nodeId) {
           data.currNode.conditionNodes.forEach(conditionNode => {
-            if (conditionNode.nodeId === data.nodeId) {
+            if (conditionNode.nodeId == data.nodeId) {
               // 获取当前操作节点
-              addFlowNode(this.node, conditionNode, data.addNode)
+              addFlowNode(this.node, conditionNode, data.addNode);
             }
-          })
+          });
         } else {
           // 获取当前操作节点
-          addFlowNode(this.node, data.currNode, data.addNode)
+          addFlowNode(this.node, data.currNode, data.addNode);
         }
       }
       // 临时缓存添加的节点
-      this.tempNodes.push(data.addNode)
+      this.tempNodes.push(data.addNode);
       // 更新地图
-      this.updateMap()
+      this.updateMap();
       // console.log('node', state.node);
       // console.info(JSON.stringify(this.node));
     },
@@ -132,24 +126,24 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/8/10 18:20
      */
     addBranch(node) {
-      const len = node.conditionNodes.length
-      const conditionNode = node.conditionNodes[len - 1]
-      conditionNode.attr.priorityLevel = len + 1 + ''
-      let condition = null
-      if (conditionNode.nodeType === 3) {
+      let len = node.conditionNodes.length;
+      let conditionNode = node.conditionNodes[len - 1];
+      conditionNode.attr.priorityLevel = len + 1 + '';
+      let condition = null;
+      if (conditionNode.nodeType == 3) {
         // 分支
-        condition = addCondition(node, len)
-        node.conditionNodes.splice(len - 1, 0, condition)
+        condition = addCondition(node, len);
+        node.conditionNodes.splice(len - 1, 0, condition);
       } else {
         // 并行
-        condition = addCondition(node, len + 1)
-        node.conditionNodes.push(condition)
+        condition = addCondition(node, len + 1);
+        node.conditionNodes.push(condition);
       }
-      addFlowBranchNode(this.node, node)
+      addFlowBranchNode(this.node, node);
       // 临时缓存添加的节点
-      this.tempNodes.push(condition)
+      this.tempNodes.push(condition);
       // 更新地图
-      this.updateMap()
+      this.updateMap();
     },
 
     /**
@@ -158,43 +152,30 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/8/10 18:20
      */
     delNode(node) {
-      if (node.nodeId === this.node.nodeId) {
+      if (node.nodeId == this.node.nodeId) {
         if (node.childNode) {
-          this.node = node.childNode
+          this.node = node.childNode;
         } else {
-          this.node = {}
+          this.node = {};
         }
-      } else if (
-        node.nodeType === 3 ||
-        node.nodeType === 8 ||
-        node.nodeType === 10
-      ) {
+      } else if (node.nodeType == 3 || node.nodeType == 8 || node.nodeType == 10) {
         // 条件(意见)分支节点和并行节点
-        delFlowBranchNode(this, this.node, node, this.tempNodes)
+        delFlowBranchNode(this, this.node, node, this.tempNodes);
       } else {
-        delFlowNode(this.node, node)
+        delFlowNode(this.node, node);
         // 如果当前审批节点的子节点是意见分支,需要级联删除意见分支
-        if (
-          node.childNode &&
-          node.nodeType === 1 &&
-          node.childNode.nodeType === 7
-        ) {
-          delFlowBranchNode(
-            this,
-            this.node,
-            node.childNode.conditionNodes[0],
-            this.tempNodes
-          )
+        if (node.childNode && node.nodeType == 1 && node.childNode.nodeType == 7) {
+          delFlowBranchNode(this, this.node, node.childNode.conditionNodes[0], this.tempNodes);
         }
       }
       // 删除对应临时缓存添加的节点
-      delTempNodes(this.tempNodes, node)
+      delTempNodes(this.tempNodes, node);
       // 临时缓存添加的节点
       if (node.update) {
-        this.tempNodes.push(node)
+        this.tempNodes.push(node);
       }
       // 更新地图
-      this.updateMap()
+      this.updateMap();
     },
 
     /**
@@ -203,10 +184,10 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/8/10 18:20
      */
     updateNode({ currNode, field, value }) {
-      if (currNode.nodeId === this.node.nodeId) {
-        this.node[field] = value
+      if (currNode.nodeId == this.node.nodeId) {
+        this.node[field] = value;
       } else {
-        updateFlowNode(this.node, currNode, field, value)
+        updateFlowNode(this.node, currNode, field, value);
       }
       // console.log('updateNode', JSON.stringify(this.node));
     },
@@ -217,8 +198,8 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/8/10 18:20
      */
     updateMap() {
-      const content = document.querySelector(this.mapMapping)
-      const _html2canvas = html2canvas
+      let content = document.querySelector(this.mapMapping);
+      const _html2canvas = html2canvas;
       setTimeout(() => {
         _html2canvas(content, {
           backgroundColor: '#aaa',
@@ -227,39 +208,67 @@ export const useFlowStore = defineStore('flow', {
           height: content.scrollHeight,
           windowHeight: content.scrollHeight
         }).then(canvas => {
-          this.mapImg = canvas.toDataURL('image/jpeg', 0.8)
-        })
-      }, 100)
+          this.mapImg = canvas.toDataURL('image/jpeg', 0.8);
+        });
+      }, 100);
     },
     /**
      * 更新缩放比例
      * @param {*} val
      */
     updateZoomValue(val) {
-      this.zoomValue = val
+      this.zoomValue = val;
+    },
+    /**
+     * 初始化自由流程
+     */
+    async initFreeFlow(modelId, definitionId) {
+      // 重置
+      this.setNode();
+      if (modelId && modelId != this.modelId) {
+        this.modelId = modelId;
+      }
+      if (definitionId && definitionId != this.definitionId) {
+        this.definitionId = definitionId;
+      }
+      this.modelModality = 1;
+      const model = await this.getModel();
+      if (model.modelModality == 2) {
+        // 进行缓存
+        this.modelModality = 2;
+        addFlowNode(this.node, this.node, addFreeNode());
+      }
+    },
+    /**
+     * 获取模型
+     * @returns
+     */
+    getModel() {
+      return Request.getAndLoadData('/model/detail', { modelId: this.modelId, definitionId: this.definitionId, needMore: false });
+    },
+    // 获取模型(流程)设计节点配置信息
+    getNodeSetting(nodeId){
+      return Request.getAndLoadData('/model/design/node', { modelId: this.modelId, definitionId: this.definitionId, nodeId: nodeId });
     },
     /**
      * 获取当前实例的初始化字段
      * @returns
      */
     getPrivileges() {
-      return Request.getAndLoadData('/model/design/node/privileges', {
-        modelId: this.modelId,
-        definitionId: this.definitionId
-      })
+      return Request.getAndLoadData('/model/design/node/privileges', { modelId: this.modelId, definitionId: this.definitionId });
     },
     /**
      * 获取当前实例的模型条件节点基础字段
      * @returns
      */
     setModelId(modelId, definitionId) {
-      this.modelId = modelId
-      this.definitionId = definitionId
-      this.getBaseColumns()
-      this.getFormColumns()
-      this.getPosition()
-      this.getRole()
-      this.getApproverTypeList()
+      this.modelId = modelId;
+      this.definitionId = definitionId;
+      this.getBaseColumns();
+      this.getFormColumns();
+      this.getPosition();
+      this.getRole();
+      this.getApproverTypeList();
     },
 
     /**
@@ -267,20 +276,18 @@ export const useFlowStore = defineStore('flow', {
      * @returns
      */
     getBaseColumns() {
-      Request.getAndLoadData('/model/design/condition/baseColumns', {
-        modelId: this.modelId,
-        definitionId: this.definitionId
-      }).then(datas => (this.baseColumns = datas))
+      Request.getAndLoadData('/model/design/condition/baseColumns', { modelId: this.modelId, definitionId: this.definitionId }).then(
+        datas => (this.baseColumns = datas)
+      );
     },
     /**
      * 获取当前实例的模型条件节点表单字段
      * @returns
      */
     getFormColumns() {
-      Request.getAndLoadData('/model/design/condition/formColumns', {
-        modelId: this.modelId,
-        definitionId: this.definitionId
-      }).then(datas => (this.formColumns = datas))
+      Request.getAndLoadData('/model/design/condition/formColumns', { modelId: this.modelId, definitionId: this.definitionId }).then(
+        datas => (this.formColumns = datas)
+      );
     },
     /**
      * 获取职位(岗位)
@@ -289,10 +296,8 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/9/27 11:46
      */
     getPosition() {
-      if (this.positions.length === 0) {
-        Request.getAndLoadData('/hrPosition/list', {}).then(
-          datas => (this.positions = datas)
-        )
+      if (this.positions.length == 0) {
+        Request.getAndLoadData('/hrPosition/list', {}).then(datas => (this.positions = datas));
       }
     },
 
@@ -303,10 +308,8 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/9/27 11:46
      */
     getRole() {
-      if (this.roles.length === 0) {
-        Request.getAndLoadData('/sysRole/getRoleSelectList', {}).then(
-          datas => (this.roles = datas)
-        )
+      if (this.roles.length == 0) {
+        Request.getAndLoadData('/sysRole/getRoleSelectList', {}).then(datas => (this.roles = datas));
       }
     },
     /**
@@ -316,11 +319,9 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/9/27 11:46
      */
     getApproverTypeList() {
-      if (this.roles.length === 0) {
-        Request.getAndLoadData('/hrOrgApprover/getApproverTypeList', {}).then(
-          datas => (this.approverTypes = datas)
-        )
+      if (this.roles.length == 0) {
+        Request.getAndLoadData('/hrOrgApprover/getApproverTypeList', {}).then(datas => (this.approverTypes = datas));
       }
     }
   }
-})
+});

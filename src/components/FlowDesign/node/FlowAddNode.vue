@@ -23,7 +23,7 @@
             <img :src="ccIcon" class="anticon" />
             <span>抄送节点</span>
           </a-menu-item>
-          <!--   <a-menu-item key="6" @click="addType(6)">
+          <a-menu-item key="6" @click="addType(6)">
             <img :src="writeIcon" class="anticon" />
             <span>办理节点</span>
           </a-menu-item>
@@ -31,14 +31,14 @@
             <img :src="noticeIcon" class="anticon" />
             <span>通知节点</span>
           </a-menu-item>
-          <a-menu-item key="5" @click="addType(5)">
+          <!--  <a-menu-item key="5" @click="addType(5)">
             <img :src="webhookIcon" class="anticon" />
             <span>事件节点</span>
           </a-menu-item> -->
         </a-menu>
       </template>
       <!-- 当审批节点下添加意见分支,就不允许添加其他类型的节点了 -->
-      <img :src="plusIcon" v-if="!props.readable && (props.nodeType != 1 || (props.nodeType == 1 && props.node.addable))" />
+      <img :src="plusIcon" v-if="showAddImg()" />
     </a-popover>
   </div>
 </template>
@@ -133,6 +133,17 @@ onMounted(() => {
   // console.log('props', props);
   // console.log('flowStore', flowStore);
 });
+
+/**
+ * 显示添加图标
+ */
+const showAddImg = () => {
+  // 如果是自由流程,不显示
+  if(flowStore.modelModality == 2) {
+    return false;
+  }
+  return !props.readable && (props.nodeType != 1 || (props.nodeType == 1 && props.node.addable))
+}
 
 // 添加节点类型
 const addType = type => {

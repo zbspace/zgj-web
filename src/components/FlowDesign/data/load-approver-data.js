@@ -37,11 +37,11 @@ export default function () {
     {
       name: '多人或签(一人通过或拒绝)',
       value: 4
-    }
-    /* {
+    },
+    {
       name: '依次审批(一人通过再到下一个人处理)',
       value: 5
-    } */
+    }
   ]);
 
   // 审批人与发起人为同一人时
@@ -75,7 +75,7 @@ export default function () {
           content: '若部门负责人为空，则自动通过'
         }
       ]
-    },
+    }
     /* {
       name: '由发起人对自己审批',
       value: 4
@@ -103,7 +103,7 @@ export default function () {
           content: '如果相邻审批节点为同一人时,每个节点都需要手动审批，需要审批多次'
         }
       ]
-    },
+    }
   ]);
 
   // 审批人为空时
@@ -237,7 +237,7 @@ export default function () {
       hrefName: '如何配置部门负责人？'
     }, */
     {
-      name: '角色',
+      name: '系統角色',
       value: 5,
       disabled: false,
       // 是否可以多个组
@@ -247,7 +247,7 @@ export default function () {
       popovers: [
         {
           title: '什么是角色？',
-          content: '角色指团队成员的专业分工类别，如人事、行政、财务等，每类角色可由 1 位或多位成员组成'
+          content: '系統角色指团队成员的专业分工类别，如人事、行政、财务等，每类角色可由 1 位或多位成员组成'
         },
         {
           title: '如何使用？',
@@ -258,10 +258,10 @@ export default function () {
         }
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
-      hrefName: '如何配置角色？'
+      hrefName: '如何配置系統角色？'
     },
     {
-      name: '岗位',
+      name: '系統岗位',
       value: 6,
       disabled: false,
       // 是否可以多个组
@@ -316,10 +316,9 @@ export default function () {
       // 是否可以多个组
       addable: true,
       // 是否多个
-      multiple: false
-    }
-    /*,
-     {
+      multiple: true
+    },
+    {
       name: '发起人自选',
       value: 9,
       // 多个组时需要disabled
@@ -327,7 +326,7 @@ export default function () {
       // 是否可以多个组
       addable: false,
       // 是否多个
-      multiple: false
+      multiple: true
     },
     {
       name: '发起人自己',
@@ -368,6 +367,115 @@ export default function () {
           content: '可以选择前序节点的名称进行关联'
         }
       ]
+    },
+    /* {
+      name: '交叉审批',
+      value: 15,
+      disabled: true,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: false,
+      popovers: [
+        {
+          title: '什么是部门负责人交叉审批？',
+          content: '工程部、技术部互审，如:工程部发起的，则需要技术部负责人审批'
+        }
+      ]
+    },
+    {
+      name: '项目角色',
+      value: 16,
+      disabled: false,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: true,
+      popovers: [
+        {
+          title: '什么是项目角色？',
+          content: '项目角色指团队成员的专业分工类别，如人事、行政、财务等，每类角色可由 1 位或多位成员组成,只在项目中存在的'
+        },
+        {
+          title: '如何使用？',
+          content: '用项目角色作为审批人，会根据所选择的项目角色进行审批，当有成员离职变动时，该角色中的其他成员可继续完成审批，从而避免审批流程失效的情况'
+        },
+        {
+          content: '提示：若选择的角色中包含多名成员，则按照设置“多人审批时采用的审批方式”来处理'
+        }
+      ],
+      href: 'system/user',
+      hrefName: '如何配置角色？'
+    },
+    {
+      name: '项目成员',
+      value: 17,
+      disabled: true,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: true,
+      popovers: [
+        {
+          title: '什么是项目成员审批？',
+          content: '当前项目所有成员审批'
+        }
+      ]
+    },
+    {
+      name: '部门成员',
+      value: 18,
+      disabled: false,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: true,
+      popovers: [
+        {
+          title: '什么是部门成员审批？',
+          content: '当前项目对应的部门所有成员审批'
+        }
+      ]
+    },
+    {
+      name: '部门及角色',
+      value: 19,
+      disabled: false,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: false,
+      popovers: [
+        {
+          title: '什么是部门及角色审批？',
+          content: ''
+        },
+        {
+          title: '选择部门是什么意思？',
+          content: '这里指没有选择部门为当前项目的部门'
+        },
+        {
+          title: '选择角色是什么意思？',
+          content: '这里指没有选择角色为当前项目的角色的审批人'
+        }
+      ],
+      href: 'system/user',
+      hrefName: '如何配置项目部门？'
+    }, */
+    {
+      name: '选择审批',
+      value: 20,
+      disabled: false,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: false,
+      popovers: [
+        {
+          title: '什么是选择审批？',
+          content: '在当前节点配置候选人,当前一个节点审批时,可以指定一个或多个候选人作为当前节点的审批人'
+        }
+      ],
     },
     {
       name: '连续多级上级审批',
@@ -415,7 +523,7 @@ export default function () {
           content: '在表单设计中添加部门控件后，其部门负责人可以配置为本节点的审批人。'
         }
       ]
-    } */
+    }
   ]);
 
   // 上级方式
@@ -911,6 +1019,13 @@ export default function () {
       value: '8',
       content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
       code: 'addSign'
+    },
+    {
+      id: getId(),
+      name: '征询',
+      value: '9',
+      content: '征询他人意见',
+      code: 'consult'
     }
   ]);
   // 超时配置
@@ -951,12 +1066,39 @@ export default function () {
     }
   ]);
 
+  // 允许退回人
+  const allowBackDatas = reactive([
+    {
+      name: '仅提交人',
+      value: 1
+    },
+    {
+      name: '任意节点',
+      value: 2
+    }
+  ]);
+  // 退回后审批形式
+  const backApprovalTypeDatas = [
+    {
+      value: 1,
+      label: '直接从当前发起退回人审批'
+    },
+    {
+      value: 2,
+      label: '从头开始审批'
+    },
+    {
+      value: 4,
+      label: '从被退回人的下一个节点开始审批'
+    }
+  ];
+
   // --------------------------------------------------------------------
   // 分支类型
   const branchTypes = reactive([
     { label: '规则', value: 1 },
     /* { label: '公式', value: 2 },*/
-    { label: '其他', value: 3 } 
+    { label: '其他', value: 3 }
   ]);
   // 基础字段
   const baseColumns = reactive([
@@ -1071,6 +1213,8 @@ export default function () {
     timeouts,
     securities,
     copyerOperations,
+    allowBackDatas,
+    backApprovalTypeDatas,
     branchTypes,
     baseColumns,
     formColumns,

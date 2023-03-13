@@ -12,8 +12,8 @@
           </div>
         </div>
         <div class="flow-drawer-option-item-switch">
+          <!-- <a-switch v-model:checked="props.node.timeLimit.enable" checked-children="开" un-checked-children="关" />  -->
           <a-switch checked-children="开" un-checked-children="关" />
-          <!--  <a-switch v-model:checked="button.checked" :disabled="button.disabled" checked-children="开" un-checked-children="关" /> -->
         </div>
       </div>
     </div>
@@ -137,10 +137,24 @@
         </a-space>
       </div>
       <FlowDrawerContent v-if="currItem.index == 2" name="转交给谁">
-        <!-- <GUser type="button" :max="1" v-model="data.approverIds" v-model:label="data.approverNames" :dataSource="userSource" showButton /> -->
+        <!-- <GUser
+          type="button"
+          :max="1"
+          v-model="data.approverIds"
+          v-model:label="data.approverNames"
+          :dataSource="userSource"
+          showButton
+        /> -->
       </FlowDrawerContent>
       <FlowDrawerContent name="被提醒人" text="(不能超过 25 人)">
-        <!-- <GUser type="button" :max="25" v-model="data.approverIds" v-model:label="data.approverNames" :dataSource="userSource" showButton /> -->
+        <!-- <GUser
+          type="button"
+          :max="25"
+          v-model="data.approverIds"
+          v-model:label="data.approverNames"
+          :dataSource="userSource"
+          showButton
+        /> -->
       </FlowDrawerContent>
       <FlowDrawerContent v-if="currItem.index != 1" name="审批意见">
         <a-checkbox v-model:checked="data.suggestion"
@@ -160,7 +174,6 @@
 <script setup>
   import { ref, reactive } from 'vue'
   import useIcon from '../../hooks/useIcon'
-  // import GDept from '@/components/GDept/index.vue';
   import FlowNoticeSelect from '../../common/FlowNoticeSelect.vue'
   // import { UserApi } from '@/api/system/user/UserApi'
   // 图标
@@ -209,8 +222,6 @@
 
   const visible = ref(false)
 
-  const check = ref(false)
-
   const currItem = ref(items[0])
 
   // 数据
@@ -241,7 +252,7 @@
     //   pageNo: page,
     //   pageSize: limit
     // })
-    return []
+    return {}
   }
 </script>
 <style lang="less" scoped>
