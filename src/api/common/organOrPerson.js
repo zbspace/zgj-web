@@ -33,6 +33,13 @@ api = {
         url: `/role/getRoleRelationInfo/${id}`
       })
     },
+    save: data => {
+      return request({
+        method: 'POST',
+        url: '/role/updateRoleRelationInfo',
+        data
+      })
+    },
     key: 'roleId'
   }
 }

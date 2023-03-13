@@ -66,6 +66,7 @@
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
             @clickBatchButton="clickBatchButton"
+            @refreshButton="refreshButton"
           >
           </componentsBatch>
         </div>
@@ -790,7 +791,7 @@
     queryParams.pageNo = state.componentsPagination.index || 1
     queryParams.pageSize = state.componentsPagination.pageNumber || 10
     state.componentsTable.loading = true
-    api.page(queryParams).then(res => {
+    api.userPage(queryParams).then(res => {
       console.log(res)
       state.componentsTable.data = res.data.rows
       state.componentsPagination.data.amount = res.data.totalRows
@@ -886,6 +887,13 @@
       passTitle.value = '批量重置密码'
       showPass.value = true
     }
+    if (item.name === '刷新') {
+      console.log('刷新')
+      getFormPage()
+    }
+  }
+  const refreshButton = (item, index) => {
+    console.log(item)
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
@@ -1015,7 +1023,7 @@
   // 初始化
   onBeforeMount(() => {
     // getFormPage()
-    getUserTreeMenu()
+    // getUserTreeMenu()
   })
 </script>
 
