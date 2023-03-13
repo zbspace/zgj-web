@@ -37,9 +37,15 @@
       @on-submit="submit"
     />
 
+    <!-- 人员选择 -->
     <kDepartOrPersonVue
       :show="agentManVisible"
+      @update:show="agentManVisible = $event"
+      :searchSelected="[]"
       @update:searchSelected="submit"
+      :tabsShow="['user']"
+      apiModule="systemOrganOrPerson"
+      :queryParams="queryParams"
     />
   </div>
 </template>
@@ -49,13 +55,23 @@
   import { designerConfig } from './designerConfig'
   import { useVformInfoStore } from '@/store/vform'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import { ElMessage } from 'element-plus'
+  import typeOfSealService from '@/api/frontDesk/sealManage/typeOfSeal'
+  import yysq from './yongyinshenqing'
+  import zbsq from './zhuanbanshenqing'
+  import kzsq from './kezhangshenqing'
+  import bgsq from './biangengshenqing'
+  import czsq from './chongzhiyongyinshenqing'
+
   const { proxy } = getCurrentInstance()
   const vformInfoStore = useVformInfoStore()
   const vFormRef = ref(null)
   const sealSelectVisible = ref(false)
   const relatedCompanyVisible = ref(false)
-  const agentManVisible = ref(true)
+  const agentManVisible = ref(false)
   const curInstance = ref(null)
+  const queryParams = { roleId: 'r1' }
+  const prefabricationFieldList = ref([])
 
   const props = defineProps({
     // 模式： 默认为设计模式  render渲染
@@ -162,6 +178,62 @@
           'limitAddressSeal',
           'uploadFile'
         ]
+  })
+
+  // 模板list
+  const templateList = computed(() => {
+    let list = []
+    switch (props.businessType) {
+      case '2': // 用印申请
+        list = [
+          {
+            title: '用印申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(yysq),
+            description: '用印申请'
+          }
+        ]
+        prefabricationFieldList.value = ['sealName']
+        break
+      case '3': // 转办申请
+        list = [
+          {
+            title: '转办申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(yysq),
+            description: '转办申请'
+          }
+        ]
+        prefabricationFieldList.value = ['applicantInfo']
+        break
+      case '4': // 重置申请
+        list = [
+          {
+            title: '重置申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(czsq),
+            description: '转办申请'
+          }
+        ]
+        prefabricationFieldList.value = ['status', 'sealName', '']
+        break
+      default: // 6刻章申请 7变更申请 停用申请 启用申请
+        list = [
+          {
+            title: '刻章申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(kzsq),
+            description: '转办申请'
+          }
+        ]
+        prefabricationFieldList.value = ['sealName']
+        break
+    }
+    return list
   })
 
   // 文件类型
@@ -290,15 +362,32 @@
     }
 
     // 员工选择
-    proxy.$jyVform.showSelectUser = instance => {
+    proxy.$jyVform.showAgentMan = instance => {
       agentManVisible.value = true
       curInstance.value = instance
     }
+
+    // 获取印章类型
+    proxy.$jyVform.getSealTypes = async instance => {
+      try {
+        curInstance.value = instance
+        const res = await typeOfSealService.list({ searchKey: '' })
+        submit(
+          res.data || [
+            {
+              sealTypeId: '1602494337040568321',
+              sealTypeName: '印章类型A'
+            }
+          ]
+        )
+      } catch (error) {
+        ElMessage.error(error)
+      }
+    }
   }
 
-  // 通过vform中的实例调用方法
+  // 通过vform中的实例调用方法 - 传值
   const submit = value => {
-    console.log('--->', value)
     sealSelectVisible.value = false
     relatedCompanyVisible.value = false
     agentManVisible.value = false
@@ -311,6 +400,8 @@
     emit('on-loaded')
     vformInfoStore.setFileTypeList()
     provideProperties()
+    // 如果是设计器，需要加载指定模板
+    vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
   })
 
   defineExpose({
@@ -342,4 +433,12 @@
 
 <style lang="scss">
   @import 'vform-jy/dist/designer.style.css';
+  .drag-dialog {
+    .el-dialog__header {
+      display: block !important;
+    }
+    .el-dialog__body {
+      padding: 25px !important;
+    }
+  }
 </style>

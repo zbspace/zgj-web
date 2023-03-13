@@ -222,8 +222,6 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 12px;
-      input {
-      }
       .btns {
         display: flex;
       }
