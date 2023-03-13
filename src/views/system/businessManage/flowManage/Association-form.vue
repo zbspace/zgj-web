@@ -33,16 +33,36 @@
             ref="ruleFormRef"
             status-icon
           >
-            <el-form-item label="业务类型" required>
+            <!-- <el-form-item label="业务类型" required>
               <el-select v-model="form.businessType" placeholder="请选择">
                 <el-option label="Zone one" value="shanghai" />
                 <el-option label="Zone two" value="beijing" />
               </el-select>
+            </el-form-item> -->
+            <el-form-item label="业务类型" prop="applyTypeId" required>
+              <el-tree-select
+                clearable
+                v-model="form.applyTypeId"
+                :data="props.businessList"
+                :render-after-expand="false"
+                highlight-current
+                accordion
+                node-key="applyTypeId"
+                :props="{
+                  label: 'applyTypeName',
+                  children: 'children'
+                }"
+              />
             </el-form-item>
+
             <el-form-item label="文件类型" required>
               <el-select v-model="form.fileType" placeholder="请选择">
-                <el-option label="Zone one" value="shanghai" />
-                <el-option label="Zone two" value="beijing" />
+                <el-option
+                  :label="item.fileTypeName"
+                  :value="item.fileTypeId"
+                  v-for="item in fileTypeList"
+                  :key="item.fileTypeId"
+                />
               </el-select>
             </el-form-item>
           </el-form>
@@ -63,9 +83,9 @@
                 class="ml-4"
                 @change="redioChange"
               >
-                <el-radio :label="item.label" size="large">
+                <el-radio :label="item.formMessageId" size="large">
                   <div class="info-list-box-text">
-                    {{ item.desc }}
+                    {{ item.formName }}
                   </div>
                 </el-radio>
               </el-radio-group>
@@ -85,13 +105,13 @@
     </div>
     <div class="exhibition" v-if="state.currentState === '2'">
       <div class="info-box">
-        <v-form-render
-          :form-json="FillFormInformationSeal"
-          :form-data="state.SealformData"
-          :option-data="state.SealoptionData"
+        <JyVform
+          :formJson="FillFormInformationSeal"
+          :formData="state.SealformData"
+          :optionData="state.SealoptionData"
+          :businessType="form.applyTypeId"
           ref="refFillFormInformation"
-        >
-        </v-form-render>
+        />
       </div>
       <div class="info-footer">
         <el-button type="primary" @click="clickEdit">编辑</el-button>
@@ -118,33 +138,20 @@
   </div>
 </template>
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { reactive, ref, onMounted } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-  // import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
+  import { FetchFormListInfo } from '@/utils/domain/formManage'
+  import FormManageService from '@/api/system/formManagement'
+  import { fileManageService } from '@/api/frontDesk/fileManage'
+
   const refFillFormInformation = ref(null)
+  const fileTypeList = ref([])
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
       radio: '',
-      data: [
-        {
-          label: '1',
-          desc: '表单1表单1表单1表单1表单1表单1表单1'
-        },
-        {
-          label: '2',
-          desc: '表单1表单1表单1表单1表单1表单1表单2'
-        },
-        {
-          label: '3',
-          desc: '表单1表单1表单1表单1表单1表单1表单3'
-        },
-        {
-          label: '4',
-          desc: '表单1表单1表单1表单1表单1表单1表单4'
-        }
-      ]
+      data: []
     },
     JyElMessageBox: {
       show: false,
@@ -162,8 +169,9 @@
     ProcessName: '',
     ProcessType: false,
     businessType: '',
-    fileType: '',
+    fileType: '1',
     rangeApplication: '',
+    applyTypeId: '2',
     desc: '',
     rules: [
       {
@@ -172,6 +180,14 @@
         trigger: 'blur'
       }
     ]
+  })
+  const props = defineProps({
+    businessList: {
+      type: Array,
+      default: () => {
+        return [] // ['table', 'rate', 'switch'] 自定义组件的type
+      }
+    }
   })
   // 点击去创建
   const clickEditForm = () => {
@@ -204,10 +220,34 @@
   const redioChange = () => {
     // console.log('--->', state.list.radio)
   }
+  // 获取表单列表
+  const getFromList = async () => {
+    try {
+      const params = new FetchFormListInfo()
+      params.applyTypeId = form.applyTypeId
+      const res = await FormManageService.formPage(new FetchFormListInfo())
+      state.list.data = res.data.records || []
+    } catch (error) {}
+  }
+  // 获取文件类型列表
+  const setFileTypeList = async () => {
+    try {
+      const res = await fileManageService.getFileTypeList({
+        formMessageId: '',
+        relationRule: ''
+      })
+      fileTypeList.value = res.data || []
+    } catch (error) {}
+  }
   // const formLibraryData = reactive({})
   // 提供方法
   defineExpose({
     getInfoValue
+  })
+
+  onMounted(() => {
+    getFromList()
+    setFileTypeList()
   })
 </script>
 <style lang="scss" scoped>

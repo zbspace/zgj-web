@@ -1027,6 +1027,7 @@
     state.componentsPagination.pageNumber = data
     getFormPage()
   }
+  function treeCurrentChange() {}
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 加载表单列表
