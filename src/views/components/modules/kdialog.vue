@@ -239,7 +239,7 @@
     if (type === 'confrim') {
       showDialog.value = !val
       emit('confirm')
-      emit('update:show', true)
+      emit('update:show', false)
       return
     }
 
@@ -248,7 +248,7 @@
       showDialog.value = !val
       const t2 = setTimeout(() => {
         clearTimeout(t2)
-        emit('update:show', true)
+        emit('update:show', false)
         emit('close')
       }, 0)
     }, 300)
