@@ -199,9 +199,10 @@
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
-      v-if="showDepPerDialog"
-    >
-    </kDepartOrPersonVue>
+      :searchSelected="searchSelected"
+      @update:searchSelected="submit"
+      :tabsShow="tabsShow"
+    />
   </div>
 </template>
 
@@ -225,6 +226,8 @@
   const loading = ref(false)
   const table = ref(null)
   const orderBy = ref(null)
+  const searchSelected = ref([])
+  const tabsShow = ref(['organ'])
 
   const form = reactive({
     organNo: '',
@@ -587,6 +590,12 @@
         ElMessage.error('校验失败')
       }
     })
+  }
+  const submit = value => {
+    console.log(JSON.parse(JSON.stringify(value)))
+    showDepPerDialog.value = false
+    searchSelected.value = JSON.parse(JSON.stringify(value))
+    console.log(JSON.parse(JSON.stringify(searchSelected.value)))
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

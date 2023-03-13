@@ -380,6 +380,7 @@
     })
     emits('update:searchSelected', changeResult.value)
     emits('update:show', false)
+    changeResult.value = []
   }
 </script>
 

@@ -10,7 +10,7 @@
           @on-click-cancel="onClickCancelBaseInfo"
         />
         <el-form
-          ref="passwordRuleFormRef"
+          ref="baseInfoFormRef"
           :model="baseInfoData"
           :rules="baseInfoRules"
           label-width="100px"
@@ -224,17 +224,50 @@
 
 <script setup>
   import ChangeSuperAdmin from '../ChangeSuperAdmin'
+  import companyInfoApi from '@/api/system/companyManagement/companyInfo'
   import { ref } from 'vue'
   const editBaseInfo = ref(false)
   const editPasswordSetting = ref(false)
   const passwordRuleFormRef = ref(null)
+  const baseInfoFormRef = ref(null)
   const changeSAVisible = ref(false)
   const oldBaseInfoData = ref({
-    tenantPmTel: '章管家',
-    tenantPm: '18888888888',
+    tenantPm: '章管家',
+    tenantPmTel: '18888888888',
     domainName: 'zhangin.com'
   })
   const baseInfoData = ref(null)
+  const validPhone = (rule, value, callback) => {
+    if (!value) {
+      callback(new Error('请输入负责人手机号'))
+    } else {
+      if (
+        !/^((1[3-9][0-9]))\d{8}$|^(5|6|8|9)\d{7}$|^\d{3,4}-\d{7,8}$|^(852)?(2[1-9]|3[145679])\d{6}$/.test(
+          value
+        )
+      ) {
+        callback(new Error('负责人手机号格式不正确'))
+      } else {
+        callback()
+      }
+    }
+  }
+  const baseInfoRules = ref({
+    tenantPm: [
+      {
+        required: true,
+        message: '请输入单位负责人',
+        trigger: 'change'
+      }
+    ],
+    tenantPmTel: [
+      {
+        required: true,
+        validator: validPhone,
+        trigger: 'change'
+      }
+    ]
+  })
   const adminInfo = ref({
     userName: '章管家',
     account: 'zgj-001',
@@ -332,16 +365,26 @@
     console.log(type)
     if (type === '修改') {
       baseInfoData.value = JSON.parse(JSON.stringify(oldBaseInfoData.value))
-      editBaseInfo.value = !editBaseInfo.value
+      editBaseInfo.value = true
     } else {
-      passwordRuleFormRef.value.validate(valid => {
+      baseInfoFormRef.value.validate(valid => {
         if (valid) {
-          console.log(passwordData.value)
-          passwordRuleFormRef.value.resetFields()
-          editPasswordSetting.value = !editPasswordSetting.value
+          console.log(baseInfoData.value)
+          companyInfoApi.updateTenantBaseInfo(baseInfoData.value).then(() => {
+            oldBaseInfoData.value = JSON.parse(
+              JSON.stringify(baseInfoData.value)
+            )
+            baseInfoFormRef.value.resetFields()
+            editBaseInfo.value = false
+          })
         }
       })
     }
+  }
+
+  const onClickCancelBaseInfo = () => {
+    baseInfoFormRef.value.resetFields()
+    editBaseInfo.value = false
   }
 
   // 变更超管
@@ -359,11 +402,32 @@
     } else {
       passwordRuleFormRef.value.validate(valid => {
         if (valid) {
-          console.log(passwordData.value)
-          oldPasswordData.value = JSON.parse(JSON.stringify(passwordData.value))
-          passwordData.value = null
-          passwordRuleFormRef.value.resetFields()
-          editPasswordSetting.value = !editPasswordSetting.value
+          const params = JSON.parse(JSON.stringify(passwordData.value))
+          console.log(params)
+          const passwordRules = params.passwordRules
+          delete params.passwordRules
+          const rules = {
+            passUppercase: '0',
+            passLowercase: '0',
+            passNum: '0',
+            passSpecial: '0'
+          }
+          passwordRules.forEach(i => {
+            rules[i] = '1'
+          })
+          companyInfoApi
+            .updateTenantPasswordPolicy({
+              ...params,
+              ...rules
+            })
+            .then(res => {
+              oldPasswordData.value = JSON.parse(
+                JSON.stringify(passwordData.value)
+              )
+              passwordData.value = null
+              passwordRuleFormRef.value.resetFields()
+              editPasswordSetting.value = false
+            })
         }
       })
     }
