@@ -14,6 +14,7 @@
       :mode="1"
       @on-opened="opened"
       @on-closed="closed"
+      :appendToBody="true"
     >
       <div class="">
         <el-row :gutter="12">

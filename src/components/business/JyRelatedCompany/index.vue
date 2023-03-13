@@ -6,9 +6,16 @@
 * @LastEditTime 2023-03-09 13:52:44
 !-->
 <template>
-  <div class="jy-constact-uit">
-    <JyDialog v-model="isVisible" :width="1080" title="往来单位" :mode="1">
-      <div class="select-block">
+  <div>
+    <JyDialog
+      v-model="isVisible"
+      :width="1080"
+      title="往来单位"
+      :mode="1"
+      @on-opened="opened"
+      :appendToBody="true"
+    >
+      <div class="select-block jy-constact-uit">
         <div>
           <el-input
             v-model="searchRelatedCompanyInfo.relatedCompanyName"
@@ -77,7 +84,7 @@
 </template>
 
 <script setup>
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { PaginationInfo } from '@/utils/domain/paginationInfo'
   import { compManageService } from '@/api/system/compManage'
   import { FeatchRelatedCompanyListInfo } from '@/utils/domain/compManage'
@@ -137,10 +144,9 @@
     selectList.value = selectArr
   }
 
-  onMounted(() => {
-    searchRelatedCompanyInfo.value.tenantId = new Date().getTime()
+  const opened = () => {
     getRelatedCompanyList()
-  })
+  }
 </script>
 
 <script>
@@ -150,16 +156,14 @@
 </script>
 
 <style lang="scss" scoped>
-  .jy-constact-uit {
-    .select-block {
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      .iconpark-icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 8px;
-      }
+  .select-block.jy-constact-uit {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    .iconpark-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
     }
   }
 </style>
