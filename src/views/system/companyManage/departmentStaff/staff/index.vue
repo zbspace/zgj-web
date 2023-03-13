@@ -181,29 +181,6 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="兼职部门" prop="partTimeOrganIds">
-          <div class="select-box-contBox">
-            <el-input
-              class="ap-box-contBox-input width-100"
-              readonly
-              v-model="state.componentsAddForm.formData.partTimeOrganIds"
-              placeholder="请选择"
-            />
-            <div class="ap-box-contBox-icon">
-              <el-icon
-                v-if="state.componentsAddForm.formData.partTimeOrganIds"
-                @click="clear('partTimeOrganIds')"
-                ><CircleClose
-              /></el-icon>
-              <img
-                @click="chooseOrgan('partTimeOrganIds')"
-                class="ap-box-contBox-icon-img"
-                src="@/assets/svg/ketanchude.svg"
-                alt=""
-              />
-            </div>
-          </div>
-        </el-form-item>
         <el-form-item label="职位" prop="userTitle">
           <el-input
             v-model="state.componentsAddForm.formData.userTitle"

@@ -32,7 +32,7 @@
         :model="state.formData"
         :rules="state.formRules"
         ref="passwordForm"
-        label-width="100"
+        label-width="80"
       >
         <el-form-item label="重置方式" prop="resetType" @change="resetChange">
           <el-radio-group v-model="state.formData.resetType">
