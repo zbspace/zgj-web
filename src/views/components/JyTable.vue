@@ -100,7 +100,8 @@
       type: Object
     },
     hasTree: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     method: {
       type: String,
