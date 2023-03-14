@@ -6,7 +6,7 @@
 * @LastEditTime 2023-03-09 10:46:01
 !-->
 <template>
-  <div class="jy-select-seal">
+  <div>
     <JyDialog
       v-model="isVisible"
       :width="1080"
@@ -16,7 +16,7 @@
       @on-closed="closed"
       :appendToBody="true"
     >
-      <div class="">
+      <div class="jy-select-seal">
         <el-row :gutter="12">
           <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
             <div class="seal-type-list" v-loading="leftLoading">
@@ -205,6 +205,7 @@
     .seal-type-item {
       display: flex;
       align-items: center;
+      margin-bottom: 16px;
       cursor: pointer;
       &:hover {
         color: #d0963e;

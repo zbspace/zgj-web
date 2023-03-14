@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form-render
+    <VFormRender
       v-if="props.mode === 'render'"
       :form-json="formJson"
       :form-data="formData"
@@ -12,7 +12,8 @@
       :fileTypeList="fileTypeList"
       :businessType="businessType"
     />
-    <v-form-designer
+
+    <VFormDesigner
       ref="vFormRef"
       v-else
       :bannedWidgets="getBannedWidgets"
@@ -54,16 +55,25 @@
 
 <script setup>
   import { ref, onMounted, getCurrentInstance, computed } from 'vue'
+  import VFormRender from '@/lib/vform/components/form-render'
+  import VFormDesigner from '@/lib/vform/components/form-designer'
   import { designerConfig } from './designerConfig'
   import { useVformInfoStore } from '@/store/vform'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
   import typeOfSealService from '@/api/frontDesk/sealManage/typeOfSeal'
+  import formManageService from '@/api/system/formManagement'
   import yysq from './yongyinshenqing'
   import zbsq from './zhuanbanshenqing'
   import kzsq from './kezhangshenqing'
   import bgsq from './biangengshenqing'
   import czsq from './chongzhiyongyinshenqing'
+  import {
+    containers,
+    advancedFields,
+    basicFields,
+    customFields
+  } from '@/lib/vform/components/form-designer/widget-panel/widgetsConfig.js'
 
   const { proxy } = getCurrentInstance()
   const vformInfoStore = useVformInfoStore()
@@ -75,6 +85,7 @@
   const queryParams = { roleId: 'r1' }
   const prefabricationFieldList = ref([])
   const tabsShow = ref([]) // 'organ', 'user'
+  const bannedWidgets = ref([]) // 设计器需要显示指定的组件
 
   const props = defineProps({
     // 模式： 默认为设计模式  render渲染
@@ -86,16 +97,16 @@
     // 业务类型  默认用印申请 、其他
     businessType: {
       type: String,
-      default: ''
+      default: '2'
     },
 
-    // 禁止设计器显示指定的组件
-    bannedWidgets: {
-      type: Array,
-      default: () => {
-        return [] // ['table', 'rate', 'switch'] 自定义组件的type
-      }
-    },
+    // 设计器需要显示指定的组件
+    // bannedWidgets: {
+    //   type: Array,
+    //   default: () => {
+    //     return [] // ['table', 'rate', 'switch'] 自定义组件的type
+    //   }
+    // },
 
     // 配置设计器初始化界面显示设置
     designerConfig: {
@@ -147,25 +158,17 @@
     'on-loaded' // vform加载完成
   ])
 
-  // 类型
+  // 禁止设计器显示的组件
   const getBannedWidgets = computed(() => {
-    return props.bannedWidgets.length
-      ? props.bannedWidgets
-      : props.businessType === '2'
-      ? []
-      : [
-          'sealName',
-          'contactUnit',
-          'usesealBesides',
-          'normalSealNum',
-          'remoteSeal',
-          'videoSeal',
-          'sealFile',
-          'seamingSeal',
-          'limitTimeSeal',
-          'limitAddressSeal',
-          'uploadFile'
-        ]
+    const allWidgets = [
+      ...containers,
+      ...basicFields,
+      ...advancedFields,
+      ...customFields
+    ]
+      .map(v => v.type)
+      .filter(v => bannedWidgets.value.includes(v))
+    return allWidgets
   })
 
   // 模板list
@@ -400,15 +403,30 @@
     agentManVisible.value = false
     curInstance.value.callBackFn(value)
   }
+
+  /**
+   * 设置动态表单基础字段&业务字段
+   * @param {*} applyTypeId 业务类型
+   */
+  const setFormColumnBasic = async applyTypeId => {
+    try {
+      const res = await formManageService.formColumnBasic({ applyTypeId })
+      bannedWidgets.value = res.data.columSys || []
+    } catch (error) {
+      ElMessage.error(error)
+    }
+  }
   // ---------------------------------business end-----------------------------------------
 
   onMounted(() => {
     console.log('--->', 'vform加载完成')
     emit('on-loaded')
-    vformInfoStore.setFileTypeList()
+    // vformInfoStore.setFileTypeList()
     provideProperties()
-    // 如果是设计器，需要加载指定模板
-    if (!props.mode) {
+    // 如果是设计器，且内容为空，需要加载指定模板
+    const widgetList = vFormRef.value.getFieldWidgets()
+    console.log('------>', widgetList)
+    if (!props.mode && !widgetList.length) {
       vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
     }
   })
@@ -430,7 +448,8 @@
     setFieldValue,
     resetForm,
     setReadMode,
-    showDialog
+    showDialog,
+    setFormColumnBasic
   })
 </script>
 
@@ -441,7 +460,7 @@
 </script>
 
 <style lang="scss">
-  @import 'vform-jy/dist/designer.style.css';
+  // @import 'vform-jy/dist/designer.style.css';
   .drag-dialog {
     .el-dialog__header {
       display: block !important;
