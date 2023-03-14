@@ -109,7 +109,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 新增部门 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="新增"
@@ -117,7 +117,7 @@
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       :width="800"
-      :height="600"
+      :height="450"
       @confirm="submitLibraryForm"
     >
       <el-form
@@ -192,11 +192,12 @@
           <el-input v-model="form.readme" type="textarea" clearable />
         </el-form-item>
       </el-form>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
+      v-if="showDeptDialog"
       :show="showDepPerDialog"
-      @update:show="showDepPerDialog = $event"
+      @update:show="closeShow"
       :searchSelected="searchSelected"
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
@@ -211,14 +212,16 @@
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
   import componentsTree from '@/views/components/tree'
-  import KDialog from '@/views/components/modules/kdialog'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import componentsBatch from '@/views/components/batch'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import department from '@/api/system/companyManagement/department'
+  import { CircleClose } from '@element-plus/icons-vue'
 
   const showFormDialog = ref(false)
   const showDepPerDialog = ref(false)
+  const showDeptDialog = ref(false)
   const vFormLibraryRef = ref(null)
   const loading = ref(false)
   const table = ref(null)
@@ -562,7 +565,8 @@
           ? orderBy.value.prop +
             ',' +
             (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
-          : ''
+          : '',
+        ...params
       })
       .then(
         result => {
@@ -577,12 +581,52 @@
       )
   }
   const chooseOrgan = type => {
-    showDepPerDialog.value = true
+    showDeptDialog.value = true
     kDepartOrPerson.value = type
-    tabsShow.value = type === 'organP' ? ['organ'] : ['user']
+    if (type === 'organP') {
+      tabsShow.value = ['organ']
+      searchSelected.value = form.organPid
+        ? [
+            {
+              id: form.organPid,
+              name: form.organPName
+            }
+          ]
+        : []
+    } else {
+      tabsShow.value = ['user']
+      searchSelected.value = form.leaderUserId
+        ? [
+            {
+              id: form.leaderUserId,
+              name: form.leaderUserName
+            }
+          ]
+        : []
+    }
+    setTimeout(() => {
+      showDepPerDialog.value = true
+    }, 200)
+  }
+
+  const closeShow = () => {
+    showDepPerDialog.value = false
+    setTimeout(() => {
+      showDeptDialog.value = false
+    }, 200)
+  }
+
+  const clear = type => {
+    if (type === 'organP') {
+      form.organPid = ''
+      form.organPName = ''
+    } else {
+      form.leaderUserId = ''
+      form.leaderUserName = ''
+    }
   }
   const add = () => {
-    vFormLibraryRef.value.resetFields()
+    // vFormLibraryRef.value.resetFields()
     showFormDialog.value = true
   }
   const submitLibraryForm = () => {
@@ -597,13 +641,12 @@
     })
   }
   const submit = value => {
-    console.log(JSON.parse(JSON.stringify(value)))
-    showDepPerDialog.value = false
-    searchSelected.value = JSON.parse(JSON.stringify(value))
-    console.log(JSON.parse(JSON.stringify(searchSelected.value)))
     if (kDepartOrPerson.value === 'organP') {
-      form.organPid = value[0].id
-      form.organPName = value[0].name
+      form.organPid = value.length ? value[0].id : ''
+      form.organPName = value.length ? value[0].name : ''
+    } else {
+      form.leaderUserId = value.length ? value[0].id : ''
+      form.leaderUserName = value.length ? value[0].name : ''
     }
   }
   onBeforeMount(() => {
