@@ -14,4 +14,21 @@ api.updatePageSetting = (tenantId, data) => {
   })
 }
 
+// 修改基础信息
+api.updateTenantBaseInfo = data => {
+  return request({
+    method: 'POST',
+    url: '/tenant/tenantBaseInfo/update',
+    data
+  })
+}
+
+// 修改密码设置
+api.updateTenantPasswordPolicy = data => {
+  return request({
+    method: 'POST',
+    url: '/tenant/tenantPasswordPolicy/update',
+    data
+  })
+}
 export default api
