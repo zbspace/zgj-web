@@ -101,7 +101,6 @@
     </componentsLayout>
     <!-- 新增员工 -->
     <KDialog
-      @update:show="showDepPerDialog = $event"
       :show="showStaffDialog"
       title="新增"
       :centerBtn="true"
@@ -109,8 +108,8 @@
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
+      @close="closeStaffFrom"
       @confirm="submitStaffForm"
-      @close="showDepPerDialog = false"
     >
       <el-form
         :model="state.componentsAddForm.formData"
@@ -337,9 +336,9 @@
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
-      :tabsShow="['organ']"
+      :tabsShow="state.tabsShow"
       @update:searchSelected="submitSelectDepart"
-      :searchSelected="searchSelected"
+      :searchSelected="state.tabSelects.searchSelected"
     >
     </kDepartOrPersonVue>
     <!-- 单据详情 -->
@@ -427,17 +426,21 @@
   const showUpload = ref(false)
   // 侧边栏树选中id
   const organId = ref(false)
-  // 部门弹窗选中信息
-  const searchSelected = ref([])
-  // 部门选中信息
-  const hostOrganSelected = ref([])
-  // 兼职部门选中信息
-  const partTimehostOrganSelected = ref([])
-  // 角色选中信息
-  const rolesSelected = ref([])
-  // 主管选中信息
-  const directLeaderUserSelected = ref([])
+
   const state = reactive({
+    tabsShow: ['organ'],
+    tabSelects: {
+      // 部门弹窗选中信息
+      searchSelected: [],
+      // 部门选中信息
+      hostOrganSelected: [],
+      // 角色选中信息
+      rolesSelected: [],
+      // 主管选中信息
+      directLeaderUserSelected: [],
+      // 兼职部门选中信息
+      partTimehostOrganSelected: []
+    },
     JyElMessageBox: {
       show: false,
       header: {
@@ -850,23 +853,24 @@
   }
   // 清除部门信息
   const clear = type => {
+    console.log('type', type)
     if (type === 'hostOrgan') {
-      hostOrganSelected.value = []
-      state.componentsAddForm.fromData.hostOrgan = ''
-      state.componentsAddForm.fromData.hostOrganId = ''
+      state.tabSelects.hostOrganSelected = []
+      state.componentsAddForm.formData.hostOrgan = ''
+      state.componentsAddForm.formData.hostOrganId = ''
     }
     if (depChoose.value === 'partTimeOrgan') {
-      partTimehostOrganSelected.value = []
+      state.tabSelects.partTimehostOrganSelected = []
       state.componentsAddForm.formData.partTimeOrganIds = ''
       state.componentsAddForm.formData.partTimeOrgan = ''
     }
     if (depChoose.value === 'roles') {
-      rolesSelected.value = []
+      state.tabSelects.rolesSelected = []
       state.componentsAddForm.formData.roleIds = ''
       state.componentsAddForm.formData.roles = ''
     }
     if (depChoose.value === 'directLeaderUser') {
-      directLeaderUserSelected.value = []
+      state.tabSelects.directLeaderUserSelected = []
       state.componentsAddForm.formData.directLeaderUserId = ''
       state.componentsAddForm.formData.directLeaderUser = ''
     }
@@ -874,17 +878,30 @@
   // 选择部门弹窗
   const chooseOrgan = type => {
     depChoose.value = type
+    state.tabsShow = []
     if (depChoose.value === 'hostOrgan') {
-      searchSelected.value = hostOrganSelected.value
+      state.tabsShow = ['organ']
+      state.tabSelects.searchSelected = JSON.parse(
+        JSON.stringify(state.tabSelects.hostOrganSelected)
+      )
     }
     if (depChoose.value === 'partTimeOrgan') {
-      searchSelected.value = partTimehostOrganSelected.value
+      state.tabsShow = ['organ']
+      state.tabSelects.searchSelected = JSON.parse(
+        JSON.stringify(state.tabSelects.partTimehostOrganSelected)
+      )
     }
     if (depChoose.value === 'roles') {
-      searchSelected.value = rolesSelected.value
+      state.tabsShow = ['role']
+      state.tabSelects.searchSelected = JSON.parse(
+        JSON.stringify(state.tabSelects.rolesSelected)
+      )
     }
     if (depChoose.value === 'directLeaderUser') {
-      searchSelected.value = directLeaderUserSelected.value
+      state.tabsShow = ['user']
+      state.tabSelects.searchSelected = JSON.parse(
+        JSON.stringify(state.tabSelects.directLeaderUserSelected)
+      )
     }
     showDepPerDialog.value = true
   }
@@ -893,29 +910,32 @@
   const submitSelectDepart = item => {
     const organIds = []
     const organNames = []
-    item.forEach(el => {
-      organIds.push(el.id)
-      organNames.push(el.name)
-    })
-    if (depChoose.value === 'hostOrgan') {
-      hostOrganSelected.value = item
-      state.componentsAddForm.formData.hostOrgan = item[0].name
-      state.componentsAddForm.formData.hostOrganId = item[0].id
-    }
-    if (depChoose.value === 'partTimeOrgan') {
-      partTimehostOrganSelected.value = item
-      state.componentsAddForm.formData.partTimeOrganIds = organIds
-      state.componentsAddForm.formData.partTimeOrgan = organNames.join('、')
-    }
-    if (depChoose.value === 'roles') {
-      rolesSelected.value = item
-      state.componentsAddForm.formData.roleIds = organIds
-      state.componentsAddForm.formData.roles = organNames.join('、')
-    }
-    if (depChoose.value === 'directLeaderUser') {
-      directLeaderUserSelected.value = item
-      state.componentsAddForm.formData.directLeaderUserId = item[0].id
-      state.componentsAddForm.formData.directLeaderUser = item[0].name
+    console.log(item)
+    if (item.length > 0) {
+      item.forEach(el => {
+        organIds.push(el.id)
+        organNames.push(el.name)
+      })
+      if (depChoose.value === 'hostOrgan') {
+        state.tabSelects.hostOrganSelected = item
+        state.componentsAddForm.formData.hostOrgan = item[0].name
+        state.componentsAddForm.formData.hostOrganId = item[0].id
+      }
+      if (depChoose.value === 'partTimeOrgan') {
+        state.tabSelects.partTimehostOrganSelected = item
+        state.componentsAddForm.formData.partTimeOrganIds = organIds
+        state.componentsAddForm.formData.partTimeOrgan = organNames.join('、')
+      }
+      if (depChoose.value === 'roles') {
+        state.tabSelects.rolesSelected = item
+        state.componentsAddForm.formData.roleIds = organIds
+        state.componentsAddForm.formData.roles = organNames.join('、')
+      }
+      if (depChoose.value === 'directLeaderUser') {
+        state.tabSelects.directLeaderUserSelected = item
+        state.componentsAddForm.formData.directLeaderUserId = item[0].id
+        state.componentsAddForm.formData.directLeaderUser = item[0].name
+      }
     }
     showDepPerDialog.value = false
   }
@@ -1080,7 +1100,6 @@
     // if (!data) {
     //   return false
     // }
-    console.log(formStaffRef)
     formStaffRef.value.validate(valid => {
       if (valid) {
         console.log(state.componentsAddForm.formData)
@@ -1091,7 +1110,7 @@
     })
   }
   const closeStaffFrom = () => {
-    showDepPerDialog.value = false
+    showStaffDialog.value = false
   }
   // 分页页数变化
   const currentChange = data => {

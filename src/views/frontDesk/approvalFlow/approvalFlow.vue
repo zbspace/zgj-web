@@ -1,4 +1,9 @@
-<!-- 审批流程 -->
+<!--
+* @Descripttion 审批流程
+* @FileName approvalFlow.vue
+* @Author Guanpf
+* @LastEditTime 2023-03-13 17:55:42
+!-->
 <template>
   <div class="approvalFlow-approvalFlow">
     <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
@@ -29,6 +34,7 @@
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
             @clickElement="clickElement"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -91,24 +97,14 @@
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
-      v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  // import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
@@ -117,14 +113,7 @@
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
-  // const emit = defineEmits([])
+  import api from '@/views/frontDesk/approvalFlow/approvalFlow.vue'
 
   const showDepPerDialog = ref(false)
   const dialogProcess = reactive({
@@ -175,19 +164,20 @@
       },
       data: [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '流程主题/申请人/编码'
+            placeholder: '单据名称'
           }
         },
         {
           id: 'picker',
           label: '申请时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -198,7 +188,7 @@
           style: {}
         },
         {
-          id: 'derivable',
+          id: 'applyOrganId',
           label: '申请部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -207,7 +197,7 @@
           }
         },
         {
-          id: 'wjlx',
+          id: 'applyTypeId',
           label: '流程类型',
           type: 'select',
           options: [
@@ -241,7 +231,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'relatedCompanyId',
           label: '往来单位',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -250,7 +240,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'sealIds',
           label: '印章名称',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -754,19 +744,20 @@
     if (activeName === '1') {
       state.componentsSearchForm.data = [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '流程主题/申请人/编码'
+            placeholder: '单据名称'
           }
         },
         {
           id: 'picker',
           label: '申请时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -777,7 +768,7 @@
           style: {}
         },
         {
-          id: 'derivable',
+          id: 'applyOrganId',
           label: '申请部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -786,7 +777,7 @@
           }
         },
         {
-          id: 'wjlx',
+          id: 'applyTypeId',
           label: '流程类型',
           type: 'select',
           options: [
@@ -820,7 +811,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'relatedCompanyId',
           label: '往来单位',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -829,7 +820,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'sealIds',
           label: '印章名称',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -841,19 +832,20 @@
     } else if (activeName === '2') {
       state.componentsSearchForm.data = [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '流程主题/申请人/编码'
+            placeholder: '单据名称'
           }
         },
         {
           id: 'picker',
           label: '申请时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -864,7 +856,7 @@
           style: {}
         },
         {
-          id: 'wjlx',
+          id: 'approvalStatus',
           label: '审批状态',
           type: 'select',
           options: [
@@ -882,7 +874,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'applyOrganId',
           label: '申请部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -891,7 +883,7 @@
           }
         },
         {
-          id: 'wjlx',
+          id: 'applyTypeId',
           label: '流程类型',
           type: 'select',
           options: [
@@ -925,7 +917,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'relatedCompanyId',
           label: '往来单位',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -934,7 +926,7 @@
           }
         },
         {
-          id: 'derivable',
+          id: 'sealIds',
           label: '印章名称',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -968,7 +960,14 @@
       dialogProcess.formJson = ApprovalJson
     }
   }
-
+  const clickSubmit = (item, index) => {
+    console.log(item)
+    if (item.id === 'reset') {
+      state.componentsSearchForm.data.forEach(element => {
+        delete state.searchForm.data[element]
+      })
+    }
+  }
   // 点击搜索表单
   function clickElement(item, index) {
     // console.log(item, index)
@@ -976,7 +975,25 @@
       showDepPerDialog.value = true
     }
   }
-
+  // 获取表格列表
+  const getFormPage = () => {
+    const searchData = state.componentsSearchForm.data
+    const queryParams = {}
+    searchData.forEach(item => {
+      queryParams[item.id] = item.value
+    })
+    queryParams.pageNo = state.componentsPagination.index || 1
+    queryParams.pageSize = state.componentsPagination.pageNumber || 10
+    state.componentsTable.loading = true
+    api.getPageNoApproval(queryParams).then(res => {
+      console.log(res)
+      state.componentsTable.data = res.data.rows
+      state.componentsPagination.data.amount = res.data.totalRows
+      state.componentsPagination.data.pageNumber = res.data.totalPage
+      state.componentsPagination.defaultAttribute.total = res.data.totalRows
+      state.componentsTable.loading = false
+    })
+  }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })
