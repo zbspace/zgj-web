@@ -425,6 +425,7 @@
     showDialog.value = true
     vFormLibraryRef.value.resetFields()
     if (title === '新增') {
+      sealTypeId.value = null
       formData.value = {
         sealTypeNo:
           dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11),
