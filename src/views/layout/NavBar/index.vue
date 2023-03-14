@@ -351,7 +351,8 @@
       CurrentSystemType: 'business' // business / system
     },
     language: i18n.global.locale,
-    departLists: JSON.parse(localStorage.getItem('departLists')),
+    // departLists: JSON.parse(localStorage.getItem('departLists')),
+    departLists: [{ tenantName: '章管家', tenantId: 1 }],
     tenantId: null,
     currentDepart: {},
     chooseTenant: {},
@@ -365,7 +366,6 @@
       }
     }
   })
-  console.log(localStorage.getItem('departLists'))
 
   const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
   if (CurrentSystemType) {

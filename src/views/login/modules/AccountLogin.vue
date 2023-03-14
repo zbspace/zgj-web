@@ -211,7 +211,7 @@
         </div>
       </div>
     </div>
-    <Verify captchaType="blockPuzzle" ref="verify"></Verify>
+    <Verify captchaType="blockPuzzle" ref="verify" v-if="openVerify"></Verify>
     <!-- 重置密码弹窗 -->
     <UpdagePasswordDialog
       v-if="state.showUpdateDialog"
@@ -255,7 +255,7 @@
       }
     }
   })
-
+  const openVerify = ref(false)
   const emits = defineEmits(['update:modelValue', 'update:departLists'])
   const state = reactive({
     activeCodeLogin: false, // 验证码登录
@@ -356,9 +356,9 @@
   })
 
   onMounted(() => {
-    const { accountNo, accountPass } = getItem('accountInfo')
-    accountLoginForm.accountNo = accountNo
-    accountLoginForm.accountPass = accountPass
+    const accountInfo = getItem('accountInfo')
+    accountLoginForm.accountNo = accountInfo && accountInfo.accountNo
+    accountLoginForm.accountPass = accountInfo && accountInfo.accountPass
   })
 
   // 监听 tabs 切换
@@ -378,13 +378,78 @@
     state.showUpdateDialog = false
     state.ImmediateRegisterDialog = false
   }
+  const goHome = () => {
+    let redirect = route.query.redirect || '/frontDesk/home'
+    if (typeof redirect !== 'string') {
+      redirect = '/frontDesk/home'
+    }
+    router.replace(redirect)
+  }
 
+  const loginFn = async attr => {
+    openVerify.value = true
+    let params = {
+      accountNo: accountLoginForm.accountNo,
+      accountPass: md5(accountLoginForm.accountPass)
+    }
+    if (attr) {
+      params = {
+        accountNo: accountLoginForm.accountNo,
+        accountPass: md5(accountLoginForm.accountPass),
+        captchaToken: attr.token,
+        captcha: attr.pointJson
+      }
+    }
+    // 账号密码登录
+    const loginResult = await loginApi.loginByAccount(params)
+    if (loginResult.code === 210600) {
+      proxy.$refs.verify.show()
+      return
+    }
+    // 存储登录用户信息
+    accountInfo.setToken({
+      token: loginResult.data.tokenValue
+    })
+    accountInfo.setUserName('曹春青')
+
+    // 记住密码
+    if (state.rememberPas) {
+      accountInfo.setAccountAndPassword({
+        accountNo: accountLoginForm.accountNo,
+        accountPass: accountLoginForm.accountPass
+      })
+    } else {
+      accountInfo.setAccountAndPassword(null)
+    }
+
+    // 记录上次选择企业信息
+    if (loginResult.data.lastTenantId) {
+      goHome()
+      setItem('tenantId', Number(loginResult.data.lastTenantId))
+      return
+    }
+
+    // 获取登录列表
+    const departListResult = await loginApi.tenantInfoList()
+    if (departListResult.data && departListResult.data.length === 1) {
+      // 初始化 且 一个企业
+      await loginApi.chooseOrgan(departListResult.data[0].tenantId)
+      setItem('tenantId', Number(departListResult.data[0].tenantId))
+      goHome()
+    } else {
+      // 进入列表选择页面
+      emits('update:modelValue', true)
+      emits('update:departLists', departListResult.data)
+    }
+
+    setItem('departLists', JSON.stringify(departListResult.data))
+  }
   const login = () => {
-    proxy.$refs.verify.show()
     if (!state.protocal) {
       ElMessage.warning('请选择协议')
       return
     }
+
     // 验证码登录验证
     const formRef = ref(null)
     formRef.value = state.activeCodeLogin
@@ -392,49 +457,8 @@
       : loginformAccountRef.value
 
     formRef.value.validate(async valid => {
-      // 记录上次选择企业信息 - 待处理
       if (valid) {
-        // 账号密码登录
-        const loginResult = await loginApi.loginByAccount({
-          accountNo: accountLoginForm.accountNo,
-          accountPass: md5(accountLoginForm.accountPass)
-        })
-        // 存储登录用户信息
-        accountInfo.setToken({
-          token: loginResult.data.tokenValue
-        })
-        accountInfo.setUserName('曹春青')
-        // 获取登录列表
-        const departListResult = await loginApi.tenantInfoList()
-        if (departListResult.data && departListResult.data.length === 1) {
-          // 初始化 且 一个企业
-          await loginApi.chooseOrgan(departListResult.data[0].tenantId)
-          localStorage.setItem(
-            'tenantId',
-            Number(departListResult.data[0].tenantId)
-          )
-          let redirect = route.query.redirect || '/frontDesk/home'
-          if (typeof redirect !== 'string') {
-            redirect = '/frontDesk/home'
-          }
-          router.replace(redirect)
-        } else {
-          // 进入列表选择页面
-          emits('update:modelValue', true)
-          emits('update:departLists', departListResult.data)
-        }
-
-        setItem('departLists', JSON.stringify(departListResult.data))
-
-        // 记住密码
-        if (state.rememberPas) {
-          accountInfo.setAccountAndPassword({
-            accountNo: accountLoginForm.accountNo,
-            accountPass: accountLoginForm.accountPass
-          })
-        } else {
-          accountInfo.setAccountAndPassword(null)
-        }
+        loginFn()
       }
     })
   }
@@ -442,6 +466,9 @@
   const customStyle = {
     height: '48px'
   }
+  defineExpose({
+    loginFn
+  })
 </script>
 
 <style scoped lang="scss">

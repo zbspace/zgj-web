@@ -102,11 +102,11 @@
     onMounted,
     reactive,
     ref,
-    watch,
     nextTick,
     toRefs,
     getCurrentInstance
   } from 'vue'
+  import { setItem } from '@/utils/storage'
   export default {
     name: 'VerifySlide',
     props: {
@@ -115,7 +115,7 @@
       },
       type: {
         type: String,
-        default: '1'
+        default: '2'
       },
       // 弹出式pop，固定fixed
       mode: {
@@ -159,7 +159,7 @@
       }
     },
     setup(props) {
-      const { mode, captchaType, type, blockSize, explain } = toRefs(props)
+      const { mode, captchaType, blockSize, explain } = toRefs(props)
       const { proxy } = getCurrentInstance()
       const secretKey = ref('') // 后端返回的ase加密秘钥
       const passFlag = ref('') // 是否通过的标识
@@ -239,9 +239,9 @@
           end()
         })
       }
-      watch(type, () => {
-        init()
-      })
+      // watch(type, () => {
+      //   init()
+      // })
       onMounted(() => {
         // 禁止拖拽
         init()
@@ -252,19 +252,19 @@
       // 鼠标按下
       function start(e) {
         e = e || window.event
+        let x = ''
         if (!e.touches) {
           // 兼容PC端
-          var x = e.clientX
+          x = e.clientX
         } else {
           // 兼容移动端
-          var x = e.touches[0].pageX
+          x = e.touches[0].pageX
         }
-        console.log(barArea)
         startLeft.value = Math.floor(
           x - barArea.value.getBoundingClientRect().left
         )
         startMoveTime.value = +new Date() // 开始滑动的时间
-        if (isEnd.value == false) {
+        if (isEnd.value === false) {
           text.value = ''
           moveBlockBackgroundColor.value = '#337ab7'
           leftBarBorderColor.value = '#337AB7'
@@ -276,7 +276,7 @@
       // 鼠标移动
       function move(e) {
         e = e || window.event
-        if (status.value && isEnd.value == false) {
+        if (status.value && isEnd.value === false) {
           if (!e.touches) {
             // 兼容PC端
             var x = e.clientX
@@ -326,6 +326,7 @@
               : JSON.stringify({ x: moveLeftDistance, y: 5.0 }),
             token: backToken.value
           }
+          setItem('captchaInfo', data)
           api.reqChecked(data).then(res => {
             if (res.data) {
               // 成功
@@ -338,7 +339,7 @@
               if (mode.value === 'pop') {
                 setTimeout(() => {
                   proxy.$parent.clickShow = false
-                  refresh()
+                  // refresh()
                 }, 1500)
               }
               passFlag.value = true
@@ -358,7 +359,7 @@
                   JSON.stringify({ x: moveLeftDistance, y: 5.0 })
               setTimeout(() => {
                 tipWords.value = ''
-                proxy.$parent.closeBox()
+                proxy.$parent.closeBox(true)
                 proxy.$parent.$emit('success', { captchaVerification })
               }, 1000)
             } else {
