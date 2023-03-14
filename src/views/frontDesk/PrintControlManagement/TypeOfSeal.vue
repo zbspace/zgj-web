@@ -80,24 +80,33 @@
     </componentsLayout>
     <!-- 动态表单 - 印章类型新增/修改 -->
     <KDialog
-      @update:show="fromState.showDialog = $event"
-      :show="fromState.showDialog"
-      :title="fromState.title"
+      @update:show="showDialog = $event"
+      :show="showDialog"
+      :title="fromStateTitle"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      :width="1000"
+      :width="800"
       :height="600"
-      @close="submitLibraryForm"
-      :key="fromState.title"
+      @confirm="submitLibraryForm"
+      :key="fromStateTitle"
     >
-      <v-form-render
-        :form-json="fromState.formJson"
-        :form-data="fromState.formJson"
-        :option-data="fromState.optionData"
-        :ref="fromState.vFormLibraryRef"
+      <el-form
+        :model="formData"
+        :rules="formRules"
+        ref="vFormLibraryRef"
+        label-width="120px"
       >
-      </v-form-render>
+        <el-form-item label="印章类型编码" prop="sealTypeNo">
+          <el-input v-model="formData.sealTypeNo" disabled />
+        </el-form-item>
+        <el-form-item label="印章类型名称" prop="sealTypeName">
+          <el-input v-model="formData.sealTypeName" />
+        </el-form-item>
+        <el-form-item label="描述" prop="readme">
+          <el-input v-model="formData.readme" type="textarea" />
+        </el-form-item>
+      </el-form>
     </KDialog>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
@@ -151,13 +160,11 @@
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   // import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
-  import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
-  import KDialog from '@/views/components/modules/KDialog.vue'
-  import { ElMessage } from 'element-plus'
+  import componentsPagination from '../../components/pagination'
+  import componentsTabs from '../../components/tabs'
+  import componentsLayout from '../../components/Layout'
+  import componentsBatch from '@/views/components/batch'
+  import KDialog from '@/views/components/modules/KDialog'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'
   // const props = defineProps({
@@ -169,13 +176,22 @@
   // })
 
   // 印章类型 新增弹框
-  const fromState = reactive({
-    title: '',
-    formJson: StampTypeApplicationJson, // 动态表单内容
-    optionData: null,
-    vFormLibraryRef: 'vFormLibraryRef',
-    showDialog: false
+  const formData = ref({
+    sealTypeNo: '',
+    sealTypeName: '',
+    readme: ''
   })
+  const formRules = ref({
+    sealTypeName: [
+      {
+        required: true,
+        message: '请输入印章类型名称',
+        trigger: 'change'
+      }
+    ]
+  })
+  const fromStateTitle = ref('新增')
+  const showDialog = ref(false)
   const vFormLibraryRef = ref(null)
   const loading = ref(false)
   const sealTypeId = ref(null)
@@ -405,19 +421,26 @@
     }
   })
   function clickEditor(title, column) {
-    fromState.title = title
-    vFormLibraryRef.value.resetForm()
+    fromStateTitle.value = title
+    showDialog.value = true
+    vFormLibraryRef.value.resetFields()
     if (title === '新增') {
-      fromState.formJson.widgetList[0].options.defaultValue =
-        dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+      formData.value = {
+        sealTypeNo:
+          dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11),
+        sealTypeName: '',
+        readme: ''
+      }
     } else {
       if (column) {
-        fromState.formJson.widgetList.forEach(i => {
-          i.options.defaultValue = column[i.id]
-        })
+        const columns = JSON.parse(JSON.stringify(column))
+        formData.value = {
+          sealTypeNo: columns.sealTypeNo,
+          sealTypeName: columns.sealTypeName,
+          readme: columns.readme
+        }
       }
     }
-    fromState.showDialog = true
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
@@ -434,7 +457,7 @@
   }
 
   function disabledDate(time) {
-    return time.getTime() > Date.now() - 8.64e7 // 如果没有后面的-8.64e7就是不可以选择今天的
+    return time.getTime() > Date.now() // 如果没有后面的-8.64e7就是不可以选择今天的
   }
 
   const confirmClick = () => {
@@ -451,6 +474,8 @@
       })
       .catch(() => {
         sealTypeId.value = null
+        state.showToastDialog.show = false
+        state.JyElMessageBox.show = false
       })
   }
 
@@ -473,40 +498,31 @@
     }
   }
 
-  const submitLibraryForm = type => {
-    if (!type) {
-      sealTypeId.value = null
-      vFormLibraryRef.value.resetForm()
-      return
-    }
-    vFormLibraryRef.value
-      .getFormData()
-      .then(formData => {
+  const submitLibraryForm = () => {
+    vFormLibraryRef.value.validate(valid => {
+      if (valid) {
         if (sealTypeId.value) {
           apis
             .edit({
               ...{
                 sealTypeId: sealTypeId.value
               },
-              ...formData
+              ...formData.value
             })
-            .then(res => {
+            .then(() => {
               sealTypeId.value = null
-              fromState.showDialog = false
+              showDialog.value = false
               reloadData()
             })
         } else {
-          apis.add(formData).then(res => {
+          apis.add(formData.value).then(res => {
             sealTypeId.value = null
-            fromState.showDialog = false
+            showDialog.value = false
             reloadData()
           })
         }
-      })
-      .catch(error => {
-        // Form Validation failed
-        ElMessage.error(error)
-      })
+      }
+    })
   }
 
   const clickSubmit = item => {
