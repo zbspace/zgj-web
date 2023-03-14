@@ -1,7 +1,14 @@
 <template>
   <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
-      <template #title>
+    <JyTable
+      url="/organ/page"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      tableClick="organName"
+      @cellClick="cellClick"
+    >
+      <template #titles>
         <div class="title">
           <div>部门管理</div>
           <div class="title-more">
@@ -29,39 +36,7 @@
           </div>
         </div>
       </template>
-
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
-      <!-- <template #batch>
-        <div class="batch">
-          <componentsBatch>
-            <el-button>批量删除</el-button>
-            <el-button>批量启用</el-button>
-            <el-button>批量停用</el-button>
-          </componentsBatch>
-        </div>
-      </template> -->
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-
-      <template #tree>
+      <template #trees>
         <div>
           <componentsTree
             :data="state.componentsTree.data"
@@ -70,35 +45,8 @@
           </componentsTree>
         </div>
       </template>
-
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            refs="tables"
-            ref="table"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            :isSelection="true"
-            :loading="loading"
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-            @sort-change="sortChange"
-          >
-          </componentsTable>
-        </div>
-      </template>
-
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
+    </JyTable>
+    <!-- </componentsLayout> -->
     <!-- 部门与单位详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -207,14 +155,10 @@
 
 <script setup>
   import { reactive, onBeforeMount, ref } from 'vue'
-  import componentsTable from '@/views/components/table'
-  import componentsSearchForm from '@/views/components/searchForm'
-  import componentsPagination from '@/views/components/pagination'
-  import componentsLayout from '@/views/components/Layout'
+  import JyTable from '@/views/components/JyTable.vue'
   import componentsTree from '@/views/components/tree'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
-  import componentsBatch from '@/views/components/batch'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import department from '@/api/system/companyManagement/department'
   import { CircleClose } from '@element-plus/icons-vue'
@@ -223,9 +167,6 @@
   const showDepPerDialog = ref(false)
   const showDeptDialog = ref(false)
   const vFormLibraryRef = ref(null)
-  const loading = ref(false)
-  const table = ref(null)
-  const orderBy = ref(null)
   const searchSelected = ref([])
   const tabsShow = ref(['organ'])
   const kDepartOrPerson = ref(null)
@@ -259,15 +200,6 @@
 
   const state = reactive({
     componentsSearchForm: {
-      style: {
-        lineStyle: {
-          width: '30%'
-        },
-        labelStyle: {
-          width: '100px'
-        }
-      },
-
       data: [
         {
           id: 'keyWord',
@@ -387,39 +319,7 @@
             }
           ]
         }
-      ],
-      data: [],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        stripe: true,
-        'header-cell-style': {
-          background: 'var(--jy-color-fill--3)'
-        },
-        'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === 'organName') {
-            return {
-              color: 'var(--jy-info-6)',
-              cursor: 'pointer'
-            }
-          }
-        }
-      }
-    },
-
-    componentsPagination: {
-      data: {
-        amount: 0,
-        index: 1,
-        pageNumber: 10
-      },
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 0,
-        'page-sizes': [10, 100, 200, 300, 400],
-        background: true
-      }
+      ]
     },
 
     componentsTree: {
@@ -477,10 +377,6 @@
       ]
     },
     componentsBatch: {
-      selectionData: [],
-      defaultAttribute: {
-        disabled: true
-      },
       data: [
         {
           name: '批量停用'
@@ -496,102 +392,14 @@
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
-    if (column.property === 'organName') {
-      state.componentsDocumentsDetails.show = true
-    }
+    state.componentsDocumentsDetails.show = true
   }
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
-  }
-  const clickSubmit = item => {
-    if (item.id === 'reset') {
-      table.value.clearSorts()
-      state.componentsSearchForm.data.forEach(item => {
-        if (item.type === 'checkButton') {
-          item.data.forEach(i => {
-            delete i.checked
-          })
-        } else if (item.type === 'checkbox') {
-          console.log(JSON.parse(JSON.stringify(item.checkbox)))
-          item.checkbox.forEach(i => {
-            i.value = false
-          })
-          console.log(JSON.parse(JSON.stringify(item.checkbox)))
-        } else {
-          delete item.value
-        }
-      })
-    }
-    reloadData()
-  }
-  // 自定义排序
-  function sortChange(orderBack) {
-    console.log(JSON.parse(JSON.stringify(orderBack)))
-    orderBy.value = orderBack
-    reloadData()
-  }
+
   // 点击关闭
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
-  const reloadData = () => {
-    state.componentsPagination.data.index = 1
-    state.componentsTable.data = []
-    state.componentsPagination.data.amount = 0
-    departPage()
-  }
-  const departPage = () => {
-    loading.value = true
-    const params = {}
-    state.componentsSearchForm.data.forEach(item => {
-      if (item.type === 'checkButton') {
-        params[item.id] = item.data
-          .filter(i => i.checked)
-          .map(i => i.id)
-          .join(',')
-      } else if (item.type === 'checkbox') {
-        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
-      } else if (item.type === 'picker') {
-        if (item.pickerType === 'date' && item.value) {
-          params[item.id] =
-            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
-        }
-      } else {
-        params[item.id] = item.value
-      }
-    })
-    department
-      .page({
-        pageNo: state.componentsPagination.data.index,
-        pageSize: state.componentsPagination.data.pageNumber,
-        sorts: orderBy.value
-          ? orderBy.value.prop +
-            ',' +
-            (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
-          : '',
-        ...params
-      })
-      .then(
-        result => {
-          state.componentsTable.data = result.data.rows
-          state.componentsPagination.data.amount = result.data.totalRows
-          state.componentsPagination.defaultAttribute.total =
-            result.data.totalRows
-          loading.value = false
-        },
-        () => {
-          loading.value = false
-        }
-      )
-  }
+
   const chooseOrgan = type => {
     showDeptDialog.value = true
     kDepartOrPerson.value = type
@@ -647,7 +455,7 @@
         console.log(form)
         department.add(form).then(() => {
           showFormDialog.value = false
-          reloadData()
+          // reloadData()
         })
       }
     })
@@ -663,7 +471,7 @@
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-    departPage()
+    // departPage()
   })
 </script>
 

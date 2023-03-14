@@ -5,8 +5,8 @@ const page = {
     pageNo: 1,
     pageSize: 10,
     totalPage: 0,
-    totalRows: 1,
-    rows: [
+    total: 1,
+    records: [
       {
         organId: '部门ID',
         organNo: '部门编码',

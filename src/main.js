@@ -21,7 +21,7 @@ import './style/flow/index.less' // 流程样式
 /* 引入自定义全局变量 */
 import './style/index.scss'
 // 运行mock
-import './mock/index'
+// import './mock/index'
 ;(async () => {
   const app = createApp(App)
   app.config.globalProperties.$jyVform = {}
