@@ -145,4 +145,22 @@ api.applyUseForm = params => {
     params
   })
 }
+
+// 查询动态表单基础字段&业务字段
+api.formColumnBasic = params => {
+  return request({
+    method: 'GET',
+    url: '/form/column/basic',
+    params
+  })
+}
+
+// 查询动态表单模板
+api.getFormTemplate = params => {
+  return request({
+    method: 'GET',
+    url: '/form/template',
+    params
+  })
+}
 export default api
