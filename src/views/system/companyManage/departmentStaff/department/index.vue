@@ -6,9 +6,7 @@
           <div>部门管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
-                >+ 新增部门</el-button
-              >
+              <el-button type="primary" @click="add">+ 新增部门</el-button>
             </div>
             <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
@@ -120,7 +118,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
       :width="800"
       :height="600"
-      @close="submitLibraryForm"
+      @confirm="submitLibraryForm"
     >
       <el-form
         :model="form"
@@ -145,7 +143,7 @@
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="form.organPid"
+              v-model="form.organPName"
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
@@ -153,11 +151,11 @@
                 v-if="form.organPid"
                 style="margin-right: 5px"
                 color="#aaaaaa"
-                @click="clear('keepUser')"
+                @click="clear('organP')"
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('keepUser')"
+                @click="chooseOrgan('organP')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -170,7 +168,7 @@
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="form.leaderUserId"
+              v-model="form.leaderUserName"
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
@@ -178,11 +176,11 @@
                 v-if="form.leaderUserId"
                 style="margin-right: 5px"
                 color="#aaaaaa"
-                @click="clear('keepUser')"
+                @click="clear('leaderUser')"
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('keepUser')"
+                @click="chooseOrgan('leaderUser')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -217,7 +215,6 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import componentsBatch from '@/views/components/batch'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  import { ElMessage } from 'element-plus'
   import department from '@/api/system/companyManagement/department'
 
   const showFormDialog = ref(false)
@@ -228,20 +225,23 @@
   const orderBy = ref(null)
   const searchSelected = ref([])
   const tabsShow = ref(['organ'])
+  const kDepartOrPerson = ref(null)
 
   const form = reactive({
     organNo: '',
     organName: '',
     organTypeNo: 1,
     organPid: '',
+    organPName: '',
     leaderUserId: '',
+    leaderUserName: '',
     readme: ''
   })
   const rules = reactive({
     organName: [
       {
         required: true,
-        message: '请输入印章全称',
+        message: '请输入部门名称',
         trigger: 'change'
       }
     ]
@@ -521,8 +521,8 @@
   // 自定义排序
   function sortChange(orderBack) {
     console.log(JSON.parse(JSON.stringify(orderBack)))
-    // orderBy.value = orderBack
-    // reloadData()
+    orderBy.value = orderBack
+    reloadData()
   }
   // 点击关闭
   function clickClose() {
@@ -578,16 +578,21 @@
   }
   const chooseOrgan = type => {
     showDepPerDialog.value = true
+    kDepartOrPerson.value = type
+    tabsShow.value = type === 'organP' ? ['organ'] : ['user']
   }
-  const submitLibraryForm = type => {
-    if (!type) {
-      return
-    }
+  const add = () => {
+    vFormLibraryRef.value.resetFields()
+    showFormDialog.value = true
+  }
+  const submitLibraryForm = () => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         console.log(form)
-      } else {
-        ElMessage.error('校验失败')
+        department.add(form).then(() => {
+          showFormDialog.value = false
+          reloadData()
+        })
       }
     })
   }
@@ -596,6 +601,10 @@
     showDepPerDialog.value = false
     searchSelected.value = JSON.parse(JSON.stringify(value))
     console.log(JSON.parse(JSON.stringify(searchSelected.value)))
+    if (kDepartOrPerson.value === 'organP') {
+      form.organPid = value[0].id
+      form.organPName = value[0].name
+    }
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
