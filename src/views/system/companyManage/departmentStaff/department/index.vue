@@ -247,6 +247,13 @@
         message: '请输入部门名称',
         trigger: 'change'
       }
+    ],
+    organPid: [
+      {
+        required: true,
+        message: '请选择上级部门',
+        trigger: 'change'
+      }
     ]
   })
 
@@ -328,41 +335,42 @@
     componentsTable: {
       header: [
         {
-          prop: '2',
+          prop: 'organName',
           label: '部门名称',
           'min-width': 150,
           fixed: true
         },
         {
-          prop: '1',
+          prop: 'organNo',
           label: '部门编码',
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'organType',
           label: '组织类型',
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'number',
           label: '部门人数',
           sortable: 'custom',
-          'min-width': 150
+          align: 'center',
+          width: 150
         },
         {
-          prop: '5',
+          prop: 'leaderUserName',
           label: '部门主管',
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'organPName',
           label: '上级组织',
           'min-width': 150
         },
         {
           prop: '7',
           label: '操作',
-          width: 150,
+          width: 170,
           fixed: 'right',
           rankDisplayData: [
             {
@@ -445,7 +453,10 @@
         'show-checkbox': false,
         'default-expand-all': true,
         'expand-on-click-node': false,
-        'check-strictly': true
+        'check-strictly': true,
+        'highlight-current': true,
+        'node-key': 'sealTypeId',
+        'current-node-key': 'all'
       }
     },
     componentsDocumentsDetails: {
@@ -486,7 +497,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     console.log(row, column, cell, event)
-    if (column.property === '2') {
+    if (column.property === 'organName') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -570,9 +581,10 @@
       })
       .then(
         result => {
-          state.componentsTable.data = result.data.records
-          state.componentsPagination.data.amount = result.data.total
-          state.componentsPagination.defaultAttribute.total = result.data.total
+          state.componentsTable.data = result.data.rows
+          state.componentsPagination.data.amount = result.data.totalRows
+          state.componentsPagination.defaultAttribute.total =
+            result.data.totalRows
           loading.value = false
         },
         () => {

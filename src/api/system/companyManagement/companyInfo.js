@@ -31,4 +31,22 @@ api.updateTenantPasswordPolicy = data => {
     data
   })
 }
+
+// 获取修改超级管理员的验证码
+api.getVerificationCode = data => {
+  return request({
+    method: 'POST',
+    url: '/tenant/tenantAdminInfo/getVerificationCode',
+    data
+  })
+}
+
+// 修改管理员
+api.updateAdmin = data => {
+  return request({
+    method: 'POST',
+    url: '/tenant/tenantAdminInfo/update',
+    data
+  })
+}
 export default api
