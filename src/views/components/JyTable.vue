@@ -225,12 +225,12 @@
 
   // 分页页数变化
   const currentChange = data => {
-    state.componentsPagination.index = data
+    state.componentsPagination.data.index = data
     page()
   }
   // 每页请求数量变化
   const sizeChange = data => {
-    state.componentsPagination.pageNumber = data
+    state.componentsPagination.data.pageNumber = data
     reloadData()
   }
 
@@ -253,7 +253,7 @@
       } else if (item.type === 'checkbox') {
         params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
       } else if (item.type === 'picker') {
-        if (item.pickerType === 'date' && item.value) {
+        if (item.defaultAttribute.type === 'daterange' && item.value) {
           params[item.id] =
             item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
         }
@@ -262,8 +262,8 @@
       }
     })
     const requestDatas = {
-      pageNo: state.componentsPagination.data.index,
-      pageSize: state.componentsPagination.data.pageNumber,
+      current: state.componentsPagination.data.index,
+      size: state.componentsPagination.data.pageNumber,
       sorts: orderBy.value
         ? orderBy.value.prop +
           ',' +
@@ -283,9 +283,11 @@
       }
     }
     request({
-      method: props.method,
-      url: props.url,
-      requestData
+      ...{
+        method: props.method,
+        url: props.url
+      },
+      ...requestData
     }).then(
       result => {
         state.componentsTable.data = result.data.records
