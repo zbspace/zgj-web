@@ -179,7 +179,7 @@
             imgUrl:
               'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
             jsonUrl: JSON.stringify(yysq),
-            description: '用印申请'
+            description: '用印申请描述'
           }
         ]
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -408,7 +408,9 @@
     vformInfoStore.setFileTypeList()
     provideProperties()
     // 如果是设计器，需要加载指定模板
-    vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
+    if (!props.mode) {
+      vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
+    }
   })
 
   defineExpose({
