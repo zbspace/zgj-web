@@ -5,8 +5,8 @@ const setWatermark = str => {
     document.body.removeChild(document.getElementById(id))
   }
   const can = document.createElement('canvas')
-  can.width = 400
-  can.height = 300
+  can.width = 330
+  can.height = 220
   const cans = can.getContext('2d')
   cans.rotate((-25 * Math.PI) / 180)
   cans.font = '14px Vedana'
@@ -17,9 +17,10 @@ const setWatermark = str => {
   const div = document.createElement('div')
   div.id = id
   div.style.pointerEvents = 'none'
-  div.style.top = '20px'
-  div.style.left = '0px'
-  div.style.opacity = '0.15'
+  div.style.top = '0'
+  div.style.left = '0'
+  div.style.zIndex = 9999
+  div.style.opacity = '0.1'
   div.style.position = 'fixed'
   div.style.width = document.documentElement.clientWidth + 'px'
   div.style.height = document.documentElement.clientHeight + 'px'

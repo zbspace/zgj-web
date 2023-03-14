@@ -28,7 +28,7 @@ a {
 .svg-icon {
   width: 1.2rem;
   height: 1.2rem;
-  fill: var(--el-color-primary);
+  fill: var(--el-color-primary) !important;
   margin-left: 0.3rem;
 }
 

@@ -45,6 +45,7 @@
           :businessList="props.businessList"
         ></basicsInfo>
         <AssociationForm
+          :businessList="props.businessList"
           v-show="state.processTabs.checkedNode.index == '2'"
           ref="refAssociationForm"
         ></AssociationForm>
