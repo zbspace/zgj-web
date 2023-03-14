@@ -9,7 +9,7 @@
         size="large"
         active-value="1"
         inactive-value="2"
-        @change="changeWaterMakeStatus"
+        :before-change="changeWaterMakeStatus"
       />
     </div>
     <div class="upload">

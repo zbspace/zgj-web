@@ -4,6 +4,7 @@ import legacy from '@vitejs/plugin-legacy'
 import ViteCompression from 'vite-plugin-compression'
 import ViteComponents from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import viteSvgIcons from 'vite-plugin-svg-icons'
 import {
   createStyleImportPlugin,
   VxeTableResolve
@@ -61,7 +62,13 @@ export default defineConfig((mode, command) => {
       createStyleImportPlugin({
         resolves: [VxeTableResolve()]
       }),
-      vueJsx({})
+      vueJsx({}),
+      viteSvgIcons({
+        // Specify the icon folder to be cached
+        iconDirs: [resolve(process.cwd(), 'src/lib/vform/icons/svg')],
+        // Specify symbolId format
+        symbolId: 'icon-[dir]-[name]'
+      })
     ],
     build: {
       target: 'es2015',

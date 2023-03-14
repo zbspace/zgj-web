@@ -87,9 +87,7 @@
             v-if="state.processTabs.checkedNode.index === '2'"
             style="margin-top: 0; width: 100%"
             :businessType="formData.applyTypeId"
-            :templateList="templateList"
             :prefabricationFieldList="prefabricationFieldList"
-            @on-loaded="onLoaded"
           />
         </template>
       </layout>
@@ -101,15 +99,6 @@
   import { ref, reactive, computed, onMounted, nextTick } from 'vue'
   import { ElMessage } from 'element-plus'
   import layout from '@/views/system/businessManage/flowManage/layout'
-  // import template1 from './templates/template1'
-  import template2 from './templates/template2'
-  // import template3 from './templates/template3'
-  // import template4 from './templates/template4'
-  // import template5 from './templates/template5'
-  // import template6 from './templates/template6'
-  import template7 from './templates/template7'
-  // import template8 from './templates/template8'
-  // import template9 from './templates/template9'
   import formManageService from '@/api/system/formManagement'
 
   const vformRef = ref(null)
@@ -183,16 +172,6 @@
 
   const prefabricationFieldList = ref(['sealName'])
 
-  const templateList = ref([
-    {
-      title: '用印申请',
-      imgUrl:
-        'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
-      jsonUrl: JSON.stringify(template7),
-      description: '用印申请'
-    }
-  ])
-
   const rules = {
     formName: [
       {
@@ -210,9 +189,7 @@
     ]
   }
 
-  const onChange = businessType => {
-    getTemplateList(businessType)
-  }
+  const onChange = businessType => {}
 
   // 点击切换选项
   const clickCutTabs = async (data, item) => {
@@ -268,42 +245,6 @@
     } catch (error) {
       ElMessage.error(error)
     }
-  }
-
-  // 获取模板list
-  const getTemplateList = async businessType => {
-    switch (businessType) {
-      case '1-1': // 用印申请
-        templateList.value = [
-          {
-            title: '用印申请',
-            imgUrl:
-              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
-            jsonUrl: JSON.stringify(template7),
-            description: '用印申请'
-          }
-        ]
-        prefabricationFieldList.value = ['sealName']
-        break
-      case '2-1': // 转办申请
-        templateList.value = [
-          {
-            title: '转办申请',
-            imgUrl:
-              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
-            jsonUrl: JSON.stringify(template2),
-            description: '转办申请'
-          }
-        ]
-        prefabricationFieldList.value = ['applicantInfo']
-        break
-      default:
-        break
-    }
-  }
-
-  const onLoaded = async () => {
-    vformRef.value.setFormJson(templateList.value[0].jsonUrl)
   }
 
   onMounted(() => {

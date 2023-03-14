@@ -1,8 +1,19 @@
 <!-- 印章类型 -->
 <template>
   <div class="PrintControlManagement-TypeOfSeal">
-    <componentsLayout Layout="title,searchForm,table,pagination,batch">
-      <template #title>
+    <JyTable
+      url="/sealType/page"
+      ref="jyTable"
+      :hasTree="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      tableClick="organName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
+      <template #titles>
         <div class="title">
           <div>印章类型</div>
           <div class="title-more">
@@ -15,89 +26,36 @@
           </div>
         </div>
       </template>
-      <template #tabs>
-        <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
-        </div>
-      </template>
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-            @clickBatchButton="clickBatchButton"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            refs="tables"
-            ref="table"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            :loading="loading"
-            isSelection
-            @selection-change="selectionChange"
-            @custom-click="customClick"
-            @sort-change="sortChange"
-          >
-            <template #custom_intelligentCount="scope">
-              <span>{{ scope.value }}枚</span>
-            </template>
-            <template #custom_ordinaryCount="scope">
-              <span>{{ scope.value }}枚</span>
-            </template>
-          </componentsTable>
-        </div>
-      </template>
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-          @current-change="currentPageChange"
-          @size-change="sizeChange"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
+    </JyTable>
     <!-- 动态表单 - 印章类型新增/修改 -->
     <KDialog
-      @update:show="fromState.showDialog = $event"
-      :show="fromState.showDialog"
-      :title="fromState.title"
+      @update:show="showDialog = $event"
+      :show="showDialog"
+      :title="fromStateTitle"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      :width="1000"
+      :width="800"
       :height="600"
-      @close="submitLibraryForm"
-      :key="fromState.title"
+      @confirm="submitLibraryForm"
+      :key="fromStateTitle"
     >
-      <v-form-render
-        :form-json="fromState.formJson"
-        :form-data="fromState.formJson"
-        :option-data="fromState.optionData"
-        :ref="fromState.vFormLibraryRef"
+      <el-form
+        :model="formData"
+        :rules="formRules"
+        ref="vFormLibraryRef"
+        label-width="120px"
       >
-      </v-form-render>
+        <el-form-item label="印章类型编码" prop="sealTypeNo">
+          <el-input v-model="formData.sealTypeNo" disabled />
+        </el-form-item>
+        <el-form-item label="印章类型名称" prop="sealTypeName">
+          <el-input v-model="formData.sealTypeName" />
+        </el-form-item>
+        <el-form-item label="描述" prop="readme">
+          <el-input v-model="formData.readme" type="textarea" />
+        </el-form-item>
+      </el-form>
     </KDialog>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
@@ -140,24 +98,9 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
-  import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
-  import KDialog from '@/views/components/modules/KDialog.vue'
-  import { ElMessage } from 'element-plus'
+  import { ref, reactive } from 'vue'
+  import JyTable from '@/views/components/JyTable.vue'
+  import KDialog from '@/views/components/modules/KDialog'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'
   // const props = defineProps({
@@ -169,18 +112,25 @@
   // })
 
   // 印章类型 新增弹框
-  const fromState = reactive({
-    title: '',
-    formJson: StampTypeApplicationJson, // 动态表单内容
-    optionData: null,
-    vFormLibraryRef: 'vFormLibraryRef',
-    showDialog: false
+  const formData = ref({
+    sealTypeNo: '',
+    sealTypeName: '',
+    readme: ''
   })
+  const formRules = ref({
+    sealTypeName: [
+      {
+        required: true,
+        message: '请输入印章类型名称',
+        trigger: 'change'
+      }
+    ]
+  })
+  const fromStateTitle = ref('新增')
+  const showDialog = ref(false)
   const vFormLibraryRef = ref(null)
-  const loading = ref(false)
   const sealTypeId = ref(null)
-  const orderBy = ref(null)
-  const table = ref(null)
+  const jyTable = ref(null)
 
   // const emit = defineEmits([])
   const state = reactive({
@@ -201,14 +151,6 @@
       ]
     },
     componentsSearchForm: {
-      style: {
-        lineStyle: {
-          width: 'calc(100% / 3)'
-        },
-        labelStyle: {
-          width: '100px'
-        }
-      },
       data: [
         {
           id: 'searchKey',
@@ -344,39 +286,9 @@
         }
       }
     },
-    componentsPagination: {
-      data: {
-        amount: 0,
-        index: 1,
-        pageNumber: 10
-      },
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 0,
-        'page-sizes': [10, 100, 200, 300, 400],
-        background: true
-      }
-    },
-    componentsBreadcrumb: {
-      data: [
-        {
-          name: 'ceshi'
-        },
-        {
-          name: 'ceshi'
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        separator: '/'
-      }
-    },
+
     componentsBatch: {
       selectionData: [],
-      defaultAttribute: {
-        disabled: true
-      },
       data: [
         {
           id: 'deleteMore',
@@ -384,6 +296,7 @@
         }
       ]
     },
+
     JyElMessageBox: {
       show: false,
       header: {
@@ -393,6 +306,7 @@
         data: ''
       }
     },
+
     showToastDialog: {
       show: false,
       header: {
@@ -405,19 +319,27 @@
     }
   })
   function clickEditor(title, column) {
-    fromState.title = title
-    vFormLibraryRef.value.resetForm()
+    fromStateTitle.value = title
+    showDialog.value = true
+    vFormLibraryRef.value.resetFields()
     if (title === '新增') {
-      fromState.formJson.widgetList[0].options.defaultValue =
-        dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+      sealTypeId.value = null
+      formData.value = {
+        sealTypeNo:
+          dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11),
+        sealTypeName: '',
+        readme: ''
+      }
     } else {
       if (column) {
-        fromState.formJson.widgetList.forEach(i => {
-          i.options.defaultValue = column[i.id]
-        })
+        const columns = JSON.parse(JSON.stringify(column))
+        formData.value = {
+          sealTypeNo: columns.sealTypeNo,
+          sealTypeName: columns.sealTypeName,
+          readme: columns.readme
+        }
       }
     }
-    fromState.showDialog = true
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
@@ -434,7 +356,7 @@
   }
 
   function disabledDate(time) {
-    return time.getTime() > Date.now() - 8.64e7 // 如果没有后面的-8.64e7就是不可以选择今天的
+    return time.getTime() > Date.now() // 如果没有后面的-8.64e7就是不可以选择今天的
   }
 
   const confirmClick = () => {
@@ -451,20 +373,13 @@
       })
       .catch(() => {
         sealTypeId.value = null
+        state.showToastDialog.show = false
+        state.JyElMessageBox.show = false
       })
   }
 
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
-  }
-
-  function clickBatchButton(item) {
+  function clickBatchButton(item, list) {
+    state.componentsBatch.selectionData = list
     if (item.id === 'deleteMore') {
       state.showToastDialog.header.data = '批量删除？'
       state.showToastDialog.content.data =
@@ -473,123 +388,36 @@
     }
   }
 
-  const submitLibraryForm = type => {
-    if (!type) {
-      sealTypeId.value = null
-      vFormLibraryRef.value.resetForm()
-      return
-    }
-    vFormLibraryRef.value
-      .getFormData()
-      .then(formData => {
+  const submitLibraryForm = () => {
+    vFormLibraryRef.value.validate(valid => {
+      if (valid) {
         if (sealTypeId.value) {
           apis
             .edit({
               ...{
                 sealTypeId: sealTypeId.value
               },
-              ...formData
+              ...formData.value
             })
-            .then(res => {
+            .then(() => {
               sealTypeId.value = null
-              fromState.showDialog = false
+              showDialog.value = false
               reloadData()
             })
         } else {
-          apis.add(formData).then(res => {
+          apis.add(formData.value).then(res => {
             sealTypeId.value = null
-            fromState.showDialog = false
+            showDialog.value = false
             reloadData()
           })
         }
-      })
-      .catch(error => {
-        // Form Validation failed
-        ElMessage.error(error)
-      })
-  }
-
-  const clickSubmit = item => {
-    if (item.id === 'reset') {
-      table.value.clearSorts()
-      state.componentsSearchForm.data.forEach(item => {
-        delete item.value
-      })
-    }
-    reloadData()
+      }
+    })
   }
 
   const reloadData = () => {
-    state.componentsTable.data = []
-    state.componentsPagination.data.index = 1
-    flowPageApi()
+    jyTable.value.reloadData()
   }
-
-  // 自定义排序
-  function sortChange(orderBack) {
-    console.log(JSON.parse(JSON.stringify(orderBack)))
-    orderBy.value = orderBack
-    reloadData()
-  }
-
-  const flowPageApi = () => {
-    loading.value = true
-    const params = {}
-    state.componentsSearchForm.data.forEach(item => {
-      if (item.type === 'checkButton') {
-        params[item.id] = item.data
-          .filter(i => i.checked)
-          .map(i => i.id)
-          .join(',')
-      } else if (item.type === 'checkbox') {
-        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
-      } else if (item.type === 'picker') {
-        if (item.pickerType === 'date' && item.value) {
-          params[item.id] =
-            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
-        }
-      } else {
-        params[item.id] = item.value
-      }
-    })
-    apis
-      .page({
-        ...{
-          current: state.componentsPagination.data.index,
-          size: state.componentsPagination.data.pageNumber,
-          sorts: orderBy.value
-            ? orderBy.value.prop +
-              ' ' +
-              (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
-            : ''
-        },
-        ...params
-      })
-      .then(result => {
-        state.componentsTable.data = result.data.records
-        state.componentsPagination.data.amount = result.data.total
-        state.componentsPagination.defaultAttribute.total = result.data.total
-        loading.value = false
-      })
-  }
-
-  const currentPageChange = e => {
-    state.componentsPagination.data.index = e
-    flowPageApi()
-  }
-
-  const sizeChange = e => {
-    state.componentsPagination.data.pageNumber = e
-    flowPageApi()
-  }
-
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-    flowPageApi()
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
 </script>
 <style lang="scss" scoped>
   .PrintControlManagement-TypeOfSeal {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form-render
+    <VFormRender
       v-if="props.mode === 'render'"
       :form-json="formJson"
       :form-data="formData"
@@ -10,8 +10,10 @@
       @appendButtonClick="appendButtonClick"
       @buttonClick="buttonClick"
       :fileTypeList="fileTypeList"
+      :businessType="businessType"
     />
-    <v-form-designer
+
+    <VFormDesigner
       ref="vFormRef"
       v-else
       :bannedWidgets="getBannedWidgets"
@@ -20,7 +22,7 @@
       :prefabricationFieldList="prefabricationFieldList"
       :templateList="templateList"
       :fileTypeList="fileTypeList"
-      :admin="admin"
+      :userType="userType"
     />
 
     <!-- 印章选择 -->
@@ -37,25 +39,53 @@
       @on-submit="submit"
     />
 
+    <!-- 人员选择 -->
     <kDepartOrPersonVue
       :show="agentManVisible"
+      @update:show="agentManVisible = $event"
+      :searchSelected="[]"
       @update:searchSelected="submit"
+      :tabsShow="tabsShow"
+      apiModule="systemOrganOrPerson"
+      :queryParams="queryParams"
+      v-if="agentManVisible"
     />
   </div>
 </template>
 
 <script setup>
   import { ref, onMounted, getCurrentInstance, computed } from 'vue'
+  import VFormRender from '@/lib/vform/components/form-render'
+  import VFormDesigner from '@/lib/vform/components/form-designer'
   import { designerConfig } from './designerConfig'
   import { useVformInfoStore } from '@/store/vform'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import { ElMessage } from 'element-plus'
+  import typeOfSealService from '@/api/frontDesk/sealManage/typeOfSeal'
+  import formManageService from '@/api/system/formManagement'
+  import yysq from './yongyinshenqing'
+  import zbsq from './zhuanbanshenqing'
+  import kzsq from './kezhangshenqing'
+  import bgsq from './biangengshenqing'
+  import czsq from './chongzhiyongyinshenqing'
+  import {
+    containers,
+    advancedFields,
+    basicFields,
+    customFields
+  } from '@/lib/vform/components/form-designer/widget-panel/widgetsConfig.js'
+
   const { proxy } = getCurrentInstance()
   const vformInfoStore = useVformInfoStore()
   const vFormRef = ref(null)
   const sealSelectVisible = ref(false)
   const relatedCompanyVisible = ref(false)
-  const agentManVisible = ref(true)
+  const agentManVisible = ref(false)
   const curInstance = ref(null)
+  const queryParams = { roleId: 'r1' }
+  const prefabricationFieldList = ref([])
+  const tabsShow = ref([]) // 'organ', 'user'
+  const bannedWidgets = ref([]) // 设计器需要显示指定的组件
 
   const props = defineProps({
     // 模式： 默认为设计模式  render渲染
@@ -67,16 +97,16 @@
     // 业务类型  默认用印申请 、其他
     businessType: {
       type: String,
-      default: ''
+      default: '2'
     },
 
-    // 禁止设计器显示指定的组件
-    bannedWidgets: {
-      type: Array,
-      default: () => {
-        return [] // ['table', 'rate', 'switch'] 自定义组件的type
-      }
-    },
+    // 设计器需要显示指定的组件
+    // bannedWidgets: {
+    //   type: Array,
+    //   default: () => {
+    //     return [] // ['table', 'rate', 'switch'] 自定义组件的type
+    //   }
+    // },
 
     // 配置设计器初始化界面显示设置
     designerConfig: {
@@ -114,21 +144,6 @@
       default: () => []
     },
 
-    // 模板list
-    templateList: {
-      type: Array,
-      default: () => [
-        // {
-        //   title: '单列表单',
-        //   imgUrl:
-        //     'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
-        //   jsonUrl:
-        //     'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/json1.txt',
-        //   description: '表单模板详细说明...'
-        // }
-      ]
-    },
-
     // 用户类型 root能看见所有功能
     userType: {
       type: String,
@@ -143,25 +158,90 @@
     'on-loaded' // vform加载完成
   ])
 
-  // 类型
+  // 禁止设计器显示的组件
   const getBannedWidgets = computed(() => {
-    return props.bannedWidgets.length
-      ? props.bannedWidgets
-      : props.businessType === '2'
-      ? []
-      : [
-          'sealName',
-          'contactUnit',
-          'usesealBesides',
-          'normalSealNum',
-          'remoteSeal',
-          'videoSeal',
-          'sealFile',
-          'seamingSeal',
-          'limitTimeSeal',
-          'limitAddressSeal',
-          'uploadFile'
+    const allWidgets = [
+      ...containers,
+      ...basicFields,
+      ...advancedFields,
+      ...customFields
+    ]
+      .map(v => v.type)
+      .filter(v => bannedWidgets.value.includes(v))
+    return allWidgets
+  })
+
+  // 模板list
+  const templateList = computed(() => {
+    let list = []
+    switch (props.businessType) {
+      case '2': // 用印申请
+        list = [
+          {
+            title: '用印申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(yysq),
+            description: '用印申请描述'
+          }
         ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        prefabricationFieldList.value = ['sealName']
+        break
+      case '3': // 转办申请
+        list = [
+          {
+            title: '转办申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(zbsq),
+            description: '转办申请'
+          }
+        ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        prefabricationFieldList.value = ['applicantInfo']
+        break
+      case '4': // 重置申请
+        list = [
+          {
+            title: '重置申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(czsq),
+            description: '转办申请'
+          }
+        ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        prefabricationFieldList.value = ['sealName']
+        break
+      case '7': // 变更申请
+        list = [
+          {
+            title: '变更申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(bgsq),
+            description: '变更申请'
+          }
+        ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        prefabricationFieldList.value = ['sealName', 'applicantInfo']
+        break
+      default: // 6刻章申请 停用申请 启用申请
+        list = [
+          {
+            title: '刻章申请',
+            imgUrl:
+              'https://ks3-cn-beijing.ksyuncs.com/vform-static/form-samples/t1.png',
+            jsonUrl: JSON.stringify(kzsq),
+            description: '转办申请'
+          }
+        ]
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        prefabricationFieldList.value = ['sealName']
+        break
+    }
+    return list
   })
 
   // 文件类型
@@ -290,27 +370,65 @@
     }
 
     // 员工选择
-    proxy.$jyVform.showSelectUser = instance => {
+    proxy.$jyVform.showAgentMan = (instance, str) => {
+      tabsShow.value = []
+      tabsShow.value.push(str)
       agentManVisible.value = true
       curInstance.value = instance
     }
+
+    // 获取印章类型
+    proxy.$jyVform.getSealTypes = async instance => {
+      try {
+        curInstance.value = instance
+        const res = await typeOfSealService.list({ searchKey: '' })
+        submit(
+          res.data || [
+            {
+              sealTypeId: '1602494337040568321',
+              sealTypeName: '印章类型A'
+            }
+          ]
+        )
+      } catch (error) {
+        ElMessage.error(error)
+      }
+    }
   }
 
-  // 通过vform中的实例调用方法
+  // 通过vform中的实例调用方法 - 传值
   const submit = value => {
-    console.log('--->', value)
     sealSelectVisible.value = false
     relatedCompanyVisible.value = false
     agentManVisible.value = false
     curInstance.value.callBackFn(value)
+  }
+
+  /**
+   * 设置动态表单基础字段&业务字段
+   * @param {*} applyTypeId 业务类型
+   */
+  const setFormColumnBasic = async applyTypeId => {
+    try {
+      const res = await formManageService.formColumnBasic({ applyTypeId })
+      bannedWidgets.value = res.data.columSys || []
+    } catch (error) {
+      ElMessage.error(error)
+    }
   }
   // ---------------------------------business end-----------------------------------------
 
   onMounted(() => {
     console.log('--->', 'vform加载完成')
     emit('on-loaded')
-    vformInfoStore.setFileTypeList()
+    // vformInfoStore.setFileTypeList()
     provideProperties()
+    // 如果是设计器，且内容为空，需要加载指定模板
+    const widgetList = vFormRef.value.getFieldWidgets()
+    console.log('------>', widgetList)
+    if (!props.mode && !widgetList.length) {
+      vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
+    }
   })
 
   defineExpose({
@@ -330,7 +448,8 @@
     setFieldValue,
     resetForm,
     setReadMode,
-    showDialog
+    showDialog,
+    setFormColumnBasic
   })
 </script>
 
@@ -341,5 +460,13 @@
 </script>
 
 <style lang="scss">
-  @import 'vform-jy/dist/designer.style.css';
+  // @import 'vform-jy/dist/designer.style.css';
+  .drag-dialog {
+    .el-dialog__header {
+      display: block !important;
+    }
+    .el-dialog__body {
+      padding: 25px !important;
+    }
+  }
 </style>

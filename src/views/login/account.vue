@@ -239,6 +239,9 @@
   const goHome = tenantId => {
     loginApi.chooseOrgan(tenantId).then(res => {
       localStorage.setItem('tenantId', Number(tenantId))
+      if (!localStorage.getItem('watermark')) {
+        localStorage.setItem('watermark', 1)
+      }
       let redirect = route.query.redirect || '/frontDesk/home'
       if (typeof redirect !== 'string') {
         redirect = '/frontDesk/home'

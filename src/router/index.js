@@ -79,7 +79,7 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
     const text =
       JSON.parse(localStorage.getItem('accountInfo')).userName +
       ' ' +
-      dayjs().format('YYYY-MM-DD HH:mm:ss')
+      dayjs().format('YYYY-MM-DD HH:mm')
     setWaterMark(text)
   }
   next()

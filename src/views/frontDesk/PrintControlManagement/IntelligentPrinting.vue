@@ -80,7 +80,6 @@
       :tabsShow="tabsShow"
       :activeTab="activeTab"
       :apiModule="apiModule"
-      editDeploy
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
@@ -105,7 +104,8 @@
     // defineProps,
     // defineEmits,
     onBeforeMount,
-    onMounted
+    onMounted,
+    watch
   } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
@@ -1011,6 +1011,13 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
+
+  watch(
+    () => searchSelected.value,
+    val => {
+      console.log(val, '===')
+    }
+  )
 </script>
 <style lang="scss" scoped>
   .PrintControlManagement-IntelligentPrinting {
