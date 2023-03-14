@@ -398,7 +398,8 @@
         accountNo: accountLoginForm.accountNo,
         accountPass: md5(accountLoginForm.accountPass),
         captchaToken: attr.token,
-        captcha: attr.pointJson
+        captcha: attr.pointJson,
+        secretKey: attr.secretKey
       }
     }
     // 账号密码登录

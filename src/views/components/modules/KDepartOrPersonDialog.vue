@@ -295,14 +295,8 @@
     })
 
   // 选中数据
-<<<<<<< HEAD
   // const allSelected = ref([])
-  const selectedDepart = ref([])
-=======
-  const allSelected = ref([])
-  console.log(props.searchSelected)
   const selectedDepart = ref(props.searchSelected || [])
->>>>>>> dev
   const selectedUser = ref([])
 
   const firstShow = ref(false)

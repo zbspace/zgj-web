@@ -324,7 +324,8 @@
                   secretKey.value
                 )
               : JSON.stringify({ x: moveLeftDistance, y: 5.0 }),
-            token: backToken.value
+            token: backToken.value,
+            secretKey: secretKey.value
           }
           setItem('captchaInfo', data)
           console.log(data, 'checked参数')
