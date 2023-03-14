@@ -1,7 +1,7 @@
-import { reactive } from 'vue';
-import useCommon from '../hooks/useCommon';
+import { reactive } from 'vue'
+import useCommon from '../hooks/useCommon'
 // 公共
-const { getId } = useCommon();
+const { getId } = useCommon()
 
 export default function () {
   // 审批类型
@@ -18,7 +18,7 @@ export default function () {
       name: '自动拒绝',
       value: 3
     } */
-  ]);
+  ])
 
   // 审批方式
   const approvalModes = reactive([
@@ -42,7 +42,7 @@ export default function () {
       name: '依次审批(一人通过再到下一个人处理)',
       value: 5
     }
-  ]);
+  ])
 
   // 审批人与发起人为同一人时
   const sameApprovals = reactive([
@@ -80,7 +80,7 @@ export default function () {
       name: '由发起人对自己审批',
       value: 4
     } */
-  ]);
+  ])
 
   // 相邻审批节点为同一人时
   const adjacentApprovals = reactive([
@@ -100,11 +100,12 @@ export default function () {
       popovers: [
         {
           title: '不自动跳过？',
-          content: '如果相邻审批节点为同一人时,每个节点都需要手动审批，需要审批多次'
+          content:
+            '如果相邻审批节点为同一人时,每个节点都需要手动审批，需要审批多次'
         }
       ]
     }
-  ]);
+  ])
 
   // 审批人为空时
   const approvalWithNulls = reactive([
@@ -114,7 +115,8 @@ export default function () {
       popovers: [
         {
           title: '什么是自动跳过？',
-          content: '当该审批节点没有审批人的时候，审批单将自动跳过，最后节点除外'
+          content:
+            '当该审批节点没有审批人的时候，审批单将自动跳过，最后节点除外'
         }
       ]
     },
@@ -141,7 +143,8 @@ export default function () {
           content: '若审批人为空，则自动转交给该审批流程的管理员'
         },
         {
-          content: '提示：可在“基础信息 - 谁可以管理这个审批”中，查看和编辑该审批流程的管理员'
+          content:
+            '提示：可在“基础信息 - 谁可以管理这个审批”中，查看和编辑该审批流程的管理员'
         }
       ]
     },
@@ -151,14 +154,16 @@ export default function () {
       popovers: [
         {
           title: '什么是给出异常提示,待管理员指定？',
-          content: '若审批人为空，则在页面给出反馈,并且纳入到异常流程中,管理员处理'
+          content:
+            '若审批人为空，则在页面给出反馈,并且纳入到异常流程中,管理员处理'
         },
         {
-          content: '提示：可在“基础信息 - 谁可以管理这个审批”中，查看和编辑该审批流程的管理员'
+          content:
+            '提示：可在“基础信息 - 谁可以管理这个审批”中，查看和编辑该审批流程的管理员'
         }
       ]
     }
-  ]);
+  ])
   // --------------------------------------------------------------------
   // 审批人项
   const approvals = reactive([
@@ -247,14 +252,17 @@ export default function () {
       popovers: [
         {
           title: '什么是角色？',
-          content: '系統角色指团队成员的专业分工类别，如人事、行政、财务等，每类角色可由 1 位或多位成员组成'
+          content:
+            '系統角色指团队成员的专业分工类别，如人事、行政、财务等，每类角色可由 1 位或多位成员组成'
         },
         {
           title: '如何使用？',
-          content: '用角色作为审批人，当有成员离职变动时，该角色中的其他成员可继续完成审批，从而避免审批流程失效的情况'
+          content:
+            '用角色作为审批人，当有成员离职变动时，该角色中的其他成员可继续完成审批，从而避免审批流程失效的情况'
         },
         {
-          content: '提示：若选择的角色中包含多名成员，则按照设置“多人审批时采用的审批方式”来处理'
+          content:
+            '提示：若选择的角色中包含多名成员，则按照设置“多人审批时采用的审批方式”来处理'
         }
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
@@ -276,10 +284,12 @@ export default function () {
         },
         {
           title: '如何使用？',
-          content: '用岗位作为审批人，当有成员离职变动时，该岗位中的其他成员可继续完成审批，从而避免审批流程失效的情况'
+          content:
+            '用岗位作为审批人，当有成员离职变动时，该岗位中的其他成员可继续完成审批，从而避免审批流程失效的情况'
         },
         {
-          content: '提示：若选择的岗位中包含多名成员，则按照设置“多人审批时采用的审批方式”来处理'
+          content:
+            '提示：若选择的岗位中包含多名成员，则按照设置“多人审批时采用的审批方式”来处理'
         }
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
@@ -308,7 +318,7 @@ export default function () {
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
       hrefName: '如何配置用户组？'
-    } ,*/
+    } , */
     {
       name: '指定成员',
       value: 8,
@@ -339,7 +349,8 @@ export default function () {
       popovers: [
         {
           title: '什么是发起人审批？',
-          content: '将发起人自己设置为审批人，可用于需要发起人进行信息复核的场景'
+          content:
+            '将发起人自己设置为审批人，可用于需要发起人进行信息复核的场景'
         }
       ]
     },
@@ -354,13 +365,16 @@ export default function () {
       popovers: [
         {
           title: '什么是节点审批人？',
-          content: '通过选择前面已经配置的节点进行关联，流程执行时自动获取所有关联审批节点中的实际审批人作为当前节点的审批人'
+          content:
+            '通过选择前面已经配置的节点进行关联，流程执行时自动获取所有关联审批节点中的实际审批人作为当前节点的审批人'
         },
         {
-          content: '节点审批人默认为多人审批，不会从关联的审批节点继承，需单独设置审批方式'
+          content:
+            '节点审批人默认为多人审批，不会从关联的审批节点继承，需单独设置审批方式'
         },
         {
-          content: '当前节点为节点审批人时，同一审批人重复审批将不会触发自动通过'
+          content:
+            '当前节点为节点审批人时，同一审批人重复审批将不会触发自动通过'
         },
         {
           title: '如何关联节点？',
@@ -473,9 +487,10 @@ export default function () {
       popovers: [
         {
           title: '什么是选择审批？',
-          content: '在当前节点配置候选人,当前一个节点审批时,可以指定一个或多个候选人作为当前节点的审批人'
+          content:
+            '在当前节点配置候选人,当前一个节点审批时,可以指定一个或多个候选人作为当前节点的审批人'
         }
-      ],
+      ]
     },
     {
       name: '连续多级上级审批',
@@ -488,7 +503,8 @@ export default function () {
       popovers: [
         {
           title: '什么是连续多级上级审批？',
-          content: '从发起人的直属上级开始，依次逐级向上审批，直到所设置的审批终点为止。是手动逐个添加多级上级审批的一种便捷设置'
+          content:
+            '从发起人的直属上级开始，依次逐级向上审批，直到所设置的审批终点为止。是手动逐个添加多级上级审批的一种便捷设置'
         }
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
@@ -505,7 +521,8 @@ export default function () {
       popovers: [
         {
           title: '如何配置表单内人员？',
-          content: '在表单设计中添加人员控件后，该人员/其上级/部门负责人将可以配置为本节点的审批人。'
+          content:
+            '在表单设计中添加人员控件后，该人员/其上级/部门负责人将可以配置为本节点的审批人。'
         }
       ]
     },
@@ -520,11 +537,12 @@ export default function () {
       popovers: [
         {
           title: '何配置表单内部门？',
-          content: '在表单设计中添加部门控件后，其部门负责人可以配置为本节点的审批人。'
+          content:
+            '在表单设计中添加部门控件后，其部门负责人可以配置为本节点的审批人。'
         }
       ]
     }
-  ]);
+  ])
 
   // 上级方式
   const higherLevelModes = reactive([
@@ -537,7 +555,8 @@ export default function () {
           content: '以发起人的直属上级为第一级，向更高管理层级递增'
         },
         {
-          content: '图示：若小王为发起人，则小张是小王的“直属上级”，小李是小王的“第二级上级”'
+          content:
+            '图示：若小王为发起人，则小张是小王的“直属上级”，小李是小王的“第二级上级”'
         }
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
@@ -553,13 +572,14 @@ export default function () {
           content: '以公司组织架构中的最高上级为第一级，向更低管理层级递增'
         },
         {
-          content: '图示：若小王为发起人，则小赵是小王的“最高上级”，小周是小王的“第二级上级”'
+          content:
+            '图示：若小王为发起人，则小赵是小王的“最高上级”，小周是小王的“第二级上级”'
         }
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
       hrefName: '查看和设置上级信息'
     }
-  ]);
+  ])
   // 上级层级
   const higherLevels = reactive([
     {
@@ -610,7 +630,7 @@ export default function () {
       name: '直属上级加11级',
       value: '12'
     }
-  ]);
+  ])
 
   const reverseHigherLevels = reactive([
     {
@@ -661,7 +681,7 @@ export default function () {
       name: '最高上级减11级',
       value: '12'
     }
-  ]);
+  ])
 
   // 部门负责人方式
   const departmentHeadModes = reactive([
@@ -674,7 +694,8 @@ export default function () {
           content: '以发起人的直接部门负责人为第一级，向更高管理层级递增'
         },
         {
-          content: '图示：若小王为发起人，则小张是小王的“直接部门负责人”，小李是小王的“第二级部门负责人”'
+          content:
+            '图示：若小王为发起人，则小张是小王的“直接部门负责人”，小李是小王的“第二级部门负责人”'
         }
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
@@ -687,16 +708,18 @@ export default function () {
       popovers: [
         {
           title: '什么是部门负责人 - 自上而下？',
-          content: '以公司组织架构中的最高部门负责人为第一级，向更低管理层级递增'
+          content:
+            '以公司组织架构中的最高部门负责人为第一级，向更低管理层级递增'
         },
         {
-          content: '图示：若小王为发起人，则小赵是小王的“最高部门负责人”，小周是小王的“第二级部门负责人”'
+          content:
+            '图示：若小王为发起人，则小赵是小王的“最高部门负责人”，小周是小王的“第二级部门负责人”'
         }
       ],
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
       hrefName: '查看和设置上级信息'
     }
-  ]);
+  ])
   // 部门负责人层级
   const departmentHeads = reactive([
     {
@@ -747,7 +770,7 @@ export default function () {
       name: '直属部门负责人加11级',
       value: '12'
     }
-  ]);
+  ])
   const reverseDepartmentHeads = reactive([
     {
       name: '最高部门负责人',
@@ -797,7 +820,7 @@ export default function () {
       name: '最高部门负责人减11级',
       value: '12'
     }
-  ]);
+  ])
   // 部门审批人
   const departmentApprovals = reactive([
     {
@@ -840,7 +863,7 @@ export default function () {
       name: '项目负责人',
       value: '110'
     }
-  ]);
+  ])
   // 角色
   const roles = reactive([
     {
@@ -867,7 +890,7 @@ export default function () {
       name: '经理',
       value: '6'
     }
-  ]);
+  ])
   // 岗位
   const posts = reactive([
     {
@@ -914,7 +937,7 @@ export default function () {
       name: '副总经理',
       value: '11'
     }
-  ]);
+  ])
   // 用户组
   const userGroups = reactive([
     {
@@ -929,7 +952,7 @@ export default function () {
       name: '资产组',
       value: '3'
     }
-  ]);
+  ])
   // 人员类型
   const assigneeTypes = reactive([
     {
@@ -944,7 +967,7 @@ export default function () {
       name: '人员部门负责人',
       value: 3
     }
-  ]);
+  ])
 
   // 人员范围
   const assigneeScopes = reactive([
@@ -960,7 +983,7 @@ export default function () {
       name: '角色成员',
       value: 3
     }
-  ]);
+  ])
   // --------------------------------------------------------------------
   // 操作配置
   const buttons = reactive([
@@ -1010,7 +1033,8 @@ export default function () {
       id: getId(),
       name: '撤回',
       value: '7',
-      content: '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+      content:
+        '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
       code: 'revoke'
     },
     {
@@ -1027,7 +1051,7 @@ export default function () {
       content: '征询他人意见',
       code: 'consult'
     }
-  ]);
+  ])
   // 超时配置
   const timeouts = reactive([
     {
@@ -1037,7 +1061,7 @@ export default function () {
       content: '支持自动提醒、转交等，为每条审批流设一个智能闹钟',
       code: 'timeout'
     }
-  ]);
+  ])
   // 安全配置
   const securities = reactive([
     {
@@ -1054,7 +1078,7 @@ export default function () {
       content: '凭密码才能填写表单',
       code: 'password'
     }
-  ]);
+  ])
   // 抄送操作配置
   const copyerOperations = reactive([
     {
@@ -1064,7 +1088,7 @@ export default function () {
       content: '允许发起人添加抄送人',
       code: 'customCc'
     }
-  ]);
+  ])
 
   // 允许退回人
   const allowBackDatas = reactive([
@@ -1076,7 +1100,7 @@ export default function () {
       name: '任意节点',
       value: 2
     }
-  ]);
+  ])
   // 退回后审批形式
   const backApprovalTypeDatas = [
     {
@@ -1091,15 +1115,15 @@ export default function () {
       value: 4,
       label: '从被退回人的下一个节点开始审批'
     }
-  ];
+  ]
 
   // --------------------------------------------------------------------
   // 分支类型
   const branchTypes = reactive([
     { label: '规则', value: 1 },
-    /* { label: '公式', value: 2 },*/
+    /* { label: '公式', value: 2 }, */
     { label: '其他', value: 3 }
-  ]);
+  ])
   // 基础字段
   const baseColumns = reactive([
     { label: '姓名', value: '姓名', code: 'NAME' },
@@ -1108,9 +1132,9 @@ export default function () {
     { label: 'Base地', value: 'Base地', code: 'BASE' },
     { label: '所属体系', value: '所属体系', code: '' },
     { label: '归属地', value: '归属地', code: 'LOCATION' }
-  ]);
+  ])
   // 表单字段，必填
-  const formColumns = reactive([{ label: '加班类型', value: '加班类型' }]);
+  const formColumns = reactive([{ label: '加班类型', value: '加班类型' }])
   // 比较(操作)符
   const optTypes = reactive([
     { label: '等于', value: 'eq', code: '==' },
@@ -1119,14 +1143,14 @@ export default function () {
     { label: '大于等于', value: 'ge', code: '>=' },
     { label: '小于', value: 'lt', code: '<' },
     { label: '小于等于', value: 'le', code: '<=' }
-  ]);
+  ])
   // 值类型
   const valueTypes = reactive([
     { label: '固定', value: '1' }
     /* { label: '动态值', value: '2' },
     { label: '流程值', value: '3' } */
     /* { label: '数据源', value: '4' }, */
-  ]);
+  ])
   // 动态值类型
   const dynamicValueTypes = reactive([
     { label: '当前员工', value: '1' },
@@ -1137,13 +1161,13 @@ export default function () {
     { label: '上级部门', value: '6' },
     { label: '当前日期', value: '7' },
     { label: '当前时间', value: '8' }
-  ]);
+  ])
 
   // 流程值类型
   const flowValueTypes = reactive([
     { label: '流程状态', value: '1' },
     { label: '流程创建人', value: '2' }
-  ]);
+  ])
 
   // 表单数据
   const dataSourceOptions = reactive([
@@ -1159,7 +1183,7 @@ export default function () {
         { label: '归属地', value: '归属地' }
       ]
     }
-  ]);
+  ])
 
   // -------------------------------------------------------------------------------
   // 通知类型
@@ -1188,7 +1212,7 @@ export default function () {
       name: '飞书',
       value: 32
     }
-  ]);
+  ])
 
   return {
     approvalMethods,
@@ -1224,5 +1248,5 @@ export default function () {
     flowValueTypes,
     dataSourceOptions,
     notices
-  };
+  }
 }

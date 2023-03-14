@@ -327,6 +327,7 @@
             token: backToken.value
           }
           setItem('captchaInfo', data)
+          console.log(data, 'checked参数')
           api.reqChecked(data).then(res => {
             if (res.data) {
               // 成功

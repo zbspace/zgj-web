@@ -1,16 +1,16 @@
-import SnowflakeId from 'snowflake-id';
+import SnowflakeId from 'snowflake-id'
 
 /**
  *   获取ID
  */
 const getId = num => {
-  const snowflake = new SnowflakeId();
-  let arr = [];
+  const snowflake = new SnowflakeId()
+  const arr = []
   for (let i = 0; i <= num; i++) {
-    arr.push(snowflake.generate());
+    arr.push(snowflake.generate())
   }
-  return num ? arr[num] : snowflake.generate();
-};
+  return num ? arr[num] : snowflake.generate()
+}
 
 /**
  * 发起人节点
@@ -90,7 +90,8 @@ export function getStartNode() {
         buttonName: '撤回',
         checked: false,
         disabled: true,
-        content: '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+        content:
+          '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
         buttonCode: 'revoke',
         color: 'default'
       },
@@ -103,7 +104,7 @@ export function getStartNode() {
         color: 'warning'
       }
     ]
-  };
+  }
 }
 
 /**
@@ -197,7 +198,8 @@ export function addApproverNode(type) {
         buttonName: '撤回',
         checked: false,
         disabled: false,
-        content: '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+        content:
+          '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
         buttonCode: 'revoke',
         color: 'default'
       },
@@ -267,7 +269,7 @@ export function addApproverNode(type) {
     error: false,
     // 显示内容
     content: null
-  };
+  }
 }
 
 /**
@@ -357,7 +359,8 @@ export function addFreeNode() {
         buttonName: '撤回',
         checked: false,
         disabled: false,
-        content: '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+        content:
+          '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
         buttonCode: 'revoke',
         color: 'default'
       },
@@ -419,7 +422,7 @@ export function addFreeNode() {
     error: false,
     // 显示内容
     content: null
-  };
+  }
 }
 
 /**
@@ -483,7 +486,7 @@ export function addCcNode(type) {
     error: false,
     // 显示内容
     content: null
-  };
+  }
 }
 
 /**
@@ -541,7 +544,7 @@ export function addNoticeNode(type) {
     update: false,
     // 是否有错误
     error: false
-  };
+  }
 }
 
 /**
@@ -566,7 +569,7 @@ export function addEventNode(type) {
     update: false,
     // 是否有错误
     error: false
-  };
+  }
 }
 
 /**
@@ -591,7 +594,7 @@ export function addTimerNode(type) {
     deletable: false,
     // 是否有错误
     error: false
-  };
+  }
 }
 
 /**
@@ -620,7 +623,7 @@ export function addWriteNode(type) {
     error: false,
     // 显示内容
     content: null
-  };
+  }
 }
 
 /**
@@ -629,7 +632,7 @@ export function addWriteNode(type) {
  * @returns
  */
 export function addBranchNode(type) {
-  const uid = getId();
+  const uid = getId()
   return {
     nodeId: uid,
     nodeName: '路由',
@@ -705,7 +708,7 @@ export function addBranchNode(type) {
         content: '不满足时，进入默认条件'
       }
     ]
-  };
+  }
 }
 
 /**
@@ -728,7 +731,7 @@ export function addCondition(node, len) {
     update: false,
     attr: {
       // 显示优先级
-      showPriorityLevel: node.nodeType == 4 ? true : false,
+      showPriorityLevel: node.nodeType == 4,
       // 优先级
       priorityLevel: len,
       // 分支类型
@@ -742,7 +745,7 @@ export function addCondition(node, len) {
     childNode: null,
     // 条件组
     conditionGroup: []
-  };
+  }
 }
 
 /**
@@ -751,7 +754,7 @@ export function addCondition(node, len) {
  * @returns
  */
 export function addSuggestNode(type) {
-  const uid = getId();
+  const uid = getId()
   return {
     nodeId: uid,
     nodeName: '意见',
@@ -818,7 +821,7 @@ export function addSuggestNode(type) {
         error: false
       }
     ]
-  };
+  }
 }
 
 /**
@@ -827,7 +830,7 @@ export function addSuggestNode(type) {
  * @returns
  */
 export function addParallelNode(type) {
-  const uid = getId();
+  const uid = getId()
   return {
     nodeId: uid,
     nodeName: '并行',
@@ -909,5 +912,5 @@ export function addParallelNode(type) {
         conditionGroup: []
       }
     ]
-  };
+  }
 }

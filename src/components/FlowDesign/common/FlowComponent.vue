@@ -36,6 +36,36 @@
       class="w-fill"
       @change="onChange"
     />
+    <!-- 部门 -->
+    <!-- <GDept
+      v-else-if="props.is == 'dept'"
+      v-model="currentValue"
+      v-model:label="currentValueName"
+      :showButton="false"
+      :size="props.size"
+      :radioModel="true"
+      @change="onChange"
+    /> -->
+    <!-- 角色 -->
+    <!-- <GRole
+      v-else-if="props.is == 'role'"
+      v-model="currentValue"
+      v-model:label="currentValueName"
+      :showButton="false"
+      :size="props.size"
+      :radioModel="true"
+      @change="onChange"
+    /> -->
+    <!-- 职位 -->
+    <!-- <GPos
+      v-else-if="props.is == 'pos'"
+      v-model="currentValue"
+      v-model:label="currentValueName"
+      :showButton="false"
+      :size="props.size"
+      :radioModel="true"
+      @change="onChange"
+    /> -->
   </span>
 </template>
 

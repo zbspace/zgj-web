@@ -35,13 +35,12 @@
 
 <script setup>
   import { computed } from 'vue'
-  import useCommon from '../../hooks/useCommon'
+  // import useCommon from '../../hooks/useCommon';
   // import useIcon from '../../hooks/useIcon';
   // import { useFlowStore } from '../../store/flow';
   import FlowMultiSelect from '../../common/FlowMultiSelect.vue'
   import loadApproverData from '../../data/load-approver-data'
   // 公共
-  const { size, radioStyle } = useCommon()
   // 图标
   // Store
   // 数据

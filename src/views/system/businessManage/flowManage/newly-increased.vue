@@ -89,6 +89,7 @@
   import apiFlow from '@/api/system/flowManagement'
 
   import flowJson from '@/views/jyGunsJson/flow'
+  // import { ModelApi } from '@/api/flow/ModelApi'
   const emit = defineEmits(['close', 'update:modelValue', 'clickCutTabs'])
   // 异步组件
   const VFlowDesign = defineAsyncComponent({
@@ -174,9 +175,9 @@
       refAssociationForm.value.getInfoValue()
     )
     // 发送api请求 保存流程设计
-    apiFlowAdd().then(result => {
-      console.log('--->', result)
-    })
+    // apiFlowAdd().then(result => {
+    //   console.log('--->', result)
+    // })
   }
   // 设置流程模板默认数据
   const handleSetData = () => {

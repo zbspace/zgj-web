@@ -113,6 +113,14 @@
         </FlowDrawerContent>
         <!-- 部门审批人 -->
         <FlowDrawerContent v-if="group.approverType == 3" name="选择部门">
+          <!-- <GDept
+            v-model="group.orgId"
+            v-model:label="group.orgName"
+            :showButton="false"
+            :size="size"
+            :radioModel="true"
+            call-back-type="string"
+          /> -->
         </FlowDrawerContent>
         <FlowDrawerContent v-if="group.approverType == 3" name="部门审批人">
           <a-form-item
@@ -197,7 +205,7 @@
             :name="['approverGroups', k, 'approverIds']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
-            <!-- <GUser
+            <GUser
               type="button"
               :max="25"
               v-model="group.approverIds"
@@ -205,7 +213,7 @@
               :dataSource="userSource"
               showButton
               @change="changeUser"
-            /> -->
+            />
           </a-form-item>
         </FlowDrawerContent>
 
@@ -246,7 +254,7 @@
           text="(不能超过 25 人, 如配置候选成员将覆盖选择范围！)"
         >
           <a-form-item :name="['approverGroups', k, 'approverIds']">
-            <!-- <GUser
+            <GUser
               type="button"
               :max="25"
               v-model="group.approverIds"
@@ -254,7 +262,7 @@
               :dataSource="userSource"
               showButton
               @change="changeUser"
-            /> -->
+            />
           </a-form-item>
         </FlowDrawerContent>
         <!-- 节点审批人 -->
@@ -447,6 +455,7 @@
             :name="['approverGroups', k, 'approverIds']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
+            <!-- <GDept size="large" :max="2" :min="2" mode="multiple" v-model="group.approverIds" v-model:label="group.approverNames" /> -->
           </a-form-item>
         </FlowDrawerContent>
         <!-- =============部门负责人交叉审批 END-->
@@ -486,6 +495,7 @@
             :name="['approverGroups', k, 'approverIds']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
+            <!-- <GDept size="large" :radioModel="true" v-model="group.approverIds" v-model:label="group.approverNames" /> -->
           </a-form-item>
         </FlowDrawerContent>
         <!-- 项目部门角色-->
@@ -494,6 +504,14 @@
             :name="['approverGroups', k, 'orgId']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
+            <!-- <GDept
+              v-model="group.orgId"
+              v-model:label="group.orgName"
+              :showButton="false"
+              :size="size"
+              :radioModel="true"
+              call-back-type="string"
+            /> -->
           </a-form-item>
         </FlowDrawerContent>
         <FlowDrawerContent v-if="group.approverType == 19" name="选择角色">
@@ -521,7 +539,7 @@
             :name="['approverGroups', k, 'approverIds']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
-            <!-- <GUser
+            <GUser
               type="button"
               :max="25"
               v-model="group.approverIds"
@@ -529,7 +547,7 @@
               :dataSource="userSource"
               showButton
               @change="changeUser"
-            /> -->
+            />
           </a-form-item>
         </FlowDrawerContent>
       </a-card>
@@ -550,6 +568,8 @@
   import loadApproverData from '../../data/load-approver-data'
   import FlowSelect from '../../common/FlowSelect.vue'
   import FlowDrawerContent from '../FlowDrawerContent.vue'
+  // import GDept from '@/components/GDept/index.vue';
+  // import GDeptApprover from '@/components/GDeptApprover/index.vue';
   import FlowPopoverTip from '../FlowPopoverTip.vue'
   // import { UserApi } from '@/api/system/user/UserApi'
   // 公共

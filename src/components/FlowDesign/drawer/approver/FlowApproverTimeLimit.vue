@@ -137,24 +137,24 @@
         </a-space>
       </div>
       <FlowDrawerContent v-if="currItem.index == 2" name="转交给谁">
-        <!-- <GUser
+        <GUser
           type="button"
           :max="1"
           v-model="data.approverIds"
           v-model:label="data.approverNames"
           :dataSource="userSource"
           showButton
-        /> -->
+        />
       </FlowDrawerContent>
       <FlowDrawerContent name="被提醒人" text="(不能超过 25 人)">
-        <!-- <GUser
+        <GUser
           type="button"
           :max="25"
           v-model="data.approverIds"
           v-model:label="data.approverNames"
           :dataSource="userSource"
           showButton
-        /> -->
+        />
       </FlowDrawerContent>
       <FlowDrawerContent v-if="currItem.index != 1" name="审批意见">
         <a-checkbox v-model:checked="data.suggestion"
@@ -174,6 +174,7 @@
 <script setup>
   import { ref, reactive } from 'vue'
   import useIcon from '../../hooks/useIcon'
+  // import GDept from '@/components/GDept/index.vue';
   import FlowNoticeSelect from '../../common/FlowNoticeSelect.vue'
   // import { UserApi } from '@/api/system/user/UserApi'
   // 图标

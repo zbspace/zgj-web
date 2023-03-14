@@ -7,11 +7,7 @@
             <div class="app-todo">
               <a-row>
                 <a-col :span="12" class="mt-icon">
-                  <span
-                    role="img"
-                    aria-label="bell"
-                    class="anticon anticon-bell"
-                  >
+                  <span role="img" aria-label="bell" class="anticon anticon-bell">
                     <svg
                       focusable="false"
                       class=""
@@ -47,10 +43,7 @@
               <a-col :span="6">
                 <div class="app-task">
                   <div class="app-task-icon">
-                    <span
-                      role="img"
-                      aria-label="play-circle"
-                      class="anticon anticon-play-circle"
+                    <span role="img" aria-label="play-circle" class="anticon anticon-play-circle"
                       ><svg
                         focusable="false"
                         class=""
@@ -81,10 +74,7 @@
               <a-col :span="6">
                 <div class="app-task">
                   <div class="app-task-icon">
-                    <span
-                      role="img"
-                      aria-label="carry-out"
-                      class="anticon anticon-carry-out"
+                    <span role="img" aria-label="carry-out" class="anticon anticon-carry-out"
                       ><svg
                         focusable="false"
                         class=""
@@ -115,10 +105,7 @@
               <a-col :span="6">
                 <div class="app-task">
                   <div class="app-task-icon">
-                    <span
-                      role="img"
-                      aria-label="sound"
-                      class="anticon anticon-sound"
+                    <span role="img" aria-label="sound" class="anticon anticon-sound"
                       ><svg
                         focusable="false"
                         class=""
@@ -129,10 +116,7 @@
                         aria-hidden="true"
                         viewBox="64 64 896 896"
                       >
-                        <path
-                          d="M275.4 424H146v176h129.4l18 11.7L586 803V221L293.3 412.3z"
-                          fill="#e6f7ff"
-                        ></path>
+                        <path d="M275.4 424H146v176h129.4l18 11.7L586 803V221L293.3 412.3z" fill="#e6f7ff"></path>
                         <path
                           d="M892.1 737.8l-110.3-63.7a15.9 15.9 0 00-21.7 5.9l-19.9 34.5c-4.4 7.6-1.8 17.4 5.8 21.8L856.3 800a15.9 15.9 0 0021.7-5.9l19.9-34.5c4.4-7.6 1.7-17.4-5.8-21.8zM934 476H806c-8.8 0-16 7.2-16 16v40c0 8.8 7.2 16 16 16h128c8.8 0 16-7.2 16-16v-40c0-8.8-7.2-16-16-16zM760 344a15.9 15.9 0 0021.7 5.9L892 286.2c7.6-4.4 10.2-14.2 5.8-21.8L878 230a15.9 15.9 0 00-21.7-5.9L746 287.8a15.99 15.99 0 00-5.8 21.8L760 344zM625.9 115c-5.9 0-11.9 1.6-17.4 5.3L254 352H90c-8.8 0-16 7.2-16 16v288c0 8.8 7.2 16 16 16h164l354.5 231.7c5.5 3.6 11.6 5.3 17.4 5.3 16.7 0 32.1-13.3 32.1-32.1V147.1c0-18.8-15.4-32.1-32.1-32.1zM586 803L293.4 611.7l-18-11.7H146V424h129.4l17.9-11.7L586 221v582z"
                           fill="#1890ff"
@@ -145,10 +129,7 @@
               <a-col :span="6">
                 <div class="app-task">
                   <div class="app-task-icon">
-                    <span
-                      role="img"
-                      aria-label="file-add"
-                      class="anticon anticon-file-add"
+                    <span role="img" aria-label="file-add" class="anticon anticon-file-add"
                       ><svg
                         focusable="false"
                         class=""
@@ -196,24 +177,16 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a-button type="link" @click="design(data)"
-                      >流程设计</a-button
-                    >
+                    <a-button type="link" @click="design(data)">流程设计</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="edit(data)"
-                      >模型修改</a-button
-                    >
+                    <a-button type="link" @click="edit(data)">模型修改</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="sort(data, 2)"
-                      >模型排序</a-button
-                    >
+                    <a-button type="link" @click="sort(data, 2)">模型排序</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="move(data)"
-                      >模型移动</a-button
-                    >
+                    <a-button type="link" @click="move(data)">模型移动</a-button>
                   </a-menu-item>
                   <a-menu-item>
                     <a-button type="link" @click="stop(data)">
@@ -224,9 +197,7 @@
               </template>
               <div class="app-item">
                 <div class="low-app-icon size-middle back-color-3">
-                  <span
-                    class="app-iconify anticon"
-                    style="font-size: 28px; display: inline-flex"
+                  <span class="app-iconify anticon" style="font-size: 28px; display: inline-flex"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -253,24 +224,16 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a-button type="link" @click="design(data)"
-                      >流程设计</a-button
-                    >
+                    <a-button type="link" @click="design(data)">流程设计</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="edit(data)"
-                      >模型修改</a-button
-                    >
+                    <a-button type="link" @click="edit(data)">模型修改</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="sort(data, 2)"
-                      >模型排序</a-button
-                    >
+                    <a-button type="link" @click="sort(data, 2)">模型排序</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="move(data)"
-                      >模型移动</a-button
-                    >
+                    <a-button type="link" @click="move(data)">模型移动</a-button>
                   </a-menu-item>
                   <a-menu-item>
                     <a-button type="link" @click="stop(data)">
@@ -281,9 +244,7 @@
               </template>
               <div class="app-item">
                 <div class="low-app-icon size-middle back-color-3">
-                  <span
-                    class="app-iconify anticon"
-                    style="font-size: 28px; display: inline-flex"
+                  <span class="app-iconify anticon" style="font-size: 28px; display: inline-flex"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -310,24 +271,16 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a-button type="link" @click="design(data)"
-                      >流程设计</a-button
-                    >
+                    <a-button type="link" @click="design(data)">流程设计</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="edit(data)"
-                      >模型修改</a-button
-                    >
+                    <a-button type="link" @click="edit(data)">模型修改</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="sort(data, 2)"
-                      >模型排序</a-button
-                    >
+                    <a-button type="link" @click="sort(data, 2)">模型排序</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="move(data)"
-                      >模型移动</a-button
-                    >
+                    <a-button type="link" @click="move(data)">模型移动</a-button>
                   </a-menu-item>
                   <a-menu-item>
                     <a-button type="link" @click="stop(data)">
@@ -338,9 +291,7 @@
               </template>
               <div class="app-item">
                 <div class="low-app-icon size-middle back-color-3">
-                  <span
-                    class="app-iconify anticon"
-                    style="font-size: 28px; display: inline-flex"
+                  <span class="app-iconify anticon" style="font-size: 28px; display: inline-flex"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -367,24 +318,16 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a-button type="link" @click="design(data)"
-                      >流程设计</a-button
-                    >
+                    <a-button type="link" @click="design(data)">流程设计</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="edit(data)"
-                      >模型修改</a-button
-                    >
+                    <a-button type="link" @click="edit(data)">模型修改</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="sort(data, 2)"
-                      >模型排序</a-button
-                    >
+                    <a-button type="link" @click="sort(data, 2)">模型排序</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="move(data)"
-                      >模型移动</a-button
-                    >
+                    <a-button type="link" @click="move(data)">模型移动</a-button>
                   </a-menu-item>
                   <a-menu-item>
                     <a-button type="link" @click="stop(data)">
@@ -395,9 +338,7 @@
               </template>
               <div class="app-item">
                 <div class="low-app-icon size-middle back-color-3">
-                  <span
-                    class="app-iconify anticon"
-                    style="font-size: 28px; display: inline-flex"
+                  <span class="app-iconify anticon" style="font-size: 28px; display: inline-flex"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -424,24 +365,16 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a-button type="link" @click="design(data)"
-                      >流程设计</a-button
-                    >
+                    <a-button type="link" @click="design(data)">流程设计</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="edit(data)"
-                      >模型修改</a-button
-                    >
+                    <a-button type="link" @click="edit(data)">模型修改</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="sort(data, 2)"
-                      >模型排序</a-button
-                    >
+                    <a-button type="link" @click="sort(data, 2)">模型排序</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="move(data)"
-                      >模型移动</a-button
-                    >
+                    <a-button type="link" @click="move(data)">模型移动</a-button>
                   </a-menu-item>
                   <a-menu-item>
                     <a-button type="link" @click="stop(data)">
@@ -452,9 +385,7 @@
               </template>
               <div class="app-item">
                 <div class="low-app-icon size-middle back-color-3">
-                  <span
-                    class="app-iconify anticon"
-                    style="font-size: 28px; display: inline-flex"
+                  <span class="app-iconify anticon" style="font-size: 28px; display: inline-flex"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -481,24 +412,16 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a-button type="link" @click="design(data)"
-                      >流程设计</a-button
-                    >
+                    <a-button type="link" @click="design(data)">流程设计</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="edit(data)"
-                      >模型修改</a-button
-                    >
+                    <a-button type="link" @click="edit(data)">模型修改</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="sort(data, 2)"
-                      >模型排序</a-button
-                    >
+                    <a-button type="link" @click="sort(data, 2)">模型排序</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="move(data)"
-                      >模型移动</a-button
-                    >
+                    <a-button type="link" @click="move(data)">模型移动</a-button>
                   </a-menu-item>
                   <a-menu-item>
                     <a-button type="link" @click="stop(data)">
@@ -509,9 +432,7 @@
               </template>
               <div class="app-item">
                 <div class="low-app-icon size-middle back-color-3">
-                  <span
-                    class="app-iconify anticon"
-                    style="font-size: 28px; display: inline-flex"
+                  <span class="app-iconify anticon" style="font-size: 28px; display: inline-flex"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -538,24 +459,16 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a-button type="link" @click="design(data)"
-                      >流程设计</a-button
-                    >
+                    <a-button type="link" @click="design(data)">流程设计</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="edit(data)"
-                      >模型修改</a-button
-                    >
+                    <a-button type="link" @click="edit(data)">模型修改</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="sort(data, 2)"
-                      >模型排序</a-button
-                    >
+                    <a-button type="link" @click="sort(data, 2)">模型排序</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="move(data)"
-                      >模型移动</a-button
-                    >
+                    <a-button type="link" @click="move(data)">模型移动</a-button>
                   </a-menu-item>
                   <a-menu-item>
                     <a-button type="link" @click="stop(data)">
@@ -566,10 +479,7 @@
               </template>
               <div class="app-item">
                 <div class="low-app-icon size-middle back-color-3">
-                  <span
-                    class="app-iconify anticon"
-                    style="font-size: 28px; display: inline-flex"
-                  >
+                  <span class="app-iconify anticon" style="font-size: 28px; display: inline-flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -596,24 +506,16 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a-button type="link" @click="design(data)"
-                      >流程设计</a-button
-                    >
+                    <a-button type="link" @click="design(data)">流程设计</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="edit(data)"
-                      >模型修改</a-button
-                    >
+                    <a-button type="link" @click="edit(data)">模型修改</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="sort(data, 2)"
-                      >模型排序</a-button
-                    >
+                    <a-button type="link" @click="sort(data, 2)">模型排序</a-button>
                   </a-menu-item>
                   <a-menu-item>
-                    <a-button type="link" @click="move(data)"
-                      >模型移动</a-button
-                    >
+                    <a-button type="link" @click="move(data)">模型移动</a-button>
                   </a-menu-item>
                   <a-menu-item>
                     <a-button type="link" @click="stop(data)">
@@ -624,9 +526,7 @@
               </template>
               <div class="app-item">
                 <div class="low-app-icon size-middle back-color-3">
-                  <span
-                    class="app-iconify anticon"
-                    style="font-size: 28px; display: inline-flex"
+                  <span class="app-iconify anticon" style="font-size: 28px; display: inline-flex"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -654,169 +554,154 @@
   </div>
 </template>
 <script setup>
-  import { ref, watch, computed, onMounted } from 'vue'
-  import useCommon from '../hooks/useCommon'
-  // 公共方法
-  const { getflowIcon, size } = useCommon()
-  const emit = defineEmits([
-    'done',
-    'rename',
-    'sort',
-    'del',
-    'design',
-    'edit',
-    'stop',
-    'move',
-    'click'
-  ])
-  //  数据
-  const categoryDatas = ref([])
-  // 默认展开
-  const defaultActiveKey = ref([...new Array(100).keys()])
-  // 图标
-  const iconList = ref([])
+import { ref, watch, computed, onMounted } from 'vue';
+import useCommon from '../hooks/useCommon';
+// 公共方法
+const { getflowIcon } = useCommon();
+const emit = defineEmits(['done', 'rename', 'sort', 'del', 'design', 'edit', 'stop', 'move', 'click']);
+//  数据
+const categoryDatas = ref([]);
+// 默认展开
+let defaultActiveKey = ref([...new Array(100).keys()]);
+// 图标
+const iconList = ref([]);
 
-  // 接收属性
-  const props = defineProps({
-    datasource: {
-      type: [Array, Function],
-      required: true
-    },
-    width: {
-      type: Number,
-      required: false,
-      default: 100
-    },
-    readable: {
-      type: Boolean,
-      default: false
-    }
-  })
-
-  /**
-   * 监听值变化
-   */
-  watch(
-    () => props.datasource,
-    newVal => {
-      reload(newVal)
-    }
-  )
-
-  /**
-   * 图标
-   */
-  const activeIconSrc = computed(() => {
-    return activeIcon => {
-      const icon = iconList.value.find(t => t.name_suffix === activeIcon)
-      return icon ? icon.url : ''
-    }
-  })
-
-  /**
-   * 表单面板样式
-   */
-  const modelPanelStyle = computed(() => {
-    const width = props.width + '%'
-    return {
-      width
-    }
-  })
-
-  onMounted(() => {
-    reload()
-    iconList.value = getflowIcon()
-  })
-
-  const reload = () => {
-    if (Array.isArray(props.datasource)) {
-      categoryDatas.value = props.datasource
-      defaultActiveKey.value = [...new Array(categoryDatas.value.length).keys()]
-      emit('done', props.datasource)
-    } else if (typeof props.datasource === 'function') {
-      props
-        .datasource()
-        .then(result => {
-          categoryDatas.value = result
-          defaultActiveKey.value = [
-            ...new Array(categoryDatas.value.length).keys()
-          ]
-          emit('done', result)
-        })
-        .catch(e => {
-          console.error(
-            'datasource \u8FD4\u56DE\u7684\u6570\u636E\u9519\u8BEF: ',
-            e == null ? void 0 : e.message
-          )
-        })
-    }
+// 接收属性
+const props = defineProps({
+  datasource: {
+    type: [Array, Function],
+    required: true
+  },
+  width: {
+    type: Number,
+    required: false,
+    default: 100
+  },
+  readable: {
+    type: Boolean,
+    default: false
   }
+});
 
-  /**
-   * 重命名
-   * @param {*} record
-   */
-  const rename = record => {
-    emit('rename', record)
+/**
+ * 监听值变化
+ */
+watch(
+  () => props.datasource,
+  newVal => {
+    reload(newVal);
   }
+);
 
-  /**
-   * 分类排序
-   * @param {*} record
-   */
-  const sort = (record, type) => {
-    emit('sort', record, type)
+/**
+ * 图标
+ */
+const activeIconSrc = computed(() => {
+  return activeIcon => {
+    const icon = iconList.value.find(t => t.name_suffix === activeIcon);
+    return icon ? icon.url : '';
+  };
+});
+
+/**
+ * 表单面板样式
+ */
+const modelPanelStyle = computed(() => {
+  const width = props.width + '%';
+  return {
+    width: width
+  };
+});
+
+onMounted(() => {
+  reload();
+  iconList.value = getflowIcon();
+});
+
+const reload = () => {
+  if (Array.isArray(props.datasource)) {
+    categoryDatas.value = props.datasource;
+    defaultActiveKey.value = [...new Array(categoryDatas.value.length).keys()];
+    emit('done', props.datasource);
+  } else if (typeof props.datasource === 'function') {
+    props
+      .datasource()
+      .then(result => {
+        categoryDatas.value = result;
+        defaultActiveKey.value = [...new Array(categoryDatas.value.length).keys()];
+        emit('done', result);
+      })
+      .catch(e => {
+        console.error('datasource \u8FD4\u56DE\u7684\u6570\u636E\u9519\u8BEF: ', e == null ? void 0 : e.message);
+      });
   }
+};
 
-  /**
-   * 删除分类
-   * @param {*} record
-   */
-  const delCategory = record => {
-    emit('del', record)
-  }
+/**
+ * 重命名
+ * @param {*} record
+ */
+const rename = record => {
+  emit('rename', record);
+};
 
-  /**
-   * 设计
-   * @param {*} record
-   */
-  const design = record => {
-    emit('design', record)
-  }
+/**
+ * 分类排序
+ * @param {*} record
+ */
+const sort = (record, type) => {
+  emit('sort', record, type);
+};
 
-  /**
-   * 编辑
-   * @param {*} record
-   */
-  const edit = record => {
-    emit('edit', record)
-  }
+/**
+ * 删除分类
+ * @param {*} record
+ */
+const delCategory = record => {
+  emit('del', record);
+};
 
-  /**
-   * 停用
-   * @param {*} record
-   */
-  const stop = record => {
-    emit('stop', record)
-  }
+/**
+ * 设计
+ * @param {*} record
+ */
+const design = record => {
+  emit('design', record);
+};
 
-  /**
-   * 移动
-   * @param {*} record
-   */
-  const move = record => {
-    emit('move', record)
-  }
+/**
+ * 编辑
+ * @param {*} record
+ */
+const edit = record => {
+  emit('edit', record);
+};
 
-  /**
-   * 点击
-   * @param {*} record
-   */
-  const click = record => {
-    emit('click', record)
-  }
+/**
+ * 停用
+ * @param {*} record
+ */
+const stop = record => {
+  emit('stop', record);
+};
 
-  defineExpose({
-    reload
-  })
+/**
+ * 移动
+ * @param {*} record
+ */
+const move = record => {
+  emit('move', record);
+};
+
+/**
+ * 点击
+ * @param {*} record
+ */
+const click = record => {
+  emit('click', record);
+};
+
+defineExpose({
+  reload
+});
 </script>
