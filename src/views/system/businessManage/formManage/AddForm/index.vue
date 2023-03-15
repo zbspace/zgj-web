@@ -88,6 +88,7 @@
             style="margin-top: 0; width: 100%"
             :businessType="formData.applyTypeId"
             :prefabricationFieldList="prefabricationFieldList"
+            @on-loaded="loaded"
           />
         </template>
       </layout>
@@ -204,9 +205,14 @@
       // 处理选项
       disCutTabs()
     } catch (error) {
+      ElMessage.error(error)
       state.processTabs.data[1].checked = false
       state.processTabs.data[0].checked = true
     }
+  }
+
+  const loaded = () => {
+    vformRef.value.setFormTemplate(formData.value.applyTypeId)
   }
 
   // 处理选项

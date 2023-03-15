@@ -162,15 +162,15 @@ export const loadExtension = function (app) {
   // PERegister.registerCPEditor(app, 'limitTimeSeal-defaultValue', 'limitTimeSeal-defaultValue-editor',
   // PEFactory.createBooleanEditor('limitTimeSealDefaultValue', 'extension.setting.defaultValue'))
 
-  PERegister.registerCPEditor(
-    app,
-    'limitAddressSeal-defaultValue',
-    'limitAddressSeal-defaultValue-editor',
-    PEFactory.createBooleanEditor(
-      'limitAddressSealDefaultValue',
-      'extension.setting.defaultValue'
-    )
-  )
+  // PERegister.registerCPEditor(
+  //   app,
+  //   'limitAddressSeal-defaultValue',
+  //   'limitAddressSeal-defaultValue-editor',
+  //   PEFactory.createBooleanEditor(
+  //     'limitAddressSealDefaultValue',
+  //     'extension.setting.defaultValue'
+  //   )
+  // )
   /* -------------------------------------------------- */
   PERegister.registerCPEditor(
     app,

@@ -195,11 +195,6 @@
         thisIndex: null,
         xzyzDialogVisible: false,
         loadingFlag: false,
-        xzyzTableData: [
-          { id: 1, f1: '印章1', f2: '张三' },
-          { id: 1, f1: '印章2', f2: '李四' },
-          { id: 1, f1: '印章3', f2: '王五' }
-        ],
         sealTypeTreeData: [],
         defaultProps: {
           children: 'children',
@@ -250,7 +245,6 @@
       this.initFieldModel()
       this.initEventHandler()
       this.buildFieldRules()
-
       this.handleOnCreated()
     },
 

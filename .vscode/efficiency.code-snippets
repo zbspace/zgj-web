@@ -22,13 +22,14 @@
     "description": "Log output to console"
   },
   "Try catch message": {
-    "scope": "typescript",
+    "scope": "javascript",
     "prefix": "trymsg",
     "body": [
+      "import { ElMessage } from 'element-plus'",
       "try {",
       "\t$1",
       "} catch (error) {",
-      "\tthis.messageError(error);",
+      "\tElMessage(error);",
       "}"
     ],
     "description": "捕获错误并弹窗提示"

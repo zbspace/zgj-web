@@ -7,7 +7,7 @@ export default {
     document: '文档',
     qqGroup: '技术WX群',
     deployment: '私有部署',
-    subscription: '订阅Pro',
+    subscription: '订阅Pro'
   },
 
   designer: {
@@ -18,51 +18,51 @@ export default {
     dragAction: '拖动',
     basicFieldTitle: '基础字段',
     advancedFieldTitle: '高级字段',
-    customFieldTitle: '自定义扩展字段',
+    customFieldTitle: '其他',
 
     noWidgetHint: '请从左侧列表中选择一个组件, 然后用鼠标拖动组件放置于此处.',
 
     widgetLabel: {
-      grid:             '栅格',
-      table:            '表格',
-      tab:              '标签页',
-      section:          '区块',
-      'sub-form':       '单行子表单',
-      'grid-sub-form':  '多行子表单',
-      'grid-col':       '栅格列',
-      'table-cell':     '单元格',
-      'tab-pane':       '选项卡页',
-      'data-table':     '数据表格',
-      tree:             '树形',
-      'vf-dialog':      '弹出窗口',
-      'vf-drawer':      '侧滑抽屉',
+      grid: '栅格',
+      table: '表格',
+      tab: '标签页',
+      section: '区块',
+      'sub-form': '单行子表单',
+      'grid-sub-form': '多行子表单',
+      'grid-col': '栅格列',
+      'table-cell': '单元格',
+      'tab-pane': '选项卡页',
+      'data-table': '数据表格',
+      tree: '树形',
+      'vf-dialog': '弹出窗口',
+      'vf-drawer': '侧滑抽屉',
 
-      input:          '单行输入',
-      textarea:       '多行输入',
-      number:         '计数器',
-      radio:          '单选项',
-      checkbox:       '多选项',
-      select:         '下拉选项',
-      time:           '时间',
-      'time-range':   '时间范围',
-      date:           '日期',
-      'date-range':   '日期范围',
-      switch:         '开关',
-      rate:           '评分',
-      color:          '颜色选择器',
-      slider:         '滑块',
-      'static-text':  '静态文字',
-      'html-text':    'HTML',
-      button:         '按钮',
-      divider:        '分隔线',
+      input: '单行输入',
+      textarea: '多行输入',
+      number: '计数器',
+      radio: '单选项',
+      checkbox: '多选项',
+      select: '下拉选项',
+      time: '时间',
+      'time-range': '时间范围',
+      date: '日期',
+      'date-range': '日期范围',
+      switch: '开关',
+      rate: '评分',
+      color: '颜色选择器',
+      slider: '滑块',
+      'static-text': '静态文字',
+      'html-text': 'HTML',
+      button: '按钮',
+      divider: '分隔线',
 
       'picture-upload': '图片',
-      'file-upload':    '文件',
-      'rich-editor':    '富文本',
-      cascader:         '级联选择',
-      slot:             '插槽',
+      'file-upload': '文件',
+      'rich-editor': '富文本',
+      cascader: '级联选择',
+      slot: '插槽',
 
-      custom:           'Custom Component',
+      custom: 'Custom Component'
     },
 
     hint: {
@@ -116,7 +116,8 @@ export default {
       sampleLoadedSuccess: '表单示例加载成功',
       sampleLoadedFail: '表单示例加载失败',
       loadFormTemplate: '加载此模板',
-      loadFormTemplateHint: '是否加载这个模板？加载后会覆盖设计器当前表单，你可以使用“撤销”功能恢复。',
+      loadFormTemplateHint:
+        '是否加载这个模板？加载后会覆盖设计器当前表单，你可以使用“撤销”功能恢复。',
       loadFormTemplateSuccess: '表单模板加载成功',
       loadFormTemplateFailed: '表单模板加载失败',
       currentNodeCannotBeSelected: '当前组件节点不可选择',
@@ -145,12 +146,16 @@ export default {
       noChineseValidator: '非中文字符',
       chineseValidator: '仅中文字符',
 
-      rowspanNotConsistentForMergeEntireRow: '存在行高不一致的单元格, 无法合并整行.',
-      colspanNotConsistentForMergeEntireColumn: '存在列宽不一致的单元格, 无法合并整列.',
-      rowspanNotConsistentForDeleteEntireRow: '存在行高不一致的单元格, 不可删除整行.',
-      colspanNotConsistentForDeleteEntireColumn: '存在列宽不一致的单元格, 不可删除整列.',
+      rowspanNotConsistentForMergeEntireRow:
+        '存在行高不一致的单元格, 无法合并整行.',
+      colspanNotConsistentForMergeEntireColumn:
+        '存在列宽不一致的单元格, 无法合并整列.',
+      rowspanNotConsistentForDeleteEntireRow:
+        '存在行高不一致的单元格, 不可删除整行.',
+      colspanNotConsistentForDeleteEntireColumn:
+        '存在列宽不一致的单元格, 不可删除整列.',
       lastColCannotBeDeleted: '最后一列不可删除.',
-      lastRowCannotBeDeleted: '最后一行不可删除.',
+      lastRowCannotBeDeleted: '最后一行不可删除.'
     },
 
     toolbar: {
@@ -167,7 +172,7 @@ export default {
       exportJson: '导出JSON',
       exportCode: '导出代码',
       generateCode: '生成代码',
-      generateSFC: '生成SFC',
+      generateSFC: '生成SFC'
     },
 
     setting: {
@@ -320,8 +325,8 @@ export default {
       centerAlign: '居中',
       rightAlign: '居右',
       formCss: '表单全局CSS',
-			padCss: 'PAD全局CSS',
-			phoneCss: '移动端全局CSS',
+      padCss: 'PAD全局CSS',
+      phoneCss: '移动端全局CSS',
       addCss: '编写CSS',
       customClass: '自定义CSS样式',
       globalFunctions: '表单全局函数',
@@ -334,7 +339,7 @@ export default {
       formRulesName: '验证规则名称',
       syntaxCheckWarning: 'JS代码存在语法错误，请仔细检查！',
 
-      //dialog & drawer
+      // dialog & drawer
       title: '标题',
       dialogWidth: '弹窗宽度（px/%）',
       fullscreen: '全屏显示弹窗',
@@ -352,7 +357,7 @@ export default {
       drawSize: '抽屉大小（px/%）',
       drawDirection: '抽屉滑出方向',
 
-      //data-table
+      // data-table
       tableWidth: '宽度(px/%)',
       tableHeight: '高度(px/%)',
       showCheckBox: '是否显示复选框列',
@@ -398,7 +403,7 @@ export default {
       deleteOperationButtonHint: '确定删除该按钮？',
       operationButtonDuplicatedNameError: '按钮名称不可重复',
 
-      //data-source
+      // data-source
       dsEnabled: '使用数据源',
       dsName: '指定数据源',
       dataSetName: '指定数据集',
@@ -456,33 +461,32 @@ export default {
       dsValidationError: '数据源设置存在错误，请修改',
       dsDuplicatedNameError: '数据源名称重复，请修改！',
 
-			// 树
-      showTreeCheckBox:'显示复选框',
-			lazy:'懒加载',
-			treeDataEdit:'树数据编辑',
-			defaultExpandAllNode:'默认展开所有节点',
-			expandRetractAllNode:'展开/收缩',
-			selectClearAllNode:'选中/取消选中',
-			nodeEdit:"允许添加删除节点",
-			expandAllNode:'展开所有',
-			retractAllNode:'收缩所有',
-			selectAllNode:'选择所有',
-			clearAllNode:'清除所有',
+      // 树
+      showTreeCheckBox: '显示复选框',
+      lazy: '懒加载',
+      treeDataEdit: '树数据编辑',
+      defaultExpandAllNode: '默认展开所有节点',
+      expandRetractAllNode: '展开/收缩',
+      selectClearAllNode: '选中/取消选中',
+      nodeEdit: '允许添加删除节点',
+      expandAllNode: '展开所有',
+      retractAllNode: '收缩所有',
+      selectAllNode: '选择所有',
+      clearAllNode: '清除所有',
 
-			draggable:'允许拖拽节点',
-			filter:'显示过滤框',
-			expandOnClickNode:'点击节点可收缩',
-			inputNodeName:'请输入节点名',
-			deleteNode:'确定删除节点?',
-			nodeDeleted:'节点已删除',
-			tips:'提示',
-			onNodeCheckRemark:'树节点选择事件',
-			onNodeClickRemark:'树节点点击事件',
-			onNodeContextmenuRemark:'树节点右击事件',
-			enterForQuery:'输入关键字进行过滤',
-			add:'添加',
-			delete:'删除',
+      draggable: '允许拖拽节点',
+      filter: '显示过滤框',
+      expandOnClickNode: '点击节点可收缩',
+      inputNodeName: '请输入节点名',
+      deleteNode: '确定删除节点?',
+      nodeDeleted: '节点已删除',
+      tips: '提示',
+      onNodeCheckRemark: '树节点选择事件',
+      onNodeClickRemark: '树节点点击事件',
+      onNodeContextmenuRemark: '树节点右击事件',
+      enterForQuery: '输入关键字进行过滤',
+      add: '添加',
+      delete: '删除'
     }
-
   }
 }

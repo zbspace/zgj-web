@@ -118,7 +118,7 @@
           <div class="rows">
             <el-form-item label="弱密码禁止保存" prop="passLow">
               <span class="content color-3ED096" v-if="!editPasswordSetting">{{
-                passwordData.passLow === '1' ? '是' : '否'
+                oldPasswordData.passLow === '1' ? '是' : '否'
               }}</span>
               <el-switch
                 v-else
