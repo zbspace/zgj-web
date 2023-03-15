@@ -18,9 +18,10 @@
           :class="[labelAlign, customClass]"
           :size="field.options.size"
         >
-          <el-input v-model="fieldModel.applicant"></el-input>
+          <el-input v-model="fieldModel.applicant" disabled></el-input>
         </el-form-item>
       </el-col>
+
       <el-col :span="12">
         <el-form-item
           label="申请部门"
@@ -33,7 +34,7 @@
           ]"
         >
           <el-input
-            v-model="fieldModel.department"
+            v-model="fieldModel.departmentName"
             v-show="!field.options.hidden"
             :size="field.options.size"
             :disabled="field.options.disabled"
@@ -128,7 +129,8 @@
         tabsShow: ['organ'],
         fieldModel: {
           applicant: '',
-          department: ''
+          departmentId: '',
+          departmentName: ''
         },
         rules: []
       }
@@ -193,40 +195,42 @@
       openSelectUser() {
         this.xzyzDialogVisible = true
       },
-      callBackFn(list) {
+
+      submit(list) {
         const selectRecords = list
         this.xzyzDialogVisible = false
         if (selectRecords.length === 0) {
           return
         }
-        let applicant = ''
-        let department = ''
+        let departmentName = ''
+        let departmentId = ''
         for (let i = 0; i < selectRecords.length; i++) {
           if (i === 0) {
-            applicant = selectRecords[i].id
-            department = selectRecords[i].name
+            departmentId = selectRecords[i].id
+            departmentName = selectRecords[i].name
           } else {
-            applicant = applicant + ',' + selectRecords[i].id
-            department = department + ',' + selectRecords[i].name
+            departmentId = departmentId + ',' + selectRecords[i].id
+            departmentName = departmentName + ',' + selectRecords[i].name
           }
         }
-        this.fieldModel.applicant = applicant
-        this.fieldModel.department = department
+        this.fieldModel.departmentId = departmentId
+        this.fieldModel.departmentName = departmentName
       },
       valueChange(v) {
         if (!v) {
-          this.fieldModel.applicant = null
-          this.fieldModel.department = null
+          this.fieldModel.applicantId = ''
+          this.fieldModel.departmentName = ''
         }
         this.validate()
       },
       onClear() {
         this.fieldModel.applicant = null
-        this.fieldModel.department = null
+        this.fieldModel.departmentId = ''
+        this.fieldModel.departmentName = ''
         this.validate()
       },
       validate() {
-        if (!this.fieldModel.department) {
+        if (!this.fieldModel.departmentName) {
           this.setRequiredTextShow(true)
         } else {
           this.setRequiredTextShow(false)

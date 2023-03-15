@@ -54,7 +54,7 @@ export const sealNameSchema = {
         routineSealRequiredTextShow: false
       }
     ],
-    showSealType: true,
+    applyTypeId: '2', // 业务类型id 2用印申请 10销毁申请 11换章申请 3转办申请 4重置申请 6刻章申请 7变更申请 8启用申请 9停用申请
     placeholder: '',
     columnWidth: '200px',
     labelWidth: 100,
@@ -275,7 +275,8 @@ export const applicantInfoSchema = {
     type: 'text',
     defaultValue: {
       applicant: '',
-      department: ''
+      departmentName: '',
+      departmentId: ''
     },
     placeholder: '',
     columnWidth: '200px',
