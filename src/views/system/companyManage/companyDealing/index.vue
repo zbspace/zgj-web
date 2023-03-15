@@ -12,7 +12,13 @@
           <div>往来企业</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
+              <el-button
+                type="primary"
+                @click="
+                  () => {
+                    ;(showFormDialog = true), (state.title = '新增')
+                  }
+                "
                 >+ 增加</el-button
               >
             </div>
@@ -55,6 +61,7 @@
           <componentsBatch
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
+            @clickBatchButton="clickBatchButton"
           ></componentsBatch>
         </div>
       </template>
@@ -98,6 +105,8 @@
     <!-- 新建 -->
     <componetsAddForm
       :showAdd="showFormDialog"
+      :title="state.title"
+      :column="state.column"
       @on-cancel="closeFormDialog"
       @on-confirm="submitFromDialog"
     >
@@ -106,9 +115,13 @@
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      @confirmClick="confirmClick"
     >
       <template #header>
-        {{ state.JyElMessageBox.header.data }}
+        <div class="header-div">
+          <img :src="state.JyElMessageBox.header.icon" alt="" />
+          <span>{{ state.JyElMessageBox.header.data }}</span>
+        </div>
       </template>
       <template #content>
         {{ state.JyElMessageBox.content.data }}
@@ -126,10 +139,13 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componetsAddForm from './modules/addDealing.vue'
-  import ElMessage from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import api from '@/api/system/companyManagement/companyDealing'
   const showFormDialog = ref(false)
   const state = reactive({
+    title: '新增',
+    column: {},
+    relatedCompanyIds: [],
     componetsAddForm: {
       showAddDialog: false
     },
@@ -276,15 +292,15 @@
 
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
         pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
+        total: 0,
+        'page-sizes': [10, 50, 100],
         background: true
       }
     },
@@ -315,11 +331,13 @@
     JyElMessageBox: {
       show: false,
       header: {
-        data: ''
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
       },
       content: {
         data: ''
-      }
+      },
+      type: '删除'
     }
   })
   // 筛选条件按钮
@@ -364,13 +382,7 @@
         if (res.code === 200) {
           state.componentsTable.data = res.data.records
           state.componentsPagination.data.amount = res.data.total
-          state.componentsPagination.data.pageNumber = res.data.size
           state.componentsPagination.defaultAttribute.total = res.data.total
-        } else {
-          state.componentsTable.data = []
-          state.componentsPagination.data.amount = 0
-          state.componentsPagination.data.pageNumber = 0
-          state.componentsPagination.defaultAttribute.total = 0
         }
         state.componentsTable.loading = false
       },
@@ -384,19 +396,20 @@
     showFormDialog.value = false
   }
   // 提交
-  const submitFromDialog = data => {
-    console.log('submitFromDialog', data)
+  const submitFromDialog = (data, type) => {
+    console.log('submitFromDialog', data, type)
     if (data.code === 200) {
-      // ElMessage({
-      //   message: 'Congrats, this is a success message.',
-      //   type: 'success'
-      // })
+      ElMessage.success(`${type}了一条记录！`)
       showFormDialog.value = false
+      getFormPage()
     }
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
+    console.log('row', row)
+    console.log('column', column)
+    console.log('cell', cell)
+    console.log('event', event)
     if (column.property === 'relatedCompanyName') {
       api.detailRelatedCompany(row.relatedCompanyId).then(res => {
         console.log(res)
@@ -415,16 +428,8 @@
               value: res.data.organName
             },
             {
-              label: '更新时间',
-              value: '字段名称'
-            },
-            {
               label: '联系人',
               value: res.data.contactName
-            },
-            {
-              label: '联系方式',
-              value: '字段名称'
             },
             {
               label: '备注：',
@@ -453,17 +458,35 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(cell.name)
+    state.relatedCompanyIds = []
+    state.relatedCompanyIds.push(column.relatedCompanyId)
     if (cell.name === '修改') {
-      // showFormDialog.value = true
+      state.title = '修改'
+      showFormDialog.value = true
+      state.column = column
     }
     if (cell.name === '删除') {
-      state.JyElMessageBox.header.data = '提示？'
-      state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
+      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
     }
   }
-
+  const confirmClick = data => {
+    console.log(data)
+    delRows(state.JyElMessageBox.header.data)
+  }
+  const delRows = delType => {
+    console.log(state.relatedCompanyIds)
+    api
+      .deleteRelatedCompany({ relatedCompanyIds: state.relatedCompanyIds })
+      .then(res => {
+        if (res.code === 200) {
+          ElMessage.success(`${delType}成功！`)
+          state.JyElMessageBox.show = false
+          getFormPage()
+        }
+      })
+  }
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
@@ -472,6 +495,28 @@
       state.componentsBatch.defaultAttribute.disabled = false
     } else {
       state.componentsBatch.defaultAttribute.disabled = true
+    }
+  }
+  // 批量操作
+  const clickBatchButton = (item, index) => {
+    state.relatedCompanyIds = []
+    const list = state.componentsBatch.selectionData
+    console.log('list', list)
+    console.log(list[0])
+    let nameList = ''
+    const nameArr = []
+    const nameIdArr = []
+    list.forEach(el => {
+      nameArr.push(`[${el.relatedCompanyName}]`)
+      nameIdArr.push(el.relatedCompanyId)
+    })
+    state.relatedCompanyIds = nameIdArr
+    nameList = nameArr.join('、')
+    if (item.name === '批量删除') {
+      state.JyElMessageBox.header.data = '批量删除'
+      state.JyElMessageBox.content.data = `已选中往来企业：${nameList}，请问确定要批量删除吗？`
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '批量删除'
     }
   }
   onBeforeMount(() => {
