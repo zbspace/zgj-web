@@ -110,8 +110,8 @@
     readme: '',
     formInfo: ''
   })
-
   const formRef = ref(null)
+  const mustProps = ref([])
   const props = defineProps({
     addTitle: {
       type: String,
@@ -190,7 +190,9 @@
     ]
   }
 
-  const onChange = businessType => {}
+  const onChange = () => {
+    getFormColumnMust()
+  }
 
   // 点击切换选项
   const clickCutTabs = async (data, item) => {
@@ -212,7 +214,7 @@
   }
 
   const loaded = () => {
-    vformRef.value.setFormTemplate(formData.value.applyTypeId)
+    vformRef.value.initDesigner(formData.value.applyTypeId)
   }
 
   // 处理选项
@@ -239,6 +241,13 @@
   const clickSave = async () => {
     try {
       const formInfo = await vformRef.value.getFormJson()
+      const fieldWidgets = await vformRef.value.getFieldWidgets()
+      const arr = mustProps.value.filter(
+        v => !fieldWidgets.map(v => v.name).includes(v)
+      )
+      if (arr.length) {
+        return ElMessage.error('请务删除必要字段，请重新加载模板进行编辑')
+      }
       await formManageService.formAdd({
         formName: formData.value.formName,
         applyTypeId: formData.value.applyTypeId,
@@ -253,8 +262,21 @@
     }
   }
 
+  // 查询表单必有字段
+  const getFormColumnMust = async applyTypeId => {
+    try {
+      const res = await formManageService.getFormColumnMust({
+        applyTypeId: formData.value.applyTypeId
+      })
+      mustProps.value = res.data || []
+    } catch (error) {
+      ElMessage.error(error)
+    }
+  }
+
   onMounted(() => {
     disCutTabs()
+    getFormColumnMust()
   })
 </script>
 
