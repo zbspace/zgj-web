@@ -174,16 +174,26 @@
     () => props.column,
     data => {
       if (data) {
-        state.searchSelected = [
-          {
-            id: data.organId,
-            idFullPath: data.organId,
-            name: data.organName,
-            type: 'organ'
+        if (props.title === '修改') {
+          state.searchSelected = [
+            {
+              id: data.organId,
+              idFullPath: data.organId,
+              name: data.organName,
+              type: 'organ'
+            }
+          ]
+          for (const i in data) {
+            state.componentsAddForm.formData[i] = data[i]
           }
-        ]
-        for (const i in data) {
-          state.componentsAddForm.formData[i] = data[i]
+        } else {
+          if (formRef.value) {
+            formRef.value.resetFields()
+            state.searchSelected = []
+            for (const i in state.componentsAddForm.formData) {
+              state.componentsAddForm.formData[i] = ''
+            }
+          }
         }
       }
     }
@@ -228,14 +238,12 @@
   }
   // 清除部门信息
   const clear = type => {
-    state.searchSelected = []
     state.componentsAddForm.formData.organName = ''
     state.componentsAddForm.formData.organId = ''
   }
 
   // 选择部门弹窗
   const chooseOrgan = item => {
-    console.log(item)
     showDepPerDialog.value = true
   }
   // 获取部门信息

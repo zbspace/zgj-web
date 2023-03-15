@@ -16,7 +16,9 @@
                 type="primary"
                 @click="
                   () => {
-                    ;(showFormDialog = true), (state.title = '新增')
+                    ;(showFormDialog = true),
+                      (state.title = '新增'),
+                      (state.column = {})
                   }
                 "
                 >+ 增加</el-button
@@ -359,6 +361,7 @@
   // 每页请求数量变化
   const sizeChange = data => {
     console.log(data)
+    state.componentsPagination.data.index = 1
     state.componentsPagination.data.pageNumber = data
     getFormPage()
   }

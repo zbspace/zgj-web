@@ -196,7 +196,7 @@
   const clickCutTabs = async (data, item) => {
     try {
       if (item.index === '2') {
-        await formRef.value.validate()
+        await formRef.value.resetFields()
       }
       data.forEach(element => {
         element.checked = false
