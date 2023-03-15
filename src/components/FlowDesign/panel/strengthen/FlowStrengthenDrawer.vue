@@ -4,7 +4,7 @@
     getContainer=".flow-helper"
     :zIndex="zIndex"
     width="300px"
-    :wrapStyle="wrapStyle"
+    :style="wrapStyle"
     :visible="visible"
     @close="close"
   >
