@@ -5,7 +5,7 @@
 * @LastEditTime 2023-03-09 14:09:56
 !-->
 <template>
-  <Kdialog
+  <JyDialog
     @update:show="showDialog = $event"
     :show="showDialog"
     title="下载章管家APP"
@@ -34,11 +34,11 @@
       <div class="tip">{{ $t('t-zgj-tips.downAppTips1') }}</div>
       <div class="tip">{{ $t('t-zgj-tips.downAppTips2') }}</div>
     </div>
-  </Kdialog>
+  </JyDialog>
 </template>
 
 <script setup>
-  import Kdialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import { computed } from 'vue'
 
   const props = defineProps({

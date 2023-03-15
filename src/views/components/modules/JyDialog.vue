@@ -9,6 +9,7 @@
     :fullscreen="handelScreen"
     destroy-on-close
     class="jyDialog"
+    @closed="closed"
   >
     <template #header>
       <div
@@ -192,6 +193,11 @@
       return
     }
 
+    emit('update:show', false)
+    emit('close')
+  }
+
+  const closed = () => {
     emit('update:show', false)
     emit('close')
   }

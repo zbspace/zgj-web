@@ -51,7 +51,7 @@
         </div>
       </template>
     </componentsLayout>
-    <KDialog
+    <JyDialog
       @update:show="showDialog = $event"
       :show="showDialog"
       title="license信息"
@@ -89,7 +89,7 @@
           </div>
         </div>
       </div>
-    </KDialog>
+    </JyDialog>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
@@ -113,7 +113,7 @@
   import componentsLayout from '@/views/components/Layout'
   // import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
 
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   const state = reactive({
     cache: {
       setLicense: '',

@@ -94,7 +94,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 动态表单 - 印章申请 -->
-    <KDialog
+    <JyDialog
       @update:show="fromState.showDialog = $event"
       :show="fromState.showDialog"
       :title="fromState.title"
@@ -113,7 +113,7 @@
         :ref="fromState.vFormLibraryRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -156,7 +156,7 @@
   import { ElMessage, ElMessageBox } from 'element-plus'
   import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
   import StampChangeJson from '@/views/addDynamicFormJson/StampChange.json'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   // const props = defineProps({
   //   // 处理类型

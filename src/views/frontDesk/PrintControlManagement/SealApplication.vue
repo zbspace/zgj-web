@@ -70,14 +70,14 @@
     </componentsLayout>
 
     <!-- test - dialog -->
-    <KDialog
+    <JyDialog
       @update:show="showDialog = $event"
       :show="showDialog"
       title="Demo Dialog"
       :oneBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-    ></KDialog>
+    ></JyDialog>
 
     <!-- 人员选择  -->
     <kDepartOrPersonVue
@@ -88,7 +88,7 @@
     </kDepartOrPersonVue>
 
     <!-- 动态表单 - 用印申请 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="新增（用印申请）"
@@ -106,7 +106,7 @@
         ref="vFormRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
@@ -133,7 +133,7 @@
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/sealApplication.json'
   const props = defineProps({
     // 处理类型

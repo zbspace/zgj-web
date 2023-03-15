@@ -69,7 +69,7 @@
     </div>
 
     <!-- 业务规则弹框 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="新增业务规则"
@@ -87,7 +87,7 @@
         ref="vFormRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
   </div>
 </template>
 
@@ -99,7 +99,7 @@
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/documentType.json'
   import { ElMessage } from 'element-plus'
 

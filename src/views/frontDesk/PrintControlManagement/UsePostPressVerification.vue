@@ -63,7 +63,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- test - dialog -->
-    <KDialog
+    <JyDialog
       @update:show="state.componentsUploadFile.show = $event"
       :width="1000"
       :show="state.componentsUploadFile.show"
@@ -73,7 +73,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
     >
       <fileCheckUpload :data="state.componentsUploadFile"></fileCheckUpload>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -101,7 +101,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import { useRouter } from 'vue-router'
   // import { UploadFilled } from '@element-plus/icons-vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'

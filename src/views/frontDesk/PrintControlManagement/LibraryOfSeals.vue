@@ -111,7 +111,7 @@
     </div>
 
     <!-- 动态表单 - 印章库 -->
-    <KDialog
+    <JyDialog
       @update:show="showLibraryDialog = $event"
       :show="showLibraryDialog"
       title="新增"
@@ -393,7 +393,7 @@
           </el-upload>
         </el-form-item> -->
       </el-form>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -422,7 +422,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'

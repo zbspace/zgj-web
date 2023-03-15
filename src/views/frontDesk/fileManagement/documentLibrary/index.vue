@@ -105,7 +105,7 @@
     </div>
 
     <!-- 动态表单 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="新增工作台"
@@ -123,7 +123,7 @@
         ref="vFormRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
 
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
@@ -151,7 +151,7 @@
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/documentLibrary.json'
   import { ElMessage } from 'element-plus'
   import { fileManageService } from '@/api/frontDesk/fileManage'

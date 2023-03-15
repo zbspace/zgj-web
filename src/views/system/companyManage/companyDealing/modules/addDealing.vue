@@ -5,7 +5,7 @@
 * @LastEditTime 2023-03-14 10:00:26
 !-->
 <template>
-  <KDialog
+  <JyDialog
     @update:show="showDealingForm = $event"
     :show="showDealingForm"
     title="新增"
@@ -83,7 +83,7 @@
         />
       </el-form-item>
     </el-form>
-  </KDialog>
+  </JyDialog>
   <!-- 人员选择  -->
   <kDepartOrPersonVue
     v-if="showDepPerDialog"
@@ -97,7 +97,7 @@
 </template>
 <script setup>
   import { ref, reactive, computed } from 'vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
+  import JyDialog from '@/views/components/modules/kdialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog.vue'
   import { ElMessage } from 'element-plus'
   import { CircleClose } from '@element-plus/icons-vue'

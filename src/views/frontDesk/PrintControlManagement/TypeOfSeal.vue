@@ -28,7 +28,7 @@
       </template>
     </JyTable>
     <!-- 动态表单 - 印章类型新增/修改 -->
-    <KDialog
+    <JyDialog
       @update:show="showDialog = $event"
       :show="showDialog"
       :title="fromStateTitle"
@@ -56,7 +56,7 @@
           <el-input v-model="formData.readme" type="textarea" />
         </el-form-item>
       </el-form>
-    </KDialog>
+    </JyDialog>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
@@ -100,7 +100,7 @@
 <script setup>
   import { ref, reactive } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import KDialog from '@/views/components/modules/KDialog'
+  import JyDialog from '@/views/components/modules/JyDialog'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'
   // const props = defineProps({

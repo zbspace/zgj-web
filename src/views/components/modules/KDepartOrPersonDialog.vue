@@ -217,9 +217,9 @@
    * tabsShow ['organ', 'user', 'role'] 展示按照数字顺序排
    * activeTab 选中tab
    */
-  import KDialog from '@/views/components/modules/KDialog.vue'
-  import { ref, toRefs } from 'vue'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
+  import { ref, toRefs } from 'vue'
+  // import JyDialog from '@/views/components/modules/JyDialog.vue'
   import VTabs from '@/components/modules/tabs.vue'
   import KDepartTab from './modules/KDepartTab.vue'
   import KUserTab from './modules/KUserTab.vue'

@@ -99,7 +99,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 流程终止弹窗 -->
-    <KDialog
+    <JyDialog
       @update:show="dialogProcess.show = $event"
       :show="dialogProcess.show"
       :title="dialogProcess.title"
@@ -116,7 +116,7 @@
         :key="dialogProcess.title"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -158,7 +158,7 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
 
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import dialogProcessJson from '@/views/addDynamicFormJson/ProcessStopJson.json'

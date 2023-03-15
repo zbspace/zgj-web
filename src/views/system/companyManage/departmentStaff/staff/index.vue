@@ -100,7 +100,7 @@
       </template>
     </componentsLayout>
     <!-- 新增员工 -->
-    <KDialog
+    <JyDialog
       :show="showStaffDialog"
       title="新增"
       :centerBtn="true"
@@ -331,7 +331,7 @@
           </el-col>
         </el-row>
       </el-form>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       v-if="showDepPerDialog"
@@ -406,7 +406,7 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import UpdatePassword from './modules/updatePassword.vue'
   import UploadFace from './modules/uploadFace.vue'
