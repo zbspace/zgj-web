@@ -106,6 +106,7 @@
   const layoutScrollbar = ref(null)
   // 初始化布局
   function initLayout() {
+    console.log(props.Layout)
     if (props.Layout) {
       props.Layout.split(',').map(item => (state.Layout[item] = true))
     }

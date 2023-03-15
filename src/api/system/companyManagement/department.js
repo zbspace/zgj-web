@@ -13,4 +13,12 @@ api.page = params => {
   })
 }
 
+api.add = data => {
+  return request({
+    method: 'POST',
+    url: '/organ/add',
+    data
+  })
+}
+
 export default api

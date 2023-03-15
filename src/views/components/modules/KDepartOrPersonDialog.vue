@@ -1,5 +1,5 @@
 <template>
-  <KDialog
+  <JyDialog
     @update:show="props.show"
     :show="props.show"
     :title="$t('t-zgj-list.SelectionDepartment')"
@@ -203,7 +203,7 @@
         </div>
       </div>
     </div>
-  </KDialog>
+  </JyDialog>
 </template>
 
 <script setup>
@@ -217,8 +217,9 @@
    * tabsShow ['organ', 'user', 'role'] 展示按照数字顺序排
    * activeTab 选中tab
    */
-  import { ref, toRefs } from 'vue'
   import KDialog from '@/views/components/modules/KDialog.vue'
+  import { ref, toRefs } from 'vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import VTabs from '@/components/modules/tabs.vue'
   import KDepartTab from './modules/KDepartTab.vue'
   import KUserTab from './modules/KUserTab.vue'
@@ -294,8 +295,8 @@
     })
 
   // 选中数据
-  const allSelected = ref([])
-  const selectedDepart = ref([])
+  // const allSelected = ref([])
+  const selectedDepart = ref(props.searchSelected || [])
   const selectedUser = ref([])
 
   const firstShow = ref(false)
@@ -324,7 +325,13 @@
   }
 
   if (props.searchSelected.length > 0) {
-    allSelected.value = toRefs(props.searchSelected)
+    // allSelected.value = toRefs(props.searchSelected)
+    selectedDepart.value = props.searchSelected.filter(
+      item => item.type === 'organ'
+    )
+    selectedUser.value = props.searchSelected.filter(
+      item => item.type === 'user'
+    )
   }
 
   const kdepart = ref(null)

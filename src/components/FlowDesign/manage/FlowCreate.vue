@@ -22,6 +22,19 @@
             @change="changeCategory"
           />
         </a-form-item>
+        <a-form-item label="流程形式" name="modelModality" :rules="[{ required: true, message: '请选择表单!' }]">
+          <a-radio-group v-model:value="formState.modelModality">
+            <a-radio
+              v-for="(modelModalityOption, i) in modelModalityOptions"
+              :key="i"
+              :value="modelModalityOption.value"
+              :disabled="formState.modelId"
+            >
+              <span>{{ modelModalityOption.name }}</span>
+              <FlowPopoverTip :popovers="modelModalityOption.popovers" />
+            </a-radio>
+          </a-radio-group>
+        </a-form-item>
         <a-form-item label="绑定表单" name="formIdList" :rules="[{ required: true, message: '请选择表单!' }]">
           <FlowSelect
             v-model="formState.formIdList"
@@ -46,13 +59,7 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item label="谁可以管理这个审批" name="assignees" :rules="[{ required: true, message: '请选择管理!' }]">
-          <GUser
-            ref="guserRef"
-            type="button"
-            v-model="formState.assignees"
-            v-model:label="formState.assigneeLabels"
-            showButton
-          />
+          <GUser ref="guserRef" type="button" v-model="formState.assignees" v-model:label="formState.assigneeLabels" showButton />
         </a-form-item>
         <a-form-item label="说明" name="remark">
           <a-textarea v-model:value="formState.remark" :size="size" :rows="4" placeholder="说明" />
@@ -75,6 +82,7 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import useCommon from '../hooks/useCommon';
 import GUser from '@/components/GUser/index.vue';
+import FlowPopoverTip from '../drawer/FlowPopoverTip.vue';
 // 公共方法
 const { getflowIcon, isMobile, size, visible } = useCommon();
 
@@ -134,6 +142,30 @@ const selectedIcon = ref(null);
 //  分类数据
 const categoryDatas = ref([]);
 
+// 流程形式
+const modelModalityOptions = ref([
+  {
+    name: '预设流程',
+    value: 1,
+    popovers: [
+      {
+        title: '什么是预设流程？',
+        content: '管理员定义好流程节点流转和审批人'
+      }
+    ]
+  },
+  {
+    name: '自由流程',
+    value: 2,
+    popovers: [
+      {
+        title: '什么是自由流程？',
+        content: '发起人指定审批人依次审批'
+      }
+    ]
+  }
+]);
+
 //  表单数据
 const formDatas = ref([]);
 
@@ -144,6 +176,7 @@ const formState = reactive({
   modelName: null,
   modelKey: null,
   categoryId: null,
+  modelModality: 1,
   formIdList: [],
   formShowType: 1,
   assignees: [],
@@ -177,7 +210,6 @@ onMounted(() => {
   formReload();
   // reload();
 });
-
 
 const reloadIcon = () => {
   iconList.value = getflowIcon();

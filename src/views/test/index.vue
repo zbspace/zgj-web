@@ -1,14 +1,11 @@
 <template>
   <div>
-    <JySelectSeal v-model="visible" />
+    <!-- <JySelectSeal v-model="visible" /> -->
     <!-- <JyRelatedCompany v-model="visible" /> -->
-    <!-- <JyVform /> -->
+    <JyVform />
   </div>
 </template>
 
-<script setup>
-  import { ref } from 'vue'
-  const visible = ref(true)
-</script>
+<script setup></script>
 
 <style lang="scss" scoped></style>

@@ -1,8 +1,17 @@
 <template>
   <div class="flow-row">
-    <div class="flow-box">
+    <div
+      class="flow-box"
+      :class="{ 'flow-complete': props.node.nodeStatus == 2, 'flow-drag': props.node.dragClass }"
+      draggable="true"
+      @dragstart="ondragstart($event, props.node)"
+      @dragover="ondragover($event, props.node)"
+      @dragenter="ondragenter($event, props.node)"
+      @dragleave="ondragleave($event, props.node)"
+      @dragend="ondragend($event, props.node)"
+    >
       <div class="flow-item" :class="{ 'flow-item-active': isActive }" @click="!props.readable && open(drawer, props.node)">
-        <div class="flow-node-box copyer" :class="{ 'has-error': node.error }">
+        <div class="flow-node-box" :class="{ copyer: !readable, 'has-error': node.error }">
           <div class="node-name" :class="nameClass(node, 'node-cc')">
             <EditName v-model="props.node.nodeName" />
             <div class="search-input el-input" style="display: none">
@@ -21,7 +30,10 @@
           <DeleteConfirm :node="props.node" />
         </div>
       </div>
+      <!-- 节点添加 -->
       <FlowAddNode :node="props.node" :nodeType="2" :readable="props.readable" />
+      <!-- 拖拽操作 -->
+      <FlowDragTool v-model="props.node.dragTool" @close="v => (props.node.dragClass = v)" />
     </div>
     <FlowCopyerDrawer ref="drawer" :node="props.node" @close="isActive = false" @nodeUpdate="nodeUpdate" />
   </div>
@@ -31,7 +43,9 @@
 import { ref } from 'vue';
 import useCommon from '../hooks/useCommon';
 import useIcon from '../hooks/useIcon';
+import useNodeDrag from '../hooks/useNodeDrag';
 import FlowAddNode from '../node/FlowAddNode.vue';
+import FlowDragTool from '../common/FlowDragTool.vue';
 import DeleteConfirm from '../common/DeleteConfirm.vue';
 import FlowNodeContent from '../common/FlowNodeContent.vue';
 import FlowCopyerDrawer from '../drawer/FlowCopyerDrawer.vue';
@@ -39,6 +53,8 @@ import FlowCopyerDrawer from '../drawer/FlowCopyerDrawer.vue';
 const { isActive, nameClass, open } = useCommon();
 // 图标
 const { ccIcon } = useIcon();
+// 节点拖拽
+const { ondragstart, ondragover, ondragenter, ondragleave, ondragend } = useNodeDrag();
 // 当前侧边
 const drawer = ref(null);
 

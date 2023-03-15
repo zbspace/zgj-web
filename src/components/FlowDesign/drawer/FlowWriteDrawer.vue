@@ -68,7 +68,7 @@ const headerStyle = reactive({
   // 'background-color': '#6da4f2',
   // #21B564 -16.37%, #23BE69
   // background: 'linear-gradient(90.04deg,#29cc80 -16.37%,#5ccc98 137.34%)',
-  background: 'linear-gradient(90.04deg,#21B564 -16.37%,#23BE69 137.34%)',
+  background: 'linear-gradient(90.04deg,#ccd053 -16.37%,#dcf306 137.34%)',
   'border-radius': '0px 0px 0 0'
 });
 

@@ -43,6 +43,7 @@ service.interceptors.request.use(
     if (config.isForm) {
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
     }
+    config.headers.terminalType = 'PC'
     return config
   },
   error => {
@@ -59,11 +60,17 @@ service.interceptors.response.use(
     if (status === 200) {
       if (data.code === 200) {
         return data
+      } else if (data.code === 210600) {
+        // 登录获取滑块
+        return data
+      } else if (data.code === '00000') {
+        // 流程引擎
+        return res
       } else {
         return processErrorResponse(res)
       }
     }
-    return res
+    // return res
   },
   error => {
     // 处理响应错误

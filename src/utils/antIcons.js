@@ -7,7 +7,9 @@ import {
   BorderInnerOutlined,
   CopyOutlined,
   CloseOutlined,
-  CheckCircleOutlined
+  CheckCircleOutlined,
+  RightOutlined,
+  DeleteOutlined
 } from '@ant-design/icons-vue'
 export function requireAntIcons(app) {
   app.component('LeftOutlined', LeftOutlined)
@@ -18,4 +20,6 @@ export function requireAntIcons(app) {
   app.component('CopyOutlined', CopyOutlined)
   app.component('CloseOutlined', CloseOutlined)
   app.component('CheckCircleOutlined', CheckCircleOutlined)
+  app.component('RightOutlined', RightOutlined)
+  app.component('DeleteOutlined', DeleteOutlined)
 }

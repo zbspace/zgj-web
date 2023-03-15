@@ -12,13 +12,16 @@
         @dragleave="ondragleave($event, props.node)"
         @dragend="ondragend($event, props.node)"
       >
-        <div class="flow-node-box approver" :class="{ 'has-error': props.node.error }">
+        <div
+          class="flow-node-box"
+          :class="{ approver: props.node.nodeType == 1 && !readable, transact: props.node.nodeType == 6 && !readable, 'has-error': props.node.error }"
+        >
           <div class="node-name" :class="nameClass(props.node, props.node.nodeType == 1 ? 'node-sp' : 'node-transact')">
             <EditName v-model="props.node.nodeName" :node="props.node" />
             <img :src="props.node.nodeType == 1 ? approverIcon : writeIcon" style="margin-left: 10px" />
           </div>
           <!-- 节点内容 -->
-          <FlowNodeContent :content="props.node.content"/>
+          <FlowNodeContent :content="props.node.content" />
           <!-- 错误提示 -->
           <exclamation-circle-outlined v-if="props.node.error" class="node-error" />
           <div v-if="!props.readable && !props.node.deletable" class="close-icon">
@@ -43,7 +46,7 @@
 import { ref } from 'vue';
 import useCommon from '../hooks/useCommon';
 import useIcon from '../hooks/useIcon';
-import { useFlowStore } from '../store/flow';
+import useNodeDrag from '../hooks/useNodeDrag';
 import FlowAddNode from '../node/FlowAddNode.vue';
 import DeleteConfirm from '../common/DeleteConfirm.vue';
 import FlowDragTool from '../common/FlowDragTool.vue';
@@ -53,10 +56,8 @@ import FlowApprovalDrawer from '../drawer/FlowApproverDrawer.vue';
 const { isActive, nameClass, open } = useCommon();
 // 图标
 const { approverIcon, writeIcon } = useIcon();
-
-// Store
-const flowStore = useFlowStore();
-
+// 节点拖拽
+const { ondragstart, ondragover, ondragenter, ondragleave, ondragend } = useNodeDrag();
 // 当前侧边
 const drawer = ref(null);
 
@@ -73,56 +74,6 @@ const props = defineProps({
     default: false
   }
 });
-
-/**
- * ondragstart 事件：
- * 当拖拽元素开始被拖拽的时候触发的事件，此事件作用在被拖曳元素上
- * @param {*} e
- */
-const ondragstart = (e, node) => {
-  flowStore.dragSourceNode = node;
-};
-
-/**
- * ondragover 事件：
- * 拖拽元素在目标元素上移动的时候触发的事件，此事件作用在目标元素上
- * @param {*} e
- */
-const ondragover = (e, node) => {
-  e.preventDefault();
-  node.dragClass = true;
-};
-
-/**
- * ondragenter 事件：
- * 当拖曳元素进入目标元素的时候触发的事件，此事件作用在目标元素
- * @param {*} e
- */
-const ondragenter = (e, node) => {
-  //if (flowStore.dragSourceNode.nodeId != node.nodeId) {
-  flowStore.dragTargetNode = node;
-  //}
-};
-
-/**
- * ondragenter 事件：
- * 当拖曳元素离开目标元素的时候触发的事件，此事件作用在目标元素
- * @param {*} e
- */
-const ondragleave = (e, node) => {
-  node.dragClass = false;
-  node.dragTool = false;
-};
-
-/**
- * ondragend 事件：
- * 当拖拽完成后触发的事件，此事件作用在被拖曳元素上
- * @param {*} e
- */
-const ondragend = (e, node) => {
-  node.dragClass = false;
-  flowStore.dragTargetNode.dragTool = true;
-};
 
 // 事件
 const emit = defineEmits(['nodeUpdate']);

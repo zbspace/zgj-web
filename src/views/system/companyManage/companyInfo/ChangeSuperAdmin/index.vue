@@ -15,8 +15,8 @@
           <div v-if="step === 1">
             <el-form-item label="验证方式">
               <el-radio-group v-model="formData.verification">
-                <el-radio label="1">手机号验证</el-radio>
-                <el-radio label="2">邮箱验证</el-radio>
+                <el-radio :label="1">手机号验证</el-radio>
+                <el-radio :label="2">邮箱验证</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="超级管理员">
@@ -59,18 +59,26 @@
             <el-form-item label="超级管理员账号">
               <span>{{ superAdminInfo.account }}</span>
             </el-form-item>
-            <el-form-item label="新的超管姓名" prop="name">
-              <el-select style="width: 264px" v-model="formData.name">
+            <el-form-item label="新的超管姓名" prop="adminId">
+              <el-select
+                style="width: 264px"
+                v-model="formData.adminId"
+                filterable
+              >
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="item in userList"
+                  :key="item.userId"
+                  :label="item.userName"
+                  :value="item.userId"
                 />
               </el-select>
             </el-form-item>
             <el-form-item label="新的超管账号">
-              <el-input disabled style="width: 264px"></el-input>
+              <el-input
+                v-model="formData.adminName"
+                disabled
+                style="width: 264px"
+              ></el-input>
             </el-form-item>
           </div>
         </el-form>
@@ -95,19 +103,23 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed } from 'vue'
+  import { ref, reactive, computed, watch } from 'vue'
+  import apis from '@/api/system/companyManagement/companyInfo'
+  import userApi from '@/api/system/companyManagement/departmentStaff'
   import { ElMessage } from 'element-plus'
   class SuperAdmin {
     name = ''
     data = ''
     vcode = ''
-    verification = '1'
+    verification = 1
+    adminId = null
+    adminName = ''
   }
   const formData = ref(new SuperAdmin())
   const formRef = ref(null)
   const visibleVcode = ref(false)
   const step = ref(1)
-  const options = ref([{ label: 'zb', value: '1' }])
+  const userList = ref([])
   const timer = ref(null)
   const countdownTime = ref(-1)
   const props = defineProps({
@@ -126,6 +138,16 @@
       }
     }
   })
+
+  watch(
+    () => props.modelValue,
+    newVal => {
+      if (newVal) {
+        getUserList()
+      }
+    }
+  )
+
   const emit = defineEmits(['update:modelValue', 'updateSuperAdminInfo'])
   const rules = reactive({
     vcode: [
@@ -136,7 +158,7 @@
         pattern: /^\d{6}$/
       }
     ],
-    name: [
+    adminId: [
       {
         required: true,
         message: '超管不能为空',
@@ -164,15 +186,35 @@
     })
   }
 
+  const getUserList = () => {
+    userApi
+      .userPage({
+        status: 1,
+        pageNo: 1,
+        pageSize: 10000
+      })
+      .then(res => {
+        console.log(res)
+        userList.value = res.data.rows
+      })
+  }
+
   const submit = async () => {
     await formRef.value.validate((valid, fields) => {
+      console.log(fields)
       if (valid) {
         // cancel()
-        ElMessage({
-          message: '超级管理员变更成功',
-          type: 'success'
-        })
-        emit('updateSuperAdminInfo')
+        apis
+          .updateAdmin({
+            adminId: formData.value.adminId
+          })
+          .then(res => {
+            ElMessage({
+              message: '超级管理员变更成功',
+              type: 'success'
+            })
+            emit('updateSuperAdminInfo')
+          })
       } else {
         console.log('error', fields)
       }
@@ -186,7 +228,7 @@
   }
 
   const sendVCode = () => {
-    countdownTime.value = 10
+    countdownTime.value = 60
     if (!timer.value) {
       timer.value = setInterval(() => {
         if (countdownTime.value < 0) {
@@ -196,6 +238,11 @@
           countdownTime.value--
         }
       }, 1000)
+      apis.getVerificationCode({
+        type: formData.value.verification,
+        mobile: 13626262626,
+        email: 'xxxxqq.com'
+      })
     }
   }
 

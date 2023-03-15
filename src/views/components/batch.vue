@@ -16,7 +16,7 @@
       <div class="ap-box-right">
         <div
           class="ap-box-right-fill shuaxin"
-          @click="clickBatchButton({ name: '刷新' })"
+          @click="clickBatchButton({ name: 'refresh' })"
         >
           <svg
             width="12"
@@ -113,7 +113,7 @@
         </div> -->
         <div
           class="ap-box-right-fill quanping"
-          @click="clickBatchButton({ name: '全屏' })"
+          @click="clickBatchButton({ name: 'fullscreen' })"
         >
           <svg
             width="12"

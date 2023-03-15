@@ -235,20 +235,20 @@
     if (!modal) {
       return
     }
-    showDialog.value = val
     if (type === 'confrim') {
-      showDialog.value = !val
+      // showDialog.value = !val
       emit('confirm')
-      emit('update:show', false)
+      // emit('update:show', false)
       return
     }
 
+    showDialog.value = val
+    emit('update:show', false)
     const timer = setTimeout(() => {
       clearTimeout(timer)
-      showDialog.value = !val
+      // showDialog.value = val
       const t2 = setTimeout(() => {
         clearTimeout(t2)
-        emit('update:show', false)
         emit('close')
       }, 0)
     }, 300)

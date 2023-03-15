@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     :width="drawerWidth()"
-    :headerStyle="headerStyle"
+    :headerStyle="headerStyle(node.nodeType)"
     :drawerStyle="drawerBodyStyle"
     placement="right"
     :closable="true"
@@ -64,8 +64,7 @@
           <FlowDrawerContent v-if="noticeTypeComputed(props.node.notice.noticeType).includes(4)" name="外部手机号">
             <AddButton title="添加手机号" />
           </FlowDrawerContent>
-
-           <FlowDrawerContent name="选择已审核模板">
+            <FlowDrawerContent name="选择已审核模板">
             <AddButton title="创建新模板" />
             <a-select :size="size" placeholder="请选择模板" class="w-fill" />
           </FlowDrawerContent> -->
@@ -102,7 +101,7 @@ import FlowDrawerFooter from './FlowDrawerFooter.vue';
 // 图标
 const { approverIcon, writeIcon } = useIcon();
 // 公共
-const { drawerWidth, drawerBodyStyle, visible, toUgroup } = useCommon();
+const { drawerWidth, drawerBodyStyle, visible, noticeTypeComputed } = useCommon();
 // 审批人是否多个
 const multiple = ref(false);
 // 子组件
@@ -116,9 +115,18 @@ let tabsActiveKey = ref('1');
 const { approvalMethods } = loadApproverData();
 
 // 侧边头样式
-const headerStyle = reactive({
-  background: 'linear-gradient(89.96deg,#fa6f32 .05%,#fb9337 79.83%)',
-  'border-radius': '0px 0px 0 0'
+const headerStyle = computed(() => nodeType => {
+  if (nodeType == 6) {
+    return {
+      background: 'linear-gradient(90.04deg,#ccd053 -16.37%,#dcf306 137.34%)',
+      'border-radius': '0px 0px 0 0'
+    };
+  } else {
+    return {
+      background: 'linear-gradient(89.96deg,#fa6f32 .05%,#fb9337 79.83%)',
+      'border-radius': '0px 0px 0 0'
+    };
+  }
 });
 
 // 接收属性
@@ -128,15 +136,6 @@ const props = defineProps({
     default: function () {
       return {};
     }
-  }
-});
-
-// 类型
-const noticeTypeComputed = computed(() => noticeType => {
-  if (noticeType) {
-    return toUgroup(noticeType);
-  } else {
-    return [];
   }
 });
 

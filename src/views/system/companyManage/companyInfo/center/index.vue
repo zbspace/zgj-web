@@ -225,6 +225,7 @@
 <script setup>
   import ChangeSuperAdmin from '../ChangeSuperAdmin'
   import companyInfoApi from '@/api/system/companyManagement/companyInfo'
+  import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
   const editBaseInfo = ref(false)
   const editPasswordSetting = ref(false)
@@ -376,6 +377,10 @@
             )
             baseInfoFormRef.value.resetFields()
             editBaseInfo.value = false
+            ElMessage({
+              message: '基础信息变更成功',
+              type: 'success'
+            })
           })
         }
       })
@@ -427,6 +432,10 @@
               passwordData.value = null
               passwordRuleFormRef.value.resetFields()
               editPasswordSetting.value = false
+              ElMessage({
+                message: '密码规则变更成功',
+                type: 'success'
+              })
             })
         }
       })
