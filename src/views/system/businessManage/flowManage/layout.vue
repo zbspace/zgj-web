@@ -115,7 +115,7 @@
   // 点击切换选项
   const clickCutTabs = (data, item) => {
     const beforeCutTabs = state.props.beforeCutTabs(data, item)
-    console.log('--->', beforeCutTabs)
+    console.log('--->', item)
     if (beforeCutTabs === false) {
       return
     }
@@ -171,7 +171,7 @@
           color: rgba(0, 0, 0, 0.85);
           display: flex;
           align-items: center;
-          width: 25%;
+          min-width: 110px;
           font-size: 22px;
           .iconpark {
             width: 1.5rem;
@@ -193,7 +193,8 @@
         .process-tabs {
           display: flex;
           height: 100%;
-          width: 50%;
+          min-width: 600px;
+          flex: 1;
           justify-content: center;
           .tabs {
             display: flex;
@@ -231,7 +232,7 @@
           }
         }
         .process-save {
-          width: 25%;
+          min-width: 200px;
           display: flex;
           justify-content: flex-end;
           align-items: center;

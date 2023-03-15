@@ -45,14 +45,17 @@
           :businessList="props.businessList"
         ></basicsInfo>
         <AssociationForm
+          :getModelValue="getModelValue"
+          @update:getModelValue="getModelValue = $event"
           :businessList="props.businessList"
-          v-show="state.processTabs.checkedNode.index == '2'"
+          v-if="state.processTabs.checkedNode.index == '2'"
           ref="refAssociationForm"
         ></AssociationForm>
         <VFlowDesign
-          v-show="state.processTabs.checkedNode.index == '3'"
+          v-if="state.processTabs.checkedNode.index == '3' && getModelValue"
           ref="refVFlowDesign"
           @onMountedCallBack="onMountedCallBack"
+          :initObj="getModelValue"
         ></VFlowDesign>
         <advancedSetup
           v-show="state.processTabs.checkedNode.index == '4'"
@@ -80,7 +83,8 @@
     reactive,
     onBeforeMount,
     onMounted,
-    defineAsyncComponent
+    defineAsyncComponent,
+    watch
   } from 'vue'
   import layout from './layout.vue'
   import basicsInfo from './basics-info.vue'
@@ -91,7 +95,7 @@
 
   import flowJson from '@/views/jyGunsJson/flow'
   // import { ModelApi } from '@/api/flow/ModelApi'
-  const emit = defineEmits(['close', 'update:modelValue', 'clickCutTabs'])
+  const emit = defineEmits(['close', 'update:modelValue'])
   // 异步组件
   const VFlowDesign = defineAsyncComponent({
     loader: () => import('@/views/components/FlowDesign/index.vue')
@@ -186,12 +190,12 @@
   }
   // 切换tabs之前
   const beforeCutTabs = (data, item) => {
-    if (item.index === '3') {
+    if (item.index === '3' && !getModelValue.value) {
       const InfoValue = refAssociationForm.value.getInfoValue()
       console.log('--->', InfoValue)
       if (!InfoValue.SelectionForm) {
         state.JyElMessageBox.header.data = '提示？'
-        state.JyElMessageBox.content.data = '请选择表单'
+        state.JyElMessageBox.content.data = '请填写完整信息'
         state.JyElMessageBox.show = true
         return false
       }
@@ -238,6 +242,25 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
+
+  const getModelValue = ref(null)
+  watch(
+    () => getModelValue.value,
+    val => {
+      console.log(val, '返沪地参数')
+      if (!val) return
+      state.processTabs.checkedNode = {
+        index: '3',
+        label: '流程设计'
+      }
+      state.processTabs.data.forEach(item => {
+        item.checked = false
+        if (item.index === '3') {
+          item.checked = true
+        }
+      })
+    }
+  )
 </script>
 <style lang="scss" scoped>
   .flowManage-newly-increased {
