@@ -8,7 +8,7 @@
   <JyDialog
     @update:show="showDealingForm = $event"
     :show="showDealingForm"
-    title="新增"
+    :title="props.title"
     :centerBtn="true"
     :confirmText="$t('t-zgj-operation.submit')"
     :concelText="$t('t-zgj-operation.cancel')"
@@ -23,9 +23,14 @@
       ref="formRef"
       label-width="100px"
     >
-      <el-form-item label="企业编码" prop="tenantId">
+      <el-form-item label="企业编码" prop="relatedCompanyNo">
         <el-input
-          v-model="state.componentsAddForm.formData.tenantId"
+          type="hidden"
+          v-model="state.componentsAddForm.formData.relatedCompanyId"
+        ></el-input>
+        <el-input
+          disabled
+          v-model="state.componentsAddForm.formData.relatedCompanyNo"
           placeholder="请输入企业编码"
         />
       </el-form-item>
@@ -40,7 +45,7 @@
           <el-input
             class="ap-box-contBox-input width-100"
             readonly
-            v-model="state.componentsAddForm.formData.organ"
+            v-model="state.componentsAddForm.formData.organName"
             placeholder="请选择"
           />
           <el-input
@@ -96,8 +101,8 @@
   </kDepartOrPersonVue>
 </template>
 <script setup>
-  import { ref, reactive, computed } from 'vue'
-  import JyDialog from '@/views/components/modules/JyDialog'
+  import { ref, reactive, computed, watch } from 'vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog.vue'
   import { ElMessage } from 'element-plus'
   import { CircleClose } from '@element-plus/icons-vue'
@@ -109,9 +114,15 @@
       type: Boolean,
       default: false
     },
-    show: {
-      type: Boolean,
-      default: false
+    title: {
+      type: String,
+      default: '新增'
+    },
+    column: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   })
   const emit = defineEmits(['update:showAdd', 'on-confirm', 'on-cancel'])
@@ -119,12 +130,12 @@
     searchSelected: [],
     componentsAddForm: {
       formData: {
-        tenantId: '',
         relatedCompanyName: '',
         organId: '',
-        organ: '',
+        organName: '',
         contactName: '',
         contactInformation: '',
+        relatedCompanyId: '',
         remark: ''
       },
       formRules: {
@@ -159,6 +170,24 @@
       }
     }
   })
+  watch(
+    () => props.column,
+    data => {
+      if (data) {
+        state.searchSelected = [
+          {
+            id: data.organId,
+            idFullPath: data.organId,
+            name: data.organName,
+            type: 'organ'
+          }
+        ]
+        for (const i in data) {
+          state.componentsAddForm.formData[i] = data[i]
+        }
+      }
+    }
+  )
   const showDealingForm = computed({
     get() {
       return props.showAdd
@@ -175,11 +204,23 @@
   const submitForm = () => {
     formRef.value.validate(valid => {
       if (valid) {
-        console.log(valid)
-        api.addRelatedCompany(state.componentsAddForm.formData).then(res => {
-          console.log(res)
-          emit('on-confirm', res)
-        })
+        console.log(props.title)
+        if (
+          state.componentsAddForm.formData.relatedCompanyId &&
+          props.title === '修改'
+        ) {
+          api
+            .updateRelatedCompany(state.componentsAddForm.formData)
+            .then(res => {
+              console.log(res)
+              emit('on-confirm', res, '修改')
+            })
+        } else {
+          api.addRelatedCompany(state.componentsAddForm.formData).then(res => {
+            console.log(res)
+            emit('on-confirm', res, '新增')
+          })
+        }
       } else {
         ElMessage.error('校验失败')
       }
@@ -188,7 +229,7 @@
   // 清除部门信息
   const clear = type => {
     state.searchSelected = []
-    state.componentsAddForm.formData.organ = ''
+    state.componentsAddForm.formData.organName = ''
     state.componentsAddForm.formData.organId = ''
   }
 
@@ -200,9 +241,11 @@
   // 获取部门信息
   const submitSelectDepart = data => {
     console.log(data)
-    state.searchSelected = data
-    state.componentsAddForm.formData.organ = data[0].name
-    state.componentsAddForm.formData.organId = data[0].id
+    if (data && data.length > 0) {
+      state.searchSelected = data
+      state.componentsAddForm.formData.organName = data[0].name
+      state.componentsAddForm.formData.organId = data[0].id
+    }
     showDepPerDialog.value = false
   }
 </script>

@@ -45,7 +45,7 @@ api.updateRelatedCompany = data => {
 // 删除往来企业
 api.deleteRelatedCompany = data => {
   return request({
-    method: 'GET',
+    method: 'POST',
     url: '/tenant/relatedCompany/delete',
     data
   })
