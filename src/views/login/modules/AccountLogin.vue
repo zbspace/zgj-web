@@ -82,6 +82,7 @@
                 size="large"
                 clearable
                 class="l-code-inpt"
+                @keyup.enter="login"
               >
                 <template #prefix>
                   <div class="icon">
@@ -99,6 +100,7 @@
                   size="large"
                   :type="state.showPass ? 'text' : 'password'"
                   class="l-code-inpt"
+                  @keyup.enter="login"
                 >
                   <template #prefix>
                     <div class="icon">
