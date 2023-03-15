@@ -69,7 +69,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 处理弹窗 -->
-    <KDialog
+    <JyDialog
       @update:show="dialogProcess.show = $event"
       :show="dialogProcess.show"
       :title="dialogProcess.title"
@@ -90,7 +90,7 @@
         <button>进入盖章</button>
         <p>目前PC端不支持进入视频盖章，请至移动端操作</p>
       </div>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -111,7 +111,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import RealTimeConfirmlJson from '@/views/addDynamicFormJson/RealTimeConfirm.json'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'

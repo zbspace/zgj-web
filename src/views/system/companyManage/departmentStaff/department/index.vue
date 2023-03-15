@@ -5,10 +5,11 @@
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
+      hasTree
       tableClick="organName"
       @cellClick="cellClick"
     >
-      <template #titles>
+      <template #title>
         <div class="title">
           <div>部门管理</div>
           <div class="title-more">
@@ -36,7 +37,7 @@
           </div>
         </div>
       </template>
-      <template #trees>
+      <template #tree>
         <div>
           <componentsTree
             :data="state.componentsTree.data"
@@ -154,7 +155,7 @@
 </template>
 
 <script setup>
-  import { reactive, onBeforeMount, ref } from 'vue'
+  import { reactive, onBeforeMount, ref, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsTree from '@/views/components/tree'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
@@ -446,8 +447,10 @@
     }
   }
   const add = () => {
-    // vFormLibraryRef.value.resetFields()
     showFormDialog.value = true
+    nextTick(() => {
+      vFormLibraryRef.value.resetFields()
+    })
   }
   const submitLibraryForm = () => {
     vFormLibraryRef.value.validate(valid => {

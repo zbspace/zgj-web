@@ -57,8 +57,8 @@
   import componentsLayout from '../../../components/Layout.vue'
   import documentsDetailsPortion from '../../../components/documentsDetails/portion.vue'
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
-  // import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
-  import FillFormInformation from '@/views/system/businessManage/formManage/AddForm/templates/template7'
+  import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
+  // import FillFormInformation from '@/views/system/businessManage/formManage/AddForm/templates/template7.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
   // const props = defineProps({
   //   // 处理类型

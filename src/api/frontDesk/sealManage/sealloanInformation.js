@@ -14,7 +14,7 @@ api.page = params => {
 // 印章外借历史记录
 api.history = params => {
   return request({
-    method: 'POST',
+    method: 'GET',
     url: '/out/history',
     params
   })

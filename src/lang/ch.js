@@ -1926,7 +1926,7 @@ export const ch = {
   't-zgj-page.jump': '到第',
   't-zgj-laydate.lang': '',
   't-zgj-Copyright':
-    'Copyright@2012-2022  章管家  沪ICP备13006057号-6  上海建业信息科技股份有限公司',
+    'Copyright@2012-2023  章管家  沪ICP备13006057号-6  上海建业信息科技股份有限公司',
   't-zgj-Timeout': '已超时',
   't-zgj-password.Original': '原密码',
   't-zgj-password.PleaseOriginal': '请输入原密码',

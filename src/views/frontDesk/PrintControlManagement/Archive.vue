@@ -101,7 +101,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 文件归档弹窗 -->
-    <KDialog
+    <JyDialog
       @update:show="confirmFileAchive"
       :show="dialogData.show"
       title="文件归档"
@@ -288,7 +288,7 @@
           </div>
         </template>
       </documentsDetailsPortion>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -316,7 +316,7 @@
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'
