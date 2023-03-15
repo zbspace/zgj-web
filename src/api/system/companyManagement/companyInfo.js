@@ -3,8 +3,25 @@ import request from '@/utils/request'
 // 部门管理
 const api = {}
 
+// 获取公司信息详情
+api.getTenantInfo = () => {
+  return request({
+    method: 'GET',
+    url: `/tenant/getDetailById`
+  })
+}
+
+// 修改头部标题
+api.editTenantTitle = data => {
+  return request({
+    method: 'POST',
+    url: `/tenant/update`,
+    data
+  })
+}
+
 // ================
-// 修改页面设置
+// 修改系统页面设置
 api.updatePageSetting = (tenantId, data) => {
   return request({
     method: 'POST',

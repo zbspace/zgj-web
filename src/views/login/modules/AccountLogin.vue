@@ -442,7 +442,10 @@
         // 获取登录列表
         loginApi.tenantInfoList().then(departListResult => {
           setItem('departLists', JSON.stringify(departListResult.data))
-          if (!loginResult.data.lastTenantId) {
+          const index = departListResult.data.findIndex(
+            i => Number(i.tenantId) === Number(loginResult.data.lastTenantId)
+          )
+          if (index === -1) {
             if (departListResult.data && departListResult.data.length === 1) {
               // 初始化 且 一个企业
               loginApi
@@ -457,7 +460,6 @@
               emits('update:departLists', departListResult.data)
             }
           } else {
-            // 记录上次选择企业信息
             goHome()
             setItem('tenantId', Number(loginResult.data.lastTenantId))
           }
