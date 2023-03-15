@@ -87,6 +87,7 @@
           v-model="state.chooseDepartBox"
           :departLists="departLists"
           @update:departLists="departLists = $event"
+          @getWater="getWater"
         ></VAccountLogin>
       </div>
 
@@ -186,6 +187,9 @@
   import useClickQutside from '@/utils/useClickQutside.js'
   import { useRouter, useRoute } from 'vue-router'
   import loginApi from '@/api/login'
+  import companyApi from '@/api/system/companyManagement/companyInfo'
+  import { setWaterMark, removeWatermark } from '@/utils/water'
+  import dayjs from 'dayjs'
   const router = useRouter()
   const route = useRoute()
 
@@ -245,9 +249,7 @@
   const goHome = tenantId => {
     loginApi.chooseOrgan(tenantId).then(res => {
       localStorage.setItem('tenantId', Number(tenantId))
-      if (!localStorage.getItem('watermark')) {
-        localStorage.setItem('watermark', 1)
-      }
+      getWater()
       let redirect = route.query.redirect || '/frontDesk/home'
       if (typeof redirect !== 'string') {
         redirect = '/frontDesk/home'
@@ -255,6 +257,26 @@
       router.replace(redirect)
     })
   }
+
+  function getWater() {
+    companyApi.getTenantInfo().then(res => {
+      if (res.data.tenantShowInfo) {
+        localStorage.setItem('watermark', res.data.tenantShowInfo.pageWatermark)
+      } else {
+        localStorage.setItem('watermark', '1')
+      }
+      if (localStorage.getItem('watermark') === '1') {
+        const text =
+          JSON.parse(localStorage.getItem('accountInfo')).userName +
+          ' ' +
+          dayjs().format('YYYY-MM-DD HH:mm')
+        setWaterMark(text)
+      } else {
+        removeWatermark()
+      }
+    })
+  }
+
   onMounted(() => {})
 
   onBeforeUnmount(() => {

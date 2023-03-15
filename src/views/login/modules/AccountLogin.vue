@@ -267,7 +267,11 @@
     }
   })
   const openVerify = ref(false)
-  const emits = defineEmits(['update:modelValue', 'update:departLists'])
+  const emits = defineEmits([
+    'update:modelValue',
+    'update:departLists',
+    'getWater'
+  ])
   const state = reactive({
     activeCodeLogin: false, // 验证码登录
     protocal: true, // 协议
@@ -465,6 +469,7 @@
             goHome()
             setItem('tenantId', Number(loginResult.data.lastTenantId))
           }
+          emits('getWater')
         })
       },
       () => {
@@ -472,6 +477,7 @@
       }
     )
   }
+
   const login = () => {
     if (!state.protocal) {
       ElMessage.warning('请阅读并同意服务协议和隐私政策')

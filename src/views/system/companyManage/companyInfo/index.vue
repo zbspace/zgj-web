@@ -40,7 +40,6 @@
     loading.value = true
     apis.getTenantInfo().then(
       res => {
-        console.log(res)
         tenant.value = res.data.tenant
         tenantBaseInfo.value = res.data.tenantBaseInfo
         tenantAdminInfo.value = res.data.tenantAdminInfo
