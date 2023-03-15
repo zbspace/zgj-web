@@ -5,10 +5,10 @@
         <img src="@/assets/svg/verification/verification-error.svg" alt="" />
       </div>
       <div class="right">
-        <div class="name"> 上海建业信息科技股份有限公司 </div>
+        <div class="name"> {{ props.tenant.tenantName }} </div>
         <div class="label" v-if="!edit">
-          <span>{{ input }}</span>
-          <img :src="inputIcon" alt="" @click="edit = !edit" />
+          <span>{{ props.tenant.tenantTitle }}</span>
+          <img :src="inputIcon" @click="editTitle" />
         </div>
         <div v-if="edit" class="input">
           <el-input v-model="input" placeholder="请输入新的头部系统显示名称" />
@@ -21,15 +21,42 @@
 </template>
 
 <script setup>
-  import inputIcon from '@/assets/svg/system/comp-info/input.svg'
   import { ref } from 'vue'
-  const input = ref('上海测试专属')
+  import inputIcon from '@/assets/svg/system/comp-info/input.svg'
+  import companyInfoApi from '@/api/system/companyManagement/companyInfo'
+  import { ElMessage } from 'element-plus'
+  const emit = defineEmits(['reloadData'])
+
+  const props = defineProps({
+    tenant: {
+      type: Object,
+      required: true
+    }
+  })
+
+  const input = ref(null)
   const edit = ref(false)
   const save = () => {
-    edit.value = !edit.value
+    companyInfoApi
+      .editTenantTitle({
+        tenantTitle: input.value,
+        tenantId: localStorage.getItem('tenantId')
+      })
+      .then(res => {
+        ElMessage({
+          message: '标题变更成功',
+          type: 'success'
+        })
+        edit.value = !edit.value
+        emit('reloadData')
+      })
   }
   const cancel = () => {
     edit.value = !edit.value
+  }
+  const editTitle = () => {
+    input.value = props.tenant.tenantTitle
+    edit.value = true
   }
 </script>
 
