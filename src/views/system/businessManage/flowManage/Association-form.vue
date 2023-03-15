@@ -128,14 +128,23 @@
         >
           去创建
         </el-button>
-        <el-button type="primary" v-else @click="saveAddModel">确定</el-button>
+        <el-button
+          type="primary"
+          v-else
+          @click="
+            () => {
+              state.currentState = '2'
+            }
+          "
+          >确定</el-button
+        >
       </div>
     </div>
     <div class="exhibition" v-if="state.currentState === '2'">
       <div class="info-box">
         <JyVform
           mode="render"
-          :formJson="FillFormInformationSeal"
+          :formJson="formJson"
           :formData="state.SealformData"
           :optionData="state.SealoptionData"
           :businessType="form.applyTypeId"
@@ -157,10 +166,17 @@
           height: '100%'
         }"
       >
-        <AddFrom
-          :formId="'12345667'"
+        <!-- <AddFrom
           v-model="state.JyElMessageBox.show"
           @close="state.JyElMessageBox.show = false"
+        /> -->
+        <AddFrom
+          v-model="state.JyElMessageBox.show"
+          v-if="state.JyElMessageBox.show"
+          addTitle="编辑"
+          :columnData="vformObj"
+          @close="state.JyElMessageBox.show = false"
+          :optionData="optionData"
         />
       </JyElMessageBox>
     </div>
@@ -169,13 +185,14 @@
 <script setup>
   import { reactive, ref, watch } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-  import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
   import { FetchFormListInfo } from '@/utils/domain/formManage'
   import FormManageService from '@/api/system/formManagement'
   import { fileManageService } from '@/api/frontDesk/fileManage'
   import { ModelApi } from '@/api/flow/ModelApi'
   const refFillFormInformation = ref(null)
   const fileTypeList = ref([])
+  const formJson = ref('')
+  const vformObj = ref(null)
 
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
@@ -269,8 +286,10 @@
   }
 
   // 单选框发生变化
-  const redioChange = () => {
-    // console.log('--->', state.list.radio)
+  const redioChange = value => {
+    const obj = state.list.data.find(v => v.formMessageId === state.list.radio)
+    formJson.value = (obj && JSON.parse(obj.formInfo)) || ''
+    vformObj.value = obj
   }
 
   // 获取表单列表

@@ -628,11 +628,11 @@
         const dsNameSet = new Set()
         this.getFieldWidgets().forEach(fw => {
           if (
-            !!fw.field.options.dsEnabled &&
-            !!fw.field.options.dsName &&
-            !!fw.field.options.dataSetName
+            !!JSON.parse(fw.field).options.dsEnabled &&
+            !!JSON.parse(fw.field).options.dsName &&
+            !!JSON.parse(fw.field).options.dataSetName
           ) {
-            dsNameSet.add(fw.field.options.dsName)
+            dsNameSet.add(JSON.parse(fw.field).options.dsName)
           }
         })
 

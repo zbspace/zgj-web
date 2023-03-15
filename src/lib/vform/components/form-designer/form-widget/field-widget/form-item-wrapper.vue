@@ -150,7 +150,12 @@
 
       rules: Array
     },
-    inject: ['getFormConfig', 'getSubFormFieldFlag', 'getSubFormName'],
+    inject: [
+      'getFormConfig',
+      'getSubFormFieldFlag',
+      'getSubFormName',
+      'getPrefabricationFieldList'
+    ],
     computed: {
       formConfig() {
         return this.getFormConfig()
@@ -238,8 +243,25 @@
         this.designer.moveDownWidget(this.parentList, this.indexOfParentList)
         this.designer.emitHistoryChange()
       },
+      queryStr(list, keyWord) {
+        const reg = new RegExp(keyWord) // 创建正则表达式
+        const arr = []
+        for (let i = 0; i < list.length; i++) {
+          if (reg.test(list[i])) {
+            arr.push(list[i])
+          }
+        }
+        return arr
+      },
 
       removeFieldWidget() {
+        const list = this.getPrefabricationFieldList() // ["contactUnit33846"]
+        if (this.queryStr(list, this.field.options.name).length > 0) {
+          this.$message.error(
+            '组件：' + this.field.options.label + '在限制删除列表中,无法删除'
+          )
+          return false
+        }
         if (this.parentList) {
           let nextSelected = null
           if (this.parentList.length === 1) {

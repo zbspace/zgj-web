@@ -5,6 +5,7 @@
       title="add form"
       fullscreen
       class="add-form-dialog"
+      @opened="opened"
     >
       <layout
         @clickCutTabs="clickCutTabs"
@@ -108,7 +109,8 @@
     applyTypeId: '2',
     sealUseTypeId: '1',
     readme: '',
-    formInfo: ''
+    formInfo: '',
+    formColumnInfos: []
   })
   const formRef = ref(null)
   const mustProps = ref([])
@@ -171,7 +173,7 @@
     return props.optionData.filter(v => v.applyTypePid)
   })
 
-  const prefabricationFieldList = ref(['sealName'])
+  const prefabricationFieldList = ref([])
 
   const rules = {
     formName: [
@@ -190,15 +192,13 @@
     ]
   }
 
-  const onChange = () => {
-    getFormColumnMust()
-  }
+  const onChange = () => {}
 
   // 点击切换选项
   const clickCutTabs = async (data, item) => {
     try {
       if (item.index === '2') {
-        await formRef.value.resetFields()
+        await formRef.value.validate()
       }
       data.forEach(element => {
         element.checked = false
@@ -214,7 +214,13 @@
   }
 
   const loaded = () => {
-    vformRef.value.initDesigner(formData.value.applyTypeId)
+    if (props.columnData.formMessageId) {
+      vformRef.value.setFormJson(props.columnData.formInfo)
+    } else {
+      vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
+    }
+    vformRef.value.setFormTemplate(formData.value.applyTypeId)
+    getFormColumnMust()
   }
 
   // 处理选项
@@ -240,7 +246,7 @@
   // 点击保存
   const clickSave = async () => {
     try {
-      const formInfo = await vformRef.value.getFormJson()
+      formData.value.formInfo = JSON.stringify(vformRef.value.getFormJson())
       const fieldWidgets = await vformRef.value.getFieldWidgets()
       const arr = mustProps.value.filter(
         v => !fieldWidgets.map(v => v.name).includes(v)
@@ -248,15 +254,19 @@
       if (arr.length) {
         return ElMessage.error('请务删除必要字段，请重新加载模板进行编辑')
       }
-      await formManageService.formAdd({
-        formName: formData.value.formName,
-        applyTypeId: formData.value.applyTypeId,
-        sealUseTypeId: formData.value.sealUseTypeId,
-        readme: formData.value.readme,
-        formInfo: JSON.stringify(formInfo)
-      })
+      formData.value.formColumnInfos = vformRef.value.getFieldWidgets()
+      if (props.columnData.formMessageId) {
+        await formManageService.formEdit({
+          ...formData.value,
+          formMessageId: props.columnData.formMessageId
+        })
+        ElMessage.success('表单修改成功')
+      } else {
+        await formManageService.formAdd(formData.value)
+        ElMessage.success('表单添加成功')
+      }
+      vformRef.value.setFormJson('')
       isVisible.value = false
-      ElMessage.success('表单添加成功')
     } catch (error) {
       ElMessage.error(error)
     }
@@ -269,14 +279,24 @@
         applyTypeId: formData.value.applyTypeId
       })
       mustProps.value = res.data || []
+      prefabricationFieldList.value = res.data || []
     } catch (error) {
       ElMessage.error(error)
     }
   }
 
+  const opened = () => {
+    if (props.columnData.formName) {
+      formData.value.formName = props.columnData.formName
+      formData.value.applyTypeId = props.columnData.applyTypeId
+      formData.value.readme = props.columnData.readme
+      formData.value.formInfo = props.columnData.readme
+      formData.value.sealUseTypeId = props.columnData.sealUseTypeId
+    }
+  }
+
   onMounted(() => {
     disCutTabs()
-    getFormColumnMust()
   })
 </script>
 

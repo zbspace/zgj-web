@@ -886,6 +886,7 @@
       state.showFormDialog.header.data = '表单复制'
       state.showFormDialog.show = true
       state.componentsAddForm.data = JSON.parse(JSON.stringify(column))
+      state.componentsAddForm.data.formMessageId = ''
       state.componentsAddForm.data.formName = `${column.formName}-副本`
     }
   }
@@ -894,7 +895,7 @@
     const data = {
       formMessageId: state.JyElMessageBox.data.tableId
     }
-    api.relationContractType(data).then(res => {
+    api.formDelete(data).then(res => {
       console.log(res)
       if (res.data.length > 0) {
         state.showToastDialog.header.data = '删除'

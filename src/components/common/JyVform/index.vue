@@ -11,6 +11,7 @@
       @buttonClick="buttonClick"
       :fileTypeList="fileTypeList"
       :businessType="businessType"
+      :prefabricationFieldList="props.prefabricationFieldList"
     />
 
     <VFormDesigner
@@ -19,7 +20,7 @@
       :bannedWidgets="bannedWidgets"
       :designer-config="designerConfig"
       :hideModuleList="hideModuleList"
-      :prefabricationFieldList="prefabricationFieldList"
+      :prefabricationFieldList="props.prefabricationFieldList"
       :templateList="templateList"
       :fileTypeList="fileTypeList"
       :userType="userType"
@@ -45,7 +46,7 @@
 
   const vformInfoStore = useVformInfoStore()
   const vFormRef = ref(null)
-  const prefabricationFieldList = ref([])
+  // const prefabricationFieldList = ref([])
   const bannedWidgets = ref([]) // 设计器需要显示指定的组件
   const templateList = ref([])
   const key = ref(0)
