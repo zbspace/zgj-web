@@ -439,28 +439,28 @@
           accountInfo.setAccountAndPassword(null)
         }
 
-        // 记录上次选择企业信息
-        if (loginResult.data.lastTenantId) {
-          goHome()
-          setItem('tenantId', Number(loginResult.data.lastTenantId))
-          return
-        }
-
         // 获取登录列表
         loginApi.tenantInfoList().then(departListResult => {
-          if (departListResult.data && departListResult.data.length === 1) {
-            // 初始化 且 一个企业
-            loginApi.chooseOrgan(departListResult.data[0].tenantId).then(() => {
-              setItem('tenantId', Number(departListResult.data[0].tenantId))
-              goHome()
-            })
-          } else {
-            // 进入列表选择页面
-            emits('update:modelValue', true)
-            emits('update:departLists', departListResult.data)
-          }
-
           setItem('departLists', JSON.stringify(departListResult.data))
+          if (!loginResult.data.lastTenantId) {
+            if (departListResult.data && departListResult.data.length === 1) {
+              // 初始化 且 一个企业
+              loginApi
+                .chooseOrgan(departListResult.data[0].tenantId)
+                .then(() => {
+                  setItem('tenantId', Number(departListResult.data[0].tenantId))
+                  goHome()
+                })
+            } else {
+              // 进入列表选择页面
+              emits('update:modelValue', true)
+              emits('update:departLists', departListResult.data)
+            }
+          } else {
+            // 记录上次选择企业信息
+            goHome()
+            setItem('tenantId', Number(loginResult.data.lastTenantId))
+          }
         })
       },
       () => {
