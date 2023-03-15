@@ -114,7 +114,7 @@
     <JyDialog
       @update:show="showLibraryDialog = $event"
       :show="showLibraryDialog"
-      title="新增"
+      :title="state.title"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
@@ -175,6 +175,12 @@
                 <el-input
                   class="ap-box-contBox-input width-100"
                   readonly
+                  v-model="state.form.subOrganName"
+                  placeholder="请选择"
+                />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
                   v-model="state.form.subOrganId"
                   placeholder="请选择"
                 />
@@ -207,6 +213,12 @@
                   v-model="state.form.manageUserName"
                   placeholder="请选择"
                 />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
+                  v-model="state.form.manageUserId"
+                  placeholder="请选择"
+                />
                 <div class="ap-box-contBox-icon">
                   <el-icon
                     v-if="state.form.manageUserName"
@@ -234,6 +246,12 @@
                   v-model="state.form.manageOrganName"
                   placeholder="请选择"
                 />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
+                  v-model="state.form.manageOrganId"
+                  placeholder="请选择"
+                />
                 <div class="ap-box-contBox-icon">
                   <el-icon
                     v-if="state.form.manageOrganName"
@@ -259,13 +277,19 @@
               <div class="select-box-contBox">
                 <el-input
                   class="ap-box-contBox-input width-100"
-                  readonly
+                  type="hidden"
                   v-model="state.form.keepOrganName"
+                  placeholder="请选择"
+                />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.keepUserId"
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon">
                   <el-icon
-                    v-if="state.form.keepOrganName"
+                    v-if="state.form.keepUserName"
                     style="margin-right: 5px"
                     color="#aaaaaa"
                     @click="clear('keepUser')"
@@ -290,6 +314,12 @@
                   v-model="state.form.keepOrganName"
                   placeholder="请选择"
                 />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
+                  v-model="state.form.keepOrganId"
+                  placeholder="请选择"
+                />
                 <div class="ap-box-contBox-icon">
                   <el-icon
                     v-if="state.form.keepOrganName"
@@ -299,6 +329,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
+                    @click="chooseOrgan('keepOrgan')"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                   />
@@ -399,24 +430,19 @@
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
       v-if="showDepPerDialog"
+      :tabsShow="tabsShow"
+      @update:searchSelected="submitSelectDepart"
+      :searchSelected="state.searchSelected"
     >
     </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted,
-    ref
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { Paperclip, CircleClose } from '@element-plus/icons-vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
@@ -438,6 +464,7 @@
   const table = ref(null)
 
   const add = () => {
+    state.title = '新增'
     vFormLibraryRef.value.resetFields()
     state.form.sealNo =
       dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
@@ -456,9 +483,36 @@
     })
   }
   const showDepPerDialog = ref(false)
-
+  const submitSelectDepart = data => {
+    state.form[depChoose.value + 'Id'] = data[0].id
+    state.form[depChoose.value + 'Name'] = data[0].name
+    // if (depChoose.value === 'subOrgan') {
+    //   state.form.subOrganName = data[0].name
+    //   state.form.subOrganId = data[0].id
+    // }
+    // if (depChoose.value === 'manageUser') {
+    //   state.form.manageUserName = data[0].name
+    //   state.form.manageUserId = data[0].id
+    // }
+    // if (depChoose.value === 'manageOrgan') {
+    //   state.form.manageOrganName = data[0].name
+    //   state.form.manageOrganId = data[0].id
+    // }
+    // if (depChoose.value === 'keepUser') {
+    //   state.form.keepUserName = data[0].name
+    //   state.form.keepUserId = data[0].id
+    // }
+    // if (depChoose.value === 'keepOrgan') {
+    //   state.form.keepOrganName = data[0].name
+    //   state.form.keepOrganId = data[0].id
+    // }
+    console.log(data)
+  }
   // const emit = defineEmits([])
   const state = reactive({
+    tabsShow: ['organ'],
+    searchSelected: [],
+    title: '新增',
     typeList: [],
     form: {
       sealNo: '',
@@ -466,9 +520,13 @@
       sealAlias: '',
       sealTypeId: '',
       subOrganId: '',
+      subOrganName: '',
       manageUserId: '',
+      manageUserName: '',
       manageOrganId: '',
+      manageOrganName: '',
       keepUserId: '',
+      keepUserName: '',
       keepOrganId: '',
       keepOrganName: '',
       extShow: 1,
@@ -765,16 +823,28 @@
           label: '操作',
           fixed: 'right',
           'min-width': 150,
-          width: '250',
+          width: '380',
           rankDisplayData: [
             {
               name: '修改'
+            },
+            {
+              name: '删除'
             },
             {
               name: '设置维护范围'
             },
             {
               name: '设置可用范围'
+            },
+            {
+              name: '停用'
+            },
+            {
+              name: '变更'
+            },
+            {
+              name: '销毁'
             }
           ]
         }
@@ -825,7 +895,7 @@
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
         total: 0,
-        'page-sizes': [10, 100, 200, 300, 400],
+        'page-sizes': [10, 50, 100],
         background: true
       }
     },
@@ -895,6 +965,7 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '修改') {
+      state.title = '修改'
       showLibraryDialog.value = true
     }
     if (cell.name === '设置维护范围' || cell.name === '设置可用范围') {
@@ -966,6 +1037,13 @@
 
   const chooseOrgan = type => {
     depChoose.value = type
+    console.log(state.form[type + 'Id'])
+    if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
+      state.searchSelected.push({
+        id: state.form[type + 'Id'],
+        name: state.form[type + 'Name']
+      })
+    }
     showDepPerDialog.value = true
   }
 

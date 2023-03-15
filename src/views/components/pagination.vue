@@ -18,6 +18,9 @@
     </div>
     <div class="ap-box">
       <el-pagination
+        :page-size="props.data.pageNumber"
+        :current-page="props.data.index"
+        :total="props.data.amount"
         v-bind="state.props.defaultAttribute"
         @size-change="sizeChange"
         @current-change="currentChange"

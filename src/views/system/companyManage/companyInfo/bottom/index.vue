@@ -21,22 +21,20 @@
         :data="{
           type: 1
         }"
-        :on-progress="homeLogoProgress"
         :before-upload="beforeUpload"
       >
-        <div class="uploadTip">
-          <div v-if="!homeLogoPercentage">
+        <div class="uploadTip" v-if="!props.tenantShowInfo.homeLogoPath">
+          <div>
             <img class="uploadIcon" :src="shapeIcon" />
             <p>上传首页LOGO</p>
           </div>
-          <el-progress
-            type="circle"
-            :percentage="homeLogoPercentage"
-            v-if="homeLogoPercentage"
-          />
         </div>
 
-        <!-- <el-image class="logoImage" :src="shapeIcon" fit="contain"></el-image> -->
+        <el-image
+          class="logoImage"
+          :src="props.tenantShowInfo.homeLogoPath"
+          fit="contain"
+        ></el-image>
       </el-upload>
     </div>
     <div class="upload">
@@ -47,50 +45,68 @@
         :data="{
           type: 2
         }"
+        :show-file-list="false"
+        :before-upload="beforeUpload"
       >
-        <div class="uploadTip">
+        <div class="uploadTip" v-if="!props.tenantShowInfo.loginLogoPath">
           <img class="uploadIcon" :src="shapeIcon" />
           <p>上传登录页LOGO</p>
         </div>
-        <!-- <el-image class="logoImage" :src="shapeIcon" fit="contain"></el-image> -->
+        <el-image
+          class="logoImage"
+          :src="props.tenantShowInfo.loginLogoPath"
+          fit="contain"
+        ></el-image>
       </el-upload>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { ref } from 'vue'
-  import shapeIcon from '@/assets/svg/system/comp-info/shape.svg'
+  import { ref, watch } from 'vue'
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { ElMessage } from 'element-plus'
   import apis from '@/api/system/companyManagement/companyInfo'
+  const emit = defineEmits(['reloadData'])
+  const props = defineProps({
+    tenantShowInfo: {
+      type: Object,
+      required: true
+    }
+  })
   const pageWatermark = ref('1')
   const pageWatermarkLoading = ref(false)
-  const homeLogoPercentage = ref(0)
   const tenantId = ref(localStorage.getItem('tenantId'))
   const headers = ref({
     'zgj-token': useAccountInfoStore().token
   })
 
-  const homeLogoProgress = (event, file, fileLists) => {
-    homeLogoPercentage.value = event.percent
-  }
+  watch(
+    () => props.tenantShowInfo,
+    () => {
+      pageWatermark.value = props.tenantShowInfo.pageWatermark
+    }
+  )
 
-  const changeWaterMakeStatus = e => {
+  const changeWaterMakeStatus = () => {
     pageWatermarkLoading.value = true
     const formData = new FormData()
     formData.append('type', 3)
-    formData.append('pageWatermark', e)
-    apis.updatePageSetting(tenantId.value, formData).then(
-      () => {
-        pageWatermarkLoading.value = false
-        localStorage.setItem('watermark', e)
-      },
-      () => {
-        pageWatermark.value = e === '1' ? '2' : '1'
-        pageWatermarkLoading.value = false
-      }
-    )
+    formData.append('pageWatermark', pageWatermark.value === '1' ? 2 : '1')
+    return new Promise((resolve, reject) => {
+      apis.updatePageSetting(tenantId.value, formData).then(
+        () => {
+          pageWatermarkLoading.value = false
+          localStorage.setItem('watermark', pageWatermark.value)
+          emit('reloadData')
+          return resolve(true)
+        },
+        () => {
+          pageWatermarkLoading.value = false
+          return reject(new Error('Error'))
+        }
+      )
+    })
   }
 
   const beforeUpload = file => {
