@@ -2100,7 +2100,7 @@ export const en = {
   't-zgj-page.jump': 'Jump',
   't-zgj-laydate.lang': 'en',
   't-zgj-Copyright':
-    'Copyright @2012-2022 Zhangguanjia 沪ICP备13006057号-6 Shanghai Jianye Information Technology Co., Ltd',
+    'Copyright @2012-2023 Zhangguanjia 沪ICP备13006057号-6 Shanghai Jianye Information Technology Co., Ltd',
   't-zgj-Timeout': 'Timeout',
   't-zgj-password.Original': 'Original password',
   't-zgj-password.PleaseOriginal': 'Please enter the original password',

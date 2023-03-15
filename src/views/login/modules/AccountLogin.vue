@@ -170,8 +170,12 @@
         />
         <div class="protocol-text">
           <span>{{ $t('t-agree-protocol') }}</span>
-          <span class="item">《 {{ $t('t-service-protocol') }} 》</span>
-          <span class="item">《{{ $t('t-privacy-policy') }}》</span>
+          <span class="item" @click.stop="previewAgreement"
+            >《 {{ $t('t-service-protocol') }} 》</span
+          >
+          <span class="item" @click.stop="previewPolicy"
+            >《{{ $t('t-privacy-policy') }}》</span
+          >
         </div>
       </div>
 
@@ -463,6 +467,14 @@
         loginFn()
       }
     })
+  }
+
+  const previewAgreement = () => {
+    console.log('打开用户协议')
+  }
+
+  const previewPolicy = () => {
+    console.log('打开隐私政策')
   }
 
   const customStyle = {
