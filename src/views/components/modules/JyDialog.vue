@@ -7,7 +7,7 @@
     :width="props.width"
     :draggable="draggable"
     :fullscreen="handelScreen"
-    destroy-on-close
+    :destroy-on-close="destroyOnClose"
     class="jyDialog"
     @closed="closed"
   >
@@ -137,6 +137,10 @@
     draggable: {
       type: Boolean,
       default: true
+    },
+    destroyOnClose: {
+      type: Boolean,
+      default: false
     },
     width: {
       type: Number,

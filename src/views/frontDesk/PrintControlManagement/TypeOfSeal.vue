@@ -98,7 +98,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
   import JyDialog from '@/views/components/modules/JyDialog'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
@@ -321,15 +321,13 @@
   function clickEditor(title, column) {
     fromStateTitle.value = title
     showDialog.value = true
-    vFormLibraryRef.value.resetFields()
+    nextTick(() => {
+      vFormLibraryRef.value.resetFields()
+    })
     if (title === '新增') {
       sealTypeId.value = null
-      formData.value = {
-        sealTypeNo:
-          dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11),
-        sealTypeName: '',
-        readme: ''
-      }
+      formData.value.sealTypeNo =
+        dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
     } else {
       if (column) {
         const columns = JSON.parse(JSON.stringify(column))
