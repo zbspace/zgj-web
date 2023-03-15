@@ -6,8 +6,15 @@
         <div class="clear-left-border" v-if="index == 0"></div>
         <div class="clear-right-border" v-if="props.node.conditionNodes.length - 1 == index"></div>
         <div class="flow-row">
-          <div class="flow-box">
-            <div class="flow-item flow-node-branch">
+          <div class="flow-box" :class="{ 'flow-complete': conditionNode.nodeStatus == 2, 'flow-drag': conditionNode.dragClass }">
+            <div
+              class="flow-item flow-node-branch"
+              @dragstart="ondragstart($event, conditionNode)"
+              @dragover="ondragover($event, conditionNode)"
+              @dragenter="ondragenter($event, conditionNode)"
+              @dragleave="ondragleave($event, conditionNode)"
+              @dragend="ondragend($event, conditionNode)"
+            >
               <div class="flow-branch-suggest">
                 <div class="node-name">
                   <span>{{ conditionNode.nodeName }}</span>
@@ -23,7 +30,10 @@
                 <DeleteConfirm :node="conditionNode" @callback="delCallback" />
               </div>
             </div>
+            <!-- 节点添加 -->
             <FlowAddNode :node="node" :nodeType="3" :id="conditionNode.nodeId" :readable="props.readable" />
+            <!-- 拖拽操作 -->
+            <FlowDragTool v-model="conditionNode.dragTool" @close="v => (conditionNode.dragClass = v)" />
           </div>
         </div>
         <FlowNode
@@ -45,15 +55,18 @@
 import useCommon from '../hooks/useCommon';
 // import useIcon from '../hooks/useIcon';
 import { useFlowStore } from '../store/flow';
+import useNodeDrag from '../hooks/useNodeDrag';
 import FlowAddNode from '../node/FlowAddNode.vue';
+import FlowDragTool from '../common/FlowDragTool.vue';
 import DeleteConfirm from '../common/DeleteConfirm.vue';
 // 公共方法
 const { nodeName } = useCommon();
 // 图标
 // const { branchPlusIcon, branchIcon } = useIcon();
-
 // Store
 const flowStore = useFlowStore();
+// 节点拖拽
+const { ondragstart, ondragover, ondragenter, ondragleave, ondragend } = useNodeDrag();
 
 // const flowBranchSetting = ref();
 

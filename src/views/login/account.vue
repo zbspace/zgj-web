@@ -167,7 +167,13 @@
 
     <!-- footer -->
     <div class="footer-login">
-      Copyright@2012-2022 章管家 沪ICP备13006057号-6
+      Copyright@2012-2023 章管家
+      <a
+        style="font-size: 12px"
+        href="https://beian.miit.gov.cn"
+        target="_blank"
+        >沪ICP备13006057号-6</a
+      >
       上海建业信息科技股份有限公司
     </div>
   </div>

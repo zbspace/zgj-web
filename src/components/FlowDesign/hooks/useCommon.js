@@ -13,6 +13,8 @@ export default function () {
   // 节点名称属性
   const nodeName = ref('nodeName');
 
+  const loading = ref(false);
+
   const isActive = ref(false);
   // 大小，可选值为 small large
   const size = ref('large');
@@ -104,6 +106,15 @@ export default function () {
       };
     };
   });
+
+// 通知类型
+const noticeTypeComputed = computed(() => noticeType => {
+  if (noticeType) {
+    return toUgroup(noticeType);
+  } else {
+    return [];
+  }
+});
 
   /**
    *   获取ID
@@ -200,6 +211,7 @@ export default function () {
   };
 
   return {
+    loading,
     nodeName,
     isActive,
     size,
@@ -209,6 +221,7 @@ export default function () {
     drawerBodyStyle,
     radioStyle,
     approvalRadioStyle,
+    noticeTypeComputed,
     getId,
     delNode,
     addBranch,

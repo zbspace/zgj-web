@@ -212,6 +212,7 @@
               v-model:label="group.approverNames"
               :dataSource="userSource"
               showButton
+              @change="changeUser"
             />
           </a-form-item>
         </FlowDrawerContent>
@@ -220,8 +221,9 @@
         <FlowDrawerContent v-if="group.approverType == 9" name="选择方式">
           <a-radio-group
             :size="size"
-            v-model:value="group.selectedMode"
+            v-model:value="group.selectMode"
             class="w-fill"
+            @change="changeSelectMode(group.selectMode)"
           >
             <a-radio :value="1">
               <span>多选</span>
@@ -233,7 +235,7 @@
         </FlowDrawerContent>
         <FlowDrawerContent v-if="group.approverType == 9" name="选择范围">
           <a-radio-group
-            v-model:value="group.selectedScope"
+            v-model:value="group.selectRange"
             :size="size"
             class="w-fill"
           >
@@ -248,9 +250,21 @@
         </FlowDrawerContent>
         <FlowDrawerContent
           v-if="group.approverType == 9"
-          name="指定成员"
-          text="(不能超过 25 人)"
-        />
+          name="候选成员"
+          text="(不能超过 25 人, 如配置候选成员将覆盖选择范围！)"
+        >
+          <a-form-item :name="['approverGroups', k, 'approverIds']">
+            <GUser
+              type="button"
+              :max="25"
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+              :dataSource="userSource"
+              showButton
+              @change="changeUser"
+            />
+          </a-form-item>
+        </FlowDrawerContent>
         <!-- 节点审批人 -->
         <FlowDrawerContent
           v-if="group.approverType == 11"
@@ -290,9 +304,11 @@
             :rules="[{ required: true, message: '不能为空' }]"
           >
             <FlowSelect
-              :datas="higherLevels"
+              :datas="userControl"
               v-model="group.controlIds"
               v-model:label="group.controlNames"
+              labelName="fieldName"
+              valueName="fieldId"
             />
           </a-form-item>
         </FlowDrawerContent>
@@ -390,9 +406,11 @@
             :rules="[{ required: true, message: '不能为空' }]"
           >
             <FlowSelect
-              :datas="higherLevels"
+              :datas="deptControl"
               v-model="group.controlIds"
               v-model:label="group.controlNames"
+              labelName="fieldName"
+              valueName="fieldId"
             />
           </a-form-item>
         </FlowDrawerContent>
@@ -510,6 +528,28 @@
             />
           </a-form-item>
         </FlowDrawerContent>
+
+        <!-- 选择审批 -->
+        <FlowDrawerContent
+          v-if="group.approverType == 20"
+          name="候选成员"
+          text="(不能超过 25 人)"
+        >
+          <a-form-item
+            :name="['approverGroups', k, 'approverIds']"
+            :rules="[{ required: true, message: '不能为空' }]"
+          >
+            <GUser
+              type="button"
+              :max="25"
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+              :dataSource="userSource"
+              showButton
+              @change="changeUser"
+            />
+          </a-form-item>
+        </FlowDrawerContent>
       </a-card>
       <AddButton
         v-if="show"
@@ -519,6 +559,7 @@
       />
     </a-space>
   </a-form>
+  <!-- {{props.node}} -->
 </template>
 <script setup>
   import { ref, reactive, computed } from 'vue'
@@ -529,7 +570,8 @@
   import FlowDrawerContent from '../FlowDrawerContent.vue'
   // import GDept from '@/components/GDept/index.vue';
   // import GDeptApprover from '@/components/GDeptApprover/index.vue';
-  // import { UserApi } from '@/api/system/user/UserApi';
+  import FlowPopoverTip from '../FlowPopoverTip.vue'
+  // import { UserApi } from '@/api/system/user/UserApi'
   // 公共
   const { size, radioStyle, approvalRadioStyle, getId } = useCommon()
   // Store
@@ -550,6 +592,11 @@
     assigneeScopes,
     assigneeTypes
   } = loadApproverData()
+
+  // 人员控件
+  const userControl = ref([])
+  // 部门控件
+  const deptControl = ref([])
 
   // 侧边头样式
   const headStyle = reactive({
@@ -586,12 +633,13 @@
    * 用户数据
    */
   const userSource = ({ page, limit, where, orders }) => {
-    return UserApi.getUserPages({
-      ...where,
-      ...orders,
-      pageNo: page,
-      pageSize: limit
-    })
+    // return UserApi.getUserPages({
+    //   ...where,
+    //   ...orders,
+    //   pageNo: page,
+    //   pageSize: limit
+    // })
+    return {}
   }
 
   /**
@@ -609,18 +657,62 @@
    * 改变审批人类型
    */
   const changeApproverType = group => {
+    debugger
     group.approverIds = []
     group.approverNames = []
+    group.controlIds = []
+    group.controlNames = []
     // 是否多个人
     changeMultiple(group)
     // ApproverType名称
     group.approverTypeName = approvals
       .filter(approval => approval.value == group.approverType)
       .map(approval => approval.name)[0]
+    // 如果是表单内人员
+    if (group.approverType == 13) {
+      const columns = [...flowStore.baseColumns, ...flowStore.formColumns]
+      userControl.value = columns.filter(column => column.fieldType == 'user')
+    }
+    // 如果是表单内人员 TODO
+    if (group.approverType == 13) {
+      // const columns = [...flowStore.baseColumns, ...flowStore.formColumns];
+      const columns = [...flowStore.formColumns]
+      userControl.value = columns.filter(column => column.fieldType == 'user')
+    }
+    // 如果是表单内部门
+    if (group.approverType == 14) {
+      // const columns = [...flowStore.baseColumns, ...flowStore.formColumns];
+      const columns = [...flowStore.formColumns]
+      deptControl.value = columns.filter(column => column.fieldType == 'dept')
+      console.log('deptControl', deptControl)
+    }
+
     // 如果项目成员
     if (group.approverType == 17) {
       group.approverIds.push(group.approverType)
       group.approverNames.push('所有成员')
+    }
+  }
+
+  /**
+   * 改变审批人类型
+   */
+  const changeUser = users => {
+    // 是否多个人
+    if (users.length > 1) {
+      emit('update:multiple', true)
+    }
+  }
+
+  /**
+   * 改变选择方式 1:多选 2:单选
+   */
+  const changeSelectMode = selectMode => {
+    // 是否多选
+    if (selectMode == 1) {
+      emit('update:multiple', true)
+    } else {
+      emit('update:multiple', false)
     }
   }
 
@@ -641,9 +733,9 @@
       // 人员类型
       assigneeType: 1,
       // 选择方式
-      selectedMode: 1,
+      selectMode: 1,
       // 选择范围
-      selectedScope: 1,
+      selectRange: 1,
       // 审批人ID
       approverIds: [],
       // 审批人名称
@@ -651,7 +743,7 @@
     })
 
     // 是否多个人
-    changeMultiple()
+    // changeMultiple();
   }
 
   /**

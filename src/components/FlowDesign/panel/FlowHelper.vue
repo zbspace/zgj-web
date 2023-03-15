@@ -24,13 +24,11 @@
             <span>导出</span>
           </a-menu-item>
           <a-menu-item key="2" @click="addType(2)">
-            <save-two-tone />
             <span>保存为模版</span>
           </a-menu-item>
         </a-menu>
       </template>
       <div id="flow-helper-template" class="flow-helper-template">
-        <save-two-tone />
         <span class="flow-helper-title">流程模板</span>
         <right-outlined class="flow-helper-right-icon" />
       </div>
@@ -67,7 +65,7 @@ const flowConfigDrawer = ref();
 const flowAdjuvantDrawer = ref();
 const flowStrengthenDrawer = ref();
 const flowGuideDrawer = ref();
-
+const visible = ref(true)
 const onChange = e => {
   placement.value = e.target.value;
 };

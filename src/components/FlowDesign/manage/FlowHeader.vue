@@ -177,11 +177,9 @@
   const to = path => {
     emit('to', path)
   }
-  // eslint-disable-next-line no-unused-vars
   const exports = () => {
     emit('export')
   }
-  // eslint-disable-next-line no-unused-vars
   const imports = file => {
     const reader = new FileReader()
     reader.readAsText(file)

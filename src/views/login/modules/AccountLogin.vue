@@ -170,14 +170,23 @@
         />
         <div class="protocol-text">
           <span>{{ $t('t-agree-protocol') }}</span>
-          <span class="item">《 {{ $t('t-service-protocol') }} 》</span>
-          <span class="item">《{{ $t('t-privacy-policy') }}》</span>
+          <span class="item" @click.stop="previewAgreement"
+            >《 {{ $t('t-service-protocol') }} 》</span
+          >
+          <span class="item" @click.stop="previewPolicy"
+            >《{{ $t('t-privacy-policy') }}》</span
+          >
         </div>
       </div>
 
       <!-- btn -->
       <div class="l-btn">
-        <el-button type="primary" class="btn" @click="login">
+        <el-button
+          type="primary"
+          class="btn"
+          @click="login"
+          :loading="loginLoading"
+        >
           {{ $t('t-zgj-login.loginButton') }}
         </el-button>
       </div>
@@ -211,7 +220,7 @@
         </div>
       </div>
     </div>
-    <Verify captchaType="blockPuzzle" ref="verify"></Verify>
+    <Verify captchaType="blockPuzzle" ref="verify" v-if="openVerify"></Verify>
     <!-- 重置密码弹窗 -->
     <UpdagePasswordDialog
       v-if="state.showUpdateDialog"
@@ -232,15 +241,16 @@
   import UpdagePasswordDialog from './UpdagePasswordDialog.vue'
   import ImmediateRegister from './Register.vue'
   import { useAccountInfoStore } from '@/store/accountInfo'
-  // import { useRoute, useRouter } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { ElMessage } from 'element-plus'
   import md5 from 'js-md5'
+  import { setItem, getItem } from '@/utils/storage.js'
   import loginApi from '@/api/login'
-  // import Verify from '../components/verifition/Verify'
-  // const { proxy } = getCurrentInstance()
+  import Verify from '../components/verifition/Verify'
+  const { proxy } = getCurrentInstance()
   const accountInfo = useAccountInfoStore()
-  // const route = useRoute()
-  // const router = useRouter()
+  const route = useRoute()
+  const router = useRouter()
   // eslint-disable-next-line no-unused-vars
   const props = defineProps({
     modelValue: {
@@ -254,12 +264,12 @@
       }
     }
   })
-
+  const openVerify = ref(false)
   const emits = defineEmits(['update:modelValue', 'update:departLists'])
   const state = reactive({
     activeCodeLogin: false, // 验证码登录
     protocal: true, // 协议
-    rememberPas: false, // 记住密码
+    rememberPas: true, // 记住密码
     placeholderPhone: null,
     placeholderCode: null,
     placeholderCodeAndAccount: null,
@@ -277,9 +287,7 @@
     accountRulesPass: null
   })
 
-  // const useVerify = () => {
-  //   proxy.$refs.verify.show()
-  // }
+  const loginLoading = ref(false)
 
   // 监听 语言切换
   watch(
@@ -359,8 +367,9 @@
   })
 
   onMounted(() => {
-    accountLoginForm.accountNo = 'a001'
-    accountLoginForm.accountPass = '666666'
+    const accountInfo = getItem('accountInfo')
+    accountLoginForm.accountNo = accountInfo && accountInfo.accountNo
+    accountLoginForm.accountPass = accountInfo && accountInfo.accountPass
   })
 
   // 监听 tabs 切换
@@ -380,105 +389,118 @@
     state.showUpdateDialog = false
     state.ImmediateRegisterDialog = false
   }
+  const goHome = () => {
+    let redirect = route.query.redirect || '/frontDesk/home'
+    if (typeof redirect !== 'string') {
+      redirect = '/frontDesk/home'
+    }
+    router.replace(redirect)
+  }
 
+  const loginFn = attr => {
+    openVerify.value = true
+    let params = {
+      accountNo: accountLoginForm.accountNo,
+      accountPass: md5(accountLoginForm.accountPass)
+    }
+    console.log(attr, '登录时的参数')
+    if (attr) {
+      params = {
+        accountNo: accountLoginForm.accountNo,
+        accountPass: md5(accountLoginForm.accountPass),
+        captchaToken: attr.token,
+        captcha: attr.pointJson,
+        secretKey: attr.secretKey
+      }
+    }
+    // 账号密码登录
+    loginLoading.value = true
+    loginApi.loginByAccount(params).then(
+      loginResult => {
+        if (loginResult.code === 210600) {
+          loginLoading.value = false
+          proxy.$refs.verify.show()
+          return
+        }
+        loginLoading.value = false
+        // 存储登录用户信息
+        accountInfo.setToken({
+          token: loginResult.data.tokenValue
+        })
+        accountInfo.setUserName('曹春青')
+
+        // 记住密码
+        if (state.rememberPas) {
+          accountInfo.setAccountAndPassword({
+            accountNo: accountLoginForm.accountNo,
+            accountPass: accountLoginForm.accountPass
+          })
+        } else {
+          accountInfo.setAccountAndPassword(null)
+        }
+
+        // 记录上次选择企业信息
+        if (loginResult.data.lastTenantId) {
+          goHome()
+          setItem('tenantId', Number(loginResult.data.lastTenantId))
+          return
+        }
+
+        // 获取登录列表
+        loginApi.tenantInfoList().then(departListResult => {
+          if (departListResult.data && departListResult.data.length === 1) {
+            // 初始化 且 一个企业
+            loginApi.chooseOrgan(departListResult.data[0].tenantId).then(() => {
+              setItem('tenantId', Number(departListResult.data[0].tenantId))
+              goHome()
+            })
+          } else {
+            // 进入列表选择页面
+            emits('update:modelValue', true)
+            emits('update:departLists', departListResult.data)
+          }
+
+          setItem('departLists', JSON.stringify(departListResult.data))
+        })
+      },
+      () => {
+        loginLoading.value = false
+      }
+    )
+  }
   const login = () => {
-    // useVerify()
-    // return false
     if (!state.protocal) {
-      ElMessage.warning('请选择协议')
+      ElMessage.warning('请阅读并同意服务协议和隐私政策')
       return
     }
+
     // 验证码登录验证
     const formRef = ref(null)
     formRef.value = state.activeCodeLogin
       ? loginformCodeRef.value
       : loginformAccountRef.value
 
-    formRef.value.validate(valid => {
+    formRef.value.validate(async valid => {
       if (valid) {
-        const flag = ref(false)
-        if (flag.value) {
-          emits('update:modelValue', true)
-          emits('update:departLists', [
-            {
-              id: 1,
-              tenantName: '上海建业信息科技股份有限公司'
-            },
-            {
-              id: 2,
-              tenantName: '建业科技测试部'
-            }
-          ])
-          accountInfo.setToken({
-            token: 'test'
-          })
-          accountInfo.setUserName('曹春青')
-        } else {
-          // 账号密码登录
-          loginApi
-            .loginByAccount({
-              accountNo: accountLoginForm.accountNo,
-              accountPass: md5(accountLoginForm.accountPass)
-            })
-            .then(res => {
-              if (res.success) {
-                // 存储登录用户信息
-                accountInfo.setToken({
-                  token: res.data.tokenValue
-                })
-                accountInfo.setUserName('曹春青')
-
-                // 获取用户企业列表
-                loginApi
-                  .tenantInfoList()
-                  .then(res => {
-                    if (!res.success) return false
-
-                    // if (res.data && res.data.length <= 0) {
-                    //   let redirect = route.query.redirect || '/frontDesk/home'
-                    //   if (typeof redirect !== 'string') {
-                    //     redirect = '/frontDesk/home'
-                    //   }
-                    //   router.replace(redirect)
-                    //   ElMessage.success('登录成功')
-                    //   return
-                    // }
-                    emits('update:modelValue', true)
-                    emits('update:departLists', res.data)
-                    window.localStorage.setItem(
-                      'departLists',
-                      JSON.stringify(res.data)
-                    )
-                  })
-                  .catch(() => {})
-              }
-            })
-            .catch(err => {
-              console.log(err, '==')
-            })
-        }
-      } else {
-        return false
+        loginFn()
       }
     })
+  }
+
+  const previewAgreement = () => {
+    console.log('打开用户协议')
+  }
+
+  const previewPolicy = () => {
+    console.log('打开隐私政策')
   }
 
   const customStyle = {
     height: '48px'
   }
-
-  // 监听 记住密码
-  watch(
-    () => state.rememberPas,
-    val => {
-      val
-        ? accountInfo.setAccountAndPassword({
-            accountNo: accountLoginForm.accountNo,
-            accountPass: md5(accountLoginForm.accountPass)
-          })
-        : accountInfo.setAccountAndPassword(null)
-    }
-  )
+  defineExpose({
+    loginFn
+  })
 </script>
 
 <style scoped lang="scss">

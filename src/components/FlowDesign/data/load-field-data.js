@@ -1,7 +1,7 @@
-import useCommon from '../hooks/useCommon';
+import useCommon from '../hooks/useCommon'
 
 // 公共
-const { getId } = useCommon();
+const { getId } = useCommon()
 
 /**
  * 表单数据
@@ -113,5 +113,5 @@ export function formFields() {
       displayable: false,
       required: false
     }
-  ];
+  ]
 }

@@ -2,9 +2,9 @@
  * 存放审批流程数据
  */
 import { defineStore } from 'pinia'
-import Request from '@/utils/requestUtil'
+import Request from '@/utils/request-util'
 import html2canvas from 'html2canvas'
-import { getStartNode, addCondition } from '../data/load-node-data'
+import { getStartNode, addCondition, addFreeNode } from '../data/load-node-data'
 import {
   addFlowNode,
   updateFlowNode,
@@ -46,6 +46,8 @@ export const useFlowStore = defineStore('flow', {
     modelId: null,
     // 定义ID
     definitionId: null,
+    // 流程形式
+    modelModality: 1,
     // 基础字段
     baseColumns: [],
     // 表单字段
@@ -237,6 +239,45 @@ export const useFlowStore = defineStore('flow', {
      */
     updateZoomValue(val) {
       this.zoomValue = val
+    },
+    /**
+     * 初始化自由流程
+     */
+    async initFreeFlow(modelId, definitionId) {
+      // 重置
+      this.setNode()
+      if (modelId && modelId !== this.modelId) {
+        this.modelId = modelId
+      }
+      if (definitionId && definitionId !== this.definitionId) {
+        this.definitionId = definitionId
+      }
+      this.modelModality = 1
+      const model = await this.getModel()
+      if (model.modelModality === 2) {
+        // 进行缓存
+        this.modelModality = 2
+        addFlowNode(this.node, this.node, addFreeNode())
+      }
+    },
+    /**
+     * 获取模型
+     * @returns
+     */
+    getModel() {
+      return Request.getAndLoadData('/model/detail', {
+        modelId: this.modelId,
+        definitionId: this.definitionId,
+        needMore: false
+      })
+    },
+    // 获取模型(流程)设计节点配置信息
+    getNodeSetting(nodeId) {
+      return Request.getAndLoadData('/model/design/node', {
+        modelId: this.modelId,
+        definitionId: this.definitionId,
+        nodeId
+      })
     },
     /**
      * 获取当前实例的初始化字段

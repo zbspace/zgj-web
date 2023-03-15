@@ -14,8 +14,9 @@ import '@/utils/svgIconPack'
 
 // 全局自定义组件
 import { requireComp } from '@/components/index'
-import { requireAntIcons } from '@/utils/antIcons'
+// import { requireAntIcons } from '@/utils/antIcons'
 import './style/flow/index.less' // 流程样式
+import * as antIcons from '@ant-design/icons-vue'
 
 import { loadExtension } from '@/lib/vform/extension/extension-loader'
 import Draggable from 'vuedraggable'
@@ -48,5 +49,9 @@ import './style/index.scss'
     .use(ContainerItems)
     .mount('#app')
   requireComp(app)
-  requireAntIcons(app)
+  // requireAntIcons(app)
+  // 注册图标组件到全局
+  Object.keys(antIcons).forEach(key => {
+    app.component(key, antIcons[key])
+  })
 })()

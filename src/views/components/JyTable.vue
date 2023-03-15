@@ -3,10 +3,14 @@
     <componentsLayout
       :Layout="
         'title,searchForm,table,pagination,batch' +
-        (props.hasTree ? ',tree' : '')
+        (props.hasTree ? ',tree' : '') +
+        (props.hasTabs ? ',tabs' : '')
       "
     >
-      <template #title><slot name="titles"></slot></template>
+      <template #title><slot name="title"></slot></template>
+      <template #tabs>
+        <slot name="tabs"></slot>
+      </template>
       <template #searchForm>
         <div>
           <componentsSearchForm
@@ -31,7 +35,7 @@
       </template>
 
       <template #tree>
-        <slot name="trees"></slot>
+        <slot name="tree"></slot>
       </template>
 
       <template #table>

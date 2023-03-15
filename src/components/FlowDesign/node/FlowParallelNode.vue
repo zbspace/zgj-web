@@ -9,8 +9,16 @@
         <div class="clear-left-border" v-if="index == 0"></div>
         <div class="clear-right-border" v-if="props.node.conditionNodes.length - 1 == index"></div>
         <div class="flow-row">
-          <div class="flow-box">
-            <div class="flow-item flow-node-branch" @click="!readable && open(drawer, conditionNode, props.node)">
+          <div class="flow-box" :class="{ 'flow-complete': conditionNode.nodeStatus == 2, 'flow-drag': conditionNode.dragClass }">
+            <div
+              class="flow-item flow-node-branch"
+              @click="!readable && open(drawer, conditionNode, props.node)"
+              @dragstart="ondragstart($event, conditionNode)"
+              @dragover="ondragover($event, conditionNode)"
+              @dragenter="ondragenter($event, conditionNode)"
+              @dragleave="ondragleave($event, conditionNode)"
+              @dragend="ondragend($event, conditionNode)"
+            >
               <div class="flow-node-box" :class="{ 'has-error': conditionNode.error }">
                 <div class="node-name" :class="nameClass(props.node, 'node-pl')">
                   <EditName v-model="conditionNode.nodeName" />
@@ -27,7 +35,10 @@
                 <DeleteConfirm :node="conditionNode" />
               </div>
             </div>
+            <!-- 节点添加 -->
             <FlowAddNode :node="props.node" :nodeType="9" :id="conditionNode.nodeId" :readable="props.readable" />
+            <!-- 拖拽操作 -->
+            <FlowDragTool v-model="conditionNode.dragTool" @close="v => (conditionNode.dragClass = v)" />
           </div>
         </div>
         <FlowNode
@@ -44,14 +55,18 @@
 <script setup>
 import { ref } from 'vue';
 import useIcon from '../hooks/useIcon';
+import useNodeDrag from '../hooks/useNodeDrag';
 import useCommon from '../hooks/useCommon';
 import FlowAddNode from './FlowAddNode.vue';
+import FlowDragTool from '../common/FlowDragTool.vue';
 import FlowNodeContent from '../common/FlowNodeContent.vue';
 import DeleteConfirm from '../common/DeleteConfirm.vue';
 // 公共方法
 const { nodeName, addBranch, nameClass, isActive, open } = useCommon();
 // 图标
 const { branchPlusIcon, parallelIcon } = useIcon();
+// 节点拖拽
+const { ondragstart, ondragover, ondragenter, ondragleave, ondragend } = useNodeDrag();
 // 当前侧边
 const drawer = ref(null);
 

@@ -6,7 +6,7 @@
     >
       <div class="verifybox-top" v-if="mode == 'pop'">
         请完成安全验证
-        <span class="verifybox-close" @click="closeBox">
+        <span class="verifybox-close" @click="closeBox(false)">
           <i class="iconfont icon-close"></i>
         </span>
       </div>
@@ -40,14 +40,12 @@
    * @description 分发验证码使用
    * */
   import VerifySlide from './Verify/VerifySlide'
-  import VerifyPoints from './Verify/VerifyPoints'
-  import { computed, ref, toRefs, watchEffect } from 'vue'
-
+  import { computed, ref, toRefs, watchEffect, getCurrentInstance } from 'vue'
+  import { removeItem, getItem } from '@/utils/storage'
   export default {
     name: 'Vue2Verify',
     components: {
-      VerifySlide,
-      VerifyPoints
+      VerifySlide
     },
     props: {
       captchaType: {
@@ -93,7 +91,7 @@
       const componentType = ref(undefined)
 
       const instance = ref({})
-
+      const { proxy } = getCurrentInstance()
       const showBox = computed(() => {
         if (mode.value === 'pop') {
           return clickShow.value
@@ -111,9 +109,11 @@
           instance.value.refresh()
         }
       }
-      const closeBox = () => {
+      const closeBox = bool => {
         clickShow.value = false
+        !bool && removeItem('captchaInfo')
         refresh()
+        bool && proxy.$parent.loginFn(getItem('captchaInfo'))
       }
       const show = () => {
         if (mode.value === 'pop') {
@@ -125,10 +125,6 @@
           case 'blockPuzzle':
             verifyType.value = '2'
             componentType.value = 'VerifySlide'
-            break
-          case 'clickWord':
-            verifyType.value = ''
-            componentType.value = 'VerifyPoints'
             break
         }
       })

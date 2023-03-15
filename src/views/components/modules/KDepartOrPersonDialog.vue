@@ -217,6 +217,7 @@
    * tabsShow ['organ', 'user', 'role'] 展示按照数字顺序排
    * activeTab 选中tab
    */
+  import KDialog from '@/views/components/modules/KDialog.vue'
   import { ref, toRefs } from 'vue'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
   import VTabs from '@/components/modules/tabs.vue'
@@ -294,8 +295,7 @@
     })
 
   // 选中数据
-  const allSelected = ref([])
-  console.log(props.searchSelected)
+  // const allSelected = ref([])
   const selectedDepart = ref(props.searchSelected || [])
   const selectedUser = ref([])
 
@@ -325,7 +325,13 @@
   }
 
   if (props.searchSelected.length > 0) {
-    allSelected.value = toRefs(props.searchSelected)
+    // allSelected.value = toRefs(props.searchSelected)
+    selectedDepart.value = props.searchSelected.filter(
+      item => item.type === 'organ'
+    )
+    selectedUser.value = props.searchSelected.filter(
+      item => item.type === 'user'
+    )
   }
 
   const kdepart = ref(null)
