@@ -56,6 +56,7 @@
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
             isSelection
+            :loading="state.componentsTable.loading"
             @selection-change="selectionChange"
             @custom-click="customClick"
           >
@@ -113,6 +114,7 @@
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import dayjs from 'dayjs'
   import api from '@/views/frontDesk/approvalFlow/approvalFlow.vue'
 
   const showDepPerDialog = ref(false)
@@ -396,7 +398,8 @@
         'header-cell-style': {
           background: 'var(--jy-color-fill--3)'
         }
-      }
+      },
+      loading: false
     },
     componentsTree: {
       data: [
@@ -618,7 +621,7 @@
     } else if (activeName === '2') {
       state.componentsTable.header = [
         {
-          prop: '1',
+          prop: 'flowName',
           label: '流程名称',
           sortable: true,
           'min-width': 150
@@ -961,12 +964,12 @@
     }
   }
   const clickSubmit = (item, index) => {
-    console.log(item)
     if (item.id === 'reset') {
       state.componentsSearchForm.data.forEach(element => {
         delete state.searchForm.data[element]
       })
     }
+    getFormPage()
   }
   // 点击搜索表单
   function clickElement(item, index) {
@@ -980,19 +983,36 @@
     const searchData = state.componentsSearchForm.data
     const queryParams = {}
     searchData.forEach(item => {
+      if (item.type === 'picker') {
+        if (item.pickerType === 'date') {
+          if (item.value) {
+            queryParams.applyStartTime = dayjs(item.value[0]).format(
+              'YYYY-MM-DD HH:mm:ss'
+            )
+            queryParams.applyEndTime = dayjs(item.value[1]).format(
+              'YYYY-MM-DD HH:mm:ss'
+            )
+          }
+        }
+      }
       queryParams[item.id] = item.value
     })
     queryParams.pageNo = state.componentsPagination.index || 1
     queryParams.pageSize = state.componentsPagination.pageNumber || 10
     state.componentsTable.loading = true
-    api.getPageNoApproval(queryParams).then(res => {
-      console.log(res)
-      state.componentsTable.data = res.data.rows
-      state.componentsPagination.data.amount = res.data.totalRows
-      state.componentsPagination.data.pageNumber = res.data.totalPage
-      state.componentsPagination.defaultAttribute.total = res.data.totalRows
-      state.componentsTable.loading = false
-    })
+    api.getPageNoApproval(queryParams).then(
+      res => {
+        console.log(res)
+        state.componentsTable.data = res.data.rows
+        state.componentsPagination.data.amount = res.data.totalRows
+        state.componentsPagination.data.pageNumber = res.data.totalPage
+        state.componentsPagination.defaultAttribute.total = res.data.totalRows
+        state.componentsTable.loading = false
+      },
+      () => {
+        state.componentsTable.loading = false
+      }
+    )
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
