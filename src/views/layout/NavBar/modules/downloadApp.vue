@@ -17,13 +17,13 @@
       <div class="qrcode">
         <div class="ios box">
           <div class="code"></div>
-          <div class="title" v-if="false">
+          <div class="title">
             <img src="@/assets/images/login/ios_down.svg" />
             <div>{{ $t('t-zgj-DownloadApp.IOS') }}</div>
           </div>
         </div>
 
-        <div class="android box" v-if="false">
+        <div class="android box">
           <div class="code"></div>
           <div class="title">
             <img src="@/assets/images/login/android_down.svg" />
@@ -70,9 +70,9 @@
     padding: 8px 0;
 
     .qrcode {
-      // display: flex;
-      // justify-content: space-between;
-      padding: 20px 46px 40px 46px;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0 40px 0;
 
       .box {
         display: flex;
@@ -83,7 +83,7 @@
         .code {
           width: 180px;
           height: 180px;
-          background: url(../../assets/images/login/test.png) no-repeat center
+          background: url(@/assets/images/login/test.png) no-repeat center
             center;
           background-size: 100%;
           margin-bottom: 10px;

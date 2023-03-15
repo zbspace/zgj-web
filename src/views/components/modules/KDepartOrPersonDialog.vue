@@ -218,7 +218,7 @@
    * activeTab 选中tab
    */
   import JyDialog from '@/views/components/modules/JyDialog.vue'
-  import { ref, toRefs } from 'vue'
+  import { ref } from 'vue'
   // import JyDialog from '@/views/components/modules/JyDialog.vue'
   import VTabs from '@/components/modules/tabs.vue'
   import KDepartTab from './modules/KDepartTab.vue'

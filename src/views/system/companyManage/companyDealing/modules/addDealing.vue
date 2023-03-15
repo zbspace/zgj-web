@@ -97,7 +97,7 @@
 </template>
 <script setup>
   import { ref, reactive, computed } from 'vue'
-  import JyDialog from '@/views/components/modules/kdialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog.vue'
   import { ElMessage } from 'element-plus'
   import { CircleClose } from '@element-plus/icons-vue'

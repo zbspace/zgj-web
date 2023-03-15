@@ -148,7 +148,7 @@
   import componentsDocumentsDetails from '../../components/documentsDetails'
   import { ElMessage } from 'element-plus'
   import SealLendingJson from '@/views/addDynamicFormJson/SealLending.json'
-  import JyDialog from '@/views/components/modules/kdialog'
+  import JyDialog from '@/views/components/modules/JyDialog'
   // import { useRouter } from 'vue-router'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import apis from '@/api/frontDesk/sealManage/sealloanInformation'

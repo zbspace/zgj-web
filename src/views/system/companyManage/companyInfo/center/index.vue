@@ -105,7 +105,7 @@
           <div class="rows">
             <el-form-item label="首次登录必须修改密码" prop="passInitModfiy">
               <span class="content color-3ED096" v-if="!editPasswordSetting">{{
-                oldPasswordData.passInitModfiy ? '是' : '否'
+                oldPasswordData.passInitModfiy === '1' ? '是' : '否'
               }}</span>
               <el-switch
                 v-else
@@ -117,9 +117,9 @@
           </div>
           <div class="rows">
             <el-form-item label="弱密码禁止保存" prop="passLow">
-              <span class="content color-3ED096" v-if="!editPasswordSetting"
-                >开</span
-              >
+              <span class="content color-3ED096" v-if="!editPasswordSetting">{{
+                passwordData.passLow === '1' ? '是' : '否'
+              }}</span>
               <el-switch
                 v-else
                 active-value="1"
@@ -132,9 +132,11 @@
             <el-form-item label="密码变更提醒" prop="passRemind">
               <div v-if="!editPasswordSetting">
                 <span class="content color-3ED096">{{
-                  oldPasswordData.passRemind ? '是' : '否'
+                  oldPasswordData.passRemind === '1' ? '是' : '否'
                 }}</span>
-                <span class="color-black-045"
+                <span
+                  class="color-black-045"
+                  v-if="oldPasswordData.passRemind === '1'"
                   >（提醒周期{{ oldPasswordData.passRemindNum }}天）</span
                 >
               </div>
