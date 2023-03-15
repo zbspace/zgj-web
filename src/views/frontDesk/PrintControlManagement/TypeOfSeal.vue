@@ -26,6 +26,11 @@
           </div>
         </div>
       </template>
+      <tableItem>
+        <template #custom_ordinaryCount="scope">
+          <span>{{ scope.value }}枚</span>
+        </template>
+      </tableItem>
     </JyTable>
     <!-- 动态表单 - 印章类型新增/修改 -->
     <JyDialog
@@ -238,7 +243,8 @@
           prop: 'intelligentCount',
           label: '智能印章',
           align: 'center',
-          customDisplayType: 'custom',
+          customDisplayType: 'format',
+          unit: '枚',
           sortable: true,
           'min-width': 150
         },
@@ -246,7 +252,8 @@
           prop: 'ordinaryCount',
           label: '普通印章',
           align: 'center',
-          customDisplayType: 'custom',
+          customDisplayType: 'format',
+          unit: '枚',
           sortable: true,
           'min-width': 150
         },
