@@ -5,10 +5,11 @@
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
+      hasTree
       tableClick="organName"
       @cellClick="cellClick"
     >
-      <template #titles>
+      <template #title>
         <div class="title">
           <div>部门管理</div>
           <div class="title-more">
@@ -36,7 +37,7 @@
           </div>
         </div>
       </template>
-      <template #trees>
+      <template #tree>
         <div>
           <componentsTree
             :data="state.componentsTree.data"

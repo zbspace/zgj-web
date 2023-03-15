@@ -13,7 +13,7 @@
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
     >
-      <template #titles>
+      <template #title>
         <div class="title">
           <div>印章类型</div>
           <div class="title-more">
