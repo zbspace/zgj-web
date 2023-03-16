@@ -907,7 +907,7 @@
               if (widget.type === 'sealFile') {
                 // 用印文件
                 Object.keys(widgetData).forEach(propName => {
-                  if (propName == 'fileList') {
+                  if (propName === 'fileList') {
                     if (!widgetData[propName].length) {
                       _self.requiredMsgList.push('请上传用印文件')
                       widgetInstance.field.options.requiredHint =
@@ -921,7 +921,7 @@
               if (widget.type === 'agentMan') {
                 // 代办人
                 Object.keys(widgetData).forEach(propName => {
-                  if (propName == 'unitIds') {
+                  if (propName === 'unitIds') {
                     if (!widgetData[propName]) {
                       _self.requiredMsgList.push('代办人未选')
                       widgetInstance.setRequiredTextShow(true)
