@@ -71,7 +71,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, onBeforeMount, defineExpose } from 'vue'
+  import { ref, reactive, onBeforeMount, defineExpose, nextTick } from 'vue'
   import componentsLayout from '@/views/components/Layout'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
@@ -110,6 +110,10 @@
     method: {
       type: String,
       default: 'GET'
+    },
+    needAutoRequest: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -240,10 +244,12 @@
   }
 
   function reloadData() {
-    state.componentsPagination.data.index = 1
-    state.componentsTable.data = []
-    state.componentsPagination.data.amount = 0
-    page()
+    nextTick(() => {
+      state.componentsPagination.data.index = 1
+      state.componentsTable.data = []
+      state.componentsPagination.data.amount = 0
+      page()
+    })
   }
 
   const page = () => {
@@ -308,7 +314,9 @@
 
   onBeforeMount(() => {
     // 初始化布局
-    reloadData()
+    if (props.needAutoRequest) {
+      reloadData()
+    }
   })
 </script>
 <style lang="scss" scoped></style>
