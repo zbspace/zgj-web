@@ -16,7 +16,7 @@ api.test = params => {
 api.page = params => {
   return request({
     method: 'GET',
-    url: '/form/page',
+    url: '/flow/page',
     params
   })
 }
@@ -52,7 +52,7 @@ api.viewHisVersion = params => {
 api.add = data => {
   return request({
     method: 'POST',
-    url: '/form/add',
+    url: '/flow/add',
     data
   })
 }

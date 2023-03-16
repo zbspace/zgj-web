@@ -61,7 +61,7 @@
               required
               v-if="form.applyTypeId === '2'"
             >
-              <el-select v-model="form.fileType" placeholder="请选择">
+              <el-select v-model="form.fileType" placeholder="请选择" multiple>
                 <el-option
                   :label="item.fileTypeName"
                   :value="item.fileTypeId"
@@ -128,16 +128,14 @@
         >
           去创建
         </el-button>
-        <el-button
-          type="primary"
-          v-else
-          @click="
+        <el-button type="primary" v-else @click="saveAddModel">
+          <!--   @click="
             () => {
               state.currentState = '2'
             }
-          "
-          >确定</el-button
-        >
+          " -->
+          确定
+        </el-button>
       </div>
     </div>
     <div class="exhibition" v-if="state.currentState === '2'">
@@ -215,9 +213,8 @@
     ProcessName: '',
     ProcessType: false,
     fileType: '',
-    rangeApplication: '',
     applyTypeId: '',
-    desc: '',
+    formMessageId: '',
     rules: {
       applyTypeId: [
         {
@@ -268,18 +265,25 @@
   }
 
   // 获取信息值
-  const getInfoValue = () => {
-    let SelectionForm = null
+  const getAssociationValue = async () => {
     if (state.list.radio) {
-      state.list.data.map(item => {
-        if (item.label === state.list.radio) {
-          SelectionForm = item
-        }
-        return true
-      })
+      form.formMessageId = state.list.radio
+    } else {
+      return {
+        formMessageId: [
+          {
+            message: '请选择表单',
+            fieldValue: '',
+            field: 'formMessageId'
+          }
+        ]
+      }
     }
-    return {
-      SelectionForm
+    const valid = await ruleFormRef.value.validate().catch(err => err)
+    if (typeof valid === 'boolean' && valid) {
+      return form
+    } else {
+      return [valid]
     }
   }
 
@@ -304,10 +308,7 @@
   // 获取文件类型列表
   const setFileTypeList = async () => {
     try {
-      const res = await fileManageService.getFileTypeList({
-        formMessageId: '',
-        relationRule: ''
-      })
+      const res = await fileManageService.getFileTypeList(form.applyTypeId)
       fileTypeList.value = res.data || []
     } catch (error) {}
   }
@@ -352,7 +353,7 @@
   }
   // 提供方法
   defineExpose({
-    getInfoValue
+    getAssociationValue
   })
 </script>
 <style lang="scss" scoped>

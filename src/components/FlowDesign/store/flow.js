@@ -298,9 +298,9 @@ export const useFlowStore = defineStore('flow', {
       this.definitionId = definitionId
       this.getBaseColumns()
       this.getFormColumns()
-      this.getPosition()
-      this.getRole()
-      this.getApproverTypeList()
+      // this.getPosition()
+      // this.getRole()
+      // this.getApproverTypeList()
     },
 
     /**

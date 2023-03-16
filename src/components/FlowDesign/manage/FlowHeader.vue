@@ -1,7 +1,7 @@
 <template>
   <a-row class="flow-header" :style="headerStyle" :bordered="false">
     <a-col :span="4">
-      <div class="back">
+      <div class="back" v-if="false">
         <a-button @click="back" size="medium" shape="circle">
           <template #icon><left-outlined /></template>
         </a-button>
@@ -25,7 +25,7 @@
         <a-menu-item key="3" @click="to('3')">③ 审批流程 </a-menu-item>
         <a-menu-item key="4" @click="to('4')">④ 扩展设置</a-menu-item> -->
         <!-- <a-menu-item key="2" @click="to('2')">① 审批表单</a-menu-item> -->
-        <a-menu-item key="3" @click="to('3')">② 审批流程 </a-menu-item>
+        <!-- <a-menu-item key="3" @click="to('3')">② 审批流程 </a-menu-item> -->
         <!-- <a-menu-item key="4" @click="to('4')">③ 扩展设置</a-menu-item> -->
       </a-menu>
     </a-col>

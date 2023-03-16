@@ -109,10 +109,10 @@
             <!-- 占位 -->
 
             <div v-if="props.tabActive === 'user'">
-              <div
+              <!-- <div
                 style="width: 16px; height: 16px"
                 v-if="item.type !== 'user'"
-              ></div>
+              ></div> -->
               <!-- 未选 -->
               <div
                 v-show="item.selectedStatus === 0 && item.type === 'user'"

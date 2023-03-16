@@ -14,7 +14,12 @@
           <div class="process-save-down">
             <el-popover placement="bottom" :width="400" trigger="click">
               <template #reference>
-                <div class="process-save-down-text"> 5项不完善 </div>
+                <div
+                  class="process-save-down-text"
+                  v-show="errorInfo.length !== 0"
+                >
+                  {{ errorInfo.length }}项不完善
+                </div>
               </template>
               <div class="popover-cont">
                 <div class="popover-cont-title">内容不完善，当前无法发布</div>
@@ -48,13 +53,13 @@
           :getModelValue="getModelValue"
           @update:getModelValue="getModelValue = $event"
           :businessList="props.businessList"
-          v-if="state.processTabs.checkedNode.index == '2'"
+          v-show="state.processTabs.checkedNode.index == '2'"
           ref="refAssociationForm"
         ></AssociationForm>
         <VFlowDesign
-          v-if="state.processTabs.checkedNode.index == '3' && getModelValue"
+          v-show="state.processTabs.checkedNode.index == '3'"
+          v-if="getModelValue"
           ref="refVFlowDesign"
-          @onMountedCallBack="onMountedCallBack"
           :initObj="getModelValue"
         ></VFlowDesign>
         <advancedSetup
@@ -92,17 +97,14 @@
   // import VFlowDesign from '@/views/components/FlowDesign/index.vue'
   import advancedSetup from './advanced-setup.vue'
   import apiFlow from '@/api/system/flowManagement'
-
-  import flowJson from '@/views/jyGunsJson/flow'
+  import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  // Store
+  const flowStore = useFlowStore()
   // import { ModelApi } from '@/api/flow/ModelApi'
   const emit = defineEmits(['close', 'update:modelValue'])
   // 异步组件
   const VFlowDesign = defineAsyncComponent({
     loader: () => import('@/views/components/FlowDesign/index.vue')
-    // // 加载异步组件时使用的组件
-    // loadingComponent: LoadingComponent,
-    // // 加载失败时使用的组件
-    // errorComponent: ErrorComponent
   })
   const props = defineProps({
     businessList: {
@@ -170,84 +172,62 @@
   const clickClose = () => {
     emit('close')
   }
+  const errorInfo = ref([])
   // 点击保存
-  const clickSave = () => {
-    console.log('--->点击保存')
-    console.log('--->refVFlowDesign', refVFlowDesign.value.getValue())
-    console.log('--->refBasicsInfo', refBasicsInfo.value.getFormValue())
-    console.log(
-      '--->refAssociationForm',
-      refAssociationForm.value.getInfoValue()
-    )
-    // 发送api请求 保存流程设计
-    // apiFlowAdd().then(result => {
-    //   console.log('--->', result)
-    // })
+  const clickSave = async () => {
+    errorInfo.value = []
+    if (!refVFlowDesign.value)
+      return {
+        // 提示信息
+      }
+    const basicsResult = await refBasicsInfo.value.getBasicsFormValue()
+    if (Array.isArray(basicsResult)) {
+      errorInfo.value = errorInfo.value.concat(basicsResult)
+    }
+    const associationResult =
+      await refAssociationForm.value.getAssociationValue()
+
+    if (Array.isArray(associationResult)) {
+      errorInfo.value = errorInfo.value.concat(associationResult)
+    }
+    const designResult = await refVFlowDesign.value.designSave()
+    if (Array.isArray(designResult)) {
+      errorInfo.value = errorInfo.value.concat(designResult)
+    }
+    console.log(errorInfo.value.length, '错误信息', errorInfo.value)
+    if (errorInfo.value.length > 0) return
+
+    const params = {
+      ...basicsResult,
+      ...associationResult,
+      ...designResult
+    }
+    // 保存流程设计
+    apiFlow.add(params).then(() => {
+      clickClose()
+    })
   }
-  // 设置流程模板默认数据
-  const handleSetData = () => {
-    refVFlowDesign.value.handleSetData(flowJson)
-  }
+
   // 切换tabs之前
   const beforeCutTabs = (data, item) => {
     if (item.index === '3' && !getModelValue.value) {
-      const InfoValue = refAssociationForm.value.getInfoValue()
-      console.log('--->', InfoValue)
-      if (!InfoValue.SelectionForm) {
-        state.JyElMessageBox.header.data = '提示？'
-        state.JyElMessageBox.content.data = '请填写完整信息'
-        state.JyElMessageBox.show = true
-        return false
-      }
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请填写完整信息'
+      state.JyElMessageBox.show = true
+      return false
     }
   }
 
-  // 组件加载完成回调
-  const onMountedCallBack = () => {
-    // 设置流程模板默认数据
-    handleSetData()
-  }
-
-  // 发送api请求 保存流程设计
-  const apiFlowAdd = () => {
-    return apiFlow
-      .add({
-        processName: '流程名称',
-        applyTypeId: '业务类型',
-        sealUseTypeId: '用印类型',
-        fileTypeId: '文件类型',
-        dataScope: [
-          {
-            scopeId: 'id',
-            scopeName: '管理员',
-            scopeType: 1
-          }
-        ],
-        remark: '流程说明',
-        formMessageId: '表单id',
-        isTimeoutRemind: 1,
-        remindDuration: 24,
-        autoDistinct: 0
-      })
-      .then(result => {
-        console.log(result)
-        return result
-      })
-  }
   onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
     // 处理选项
     disCutTabs()
   })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
+  onMounted(() => {})
 
   const getModelValue = ref(null)
   watch(
     () => getModelValue.value,
     val => {
-      console.log(val, '返沪地参数')
       if (!val) return
       state.processTabs.checkedNode = {
         index: '3',
@@ -259,6 +239,10 @@
           item.checked = true
         }
       })
+      flowStore.setModelId(
+        getModelValue.value.modelId,
+        getModelValue.value.definitionId
+      )
     }
   )
 </script>

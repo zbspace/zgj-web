@@ -153,10 +153,73 @@
   onMounted(async () => {
     // 初始化
     if (props.node.privileges && props.node.privileges.length == 0) {
-      privileges.value = await flowStore.getPrivileges({
-        modelId: this.modelId,
-        definitionId: this.definitionId
-      })
+      // privileges.value = await flowStore.getPrivileges()
+      // 假数据
+      privileges.value = [
+        {
+          createTime: '2022-11-27 12: 31: 00',
+          createUser: '1339550467939639299',
+          updateTime: null,
+          updateUser: null,
+          nodePrivilegesId: '1596723235200790529',
+          modelId: '1596550552731209730',
+          definitionId: '1596550552739598338',
+          nodeId: '1596723224647921666',
+          formId: '1589976128312606721',
+          fieldId: '1589976917521235970',
+          fieldName: null,
+          fieldKey: null,
+          fieldModel: null,
+          name: '合同名称',
+          writable: true,
+          readable: false,
+          displayable: false,
+          required: false,
+          tenantId: null
+        },
+        {
+          createTime: '2022-11-27 12: 31: 00',
+          createUser: '1339550467939639299',
+          updateTime: null,
+          updateUser: null,
+          nodePrivilegesId: '1596723235200790530',
+          modelId: '1596550552731209730',
+          definitionId: '1596550552739598338',
+          nodeId: '1596723224647921666',
+          formId: '1589976128312606721',
+          fieldId: '1589976917521235972',
+          fieldName: null,
+          fieldKey: null,
+          fieldModel: null,
+          name: '公司主体',
+          writable: true,
+          readable: false,
+          displayable: false,
+          required: false,
+          tenantId: null
+        },
+        {
+          createTime: '2022-11-27 12: 31: 00',
+          createUser: '1339550467939639299',
+          updateTime: null,
+          updateUser: null,
+          nodePrivilegesId: '1596723235200790531',
+          modelId: '1596550552731209730',
+          definitionId: '1596550552739598338',
+          nodeId: '1596723224647921666',
+          formId: '1589976128312606721',
+          fieldId: '1589976917521235974',
+          fieldName: null,
+          fieldKey: null,
+          fieldModel: null,
+          name: '项目名称',
+          writable: true,
+          readable: false,
+          displayable: false,
+          required: false,
+          tenantId: null
+        }
+      ]
       privileges.value.forEach(item => {
         if (props.readable) {
           setWritable(true, item)
