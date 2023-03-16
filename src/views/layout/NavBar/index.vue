@@ -479,9 +479,14 @@
         accountInfo.userName = ''
         localStorage.setItem('accountInfo', accountInfo)
         // 跳转到登录页
-        const url = encodeURIComponent(router.currentRoute.value.fullPath)
         ElMessage.success('退出登录！')
-        router.replace(`/login/account?redirect=${url}`)
+        router.replace({
+          path: '/login/account',
+          // 保存我们所在的位置，以便以后再来
+          query: {
+            redirect: encodeURIComponent(router.currentRoute.value.fullPath)
+          }
+        })
       }
     })
   }

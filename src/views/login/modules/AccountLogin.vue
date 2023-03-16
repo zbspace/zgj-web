@@ -397,7 +397,9 @@
     state.ImmediateRegisterDialog = false
   }
   const goHome = () => {
-    let redirect = route.query.redirect || '/frontDesk/home'
+    let redirect = route.query.redirect
+      ? decodeURIComponent(route.query.redirect)
+      : '/frontDesk/home'
     if (typeof redirect !== 'string') {
       redirect = '/frontDesk/home'
     }
