@@ -61,7 +61,7 @@
               required
               v-if="form.applyTypeId === '2'"
             >
-              <el-select v-model="form.fileType" placeholder="请选择">
+              <el-select v-model="form.fileType" placeholder="请选择" multiple>
                 <el-option
                   :label="item.fileTypeName"
                   :value="item.fileTypeId"
@@ -95,11 +95,7 @@
             :key="index"
           >
             <div class="info-list-box-redio">
-              <el-radio-group
-                v-model="state.list.radio"
-                class="ml-4"
-                @change="redioChange"
-              >
+              <el-radio-group v-model="state.list.radio" class="ml-4">
                 <el-radio :label="item.formMessageId" size="large">
                   <div class="info-list-box-text">
                     {{ item.formName }}
@@ -196,13 +192,9 @@
     SealoptionData: {}
   })
   const form = reactive({
-    ProcessName: '',
-    ProcessType: false,
-    businessType: '',
     fileType: '',
-    rangeApplication: '',
     applyTypeId: '',
-    desc: '',
+    formMessageId: '',
     rules: {
       applyTypeId: [
         {
@@ -253,24 +245,26 @@
   }
 
   // 获取信息值
-  const getInfoValue = () => {
-    let SelectionForm = null
+  const getAssociationValue = async () => {
     if (state.list.radio) {
-      state.list.data.map(item => {
-        if (item.label === state.list.radio) {
-          SelectionForm = item
-        }
-        return true
-      })
+      form.formMessageId = state.list.radio
+    } else {
+      return {
+        formMessageId: [
+          {
+            message: '请选择表单',
+            fieldValue: '',
+            field: 'formMessageId'
+          }
+        ]
+      }
     }
-    return {
-      SelectionForm
+    const valid = await ruleFormRef.value.validate().catch(err => err)
+    if (typeof valid === 'boolean' && valid) {
+      return form
+    } else {
+      return [valid]
     }
-  }
-
-  // 单选框发生变化
-  const redioChange = () => {
-    // console.log('--->', state.list.radio)
   }
 
   // 获取表单列表
@@ -287,10 +281,7 @@
   // 获取文件类型列表
   const setFileTypeList = async () => {
     try {
-      const res = await fileManageService.getFileTypeList({
-        formMessageId: '',
-        relationRule: ''
-      })
+      const res = await fileManageService.getFileTypeList(form.applyTypeId)
       fileTypeList.value = res.data || []
     } catch (error) {}
   }
@@ -335,7 +326,7 @@
   }
   // 提供方法
   defineExpose({
-    getInfoValue
+    getAssociationValue
   })
 </script>
 <style lang="scss" scoped>

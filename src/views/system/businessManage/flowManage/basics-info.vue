@@ -9,12 +9,8 @@
           :rules="rules"
           ref="ruleFormRef"
         >
-          <el-form-item label="流程名称" prop="processName">
-            <el-input
-              v-model="form.processName"
-              placeholder="请输入"
-              clearable
-            />
+          <el-form-item label="流程名称" prop="flowName">
+            <el-input v-model="form.flowName" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="业务类型" prop="applyTypeId">
             <el-tree-select
@@ -46,19 +42,18 @@
             prop="fileTypeIds"
             v-if="form.applyTypeId === '2'"
           >
-            <el-select
-              v-model="form.fileTypeIds"
-              multiple
-              placeholder="请选择"
-              clearable
-            >
-              <el-option label="Zone one" value="shanghai" />
-              <el-option label="Zone two" value="beijing" />
+            <el-select v-model="form.fileTypeIds" placeholder="请选择" multiple>
+              <el-option
+                :label="item.fileTypeName"
+                :value="item.fileTypeId"
+                v-for="item in fileTypeList"
+                :key="item.fileTypeId"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item label="流程适用范围" prop="dataScope">
+          <el-form-item label="流程适用范围" prop="showDataScope">
             <el-input
-              v-model="form.dataScope"
+              v-model="form.showDataScope"
               readonly
               @click="showDepPerDialog = true"
               placeholder="请输入"
@@ -73,7 +68,7 @@
           </el-form-item>
           <el-form-item label="流程说明">
             <el-input
-              v-model="form.remark"
+              v-model="form.readme"
               type="textarea"
               maxlength="100"
               show-word-limit
@@ -99,6 +94,7 @@
 <script setup>
   import { reactive, ref, watch } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import { fileManageService } from '@/api/frontDesk/fileManage'
   const props = defineProps({
     businessList: {
       type: Array,
@@ -109,20 +105,21 @@
   })
   const showDepPerDialog = ref(false)
   const searchSelected = ref([])
-  const tabsShow = ref(['user'])
+  const tabsShow = ref(['user', 'organ'])
   const activeTab = ref('user')
-
+  const fileTypeList = ref([])
   const form = reactive({
-    processName: '',
-    applyTypeId: '2',
+    flowName: '',
+    applyTypeId: '',
     sealUseTypeId: 1,
     fileTypeIds: [],
+    showDataScope: '',
     dataScope: [],
-    remark: ''
+    readme: ''
   })
 
   const rules = reactive({
-    processName: [
+    flowName: [
       {
         required: true,
         message: '请填写流程名称',
@@ -147,10 +144,10 @@
       {
         required: true,
         message: '请选择文件类型',
-        trigger: 'change'
+        trigger: ['change', 'blur']
       }
     ],
-    dataScope: [
+    showDataScope: [
       {
         required: true,
         message: '请选择流程适用范围',
@@ -159,10 +156,22 @@
     ]
   })
 
-  const getFormValue = () => {
-    return form
+  const ruleFormRef = ref(null)
+  const getBasicsFormValue = async () => {
+    const valid = await ruleFormRef.value.validate().catch(err => err)
+    if (typeof valid === 'boolean' && valid) {
+      return form
+    } else {
+      return [valid]
+    }
   }
 
+  const setFileTypeList = async () => {
+    try {
+      const res = await fileManageService.getFileTypeList(form.applyTypeId)
+      fileTypeList.value = res.data || []
+    } catch (error) {}
+  }
   watch(
     () => searchSelected.value,
     val => {
@@ -171,15 +180,33 @@
       if (val.length > 0 && val) {
         val.forEach(item => {
           arr.push(item.name)
+          // 初始化 form.dataScope
+          form.dataScope.push({
+            scopeId: item.id,
+            scopeName: item.name,
+            scipeType: item.type === 'user' ? '1' : '2'
+          })
         })
-        form.dataScope = arr.join(',')
+        form.showDataScope = arr.join(',')
+        console.log(form.dataScope, '== form.dataScope')
       } else {
-        form.dataScope = null
+        form.showDataScope = ''
+        form.dataScope = []
       }
     }
   )
+
+  watch(
+    () => form.applyTypeId,
+    val => {
+      if (val === '2') {
+        setFileTypeList()
+      }
+    }
+  )
+
   defineExpose({
-    getFormValue
+    getBasicsFormValue
   })
 </script>
 <style lang="scss" scoped>

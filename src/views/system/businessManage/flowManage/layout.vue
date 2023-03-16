@@ -100,22 +100,18 @@
 
   // 初始化数据
   const initProps = () => {
-    // console.log('--->', 'initProps')
     const dispose = state.props
     for (const key in props) {
       if (Object.hasOwnProperty.call(dispose, key)) {
-        // console.log('--->', key)
         dispose[key] = props[key]
       } else {
         dispose[key] = props[key]
       }
     }
-    // console.log('--->', props, dispose)
   }
   // 点击切换选项
   const clickCutTabs = (data, item) => {
     const beforeCutTabs = state.props.beforeCutTabs(data, item)
-    console.log('--->', item)
     if (beforeCutTabs === false) {
       return
     }
@@ -129,25 +125,16 @@
   const clickClose = () => {
     emit('close')
   }
-  // // 切换弹窗之前的回调函数
-  // const beforeCutTabs = fun => {
-  //   const back = fun()
-  //   // if()
-  // }
 
   watch(props, (newValue, oldValue) => {
-    // console.log(newValue, oldValue);
     // 初始化数据
     initProps()
   })
   onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
     // 初始化数据
     initProps()
   })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
+  onMounted(() => {})
 </script>
 <style lang="scss" scoped>
   .flowManage-layout {

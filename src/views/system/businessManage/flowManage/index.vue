@@ -290,7 +290,7 @@
     componentsTable: {
       header: [
         {
-          prop: 'formName',
+          prop: 'flowName',
           label: '流程名称',
           sortable: true,
           'min-width': 150,
@@ -303,13 +303,13 @@
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'fileTypeName',
           label: '文件类型',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: 'relationFlow',
+          prop: 'status',
           label: '状态',
           sortable: true,
           'min-width': 150
