@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 基础信息-新建流程
+* @FileName basics-info.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-16 16:17:17
+!-->
 <template>
   <div class="flowManage-basics-info">
     <div class="info-box">
@@ -13,19 +19,20 @@
             <el-input v-model="form.flowName" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="业务类型" prop="applyTypeId">
-            <el-tree-select
-              clearable
-              v-model="form.applyTypeId"
-              :data="props.businessList"
-              :render-after-expand="false"
-              highlight-current
-              accordion
-              node-key="applyTypeId"
-              :props="{
-                label: 'applyTypeName',
-                children: 'children'
-              }"
-            />
+            <el-select v-model="form.applyTypeId">
+              <el-option-group
+                v-for="group in props.businessList"
+                :key="group.applyTypeName"
+                :label="group.applyTypeName"
+              >
+                <el-option
+                  v-for="item in group.children"
+                  :key="item.applyTypeId"
+                  :label="item.applyTypeName"
+                  :value="item.applyTypeId"
+                />
+              </el-option-group>
+            </el-select>
           </el-form-item>
           <el-form-item
             label="用印类型"
@@ -249,5 +256,8 @@
     .box-icon-img {
       height: 100%;
     }
+  }
+  .el-form-item {
+    margin-bottom: 24px !important;
   }
 </style>
