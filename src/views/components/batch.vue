@@ -204,6 +204,7 @@
                 animation="300"
                 item-key="id"
                 handle=".draggable"
+                @end="draggableEnd"
               >
                 <template #item="{ element }">
                   <div class="oneDraggable">
@@ -293,6 +294,7 @@
                 animation="300"
                 item-key="id"
                 handle=".draggable"
+                @end="draggableEnd"
               >
                 <template #item="{ element }">
                   <div class="oneDraggable">
@@ -382,6 +384,7 @@
                 animation="300"
                 item-key="id"
                 handle=".draggable"
+                @end="draggableEnd"
               >
                 <template #item="{ element }">
                   <div class="oneDraggable">
@@ -549,6 +552,14 @@
         state.noFixList.push(item)
       }
     })
+  }
+
+  // 拖拽设置
+  function draggableEnd() {
+    state.tableHeader = state.leftFixList
+      .concat(state.noFixList)
+      .concat(state.rightFixList)
+    emit('setTableHeader', state.tableHeader)
   }
 
   // 取消固定
