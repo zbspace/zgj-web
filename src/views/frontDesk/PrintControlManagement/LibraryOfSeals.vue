@@ -304,12 +304,13 @@
           />
         </el-form-item>
         <el-form-item label="备注" prop="sealExplain">
-          <el-input
+          <!-- <el-input
             v-model="state.form.sealExplain"
             :rows="4"
             type="textarea"
             placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
-          />
+          /> -->
+          <JyRichEdit :value="state.form.sealExplain" @updateValue="getMsg" />
         </el-form-item>
         <el-form-item
           label="印模"
@@ -374,6 +375,7 @@
   import { ElMessage } from 'element-plus'
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
   import api from '@/api/frontDesk/sealManage/libraryOfSeals'
+  import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
   import dayjs from 'dayjs'
 
   // 印章库 新增弹框
@@ -392,6 +394,7 @@
     showLibraryDialog.value = true
   }
   const submitLibraryForm = type => {
+    console.log(state.form)
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         api.add(state.form).then(res => {
@@ -432,8 +435,12 @@
     // }
     console.log(data)
   }
+  const getMsg = val => {
+    state.form.sealExplain = val
+  }
   // const emit = defineEmits([])
   const state = reactive({
+    msg: '',
     tabsShow: ['organ'],
     searchSelected: [],
     title: '新增',
