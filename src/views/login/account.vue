@@ -250,7 +250,9 @@
     loginApi.chooseOrgan(tenantId).then(res => {
       localStorage.setItem('tenantId', Number(tenantId))
       getWater()
-      let redirect = route.query.redirect || '/frontDesk/home'
+      let redirect = route.query.redirect
+        ? decodeURIComponent(route.query.redirect)
+        : '/frontDesk/home'
       if (typeof redirect !== 'string') {
         redirect = '/frontDesk/home'
       }

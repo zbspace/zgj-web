@@ -237,7 +237,7 @@ export const videoSealSchema = {
   formItemFlag: true,
   options: {
     name: 'videoSeal',
-    // label: '视频盖章',
+    label: '视频盖章',
     labelAlign: 'right',
     columnWidth: '200px',
     labelWidth: 100,

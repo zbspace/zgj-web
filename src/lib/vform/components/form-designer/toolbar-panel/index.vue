@@ -1149,12 +1149,13 @@
   .toolbar-container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
-  .toolbar-container:after {
-    display: block;
-    content: '';
-    clear: both;
-  }
+  // .toolbar-container:after {
+  //   display: block;
+  //   content: '';
+  //   clear: both;
+  // }
 
   .left-toolbar {
     display: flex;
