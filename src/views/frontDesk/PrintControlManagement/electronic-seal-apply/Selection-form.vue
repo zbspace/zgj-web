@@ -10,7 +10,7 @@
       </template>
       <template #custom>
         <div class="custom">
-          <div class="ap-cont-info">
+          <!-- <div class="ap-cont-info">
             <div class="ap-cont-info-icon">
               <img
                 class="ap-cont-info-icon-img"
@@ -22,7 +22,7 @@
               >有已发起意外退出的用印申请【上海科创招投标建筑制材专属项目合同】</div
             >
             <div class="ap-cont-info-caozuo">继续完成用印申请</div>
-          </div>
+          </div> -->
           <div class="ap-cont-title"> 请选择所需表单 </div>
           <div class="ap-cont-desc">
             请根据以下步骤完善表单内容及确认审批流程
@@ -74,7 +74,7 @@
             </div>
           </div>
           <div class="ap-cont-liebiao">
-            <div class="ap-cont-liebiao-list" v-for="n in 5" :key="n">
+            <div class="ap-cont-liebiao-list" v-for="n in 15" :key="n">
               <div class="ap-cont-liebiao-list-back">
                 <img
                   class="ap-cont-liebiao-list-back-img"
@@ -202,10 +202,55 @@
         display: flex;
         flex-flow: wrap;
 
+        @media screen and (max-width: 900px) {
+          .ap-cont-liebiao-list {
+            width: 100%;
+            margin: 0;
+          }
+        }
+
+        @media screen and (min-width: 900px) and (max-width: 1200px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 15px) / 2);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(2n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1200px) and (max-width: 1500px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 30px) / 3);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(3n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1500px) and (max-width: 1750px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 45px) / 4);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(4n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1750px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 60px) / 5);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(5n) {
+            margin: 0 0 15px 0;
+          }
+        }
         .ap-cont-liebiao-list {
-          width: 20rem;
-          margin: 0rem 1rem 1rem 0rem;
-          padding: 0.5rem;
+          margin: 0 15px 15px 0;
+          padding: 10px;
           box-sizing: border-box;
           display: flex;
           flex-flow: wrap;

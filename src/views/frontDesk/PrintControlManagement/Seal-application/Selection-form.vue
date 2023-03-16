@@ -74,7 +74,7 @@
             </div>
           </div>
           <div class="ap-cont-liebiao">
-            <div class="ap-cont-liebiao-list" v-for="n in 5" :key="n">
+            <div class="ap-cont-liebiao-list" v-for="n in 15" :key="n">
               <div class="ap-cont-liebiao-list-back">
                 <img
                   class="ap-cont-liebiao-list-back-img"
@@ -117,7 +117,7 @@
       @close="submitForm"
     >
       <div class="optional-module">
-        <div class="optional-module-list" v-for="n in 6" :key="n">
+        <div class="optional-module-list" v-for="n in 15" :key="n">
           <div class="optional-module-list-title">
             <div class="optional-module-list-title-desc">
               文件类型文件类型文件类型文件类型
@@ -258,10 +258,57 @@
         display: flex;
         flex-flow: wrap;
 
+        @media screen and (max-width: 900px) {
+          .ap-cont-liebiao-list {
+            width: 100%;
+            margin: 0;
+          }
+        }
+
+        @media screen and (min-width: 900px) and (max-width: 1200px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 15px) / 2);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(2n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1200px) and (max-width: 1500px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 30px) / 3);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(3n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1500px) and (max-width: 1750px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 45px) / 4);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(4n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1750px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 60px) / 5);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(5n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
         .ap-cont-liebiao-list {
-          width: 20rem;
-          margin: 0rem 1rem 1rem 0rem;
-          padding: 0.5rem;
+          // width: 20rem;
+          margin: 0 15px 15px 0;
+          padding: 10px;
           box-sizing: border-box;
           display: flex;
           flex-flow: wrap;
@@ -285,9 +332,9 @@
             color: var(--jy-color-text-1);
           }
 
-          .ap-cont-liebiao-list-but {
-            margin-bottom: 0.5rem;
-          }
+          // .ap-cont-liebiao-list-but {
+          //   margin-bottom: 0.5rem;
+          // }
           .ap-cont-liebiao-list-template {
             position: absolute;
             top: 1rem;
