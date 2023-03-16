@@ -8,7 +8,7 @@
         :loading="pageWatermarkLoading"
         size="large"
         active-value="1"
-        inactive-value="2"
+        inactive-value="0"
         :before-change="changeWaterMakeStatus"
       />
     </div>
@@ -33,7 +33,7 @@
         <el-image
           class="logoImage"
           :src="props.tenantShowInfo.homeLogoPath"
-          fit="contain"
+          fit="scale-down"
         ></el-image>
       </el-upload>
     </div>
@@ -55,7 +55,7 @@
         <el-image
           class="logoImage"
           :src="props.tenantShowInfo.loginLogoPath"
-          fit="contain"
+          fit="scale-down"
         ></el-image>
       </el-upload>
     </div>
@@ -67,6 +67,9 @@
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { ElMessage } from 'element-plus'
   import apis from '@/api/system/companyManagement/companyInfo'
+  import { setWaterMark, removeWatermark } from '@/utils/water'
+  import dayjs from 'dayjs'
+
   const emit = defineEmits(['reloadData'])
   const props = defineProps({
     tenantShowInfo: {
@@ -92,12 +95,21 @@
     pageWatermarkLoading.value = true
     const formData = new FormData()
     formData.append('type', 3)
-    formData.append('pageWatermark', pageWatermark.value === '1' ? 2 : '1')
+    formData.append('pageWatermark', pageWatermark.value === '1' ? '0' : '1')
     return new Promise((resolve, reject) => {
       apis.updatePageSetting(tenantId.value, formData).then(
         () => {
           pageWatermarkLoading.value = false
+          pageWatermark.value = pageWatermark.value === '1' ? '0' : '1'
           localStorage.setItem('watermark', pageWatermark.value)
+          removeWatermark()
+          if (pageWatermark.value === '1') {
+            const text =
+              JSON.parse(localStorage.getItem('accountInfo')).userName +
+              ' ' +
+              dayjs().format('YYYY-MM-DD HH:mm')
+            setWaterMark(text)
+          }
           emit('reloadData')
           return resolve(true)
         },

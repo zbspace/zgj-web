@@ -54,7 +54,7 @@ export const sealNameSchema = {
         routineSealRequiredTextShow: false
       }
     ],
-    showSealType: true,
+    applyTypeId: '2', // 业务类型id 2用印申请 10销毁申请 11换章申请 3转办申请 4重置申请 6刻章申请 7变更申请 8启用申请 9停用申请
     placeholder: '',
     columnWidth: '200px',
     labelWidth: 100,
@@ -66,6 +66,7 @@ export const sealNameSchema = {
     required: true,
     clearable: true,
     requiredHint: '',
+    dsEnabled: false, // 是否使用数据源数据
     // -------------------
     customClass: '', // 自定义css类名
     // -------------------
@@ -101,6 +102,7 @@ export const contactUnitSchema = {
     labelHidden: true,
     required: false,
     requiredHint: '',
+    dsEnabled: false, // 是否使用数据源数据
     defaultValue: { unitIds: '', unitNames: '' },
     // -------------------
     customClass: '', // 自定义css类名
@@ -130,6 +132,7 @@ export const usesealBesidesSchema = {
     addTitle: '详细',
     onClose: '',
     customClass: '',
+    dsEnabled: false, // 是否使用数据源数据
     defaultValue: {
       isTrue: false,
       besidesTime: [],
@@ -204,6 +207,7 @@ export const remoteSealSchema = {
     disabled: false,
     hidden: false,
     defaultValue: false,
+    dsEnabled: false, // 是否使用数据源数据
     // -------------------
     customClass: '', // 自定义css类名
     labelIconClass: null,
@@ -241,6 +245,7 @@ export const videoSealSchema = {
     disabled: false,
     hidden: false,
     defaultValue: false,
+    dsEnabled: false, // 是否使用数据源数据
     // -------------------
     customClass: '', // 自定义css类名
     labelIconClass: null,
@@ -275,7 +280,8 @@ export const applicantInfoSchema = {
     type: 'text',
     defaultValue: {
       applicant: '',
-      department: ''
+      departmentName: '',
+      departmentId: ''
     },
     placeholder: '',
     columnWidth: '200px',
@@ -405,6 +411,7 @@ export const limitTimeSealSchema = {
       { label: '是', value: 1 },
       { label: '否', value: 2 }
     ],
+    dsEnabled: false, // 是否使用数据源数据
     // -------------------
     customClass: '', // 自定义css类名
     labelIconClass: null,
@@ -442,6 +449,7 @@ export const limitAddressSealSchema = {
     disabled: false,
     hidden: false,
     defaultValue: false,
+    dsEnabled: false, // 是否使用数据源数据
     // -------------------
     customClass: '', // 自定义css类名
     labelIconClass: null,
@@ -478,6 +486,7 @@ export const uploadFileSchema = {
     labelHidden: false,
     disabled: false,
     hidden: false,
+    dsEnabled: false, // 是否使用数据源数据
     // defaultValue: false,
     // -------------------
     customClass: '', // 自定义css类名
@@ -520,6 +529,7 @@ export const sealFileSchema = {
     validation: '',
     validationHint: '',
     defaultValue: { fileList: [], fileList1: [] },
+    dsEnabled: false, // 是否使用数据源数据
     // -------------------
     customClass: '', // 自定义css类名
     labelIconClass: null,
@@ -617,6 +627,7 @@ export const agentManSchema = {
     clearable: true,
     labelHidden: true,
     required: true,
+    dsEnabled: false, // 是否使用数据源数据
     requiredHint: '',
     defaultValue: { unitIds: '', unitNames: '' },
     // -------------------

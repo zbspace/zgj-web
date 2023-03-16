@@ -1,4 +1,4 @@
-import Request from '@/utils/request-util';
+import Request from '@/utils/request-util'
 
 /**
  * 流程模型api
@@ -14,7 +14,12 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static getCategoryDetailList(params) {
-    return Request.getAndLoadData('/model/getCategoryDetailList', params);
+    return Request.getAndLoadData('/model/getCategoryDetailList', params)
+  }
+
+  // 指定的模型信息
+  static getModelKey(params) {
+    return Request.getAndLoadData('/model/key', params)
   }
 
   /**
@@ -24,7 +29,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static findPage(params) {
-    return Request.getAndLoadData('/model/page', params);
+    return Request.getAndLoadData('/model/page', params)
   }
 
   /**
@@ -34,7 +39,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static findList(params) {
-    return Request.getAndLoadData('/model/list', params);
+    return Request.getAndLoadData('/model/list', params)
   }
 
   /**
@@ -44,7 +49,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static add(params) {
-    return Request.post('/model/add', params);
+    return Request.post('/model/add', params)
   }
 
   /**
@@ -54,7 +59,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static edit(params) {
-    return Request.post('/model/edit', params);
+    return Request.post('/model/edit', params)
   }
 
   /**
@@ -64,7 +69,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static delete(params) {
-    return Request.post('/model/delete', params);
+    return Request.post('/model/delete', params)
   }
 
   /**
@@ -74,7 +79,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static detail(params) {
-    return Request.getAndLoadData('/model/detail', params);
+    return Request.getAndLoadData('/model/detail', params)
   }
 
   /**
@@ -84,7 +89,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static getId(params) {
-    return Request.getAndLoadData('/model/getId', params);
+    return Request.getAndLoadData('/model/getId', params)
   }
 
   /**
@@ -94,7 +99,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static moveCategory(params) {
-    return Request.post('/model/moveCategory', params);
+    return Request.post('/model/moveCategory', params)
   }
 
   /**
@@ -104,7 +109,7 @@ export class ModelApi {
    * @date 2022/08/13 13:21
    */
   static updateStatus(params) {
-    return Request.post('/model/updateStatus', params);
+    return Request.post('/model/updateStatus', params)
   }
 
   /**
@@ -114,7 +119,7 @@ export class ModelApi {
    * @date 2022/08/23 15:27
    */
   static saveDesign(params) {
-    return Request.post('/model/design', params);
+    return Request.post('/model/design', params)
   }
 
   /**
@@ -124,7 +129,7 @@ export class ModelApi {
    * @date 2022/08/23 15:27
    */
   static getDesign(params) {
-    return Request.getAndLoadData('/model/design', params);
+    return Request.getAndLoadData('/model/design', params)
   }
 
   /**
@@ -134,7 +139,7 @@ export class ModelApi {
    * @date 2022/08/23 15:27
    */
   static updateDesignNode(params) {
-    return Request.post('/model/design/node', params);
+    return Request.post('/model/design/node', params)
   }
 
   /**
@@ -144,6 +149,6 @@ export class ModelApi {
    * @date 2022/08/23 15:27
    */
   static updateDesignUpgrade(params) {
-    return Request.post('/model/design/upgrade', params);
+    return Request.post('/model/design/upgrade', params)
   }
 }

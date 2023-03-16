@@ -11,6 +11,7 @@
       @buttonClick="buttonClick"
       :fileTypeList="fileTypeList"
       :businessType="businessType"
+      :prefabricationFieldList="props.prefabricationFieldList"
     />
 
     <VFormDesigner
@@ -19,7 +20,7 @@
       :bannedWidgets="bannedWidgets"
       :designer-config="designerConfig"
       :hideModuleList="hideModuleList"
-      :prefabricationFieldList="prefabricationFieldList"
+      :prefabricationFieldList="props.prefabricationFieldList"
       :templateList="templateList"
       :fileTypeList="fileTypeList"
       :userType="userType"
@@ -45,7 +46,7 @@
 
   const vformInfoStore = useVformInfoStore()
   const vFormRef = ref(null)
-  const prefabricationFieldList = ref([])
+  // const prefabricationFieldList = ref([])
   const bannedWidgets = ref([]) // 设计器需要显示指定的组件
   const templateList = ref([])
   const key = ref(0)
@@ -224,7 +225,12 @@
     return vFormRef.value.getFormJson() || ''
   }
 
-  // ---------------------------------business---------------------------------------------
+  // ---------------------------------business designer必须主动调用---------------------------------------------
+  // 根据业务类型初始化设计器界面、模板、必须字段
+  const initDesigner = applyTypeId => {
+    setFormColumnBasic(applyTypeId)
+    setFormTemplate(applyTypeId)
+  }
 
   /**
    * 设置动态表单基础字段&业务字段
@@ -255,44 +261,22 @@
   const setFormTemplate = async applyTypeId => {
     try {
       const res = await formManageService.getFormTemplate({ applyTypeId })
-      templateList.value = res.data || []
+      templateList.value = res.data.map(v => JSON.parse(v.formTemplateInfo))
       const widgetList = vFormRef.value.getFieldWidgets()
       // 如果是设计器，且内容为空，需要加载指定模板
       if (!props.mode && !widgetList.length) {
-        vFormRef.value.setFormJson(
-          JSON.parse(templateList.value[0].formTemplateInfo).jsonUrl
-        )
+        vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
       }
     } catch (error) {
       ElMessage.error(error)
     }
   }
-
-  /**
-   * 查询设置动态表单模板
-   * @param {*} applyTypeId 业务类型
-   */
-  // const setFormTemplate = async applyTypeId => {
-  //   try {
-  //     const res = await formManageService.getFormColumnMust({ applyTypeId })
-  //     templateList.value = res.data || []
-  //     const widgetList = vFormRef.value.getFieldWidgets()
-  //     // 如果是设计器，且内容为空，需要加载指定模板
-  //     if (!props.mode && !widgetList.length) {
-  //       vFormRef.value.setFormJson(
-  //         JSON.parse(templateList.value[0].formTemplateInfo).jsonUrl
-  //       )
-  //     }
-  //   } catch (error) {
-  //     ElMessage.error(error)
-  //   }
-  // }
-
   // ---------------------------------business end-----------------------------------------
 
   onMounted(() => {
     console.log('--->', 'vform加载完成')
     emit('on-loaded')
+    console.log('--->', vFormRef.value.getFieldWidgets())
   })
 
   defineExpose({
@@ -314,7 +298,8 @@
     setReadMode,
     showDialog,
     setFormColumnBasic,
-    setFormTemplate
+    setFormTemplate,
+    initDesigner
   })
 </script>
 

@@ -57,22 +57,48 @@
             </el-select>
           </el-form-item>
           <el-form-item label="流程适用范围" prop="dataScope">
-            <el-input v-model="form.dataScope" />
+            <el-input
+              v-model="form.dataScope"
+              readonly
+              @click="showDepPerDialog = true"
+              placeholder="请输入"
+            />
+            <div class="box-icon">
+              <img
+                class="box-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
           </el-form-item>
           <el-form-item label="流程说明">
             <el-input
               v-model="form.remark"
               type="textarea"
+              maxlength="100"
+              show-word-limit
               placeholder="请输入"
             />
           </el-form-item>
         </el-form>
       </div>
     </div>
+    <!-- 人员选择  -->
+    <kDepartOrPersonVue
+      :show="showDepPerDialog"
+      @update:show="showDepPerDialog = $event"
+      :searchSelected="searchSelected"
+      @update:searchSelected="searchSelected = $event"
+      :tabsShow="tabsShow"
+      :activeTab="activeTab"
+      v-if="showDepPerDialog"
+    >
+    </kDepartOrPersonVue>
   </div>
 </template>
 <script setup>
-  import { reactive } from 'vue'
+  import { reactive, ref, watch } from 'vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   const props = defineProps({
     businessList: {
       type: Array,
@@ -81,6 +107,11 @@
       }
     }
   })
+  const showDepPerDialog = ref(false)
+  const searchSelected = ref([])
+  const tabsShow = ref(['user'])
+  const activeTab = ref('user')
+
   const form = reactive({
     processName: '',
     applyTypeId: '2',
@@ -89,6 +120,7 @@
     dataScope: [],
     remark: ''
   })
+
   const rules = reactive({
     processName: [
       {
@@ -126,9 +158,26 @@
       }
     ]
   })
+
   const getFormValue = () => {
     return form
   }
+
+  watch(
+    () => searchSelected.value,
+    val => {
+      console.log(val, 12)
+      const arr = []
+      if (val.length > 0 && val) {
+        val.forEach(item => {
+          arr.push(item.name)
+        })
+        form.dataScope = arr.join(',')
+      } else {
+        form.dataScope = null
+      }
+    }
+  )
   defineExpose({
     getFormValue
   })
@@ -160,6 +209,18 @@
       .el-select {
         width: 100%;
       }
+    }
+  }
+  .box-icon {
+    position: absolute;
+    right: 0.8rem;
+    cursor: pointer;
+    height: 50%;
+    display: flex;
+    align-items: center;
+
+    .box-icon-img {
+      height: 100%;
     }
   }
 </style>

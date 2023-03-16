@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 流程设计-关联表单
+* @FileName Association-form.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-15 16:47:11
+!-->
 <template>
   <div class="flowManage-Association-form">
     <div class="choice" v-if="state.currentState === '1'">
@@ -33,12 +39,6 @@
             ref="ruleFormRef"
             status-icon
           >
-            <!-- <el-form-item label="业务类型" required>
-              <el-select v-model="form.businessType" placeholder="请选择">
-                <el-option label="Zone one" value="shanghai" />
-                <el-option label="Zone two" value="beijing" />
-              </el-select>
-            </el-form-item> -->
             <el-form-item label="业务类型" prop="applyTypeId" required>
               <el-tree-select
                 clearable
@@ -55,7 +55,12 @@
               />
             </el-form-item>
 
-            <el-form-item label="文件类型" required>
+            <el-form-item
+              label="文件类型"
+              prop="fileType"
+              required
+              v-if="form.applyTypeId === '2'"
+            >
               <el-select v-model="form.fileType" placeholder="请选择">
                 <el-option
                   :label="item.fileTypeName"
@@ -67,11 +72,23 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="info-noContent" v-if="state.list.data.length === 0">
-          <div class="info-noContent-backcolor"></div>
-          <div class="info-noContent-desc">暂无可关联的表单</div>
+        <div
+          class="info-noContent"
+          v-if="state.list.data.length === 0 && flagStatus"
+        >
+          <div class="info-noContent-backcolor" @click="clickEdit">
+            <img src="@/assets/svg/system/flow/vector.svg" />
+            <div class="text">去创建</div>
+          </div>
+          <div class="info-noContent-desc">
+            <img src="@/assets/svg/system/flow/info.svg" />
+            暂无可关联的表单
+          </div>
         </div>
-        <div class="info-list" v-else>
+        <div
+          class="info-list"
+          v-if="form.applyTypeId && state.list.data.length !== 0"
+        >
           <div
             class="info-list-box"
             v-for="(item, index) in state.list.data"
@@ -92,22 +109,42 @@
             </div>
             <div class="info-list-box-but">
               <div class="Have-been-enabled">已启用</div>
+              <div
+                @click.stop.prevent="clickEditForm"
+                class="look-detail"
+                v-if="false"
+              >
+                查看
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="info-footer">
-        <el-button type="primary" v-if="state.list.data.length === 0">
+        <el-button
+          type="primary"
+          @click="clickEdit"
+          v-if="form.applyTypeId && state.list.data.length === 0"
+        >
           去创建
         </el-button>
-        <el-button type="primary" v-else @click="clickEditForm">确定</el-button>
+        <el-button
+          type="primary"
+          v-else
+          @click="
+            () => {
+              state.currentState = '2'
+            }
+          "
+          >确定</el-button
+        >
       </div>
     </div>
     <div class="exhibition" v-if="state.currentState === '2'">
       <div class="info-box">
         <JyVform
           mode="render"
-          :formJson="FillFormInformationSeal"
+          :formJson="formJson"
           :formData="state.SealformData"
           :optionData="state.SealoptionData"
           :businessType="form.applyTypeId"
@@ -129,25 +166,34 @@
           height: '100%'
         }"
       >
-        <AddFrom
-          :formId="'12345667'"
+        <!-- <AddFrom
           v-model="state.JyElMessageBox.show"
           @close="state.JyElMessageBox.show = false"
+        /> -->
+        <AddFrom
+          v-model="state.JyElMessageBox.show"
+          v-if="state.JyElMessageBox.show"
+          addTitle="编辑"
+          :columnData="vformObj"
+          @close="state.JyElMessageBox.show = false"
+          :optionData="optionData"
         />
       </JyElMessageBox>
     </div>
   </div>
 </template>
 <script setup>
-  import { reactive, ref, onMounted } from 'vue'
+  import { reactive, ref, watch } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-  import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
   import { FetchFormListInfo } from '@/utils/domain/formManage'
   import FormManageService from '@/api/system/formManagement'
   import { fileManageService } from '@/api/frontDesk/fileManage'
-
+  import { ModelApi } from '@/api/flow/ModelApi'
   const refFillFormInformation = ref(null)
   const fileTypeList = ref([])
+  const formJson = ref('')
+  const vformObj = ref(null)
+
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
@@ -170,38 +216,59 @@
     ProcessName: '',
     ProcessType: false,
     businessType: '',
-    fileType: '1',
+    fileType: '',
     rangeApplication: '',
-    applyTypeId: '2',
+    applyTypeId: '',
     desc: '',
-    rules: [
-      {
-        required: true,
-        message: '新手机号不能为空',
-        trigger: 'blur'
-      }
-    ]
+    rules: {
+      applyTypeId: [
+        {
+          required: true,
+          message: '请选择业务类型',
+          trigger: ['blur', 'change']
+        }
+      ],
+      fileType: [
+        {
+          required: true,
+          message: '请选择文件类型',
+          trigger: ['blur', 'change']
+        }
+      ]
+    }
   })
+  const flagStatus = ref(false)
+
   const props = defineProps({
     businessList: {
       type: Array,
       default: () => {
         return [] // ['table', 'rate', 'switch'] 自定义组件的type
       }
+    },
+    getModelValue: {
+      type: Object,
+      default: null
     }
   })
+
+  const emits = defineEmits('update:getModelValue')
+
   // 点击去创建
   const clickEditForm = () => {
     state.currentState = '2'
   }
+
   // 点击重新选择
   const clickReselect = () => {
     state.currentState = '1'
   }
+
   // 点击编辑
   const clickEdit = () => {
     state.JyElMessageBox.show = true
   }
+
   // 获取信息值
   const getInfoValue = () => {
     let SelectionForm = null
@@ -217,10 +284,14 @@
       SelectionForm
     }
   }
+
   // 单选框发生变化
-  const redioChange = () => {
-    // console.log('--->', state.list.radio)
+  const redioChange = value => {
+    const obj = state.list.data.find(v => v.formMessageId === state.list.radio)
+    formJson.value = (obj && JSON.parse(obj.formInfo)) || ''
+    vformObj.value = obj
   }
+
   // 获取表单列表
   const getFromList = async () => {
     try {
@@ -228,8 +299,10 @@
       params.applyTypeId = form.applyTypeId
       const res = await FormManageService.formPage(new FetchFormListInfo())
       state.list.data = res.data.records || []
+      flagStatus.value = true
     } catch (error) {}
   }
+
   // 获取文件类型列表
   const setFileTypeList = async () => {
     try {
@@ -240,15 +313,48 @@
       fileTypeList.value = res.data || []
     } catch (error) {}
   }
-  // const formLibraryData = reactive({})
+
+  watch(
+    () => form.applyTypeId,
+    val => {
+      if (!val) return (flagStatus.value = false)
+      if (form.applyTypeId === '2') {
+        setFileTypeList()
+      } else {
+        getFromList()
+      }
+    }
+  )
+  watch(
+    () => form.fileType,
+    val => {
+      getFromList()
+      flagStatus.value = true
+    }
+  )
+  const ruleFormRef = ref(null)
+  const saveAddModel = () => {
+    ruleFormRef.value.validate(validate => {
+      if (validate && state.list.radio) {
+        const random = Math.random()
+        ModelApi.add({ modelKey: random, formIdList: [state.list.radio] }).then(
+          () => {
+            ModelApi.getModelKey({
+              modelKey: random
+            }).then(res => {
+              emits('update:getModelValue', {
+                modelId: res.modelId,
+                definitionId: res.definitionId
+              })
+            })
+          }
+        )
+      }
+    })
+  }
   // 提供方法
   defineExpose({
     getInfoValue
-  })
-
-  onMounted(() => {
-    getFromList()
-    setFileTypeList()
   })
 </script>
 <style lang="scss" scoped>
@@ -275,7 +381,7 @@
     }
 
     .info-box {
-      width: 50%;
+      width: 60%;
       margin: 0% auto;
       text-align: center;
 
@@ -348,26 +454,43 @@
       flex-flow: wrap;
 
       .info-noContent-backcolor {
-        background-color: #d9d9d9;
-        width: 15rem;
-        height: 8rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 258px;
+        height: 110px;
+        background: rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 4px;
+        margin-top: 24px;
+        cursor: pointer;
+        .text {
+          margin-top: 20px;
+          color: rgba(0, 0, 0, 0.85);
+          font-size: 14px;
+        }
       }
 
       .info-noContent-desc {
         width: 100%;
-        margin-top: 1rem;
+        margin-top: 16px;
+        img {
+          width: 16pxl;
+        }
       }
     }
 
     .info-list {
-      margin-top: 1rem;
-
+      margin-top: 16px;
+      height: 400px;
+      overflow-y: auto;
       .info-list-box {
         display: flex;
         align-items: center;
         justify-content: space-between;
         text-align: left;
-        padding: 0.7rem 1rem;
+        padding: 8px 14px;
         box-sizing: border-box;
         background: var(--jy-color-fill--2);
         border-radius: var(--jy-border-radius-2);
@@ -381,7 +504,15 @@
           justify-content: center;
           align-items: center;
         }
+        .info-list-box-but {
+          display: flex;
 
+          .look-detail {
+            margin-left: 8px;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+          }
+        }
         .info-list-box-text {
           width: calc(100% - 5rem);
         }

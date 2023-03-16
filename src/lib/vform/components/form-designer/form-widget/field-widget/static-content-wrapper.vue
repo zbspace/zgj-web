@@ -1,28 +1,63 @@
 <template>
-  <div class="field-wrapper" :class="{'design-time-bottom-margin': !!this.designer}" :style="{display: displayStyle}">
-    <div class="static-content-item" v-if="!field.options.hidden || (designState === true)" :style="{display: displayStyle}"
-         :class="[selected ? 'selected' : '', customClass]" @click.stop="selectField(field)">
+  <div
+    class="field-wrapper"
+    :class="{ 'design-time-bottom-margin': !!this.designer }"
+    :style="{ display: displayStyle }"
+  >
+    <div
+      class="static-content-item"
+      v-if="!field.options.hidden || designState === true"
+      :style="{ display: displayStyle }"
+      :class="[selected ? 'selected' : '', customClass]"
+      @click.stop="selectField(field)"
+    >
       <slot></slot>
     </div>
 
     <template v-if="!!this.designer">
       <div class="field-action" v-if="designer.selectedId === field.id">
-        <i :title="i18nt('designer.hint.selectParentWidget')" @click.stop="selectParentWidget(field)">
+        <i
+          :title="i18nt('designer.hint.selectParentWidget')"
+          @click.stop="selectParentWidget(field)"
+        >
           <svg-icon icon-class="el-back" />
         </i>
-        <i v-if="!!parentList && (parentList.length > 1)" :title="i18nt('designer.hint.moveUpWidget')"
-           @click.stop="moveUpWidget(field)"><svg-icon icon-class="el-move-up" /></i>
-        <i v-if="!!parentList && (parentList.length > 1)" :title="i18nt('designer.hint.moveDownWidget')"
-           @click.stop="moveDownWidget(field)"><svg-icon icon-class="el-move-down" /></i>
-        <i :title="i18nt('designer.hint.remove')" @click.stop="removeFieldWidget">
+        <i
+          v-if="!!parentList && parentList.length > 1"
+          :title="i18nt('designer.hint.moveUpWidget')"
+          @click.stop="moveUpWidget(field)"
+          ><svg-icon icon-class="el-move-up"
+        /></i>
+        <i
+          v-if="!!parentList && parentList.length > 1"
+          :title="i18nt('designer.hint.moveDownWidget')"
+          @click.stop="moveDownWidget(field)"
+          ><svg-icon icon-class="el-move-down"
+        /></i>
+        <i
+          :title="i18nt('designer.hint.remove')"
+          @click.stop="removeFieldWidget"
+        >
           <svg-icon icon-class="el-delete" />
         </i>
       </div>
 
-      <div class="drag-handler background-opacity" v-if="designer.selectedId === field.id">
-        <i :title="i18nt('designer.hint.dragHandler')"><svg-icon icon-class="el-drag-move" /></i>
-        <i>{{i18n2t(`designer.widgetLabel.${field.type}`, `extension.widgetLabel.${field.type}`)}}</i>
-        <i v-if="field.options.hidden === true"><svg-icon icon-class="el-hide" /></i>
+      <div
+        class="drag-handler background-opacity"
+        v-if="designer.selectedId === field.id"
+      >
+        <i :title="i18nt('designer.hint.dragHandler')"
+          ><svg-icon icon-class="el-drag-move"
+        /></i>
+        <i>{{
+          i18n2t(
+            `designer.widgetLabel.${field.type}`,
+            `extension.widgetLabel.${field.type}`
+          )
+        }}</i>
+        <i v-if="field.options.hidden === true"
+          ><svg-icon icon-class="el-hide"
+        /></i>
       </div>
     </template>
   </div>
@@ -30,12 +65,12 @@
 
 <script>
   import SvgIcon from '@/lib/vform/components/svg-icon'
-  import i18n from "@/lib/vform/utils/i18n";
+  import i18n from '@/lib/vform/utils/i18n'
 
   export default {
-    name: "static-content-wrapper",
+    name: 'StaticContentWrapper',
     mixins: [i18n],
-		inject: ['getPrefabricationFieldList'],
+    inject: ['getPrefabricationFieldList'],
     components: {
       SvgIcon
     },
@@ -56,18 +91,18 @@
         default: 'block'
       },
 
-      subFormRowIndex: { /* 子表单组件行索引，从0开始计数 */
-        type: Number,
+      subFormRowIndex: {
+        /* 子表单组件行索引，从0开始计数 */ type: Number,
         default: -1
       },
-      subFormColIndex: { /* 子表单组件列索引，从0开始计数 */
-        type: Number,
+      subFormColIndex: {
+        /* 子表单组件列索引，从0开始计数 */ type: Number,
         default: -1
       },
-      subFormRowId: { /* 子表单组件行Id，唯一id且不可变 */
-        type: String,
+      subFormRowId: {
+        /* 子表单组件行Id，唯一id且不可变 */ type: String,
         default: ''
-      },
+      }
     },
     computed: {
       selected() {
@@ -75,16 +110,16 @@
       },
 
       customClass() {
-        return !!this.field.options.customClass ? this.field.options.customClass.join(' ') : ''
-      },
-
+        return this.field.options.customClass
+          ? this.field.options.customClass.join(' ')
+          : ''
+      }
     },
     methods: {
-
       selectField(field) {
-        if (!!this.designer) {
+        if (this.designer) {
           this.designer.setSelected(field)
-          this.designer.emitEvent('field-selected', this.parentWidget)  //发送选中组件的父组件对象
+          this.designer.emitEvent('field-selected', this.parentWidget) // 发送选中组件的父组件对象
         }
       },
 
@@ -105,29 +140,31 @@
         this.designer.moveDownWidget(this.parentList, this.indexOfParentList)
         this.designer.emitHistoryChange()
       },
-			queryStr(list, keyWord) {
-			  const reg = new RegExp(keyWord) // 创建正则表达式
-			  const arr = []
-			  for (let i = 0; i < list.length; i++) {
-			    if (reg.test(list[i])) {
-			      arr.push(list[i])
-			    }
-			  }
-			  return arr
-			},
+      queryStr(list, keyWord) {
+        const reg = new RegExp(keyWord) // 创建正则表达式
+        const arr = []
+        for (let i = 0; i < list.length; i++) {
+          if (reg.test(list[i])) {
+            arr.push(list[i])
+          }
+        }
+        return arr
+      },
       removeFieldWidget() {
-				let list = this.getPrefabricationFieldList()//["contactUnit33846"]
-				if(this.queryStr(list,this.field.id).length>0){
-					this.$message.error("组件："+this.field.id+"在限制删除列表中,无法删除")
-					return false
-				} 
-        if (!!this.parentList) {
+        const list = this.getPrefabricationFieldList() // ["contactUnit33846"]
+        if (this.queryStr(list, this.field.id).length > 0) {
+          this.$message.error(
+            '组件：' + this.field.id + '在限制删除列表中,无法删除'
+          )
+          return false
+        }
+        if (this.parentList) {
           let nextSelected = null
           if (this.parentList.length === 1) {
-            if (!!this.parentWidget) {
+            if (this.parentWidget) {
               nextSelected = this.parentWidget
             }
-          } else if (this.parentList.length === (1 + this.indexOfParentList)) {
+          } else if (this.parentList.length === 1 + this.indexOfParentList) {
             nextSelected = this.parentList[this.indexOfParentList - 1]
           } else {
             nextSelected = this.parentList[this.indexOfParentList + 1]
@@ -135,21 +172,20 @@
 
           this.$nextTick(() => {
             this.parentList.splice(this.indexOfParentList, 1)
-            //if (!!nextSelected) {
+            // if (!!nextSelected) {
             this.designer.setSelected(nextSelected)
-            //}
+            // }
 
             this.designer.emitHistoryChange()
           })
         }
-      },
-
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  @import "@/lib/vform/styles/global.scss";
+  @import '@/lib/vform/styles/global.scss';
 
   .design-time-bottom-margin {
     margin-bottom: 5px;
@@ -158,7 +194,7 @@
   .field-wrapper {
     position: relative;
 
-    .field-action{
+    .field-action {
       position: absolute;
       //bottom: -24px;
       bottom: 0;
@@ -201,7 +237,8 @@
     }
   }
 
-  .field-action, .drag-handler {
+  .field-action,
+  .drag-handler {
     :deep(.svg-icon) {
       margin-left: 0.1em;
       margin-right: 0.1em;
@@ -210,15 +247,16 @@
 
   .static-content-item {
     min-height: 20px;
-    display: flex;  /* 垂直居中 */
-    align-items: center;  /* 垂直居中 */
+    display: flex; /* 垂直居中 */
+    align-items: center; /* 垂直居中 */
 
     :deep(.el-divider--horizontal) {
       margin: 0;
     }
   }
 
-  .el-form-item.selected, .static-content-item.selected {
+  .el-form-item.selected,
+  .static-content-item.selected {
     outline: 2px solid var(--jy-primary-6);
   }
 </style>
