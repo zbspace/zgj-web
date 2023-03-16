@@ -162,3 +162,24 @@ export function filterObj(obj) {
 //   const cryptRespKeyStr = myEncrypt.encrypt(data)
 //   return cryptRespKeyStr
 // }
+
+/**
+ * 数组变树
+ * @param list 原数组
+ * @param pid 从某以节点pid往下找
+ */
+export function arr2tree(list, pid = 0) {
+  const parentObj = {}
+  list.forEach(o => {
+    parentObj[o.id] = o
+  })
+  if (!pid) {
+    return list
+      .filter(o => !parentObj[o.pid])
+      .map(o => ((o.children = this.arr2tree(list, o.id)), o))
+  } else {
+    return list
+      .filter(o => o.pid === pid)
+      .map(o => ((o.children = this.arr2tree(list, o.id)), o))
+  }
+}

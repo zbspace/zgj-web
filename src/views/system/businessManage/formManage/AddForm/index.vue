@@ -46,16 +46,21 @@
                 <el-form-item label="业务类型" prop="applyTypeId">
                   <el-select
                     v-model="formData.applyTypeId"
-                    placeholder="请选择"
-                    @change="onChange"
                     style="width: 430px"
+                    @change="onChange"
                   >
-                    <el-option
-                      :label="item.applyTypeName"
-                      :value="item.applyTypeId"
-                      v-for="item in optionData"
-                      :key="item.applyTypeId"
-                    />
+                    <el-option-group
+                      v-for="group in optionData"
+                      :key="group.applyTypeName"
+                      :label="group.applyTypeName"
+                    >
+                      <el-option
+                        v-for="item in group.options"
+                        :key="item.applyTypeId"
+                        :label="item.applyTypeName"
+                        :value="item.applyTypeId"
+                      />
+                    </el-option-group>
                   </el-select>
                 </el-form-item>
 
@@ -102,6 +107,7 @@
   import layout from '@/views/system/businessManage/flowManage/layout'
   import formManageService from '@/api/system/formManagement'
   import { AddFormInfo } from '@/utils/domain/formManage'
+  import { messageError, messageSuccess } from '@/hooks/useMessage'
 
   const vformRef = ref(null)
   const formData = ref(new AddFormInfo())
@@ -163,7 +169,26 @@
   })
 
   const optionData = computed(() => {
-    return props.optionData.filter(v => v.applyTypePid)
+    const arr = []
+    props.optionData.forEach(v => {
+      if (!v.applyTypePid) {
+        arr.push({
+          applyTypeName: v.applyTypeName,
+          applyTypeId: v.applyTypeId,
+          options: []
+        })
+      }
+    })
+    props.optionData
+      .filter(v => v.applyTypePid)
+      .forEach(v => {
+        arr.forEach(x => {
+          if (v.applyTypePid === x.applyTypeId) {
+            x.options.push(v)
+          }
+        })
+      })
+    return arr
   })
 
   const prefabricationFieldList = ref([])
@@ -200,8 +225,7 @@
       // 处理选项
       disCutTabs()
     } catch (error) {
-      console.log('--->', error)
-      ElMessage.error(error)
+      messageError(error)
       state.processTabs.data[1].checked = false
       state.processTabs.data[0].checked = true
     }
@@ -239,30 +263,33 @@
 
   // 点击保存
   const clickSave = async () => {
+    if (!vformRef.value) {
+      messageError('请先完善表单设计')
+    }
+    formData.value.formInfo = JSON.stringify(vformRef.value.getFormJson())
+    const fieldWidgets = vformRef.value.getFieldWidgets()
+    const arr = mustProps.value.filter(
+      v => !fieldWidgets.map(v => v.name).includes(v)
+    )
+    if (arr.length) {
+      return messageError('请务删除必要字段，请重新加载模板进行编辑')
+    }
+    formData.value.formColumnInfos = vformRef.value.getFieldWidgets()
     try {
-      formData.value.formInfo = JSON.stringify(vformRef.value.getFormJson())
-      const fieldWidgets = await vformRef.value.getFieldWidgets()
-      const arr = mustProps.value.filter(
-        v => !fieldWidgets.map(v => v.name).includes(v)
-      )
-      if (arr.length) {
-        return ElMessage.error('请务删除必要字段，请重新加载模板进行编辑')
-      }
-      formData.value.formColumnInfos = vformRef.value.getFieldWidgets()
       if (props.columnData.formMessageId) {
         await formManageService.formEdit({
           ...formData.value,
           formMessageId: props.columnData.formMessageId
         })
-        ElMessage.success('表单修改成功')
+        messageSuccess('表单修改成功')
       } else {
         await formManageService.formAdd(formData.value)
-        ElMessage.success('表单添加成功')
+        messageSuccess('表单添加成功')
       }
       vformRef.value.setFormJson('')
       isVisible.value = false
     } catch (error) {
-      ElMessage.error(error)
+      messageError(error)
     }
   }
 
