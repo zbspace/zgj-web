@@ -331,8 +331,6 @@
                 <div class="ap-box-contBox-icon">
                   <el-icon
                     v-if="state.form.keepUserName"
-                    style="margin-right: 5px"
-                    color="#aaaaaa"
                     @click="clear('keepUser')"
                     ><CircleClose
                   /></el-icon>
@@ -481,19 +479,14 @@
 <script setup>
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { Paperclip, CircleClose } from '@element-plus/icons-vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
   import JyTable from '@/views/components/JyTable.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
+  import api from '@/api/frontDesk/sealManage/libraryOfSeals'
   import dayjs from 'dayjs'
 
   // 印章库 新增弹框
@@ -514,7 +507,10 @@
   const submitLibraryForm = type => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
-        console.log(state.form)
+        api.add(state.form).then(res => {
+          console.log(res)
+          ElMessage.success('新增成功印章成功！')
+        })
       } else {
         ElMessage.error('校验失败')
       }
@@ -1020,6 +1016,7 @@
       queryParams.value = { sealTypeIds: '' }
       state.componentsTree.data = [
         {
+          sealTypeId: 'all',
           sealTypeName: '印章类型',
           children: res.data
         }
