@@ -100,7 +100,7 @@
       </template>
     </componentsLayout>
     <!-- 新增员工 -->
-    <KDialog
+    <JyDialog
       :show="showStaffDialog"
       title="新增"
       :centerBtn="true"
@@ -331,9 +331,10 @@
           </el-col>
         </el-row>
       </el-form>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
+      v-if="showDepPerDialog"
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
       :tabsShow="state.tabsShow"
@@ -396,7 +397,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive, onBeforeMount } from 'vue'
+  import { ref, reactive, onBeforeMount, watch } from 'vue'
   import { CircleClose, Plus } from '@element-plus/icons-vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
@@ -405,7 +406,7 @@
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import UpdatePassword from './modules/updatePassword.vue'
   import UploadFace from './modules/uploadFace.vue'
@@ -887,9 +888,9 @@
     }
     if (depChoose.value === 'partTimeOrgan') {
       state.tabsShow = ['organ']
-      state.tabSelects.searchSelected = JSON.parse(
-        JSON.stringify(state.tabSelects.partTimehostOrganSelected)
-      )
+      state.tabSelects.searchSelected =
+        state.tabSelects.partTimehostOrganSelected
+      console.log(state.tabSelects.searchSelected)
     }
     if (depChoose.value === 'roles') {
       state.tabsShow = ['role']
@@ -905,7 +906,12 @@
     }
     showDepPerDialog.value = true
   }
-
+  watch(
+    () => state.tabSelects.partTimehostOrganSelected,
+    data => {
+      console.log(data)
+    }
+  )
   // 获取部门
   const submitSelectDepart = item => {
     const organIds = []
@@ -1103,7 +1109,7 @@
     formStaffRef.value.validate(valid => {
       if (valid) {
         console.log(state.componentsAddForm.formData)
-        api.formAdd().then(res => {})
+        api.formAdd(state.componentsAddForm.formData).then(res => {})
       } else {
         ElMessage.error('校验失败')
       }

@@ -82,6 +82,7 @@
                 size="large"
                 clearable
                 class="l-code-inpt"
+                @keyup.enter="login"
               >
                 <template #prefix>
                   <div class="icon">
@@ -99,6 +100,7 @@
                   size="large"
                   :type="state.showPass ? 'text' : 'password'"
                   class="l-code-inpt"
+                  @keyup.enter="login"
                 >
                   <template #prefix>
                     <div class="icon">
@@ -170,14 +172,23 @@
         />
         <div class="protocol-text">
           <span>{{ $t('t-agree-protocol') }}</span>
-          <span class="item">《 {{ $t('t-service-protocol') }} 》</span>
-          <span class="item">《{{ $t('t-privacy-policy') }}》</span>
+          <span class="item" @click.stop="previewAgreement"
+            >《 {{ $t('t-service-protocol') }} 》</span
+          >
+          <span class="item" @click.stop="previewPolicy"
+            >《{{ $t('t-privacy-policy') }}》</span
+          >
         </div>
       </div>
 
       <!-- btn -->
       <div class="l-btn">
-        <el-button type="primary" class="btn" @click="login">
+        <el-button
+          type="primary"
+          class="btn"
+          @click="login"
+          :loading="loginLoading"
+        >
           {{ $t('t-zgj-login.loginButton') }}
         </el-button>
       </div>
@@ -256,7 +267,11 @@
     }
   })
   const openVerify = ref(false)
-  const emits = defineEmits(['update:modelValue', 'update:departLists'])
+  const emits = defineEmits([
+    'update:modelValue',
+    'update:departLists',
+    'getWater'
+  ])
   const state = reactive({
     activeCodeLogin: false, // 验证码登录
     protocal: true, // 协议
@@ -277,6 +292,8 @@
     accountRulesNo: null,
     accountRulesPass: null
   })
+
+  const loginLoading = ref(false)
 
   // 监听 语言切换
   watch(
@@ -386,7 +403,7 @@
     router.replace(redirect)
   }
 
-  const loginFn = async attr => {
+  const loginFn = attr => {
     openVerify.value = true
     let params = {
       accountNo: accountLoginForm.accountNo,
@@ -402,52 +419,67 @@
       }
     }
     // 账号密码登录
-    const loginResult = await loginApi.loginByAccount(params)
-    if (loginResult.code === 210600) {
-      proxy.$refs.verify.show()
-      return
-    }
-    // 存储登录用户信息
-    accountInfo.setToken({
-      token: loginResult.data.tokenValue
-    })
-    accountInfo.setUserName('曹春青')
+    loginLoading.value = true
+    loginApi.loginByAccount(params).then(
+      loginResult => {
+        if (loginResult.code === 210600) {
+          loginLoading.value = false
+          proxy.$refs.verify.show()
+          return
+        }
+        loginLoading.value = false
+        // 存储登录用户信息
+        accountInfo.setToken({
+          token: loginResult.data.tokenValue
+        })
+        accountInfo.setUserName('曹春青')
 
-    // 记住密码
-    if (state.rememberPas) {
-      accountInfo.setAccountAndPassword({
-        accountNo: accountLoginForm.accountNo,
-        accountPass: accountLoginForm.accountPass
-      })
-    } else {
-      accountInfo.setAccountAndPassword(null)
-    }
+        // 记住密码
+        if (state.rememberPas) {
+          accountInfo.setAccountAndPassword({
+            accountNo: accountLoginForm.accountNo,
+            accountPass: accountLoginForm.accountPass
+          })
+        } else {
+          accountInfo.setAccountAndPassword(null)
+        }
 
-    // 记录上次选择企业信息
-    if (loginResult.data.lastTenantId) {
-      goHome()
-      setItem('tenantId', Number(loginResult.data.lastTenantId))
-      return
-    }
-
-    // 获取登录列表
-    const departListResult = await loginApi.tenantInfoList()
-    if (departListResult.data && departListResult.data.length === 1) {
-      // 初始化 且 一个企业
-      await loginApi.chooseOrgan(departListResult.data[0].tenantId)
-      setItem('tenantId', Number(departListResult.data[0].tenantId))
-      goHome()
-    } else {
-      // 进入列表选择页面
-      emits('update:modelValue', true)
-      emits('update:departLists', departListResult.data)
-    }
-
-    setItem('departLists', JSON.stringify(departListResult.data))
+        // 获取登录列表
+        loginApi.tenantInfoList().then(departListResult => {
+          setItem('departLists', JSON.stringify(departListResult.data))
+          const index = departListResult.data.findIndex(
+            i => Number(i.tenantId) === Number(loginResult.data.lastTenantId)
+          )
+          if (index === -1) {
+            if (departListResult.data && departListResult.data.length === 1) {
+              // 初始化 且 一个企业
+              loginApi
+                .chooseOrgan(departListResult.data[0].tenantId)
+                .then(() => {
+                  setItem('tenantId', Number(departListResult.data[0].tenantId))
+                  goHome()
+                })
+            } else {
+              // 进入列表选择页面
+              emits('update:modelValue', true)
+              emits('update:departLists', departListResult.data)
+            }
+          } else {
+            goHome()
+            setItem('tenantId', Number(loginResult.data.lastTenantId))
+          }
+          emits('getWater')
+        })
+      },
+      () => {
+        loginLoading.value = false
+      }
+    )
   }
+
   const login = () => {
     if (!state.protocal) {
-      ElMessage.warning('请选择协议')
+      ElMessage.warning('请阅读并同意服务协议和隐私政策')
       return
     }
 
@@ -462,6 +494,14 @@
         loginFn()
       }
     })
+  }
+
+  const previewAgreement = () => {
+    console.log('打开用户协议')
+  }
+
+  const previewPolicy = () => {
+    console.log('打开隐私政策')
   }
 
   const customStyle = {

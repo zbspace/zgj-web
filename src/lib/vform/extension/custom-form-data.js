@@ -2,38 +2,39 @@
 export const customFormData = {
   sealName: [
     {
-      seal: "",
-      sealId: "",
-      routineSeal: "",
+      seal: '',
+      sealId: '',
+      routineSeal: '',
       sealRequiredTextShow: false,
-      routineSealRequiredTextShow: false,
-    },
+      routineSealRequiredTextShow: false
+    }
   ],
   contactUnit: {
-    unitIds: "",
-    unitNames: "",
+    unitIds: '',
+    unitNames: ''
   },
   usesealBesides: {
     isTrue: true,
     besidesTime: [],
     Add: [],
-    detailAdd: "",
+    detailAdd: ''
   },
-  normalSealNum: "",
+  normalSealNum: '',
   remoteSeal: false,
   videoSeal: false,
   seamingSeal: false,
   sealFile: {
     fileList: [],
-    fileList1: [],
+    fileList1: []
   },
   applicantInfo: {
-    applicant: "",
-    department: '',
+    applicant: '',
+    departmentId: '',
+    departmentName: ''
   },
   limitTimeSeal: {
     timeLimit: false,
-    sealTime: [],
+    sealTime: []
   },
-  fileType:''
-};
+  fileType: ''
+}

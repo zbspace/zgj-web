@@ -7,8 +7,9 @@
     :width="props.width"
     :draggable="draggable"
     :fullscreen="handelScreen"
-    destroy-on-close
+    :destroy-on-close="destroyOnClose"
     class="jyDialog"
+    @closed="closed"
   >
     <template #header>
       <div
@@ -137,6 +138,10 @@
       type: Boolean,
       default: true
     },
+    destroyOnClose: {
+      type: Boolean,
+      default: false
+    },
     width: {
       type: Number,
       default: 800
@@ -192,6 +197,11 @@
       return
     }
 
+    emit('update:show', false)
+    emit('close')
+  }
+
+  const closed = () => {
     emit('update:show', false)
     emit('close')
   }

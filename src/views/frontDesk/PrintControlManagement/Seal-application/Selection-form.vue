@@ -105,7 +105,7 @@
       </template>
     </componentsLayout>
     <!-- 动态表单 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="选择模板"
@@ -137,14 +137,14 @@
           </div>
         </div>
       </div>
-    </KDialog>
+    </JyDialog>
   </div>
 </template>
 <script setup>
   import { ref, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   // eslint-disable-next-line no-unused-vars
   const props = defineProps({
     // 处理类型

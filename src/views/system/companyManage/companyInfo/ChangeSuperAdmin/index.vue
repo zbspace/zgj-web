@@ -64,6 +64,7 @@
                 style="width: 264px"
                 v-model="formData.adminId"
                 filterable
+                @change="changeAdmin"
               >
                 <el-option
                   v-for="item in userList"
@@ -194,9 +195,14 @@
         pageSize: 10000
       })
       .then(res => {
-        console.log(res)
         userList.value = res.data.rows
       })
+  }
+
+  const changeAdmin = e => {
+    formData.value.adminName = userList.value.find(
+      i => i.userId === e
+    ).accountNo
   }
 
   const submit = async () => {
@@ -223,8 +229,10 @@
 
   const cancel = () => {
     isVisible.value = false
-    step.value = 1
-    formData.value = new SuperAdmin()
+    setTimeout(() => {
+      step.value = 1
+      formData.value = new SuperAdmin()
+    }, 300)
   }
 
   const sendVCode = () => {

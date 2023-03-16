@@ -88,6 +88,7 @@
             style="margin-top: 0; width: 100%"
             :businessType="formData.applyTypeId"
             :prefabricationFieldList="prefabricationFieldList"
+            @on-loaded="loaded"
           />
         </template>
       </layout>
@@ -109,8 +110,8 @@
     readme: '',
     formInfo: ''
   })
-
   const formRef = ref(null)
+  const mustProps = ref([])
   const props = defineProps({
     addTitle: {
       type: String,
@@ -189,13 +190,15 @@
     ]
   }
 
-  const onChange = businessType => {}
+  const onChange = () => {
+    getFormColumnMust()
+  }
 
   // 点击切换选项
   const clickCutTabs = async (data, item) => {
     try {
       if (item.index === '2') {
-        await formRef.value.validate()
+        await formRef.value.resetFields()
       }
       data.forEach(element => {
         element.checked = false
@@ -204,9 +207,14 @@
       // 处理选项
       disCutTabs()
     } catch (error) {
+      ElMessage.error(error)
       state.processTabs.data[1].checked = false
       state.processTabs.data[0].checked = true
     }
+  }
+
+  const loaded = () => {
+    vformRef.value.initDesigner(formData.value.applyTypeId)
   }
 
   // 处理选项
@@ -233,6 +241,13 @@
   const clickSave = async () => {
     try {
       const formInfo = await vformRef.value.getFormJson()
+      const fieldWidgets = await vformRef.value.getFieldWidgets()
+      const arr = mustProps.value.filter(
+        v => !fieldWidgets.map(v => v.name).includes(v)
+      )
+      if (arr.length) {
+        return ElMessage.error('请务删除必要字段，请重新加载模板进行编辑')
+      }
       await formManageService.formAdd({
         formName: formData.value.formName,
         applyTypeId: formData.value.applyTypeId,
@@ -247,8 +262,21 @@
     }
   }
 
+  // 查询表单必有字段
+  const getFormColumnMust = async applyTypeId => {
+    try {
+      const res = await formManageService.getFormColumnMust({
+        applyTypeId: formData.value.applyTypeId
+      })
+      mustProps.value = res.data || []
+    } catch (error) {
+      ElMessage.error(error)
+    }
+  }
+
   onMounted(() => {
     disCutTabs()
+    getFormColumnMust()
   })
 </script>
 

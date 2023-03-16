@@ -58,7 +58,7 @@
       </template>
     </componentsLayout>
     <!-- 动态表单 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="新增"
@@ -76,7 +76,7 @@
         ref="vFormRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
     <!-- 印章柜详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -125,7 +125,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/editorCabinet.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'

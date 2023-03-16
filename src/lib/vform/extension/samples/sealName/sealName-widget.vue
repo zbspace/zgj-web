@@ -36,7 +36,6 @@
               >
                 <template #append>
                   <el-button
-                    slot="append"
                     icon="el-icon-search"
                     :size="field.options.size"
                     :disabled="field.options.disabled"
@@ -74,7 +73,6 @@
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <el-form-item
             label="印章次数"
-            v-if="!showSealType"
             :label-width="field.options.labelWidth"
             :class="[
               labelAlign,
@@ -82,49 +80,64 @@
               field.options.required ? 'required' : ''
             ]"
           >
-            <el-input
+            <!-- <el-input
               v-model="obj.routineSeal"
               :size="field.options.size"
               :disabled="field.options.disabled"
               :readonly="field.options.readonly"
               @change="onChanged1($event, index)"
               :clearable="field.options.clearable"
-            ></el-input>
+            ></el-input> -->
+            <el-input-number
+              v-model="obj.routineSeal"
+              :precision="0"
+              :step="1"
+              :min="1"
+              style="width: 100%"
+              @change="onChanged1($event, index)"
+            />
             <div
               class="el-form-item__error"
               v-if="obj.routineSealRequiredTextShow"
               >{{ '字段值不可为空' }}</div
             >
           </el-form-item>
-
-          <el-form-item
-            label="印章类型"
-            v-if="showSealType"
-            :label-width="field.options.labelWidth"
-            :class="[
-              labelAlign,
-              customClass,
-              field.options.required ? 'required' : ''
-            ]"
-          >
-            <el-select
-              v-model="obj.sealTypeId"
-              @focus="selectSealTypes(index)"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in sealTypes"
-                :key="item.sealTypeId"
-                :label="item.sealTypeName"
-                :value="item.sealTypeId"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
         </el-col>
       </el-row>
+      <!-- <el-col
+        :xs="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xl="12"
+        v-if="['6', '9', '8', '7', '11', '10'].indexOf(applyTypeId)"
+      >
+        <el-form-item
+          label="印章类型"
+          :label-width="field.options.labelWidth"
+          :class="[
+            labelAlign,
+            customClass,
+            field.options.required ? 'required' : ''
+          ]"
+        >
+          <el-select
+            v-model="obj.sealTypeId"
+            @focus="selectSealTypes(index)"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="item in sealTypes"
+              :key="item.sealTypeId"
+              :label="item.sealTypeName"
+              :value="item.sealTypeId"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-col> -->
 
-      <el-row :gutter="12" v-if="!showSealType">
+      <el-row :gutter="12">
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <el-form-item
             label="骑缝盖章"
@@ -195,11 +208,6 @@
         thisIndex: null,
         xzyzDialogVisible: false,
         loadingFlag: false,
-        xzyzTableData: [
-          { id: 1, f1: '印章1', f2: '张三' },
-          { id: 1, f1: '印章2', f2: '李四' },
-          { id: 1, f1: '印章3', f2: '王五' }
-        ],
         sealTypeTreeData: [],
         defaultProps: {
           children: 'children',
@@ -235,8 +243,8 @@
 
         return this.field.options.type
       },
-      showSealType() {
-        return this.field.options.showSealType
+      applyTypeId() {
+        return this.field.options.applyTypeId
       }
     },
     beforeCreate() {
@@ -250,7 +258,6 @@
       this.initFieldModel()
       this.initEventHandler()
       this.buildFieldRules()
-
       this.handleOnCreated()
     },
 
@@ -259,9 +266,9 @@
       const newRecord = {
         seal: '',
         sealId: '',
-        routineSeal: '',
+        routineSeal: 1,
         seamingSeal: false,
-        sealTypeId: [],
+        sealTypeId: '',
         sealRequiredTextShow: false,
         routineSealRequiredTextShow: false
       }
@@ -299,7 +306,7 @@
       },
 
       addItem() {
-        this.filedList.push({ seal: '', sealId: '', routineSeal: '' })
+        this.filedList.push({ seal: '', sealId: '', routineSeal: 1 })
       },
       deleteItem(idx) {
         this.filedList.splice(idx, 1)

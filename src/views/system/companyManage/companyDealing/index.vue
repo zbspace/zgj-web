@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 往来企业
+* @FileName index.vue
+* @Author Guanpf
+* @LastEditTime 2023-03-14 15:43:20
+!-->
 <template>
   <div>
     <componentsLayout Layout="title,searchForm,table,pagination,batch">
@@ -6,11 +12,19 @@
           <div>往来企业</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
+              <el-button
+                type="primary"
+                @click="
+                  () => {
+                    ;(showFormDialog = true),
+                      (state.title = '新增'),
+                      (state.column = {})
+                  }
+                "
                 >+ 增加</el-button
               >
             </div>
-            <div class="title-more-down">
+            <!-- <div class="title-more-down">
               <el-dropdown>
                 <el-button>
                   <img
@@ -27,7 +41,7 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            </div>
+            </div> -->
           </div>
         </div>
       </template>
@@ -38,6 +52,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -48,6 +63,7 @@
           <componentsBatch
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
+            @clickBatchButton="clickBatchButton"
           ></componentsBatch>
         </div>
       </template>
@@ -60,6 +76,7 @@
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
             :isSelection="true"
+            :loading="state.componentsTable.loading"
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -72,6 +89,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @size-change="sizeChange"
+          @current-change="currentChange"
         >
         </componentsPagination>
       </template>
@@ -85,13 +104,26 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 新建 -->
+    <componetsAddForm
+      :showAdd="showFormDialog"
+      :title="state.title"
+      :column="state.column"
+      @on-cancel="closeFormDialog"
+      @on-confirm="submitFromDialog"
+    >
+    </componetsAddForm>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      @confirmClick="confirmClick"
     >
       <template #header>
-        {{ state.JyElMessageBox.header.data }}
+        <div class="header-div">
+          <img :src="state.JyElMessageBox.header.icon" alt="" />
+          <span>{{ state.JyElMessageBox.header.data }}</span>
+        </div>
       </template>
       <template #content>
         {{ state.JyElMessageBox.content.data }}
@@ -101,14 +133,24 @@
 </template>
 
 <script setup>
-  import { reactive } from 'vue'
+  import { ref, reactive, onBeforeMount } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import componetsAddForm from './modules/addDealing.vue'
+  import { ElMessage } from 'element-plus'
+  import api from '@/api/system/companyManagement/companyDealing'
+  const showFormDialog = ref(false)
   const state = reactive({
+    title: '新增',
+    column: {},
+    relatedCompanyIds: [],
+    componetsAddForm: {
+      showAddDialog: false
+    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -121,7 +163,7 @@
 
       data: [
         {
-          id: 'name',
+          id: 'relatedCompanyName',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -131,7 +173,7 @@
           }
         },
         {
-          id: 'name',
+          id: 'organId',
           label: '所属部门',
           type: 'select',
           inCommonUse: true,
@@ -176,7 +218,7 @@
     componentsTable: {
       header: [
         {
-          prop: '2',
+          prop: 'relatedCompanyName',
           label: '企业名称',
           sortable: true,
           'min-width': 150,
@@ -184,32 +226,32 @@
           'show-overflow-tooltip': true
         },
         {
-          prop: '1',
+          prop: 'relatedCompanyNo',
           label: '企业编码',
           sortable: true,
           'min-width': 150
         },
 
         {
-          prop: '3',
+          prop: 'organName',
           label: '所属部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'contactName',
           label: '联系人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'contactInformation',
           label: '联系方式',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '6',
+          prop: 'readme',
           label: '备注',
           sortable: true,
           'min-width': 150,
@@ -230,56 +272,7 @@
           ]
         }
       ],
-      data: [
-        {
-          1: '001',
-          2: '复旦',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          1: '001',
-          2: '北大',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          1: '001',
-          2: '清华',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          1: '001',
-          2: '南大',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          1: '001',
-          2: '人大',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        },
-        {
-          1: '001',
-          2: '哈工大',
-          3: '厨房',
-          4: '小红',
-          5: '18017607671',
-          6: '备注'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -288,96 +281,29 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '2') {
+          if (column.property === 'relatedCompanyName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
         }
-      }
+      },
+      loading: false
     },
 
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
+        total: 0,
+        'page-sizes': [10, 50, 100],
         background: true
-      }
-    },
-
-    componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': false,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
       }
     },
     componentsDocumentsDetails: {
@@ -407,18 +333,126 @@
     JyElMessageBox: {
       show: false,
       header: {
-        data: ''
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
       },
       content: {
         data: ''
-      }
+      },
+      type: '删除'
     }
   })
+  // 筛选条件按钮
+  const clickSubmit = (item, index) => {
+    console.log(item)
+    if (item.id === 'reset') {
+      state.componentsSearchForm.data.forEach(v => {
+        delete v.value
+      })
+    }
+    getFormPage()
+  }
+  // 分页页数变化
+  const currentChange = data => {
+    console.log(data)
+    state.componentsPagination.data.index = data
+    getFormPage()
+  }
+  // 每页请求数量变化
+  const sizeChange = data => {
+    console.log(data)
+    state.componentsPagination.data.index = 1
+    state.componentsPagination.data.pageNumber = data
+    getFormPage()
+  }
+  // 获取表格列表
+  const getFormPage = () => {
+    const searchData = state.componentsSearchForm.data
+    let queryParams = ''
+    searchData.forEach(item => {
+      if (item.value) {
+        queryParams += `${item.id}=${item.value}&`
+      }
+    })
+    queryParams += `current=${
+      state.componentsPagination.data.index || 1
+    }&size=${state.componentsPagination.data.pageNumber || 10}`
+    state.componentsTable.loading = true
+    console.log(queryParams)
+    api.getRelatedCompanyList(queryParams).then(
+      res => {
+        console.log(res)
+        if (res.code === 200) {
+          state.componentsTable.data = res.data.records
+          state.componentsPagination.data.amount = res.data.total
+          state.componentsPagination.defaultAttribute.total = res.data.total
+        }
+        state.componentsTable.loading = false
+      },
+      () => {
+        state.componentsTable.loading = false
+      }
+    )
+  }
+  // 关闭新增弹窗
+  const closeFormDialog = () => {
+    showFormDialog.value = false
+  }
+  // 提交
+  const submitFromDialog = (data, type) => {
+    console.log('submitFromDialog', data, type)
+    if (data.code === 200) {
+      ElMessage.success(`${type}了一条记录！`)
+      showFormDialog.value = false
+      getFormPage()
+    }
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
-    if (column.property === '2') {
-      state.componentsDocumentsDetails.show = true
+    console.log('row', row)
+    console.log('column', column)
+    console.log('cell', cell)
+    console.log('event', event)
+    if (column.property === 'relatedCompanyName') {
+      api.detailRelatedCompany(row.relatedCompanyId).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          const baseData = [
+            {
+              label: '企业名称',
+              value: res.data.relatedCompanyName
+            },
+            {
+              label: '企业编码',
+              value: res.data.relatedCompanyNo
+            },
+            {
+              label: '企业所属部门',
+              value: res.data.organName
+            },
+            {
+              label: '联系人',
+              value: res.data.contactName
+            },
+            {
+              label: '备注：',
+              value: res.data.readme,
+              lineStyle: {
+                width: '100%'
+              }
+            }
+          ]
+
+          state.componentsDocumentsDetails.visible.forEach(item => {
+            if (item.name === 'Current-Business-Details') {
+              state.componentsDocumentsDetails.visible[0][
+                'basicInformation-data'
+              ] = baseData
+            }
+          })
+          state.componentsDocumentsDetails.show = true
+        }
+      })
     }
   }
   // 点击关闭
@@ -427,17 +461,35 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(cell.name)
+    state.relatedCompanyIds = []
+    state.relatedCompanyIds.push(column.relatedCompanyId)
     if (cell.name === '修改') {
-      // showFormDialog.value = true
+      state.title = '修改'
+      showFormDialog.value = true
+      state.column = column
     }
     if (cell.name === '删除') {
-      state.JyElMessageBox.header.data = '提示？'
-      state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
+      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
     }
   }
-
+  const confirmClick = data => {
+    console.log(data)
+    delRows(state.JyElMessageBox.header.data)
+  }
+  const delRows = delType => {
+    console.log(state.relatedCompanyIds)
+    api
+      .deleteRelatedCompany({ relatedCompanyIds: state.relatedCompanyIds })
+      .then(res => {
+        if (res.code === 200) {
+          ElMessage.success(`${delType}成功！`)
+          state.JyElMessageBox.show = false
+          getFormPage()
+        }
+      })
+  }
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
@@ -448,6 +500,31 @@
       state.componentsBatch.defaultAttribute.disabled = true
     }
   }
+  // 批量操作
+  const clickBatchButton = (item, index) => {
+    state.relatedCompanyIds = []
+    const list = state.componentsBatch.selectionData
+    console.log('list', list)
+    console.log(list[0])
+    let nameList = ''
+    const nameArr = []
+    const nameIdArr = []
+    list.forEach(el => {
+      nameArr.push(`[${el.relatedCompanyName}]`)
+      nameIdArr.push(el.relatedCompanyId)
+    })
+    state.relatedCompanyIds = nameIdArr
+    nameList = nameArr.join('、')
+    if (item.name === '批量删除') {
+      state.JyElMessageBox.header.data = '批量删除'
+      state.JyElMessageBox.content.data = `已选中往来企业：${nameList}，请问确定要批量删除吗？`
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '批量删除'
+    }
+  }
+  onBeforeMount(() => {
+    getFormPage()
+  })
 </script>
 
 <style lang="scss" scoped>

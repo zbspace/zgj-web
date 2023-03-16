@@ -13,7 +13,7 @@
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
     >
-      <template #titles>
+      <template #title>
         <div class="title">
           <div>印章类型</div>
           <div class="title-more">
@@ -26,9 +26,14 @@
           </div>
         </div>
       </template>
+      <tableItem>
+        <template #custom_ordinaryCount="scope">
+          <span>{{ scope.value }}枚</span>
+        </template>
+      </tableItem>
     </JyTable>
     <!-- 动态表单 - 印章类型新增/修改 -->
-    <KDialog
+    <JyDialog
       @update:show="showDialog = $event"
       :show="showDialog"
       :title="fromStateTitle"
@@ -56,7 +61,7 @@
           <el-input v-model="formData.readme" type="textarea" />
         </el-form-item>
       </el-form>
-    </KDialog>
+    </JyDialog>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
@@ -98,9 +103,9 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import KDialog from '@/views/components/modules/KDialog'
+  import JyDialog from '@/views/components/modules/JyDialog'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'
   // const props = defineProps({
@@ -238,7 +243,8 @@
           prop: 'intelligentCount',
           label: '智能印章',
           align: 'center',
-          customDisplayType: 'custom',
+          customDisplayType: 'format',
+          unit: '枚',
           sortable: true,
           'min-width': 150
         },
@@ -246,7 +252,8 @@
           prop: 'ordinaryCount',
           label: '普通印章',
           align: 'center',
-          customDisplayType: 'custom',
+          customDisplayType: 'format',
+          unit: '枚',
           sortable: true,
           'min-width': 150
         },
@@ -321,15 +328,13 @@
   function clickEditor(title, column) {
     fromStateTitle.value = title
     showDialog.value = true
-    vFormLibraryRef.value.resetFields()
+    nextTick(() => {
+      vFormLibraryRef.value.resetFields()
+    })
     if (title === '新增') {
       sealTypeId.value = null
-      formData.value = {
-        sealTypeNo:
-          dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11),
-        sealTypeName: '',
-        readme: ''
-      }
+      formData.value.sealTypeNo =
+        dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
     } else {
       if (column) {
         const columns = JSON.parse(JSON.stringify(column))

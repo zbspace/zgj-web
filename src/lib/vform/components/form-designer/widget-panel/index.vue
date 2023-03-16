@@ -386,7 +386,7 @@
       },
 
       loadFormTemplate(res) {
-        this.designer.loadFormJson(JSON.parse(res))
+        this.designer.loadFormJson(res)
         this.designer.emitHistoryChange()
         // if(!jsonUrl){
         // 	this.designer.loadFormJson(contactUnit)

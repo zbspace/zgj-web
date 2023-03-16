@@ -163,4 +163,13 @@ api.getFormTemplate = params => {
     params
   })
 }
+
+// 查询动态表单必有字段
+api.getFormColumnMust = params => {
+  return request({
+    method: 'GET',
+    url: '/form/column/must',
+    params
+  })
+}
 export default api

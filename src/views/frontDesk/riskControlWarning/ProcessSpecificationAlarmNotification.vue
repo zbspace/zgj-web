@@ -70,7 +70,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 动态表单 - 处理 -->
-    <KDialog
+    <JyDialog
       @update:show="fromState.show = $event"
       :show="fromState.show"
       :title="fromState.title"
@@ -89,7 +89,7 @@
         ref="vFormLibraryRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
   </div>
 </template>
 <script setup>
@@ -104,7 +104,7 @@
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import WarningOperateJson from '@/views/addDynamicFormJson/WarningOperate.json'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   const props = defineProps({
     // 处理类型
     type: {

@@ -62,7 +62,7 @@
       >
       </componentsDocumentsDetails>
     </div>
-    <KDialog
+    <JyDialog
       @update:show="state.componentsUploadFile.show = $event"
       :show="state.componentsUploadFile.show"
       title="上传文件核验"
@@ -71,7 +71,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
     >
       <fileCheckUpload :data="state.componentsUploadFile"></fileCheckUpload>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -101,7 +101,7 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { useRouter } from 'vue-router'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  import KDialog from '@/views/components/modules/KDialog.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import { UploadFilled } from '@element-plus/icons-vue'
   import fileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   const router = useRouter()

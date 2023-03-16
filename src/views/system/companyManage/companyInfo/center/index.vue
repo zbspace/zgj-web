@@ -21,7 +21,7 @@
             <div class="rows">
               <el-form-item label="单位负责人" prop="tenantPm">
                 <span class="content" v-if="!editBaseInfo">{{
-                  oldBaseInfoData.tenantPm
+                  props.tenantBaseInfo.tenantPm
                 }}</span>
                 <div v-else>
                   <el-input
@@ -35,7 +35,7 @@
             <div class="rows">
               <el-form-item label="负责人手机号" prop="tenantPmTel">
                 <span class="content" v-if="!editBaseInfo">{{
-                  oldBaseInfoData.tenantPmTel
+                  props.tenantBaseInfo.tenantPmTel
                 }}</span>
                 <div v-else>
                   <el-input
@@ -49,7 +49,7 @@
             <div class="rows">
               <el-form-item label="服务器域名" prop="domainName">
                 <span class="content" v-if="!editBaseInfo">{{
-                  oldBaseInfoData.domainName
+                  props.tenantBaseInfo.domainName
                 }}</span>
                 <div v-else>
                   <el-input
@@ -105,7 +105,7 @@
           <div class="rows">
             <el-form-item label="首次登录必须修改密码" prop="passInitModfiy">
               <span class="content color-3ED096" v-if="!editPasswordSetting">{{
-                oldPasswordData.passInitModfiy ? '是' : '否'
+                props.passwordPolicy.passInitModfiy === '1' ? '是' : '否'
               }}</span>
               <el-switch
                 v-else
@@ -117,9 +117,9 @@
           </div>
           <div class="rows">
             <el-form-item label="弱密码禁止保存" prop="passLow">
-              <span class="content color-3ED096" v-if="!editPasswordSetting"
-                >开</span
-              >
+              <span class="content color-3ED096" v-if="!editPasswordSetting">{{
+                props.passwordPolicy.passLow === '1' ? '是' : '否'
+              }}</span>
               <el-switch
                 v-else
                 active-value="1"
@@ -132,10 +132,12 @@
             <el-form-item label="密码变更提醒" prop="passRemind">
               <div v-if="!editPasswordSetting">
                 <span class="content color-3ED096">{{
-                  oldPasswordData.passRemind ? '是' : '否'
+                  props.passwordPolicy.passRemind === '1' ? '是' : '否'
                 }}</span>
-                <span class="color-black-045"
-                  >（提醒周期{{ oldPasswordData.passRemindNum }}天）</span
+                <span
+                  class="color-black-045"
+                  v-if="props.passwordPolicy.passRemind === '1'"
+                  >（提醒周期{{ props.passwordPolicy.passRemindNum }}天）</span
                 >
               </div>
               <div style="display: flex; align-items: center" v-else>
@@ -157,17 +159,25 @@
           </div>
           <div class="rows">
             <el-form-item label="密码至少包含" prop="passwordRules">
-              <div v-if="!editPasswordSetting">
+              <div
+                v-if="
+                  !editPasswordSetting &&
+                  props.passwordPolicy.passwordRules &&
+                  props.passwordPolicy.passwordRules.length
+                "
+              >
                 <template v-for="(item, index) in passwordRuleList">
                   <span
                     class="tab mr10"
                     :key="index"
-                    v-if="oldPasswordData.passwordRules.includes(item.value)"
+                    v-if="
+                      props.passwordPolicy.passwordRules.includes(item.value)
+                    "
                     >{{ item.label }}</span
                   >
                 </template>
               </div>
-              <div v-else>
+              <div v-if="editPasswordSetting">
                 <el-checkbox-group v-model="passwordData.passwordRules">
                   <el-checkbox-button
                     v-for="(item, index) in passwordRuleList"
@@ -183,7 +193,7 @@
           <div class="rows">
             <el-form-item label="限制密码长度至少为" prop="passLength">
               <span class="content tab" v-if="!editPasswordSetting">{{
-                oldPasswordData.passLength
+                props.passwordPolicy.passLength
               }}</span>
               <el-input-number
                 v-else
@@ -197,7 +207,7 @@
           <div class="rows">
             <el-form-item label="初始密码" prop="passInit">
               <span class="content tab" v-if="!editPasswordSetting">{{
-                oldPasswordData.passInit
+                props.passwordPolicy.passInit
               }}</span>
               <div v-else>
                 <el-input
@@ -227,16 +237,23 @@
   import companyInfoApi from '@/api/system/companyManagement/companyInfo'
   import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
+  const emit = defineEmits(['reloadData'])
+  const props = defineProps({
+    tenantBaseInfo: {
+      type: Object,
+      required: true
+    },
+    passwordPolicy: {
+      type: Object,
+      required: true
+    }
+  })
   const editBaseInfo = ref(false)
   const editPasswordSetting = ref(false)
   const passwordRuleFormRef = ref(null)
   const baseInfoFormRef = ref(null)
   const changeSAVisible = ref(false)
-  const oldBaseInfoData = ref({
-    tenantPm: '章管家',
-    tenantPmTel: '18888888888',
-    domainName: 'zhangin.com'
-  })
+
   const baseInfoData = ref(null)
   const validPhone = (rule, value, callback) => {
     if (!value) {
@@ -293,15 +310,6 @@
       value: 'passSpecial'
     }
   ])
-  const oldPasswordData = ref({
-    passInitModfiy: '0',
-    passLow: '0',
-    passRemind: '0',
-    passRemindNum: 0,
-    passwordRules: ['passUppercase', 'passLowercase', 'passNum'],
-    passLength: 6,
-    passInit: '666666'
-  })
   const passwordData = ref(null)
   const passwordRules = ref({
     passInitModfiy: [
@@ -365,16 +373,14 @@
   const onClickBaseInfo = type => {
     console.log(type)
     if (type === '修改') {
-      baseInfoData.value = JSON.parse(JSON.stringify(oldBaseInfoData.value))
+      baseInfoData.value = JSON.parse(JSON.stringify(props.tenantBaseInfo))
       editBaseInfo.value = true
     } else {
       baseInfoFormRef.value.validate(valid => {
         if (valid) {
           console.log(baseInfoData.value)
           companyInfoApi.updateTenantBaseInfo(baseInfoData.value).then(() => {
-            oldBaseInfoData.value = JSON.parse(
-              JSON.stringify(baseInfoData.value)
-            )
+            emit('reloadData')
             baseInfoFormRef.value.resetFields()
             editBaseInfo.value = false
             ElMessage({
@@ -402,7 +408,7 @@
   const onClickPasswordSetting = type => {
     console.log(type)
     if (type === '修改') {
-      passwordData.value = JSON.parse(JSON.stringify(oldPasswordData.value))
+      passwordData.value = JSON.parse(JSON.stringify(props.passwordPolicy))
       editPasswordSetting.value = !editPasswordSetting.value
     } else {
       passwordRuleFormRef.value.validate(valid => {
@@ -426,9 +432,7 @@
               ...rules
             })
             .then(res => {
-              oldPasswordData.value = JSON.parse(
-                JSON.stringify(passwordData.value)
-              )
+              emit('reloadData')
               passwordData.value = null
               passwordRuleFormRef.value.resetFields()
               editPasswordSetting.value = false

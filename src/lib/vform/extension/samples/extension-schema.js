@@ -11,7 +11,7 @@ export const cardSchema = {
     showFold: true,
     cardWidth: '100%',
     shadow: 'never',
-    customClass: '',
+    customClass: ''
   }
 }
 
@@ -31,7 +31,7 @@ export const alertSchema = {
     effect: 'light',
     hidden: false,
     onClose: '',
-    customClass: '',
+    customClass: ''
   }
 }
 
@@ -44,39 +44,41 @@ export const sealNameSchema = {
     name: '',
     // label: '',
     labelAlign: 'right',
-    defaultValue: [{
-      "seal": "",
-      "sealId": "",
-      "routineSeal": "",
-      "sealRequiredTextShow": false,
-      "sealTypeId": [],
-      "routineSealRequiredTextShow": false
-    }],
-    showSealType: true,
+    defaultValue: [
+      {
+        seal: '',
+        sealId: '',
+        routineSeal: '',
+        sealRequiredTextShow: false,
+        sealTypeId: [],
+        routineSealRequiredTextShow: false
+      }
+    ],
+    applyTypeId: '2', // 业务类型id 2用印申请 10销毁申请 11换章申请 3转办申请 4重置申请 6刻章申请 7变更申请 8启用申请 9停用申请
     placeholder: '',
     columnWidth: '200px',
     labelWidth: 100,
     labelHidden: false,
-		size: '',
+    size: '',
     readonly: false,
     disabled: false,
     hidden: false,
     required: true,
     clearable: true,
     requiredHint: '',
-    //-------------------
-    customClass: '',  //自定义css类名
-    //-------------------
+    // -------------------
+    customClass: '', // 自定义css类名
+    // -------------------
     onChange: '',
-		filedList:[
-			{
-				"seal": "",
-				"sealId": "",
-				"routineSeal": "",
-				"sealRequiredTextShow":false,
-				"routineSealRequiredTextShow":false,
-			}
-		]
+    filedList: [
+      {
+        seal: '',
+        sealId: '',
+        routineSeal: '',
+        sealRequiredTextShow: false,
+        routineSealRequiredTextShow: false
+      }
+    ]
   }
 }
 
@@ -97,14 +99,14 @@ export const contactUnitSchema = {
     hidden: false,
     clearable: true,
     labelHidden: true,
-		required: false,
-		requiredHint: '',
-    defaultValue: {unitIds: '', unitNames: ''},
-    //-------------------
-    customClass: '',  //自定义css类名
+    required: false,
+    requiredHint: '',
+    defaultValue: { unitIds: '', unitNames: '' },
+    // -------------------
+    customClass: '', // 自定义css类名
 
-    //-------------------
-    onChange: '',
+    // -------------------
+    onChange: ''
   }
 }
 
@@ -112,27 +114,27 @@ export const contactUnitSchema = {
 export const usesealBesidesSchema = {
   type: 'usesealBesides',
   icon: 'usesealBesides',
-	formItemFlag: true,
+  formItemFlag: true,
   options: {
     name: '',
     title: 'Good things are coming...',
     type: 'info',
-		labelAlign: 'right',
+    labelAlign: 'right',
     size: '',
     labelWidth: 100,
     readonly: false,
     disabled: false,
     hidden: false,
-		required: true,
-		requiredHint: '',
-		addTitle:"详细",
+    required: true,
+    requiredHint: '',
+    addTitle: '详细',
     onClose: '',
     customClass: '',
     defaultValue: {
       isTrue: false,
       besidesTime: [],
       Add: [],
-      detailAdd: ""
+      detailAdd: ''
     }
   }
 }
@@ -202,8 +204,8 @@ export const remoteSealSchema = {
     disabled: false,
     hidden: false,
     defaultValue: false,
-    //-------------------
-    customClass: '',  //自定义css类名
+    // -------------------
+    customClass: '', // 自定义css类名
     labelIconClass: null,
     labelIconPosition: 'rear',
     labelTooltip: null,
@@ -213,15 +215,15 @@ export const remoteSealSchema = {
     activeColor: null,
     inactiveColor: null,
     fieldLinkage: [
-      { value: "1", linkages: [] },
-      { value: "2", linkages: [] },
+      { value: '1', linkages: [] },
+      { value: '2', linkages: [] }
     ],
-    //-------------------
+    // -------------------
     onCreated: '',
     onMounted: '',
     onChange: '',
-    onValidate: '',
-  },
+    onValidate: ''
+  }
 }
 
 // 视频盖章
@@ -239,8 +241,8 @@ export const videoSealSchema = {
     disabled: false,
     hidden: false,
     defaultValue: false,
-    //-------------------
-    customClass: '',  //自定义css类名
+    // -------------------
+    customClass: '', // 自定义css类名
     labelIconClass: null,
     labelIconPosition: 'rear',
     labelTooltip: null,
@@ -250,15 +252,15 @@ export const videoSealSchema = {
     activeColor: null,
     inactiveColor: null,
     fieldLinkage: [
-      { value: "1", linkages: [] },
-      { value: "2", linkages: [] },
+      { value: '1', linkages: [] },
+      { value: '2', linkages: [] }
     ],
-    //-------------------
+    // -------------------
     onCreated: '',
     onMounted: '',
     onChange: '',
-    onValidate: '',
-  },
+    onValidate: ''
+  }
 }
 
 // 申请人信息
@@ -272,8 +274,9 @@ export const applicantInfoSchema = {
     labelAlign: 'right',
     type: 'text',
     defaultValue: {
-      applicant: "",
-      department: ''
+      applicant: '',
+      departmentName: '',
+      departmentId: ''
     },
     placeholder: '',
     columnWidth: '200px',
@@ -292,16 +295,16 @@ export const applicantInfoSchema = {
     validationHint: '',
     dsEnabled: false, // 是否使用数据源数据
     dsName: '', // 数据源名称
-    dataSetName: '',  //数据集名称
+    dataSetName: '', // 数据集名称
     labelKey: 'label',
     valueKey: 'value',
     optionItems: [
-      {label: 'select 1', value: 1},
-      {label: 'select 2', value: 2},
-      {label: 'select 3', value: 3},
+      { label: 'select 1', value: 1 },
+      { label: 'select 2', value: 2 },
+      { label: 'select 3', value: 3 }
     ],
-    //-------------------
-    customClass: '',  //自定义css类名
+    // -------------------
+    customClass: '', // 自定义css类名
     labelIconClass: null,
     labelIconPosition: 'rear',
     labelTooltip: null,
@@ -313,7 +316,7 @@ export const applicantInfoSchema = {
     appendButton: false,
     appendButtonDisabled: false,
     buttonIcon: 'custom-search',
-    //-------------------
+    // -------------------
     onCreated: '',
     onMounted: '',
     onInput: '',
@@ -321,7 +324,7 @@ export const applicantInfoSchema = {
     onFocus: '',
     onBlur: '',
     onValidate: '',
-    onAppendButtonClick: '',
+    onAppendButtonClick: ''
 
     // filedList: [
     //   {
@@ -395,16 +398,16 @@ export const limitTimeSealSchema = {
     requiredHint: '',
     validation: '',
     validationHint: '',
-    format: 'YYYY-MM-DD',  //日期显示格式
-    valueFormat: 'YYYY-MM-DD',  //日期对象格式
+    format: 'YYYY-MM-DD', // 日期显示格式
+    valueFormat: 'YYYY-MM-DD', // 日期对象格式
     labelKey: 'label',
     valueKey: 'value',
     optionItems: [
-      {label: '是', value: 1},
-      {label: '否', value: 2},
+      { label: '是', value: 1 },
+      { label: '否', value: 2 }
     ],
-    //-------------------
-    customClass: '',  //自定义css类名
+    // -------------------
+    customClass: '', // 自定义css类名
     labelIconClass: null,
     labelIconPosition: 'rear',
     labelTooltip: null,
@@ -414,18 +417,18 @@ export const limitTimeSealSchema = {
     activeColor: null,
     inactiveColor: null,
     fieldLinkage: [
-      { value: "1", linkages: [] },
-      { value: "2", linkages: [] },
+      { value: '1', linkages: [] },
+      { value: '2', linkages: [] }
     ],
-    //-------------------
+    // -------------------
     onCreated: '',
     onMounted: '',
     onChange: '',
-    onValidate: '',
-  },
+    onValidate: ''
+  }
 }
 
-// 外带用印
+// 外带用印old
 export const limitAddressSealSchema = {
   type: 'limitAddressSeal',
   icon: 'limitAddressSeal',
@@ -440,8 +443,8 @@ export const limitAddressSealSchema = {
     disabled: false,
     hidden: false,
     defaultValue: false,
-    //-------------------
-    customClass: '',  //自定义css类名
+    // -------------------
+    customClass: '', // 自定义css类名
     labelIconClass: null,
     labelIconPosition: 'rear',
     labelTooltip: null,
@@ -451,15 +454,15 @@ export const limitAddressSealSchema = {
     activeColor: null,
     inactiveColor: null,
     fieldLinkage: [
-      { value: "1", linkages: [] },
-      { value: "2", linkages: [] },
+      { value: '1', linkages: [] },
+      { value: '2', linkages: [] }
     ],
-    //-------------------
+    // -------------------
     onCreated: '',
     onMounted: '',
     onChange: '',
-    onValidate: '',
-  },
+    onValidate: ''
+  }
 }
 
 // 用印文件old
@@ -477,8 +480,8 @@ export const uploadFileSchema = {
     disabled: false,
     hidden: false,
     // defaultValue: false,
-    //-------------------
-    customClass: '',  //自定义css类名
+    // -------------------
+    customClass: '', // 自定义css类名
     labelIconClass: null,
     labelIconPosition: 'rear',
     labelTooltip: null,
@@ -488,15 +491,15 @@ export const uploadFileSchema = {
     activeColor: null,
     inactiveColor: null,
     fieldLinkage: [
-      { value: "1", linkages: [] },
-      { value: "2", linkages: [] },
+      { value: '1', linkages: [] },
+      { value: '2', linkages: [] }
     ],
-    //-------------------
+    // -------------------
     onCreated: '',
     onMounted: '',
     onChange: '',
-    onValidate: '',
-  },
+    onValidate: ''
+  }
 }
 
 // 用印文件
@@ -517,9 +520,9 @@ export const sealFileSchema = {
     requiredHint: '',
     validation: '',
     validationHint: '',
-    defaultValue: {fileList: [],fileList1: []},
-    //-------------------
-    customClass: '',  //自定义css类名
+    defaultValue: { fileList: [], fileList1: [] },
+    // -------------------
+    customClass: '', // 自定义css类名
     labelIconClass: null,
     labelIconPosition: 'rear',
     labelTooltip: null,
@@ -529,25 +532,25 @@ export const sealFileSchema = {
     activeColor: null,
     inactiveColor: null,
     fieldLinkage: [
-      { value: "1", linkages: [] },
-      { value: "2", linkages: [] },
+      { value: '1', linkages: [] },
+      { value: '2', linkages: [] }
     ],
-    //-------------------
+    // -------------------
     onCreated: '',
     onMounted: '',
     onChange: '',
-    onValidate: '',
-  },
+    onValidate: ''
+  }
 }
 
 // 文件类型
 export const fileTypeSchema = {
   type: 'fileType',
-  icon: 'fileType-field',
+  icon: 'fileType',
   formItemFlag: true,
   options: {
     name: '',
-    // label: '文件类型',
+    label: '文件类型',
     labelAlign: 'right',
     defaultValue: '',
     placeholder: '',
@@ -561,41 +564,41 @@ export const fileTypeSchema = {
     filterable: false,
     allowCreate: false,
     remote: false,
-    automaticDropdown: false,  //自动下拉
+    automaticDropdown: false, // 自动下拉
     multiple: false,
     multipleLimit: 0,
     dsEnabled: false, // 是否使用数据源数据
     dsName: '', // 数据源名称
-    dataSetName: '',  //数据集名称
+    dataSetName: '', // 数据集名称
     labelKey: 'label',
     valueKey: 'value',
     optionItems: [
-      {label: 'select 1', value: 1},
-      {label: 'select 2', value: 2},
-      {label: 'select 3', value: 3},
+      { label: 'select 1', value: 1 },
+      { label: 'select 2', value: 2 },
+      { label: 'select 3', value: 3 }
     ],
     required: true,
     requiredHint: '请选择',
     validation: '',
     validationHint: '',
-    fieldLinkage:[
-      {value:"1",linkages:[]},
-      {value:"2",linkages:[]},
+    fieldLinkage: [
+      { value: '1', linkages: [] },
+      { value: '2', linkages: [] }
     ],
-    //-------------------
-    customClass: '',  //自定义css类名
+    // -------------------
+    customClass: '', // 自定义css类名
     labelIconClass: null,
     labelIconPosition: 'rear',
     labelTooltip: null,
-    //-------------------
+    // -------------------
     onCreated: '',
     onMounted: '',
     onRemoteQuery: '',
     onChange: '',
     onFocus: '',
     onBlur: '',
-    onValidate: '',
-  },
+    onValidate: ''
+  }
 }
 
 // 代办人
@@ -614,16 +617,27 @@ export const agentManSchema = {
     hidden: false,
     clearable: true,
     labelHidden: true,
-		required: true,
-		requiredHint: '',
-    defaultValue: {unitIds: '', unitNames: ''},
-    //-------------------
-    customClass: '',  //自定义css类名
-    //-------------------
-    onChange: '',
+    required: true,
+    requiredHint: '',
+    defaultValue: { unitIds: '', unitNames: '' },
+    // -------------------
+    customClass: '', // 自定义css类名
+    // -------------------
+    onChange: ''
   }
 }
 
-
 // 所有自定义组件list
-export const customComponents = ['sealName','contactUnit','usesealBesides', 'remoteSeal','videoSeal','limitTimeSeal','uploadFile','applicantInfo', 'sealFile','fileType','agentMan' ]
+export const customComponents = [
+  'sealName',
+  'contactUnit',
+  'usesealBesides',
+  'remoteSeal',
+  'videoSeal',
+  'limitTimeSeal',
+  'uploadFile',
+  'applicantInfo',
+  'sealFile',
+  'fileType',
+  'agentMan'
+]

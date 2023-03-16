@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <div class="components-table">
     <el-table
@@ -45,6 +46,9 @@
           <div class="switch">
             <el-switch v-model="scope.row.switchValue" />
           </div>
+        </template>
+        <template #default="scope" v-if="item.customDisplayType == 'format'">
+          <span>{{ scope.row[item.prop] }} {{ item.unit }}</span>
         </template>
         <!-- 自定义内容显示 -->
         <template
