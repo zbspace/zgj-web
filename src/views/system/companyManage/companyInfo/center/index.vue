@@ -199,7 +199,7 @@
                 v-else
                 v-model="passwordData.passLength"
                 :min="1"
-                :max="32"
+                :max="18"
               />
               <span class="color-black-045">&ensp;位</span>
             </el-form-item>

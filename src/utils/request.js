@@ -18,7 +18,11 @@ const processErrorResponse = function (response) {
   // null ？
   if (response.data && response.data.code === 401) {
     message.error('登录超时，请重新登录')
-    router.replace({ name: 'LoginAccount', redircet: '' })
+    router.replace(
+      `/login/account?redirect=${encodeURIComponent(
+        router.currentRoute.value.fullPath
+      )}`
+    )
     return Promise.reject(response || response.data)
   }
   // 提示错误信息

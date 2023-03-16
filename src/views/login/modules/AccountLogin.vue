@@ -98,6 +98,7 @@
                   v-model="accountLoginForm.accountPass"
                   :placeholder="state.placeholderPassword"
                   size="large"
+                  maxlength="18"
                   :type="state.showPass ? 'text' : 'password'"
                   class="l-code-inpt"
                   @keyup.enter="login"
