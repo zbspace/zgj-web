@@ -404,6 +404,7 @@
               font-size: var(--jy-font-size-body-1);
               margin-left: 0.5rem;
               color: var(--jy-color-text-2);
+              cursor: pointer;
             }
             .shiyong {
               color: var(--jy-info-6);
