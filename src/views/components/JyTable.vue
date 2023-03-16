@@ -193,7 +193,6 @@
 
   // 设置表格表头
   function setTableHeader(headers) {
-    console.log(headers)
     state.componentsTable.headers = headers
   }
 

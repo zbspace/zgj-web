@@ -144,7 +144,12 @@
             />
           </svg>
         </div>
-        <el-popover placement="bottom-end" :width="220" :offset="5">
+        <el-popover
+          placement="bottom-end"
+          :width="220"
+          :offset="5"
+          popper-style="padding: 0"
+        >
           <template #reference>
             <div class="ap-box-right-fill shezhi">
               <svg
@@ -177,269 +182,285 @@
               </svg>
             </div>
           </template>
-          <div v-if="state.leftFixList.length">
-            <div class="dragTitle">固定在列首</div>
-            <draggable
-              v-model="state.leftFixList"
-              group="fixLeft"
-              chosenClass="chosenClass"
-              dragClass="dragClass"
-              animation="300"
-              item-key="id"
-              handle=".draggable"
-            >
-              <template #item="{ element }">
-                <div class="oneDraggable">
-                  <svg
-                    viewBox="64 64 896 896"
-                    focusable="false"
-                    data-icon="holder"
-                    width="15"
-                    height="15"
-                    fill="#c1c1c1"
-                    aria-hidden="true"
-                    style="cursor: all-scroll"
-                    class="draggable"
-                  >
-                    <path
-                      d="M300 276.5a56 56 0 1056-97 56 56 0 00-56 97zm0 284a56 56 0 1056-97 56 56 0 00-56 97zM640 228a56 56 0 10112 0 56 56 0 00-112 0zm0 284a56 56 0 10112 0 56 56 0 00-112 0zM300 844.5a56 56 0 1056-97 56 56 0 00-56 97zM640 796a56 56 0 10112 0 56 56 0 00-112 0z"
-                    ></path>
-                  </svg>
-                  <el-checkbox
-                    v-model="element.show"
-                    :label="element.label"
-                    size="large"
-                    class="customCheckbox"
-                  />
-                  <!-- 不固定 -->
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    content="不固定"
-                    placement="top-end"
-                    :show-after="1000"
-                    :offset="20"
-                  >
-                    <svg
-                      viewBox="64 64 896 896"
-                      focusable="false"
-                      data-icon="vertical-align-middle"
-                      width="15"
-                      height="12"
-                      fill="currentColor"
-                      aria-hidden="true"
-                      class="yidongIcon"
-                      @click.stop="cancelFix(element)"
-                    >
-                      <path
-                        d="M859.9 474H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zm-353.6-74.7c2.9 3.7 8.5 3.7 11.3 0l100.8-127.5c3.7-4.7.4-11.7-5.7-11.7H550V104c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v156h-62.8c-6 0-9.4 7-5.7 11.7l100.8 127.6zm11.4 225.4a7.14 7.14 0 00-11.3 0L405.6 752.3a7.23 7.23 0 005.7 11.7H474v156c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V764h62.8c6 0 9.4-7 5.7-11.7L517.7 624.7z"
-                      ></path>
-                    </svg>
-                  </el-tooltip>
-                  <!-- 固定列尾 -->
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    content="固定在列尾"
-                    placement="top-end"
-                    :show-after="1000"
-                    :offset="20"
-                  >
-                    <svg
-                      viewBox="64 64 896 896"
-                      focusable="false"
-                      data-icon="vertical-align-bottom"
-                      width="15"
-                      height="12"
-                      fill="currentColor"
-                      class="yidongIcon"
-                      aria-hidden="true"
-                      @click="clickFixRight(element)"
-                    >
-                      <path
-                        d="M859.9 780H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zM505.7 669a8 8 0 0012.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V176c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8z"
-                      ></path>
-                    </svg>
-                  </el-tooltip>
-                </div>
-              </template>
-            </draggable>
+          <div class="popoverTitle">
+            <el-checkbox
+              v-model="checkAll"
+              :indeterminate="indeterminate"
+              label="列展示"
+              size="large"
+              class="customCheckbox"
+              @change="changeAllCheckBox"
+            />
+            <div class="reset" @click.stop="reset">重置</div>
           </div>
-          <div v-if="state.noFixList.length">
-            <div class="dragTitle">不固定</div>
-            <draggable
-              v-model="state.noFixList"
-              group="notFix"
-              chosenClass="chosenClass"
-              dragClass="dragClass"
-              animation="300"
-              item-key="id"
-              handle=".draggable"
-            >
-              <template #item="{ element }">
-                <div class="oneDraggable">
-                  <svg
-                    viewBox="64 64 896 896"
-                    focusable="false"
-                    data-icon="holder"
-                    width="15"
-                    height="15"
-                    fill="#c1c1c1"
-                    aria-hidden="true"
-                    style="cursor: all-scroll"
-                    class="draggable"
-                  >
-                    <path
-                      d="M300 276.5a56 56 0 1056-97 56 56 0 00-56 97zm0 284a56 56 0 1056-97 56 56 0 00-56 97zM640 228a56 56 0 10112 0 56 56 0 00-112 0zm0 284a56 56 0 10112 0 56 56 0 00-112 0zM300 844.5a56 56 0 1056-97 56 56 0 00-56 97zM640 796a56 56 0 10112 0 56 56 0 00-112 0z"
-                    ></path>
-                  </svg>
-                  <el-checkbox
-                    v-model="element.show"
-                    :label="element.label"
-                    size="large"
-                    class="customCheckbox"
-                  />
-                  <!-- 固定列首 -->
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    content="固定在列首"
-                    placement="top-end"
-                    :show-after="1000"
-                    :offset="20"
-                  >
+          <div class="popoverBottom">
+            <div v-if="state.leftFixList.length">
+              <div class="dragTitle">固定在列首</div>
+              <draggable
+                v-model="state.leftFixList"
+                group="fixLeft"
+                chosenClass="chosenClass"
+                dragClass="dragClass"
+                animation="300"
+                item-key="id"
+                handle=".draggable"
+              >
+                <template #item="{ element }">
+                  <div class="oneDraggable">
                     <svg
                       viewBox="64 64 896 896"
                       focusable="false"
-                      data-icon="vertical-align-top"
+                      data-icon="holder"
                       width="15"
-                      height="12"
-                      fill="currentColor"
+                      height="15"
+                      fill="#c1c1c1"
                       aria-hidden="true"
-                      class="yidongIcon"
-                      @click="clickFixLeft(element)"
+                      style="cursor: all-scroll"
+                      class="draggable"
                     >
                       <path
-                        d="M859.9 168H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zM518.3 355a8 8 0 00-12.6 0l-112 141.7a7.98 7.98 0 006.3 12.9h73.9V848c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V509.7H624c6.7 0 10.4-7.7 6.3-12.9L518.3 355z"
+                        d="M300 276.5a56 56 0 1056-97 56 56 0 00-56 97zm0 284a56 56 0 1056-97 56 56 0 00-56 97zM640 228a56 56 0 10112 0 56 56 0 00-112 0zm0 284a56 56 0 10112 0 56 56 0 00-112 0zM300 844.5a56 56 0 1056-97 56 56 0 00-56 97zM640 796a56 56 0 10112 0 56 56 0 00-112 0z"
                       ></path>
                     </svg>
-                  </el-tooltip>
-                  <!-- 固定列尾 -->
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    content="固定在列尾"
-                    placement="top-end"
-                    :show-after="1000"
-                    :offset="20"
-                  >
+                    <el-checkbox
+                      v-model="element.show"
+                      :label="element.label"
+                      size="large"
+                      class="customCheckbox"
+                      @change="changeCheckBox"
+                    />
+                    <!-- 不固定 -->
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="不固定"
+                      placement="top-end"
+                      :show-after="1000"
+                      :offset="20"
+                    >
+                      <svg
+                        viewBox="64 64 896 896"
+                        focusable="false"
+                        data-icon="vertical-align-middle"
+                        width="15"
+                        height="12"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        class="yidongIcon"
+                        @click.stop="cancelFix(element)"
+                      >
+                        <path
+                          d="M859.9 474H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zm-353.6-74.7c2.9 3.7 8.5 3.7 11.3 0l100.8-127.5c3.7-4.7.4-11.7-5.7-11.7H550V104c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v156h-62.8c-6 0-9.4 7-5.7 11.7l100.8 127.6zm11.4 225.4a7.14 7.14 0 00-11.3 0L405.6 752.3a7.23 7.23 0 005.7 11.7H474v156c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V764h62.8c6 0 9.4-7 5.7-11.7L517.7 624.7z"
+                        ></path>
+                      </svg>
+                    </el-tooltip>
+                    <!-- 固定列尾 -->
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="固定在列尾"
+                      placement="top-end"
+                      :show-after="1000"
+                      :offset="20"
+                    >
+                      <svg
+                        viewBox="64 64 896 896"
+                        focusable="false"
+                        data-icon="vertical-align-bottom"
+                        width="15"
+                        height="12"
+                        fill="currentColor"
+                        class="yidongIcon"
+                        aria-hidden="true"
+                        @click="clickFixRight(element)"
+                      >
+                        <path
+                          d="M859.9 780H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zM505.7 669a8 8 0 0012.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V176c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8z"
+                        ></path>
+                      </svg>
+                    </el-tooltip>
+                  </div>
+                </template>
+              </draggable>
+            </div>
+            <div v-if="state.noFixList.length">
+              <div class="dragTitle">不固定</div>
+              <draggable
+                v-model="state.noFixList"
+                group="notFix"
+                chosenClass="chosenClass"
+                dragClass="dragClass"
+                animation="300"
+                item-key="id"
+                handle=".draggable"
+              >
+                <template #item="{ element }">
+                  <div class="oneDraggable">
                     <svg
                       viewBox="64 64 896 896"
                       focusable="false"
-                      data-icon="vertical-align-bottom"
+                      data-icon="holder"
                       width="15"
-                      height="12"
-                      fill="currentColor"
-                      class="yidongIcon"
+                      height="15"
+                      fill="#c1c1c1"
                       aria-hidden="true"
-                      @click="clickFixRight(element)"
+                      style="cursor: all-scroll"
+                      class="draggable"
                     >
                       <path
-                        d="M859.9 780H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zM505.7 669a8 8 0 0012.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V176c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8z"
+                        d="M300 276.5a56 56 0 1056-97 56 56 0 00-56 97zm0 284a56 56 0 1056-97 56 56 0 00-56 97zM640 228a56 56 0 10112 0 56 56 0 00-112 0zm0 284a56 56 0 10112 0 56 56 0 00-112 0zM300 844.5a56 56 0 1056-97 56 56 0 00-56 97zM640 796a56 56 0 10112 0 56 56 0 00-112 0z"
                       ></path>
                     </svg>
-                  </el-tooltip>
-                </div>
-              </template>
-            </draggable>
-          </div>
-          <div v-if="state.rightFixList.length">
-            <div class="dragTitle">固定到列尾</div>
-            <draggable
-              v-model="state.rightFixList"
-              group="rightFix"
-              chosenClass="chosenClass"
-              dragClass="dragClass"
-              animation="300"
-              item-key="id"
-              handle=".draggable"
-            >
-              <template #item="{ element }">
-                <div class="oneDraggable">
-                  <svg
-                    viewBox="64 64 896 896"
-                    focusable="false"
-                    data-icon="holder"
-                    width="15"
-                    height="15"
-                    fill="#c1c1c1"
-                    aria-hidden="true"
-                    style="cursor: all-scroll"
-                    class="draggable"
-                  >
-                    <path
-                      d="M300 276.5a56 56 0 1056-97 56 56 0 00-56 97zm0 284a56 56 0 1056-97 56 56 0 00-56 97zM640 228a56 56 0 10112 0 56 56 0 00-112 0zm0 284a56 56 0 10112 0 56 56 0 00-112 0zM300 844.5a56 56 0 1056-97 56 56 0 00-56 97zM640 796a56 56 0 10112 0 56 56 0 00-112 0z"
-                    ></path>
-                  </svg>
-                  <el-checkbox
-                    v-model="element.show"
-                    :label="element.label"
-                    size="large"
-                    class="customCheckbox"
-                  />
-                  <!-- 不固定 -->
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    content="不固定"
-                    placement="top-end"
-                    :show-after="1000"
-                    :offset="20"
-                  >
+                    <el-checkbox
+                      v-model="element.show"
+                      :label="element.label"
+                      size="large"
+                      class="customCheckbox"
+                      @change="changeCheckBox"
+                    />
+                    <!-- 固定列首 -->
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="固定在列首"
+                      placement="top-end"
+                      :show-after="1000"
+                      :offset="20"
+                    >
+                      <svg
+                        viewBox="64 64 896 896"
+                        focusable="false"
+                        data-icon="vertical-align-top"
+                        width="15"
+                        height="12"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        class="yidongIcon"
+                        @click="clickFixLeft(element)"
+                      >
+                        <path
+                          d="M859.9 168H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zM518.3 355a8 8 0 00-12.6 0l-112 141.7a7.98 7.98 0 006.3 12.9h73.9V848c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V509.7H624c6.7 0 10.4-7.7 6.3-12.9L518.3 355z"
+                        ></path>
+                      </svg>
+                    </el-tooltip>
+                    <!-- 固定列尾 -->
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="固定在列尾"
+                      placement="top-end"
+                      :show-after="1000"
+                      :offset="20"
+                    >
+                      <svg
+                        viewBox="64 64 896 896"
+                        focusable="false"
+                        data-icon="vertical-align-bottom"
+                        width="15"
+                        height="12"
+                        fill="currentColor"
+                        class="yidongIcon"
+                        aria-hidden="true"
+                        @click="clickFixRight(element)"
+                      >
+                        <path
+                          d="M859.9 780H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zM505.7 669a8 8 0 0012.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V176c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8z"
+                        ></path>
+                      </svg>
+                    </el-tooltip>
+                  </div>
+                </template>
+              </draggable>
+            </div>
+            <div v-if="state.rightFixList.length">
+              <div class="dragTitle">固定到列尾</div>
+              <draggable
+                v-model="state.rightFixList"
+                group="rightFix"
+                chosenClass="chosenClass"
+                dragClass="dragClass"
+                animation="300"
+                item-key="id"
+                handle=".draggable"
+              >
+                <template #item="{ element }">
+                  <div class="oneDraggable">
                     <svg
                       viewBox="64 64 896 896"
                       focusable="false"
-                      data-icon="vertical-align-middle"
+                      data-icon="holder"
                       width="15"
-                      height="12"
-                      fill="currentColor"
+                      height="15"
+                      fill="#c1c1c1"
                       aria-hidden="true"
-                      class="yidongIcon"
-                      @click.stop="cancelFix(element)"
+                      style="cursor: all-scroll"
+                      class="draggable"
                     >
                       <path
-                        d="M859.9 474H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zm-353.6-74.7c2.9 3.7 8.5 3.7 11.3 0l100.8-127.5c3.7-4.7.4-11.7-5.7-11.7H550V104c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v156h-62.8c-6 0-9.4 7-5.7 11.7l100.8 127.6zm11.4 225.4a7.14 7.14 0 00-11.3 0L405.6 752.3a7.23 7.23 0 005.7 11.7H474v156c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V764h62.8c6 0 9.4-7 5.7-11.7L517.7 624.7z"
+                        d="M300 276.5a56 56 0 1056-97 56 56 0 00-56 97zm0 284a56 56 0 1056-97 56 56 0 00-56 97zM640 228a56 56 0 10112 0 56 56 0 00-112 0zm0 284a56 56 0 10112 0 56 56 0 00-112 0zM300 844.5a56 56 0 1056-97 56 56 0 00-56 97zM640 796a56 56 0 10112 0 56 56 0 00-112 0z"
                       ></path>
                     </svg>
-                  </el-tooltip>
-                  <!-- 固定列首 -->
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    content="固定在列首"
-                    placement="top-end"
-                    :show-after="1000"
-                    :offset="20"
-                  >
-                    <svg
-                      viewBox="64 64 896 896"
-                      focusable="false"
-                      data-icon="vertical-align-top"
-                      width="15"
-                      height="12"
-                      fill="currentColor"
-                      aria-hidden="true"
-                      class="yidongIcon"
-                      @click="clickFixLeft(element)"
+                    <el-checkbox
+                      v-model="element.show"
+                      :label="element.label"
+                      size="large"
+                      class="customCheckbox"
+                      @change="changeCheckBox"
+                    />
+                    <!-- 不固定 -->
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="不固定"
+                      placement="top-end"
+                      :show-after="1000"
+                      :offset="20"
                     >
-                      <path
-                        d="M859.9 168H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zM518.3 355a8 8 0 00-12.6 0l-112 141.7a7.98 7.98 0 006.3 12.9h73.9V848c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V509.7H624c6.7 0 10.4-7.7 6.3-12.9L518.3 355z"
-                      ></path>
-                    </svg>
-                  </el-tooltip>
-                </div>
-              </template>
-            </draggable>
+                      <svg
+                        viewBox="64 64 896 896"
+                        focusable="false"
+                        data-icon="vertical-align-middle"
+                        width="15"
+                        height="12"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        class="yidongIcon"
+                        @click.stop="cancelFix(element)"
+                      >
+                        <path
+                          d="M859.9 474H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zm-353.6-74.7c2.9 3.7 8.5 3.7 11.3 0l100.8-127.5c3.7-4.7.4-11.7-5.7-11.7H550V104c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v156h-62.8c-6 0-9.4 7-5.7 11.7l100.8 127.6zm11.4 225.4a7.14 7.14 0 00-11.3 0L405.6 752.3a7.23 7.23 0 005.7 11.7H474v156c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V764h62.8c6 0 9.4-7 5.7-11.7L517.7 624.7z"
+                        ></path>
+                      </svg>
+                    </el-tooltip>
+                    <!-- 固定列首 -->
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="固定在列首"
+                      placement="top-end"
+                      :show-after="1000"
+                      :offset="20"
+                    >
+                      <svg
+                        viewBox="64 64 896 896"
+                        focusable="false"
+                        data-icon="vertical-align-top"
+                        width="15"
+                        height="12"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        class="yidongIcon"
+                        @click="clickFixLeft(element)"
+                      >
+                        <path
+                          d="M859.9 168H164.1c-4.5 0-8.1 3.6-8.1 8v60c0 4.4 3.6 8 8.1 8h695.8c4.5 0 8.1-3.6 8.1-8v-60c0-4.4-3.6-8-8.1-8zM518.3 355a8 8 0 00-12.6 0l-112 141.7a7.98 7.98 0 006.3 12.9h73.9V848c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V509.7H624c6.7 0 10.4-7.7 6.3-12.9L518.3 355z"
+                        ></path>
+                      </svg>
+                    </el-tooltip>
+                  </div>
+                </template>
+              </draggable>
+            </div>
           </div>
         </el-popover>
       </div>
@@ -447,7 +468,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted, watch } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted, watch } from 'vue'
   import draggable from 'vuedraggable'
 
   const props = defineProps({
@@ -483,11 +504,13 @@
       }
     }
   })
+
   const emit = defineEmits([
     'clickBatchButton',
     'fullScreenButton',
     'setTableHeader'
   ])
+
   const state = reactive({
     props: {
       data: []
@@ -497,7 +520,9 @@
     noFixList: [],
     rightFixList: []
   })
-  // console.log(props.data);
+
+  const checkAll = ref(false)
+  const indeterminate = ref(false)
 
   // 初始化数据
   function initData() {
@@ -556,7 +581,44 @@
     emit('setTableHeader', state.tableHeader)
   }
 
-  watch(props, (newValue, oldValue) => {
+  // 操作是否显示
+  function changeCheckBox() {
+    state.tableHeader = state.leftFixList
+      .concat(state.noFixList)
+      .concat(state.rightFixList)
+    initTopCheckBox()
+    emit('setTableHeader', state.tableHeader)
+  }
+
+  function changeAllCheckBox() {
+    if (checkAll.value) {
+      state.tableHeader.forEach(i => (i.show = true))
+    } else {
+      state.tableHeader.forEach(i => (i.show = false))
+    }
+    emit('setTableHeader', state.tableHeader)
+    initHeaderData()
+  }
+
+  function initTopCheckBox() {
+    console.log(
+      state.tableHeader.filter(i => i.show).length === state.tableHeader.length
+    )
+    checkAll.value =
+      state.tableHeader.filter(i => i.show).length === state.tableHeader.length
+    indeterminate.value =
+      state.tableHeader.filter(i => i.show).length &&
+      state.tableHeader.filter(i => i.show).length !== state.tableHeader.length
+  }
+
+  function reset() {
+    state.tableHeader = JSON.parse(JSON.stringify(props.tableHeader))
+    initHeaderData()
+    initTopCheckBox()
+    emit('setTableHeader', state.tableHeader)
+  }
+
+  watch(props, () => {
     // 初始化数据
     initData()
   })
@@ -566,6 +628,7 @@
     initData()
     state.tableHeader = JSON.parse(JSON.stringify(props.tableHeader))
     initHeaderData()
+    initTopCheckBox()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -670,6 +733,23 @@
   }
 </style>
 <style lang="scss">
+  .popoverTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 0 15px;
+
+    .reset {
+      cursor: pointer;
+      color: var(--el-color-primary);
+    }
+  }
+
+  .popoverBottom {
+    padding: 5px 15px 15px;
+  }
+
   .oneDraggable {
     height: 30px;
     display: flex;
