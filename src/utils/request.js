@@ -2,9 +2,9 @@
  * axios 实例
  */
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
 import { API_BASE_PREFIX, TOKEN_HEADER_NAME } from './constants.js'
 import { useAccountInfoStore } from '@/store/accountInfo'
+import { message } from '@/utils/restMessage'
 import router from '@/router/index'
 const service = axios.create({
   baseURL: API_BASE_PREFIX,
@@ -17,12 +17,12 @@ const service = axios.create({
 const processErrorResponse = function (response) {
   // null ？
   if (response.data && response.data.code === 401) {
-    ElMessage.error('登录超时，请重新登录')
+    message.error('登录超时，请重新登录')
     router.replace({ name: 'LoginAccount', redircet: '' })
     return Promise.reject(response || response.data)
   }
   // 提示错误信息
-  ElMessage.error(
+  message.error(
     response
       ? response.data.msg || response.data.message || '服务器打盹了，请稍后再试'
       : '服务器打盹了，请稍后再试'
