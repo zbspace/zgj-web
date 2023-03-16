@@ -40,19 +40,20 @@
             status-icon
           >
             <el-form-item label="业务类型" prop="applyTypeId" required>
-              <el-tree-select
-                clearable
-                v-model="form.applyTypeId"
-                :data="props.businessList"
-                :render-after-expand="false"
-                highlight-current
-                accordion
-                node-key="applyTypeId"
-                :props="{
-                  label: 'applyTypeName',
-                  children: 'children'
-                }"
-              />
+              <el-select v-model="form.applyTypeId">
+                <el-option-group
+                  v-for="group in props.businessList"
+                  :key="group.applyTypeName"
+                  :label="group.applyTypeName"
+                >
+                  <el-option
+                    v-for="item in group.children"
+                    :key="item.applyTypeId"
+                    :label="item.applyTypeName"
+                    :value="item.applyTypeId"
+                  />
+                </el-option-group>
+              </el-select>
             </el-form-item>
 
             <el-form-item
@@ -568,5 +569,8 @@
         width: 100%;
       }
     }
+  }
+  .el-form-item {
+    margin-bottom: 24px !important;
   }
 </style>
