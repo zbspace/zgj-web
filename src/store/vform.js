@@ -7,16 +7,12 @@ export const useVformInfoStore = defineStore({
   id: 'vformInfo',
   state: () => {
     return {
-      businessType: '', // 业务类型(用印申请、印章申请)
       forbidRemove: [], // 禁止删除的控件标识
       fileTypeList: [] // 文件类型list
     }
   },
   getters: {},
   actions: {
-    setBusinessType(value) {
-      this.businessType = value
-    },
     setForbidRemove(value) {
       this.forbidRemove = value
     },

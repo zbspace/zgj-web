@@ -147,7 +147,6 @@
           :formJson="formJson"
           :formData="state.SealformData"
           :optionData="state.SealoptionData"
-          :businessType="form.applyTypeId"
           ref="refFillFormInformation"
         />
       </div>
@@ -215,7 +214,6 @@
   const form = reactive({
     ProcessName: '',
     ProcessType: false,
-    businessType: '',
     fileType: '',
     rangeApplication: '',
     applyTypeId: '',

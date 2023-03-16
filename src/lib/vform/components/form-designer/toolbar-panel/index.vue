@@ -1146,6 +1146,10 @@
 </script>
 
 <style lang="scss" scoped>
+  .toolbar-container {
+    display: flex;
+    align-items: center;
+  }
   .toolbar-container:after {
     display: block;
     content: '';
