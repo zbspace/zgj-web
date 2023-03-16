@@ -362,6 +362,64 @@
       :searchSelected="state.searchSelected"
     >
     </kDepartOrPersonVue>
+    <!-- 弹窗提示 -->
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.JyElMessageBox.header.icon" alt="" />
+          <span>{{ state.JyElMessageBox.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.JyElMessageBox.content.data }}</div>
+      </template>
+      <template #footer>
+        <el-button
+          type="primary"
+          @click="submitElMessageBox(state.JyElMessageBox.type)"
+        >
+          提交
+        </el-button>
+        <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
+      </template>
+    </JyElMessageBox>
+    <!-- 批量操作弹框提示 -->
+    <JyElMessageBox
+      v-model="state.showToastDialog.show"
+      :show="state.showToastDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.showToastDialog.header.icon" alt="" />
+          <span>{{ state.showToastDialog.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <p
+            v-for="item in state.componentsBatch.selectionData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{ item.formName }}</p
+          >
+        </el-scrollbar>
+      </template>
+      <template #footer>
+        <el-button
+          v-for="item in state.componentsBatch.butDatas"
+          :key="item.name"
+          :type="item.type"
+          @click="item.clickName"
+          >{{ item.name }}</el-button
+        >
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -441,6 +499,7 @@
   }
   // const emit = defineEmits([])
   const state = reactive({
+    sealIds: '',
     msg: '',
     tabsShow: ['organ'],
     searchSelected: [],
@@ -468,6 +527,27 @@
       bylawsUrl: '',
       sealExplain: '',
       stampAttachments: ''
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '删除'
+    },
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
     },
     rules: {
       sealName: [
@@ -828,6 +908,7 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(column)
+    state.sealIds = column.id
     if (cell.name === '修改') {
       state.title = '修改'
       showLibraryDialog.value = true
@@ -835,7 +916,65 @@
     if (cell.name === '设置维护范围' || cell.name === '设置可用范围') {
       showDepPerDialog.value = true
     }
+    if (cell.name === '删除') {
+      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.content.data = '请问确定要删除吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '删除'
+    }
+    if (cell.name === '停用') {
+      state.JyElMessageBox.header.data = '停用'
+      state.JyElMessageBox.content.data = '请问确定停用该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '停用'
+    }
+    if (cell.name === '启用') {
+      state.JyElMessageBox.header.data = '启用'
+      state.JyElMessageBox.content.data = '请问确定启用该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '启用'
+    }
+    if (cell.name === '销毁') {
+      state.JyElMessageBox.header.data = '销毁'
+      state.JyElMessageBox.content.data = '请问确定销毁该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '销毁'
+    }
   }
+  const clickBatchButton = (item, datas) => {
+    console.log(item)
+    const idList = []
+    datas.forEach(element => {
+      idList.push(element.sealId)
+    })
+    state.sealIds = idList.join(',')
+  }
+  // 提交弹窗
+  const submitElMessageBox = type => {
+    state.JyElMessageBox.show = false
+    if (type === '删除') {
+      apiOpt(type, api.sealInfoDelete(type, { ids: state.sealId }))
+    }
+    if (type === '停用') {
+      apiOpt(type, api.sealInfoDisable(type, { ids: state.sealId }))
+    }
+    if (type === '启用') {
+      apiOpt(type, api.sealInfoEnable(type, { ids: state.sealId }))
+    }
+    if (type === '销毁') {
+      apiOpt(type, api.sealInfoDestroy(type, { ids: state.sealId }))
+    }
+  }
+  const apiOpt = (typeName, apiName) => {
+    apiName.then(res => {
+      if (res.code === 200) {
+        ElMessage.success(`${typeName}成功！`)
+      } else {
+        ElMessage.success(`${typeName}失败，请重试`)
+      }
+    })
+  }
+  // 获取印章类型
   const typeList = () => {
     typeApis.list({ searchKey: '' }).then(res => {
       state.typeList = res.data
