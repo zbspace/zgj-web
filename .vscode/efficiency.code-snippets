@@ -25,11 +25,11 @@
     "scope": "javascript",
     "prefix": "trymsg",
     "body": [
-      "import { ElMessage } from 'element-plus'",
+      "import { messageError } from '@/hooks/useMessage'",
       "try {",
       "\t$1",
       "} catch (error) {",
-      "\tElMessage(error);",
+      "\tmessageError(error);",
       "}"
     ],
     "description": "捕获错误并弹窗提示"

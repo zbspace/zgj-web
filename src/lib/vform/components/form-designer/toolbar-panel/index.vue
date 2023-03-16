@@ -145,7 +145,7 @@
         :close-on-press-escape="false"
         center
         :destroy-on-close="true"
-        :append-to-body="false"
+        append-to-body
         class="drag-dialog small-padding-dialog"
         width="75%"
         :fullscreen="layoutType === 'H5' || layoutType === 'Pad'"
