@@ -368,15 +368,12 @@
   // 获取表格列表
   const getFormPage = () => {
     const searchData = state.componentsSearchForm.data
-    let queryParams = ''
+    const queryParams = {}
     searchData.forEach(item => {
-      if (item.value) {
-        queryParams += `${item.id}=${item.value}&`
-      }
+      queryParams[item.id] = item.value
     })
-    queryParams += `current=${
-      state.componentsPagination.data.index || 1
-    }&size=${state.componentsPagination.data.pageNumber || 10}`
+    queryParams.pageNo = state.componentsPagination.index || 1
+    queryParams.pageSize = state.componentsPagination.pageNumber || 10
     state.componentsTable.loading = true
     console.log(queryParams)
     api.getRelatedCompanyList(queryParams).then(

@@ -1,7 +1,7 @@
 <!-- 印章库 -->
 <template>
   <div class="PrintControlManagement-LibraryOfSeals">
-    <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
+    <!-- <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
       <template #title>
         <div class="title">
           印章库
@@ -22,7 +22,6 @@
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <!-- <el-dropdown-item>印章解绑</el-dropdown-item> -->
                     <el-dropdown-item>导入</el-dropdown-item>
                     <el-dropdown-item>导出台账</el-dropdown-item>
                     <el-dropdown-item>查看已删除的印章</el-dropdown-item>
@@ -99,7 +98,49 @@
         >
         </componentsPagination>
       </template>
-    </componentsLayout>
+    </componentsLayout> -->
+    <JyTable
+      url="/sealInfo/page"
+      ref="table"
+      :hasTree="true"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      :queryParams="queryParams"
+      tableClick="sealName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
+      <template #title>
+        <div class="title">
+          <div>印章库</div>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="add">+ 增加</el-button>
+            </div>
+            <div class="title-more-down"> </div>
+          </div>
+        </div>
+      </template>
+      <template #tree>
+        <div>
+          <componentsTree
+            :data="state.componentsTree.data"
+            :defaultAttribute="state.componentsTree.defaultAttribute"
+            :defaultProps="state.componentsTree.defaultProps"
+            @current-change="currentChange"
+            @node-click="clickTreeNode"
+          >
+          </componentsTree>
+        </div>
+      </template>
+      <tableItem>
+        <template #custom_ordinaryCount="scope">
+          <span>{{ scope.value }}枚</span>
+        </template>
+      </tableItem>
+    </JyTable>
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -120,7 +161,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
-      @close="submitLibraryForm"
+      @confirm="submitLibraryForm"
     >
       <!-- <JyVform
         ref="vFormLibraryRef"
@@ -193,7 +234,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('subOrgan')"
+                    @click="chooseOrgan('subOrgan', ['organ'])"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -228,7 +269,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('manageUser')"
+                    @click="chooseOrgan('manageUser', ['user'])"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -261,7 +302,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('manageOrgan')"
+                    @click="chooseOrgan('manageOrgan', ['organ'])"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -277,13 +318,13 @@
               <div class="select-box-contBox">
                 <el-input
                   class="ap-box-contBox-input width-100"
-                  type="hidden"
-                  v-model="state.form.keepOrganName"
+                  readonly
+                  v-model="state.form.keepUserName"
                   placeholder="请选择"
                 />
                 <el-input
                   class="ap-box-contBox-input width-100"
-                  readonly
+                  type="hidden"
                   v-model="state.form.keepUserId"
                   placeholder="请选择"
                 />
@@ -296,7 +337,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('keepUser')"
+                    @click="chooseOrgan('keepUser', ['user'])"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -329,7 +370,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('keepOrgan')"
+                    @click="chooseOrgan('keepOrgan', ['organ'])"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                   />
@@ -449,31 +490,28 @@
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
+  import JyTable from '@/views/components/JyTable.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
-  import libraryApis from '@/api/frontDesk/sealManage/libraryOfSeals'
   import dayjs from 'dayjs'
 
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
-  const loading = ref(false)
   const vFormLibraryRef = ref(null)
   const depChoose = ref(null)
-  const orderBy = ref(null)
   const table = ref(null)
-
+  const queryParams = ref({})
   const add = () => {
     state.title = '新增'
-    vFormLibraryRef.value.resetFields()
+    if (vFormLibraryRef.value) {
+      vFormLibraryRef.value.resetFields()
+    }
     state.form.sealNo =
       dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
     showLibraryDialog.value = true
   }
   const submitLibraryForm = type => {
-    if (!type) {
-      return
-    }
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         console.log(state.form)
@@ -484,8 +522,11 @@
   }
   const showDepPerDialog = ref(false)
   const submitSelectDepart = data => {
-    state.form[depChoose.value + 'Id'] = data[0].id
-    state.form[depChoose.value + 'Name'] = data[0].name
+    if (data) {
+      state.form[depChoose.value + 'Id'] = data[0].id
+      state.form[depChoose.value + 'Name'] = data[0].name
+    }
+
     // if (depChoose.value === 'subOrgan') {
     //   state.form.subOrganName = data[0].name
     //   state.form.subOrganId = data[0].id
@@ -972,78 +1013,36 @@
       showDepPerDialog.value = true
     }
   }
-
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
-  }
-
-  // 自定义排序
-  function sortChange(orderBack) {
-    console.log(JSON.parse(JSON.stringify(orderBack)))
-    orderBy.value = orderBack
-    reloadData()
-  }
-
-  // 点击搜索表单
-  function clickElement(item, index) {
-    console.log(JSON.parse(JSON.stringify(item)))
-    if (item.type === 'derivable') {
-      showDepPerDialog.value = true
-    }
-  }
-
-  const clickSubmit = item => {
-    if (item.id === 'reset') {
-      table.value.clearSorts()
-      state.componentsSearchForm.data.forEach(item => {
-        if (item.type === 'checkButton') {
-          item.data.forEach(i => {
-            delete i.checked
-          })
-        } else if (item.type === 'checkbox') {
-          console.log(JSON.parse(JSON.stringify(item.checkbox)))
-          item.checkbox.forEach(i => {
-            i.value = false
-          })
-          console.log(JSON.parse(JSON.stringify(item.checkbox)))
-        } else {
-          delete item.value
-        }
-      })
-    }
-    reloadData()
-  }
-
   const typeList = () => {
     typeApis.list({ searchKey: '' }).then(res => {
+      console.log(res)
       state.typeList = res.data
+      queryParams.value = { sealTypeIds: '' }
       state.componentsTree.data = [
         {
-          sealTypeId: 'all',
           sealTypeName: '印章类型',
           children: res.data
         }
       ]
+      state.componentsTree.defaultAttribute['current-node-key'] =
+        res.data[0].sealTypeId
       console.log(JSON.parse(JSON.stringify(state.componentsTree.data)))
     })
   }
 
-  const chooseOrgan = type => {
+  const chooseOrgan = (type, tabs) => {
     depChoose.value = type
+    state.searchSelected = []
     console.log(state.form[type + 'Id'])
     if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
       state.searchSelected.push({
         id: state.form[type + 'Id'],
-        name: state.form[type + 'Name']
+        name: state.form[type + 'Name'],
+        type: tabs[0]
       })
     }
+    state.tabsShow = tabs
+    console.log('state.searchSelected', state.searchSelected)
     showDepPerDialog.value = true
   }
 
@@ -1051,84 +1050,20 @@
     state.form[type + 'Id'] = ''
     state.form[type + 'Name'] = ''
   }
-
-  const reloadData = () => {
-    state.componentsPagination.data.index = 1
-    state.componentsTable.data = []
-    state.componentsPagination.data.amount = 0
-    librarySealPage()
+  const clickTreeNode = e => {
+    console.log('clickTreeNode', e)
   }
-
-  const librarySealPage = () => {
-    loading.value = true
-    const params = {}
-    state.componentsSearchForm.data.forEach(item => {
-      if (item.type === 'checkButton') {
-        params[item.id] = item.data
-          .filter(i => i.checked)
-          .map(i => i.id)
-          .join(',')
-      } else if (item.type === 'checkbox') {
-        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
-      } else if (item.type === 'picker') {
-        if (item.pickerType === 'date' && item.value) {
-          params[item.id] =
-            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
-        }
-      } else {
-        params[item.id] = item.value
-      }
-    })
-    libraryApis
-      .page({
-        ...{
-          current: state.componentsPagination.data.index,
-          size: state.componentsPagination.data.pageNumber,
-          delFlag: 0,
-          sorts: orderBy.value
-            ? orderBy.value.prop +
-              ',' +
-              (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
-            : '',
-          sealTypeIds:
-            state.componentsTree.value === 'all'
-              ? ''
-              : state.componentsTree.value
-        },
-        ...params
-      })
-      .then(
-        result => {
-          state.componentsTable.data = result.data.records
-          state.componentsPagination.data.amount = result.data.total
-          state.componentsPagination.defaultAttribute.total = result.data.total
-          loading.value = false
-        },
-        () => {
-          loading.value = false
-        }
-      )
-  }
-
-  const currentPageChange = e => {
-    state.componentsPagination.data.index = e
-    librarySealPage()
-  }
-
-  const sizeChange = e => {
-    state.componentsPagination.data.pageNumber = e
-    librarySealPage()
-  }
-
   const currentChange = e => {
-    state.componentsTree.value = e.sealTypeId
-    reloadData()
+    console.log(e)
+    queryParams.value = { sealTypeIds: e.sealTypeId ? e.sealTypeId : '' }
+    console.log('queryParams', queryParams.value)
+    table.value.reloadData()
   }
 
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     typeList()
-    librarySealPage()
+    // librarySealPage()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

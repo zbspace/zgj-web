@@ -17,10 +17,11 @@ const api = {}
 //     }`
 //   })
 // }
-api.getRelatedCompanyList = data => {
+api.getRelatedCompanyList = params => {
   return request({
     method: 'GET',
-    url: `/tenant/relatedCompany/list?${data}`
+    url: `/tenant/relatedCompany/list`,
+    params
   })
 }
 
@@ -52,19 +53,20 @@ api.deleteRelatedCompany = data => {
 }
 
 // 批量导入往来企业
-api.batchImportRelatedCompany = data => {
+api.batchImportRelatedCompany = params => {
   return request({
     method: 'GET',
     url: '/tenant/relatedCompany/batchImport',
-    data
+    params
   })
 }
 
 // 查询往来单位详细
-api.detailRelatedCompany = relatedCompanyId => {
+api.detailRelatedCompany = params => {
   return request({
     method: 'GET',
-    url: `/tenant/relatedCompany/detail/${relatedCompanyId}`
+    url: `/tenant/relatedCompany/detail`,
+    params
   })
 }
 export default api
