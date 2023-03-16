@@ -27,6 +27,7 @@ import VFormRender from '@/lib/vform/components/form-render/index'
 import { registerIcon } from '@/lib/vform/utils/el-icons'
 import '@/lib/vform/iconfont/iconfont.css'
 import 'virtual:svg-icons-register'
+import { message } from '@/utils/restMessage'
 
 /* 引入自定义全局变量 */
 import './style/index.scss'
@@ -38,6 +39,7 @@ import './style/index.scss'
   registerIcon(app)
   addDirective(app)
   app.config.globalProperties.$jyVform = {}
+  app.config.globalProperties.message = message
   app.component('Draggable', Draggable)
   app.component('VFormRender', VFormRender)
   app
