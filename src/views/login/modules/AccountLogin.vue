@@ -409,7 +409,6 @@
       accountNo: accountLoginForm.accountNo,
       accountPass: md5(accountLoginForm.accountPass)
     }
-    console.log(attr, '登录时的参数')
     if (attr) {
       params = {
         accountNo: accountLoginForm.accountNo,

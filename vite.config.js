@@ -72,6 +72,7 @@ export default defineConfig((mode, command) => {
     ],
     build: {
       target: 'es2015',
+      minify: 'terser',
       sourcemap: false,
       brotliSize: true,
       rollupOptions: {
@@ -79,7 +80,13 @@ export default defineConfig((mode, command) => {
           main: resolve(__dirname, 'index.html')
         }
       },
-      chunkSizeWarningLimit: 2000
+      chunkSizeWarningLimit: 2000,
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        }
+      }
     },
     resolve: {
       alias: [

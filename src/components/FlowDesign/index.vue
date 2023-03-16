@@ -12,8 +12,8 @@
           <FlowEndNode :node="nodeData" :readable="readable" />
         </div>
       </div>
-      <FlowZoom v-if="!readable" v-model="zoomValue" :top="top" />
-      <FlowStatus v-if="readable" :navable="navable" :top="top" />
+      <!-- <FlowZoom v-if="!readable" v-model="zoomValue" :top="top" /> -->
+      <!-- <FlowStatus v-if="readable" :navable="navable" :top="top" /> -->
     </div>
     <FlowHelper
       v-if="!readable"

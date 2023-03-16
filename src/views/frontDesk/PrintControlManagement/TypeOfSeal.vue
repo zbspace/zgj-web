@@ -103,6 +103,7 @@
   import JyDialog from '@/views/components/modules/JyDialog'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'
+  import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/typeOfSeal.json'
   // const props = defineProps({
   //   // 处理类型
   //   type: {
@@ -215,70 +216,7 @@
       ]
     },
     componentsTable: {
-      header: [
-        {
-          prop: 'sealTypeNo',
-          label: '印章类型编码',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: 'sealTypeName',
-          label: '印章类型名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'readme',
-          label: '描述',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'intelligentCount',
-          label: '智能印章',
-          align: 'center',
-          customDisplayType: 'format',
-          unit: '枚',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'ordinaryCount',
-          label: '普通印章',
-          align: 'center',
-          customDisplayType: 'format',
-          unit: '枚',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'createUserName',
-          label: '创建人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'createDatetime',
-          label: '创建时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '删除'
-            }
-          ]
-        }
-      ],
+      header: tableHeader,
       data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {

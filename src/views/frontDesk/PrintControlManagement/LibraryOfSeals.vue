@@ -377,6 +377,7 @@
   import api from '@/api/frontDesk/sealManage/libraryOfSeals'
   import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
   import dayjs from 'dayjs'
+  import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
 
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
@@ -710,76 +711,7 @@
       ]
     },
     componentsTable: {
-      header: [
-        {
-          prop: 'sealName',
-          label: '印章名称',
-          sortable: 'custom',
-          'min-width': 210,
-          'show-overflow-tooltip': true
-        },
-        {
-          prop: 'sealTypeName',
-          label: '印章类型',
-          sortable: 'custom',
-          'min-width': 150
-        },
-        {
-          prop: 'sealStatus',
-          label: '印章状态',
-          sortable: 'custom',
-          'min-width': 150
-        },
-        {
-          prop: 'keepUserName',
-          label: '保管人',
-          sortable: 'custom',
-          'min-width': 150
-        },
-        {
-          prop: 'keepOrganName',
-          label: '保管部门',
-          sortable: 'custom',
-          'min-width': 150
-        },
-        {
-          prop: 'createDatetime',
-          label: '创建时间',
-          sortable: 'custom',
-          'min-width': 180
-        },
-
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          width: '380',
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '删除'
-            },
-            {
-              name: '设置维护范围'
-            },
-            {
-              name: '设置可用范围'
-            },
-            {
-              name: '停用'
-            },
-            {
-              name: '变更'
-            },
-            {
-              name: '销毁'
-            }
-          ]
-        }
-      ],
+      header: tableHeader,
       data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {

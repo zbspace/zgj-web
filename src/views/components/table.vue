@@ -36,74 +36,69 @@
         </template>
       </el-table-column>
       <!-- 列表内容 -->
-      <el-table-column
-        v-bind="item"
-        v-for="(item, index) in props.header"
-        :key="index"
-      >
-        <!-- 自定义内容显示 -->
-        <template #default="scope" v-if="item.customDisplayType == 'switch'">
-          <div class="switch">
-            <el-switch v-model="scope.row.switchValue" />
-          </div>
-        </template>
-        <template #default="scope" v-if="item.customDisplayType == 'format'">
-          <span>{{ scope.row[item.prop] }} {{ item.unit }}</span>
-        </template>
-        <!-- 自定义内容显示 -->
-        <template
-          #default="scope"
-          v-else-if="item.customDisplayType == 'custom'"
-        >
-          <div class="custom" :index="scope.$index">
-            <slot
-              :name="'custom_' + item.prop"
-              :value="scope.row[item.prop]"
-            ></slot>
-          </div>
-        </template>
-        <!-- 自定义内容显示 -->
-        <template
-          #default="scope"
-          v-else-if="item.rankDisplayData && item.rankDisplayData.length > 0"
-        >
-          <div class="rankDisplayData">
-            <div
-              class="rankDisplayData-node"
-              v-for="(data, num) in item.rankDisplayData.slice(0, 6)"
-              :key="num"
-              @click="customClick(scope.$index, scope.row, data)"
-            >
-              <span>{{ data.name }}</span>
+      <template v-for="(item, index) in props.header">
+        <el-table-column v-bind="item" :key="index" v-if="item.show !== false">
+          <!-- 自定义内容显示 -->
+          <template #default="scope" v-if="item.customDisplayType == 'switch'">
+            <div class="switch">
+              <el-switch v-model="scope.row.switchValue" />
             </div>
-            <div
-              class="rankDisplayData-more"
-              v-if="item.rankDisplayData.length > 6"
-            >
-              <el-dropdown>
-                <span class="el-dropdown-link">
-                  <img
-                    class="rankDisplayData-node"
-                    src="../../assets/svg/sangedian.svg"
-                    alt=""
-                  />
-                </span>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item
-                      v-for="(data, num) in item.rankDisplayData.slice(6)"
-                      :key="num"
-                      @click="customClick(scope.$index, scope.row, data)"
-                    >
-                      {{ data.name }}
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+          </template>
+          <template #default="scope" v-if="item.customDisplayType == 'format'">
+            <span>{{ scope.row[item.prop] }} {{ item.unit }}</span>
+          </template>
+          <!-- 自定义内容显示 -->
+          <template #default="scope" v-if="item.customDisplayType == 'custom'">
+            <div class="custom" :index="scope.$index">
+              <slot
+                :name="'custom_' + item.prop"
+                :value="scope.row[item.prop]"
+              ></slot>
             </div>
-          </div>
-        </template>
-      </el-table-column>
+          </template>
+          <!-- 自定义内容显示 -->
+          <template
+            #default="scope"
+            v-if="item.rankDisplayData && item.rankDisplayData.length > 0"
+          >
+            <div class="rankDisplayData">
+              <div
+                class="rankDisplayData-node"
+                v-for="(data, num) in item.rankDisplayData.slice(0, 6)"
+                :key="num"
+                @click="customClick(scope.$index, scope.row, data)"
+              >
+                <span>{{ data.name }}</span>
+              </div>
+              <div
+                class="rankDisplayData-more"
+                v-if="item.rankDisplayData.length > 6"
+              >
+                <el-dropdown>
+                  <span class="el-dropdown-link">
+                    <img
+                      class="rankDisplayData-node"
+                      src="../../assets/svg/sangedian.svg"
+                      alt=""
+                    />
+                  </span>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item
+                        v-for="(data, num) in item.rankDisplayData.slice(6)"
+                        :key="num"
+                        @click="customClick(scope.$index, scope.row, data)"
+                      >
+                        {{ data.name }}
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+      </template>
     </el-table>
   </div>
 </template>
@@ -223,7 +218,7 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
-    console.log(JSON.parse(JSON.stringify(props.paginationData)))
+    // console.log(JSON.parse(JSON.stringify(props.paginationData)))
   })
 </script>
 <style lang="scss" scoped>
