@@ -26,9 +26,11 @@
       <template #batch>
         <div class="batch">
           <componentsBatch
+            :tableHeader="props.componentsTableHeader"
             :data="props.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
             @clickBatchButton="clickBatchButton"
+            @setTableHeader="setTableHeader"
           >
           </componentsBatch>
         </div>
@@ -45,7 +47,7 @@
             refs="tables"
             ref="table"
             :data="state.componentsTable.data"
-            :header="props.componentsTableHeader"
+            :header="state.componentsTable.headers"
             :paginationData="state.componentsPagination.data"
             :isSelection="isSelection"
             :loading="loading"
@@ -130,6 +132,7 @@
     },
     componentsTable: {
       data: [],
+      headers: props.componentsTableHeader,
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -186,6 +189,12 @@
       return
     }
     emit('clickBatchButton', item, state.componentsBatch.selectionData)
+  }
+
+  // 设置表格表头
+  function setTableHeader(headers) {
+    console.log(headers)
+    state.componentsTable.headers = headers
   }
 
   // 点击表格单元格

@@ -223,7 +223,7 @@
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
-    console.log(JSON.parse(JSON.stringify(props.paginationData)))
+    // console.log(JSON.parse(JSON.stringify(props.paginationData)))
   })
 </script>
 <style lang="scss" scoped>

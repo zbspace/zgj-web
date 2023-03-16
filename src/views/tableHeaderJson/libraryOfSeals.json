@@ -1,0 +1,76 @@
+[
+  {
+    "prop": "sealName",
+    "label": "印章名称",
+    "sortable": "custom",
+    "min-width": 210,
+    "show-overflow-tooltip": true,
+    "show": true
+  },
+  {
+    "prop": "sealTypeName",
+    "label": "印章类型",
+    "sortable": "custom",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "sealStatus",
+    "label": "印章状态",
+    "sortable": "custom",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "keepUserName",
+    "label": "保管人",
+    "sortable": "custom",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "keepOrganName",
+    "label": "保管部门",
+    "sortable": "custom",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "createDatetime",
+    "label": "创建时间",
+    "sortable": "custom",
+    "min-width": 180,
+    "show": true
+  },
+  {
+    "prop": "caozuo",
+    "label": "操作",
+    "fixed": "right",
+    "min-width": 150,
+    "width": "380",
+    "show": true,
+    "rankDisplayData": [
+      {
+        "name": "修改"
+      },
+      {
+        "name": "删除"
+      },
+      {
+        "name": "设置维护范围"
+      },
+      {
+        "name": "设置可用范围"
+      },
+      {
+        "name": "停用"
+      },
+      {
+        "name": "变更"
+      },
+      {
+        "name": "销毁"
+      }
+    ]
+  }
+]
