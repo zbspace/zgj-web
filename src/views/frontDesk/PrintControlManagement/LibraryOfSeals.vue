@@ -1,104 +1,6 @@
 <!-- 印章库 -->
 <template>
   <div class="PrintControlManagement-LibraryOfSeals">
-    <!-- <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
-      <template #title>
-        <div class="title">
-          印章库
-          <div class="title-more">
-            <div class="title-more-add">
-              <el-button type="primary" @click="add">+ 增加</el-button>
-            </div>
-            <div class="title-more-down">
-              <el-dropdown>
-                <el-button>
-                  <img
-                    class="button-icon"
-                    src="@/assets/svg/gengduo-caozuo.svg"
-                    alt=""
-                    srcset=""
-                  />
-                  <span>更多操作</span>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>导入</el-dropdown-item>
-                    <el-dropdown-item>导出台账</el-dropdown-item>
-                    <el-dropdown-item>查看已删除的印章</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #tabs>
-        <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
-        </div>
-      </template>
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickElement="clickElement"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-      <template #tree>
-        <div>
-          <componentsTree
-            :data="state.componentsTree.data"
-            :defaultAttribute="state.componentsTree.defaultAttribute"
-            :defaultProps="state.componentsTree.defaultProps"
-            @current-change="currentChange"
-          >
-          </componentsTree>
-        </div>
-      </template>
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            refs="tables"
-            ref="table"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            isSelection
-            :loading="loading"
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-            @sort-change="sortChange"
-          >
-          </componentsTable>
-        </div>
-      </template>
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-          @current-change="currentPageChange"
-          @size-change="sizeChange"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout> -->
     <JyTable
       url="/sealInfo/page"
       ref="table"
@@ -130,16 +32,10 @@
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="state.componentsTree.defaultProps"
             @current-change="currentChange"
-            @node-click="clickTreeNode"
           >
           </componentsTree>
         </div>
       </template>
-      <tableItem>
-        <template #custom_ordinaryCount="scope">
-          <span>{{ scope.value }}枚</span>
-        </template>
-      </tableItem>
     </JyTable>
     <!-- 单据详情 -->
     <div class="ap-box">
@@ -151,7 +47,7 @@
       </componentsDocumentsDetails>
     </div>
 
-    <!-- 动态表单 - 印章库 -->
+    <!-- 印章库 -->
     <JyDialog
       @update:show="showLibraryDialog = $event"
       :show="showLibraryDialog"
@@ -163,15 +59,6 @@
       :height="600"
       @confirm="submitLibraryForm"
     >
-      <!-- <JyVform
-        ref="vFormLibraryRef"
-        mode="render"
-        :formJson="formLibraryJson"
-        :formData="formLibraryData"
-        :optionData="optionLibraryData"
-        @buttonClick="clickSelect"
-        @on-loaded="onLoaded"
-      /> -->
       <el-form
         :model="state.form"
         :rules="state.rules"
@@ -481,13 +368,7 @@
 <script setup>
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { Paperclip, CircleClose } from '@element-plus/icons-vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
   import JyTable from '@/views/components/JyTable.vue'
@@ -918,7 +799,7 @@
         'check-strictly': true,
         'highlight-current': true,
         'node-key': 'sealTypeId',
-        'current-node-key': 'all'
+        'current-node-key': ''
       },
       defaultProps: {
         label: 'sealTypeName',
@@ -1015,25 +896,22 @@
   }
   const typeList = () => {
     typeApis.list({ searchKey: '' }).then(res => {
-      console.log(res)
       state.typeList = res.data
-      queryParams.value = { sealTypeIds: '' }
       state.componentsTree.data = [
         {
           sealTypeName: '印章类型',
+          sealTypeId: '',
           children: res.data
         }
       ]
       state.componentsTree.defaultAttribute['current-node-key'] =
         res.data[0].sealTypeId
-      console.log(JSON.parse(JSON.stringify(state.componentsTree.data)))
     })
   }
 
   const chooseOrgan = (type, tabs) => {
     depChoose.value = type
     state.searchSelected = []
-    console.log(state.form[type + 'Id'])
     if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
       state.searchSelected.push({
         id: state.form[type + 'Id'],
@@ -1042,7 +920,6 @@
       })
     }
     state.tabsShow = tabs
-    console.log('state.searchSelected', state.searchSelected)
     showDepPerDialog.value = true
   }
 
@@ -1050,13 +927,8 @@
     state.form[type + 'Id'] = ''
     state.form[type + 'Name'] = ''
   }
-  const clickTreeNode = e => {
-    console.log('clickTreeNode', e)
-  }
   const currentChange = e => {
-    console.log(e)
-    queryParams.value = { sealTypeIds: e.sealTypeId ? e.sealTypeId : '' }
-    console.log('queryParams', queryParams.value)
+    queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
     table.value.reloadData()
   }
 
