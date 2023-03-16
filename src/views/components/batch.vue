@@ -612,9 +612,6 @@
   }
 
   function initTopCheckBox() {
-    console.log(
-      state.tableHeader.filter(i => i.show).length === state.tableHeader.length
-    )
     checkAll.value =
       state.tableHeader.filter(i => i.show).length === state.tableHeader.length
     indeterminate.value =
@@ -634,16 +631,13 @@
     initData()
   })
   onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
     // 初始化数据
     initData()
     state.tableHeader = JSON.parse(JSON.stringify(props.tableHeader))
     initHeaderData()
     initTopCheckBox()
   })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
+  onMounted(() => {})
 </script>
 <style lang="scss" scoped>
   .components-batch {

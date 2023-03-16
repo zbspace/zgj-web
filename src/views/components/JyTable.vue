@@ -322,6 +322,7 @@
 
   onBeforeMount(() => {
     // 初始化布局
+    console.log(JSON.parse(JSON.stringify(props.componentsTableHeader)))
     if (props.needAutoRequest) {
       reloadData()
     }

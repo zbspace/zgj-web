@@ -37,24 +37,18 @@
       </el-table-column>
       <!-- 列表内容 -->
       <template v-for="(item, index) in props.header">
-        <el-table-column v-bind="item" :key="index" v-if="item.show">
+        <el-table-column v-bind="item" :key="index" v-if="item.show !== false">
           <!-- 自定义内容显示 -->
           <template #default="scope" v-if="item.customDisplayType == 'switch'">
             <div class="switch">
               <el-switch v-model="scope.row.switchValue" />
             </div>
           </template>
-          <template
-            #default="scope"
-            v-if="item.customDisplayType == 'format' && item.show"
-          >
+          <template #default="scope" v-if="item.customDisplayType == 'format'">
             <span>{{ scope.row[item.prop] }} {{ item.unit }}</span>
           </template>
           <!-- 自定义内容显示 -->
-          <template
-            #default="scope"
-            v-if="item.customDisplayType == 'custom' && item.show"
-          >
+          <template #default="scope" v-if="item.customDisplayType == 'custom'">
             <div class="custom" :index="scope.$index">
               <slot
                 :name="'custom_' + item.prop"
@@ -65,11 +59,7 @@
           <!-- 自定义内容显示 -->
           <template
             #default="scope"
-            v-if="
-              item.rankDisplayData &&
-              item.rankDisplayData.length > 0 &&
-              item.show
-            "
+            v-if="item.rankDisplayData && item.rankDisplayData.length > 0"
           >
             <div class="rankDisplayData">
               <div

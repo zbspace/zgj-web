@@ -375,7 +375,7 @@
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
   import api from '@/api/frontDesk/sealManage/libraryOfSeals'
   import dayjs from 'dayjs'
-  import tableHeader from '@/views/tableHeaderJson/libraryOfSeals.json'
+  import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
 
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
