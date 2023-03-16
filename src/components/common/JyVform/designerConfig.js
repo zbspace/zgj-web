@@ -11,13 +11,13 @@ export const designerConfig = {
   // 是否显示组件事件属性折叠面板
   eventCollapse: true,
   // 是否显示清空设计器按钮
-  clearDesignerButton: true,
+  clearDesignerButton: false,
   // 是否显示预览表单按钮
   previewFormButton: true,
   // 是否显示导入JSON按钮
-  importJsonButton: true,
+  importJsonButton: false,
   // 是否显示导出JSON器按钮
-  exportJsonButton: true,
+  exportJsonButton: false,
   // 是否显示导出代码按钮
   exportCodeButton: false,
   // 是否显示生成SFC按钮

@@ -102,16 +102,10 @@
   import { ElMessage } from 'element-plus'
   import layout from '@/views/system/businessManage/flowManage/layout'
   import formManageService from '@/api/system/formManagement'
+  import { AddFormInfo } from '@/utils/domain/formManage'
 
   const vformRef = ref(null)
-  const formData = ref({
-    formName: '',
-    applyTypeId: '2',
-    sealUseTypeId: '1',
-    readme: '',
-    formInfo: '',
-    formColumnInfos: []
-  })
+  const formData = ref(new AddFormInfo())
   const formRef = ref(null)
   const mustProps = ref([])
   const props = defineProps({
@@ -207,6 +201,7 @@
       // 处理选项
       disCutTabs()
     } catch (error) {
+      console.log('--->', error)
       ElMessage.error(error)
       state.processTabs.data[1].checked = false
       state.processTabs.data[0].checked = true
@@ -287,11 +282,7 @@
 
   const opened = () => {
     if (props.columnData.formName) {
-      formData.value.formName = props.columnData.formName
-      formData.value.applyTypeId = props.columnData.applyTypeId
-      formData.value.readme = props.columnData.readme
-      formData.value.formInfo = props.columnData.readme
-      formData.value.sealUseTypeId = props.columnData.sealUseTypeId
+      formData.value = { ...formData.value, ...props.columnData }
     }
   }
 
