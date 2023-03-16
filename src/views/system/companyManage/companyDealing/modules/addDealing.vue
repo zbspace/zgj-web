@@ -12,8 +12,8 @@
     :centerBtn="true"
     :confirmText="$t('t-zgj-operation.submit')"
     :concelText="$t('t-zgj-operation.cancel')"
-    :width="1000"
-    :height="600"
+    :width="900"
+    :height="400"
     @close="closeForm"
     @confirm="submitForm"
   >
@@ -257,4 +257,9 @@
     showDepPerDialog.value = false
   }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .el-icon {
+    color: #aaaaaa;
+    margin-right: 5px;
+  }
+</style>

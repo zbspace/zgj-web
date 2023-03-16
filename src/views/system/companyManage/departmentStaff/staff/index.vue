@@ -102,11 +102,11 @@
     <!-- 新增员工 -->
     <JyDialog
       :show="showStaffDialog"
-      title="新增"
+      :title="state.title"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      :width="1000"
+      :width="900"
       :height="600"
       @close="closeStaffFrom"
       @confirm="submitStaffForm"
@@ -429,6 +429,7 @@
   const organId = ref(false)
 
   const state = reactive({
+    title: '新增',
     tabsShow: ['organ'],
     tabSelects: {
       // 部门弹窗选中信息
@@ -849,6 +850,7 @@
 
   // 新增员工
   const addStaff = () => {
+    state.title = '新增'
     formStaffRef.value.resetFields()
     showStaffDialog.value = true
   }
@@ -1019,6 +1021,7 @@
     nameIdArr.push(colum.userId)
     state.componentsBatch.userIds = nameIdArr
     if (cell.name === '修改') {
+      state.title = '修改'
       showStaffDialog.value = true
     }
     if (cell.name === '停用') {
@@ -1156,5 +1159,9 @@
   }
   .el-upload__tip {
     margin: 0;
+  }
+  .el-icon {
+    color: #aaaaaa;
+    margin-right: 5px;
   }
 </style>

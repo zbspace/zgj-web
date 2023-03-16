@@ -11,27 +11,27 @@ api.page = params => {
     params
   })
 }
-// 印章类型新增
+// 印章新增
 api.add = data => {
   return request({
     method: 'POST',
-    url: '/sealType/add',
+    url: '/sealInfo/add',
     data
   })
 }
-// 印章类型编辑
+// 印章编辑
 api.edit = data => {
   return request({
     method: 'POST',
-    url: '/sealType/edit',
+    url: '/sealInfo/edit',
     data
   })
 }
-// 印章类型删除
+// 印章删除
 api.delete = params => {
   return request({
     method: 'GET',
-    url: '/sealType/delete',
+    url: '/sealInfo/delete',
     params
   })
 }

@@ -87,7 +87,6 @@
             ref="vformRef"
             v-if="state.processTabs.checkedNode.index === '2'"
             style="margin-top: 0; width: 100%"
-            :businessType="formData.applyTypeId"
             :prefabricationFieldList="prefabricationFieldList"
             @on-loaded="loaded"
           />

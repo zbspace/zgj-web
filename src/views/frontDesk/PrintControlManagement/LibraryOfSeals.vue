@@ -131,7 +131,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <!-- <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="管理人" prop="manageUserId">
               <div class="select-box-contBox">
@@ -198,7 +198,7 @@
               </div>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="保管人" prop="keepUserId">
@@ -218,8 +218,6 @@
                 <div class="ap-box-contBox-icon">
                   <el-icon
                     v-if="state.form.keepUserName"
-                    style="margin-right: 5px"
-                    color="#aaaaaa"
                     @click="clear('keepUser')"
                     ><CircleClose
                   /></el-icon>
@@ -375,6 +373,7 @@
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
+  import api from '@/api/frontDesk/sealManage/libraryOfSeals'
   import dayjs from 'dayjs'
   import tableHeader from '@/views/tableHeaderJson/libraryOfSeals.json'
 
@@ -396,7 +395,10 @@
   const submitLibraryForm = type => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
-        console.log(state.form)
+        api.add(state.form).then(res => {
+          console.log(res)
+          ElMessage.success('新增成功印章成功！')
+        })
       } else {
         ElMessage.error('校验失败')
       }
@@ -444,10 +446,10 @@
       sealTypeId: '',
       subOrganId: '',
       subOrganName: '',
-      manageUserId: '',
-      manageUserName: '',
-      manageOrganId: '',
-      manageOrganName: '',
+      // manageUserId: '',
+      // manageUserName: '',
+      // manageOrganId: '',
+      // manageOrganName: '',
       keepUserId: '',
       keepUserName: '',
       keepOrganId: '',
@@ -818,6 +820,7 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
+    console.log(column)
     if (cell.name === '修改') {
       state.title = '修改'
       showLibraryDialog.value = true

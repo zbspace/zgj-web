@@ -412,7 +412,6 @@
     console.log('event', event)
     if (column.property === 'relatedCompanyName') {
       api.detailRelatedCompany(row.relatedCompanyId).then(res => {
-        console.log(res)
         if (res.code === 200) {
           const baseData = [
             {

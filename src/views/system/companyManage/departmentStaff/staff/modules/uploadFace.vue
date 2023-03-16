@@ -157,14 +157,14 @@
     :deep(.el-dialog) {
       min-height: auto;
       padding: 0;
-      height: 500px;
+      height: 400px;
       .el-dialog__header {
         padding: 0;
         display: flex;
         align-items: center;
         margin-right: 0;
         height: 55px;
-        padding-left: 24px;
+        padding: 0 12px 0 24px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         .dialog-header-remove {
           position: absolute;
@@ -211,7 +211,9 @@
         left: 0;
         text-align: center;
         right: 0;
-        padding: 24px;
+        height: 55px;
+        line-height: 55px;
+        padding: 0;
         border-top: 1px solid rgba(0, 0, 0, 0.06);
       }
       .el-form-item__content {

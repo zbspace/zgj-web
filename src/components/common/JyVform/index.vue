@@ -10,7 +10,6 @@
       @appendButtonClick="appendButtonClick"
       @buttonClick="buttonClick"
       :fileTypeList="fileTypeList"
-      :businessType="businessType"
       :prefabricationFieldList="props.prefabricationFieldList"
     />
 
@@ -46,7 +45,6 @@
 
   const vformInfoStore = useVformInfoStore()
   const vFormRef = ref(null)
-  // const prefabricationFieldList = ref([])
   const bannedWidgets = ref([]) // 设计器需要显示指定的组件
   const templateList = ref([])
   const key = ref(0)
@@ -56,12 +54,6 @@
     mode: {
       type: String,
       default: ''
-    },
-
-    // 业务类型  默认用印申请 、其他
-    businessType: {
-      type: String,
-      default: '2'
     },
 
     // 配置设计器初始化界面显示设置
@@ -310,7 +302,6 @@
 </script>
 
 <style lang="scss">
-  // @import 'vform-jy/dist/designer.style.css';
   .drag-dialog {
     .el-dialog__header {
       display: block !important;

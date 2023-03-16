@@ -158,6 +158,8 @@
       width: 100%;
       height: 100%;
       .header {
+        position: relative;
+        z-index: 1;
         display: flex;
         height: 4rem;
         align-items: center;
@@ -252,6 +254,8 @@
         display: flex;
         align-items: flex-start;
         justify-content: center;
+        position: relative;
+        z-index: 0;
       }
     }
   }
