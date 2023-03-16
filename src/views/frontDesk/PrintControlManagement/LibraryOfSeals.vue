@@ -131,7 +131,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <!-- <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="管理人" prop="manageUserId">
               <div class="select-box-contBox">
@@ -198,7 +198,7 @@
               </div>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="保管人" prop="keepUserId">
@@ -445,10 +445,10 @@
       sealTypeId: '',
       subOrganId: '',
       subOrganName: '',
-      manageUserId: '',
-      manageUserName: '',
-      manageOrganId: '',
-      manageOrganName: '',
+      // manageUserId: '',
+      // manageUserName: '',
+      // manageOrganId: '',
+      // manageOrganName: '',
       keepUserId: '',
       keepUserName: '',
       keepOrganId: '',
@@ -888,6 +888,7 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
+    console.log(column)
     if (cell.name === '修改') {
       state.title = '修改'
       showLibraryDialog.value = true
@@ -901,7 +902,6 @@
       state.typeList = res.data
       state.componentsTree.data = [
         {
-          sealTypeId: 'all',
           sealTypeName: '印章类型',
           sealTypeId: '',
           children: res.data

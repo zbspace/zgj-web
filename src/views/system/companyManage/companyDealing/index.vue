@@ -411,47 +411,44 @@
     console.log('cell', cell)
     console.log('event', event)
     if (column.property === 'relatedCompanyName') {
-      api
-        .detailRelatedCompany({ relatedCompanyId: row.relatedCompanyId })
-        .then(res => {
-          console.log(res)
-          if (res.code === 200) {
-            const baseData = [
-              {
-                label: '企业名称',
-                value: res.data.relatedCompanyName
-              },
-              {
-                label: '企业编码',
-                value: res.data.relatedCompanyNo
-              },
-              {
-                label: '企业所属部门',
-                value: res.data.organName
-              },
-              {
-                label: '联系人',
-                value: res.data.contactName
-              },
-              {
-                label: '备注：',
-                value: res.data.readme,
-                lineStyle: {
-                  width: '100%'
-                }
+      api.detailRelatedCompany(row.relatedCompanyId).then(res => {
+        if (res.code === 200) {
+          const baseData = [
+            {
+              label: '企业名称',
+              value: res.data.relatedCompanyName
+            },
+            {
+              label: '企业编码',
+              value: res.data.relatedCompanyNo
+            },
+            {
+              label: '企业所属部门',
+              value: res.data.organName
+            },
+            {
+              label: '联系人',
+              value: res.data.contactName
+            },
+            {
+              label: '备注：',
+              value: res.data.readme,
+              lineStyle: {
+                width: '100%'
               }
-            ]
+            }
+          ]
 
-            state.componentsDocumentsDetails.visible.forEach(item => {
-              if (item.name === 'Current-Business-Details') {
-                state.componentsDocumentsDetails.visible[0][
-                  'basicInformation-data'
-                ] = baseData
-              }
-            })
-            state.componentsDocumentsDetails.show = true
-          }
-        })
+          state.componentsDocumentsDetails.visible.forEach(item => {
+            if (item.name === 'Current-Business-Details') {
+              state.componentsDocumentsDetails.visible[0][
+                'basicInformation-data'
+              ] = baseData
+            }
+          })
+          state.componentsDocumentsDetails.show = true
+        }
+      })
     }
   }
   // 点击关闭

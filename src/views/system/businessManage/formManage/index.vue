@@ -1062,7 +1062,7 @@
   .content-div {
     padding-left: 40px;
     margin-bottom: 10px;
-    font-size: 16px;
+    font-size: 14px;
   }
   .scrollbar {
     padding: 0 20px;

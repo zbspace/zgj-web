@@ -5,18 +5,6 @@ const api = {}
 
 // ================
 // 获取往来企业列表
-// api.getRelatedCompanyList = data => {
-//   return request({
-//     method: 'GET',
-//     url: `/tenant/relatedCompany/list?${
-//       data.relatedCompanyName
-//         ? 'relatedCompanyName=' + data.relatedCompanyName + '&'
-//         : ''
-//     }&organId=${data.organId || 0}&current=${data.current || 1}&size=${
-//       data.size || 10
-//     }`
-//   })
-// }
 api.getRelatedCompanyList = params => {
   return request({
     method: 'GET',
@@ -62,11 +50,10 @@ api.batchImportRelatedCompany = params => {
 }
 
 // 查询往来单位详细
-api.detailRelatedCompany = params => {
+api.detailRelatedCompany = relatedCompanyId => {
   return request({
     method: 'GET',
-    url: `/tenant/relatedCompany/detail`,
-    params
+    url: `/tenant/relatedCompany/detail/${relatedCompanyId}`
   })
 }
 export default api

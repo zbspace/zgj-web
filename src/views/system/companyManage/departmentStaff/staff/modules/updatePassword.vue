@@ -64,10 +64,8 @@
         >提示：当员工存在手机号时会以短信的形式向员工发送随机密码，否则重置后请告知员工，以确保其正常登录</div
       >
       <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="comifrm">提 交</el-button>
-        </span>
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="comifrm">提 交</el-button>
       </template>
     </el-dialog>
   </div>
@@ -215,14 +213,14 @@
     :deep(.el-dialog) {
       min-height: auto;
       padding: 0;
-      height: 500px;
+      height: 400px;
       .el-dialog__header {
         padding: 0;
         display: flex;
         align-items: center;
         margin-right: 0;
         height: 55px;
-        padding-left: 24px;
+        padding: 0 12px 0 24px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         .dialog-header-remove {
           position: absolute;
@@ -269,7 +267,9 @@
         left: 0;
         text-align: center;
         right: 0;
-        padding: 24px;
+        height: 55px;
+        line-height: 55px;
+        padding: 0;
         border-top: 1px solid rgba(0, 0, 0, 0.06);
       }
       .el-form-item__content {
