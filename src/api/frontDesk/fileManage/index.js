@@ -18,14 +18,13 @@ export const fileManageService = {
 
   /**
    * 文件类型列表
-   * @param {*} params {formMessageId: string, relationRule: string}
+   * @param {*} data {formMessageId: string, relationRule: string}
    * @returns
    */
-  getFileTypeList: params => {
+  getFileTypeList: data => {
     return request({
-      method: 'GET',
-      url: '/fileType/list',
-      params
+      method: 'POST',
+      url: `/fileType/queryList/${data}`
     })
   }
 }

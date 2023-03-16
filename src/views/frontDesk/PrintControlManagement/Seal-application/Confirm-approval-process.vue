@@ -46,7 +46,6 @@
                       scroll: false,
                       top: '100'
                     }"
-                    @onMountedCallBack="onMountedCallBack"
                   ></VFlowDesign>
                 </div>
               </template>
@@ -155,7 +154,6 @@
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
   import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
-  import flowJson from '@/views/jyGunsJson/flow'
   // 异步组件
   const VFlowDesign = defineAsyncComponent({
     loader: () => import('@/views/components/FlowDesign/index.vue')
@@ -267,10 +265,7 @@
   function clickSubmit() {
     router.push({ name: 'Accomplish' })
   }
-  // 组件加载完成回调
-  const onMountedCallBack = () => {
-    refVFlowDesign.value.handleSetData(flowJson)
-  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // vFormLibraryRef.value.resetForm()
