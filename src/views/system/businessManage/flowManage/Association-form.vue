@@ -55,8 +55,17 @@
                 </el-option-group>
               </el-select>
             </el-form-item>
-
             <el-form-item
+              label="用印类型"
+              prop="sealUseTypeId"
+              v-if="form.applyTypeId === '2'"
+            >
+              <el-radio-group v-model="form.sealUseTypeId">
+                <el-radio :label="1" size="large">物理用印</el-radio>
+                <el-radio :label="2" size="large">电子签章</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <!-- <el-form-item
               label="文件类型"
               prop="fileType"
               required
@@ -70,7 +79,7 @@
                   :key="item.fileTypeId"
                 />
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
         </div>
         <div
@@ -306,20 +315,20 @@
     } catch (error) {}
   }
 
-  // 获取文件类型列表
-  const setFileTypeList = async () => {
-    try {
-      const res = await fileManageService.getFileTypeList(form.applyTypeId)
-      fileTypeList.value = res.data || []
-    } catch (error) {}
-  }
+  // // 获取文件类型列表
+  // const setFileTypeList = async () => {
+  //   try {
+  //     const res = await fileManageService.getFileTypeList(form.applyTypeId)
+  //     fileTypeList.value = res.data || []
+  //   } catch (error) {}
+  // }
 
   watch(
     () => form.applyTypeId,
     val => {
       if (!val) return (flagStatus.value = false)
       if (form.applyTypeId === '2') {
-        setFileTypeList()
+        // setFileTypeList()
       } else {
         getFromList()
       }

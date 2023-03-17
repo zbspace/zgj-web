@@ -113,14 +113,15 @@
         </FlowDrawerContent>
         <!-- 部门审批人 -->
         <FlowDrawerContent v-if="group.approverType == 3" name="选择部门">
-          <!-- <GDept
+          <GDept
             v-model="group.orgId"
             v-model:label="group.orgName"
             :showButton="false"
             :size="size"
             :radioModel="true"
             call-back-type="string"
-          /> -->
+          />
+          选择部门
         </FlowDrawerContent>
         <FlowDrawerContent v-if="group.approverType == 3" name="部门审批人">
           <a-form-item
@@ -512,6 +513,7 @@
               :radioModel="true"
               call-back-type="string"
             /> -->
+            选择部门
           </a-form-item>
         </FlowDrawerContent>
         <FlowDrawerContent v-if="group.approverType == 19" name="选择角色">
@@ -568,8 +570,8 @@
   import loadApproverData from '../../data/load-approver-data'
   import FlowSelect from '../../common/FlowSelect.vue'
   import FlowDrawerContent from '../FlowDrawerContent.vue'
-  // import GDept from '@/components/GDept/index.vue';
-  // import GDeptApprover from '@/components/GDeptApprover/index.vue';
+  import GDept from '@/components/FlowDesign/drawer/approver/GDept/index.vue'
+  // import GDeptApprover from '@/components/GDeptApprover/index.vue'
   import FlowPopoverTip from '../FlowPopoverTip.vue'
   // import { UserApi } from '@/api/system/user/UserApi'
   // 公共
@@ -657,7 +659,7 @@
    * 改变审批人类型
    */
   const changeApproverType = group => {
-    debugger
+    // debugger
     group.approverIds = []
     group.approverNames = []
     group.controlIds = []
