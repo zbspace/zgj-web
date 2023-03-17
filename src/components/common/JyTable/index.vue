@@ -60,8 +60,13 @@
     emit('selection-change', selection)
   }
 
+  const toggleRowSelection = arr => {
+    tableRef.value.toggleRowSelection(arr)
+  }
+
   defineExpose({
-    getSelectData
+    getSelectData,
+    toggleRowSelection
   })
 </script>
 

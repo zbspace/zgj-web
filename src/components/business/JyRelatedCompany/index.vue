@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-  import { computed, ref } from 'vue'
+  import { computed, ref, nextTick } from 'vue'
   import { PaginationInfo } from '@/utils/domain/paginationInfo'
   import { compManageService } from '@/api/system/compManage'
   import { FeatchRelatedCompanyListInfo } from '@/utils/domain/compManage'
@@ -144,8 +144,13 @@
     selectList.value = selectArr
   }
 
-  const opened = () => {
-    getRelatedCompanyList()
+  const opened = async () => {
+    await getRelatedCompanyList()
+    nextTick(() => {
+      if (selectList.value.length) {
+        tableRef.value.toggleRowSelection(selectList.value)
+      }
+    })
   }
 </script>
 
