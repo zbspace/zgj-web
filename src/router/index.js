@@ -44,7 +44,7 @@ router.beforeEach((routeTo, routeFrom) => {
     return {
       path: '/login/account',
       // 保存我们所在的位置，以便以后再来
-      query: { redirect: routeTo.fullPath }
+      query: { redirect: encodeURIComponent(routeTo.fullPath) }
     }
   }
   NProgress.start()

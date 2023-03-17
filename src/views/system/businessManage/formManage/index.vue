@@ -1040,6 +1040,7 @@
   // 每页请求数量变化
   function sizeChange(data) {
     console.log(data)
+    state.componentsPagination.index = 1
     state.componentsPagination.pageNumber = data
     getFormPage()
   }
