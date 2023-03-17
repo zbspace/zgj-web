@@ -121,7 +121,8 @@
     },
     statusColoum: {
       type: String
-    }
+    },
+    openValue: {}
   })
 
   const state = reactive({

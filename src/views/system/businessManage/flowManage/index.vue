@@ -467,7 +467,7 @@
               name: '删除'
             },
             {
-              name: '启用'
+              name: '状态'
             },
             {
               name: '复制'
@@ -587,7 +587,7 @@
     }
   }
   const customClick = (row, column, cell, event) => {
-    console.log(column)
+    console.log(cell)
     state.sealIds = column.id
     state.columnData = column
     if (cell.name === '修改') {
