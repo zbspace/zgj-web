@@ -406,13 +406,13 @@
             v-for="item in state.componentsBatch.selectionData"
             :key="item"
             class="scrollbar-demo-item"
-            >{{ item.formName }}</p
+            >{{ item.name }}</p
           >
         </el-scrollbar>
       </template>
       <template #footer>
         <el-button
-          v-for="item in state.componentsBatch.butDatas"
+          v-for="item in state.butDatas"
           :key="item.name"
           :type="item.type"
           @click="item.clickName"
@@ -499,6 +499,7 @@
   }
   // const emit = defineEmits([])
   const state = reactive({
+    butDatas: [],
     sealIds: '',
     msg: '',
     tabsShow: ['organ'],
@@ -943,11 +944,91 @@
   }
   const clickBatchButton = (item, datas) => {
     console.log(item)
+    state.componentsBatch.selectionData = datas
     const idList = []
     datas.forEach(element => {
       idList.push(element.sealId)
     })
     state.sealIds = idList.join(',')
+    if (item.name === '批量删除') {
+      state.showToastDialog.header.data = '批量删除'
+      state.showToastDialog.content.data =
+        '已选中以下表单，请问确定要批量删除吗？'
+      state.showToastDialog.show = true
+      // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+      state.butDatas = [
+        {
+          name: '确定',
+          type: 'primary',
+          clickName: sureBatchDel
+        },
+        {
+          name: '取消',
+          type: '',
+          clickName: closeBatchTabel
+        }
+      ]
+    }
+  }
+  // 批量删除
+  function batchDel() {
+    state.showToastDialog.header.data = '批量删除'
+    state.showToastDialog.content.data =
+      '已选中以下表单，请问确定要批量删除吗？'
+    state.showToastDialog.show = true
+    // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+    state.componentsBatch.butDatas = [
+      {
+        name: '确定',
+        type: 'primary',
+        clickName: sureBatchDel
+      },
+      {
+        name: '取消',
+        type: '',
+        clickName: closeBatchTabel
+      }
+    ]
+    console.log('批量删除')
+  }
+  // 确定批量删除
+  const sureBatchDel = () => {
+    const list = state.componentsBatch.selectionData
+    const idList = []
+    const idObj = { formMessageId: '' }
+    list.forEach(v => {
+      idObj.formMessageId = v.formMessageId
+      idList.push(idObj)
+    })
+    api.relationContractType(idList).then(res => {
+      if (res.code === 200) {
+        if (res.data.length > 0) {
+          state.showToastDialog.header.data = '删除'
+          state.showToastDialog.content.data =
+            '选中的以下表单已关联了流程，不允许删除'
+          state.showToastDialog.show = true
+          state.showToastDialog.header.icon =
+            '/src/assets/svg/common/danger.svg'
+          state.componentsBatch.butDatas = [
+            {
+              name: '知道了',
+              type: 'primary',
+              clickName: closeBatchTabel
+            }
+          ]
+        } else {
+          api.sealInfoDelete({ ids: state.sealIds }).then(res => {
+            console.log(res)
+          })
+        }
+      } else {
+        console.log(res)
+      }
+    })
+  }
+  // 关闭表单复制弹窗
+  function closeBatchTabel() {
+    state.showToastDialog.show = false
   }
   // 提交弹窗
   const submitElMessageBox = type => {
