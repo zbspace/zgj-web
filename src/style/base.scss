@@ -99,3 +99,7 @@ a {
     color: var(--el-color-primary);
   }
 }
+
+.el-message .el-message__badge {
+  display: none;
+}

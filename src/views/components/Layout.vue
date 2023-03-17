@@ -215,7 +215,8 @@
 
     .ap-box-tree {
       width: 15%;
-      height: 100%;
+      min-height: 100%;
+      max-height: 100%;
       overflow: auto;
       padding-right: 0rem;
       box-sizing: border-box;

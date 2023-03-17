@@ -55,11 +55,9 @@
       </el-col>
     </el-row>
     <!-- 往来单位 -->
-    <JyRelatedCompany
-      v-model="xzyzDialogVisible"
-      v-if="xzyzDialogVisible"
-      @on-submit="submit"
-    />
+    <template>
+      <JyRelatedCompany v-model="xzyzDialogVisible" @on-submit="submit" />
+    </template>
   </static-content-wrapper>
 </template>
 
@@ -68,7 +66,6 @@
   import emitter from '@/lib/vform/utils/emitter'
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
-  import { ElMessage } from 'element-plus'
 
   export default {
     name: 'ContactUnitWidget',
@@ -249,7 +246,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '@/lib/vform/styles/global.scss'; /* form-item-wrapper已引入，还需要重复引入吗？ */
   .required :deep(.el-form-item__label)::before {
     content: '*';
     color: #f56c6c;
