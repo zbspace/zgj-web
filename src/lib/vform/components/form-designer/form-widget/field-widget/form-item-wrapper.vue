@@ -257,7 +257,7 @@
       removeFieldWidget() {
         const list = this.getPrefabricationFieldList() // ["contactUnit33846"]
         if (this.queryStr(list, this.field.options.name).length > 0) {
-          this.$message.error('请务删除必要字段，请重新加载模板进行编辑')
+          this.$message.error('请勿删除必要字段，请重新加载模板进行编辑')
           // this.$message.error(
           //   '组件：' + this.field.options.label + '在限制删除列表中,无法删除'
           // )

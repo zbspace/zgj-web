@@ -272,7 +272,7 @@
       v => !fieldWidgets.map(v => v.name).includes(v)
     )
     if (arr.length) {
-      return messageError('请务删除必要字段，请重新加载模板进行编辑')
+      return messageError('请勿删除必要字段，请重新加载模板进行编辑')
     }
     formData.value.formColumnInfos = vformRef.value.getFieldWidgets()
     try {

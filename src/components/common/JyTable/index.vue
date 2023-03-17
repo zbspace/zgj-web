@@ -13,6 +13,8 @@
       v-loading="props.loading"
       ref="tableRef"
       @selection-change="selectionChange"
+      @select="select"
+      @select-all="selectAll"
       @current-change="handleCurrentChange"
       :highlight-current-row="highlightCurrentRow"
     >
@@ -45,7 +47,7 @@
     }
   })
 
-  const emit = defineEmits(['selection-change'])
+  const emit = defineEmits(['selection-change', 'select', 'select-all'])
 
   const getSelectData = () => {
     console.log(tableRef.value)
@@ -58,6 +60,14 @@
 
   const handleCurrentChange = selection => {
     emit('selection-change', selection)
+  }
+
+  const select = (selection, row) => {
+    emit('select', selection, row)
+  }
+
+  const selectAll = selection => {
+    emit('select-all', selection)
   }
 
   const toggleRowSelection = arr => {
