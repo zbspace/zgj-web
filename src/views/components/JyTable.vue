@@ -47,6 +47,8 @@
             refs="tables"
             ref="table"
             :data="state.componentsTable.data"
+            :statusColoum="props.statusColoum"
+            :openValue="props.openValue"
             :header="state.componentsTable.headers"
             :paginationData="state.componentsPagination.data"
             :isSelection="isSelection"
@@ -116,6 +118,9 @@
     needAutoRequest: {
       type: Boolean,
       default: true
+    },
+    statusColoum: {
+      type: String
     }
   })
 

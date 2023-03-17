@@ -13,13 +13,13 @@
     "show": true
   },
   {
-    "prop": "organType",
+    "prop": "organTypeName",
     "label": "组织类型",
     "min-width": 150,
     "show": true
   },
   {
-    "prop": "number",
+    "prop": "organUserNum",
     "label": "部门人数",
     "sortable": "custom",
     "align": "center",
@@ -55,7 +55,7 @@
         "name": "下移"
       },
       {
-        "name": "停用"
+        "name": "状态"
       }
     ]
   }

@@ -5,6 +5,7 @@
       url="/sealInfo/page"
       ref="table"
       :hasTree="true"
+      :needAutoRequest="false"
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
@@ -1066,8 +1067,14 @@
           children: res.data
         }
       ]
-      state.componentsTree.defaultAttribute['current-node-key'] =
-        res.data[0].sealTypeId
+      if (res.data && res.data.length) {
+        state.componentsTree.defaultAttribute['current-node-key'] =
+          res.data[0].sealTypeId
+        queryParams.value = {
+          sealTypeIds: res.data[0].sealTypeId
+        }
+      }
+      table.value.reloadData()
     })
   }
 
