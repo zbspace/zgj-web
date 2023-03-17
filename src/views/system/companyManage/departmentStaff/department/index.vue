@@ -162,6 +162,7 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import department from '@/api/system/companyManagement/department'
+  import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/department.json'
   import { CircleClose } from '@element-plus/icons-vue'
 
   const showFormDialog = ref(false)
@@ -266,88 +267,11 @@
     },
 
     componentsTable: {
-      header: [
-        {
-          prop: 'organName',
-          label: '部门名称',
-          'min-width': 150,
-          fixed: true
-        },
-        {
-          prop: 'organNo',
-          label: '部门编码',
-          'min-width': 150
-        },
-        {
-          prop: 'organType',
-          label: '组织类型',
-          'min-width': 150
-        },
-        {
-          prop: 'number',
-          label: '部门人数',
-          sortable: 'custom',
-          align: 'center',
-          width: 150
-        },
-        {
-          prop: 'leaderUserName',
-          label: '部门主管',
-          'min-width': 150
-        },
-        {
-          prop: 'organPName',
-          label: '上级组织',
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '操作',
-          width: 170,
-          fixed: 'right',
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '上移'
-            },
-            {
-              name: '下移'
-            },
-            {
-              name: '停用'
-            }
-          ]
-        }
-      ]
+      header: tableHeader
     },
 
     componentsTree: {
-      data: [
-        {
-          label: '企业名称',
-          children: [
-            {
-              label: '单位名称',
-              children: [
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': true,
@@ -356,8 +280,8 @@
         'expand-on-click-node': false,
         'check-strictly': true,
         'highlight-current': true,
-        'node-key': 'sealTypeId',
-        'current-node-key': 'all'
+        'node-key': 'organId',
+        'current-node-key': ''
       }
     },
     componentsDocumentsDetails: {
@@ -472,10 +396,7 @@
       form.leaderUserName = value.length ? value[0].name : ''
     }
   }
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-    // departPage()
-  })
+  onBeforeMount(() => {})
 </script>
 
 <style lang="scss" scoped>

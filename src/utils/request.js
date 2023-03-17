@@ -4,7 +4,7 @@
 import axios from 'axios'
 import { API_BASE_PREFIX, TOKEN_HEADER_NAME } from './constants.js'
 import { useAccountInfoStore } from '@/store/accountInfo'
-import { message } from '@/utils/restMessage'
+import { ElMessage } from 'element-plus'
 import router from '@/router/index'
 const service = axios.create({
   baseURL: API_BASE_PREFIX,
@@ -17,7 +17,11 @@ const service = axios.create({
 const processErrorResponse = function (response) {
   // null ？
   if (response.data && response.data.code === 401) {
-    message.error('登录超时，请重新登录')
+    ElMessage({
+      message: '登录超时，请重新登录',
+      grouping: true,
+      type: 'error'
+    })
     router.replace({
       path: '/login/account',
       // 保存我们所在的位置，以便以后再来
@@ -28,11 +32,13 @@ const processErrorResponse = function (response) {
     return Promise.reject(response || response.data)
   }
   // 提示错误信息
-  message.error(
-    response
+  ElMessage({
+    message: response
       ? response.data.msg || response.data.message || '服务器打盹了，请稍后再试'
-      : '服务器打盹了，请稍后再试'
-  )
+      : '服务器打盹了，请稍后再试',
+    grouping: true,
+    type: 'error'
+  })
   return Promise.reject(response.data)
 }
 
