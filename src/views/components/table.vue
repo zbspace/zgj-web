@@ -68,7 +68,13 @@
                 :key="num"
                 @click="customClick(scope.$index, scope.row, data)"
               >
-                <span>{{ data.name }}</span>
+                <span>{{
+                  data.name === '状态'
+                    ? scope.row[props.statusColoum] === props.openValue
+                      ? '启用'
+                      : '停用'
+                    : data.name
+                }}</span>
               </div>
               <div
                 class="rankDisplayData-more"
@@ -165,7 +171,11 @@
       default: () => {
         return {}
       }
-    }
+    },
+    statusColoum: {
+      type: String
+    },
+    openValue: {}
   })
   const emit = defineEmits([
     'select',
