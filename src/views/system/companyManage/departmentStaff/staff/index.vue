@@ -1086,8 +1086,6 @@
       }
     })
   }
-  // 批量操作
-  const batchOpt = (typeName, urlName) => {}
   // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false

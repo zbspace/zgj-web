@@ -1,6 +1,45 @@
 <template>
   <div class="flowManage-index">
-    <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
+    <JyTable
+      url="/flow/page"
+      ref="table"
+      :hasTree="true"
+      :needAutoRequest="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      :queryParams="queryParams"
+      statusColoum="flag"
+      openValue="1"
+      tableClick="flowName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="batchOpt"
+    >
+      <template #title>
+        <div class="title">
+          <div>流程管理</div>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="add">+ 增加</el-button>
+            </div>
+            <div class="title-more-down"> </div>
+          </div>
+        </div>
+      </template>
+      <template #tree>
+        <div>
+          <componentsTree
+            :data="state.componentsTree.data"
+            :defaultAttribute="state.componentsTree.defaultAttribute"
+            :defaultProps="state.componentsTree.defaultProps"
+            @current-change="currentChange"
+          >
+          </componentsTree>
+        </div>
+      </template>
+    </JyTable>
+    <!-- <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
       <template #title>
         <div class="title">
           <div>流程管理</div>
@@ -62,6 +101,8 @@
             :paginationData="state.componentsPagination.data"
             :isSelection="true"
             :loading="loading"
+            :statusColoum="flagName"
+            :openValue="启用"
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -80,7 +121,7 @@
         >
         </componentsPagination>
       </template>
-    </componentsLayout>
+    </componentsLayout> -->
     <!-- 流程详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -175,16 +216,17 @@
     defineAsyncComponent,
     ref
   } from 'vue'
-  import componentsTable from '@/views/components/table'
-  import componentsSearchForm from '@/views/components/searchForm'
-  import componentsPagination from '@/views/components/pagination.vue'
-  import componentsLayout from '@/views/components/Layout.vue'
+  // import componentsTable from '@/views/components/table'
+  // import componentsSearchForm from '@/views/components/searchForm'
+  // import componentsPagination from '@/views/components/pagination.vue'
+  // import componentsLayout from '@/views/components/Layout.vue'
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import componentsBatch from '@/views/components/batch.vue'
+  // import componentsBatch from '@/views/components/batch.vue'
   // import newlyIncreased from './newly-increased.vue'
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
   import apiForm from '@/api/system/formManagement'
+  import JyTable from '@/views/components/JyTable.vue'
   import apiFlow from '@/api/system/flowManagement'
   import { ElMessage } from 'element-plus'
   // 异步组件
@@ -195,6 +237,7 @@
   const loading = ref(false)
   const table = ref(null)
   const orderBy = ref(null)
+  const queryParams = ref({ sealTypeIds: '2' })
 
   const state = reactive({
     columnData: {},
@@ -719,6 +762,7 @@
         }
       })
       state.componentsTree.data = listApplyTypeTree
+      table.value.reloadData()
     })
   }
 
@@ -770,55 +814,55 @@
     flowPageApi()
   }
 
-  // 发送api请求 流程列表
-  const flowPageApi = () => {
-    loading.value = true
-    const params = {}
-    state.componentsSearchForm.data.forEach(item => {
-      if (item.type === 'checkButton') {
-        params[item.id] = item.data
-          .filter(i => i.checked)
-          .map(i => i.id)
-          .join(',')
-      } else if (item.type === 'checkbox') {
-        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
-      } else if (item.type === 'picker') {
-        if (item.value) {
-          params[item.id] =
-            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
-        }
-      } else {
-        params[item.id] = item.value
-      }
-    })
-    apiFlow
-      .page({
-        ...{
-          current: state.componentsPagination.data.index,
-          size: state.componentsPagination.data.pageNumber,
-          applyTypeId: state.componentsTree.value,
-          sorts: orderBy.value
-            ? orderBy.value.prop +
-              ',' +
-              (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
-            : ''
-        },
-        ...params
-      })
-      .then(
-        result => {
-          console.log(result)
-          result.data.records.forEach(item => {})
-          state.componentsTable.data = result.data.records
-          state.componentsPagination.data.amount = result.data.total
-          state.componentsPagination.defaultAttribute.total = result.data.total
-          loading.value = false
-        },
-        () => {
-          loading.value = false
-        }
-      )
-  }
+  // // 发送api请求 流程列表
+  // const flowPageApi = () => {
+  //   loading.value = true
+  //   const params = {}
+  //   state.componentsSearchForm.data.forEach(item => {
+  //     if (item.type === 'checkButton') {
+  //       params[item.id] = item.data
+  //         .filter(i => i.checked)
+  //         .map(i => i.id)
+  //         .join(',')
+  //     } else if (item.type === 'checkbox') {
+  //       params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
+  //     } else if (item.type === 'picker') {
+  //       if (item.value) {
+  //         params[item.id] =
+  //           item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
+  //       }
+  //     } else {
+  //       params[item.id] = item.value
+  //     }
+  //   })
+  //   apiFlow
+  //     .page({
+  //       ...{
+  //         current: state.componentsPagination.data.index,
+  //         size: state.componentsPagination.data.pageNumber,
+  //         applyTypeId: state.componentsTree.value,
+  //         sorts: orderBy.value
+  //           ? orderBy.value.prop +
+  //             ',' +
+  //             (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
+  //           : ''
+  //       },
+  //       ...params
+  //     })
+  //     .then(
+  //       result => {
+  //         console.log(result)
+  //         result.data.records.forEach(item => {})
+  //         state.componentsTable.data = result.data.records
+  //         state.componentsPagination.data.amount = result.data.total
+  //         state.componentsPagination.defaultAttribute.total = result.data.total
+  //         loading.value = false
+  //       },
+  //       () => {
+  //         loading.value = false
+  //       }
+  //     )
+  // }
   // // 发送api请求 删除流程
   // const flowDeleteApi = () => {
   //   return apiFlow
@@ -903,15 +947,15 @@
   //     })
   // }
   const currentChange = e => {
-    state.componentsTree.value = e.applyTypeId
-    reloadData()
+    queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
+    table.value.reloadData()
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 发送api请求 查询表单树解构
     listApplyTypeTreeApi()
     // 发送api请求 流程列表
-    flowPageApi()
+    // flowPageApi()
     // // 发送api请求 删除流程
     // flowDeleteApi()
     // // 发送api请求 启用/停用
