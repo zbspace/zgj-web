@@ -1,44 +1,27 @@
 <template>
   <span>
-    <span>
-      <!-- <el-select
-        ref="userselect"
-        :model="props.mode"
-        :size="size"
-        placeholder="请选择"
-        :open="false"
-        :style="{ width: props.showButton ? '85%' : '100%' }"
-        v-model:value="currentValue"
-        @click="showOrgPlusModal"
-      >
-        <el-option
-          v-for="item in selectedList"
-          :label="item.name"
-          :value="item.id"
-          :key="item.id"
-        ></el-option>
-      </el-select> -->
+    <span v-if="props.type == 'select'">
       <a-select
         ref="userselect"
         :mode="props.mode"
-        :size="size"
+        allowClear
+        size="default"
         :open="false"
-        :style="{ width: props.showButton ? '85%' : '100%' }"
+        style="width: 90%"
         v-model:value="currentValue"
-        @click="showOrgPlusModal"
+        @click="addApprover"
       >
         <a-select-option
           v-for="item in selectedList"
-          :value="item.orgId"
-          :key="item.orgId"
-          >{{ item.orgName }}</a-select-option
+          :value="item.userId"
+          :key="item.userId"
+          >{{ item.nickName }}</a-select-option
         >
       </a-select>
       <a-button
         v-if="props.showButton"
-        @click="showOrgPlusModal"
-        :size="size"
-        :style="{ width: props.showButton ? '15%' : '0%' }"
+        @click="showUserPlusModal"
+        style="width: 10%"
       >
         <template #icon>
           <select-outlined />
@@ -46,16 +29,36 @@
         <span>选择</span>
       </a-button>
     </span>
-    <!-- <org-selector-plus
-      ref="orgselectorPlus"
+    <div v-else class="add-user-wrapper">
+      <div class="add-user-icon">
+        <a-button shape="round" @click="showUserPlusModal">
+          <template #icon>
+            <plus-outlined />
+          </template>
+        </a-button>
+      </div>
+      <div
+        class="add-user-item"
+        v-for="item in selectedList"
+        :key="item.userId"
+      >
+        <a-avatar size="small">
+          <template #icon><UserOutlined /></template>
+        </a-avatar>
+        <div>{{ item.nickName }}</div>
+        <close-outlined @click="removeSelectedItem(item)" />
+      </div>
+    </div>
+    <!-- <user-selector-plus
+      ref="userselectorPlus"
       :max="max"
       :min="min"
-      :radioModel="radioModel"
       @onBack="callBack"
     /> -->
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
+      ref="userselectorPlus"
       @update:show="showDepPerDialog = $event"
       v-if="showDepPerDialog"
       :tabsShow="tabsShow"
@@ -65,34 +68,35 @@
     </kDepartOrPersonVue>
   </span>
 </template>
-<script setup name="GDept">
-  import { ref, watch, toRaw, onMounted } from 'vue'
+<script setup name="GUser">
+  import { ref, watch, onMounted } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  // import { OrganizationApi } from '@/api/system/organization/OrganizationApi'
-  // 接收属性
+  import { remove } from 'lodash-es'
+  // import { UserApi } from '@/api/system/user/UserApi'
   const showDepPerDialog = ref(false)
-  const tabsShow = ref(['organ', 'user'])
+  const tabsShow = ref(['user'])
   const searchSelected = ref([])
+  // 接收属性
   const props = defineProps({
-    mode: { type: String, default: 'combobox' },
+    mode: { type: String, default: 'default' },
+    type: { type: String, default: 'select' },
     showButton: { type: Boolean, default: false },
-    radioModel: { type: Boolean, default: false },
     modelValue: { type: Array, default: () => [] },
-    callBackType: { type: String, default: 'array' },
     min: { type: Number, default: 1 },
-    max: { type: Number, default: 100000 },
-    size: { type: String, default: 'small' }
+    max: { type: Number, default: 100000 }
   })
 
   const currentValue = ref([])
 
   const selectedList = ref([])
 
+  const userselectorPlus = ref()
+
   watch(
     () => props.modelValue,
     newValue => {
-      if (selectedList.value.length === 0) {
-        // 获取机构信息
+      if (selectedList.value.length == 0) {
+        // 获取用户信息
         if (newValue && newValue.length > 0) {
           reload(newValue)
         }
@@ -101,7 +105,7 @@
   )
 
   onMounted(() => {
-    if (selectedList.value.length === 0) {
+    if (selectedList.value.length == 0) {
       // 获取机构信息
       if (props.modelValue && props.modelValue.length > 0) {
         reload(props.modelValue)
@@ -109,35 +113,40 @@
     }
   })
 
-  const reload = async orgIds => {
-    if (!Array.isArray(orgIds)) {
-      orgIds = [orgIds]
-    }
-    // const res = await OrganizationApi.getOrgInfoListByIds({ orgIdList: orgIds })
+  const reload = async userIds => {
+    // const res = await UserApi.getUsersByUserIds({ userIds })
     // if (res.data) {
     //   res.data.forEach(item => {
-    //     currentValue.value.push(item.orgId)
+    //     currentValue.value.push(item.userId)
     //     selectedList.value.push(item)
+    //     emit(
+    //       'update:label',
+    //       selectedList.value.map(a => a.nickName)
+    //     )
     //   })
     // }
   }
 
-  const showOrgPlusModal = () => {
+  const showUserPlusModal = () => {
+    // userselectorPlus.value.showUserPlusModal(
+    //   selectedList.value.map(a => a.userId)
+    // )
     showDepPerDialog.value = true
-    // orgselectorPlus.value.showOrgPlusModal(selectedList.value.map(a => a.orgId))
   }
-  /* const removeSelectedItem = record => {
-  remove(selectedList.value, item => item.orgId === record.orgId);
-  remove(currentValue.value, item => item === record.orgId);
-  // 只有ID
-  orgselectorPlus.value.delRecord(record);
-  emit('update:modelValue', currentValue.value);
-  emit(
-    'update:label',
-    selectedList.value.map(a => a.orgName)
-  );
-  emit('update:data', selectedList);
-}; */
+
+  const removeSelectedItem = record => {
+    remove(selectedList.value, item => item.userId === record.userId)
+    remove(currentValue.value, item => item === record.userId)
+    remove(searchSelected.value, item => item.id === record.userId)
+    // 只有ID
+    // userselectorPlus.value.delRecord(record)
+    emit('update:modelValue', currentValue.value)
+    emit(
+      'update:label',
+      selectedList.value.map(a => a.nickName)
+    )
+    emit('update:data', selectedList)
+  }
 
   const emit = defineEmits([
     'update:modelValue',
@@ -151,30 +160,26 @@
    * @param {*} record
    */
   const callBack = records => {
+    console.log(records)
     searchSelected.value = records
     selectedList.value = []
     currentValue.value = []
     for (let index = 0; index < records.length; index++) {
       const element = {
-        orgId: records[index].id,
-        orgName: records[index].name
+        userId: records[index].id,
+        nickName: records[index].name
       }
       selectedList.value.push(element)
       // 只有ID
       currentValue.value.push(records[index].id)
     }
-    if (props.callBackType === 'array') {
-      emit('update:modelValue', toRaw(currentValue.value))
-      const label = selectedList.value.map(a => a.orgName)
-      emit('update:label', label)
-      emit('change', toRaw(currentValue.value))
-    } else {
-      emit('update:modelValue', toRaw(currentValue.value[0]))
-      const label = selectedList.value.map(a => a.orgName)
-      emit('update:label', label[0])
-      emit('change', toRaw(currentValue.value[0]))
-    }
+    emit('update:modelValue', currentValue.value)
+    emit(
+      'update:label',
+      selectedList.value.map(a => a.nickName)
+    )
     emit('update:data', selectedList)
+    emit('change', selectedList.value)
   }
 
   defineExpose({})
@@ -240,7 +245,9 @@
       margin-bottom: 4px;
     }
   }
-  .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
-    border-color: #d0963e !important;
+  .ant-btn:hover,
+  .ant-btn:focus {
+    color: #d0963e;
+    border-color: #d0963e;
   }
 </style>

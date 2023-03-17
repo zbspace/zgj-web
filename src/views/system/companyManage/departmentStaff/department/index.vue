@@ -13,6 +13,7 @@
       tableClick="organName"
       @cellClick="cellClick"
       @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
     >
       <template #title>
         <div class="title">
@@ -177,6 +178,30 @@
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
     />
+    <!-- 批量操作 -->
+    <actionMoreDialog
+      :show="showToastDialog"
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="showToastDialogContent"
+      label="organName"
+      @sureAction="deleteMore"
+    ></actionMoreDialog>
+    <!-- 单个操作 -->
+    <JyElMessageBox
+      :modelValue="state.showOneAction.show"
+      :defaultAttribute="{}"
+      @confirmClick="confirmOneClick"
+    >
+      <template #header>
+        <div class="header-div">
+          <img src="@/assets/svg/common/warning.svg" />
+          <span>{{ state.showOneAction.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showOneAction.content.data }}</div>
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 
@@ -187,6 +212,7 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import department from '@/api/system/companyManagement/department'
+  import actionMoreDialog from '@/views/components/actionMoreDialog'
   import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/department.json'
   import { CircleClose } from '@element-plus/icons-vue'
 
@@ -203,6 +229,11 @@
   const firstLevel = ref(false)
   const card = ref(null)
   const currentDept = ref(null)
+  const showToastDialog = ref(false)
+  const currentActionType = ref(null)
+  const showToastDialogContent = ref(null)
+  const currentActionDept = ref(null)
+  const currentAction = ref(null)
 
   const form = reactive({
     organId: '',
@@ -233,6 +264,15 @@
   })
 
   const state = reactive({
+    showOneAction: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
+    },
     componentsSearchForm: {
       data: [
         {
@@ -246,7 +286,7 @@
           }
         },
         {
-          id: 'status',
+          id: 'flag',
           label: '状态',
           type: 'select',
           inCommonUse: true,
@@ -257,7 +297,7 @@
             },
             {
               label: '停用',
-              value: 2
+              value: 0
             }
           ],
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -340,6 +380,7 @@
       ]
     },
     componentsBatch: {
+      selectionData: [],
       data: [
         {
           name: '批量停用'
@@ -359,29 +400,91 @@
   }
 
   function customClick(row, column, cell, event) {
-    showFormDialog.value = true
-    form.organId = column.organId
-    nextTick(() => {
-      vFormLibraryRef.value.resetFields()
-      department.detail(column.organId).then(res => {
-        const data = res.data
-        console.log(data)
-        form.organId = data.organId
-        form.organNo = data.organNo
-        form.organName = data.organName
-        form.organTypeId = data.organTypeId
-        form.organPid = data.organPid
-        form.organPName =
-          data.organPName ||
-          JSON.parse(localStorage.getItem('departLists')).find(
-            i => i.tenantId === localStorage.getItem('tenantId')
-          ).tenantName
-        form.leaderUserId = data.leaderUserId
-        form.leaderUserName = data.leaderUserName
-        form.leaderUserName = data.leaderUserName
-        console.log(form)
+    console.log(cell)
+    if (cell.name === '修改') {
+      showFormDialog.value = true
+      form.organId = column.organId
+      nextTick(() => {
+        vFormLibraryRef.value.resetFields()
+        department.detail(column.organId).then(res => {
+          const data = res.data
+          console.log(data)
+          form.organId = data.organId
+          form.organNo = data.organNo
+          form.organName = data.organName
+          form.organTypeId = data.organTypeId
+          form.organPid = data.organPid
+          form.organPName =
+            data.organPName ||
+            JSON.parse(localStorage.getItem('departLists')).find(
+              i => i.tenantId === localStorage.getItem('tenantId')
+            ).tenantName
+          form.leaderUserId = data.leaderUserId
+          form.leaderUserName = data.leaderUserName
+          form.leaderUserName = data.leaderUserName
+          console.log(form)
+        })
       })
-    })
+    } else if (cell.name === '上移') {
+      console.log('上移')
+    } else if (cell.name === '下移') {
+      console.log('下移')
+    } else if (cell.name === '状态') {
+      currentAction.value = column.flag
+      currentActionDept.value = column.organId
+      state.showOneAction.show = true
+      state.showOneAction.header.data = '提示'
+      state.showOneAction.content.data = '是否禁用该部门'
+    }
+  }
+
+  function confirmOneClick() {
+    if (currentAction.value === '启用') {
+      department
+        .batchDisable([currentActionDept.value])
+        .then(res => {
+          console.log(res)
+          table.value.reloadData()
+        })
+        .finally(() => {
+          state.showOneAction.show = false
+        })
+    }
+  }
+
+  function clickBatchButton(item, selectionData) {
+    currentActionType.value = item.name
+    if (item.name === '批量停用') {
+      showToastDialogContent.value = {
+        header: {
+          data: '批量停用'
+        },
+        content: {
+          data: '是否批量停用这些部门？'
+        }
+      }
+    } else if (item.name === '批量启用') {
+      showToastDialogContent.value = {
+        header: {
+          data: '批量启用'
+        },
+        content: {
+          data: '是否批量启用这些部门？'
+        }
+      }
+    } else if (item.name === '批量删除') {
+      showToastDialogContent.value = {
+        header: {
+          data: '批量删除'
+        },
+        content: {
+          data: '是否批量删除这些部门？'
+        }
+      }
+    }
+    state.componentsBatch.selectionData = selectionData
+    console.log(item, JSON.parse(JSON.stringify(selectionData)))
+    showToastDialog.value = true
   }
 
   // 点击关闭
@@ -537,6 +640,40 @@
 
   // 删除部门
   function deleteNode() {}
+
+  const deleteMore = () => {
+    if (currentActionType.value === '批量停用') {
+      department
+        .batchDisable(state.componentsBatch.selectionData.map(i => i.organId))
+        .then(res => {
+          console.log(res)
+          table.value.reloadData()
+        })
+        .finally(() => {
+          showToastDialog.value = false
+        })
+    } else if (currentActionType.value === '批量启用') {
+      department
+        .batchEnable(state.componentsBatch.selectionData.map(i => i.organId))
+        .then(res => {
+          console.log(res)
+          table.value.reloadData()
+        })
+        .finally(() => {
+          showToastDialog.value = false
+        })
+    } else if (currentActionType.value === '批量删除') {
+      department
+        .batchDelete(state.componentsBatch.selectionData.map(i => i.organId))
+        .then(res => {
+          console.log(res)
+          table.value.reloadData()
+        })
+        .finally(() => {
+          showToastDialog.value = false
+        })
+    }
+  }
 
   onBeforeMount(() => {})
 </script>
