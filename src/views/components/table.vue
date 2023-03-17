@@ -71,8 +71,8 @@
                 <span>{{
                   data.name === '状态'
                     ? scope.row[props.statusColoum] === props.openValue
-                      ? '禁用'
-                      : '启用'
+                      ? '启用'
+                      : '停用'
                     : data.name
                 }}</span>
               </div>

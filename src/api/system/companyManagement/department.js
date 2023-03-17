@@ -39,4 +39,31 @@ api.edit = data => {
   })
 }
 
+// 批量删除部门
+api.batchDelete = data => {
+  return request({
+    method: 'POST',
+    url: '/organ/batchDelete',
+    data
+  })
+}
+
+// 批量停用部门
+api.batchDisable = data => {
+  return request({
+    method: 'POST',
+    url: '/organ/batchDisable',
+    data
+  })
+}
+
+// 批量启用部门
+api.batchEnable = data => {
+  return request({
+    method: 'POST',
+    url: '/organ/batchEnable',
+    data
+  })
+}
+
 export default api
