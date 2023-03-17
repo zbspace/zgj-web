@@ -13,6 +13,14 @@ api.page = params => {
   })
 }
 
+// 获取部门列表
+api.subOrganList = organId => {
+  return request({
+    method: 'GET',
+    url: `/organ/subOrganList/${organId}`
+  })
+}
+
 // 部门详情
 api.detail = organId => {
   return request({

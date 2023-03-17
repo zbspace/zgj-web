@@ -485,20 +485,10 @@
       ])
     } else {
       console.log(node.data)
-      getDeptData(node.data.organId, data => {
-        return resolve(data)
+      department.subOrganList(node.data.organId).then(res => {
+        return resolve(res.data)
       })
     }
-  }
-
-  function getDeptData(organId, callback) {
-    department
-      .page({
-        organId
-      })
-      .then(res => {
-        callback(res.data.records)
-      })
   }
 
   function currentChange(type) {
