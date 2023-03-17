@@ -571,6 +571,7 @@
   import FlowSelect from '../../common/FlowSelect.vue'
   import FlowDrawerContent from '../FlowDrawerContent.vue'
   import GDept from '@/components/FlowDesign/drawer/approver/GDept/index.vue'
+  import GUser from '@/components/FlowDesign/drawer/approver/GUser/index.vue'
   // import GDeptApprover from '@/components/GDeptApprover/index.vue'
   import FlowPopoverTip from '../FlowPopoverTip.vue'
   // import { UserApi } from '@/api/system/user/UserApi'
@@ -753,7 +754,7 @@
    */
   const delApproval = group => {
     props.node.approverGroups.forEach((element, i) => {
-      if (element.id == group.id) {
+      if (element.id === group.id) {
         props.node.approverGroups.splice(i, 1)
       }
     })
@@ -770,13 +771,13 @@
     } else if (props.node.approverGroups.length == 1) {
       group = props.node.approverGroups[0]
       multiple = approvals.filter(
-        approval => approval.value == group.approverType
+        approval => approval.value === group.approverType
       )[0].multiple
       // 指定成员、发起人自选、节点审批人、表单内人员
       // TODO: 需要根据选择判断是否多个人
     } else if (group) {
       multiple = approvals.filter(
-        approval => approval.value == group.approverType
+        approval => approval.value === group.approverType
       )[0].multiple
       // 指定成员、发起人自选、节点审批人、表单内人员
       // TODO: 需要根据选择判断是否多个人

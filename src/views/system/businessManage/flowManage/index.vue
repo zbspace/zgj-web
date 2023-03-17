@@ -33,6 +33,7 @@
           <componentsBatch
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
+            @clickBatchButton="batchOpt"
           >
           </componentsBatch>
         </div>
@@ -105,6 +106,64 @@
         ></newlyIncreased>
       </AntModalBox>
     </div>
+    <!-- 弹窗提示 -->
+    <JyElMessageBox
+      v-model="state.MessageBox.show"
+      :show="state.MessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.MessageBox.header.icon" alt="" />
+          <span>{{ state.MessageBox.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.MessageBox.content.data }}</div>
+      </template>
+      <template #footer>
+        <el-button
+          type="primary"
+          @click="submitElMessageBox(state.MessageBox.type)"
+        >
+          确认
+        </el-button>
+        <el-button @click="state.MessageBox.show = false">取消</el-button>
+      </template>
+    </JyElMessageBox>
+    <!-- 批量操作弹框提示 -->
+    <JyElMessageBox
+      v-model="state.showToastDialog.show"
+      :show="state.showToastDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.showToastDialog.header.icon" alt="" />
+          <span>{{ state.showToastDialog.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <p
+            v-for="item in state.batchColumnData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{ item }}</p
+          >
+        </el-scrollbar>
+      </template>
+      <template #footer>
+        <el-button
+          v-for="item in state.componentsBatch.butDatas"
+          :key="item.name"
+          :type="item.type"
+          @click="item.clickName"
+          >{{ item.name }}</el-button
+        >
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 
@@ -125,8 +184,9 @@
   import componentsBatch from '@/views/components/batch.vue'
   // import newlyIncreased from './newly-increased.vue'
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
-  import apiFlow from '@/api/system/flowManagement'
   import apiForm from '@/api/system/formManagement'
+  import apiFlow from '@/api/system/flowManagement'
+  import { ElMessage } from 'element-plus'
   // 异步组件
   const newlyIncreased = defineAsyncComponent(() =>
     import('./newly-increased.vue')
@@ -137,6 +197,30 @@
   const orderBy = ref(null)
 
   const state = reactive({
+    columnData: {},
+    batchColumnData: [],
+    MessageBox: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '删除'
+    },
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '删除'
+    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -416,6 +500,13 @@
         {
           name: '批量停用'
         }
+      ],
+      butDatas: [
+        {
+          name: '知道了',
+          type: '',
+          clickName: closeBatchTabel
+        }
       ]
     },
     componentsDocumentsDetails: {
@@ -451,6 +542,159 @@
     if (column.property === 'formName') {
       state.componentsDocumentsDetails.show = true
     }
+  }
+  const customClick = (row, column, cell, event) => {
+    console.log(column)
+    state.sealIds = column.id
+    state.columnData = column
+    if (cell.name === '修改') {
+      state.title = '修改'
+      // showLibraryDialog.value = true
+    }
+    if (cell.name === '复制') {
+      state.title = '复制'
+      // showLibraryDialog.value = true
+    }
+    if (cell.name === '删除') {
+      state.MessageBox.header.data = '确认要删除流程吗？'
+      state.MessageBox.show = true
+      state.MessageBox.content.data = ''
+      state.MessageBox.type = '删除'
+    }
+    if (cell.name === '停用') {
+      state.MessageBox.header.data = '停用'
+      state.MessageBox.content.data = '请问确定停用该流程吗？'
+      state.MessageBox.show = true
+      state.MessageBox.type = '停用'
+    }
+    if (cell.name === '启用') {
+      state.MessageBox.header.data = '启用'
+      state.MessageBox.content.data = '请问确定启用该流程吗？'
+      state.MessageBox.show = true
+      state.MessageBox.type = '启用'
+    }
+  }
+  // 关闭表单复制弹窗
+  function closeBatchTabel() {
+    state.showToastDialog.show = false
+  }
+  // 提交弹窗
+  const submitElMessageBox = type => {
+    if (type === '取消删除') {
+      state.MessageBox.show = false
+    }
+    if (type === '删除') {
+      console.log(state.columnData)
+      console.log(state.columnData)
+      if (state.columnData.flag === '1') {
+        state.MessageBox.header.data = '提示'
+        state.MessageBox.content.data = '请将流程停用后再进行删除'
+        state.MessageBox.show = true
+        state.MessageBox.type = '取消删除'
+        return
+      }
+      apiOpt(type, apiFlow.flowDelete(type, { ids: state.sealId }))
+    }
+    if (type === '停用') {
+      apiOpt(
+        type,
+        apiFlow.flowEnable(type, { processId: state.sealId, processStatus: 0 })
+      )
+    }
+    if (type === '启用') {
+      apiOpt(
+        type,
+        apiFlow.flowEnable(type, { processId: state.sealId, processStatus: 1 })
+      )
+    }
+  }
+  const apiOpt = (typeName, apiName) => {
+    apiName.then(res => {
+      if (res.code === 200) {
+        ElMessage.success(`${typeName}成功！`)
+      } else {
+        ElMessage.success(`${typeName}失败，请重试`)
+      }
+    })
+  }
+  // 批量删除
+  function batchOpt(item) {
+    state.batchColumnData = []
+    state.componentsBatch.selectionData.forEach(v => {
+      state.batchColumnData.push(v.flowName)
+    })
+    state.showToastDialog.header.data = item.name
+    state.showToastDialog.content.data = `已选中以下流程，请问确定要${item.name}吗？`
+    state.showToastDialog.show = true
+    state.showToastDialog.type = item.name
+    // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+    state.componentsBatch.butDatas = [
+      {
+        name: '确定',
+        type: 'primary',
+        clickName: sureBatchOpt
+      },
+      {
+        name: '取消',
+        type: '',
+        clickName: closeBatchTabel
+      }
+    ]
+  }
+  // 确定批量操作
+  const sureBatchOpt = () => {
+    const list = state.componentsBatch.selectionData
+    const idList = []
+    switch (state.showToastDialog.type) {
+      case '批量删除':
+        state.batchColumnData = []
+        list.forEach(v => {
+          if (v.flag === '1') {
+            state.batchColumnData.push(v.flowName)
+          }
+          idList.push(v.flowMessageId)
+        })
+        if (state.batchColumnData.length > 0) {
+          state.showToastDialog.header.data = state.showToastDialog.type
+          state.showToastDialog.content.data = `请将以下流程停用后再进行删除`
+          state.showToastDialog.show = false
+          setTimeout(() => {
+            state.showToastDialog.show = true
+          }, 300)
+          // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+          state.componentsBatch.butDatas = [
+            {
+              name: '知道了',
+              type: 'primary',
+              clickName: closeBatchTabel
+            }
+          ]
+        } else {
+          batchOptApi('批量删除', apiFlow.batchDelete(idList))
+        }
+        break
+      case '批量停用':
+        list.forEach(v => {
+          idList.push({ processId: v.flowMessageId })
+        })
+        batchOptApi('批量停用', apiFlow.batachDisable(idList))
+        break
+      case '批量启用':
+        list.forEach(v => {
+          idList.push({ processId: v.flowMessageId })
+        })
+        batchOptApi('批量启用', apiFlow.batachEnable(idList))
+        break
+    }
+  }
+  const batchOptApi = (type, apiName) => {
+    apiName.then(res => {
+      if (res.code === 200) {
+        ElMessage.success(`${type}成功！`)
+      } else {
+        ElMessage.error(`${type}失败，请重试！`)
+      }
+    })
   }
   // 点击关闭
   const clickClose = () => {
@@ -564,6 +808,7 @@
       .then(
         result => {
           console.log(result)
+          result.data.records.forEach(item => {})
           state.componentsTable.data = result.data.records
           state.componentsPagination.data.amount = result.data.total
           state.componentsPagination.defaultAttribute.total = result.data.total

@@ -274,7 +274,7 @@
               <span class="waixian">外显是指在其他业务系统上显示的标识</span>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item label="印章状态" prop="sealState">
               <el-radio-group v-model="state.form.sealState" class="ml-4">
                 <el-radio :label="1" size="large">正常</el-radio>
@@ -282,7 +282,7 @@
                 <el-radio :label="3" size="large">已销毁</el-radio>
               </el-radio-group>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -522,7 +522,7 @@
       keepOrganId: '',
       keepOrganName: '',
       extShow: 1,
-      sealState: 1,
+      // sealState: 1,
       hardwareVersionId: '',
       firmwareVersionId: '',
       bylawsUrl: '',
@@ -1160,7 +1160,10 @@
       width: 100%;
     }
   }
-
+  .el-icon {
+    color: #aaaaaa;
+    margin-right: 5px;
+  }
   .btnContainer {
     width: 100%;
     border-bottom: 1px solid var(--el-border-color);

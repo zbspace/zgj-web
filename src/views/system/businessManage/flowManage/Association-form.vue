@@ -222,7 +222,7 @@
   const form = reactive({
     ProcessName: '',
     ProcessType: false,
-    fileType: '',
+    sealUseTypeId: 1,
     applyTypeId: '',
     formMessageId: '',
     rules: {

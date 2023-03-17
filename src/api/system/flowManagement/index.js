@@ -58,37 +58,37 @@ api.add = data => {
 }
 
 // 编辑流程
-api.edit = data => {
+api.flowEdit = data => {
   return request({
     method: 'POST',
-    url: '/form/edit',
+    url: '/flow/edit',
     data
   })
 }
 
 // 删除流程
-api.delete = data => {
+api.flowDelete = data => {
   return request({
     method: 'POST',
-    url: '/form/delete',
+    url: '/flow/delete',
     data
   })
 }
 
 // 启用/停用
-api.enable = data => {
+api.flowEnable = data => {
   return request({
     method: 'POST',
-    url: '/form/enable',
+    url: '/flow/enable',
     data
   })
 }
 
 // 复制流程
-api.copy = data => {
+api.flowCopy = data => {
   return request({
     method: 'POST',
-    url: '/form/copy',
+    url: '/flow/copy',
     data
   })
 }
@@ -97,7 +97,7 @@ api.copy = data => {
 api.batchDelete = data => {
   return request({
     method: 'POST',
-    url: '/form/batchDelete',
+    url: '/flow/batchDelete',
     data
   })
 }
@@ -106,7 +106,7 @@ api.batchDelete = data => {
 api.batachEnable = data => {
   return request({
     method: 'POST',
-    url: '/form/batachEnable',
+    url: '/flow/batachEnable',
     data
   })
 }
@@ -115,7 +115,7 @@ api.batachEnable = data => {
 api.batachDisable = data => {
   return request({
     method: 'POST',
-    url: '/form/batachDisable',
+    url: '/flow/batachDisable',
     data
   })
 }
