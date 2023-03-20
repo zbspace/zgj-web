@@ -39,6 +39,8 @@
         ref="tableRef"
         rowKey="relatedCompanyId"
         @selection-change="selectionChange"
+        @select="select"
+        class="relate-comp-table"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column type="index" label="序号" width="80" fixed="left">
@@ -70,7 +72,7 @@
 
       <template #footer>
         <el-button type="primary" @click="submit">确定</el-button>
-        <el-button @click="isVisible = false">取消</el-button>
+        <el-button @click="cancel">取消</el-button>
       </template>
     </JyDialog>
 
@@ -103,6 +105,10 @@
     modelValue: {
       type: Boolean,
       defult: false
+    },
+    haveSelectList: {
+      type: Array,
+      default: () => []
     }
   })
 
@@ -127,8 +133,22 @@
       relatedCompanyList.value = res.data.records
       paginationInfo.value.total = res.data && res.data.total
       paginationInfo.value.pages = res.data && res.data.pages
+      initSelect()
     } catch (error) {}
     loading.value = false
+  }
+
+  const select = (selection, row) => {
+    const bool = selection.filter(
+      v => v.relatedCompanyId === row.relatedCompanyId
+    )
+    if (bool) {
+      selectList.value.push(row)
+    } else {
+      selectList.value = selectList.value.filter(
+        v => v.relatedCompanyId !== row.relatedCompanyId
+      )
+    }
   }
 
   const showChange = row => {
@@ -140,16 +160,25 @@
     emit('on-submit', selectList.value)
   }
 
-  const selectionChange = selectArr => {
-    selectList.value = selectArr
+  const cancel = () => {
+    isVisible.value = false
   }
 
   const opened = async () => {
+    selectList.value = [...props.haveSelectList]
     await getRelatedCompanyList()
+  }
+
+  const initSelect = () => {
     nextTick(() => {
-      if (selectList.value.length) {
-        tableRef.value.toggleRowSelection(selectList.value)
-      }
+      selectList.value.forEach(item => {
+        const obj = relatedCompanyList.value.find(
+          v => v.relatedCompanyId === item.relatedCompanyId
+        )
+        if (obj) {
+          tableRef.value.toggleRowSelection(obj, true)
+        }
+      })
     })
   }
 </script>
@@ -160,7 +189,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .select-block.jy-constact-uit {
     margin-bottom: 16px;
     display: flex;
@@ -169,6 +198,14 @@
       width: 16px;
       height: 16px;
       margin-right: 8px;
+    }
+  }
+
+  .jy-table.relate-comp-table {
+    .el-table__header-wrapper {
+      .el-checkbox {
+        display: none;
+      }
     }
   }
 </style>
