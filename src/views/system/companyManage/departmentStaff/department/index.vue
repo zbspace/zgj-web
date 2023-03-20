@@ -62,9 +62,6 @@
             v-show="menuVisible"
             :body-style="{ padding: '0 10px' }"
           >
-            <div @click="addSameLevelNode" v-show="firstLevel">
-              添加同级部门
-            </div>
             <div class="add" @click="addChildNode">添加子部门</div>
             <div class="delete" @click="editNode" v-show="firstLevel">
               编辑部门
@@ -363,7 +360,7 @@
       defaultProps: {
         label: 'organName',
         children: 'children',
-        isLeaf: 'isLeaf'
+        isLeaf: 'haveChildren'
       },
       value: ''
     },
@@ -586,6 +583,7 @@
       department
         .subOrganList(-1)
         .then(res => {
+          res.data.forEach(i => (i.haveChildren = !i.haveChildren))
           firstTreeData.value = res.data
           return resolve([
             {
@@ -593,7 +591,7 @@
                 i => i.tenantId === localStorage.getItem('tenantId')
               ).tenantName,
               organId: '-1',
-              isLeaf: false,
+              haveChildren: false,
               children: []
             }
           ])
@@ -611,6 +609,7 @@
     } else {
       console.log(node.data)
       department.subOrganList(node.data.organId).then(res => {
+        res.data.forEach(i => (i.haveChildren = !i.haveChildren))
         return resolve(res.data)
       })
     }
@@ -640,11 +639,6 @@
     menuVisible.value = false
     //  要及时关掉监听，不关掉的是一个坑，不信你试试，虽然前台显示的时候没有啥毛病，加一个alert你就知道了
     document.removeEventListener('click', foo)
-  }
-
-  // 添加同级部门
-  function addSameLevelNode() {
-    showFormDialog.value = true
   }
 
   // 添加子部门
