@@ -882,15 +882,15 @@
       },
       data: [
         {
-          name: 't-zgj-seal.BatchSetAvailable',
+          name: '批量设置可见范围',
+          label: 't-zgj-seal.BatchSetVisibility'
+        },
+        {
+          name: '批量设置可用范围',
           label: 't-zgj-seal.BatchSetAvailable'
         },
         {
-          name: 't-zgj-seal.BatchSetAvailable',
-          label: 't-zgj-seal.BatchSetAvailable'
-        },
-        {
-          name: 't-zgj-seal.BatchDelete',
+          name: '批量删除',
           label: 't-zgj-seal.BatchDelete'
         }
       ]
