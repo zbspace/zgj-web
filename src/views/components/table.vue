@@ -70,7 +70,7 @@
               >
                 <span>{{
                   data.name === 'status'
-                    ? scope.row[props.statusColoum] !== props.openValue
+                    ? scope.row[props.statusColoum] === props.openValue
                       ? $t('t-zgj-Enable')
                       : $t('t-zgj-seal.deactivated')
                     : $t(data.name)
