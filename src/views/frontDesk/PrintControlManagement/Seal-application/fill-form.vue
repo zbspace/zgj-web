@@ -32,19 +32,134 @@
             ></SealApplicationStep>
           </div>
           <JyVform
+            v-show="step === 'one'"
+            v-if="fillFormInformationJson"
             mode="render"
-            :formJson="FillFormInformation"
+            :formJson="fillFormInformationJson"
             :formData="state.cache.formData"
             :optionData="state.cache.optionData"
             ref="refFillFormInformation"
           >
           </JyVform>
+          <div v-if="step === 'two'">
+            <documentsDetailsPortion>
+              <template #title>
+                <div class="topTitles">
+                  <div>审批流程</div>
+                  <el-select v-model="flowMessageId" placeholder="请选择流程">
+                    <el-option
+                      v-for="item in flowLists"
+                      :key="item.flowMessageId"
+                      :label="item.flowName"
+                      :value="item.flowMessageId"
+                    />
+                  </el-select>
+                </div>
+              </template>
+              <template #content>
+                <div style="height: 1000px">
+                  <VFlowDesign
+                    ref="refVFlowDesign"
+                    :defaultAttribute="{
+                      readable: true,
+                      mapable: false,
+                      scroll: false,
+                      top: '100'
+                    }"
+                  ></VFlowDesign>
+                </div>
+              </template>
+            </documentsDetailsPortion>
+            <div class="PrintingProcess">
+              <documentsDetailsPortion>
+                <template #title>
+                  <div>用印流程</div>
+                </template>
+                <template #content>
+                  <div class="PrintingProcess-content">
+                    <div
+                      class="PrintingProcess-content-list"
+                      v-for="(item, index) in state.cache.PrintingProcess.list"
+                      :key="index"
+                    >
+                      <div class="PrintingProcess-content-list-cont">
+                        <div class="PrintingProcess-content-list-cont-title">
+                          <img
+                            class="PrintingProcess-content-list-cont-title-img"
+                            src="@/assets/svg/yongyin-shenqing-rili-lan.svg"
+                            alt=""
+                          />
+                          <span
+                            class="PrintingProcess-content-list-cont-title-span"
+                            >{{ item.title }}</span
+                          >
+                        </div>
+                        <div
+                          class="PrintingProcess-content-list-cont-list"
+                          v-for="(node, num) in item.list"
+                          :key="num"
+                        >
+                          <div
+                            class="PrintingProcess-content-list-cont-list-name"
+                            >{{ node.name }}
+                          </div>
+                          <div
+                            class="PrintingProcess-content-list-cont-list-icon"
+                          >
+                            <img
+                              class="PrintingProcess-content-list-cont-list-icon-img"
+                              src="@/assets/svg/yongyin-shenqing-wenhao-hui.svg"
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="PrintingProcess-content-list-iocn">
+                        <img
+                          class="PrintingProcess-content-list-iocn-img"
+                          src="@/assets/svg/yongyin-shenqing-xiayibu.svg"
+                          alt=""
+                          v-if="
+                            index < state.cache.PrintingProcess.list.length - 1
+                          "
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </documentsDetailsPortion>
+            </div>
+          </div>
         </div>
       </template>
       <template #fixed>
-        <div class="fixed">
+        <div class="fixed" v-if="step === 'one'">
           <div class="ap-fixed">
             <el-button type="primary" @click="clickNextStep">下一步</el-button>
+          </div>
+        </div>
+        <div class="fixed" v-if="step === 'two'">
+          <div class="ap-fixed">
+            <el-button type="primary" @click="clickSubmit">提交</el-button>
+            <el-button @click="clickPrevious">上一步</el-button>
+            <el-button class="ap-fixed-save">
+              <span class="ap-fixed-save-text"> 保存模板 </span>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content=""
+                placement="top"
+              >
+                <template #content>
+                  <div style="width: 300px">
+                    模板可用于提高重复发起同种类型用印申请的填写效率，一种文件类型仅允许保存一个模板，保存后可在申请页面直接引用
+                  </div>
+                </template>
+                <i class="ap-fixed-save-icon">
+                  <svg class="iconpark-icon"><use href="#icon4"></use></svg>
+                </i>
+              </el-tooltip>
+            </el-button>
           </div>
         </div>
       </template>
@@ -55,18 +170,10 @@
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
-  import documentsDetailsPortion from '../../../components/documentsDetails/portion.vue'
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
-  import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
-  // import FillFormInformation from '@/views/system/businessManage/formManage/AddForm/templates/template7.json'
-  import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
+  import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
+  import sealApply from '@/api/frontDesk/printControl/sealApply'
+
   const router = useRouter()
   // const emit = defineEmits([])
   const state = reactive({
@@ -77,19 +184,87 @@
           active: true
         },
         {
-          name: '确认审批流程'
+          name: '确认审批流程',
+          active: false
         },
         {
-          name: '完成'
+          name: '完成',
+          active: false
         }
       ],
       formData: {},
       optionData: {},
       SealformData: {},
-      SealoptionData: {}
+      SealoptionData: {},
+      PrintingProcess: {
+        list: [
+          {
+            title: '盖前',
+            list: [
+              {
+                name: '说明详情后续补上'
+              }
+            ]
+          },
+          {
+            title: '实时视频盖章',
+            list: [
+              {
+                name: '说明详情后续补上'
+              },
+              {
+                name: '说明详情后续补上'
+              },
+              {
+                name: '说明详情后续补上'
+              }
+            ]
+          },
+          {
+            title: '盖中',
+            list: [
+              {
+                name: '说明详情后续补上'
+              },
+              {
+                name: '说明详情后续补上'
+              },
+              {
+                name: '说明详情后续补上'
+              },
+              {
+                name: '说明详情后续补上'
+              },
+              {
+                name: '说明详情后续补上'
+              }
+            ]
+          },
+          {
+            title: '盖后',
+            list: [
+              {
+                name: '说明详情后续补上'
+              }
+            ]
+          },
+          {
+            title: '归档',
+            list: [
+              {
+                name: '说明详情后续补上'
+              }
+            ]
+          }
+        ]
+      }
     }
   })
   const refFillFormInformation = ref(null)
+  const step = ref('one')
+  const fillFormInformationJson = ref(null)
+  const flowLists = ref([])
+  const flowMessageId = ref(null)
 
   // 点击返回上一页
   function clickBackPage() {
@@ -97,22 +272,53 @@
   }
 
   // 点击下一步
-  async function clickNextStep() {
-    try {
-      await refFillFormInformation.value.getFormData()
-      router.push({ name: 'ConfirmApprovalProcess' })
-    } catch (error) {
-      console.log('--->', error)
-    }
+  function clickNextStep() {
+    refFillFormInformation.value.getFormData().then(formData => {
+      console.log(JSON.parse(JSON.stringify(formData)))
+      state.cache.flowList[0].active = false
+      state.cache.flowList[1].active = true
+      step.value = 'two'
+      sealApply
+        .flowList({
+          formMessageId: router.currentRoute.value.params.id
+        })
+        .then(res => {
+          console.log(res)
+          flowLists.value = res.data
+          flowMessageId.value = res.data[0].flowMessageId
+        })
+    })
+  }
+
+  // 上一步
+  function clickPrevious() {
+    state.cache.flowList[0].active = true
+    state.cache.flowList[1].active = false
+    step.value = 'one'
+  }
+
+  // 点击提交
+  function clickSubmit() {
+    router.replace({ name: 'Accomplish' })
+  }
+
+  const infoDetail = () => {
+    sealApply
+      .formQuery({
+        formMessageId: router.currentRoute.value.params.id
+      })
+      .then(res => {
+        fillFormInformationJson.value = JSON.parse(res.data.formInfo)
+      })
   }
 
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-    // vFormLibraryRef.value.resetForm()
-    // vFormLibraryRef.value.getFormData().then()
+    infoDetail()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    // infoDetail()
   })
 </script>
 <style lang="scss" scoped>
@@ -136,17 +342,73 @@
       }
     }
 
+    .PrintingProcess {
+      .PrintingProcess-content {
+        display: flex;
+        flex-flow: wrap;
+
+        // align-items: flex-start;
+        .PrintingProcess-content-list {
+          // margin-right: 1rem;
+          margin-bottom: 1rem;
+          display: flex;
+          align-items: center;
+
+          .PrintingProcess-content-list-cont {
+            height: 17rem;
+            align-self: flex-start;
+            width: 15rem;
+            border: 1px solid var(--jy-color-border-1);
+            background-color: var(--jy-color-fill--1);
+            padding: 1rem;
+            box-sizing: border-box;
+
+            .PrintingProcess-content-list-cont-title {
+              display: flex;
+              justify-content: center;
+              height: 2rem;
+              align-items: center;
+              font-size: var(--jy-font-size-title-1);
+
+              .PrintingProcess-content-list-cont-title-img {
+                margin-right: 0.5rem;
+              }
+            }
+
+            .PrintingProcess-content-list-cont-list {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 0.5rem 1rem;
+              box-sizing: border-box;
+            }
+          }
+
+          .PrintingProcess-content-list-iocn {
+            margin-left: 1rem;
+            margin-right: 1rem;
+            width: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+    }
+
     .custom {
       // padding-right: 1.25rem;
       box-sizing: border-box;
       text-align: center;
       padding: 36px;
       padding-bottom: 4rem;
+      max-height: calc(100vh - 210px);
+      overflow-y: auto;
       .custom-buzhou {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 1rem 0;
+        padding: 1rem 0 0;
         box-sizing: border-box;
 
         .custom-buzhou-list {
@@ -212,7 +474,21 @@
       border-top: 1px solid var(--jy-color-border-2);
       background-color: var(--jy-in-common-use-1);
       z-index: 9;
+
+      .ap-fixed-save-icon {
+        .iconpark-icon {
+          width: 1rem;
+          height: 1rem;
+        }
+      }
     }
+  }
+
+  .topTitles {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 </style>
 <style>

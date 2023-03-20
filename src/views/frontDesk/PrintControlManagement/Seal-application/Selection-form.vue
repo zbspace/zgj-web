@@ -73,8 +73,24 @@
               <div class="ap-cont-liuc-buzou-text"> 完成用印申请 </div>
             </div>
           </div>
+          <el-input
+            v-model="keyword"
+            placeholder="请输入表单名称"
+            clearable
+            style="margin-bottom: 1rem"
+            @clear="applyList()"
+            @keyup.enter="applyList()"
+          >
+            <template #append>
+              <el-button :icon="Search" @click.stop="applyList()" />
+            </template>
+          </el-input>
           <div class="ap-cont-liebiao">
-            <div class="ap-cont-liebiao-list" v-for="n in 15" :key="n">
+            <div
+              class="ap-cont-liebiao-list"
+              v-for="(item, index) in applyLists"
+              :key="index"
+            >
               <div class="ap-cont-liebiao-list-back">
                 <img
                   class="ap-cont-liebiao-list-back-img"
@@ -83,10 +99,13 @@
                 />
               </div>
               <div class="ap-cont-liebiao-list-desc">
-                上海科创招投标建筑制材专属项目合同
+                {{ item.formName }}
               </div>
               <div class="ap-cont-liebiao-list-but">
-                <el-button type="primary" @click="clickListBut(n)">
+                <el-button
+                  type="primary"
+                  @click="clickListBut(item.formMessageId)"
+                >
                   去申请
                 </el-button>
               </div>
@@ -145,21 +164,19 @@
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
-  // eslint-disable-next-line no-unused-vars
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+  import sealApply from '@/api/frontDesk/printControl/sealApply'
+  import { Search } from '@element-plus/icons-vue'
+
   const router = useRouter()
   const showFormDialog = ref(false)
+  const applyLists = ref([])
+  const keyword = ref('')
+
   // 点击列表按钮
-  function clickListBut(n) {
+  function clickListBut(formMessageId) {
     router.push({
       name: 'selectionForms',
-      params: { id: n }
+      params: { id: formMessageId }
     })
   }
 
@@ -173,11 +190,18 @@
     showFormDialog.value = false
   }
 
+  const applyList = () => {
+    sealApply.list({ keyword: keyword.value }).then(res => {
+      applyLists.value = res.data
+    })
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    applyList()
   })
 </script>
 <style lang="scss" scoped>
