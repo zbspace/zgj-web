@@ -21,7 +21,11 @@
           <div>流程管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="add">+ 增加</el-button>
+              <el-button
+                type="primary"
+                @click="state.JyElMessageBox.show = true"
+                >+ 增加</el-button
+              >
             </div>
             <div class="title-more-down"> </div>
           </div>
