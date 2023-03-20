@@ -27,7 +27,7 @@
         <div class="batch">
           <componentsBatch
             :tableHeader="props.componentsTableHeader"
-            :data="props.componentsBatch.data"
+            :data="props.componentsBatch ? props.componentsBatch.data : []"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
             @clickBatchButton="clickBatchButton"
             @setTableHeader="setTableHeader"
@@ -279,8 +279,13 @@
         params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
       } else if (item.type === 'picker') {
         if (item.defaultAttribute.type === 'daterange' && item.value) {
-          params[item.id] =
-            item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
+          if (item.requestType === 'array') {
+            params.beginTime = item.value[0] + ' 00:00:00'
+            params.endTime = item.value[0] + ' 23:59:59'
+          } else {
+            params[item.id] =
+              item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
+          }
         }
       } else {
         params[item.id] = item.value

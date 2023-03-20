@@ -62,9 +62,6 @@
             v-show="menuVisible"
             :body-style="{ padding: '0 10px' }"
           >
-            <div @click="addSameLevelNode" v-show="firstLevel">
-              添加同级部门
-            </div>
             <div class="add" @click="addChildNode">添加子部门</div>
             <div class="delete" @click="editNode" v-show="firstLevel">
               编辑部门
@@ -90,7 +87,7 @@
     <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
-      :title="form.organId ? '编辑' : '新增'"
+      :title="form.organId ? $t('t-zgj-Edit') : $t('t-zgj-add')"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
@@ -237,6 +234,8 @@
   const showToastDialogContent = ref(null)
   const currentActionDept = ref(null)
   const currentAction = ref(null)
+  const firstNode = ref(null)
+  const firstTreeData = ref([])
 
   const form = reactive({
     organId: '',
@@ -361,7 +360,7 @@
       defaultProps: {
         label: 'organName',
         children: 'children',
-        isLeaf: 'isLeaf'
+        isLeaf: 'haveChildren'
       },
       value: ''
     },
@@ -580,19 +579,37 @@
   function loadFn(node, resolve) {
     console.log(node.level)
     if (node.level === 0) {
-      return resolve([
-        {
-          organName: JSON.parse(localStorage.getItem('departLists')).find(
-            i => i.tenantId === localStorage.getItem('tenantId')
-          ).tenantName,
-          organId: '-1',
-          isLeaf: false,
-          children: []
-        }
-      ])
+      firstNode.value = node
+      department
+        .subOrganList(-1)
+        .then(res => {
+          res.data.forEach(i => (i.haveChildren = !i.haveChildren))
+          firstTreeData.value = res.data
+          return resolve([
+            {
+              organName: JSON.parse(localStorage.getItem('departLists')).find(
+                i => i.tenantId === localStorage.getItem('tenantId')
+              ).tenantName,
+              organId: '-1',
+              haveChildren: false,
+              children: []
+            }
+          ])
+        })
+        .then(() => {
+          nextTick(() => {
+            console.log(state.componentsTree.data)
+            const nodeData = firstNode.value.childNodes[0]
+            nodeData.expanded = true
+            nodeData.loadData()
+          })
+        })
+    } else if (node.level === 1) {
+      return resolve(firstTreeData.value)
     } else {
       console.log(node.data)
       department.subOrganList(node.data.organId).then(res => {
+        res.data.forEach(i => (i.haveChildren = !i.haveChildren))
         return resolve(res.data)
       })
     }
@@ -622,11 +639,6 @@
     menuVisible.value = false
     //  要及时关掉监听，不关掉的是一个坑，不信你试试，虽然前台显示的时候没有啥毛病，加一个alert你就知道了
     document.removeEventListener('click', foo)
-  }
-
-  // 添加同级部门
-  function addSameLevelNode() {
-    showFormDialog.value = true
   }
 
   // 添加子部门
