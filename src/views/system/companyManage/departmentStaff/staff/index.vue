@@ -664,7 +664,7 @@
           prop: '1',
           label: '操作',
           fixed: 'right',
-          width: 320,
+          width: 220,
           rankDisplayData: [
             {
               name: '修改'

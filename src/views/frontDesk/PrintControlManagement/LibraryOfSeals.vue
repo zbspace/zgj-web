@@ -822,7 +822,7 @@
         'check-strictly': true,
         'highlight-current': true,
         'node-key': 'sealTypeId',
-        'current-node-key': ''
+        'current-node-key': 'all'
       },
       defaultProps: {
         label: 'sealTypeName',
@@ -882,13 +882,16 @@
       },
       data: [
         {
-          name: '批量设置可见范围'
+          name: '批量设置可见范围',
+          label: 't-zgj-seal.BatchSetVisibility'
         },
         {
-          name: '批量设置可用范围'
+          name: '批量设置可用范围',
+          label: 't-zgj-seal.BatchSetAvailable'
         },
         {
-          name: '批量删除'
+          name: '批量删除',
+          label: 't-zgj-seal.BatchDelete'
         }
       ]
     }
@@ -914,8 +917,9 @@
     if (cell.name === '修改') {
       state.title = '修改'
       showLibraryDialog.value = true
+      getSealsInfo()
     }
-    if (cell.name === '设置维护范围' || cell.name === '设置可用范围') {
+    if (cell.name === '设置可见范围' || cell.name === '设置可用范围') {
       showDepPerDialog.value = true
     }
     if (cell.name === '删除') {
@@ -943,6 +947,11 @@
       state.JyElMessageBox.type = '销毁'
     }
   }
+  const getSealsInfo = () => {
+    api.sealDetailInfo({ sealId: state.sealIds }).then(res => {
+      console.log(res)
+    })
+  }
   const clickBatchButton = (item, datas) => {
     console.log(item)
     state.componentsBatch.selectionData = datas
@@ -969,6 +978,12 @@
           clickName: closeBatchTabel
         }
       ]
+    }
+    if (
+      item.name === '批量设置可见范围' ||
+      item.name === '批量设置设置可用范围'
+    ) {
+      showDepPerDialog.value = true
     }
   }
   // 批量删除
@@ -1063,17 +1078,17 @@
       state.componentsTree.data = [
         {
           sealTypeName: '印章类型',
-          sealTypeId: '',
+          sealTypeId: 'all',
           children: res.data
         }
       ]
-      if (res.data && res.data.length) {
-        state.componentsTree.defaultAttribute['current-node-key'] =
-          res.data[0].sealTypeId
-        queryParams.value = {
-          sealTypeIds: res.data[0].sealTypeId
-        }
-      }
+      // if (res.data && res.data.length) {
+      //   // state.componentsTree.defaultAttribute['current-node-key'] =
+      //   //   res.data[0].sealTypeId
+      //   queryParams.value = {
+      //     sealTypeIds: res.data[0].sealTypeId
+      //   }
+      // }
       table.value.reloadData()
     })
   }
@@ -1097,7 +1112,11 @@
     state.form[type + 'Name'] = ''
   }
   const currentChange = e => {
-    queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
+    console.log(e)
+    queryParams.value =
+      e.sealTypeId && e.sealTypeId !== 'all'
+        ? { sealTypeIds: e.sealTypeId }
+        : null
     table.value.reloadData()
   }
 
