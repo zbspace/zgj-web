@@ -895,6 +895,8 @@ export const ch = {
   't-zgj-list.FileDownload': '文件下载',
   't-zgj-seal.BatchChange': '批量变更保管人',
   't-zgj-seal.BatchDelete': '批量删除',
+  't-zgj-seal.BatchSetVisibility': '批量设置可见范围',
+  't-zgj-seal.BatchSetAvailable': '批量设置可用范围',
   't-zgj-seal.CustodianDepartment': '保管部门',
   't-zgj-seal.Custodian': '保管人',
   't-zgj-seal.SealCode': '印章编码',
