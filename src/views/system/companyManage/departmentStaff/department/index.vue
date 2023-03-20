@@ -7,8 +7,8 @@
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
       :queryParams="{ organId }"
-      statusColoum="flag"
-      openValue="启用"
+      statusColoum="status"
+      openValue="1"
       hasTree
       tableClick="organName"
       @cellClick="cellClick"

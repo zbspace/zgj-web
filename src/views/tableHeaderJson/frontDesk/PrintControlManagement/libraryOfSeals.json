@@ -50,25 +50,32 @@
     "show": true,
     "rankDisplayData": [
       {
-        "name": "修改"
+        "name": "t-zgj-Edit",
+        "label": "修改"
       },
       {
-        "name": "删除"
+        "name": "t-zgj-Delete",
+        "label": "删除"
       },
       {
-        "name": "设置可见范围"
+        "name": "t-zgj-seal.SetVisibility",
+        "label": "设置可见范围"
       },
       {
-        "name": "设置可用范围"
+        "name": "t-zgj-seal.SetAvailable",
+        "label": "设置可用范围"
       },
       {
-        "name": "停用"
+        "name": "t-zgj-seal.deactivated",
+        "label": "停用"
       },
       {
-        "name": "变更"
+        "name": "t-zgj-status.Change",
+        "label": "变更"
       },
       {
-        "name": "销毁"
+        "name": "t-zgj-status.Destroy",
+        "label": "销毁"
       }
     ]
   }

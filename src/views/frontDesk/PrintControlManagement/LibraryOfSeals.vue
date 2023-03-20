@@ -437,7 +437,6 @@
   import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
   import dayjs from 'dayjs'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
-
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
   const vFormLibraryRef = ref(null)
@@ -460,6 +459,7 @@
         api.add(state.form).then(res => {
           console.log(res)
           ElMessage.success('新增成功印章成功！')
+          table.value.reloadData()
         })
       } else {
         ElMessage.error('校验失败')
@@ -503,7 +503,7 @@
     butDatas: [],
     sealIds: '',
     msg: '',
-    tabsShow: ['organ'],
+    tabsShow: [],
     searchSelected: [],
     title: '新增',
     typeList: [],
@@ -882,16 +882,16 @@
       },
       data: [
         {
-          name: '批量设置可见范围',
-          label: 't-zgj-seal.BatchSetVisibility'
+          name: 't-zgj-seal.BatchSetVisibility',
+          label: '批量设置可见范围'
         },
         {
-          name: '批量设置可用范围',
-          label: 't-zgj-seal.BatchSetAvailable'
+          name: 't-zgj-seal.BatchSetAvailable',
+          label: '批量设置可用范围'
         },
         {
-          name: '批量删除',
-          label: 't-zgj-seal.BatchDelete'
+          name: 't-zgj-seal.BatchDelete',
+          label: '批量删除'
         }
       ]
     }
@@ -913,22 +913,25 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(column)
-    state.sealIds = column.id
-    if (cell.name === '修改') {
+    state.sealIds = column.sealId
+    if (cell.name === 't-zgj-Edit') {
       state.title = '修改'
       showLibraryDialog.value = true
       getSealsInfo()
     }
-    if (cell.name === '设置可见范围' || cell.name === '设置可用范围') {
+    if (
+      cell.name === 't-zgj-seal.SetVisibility' ||
+      cell.name === 't-zgj-seal.SetAvailable'
+    ) {
       showDepPerDialog.value = true
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
       state.JyElMessageBox.header.data = '删除'
       state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '删除'
     }
-    if (cell.name === '停用') {
+    if (cell.name === 't-zgj-seal.deactivated') {
       state.JyElMessageBox.header.data = '停用'
       state.JyElMessageBox.content.data = '请问确定停用该印章吗？'
       state.JyElMessageBox.show = true
@@ -948,8 +951,9 @@
     }
   }
   const getSealsInfo = () => {
-    api.sealDetailInfo({ sealId: state.sealIds }).then(res => {
+    api.sealInfo(state.sealIds).then(res => {
       console.log(res)
+      state.form = res.data
     })
   }
   const clickBatchButton = (item, datas) => {
@@ -960,7 +964,7 @@
       idList.push(element.sealId)
     })
     state.sealIds = idList.join(',')
-    if (item.name === '批量删除') {
+    if (item.name === 't-zgj-seal.BatchDelete') {
       state.showToastDialog.header.data = '批量删除'
       state.showToastDialog.content.data =
         '已选中以下表单，请问确定要批量删除吗？'
@@ -980,8 +984,8 @@
       ]
     }
     if (
-      item.name === '批量设置可见范围' ||
-      item.name === '批量设置设置可用范围'
+      item.name === 't-zgj-seal.BatchSetVisibility' ||
+      item.name === 't-zgj-seal.BatchSetAvailable'
     ) {
       showDepPerDialog.value = true
     }
@@ -1095,6 +1099,7 @@
 
   const chooseOrgan = (type, tabs) => {
     depChoose.value = type
+    state.tabsShow = []
     state.searchSelected = []
     if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
       state.searchSelected.push({
@@ -1103,6 +1108,7 @@
         type: tabs[0]
       })
     }
+    console.log(tabs)
     state.tabsShow = tabs
     showDepPerDialog.value = true
   }

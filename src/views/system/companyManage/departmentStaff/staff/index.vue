@@ -4,18 +4,32 @@
 * @Author Guanpf
 * @LastEditTime 2023-03-09 10:22:26
 !-->
-//
 <template>
   <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
+    <JyTable
+      url="/user/page"
+      ref="table"
+      :hasTree="true"
+      :needAutoRequest="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      :queryParams="{ organId }"
+      tableClick="userName"
+      statusColoum="status"
+      openValue="1"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
       <template #title>
         <div class="title">
           <div>员工管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="addStaff">+ 新建</el-button>
+              <el-button type="primary" @click="add">+ 增加</el-button>
             </div>
-            <!-- <div class="title-more-down">
+            <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
                 <el-button>
                   <img
@@ -33,72 +47,24 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            </div> -->
+            </div>
           </div>
         </div>
       </template>
-
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
       <template #tree>
-        <div>
-          <componentsTree
+        <div class="components-tree">
+          <el-tree
             :data="state.componentsTree.data"
-            :defaultAttribute="state.componentsTree.defaultAttribute"
-          >
-          </componentsTree>
+            :props="state.componentsTree.defaultProps"
+            v-bind="state.componentsTree.defaultAttribute"
+            lazy
+            :load="loadFn"
+            @current-change="currentChange"
+            @node-contextmenu="nodeContextmenu"
+          ></el-tree>
         </div>
       </template>
-
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-            @clickBatchButton="clickBatchButton"
-            @refreshButton="refreshButton"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            :lading="state.componentsTable.loading"
-            isSelection
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-          >
-          </componentsTable>
-        </div>
-      </template>
-
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-          @size-change="sizeChange"
-          @current-change="currentChange"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
+    </JyTable>
     <!-- 新增员工 -->
     <JyDialog
       :show="showStaffDialog"
@@ -399,19 +365,16 @@
 <script setup>
   import { ref, reactive, onBeforeMount, watch } from 'vue'
   import { CircleClose, Plus } from '@element-plus/icons-vue'
-  import componentsTable from '@/views/components/table'
-  import componentsSearchForm from '@/views/components/searchForm'
-  import componentsPagination from '@/views/components/pagination.vue'
-  import componentsLayout from '@/views/components/Layout.vue'
-  import componentsTree from '@/views/components/tree'
+  import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import componentsBatch from '@/views/components/batch.vue'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import UpdatePassword from './modules/updatePassword.vue'
   import UploadFace from './modules/uploadFace.vue'
   import { ElMessage } from 'element-plus'
+  import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/departmentStaff.json'
   import api from '@/api/system/companyManagement/departmentStaff'
+  import department from '@/api/system/companyManagement/department'
 
   // 显示新增员工弹窗
   const showStaffDialog = ref(false)
@@ -426,7 +389,8 @@
   // 显示重置人脸弹窗
   const showUpload = ref(false)
   // 侧边栏树选中id
-  const organId = ref(false)
+  const organId = ref('-1')
+  const table = ref(null)
 
   const state = reactive({
     title: '新增',
@@ -577,17 +541,17 @@
           defaultAttribute: {
             placeholder: '请选择'
           }
-        },
-        {
-          id: 'organId',
-          label: '所属部门',
-          type: 'select',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          }
         }
+        // {
+        //   id: 'organId',
+        //   label: '所属部门',
+        //   type: 'select',
+        //   inCommonUse: true,
+        //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        //   defaultAttribute: {
+        //     placeholder: '请选择'
+        //   }
+        // }
       ],
       butData: [
         {
@@ -622,68 +586,7 @@
     },
 
     componentsTable: {
-      header: [
-        {
-          prop: 'userName',
-          label: '姓名',
-          sortable: true,
-          flex: true,
-          'min-width': 150
-        },
-        {
-          prop: 'accountNo',
-          label: '账号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'hostOrganName',
-          label: '所属部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'userTitle',
-          label: '职位',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'faceState',
-          label: '人脸状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'status',
-          label: '状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '1',
-          label: '操作',
-          fixed: 'right',
-          width: 220,
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '停用'
-            },
-            {
-              name: '删除'
-            },
-            {
-              name: '修改密码'
-            },
-            {
-              name: '设置人脸'
-            }
-          ]
-        }
-      ],
+      header: tableHeader,
       data: [
         {
           userId: '1',
@@ -730,38 +633,24 @@
     },
 
     componentsTree: {
-      data: [
-        {
-          label: '企业名称',
-          children: [
-            {
-              label: '单位名称',
-              children: [
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': true,
         'show-checkbox': false,
-        'default-expand-all': true,
         'expand-on-click-node': false,
-        'check-strictly': true
-      }
+        'check-strictly': true,
+        'highlight-current': true,
+        'node-key': 'organId',
+        'current-node-key': '-1',
+        accordion: true
+      },
+      defaultProps: {
+        label: 'organName',
+        children: 'children',
+        isLeaf: 'isLeaf'
+      },
+      value: ''
     },
 
     componentsDocumentsDetails: {
@@ -784,13 +673,13 @@
       },
       data: [
         {
-          name: '批量停用'
+          name: 't-zgj-dept.BatchDeactivation'
         },
         {
-          name: '批量启用'
+          name: 't-zgj-dept.BatchEnable'
         },
         {
-          name: '批量删除'
+          name: 't-zgj-seal.BatchDelete'
         },
         {
           name: '批量重置密码'
@@ -799,37 +688,27 @@
       userIds: []
     }
   })
-
-  // 筛选条件按钮
-  const clickSubmit = (item, index) => {
-    console.log(item)
-    if (item.id === 'reset') {
-      state.componentsSearchForm.data.forEach(v => {
-        delete v.value
+  function loadFn(node, resolve) {
+    console.log(node.level)
+    if (node.level === 0) {
+      return resolve([
+        {
+          organName: JSON.parse(localStorage.getItem('departLists')).find(
+            i => i.tenantId === localStorage.getItem('tenantId')
+          ).tenantName,
+          organId: '-1',
+          isLeaf: false,
+          children: []
+        }
+      ])
+    } else {
+      console.log(node.data)
+      department.subOrganList(node.data.organId).then(res => {
+        return resolve(res.data)
       })
     }
-    getFormPage()
   }
-  // 获取表格列表
-  const getFormPage = () => {
-    const searchData = state.componentsSearchForm.data
-    const queryParams = {}
-    queryParams.organId = organId.value
-    searchData.forEach(item => {
-      queryParams[item.id] = item.value
-    })
-    queryParams.pageNo = state.componentsPagination.index || 1
-    queryParams.pageSize = state.componentsPagination.pageNumber || 10
-    state.componentsTable.loading = true
-    api.userPage(queryParams).then(res => {
-      console.log(res)
-      state.componentsTable.data = res.data.rows
-      state.componentsPagination.data.amount = res.data.totalRows
-      state.componentsPagination.data.pageNumber = res.data.totalPage
-      state.componentsPagination.defaultAttribute.total = res.data.totalRows
-      state.componentsTable.loading = false
-    })
-  }
+
   // 提交密码
   const confirmPass = data => {
     console.log(data)
@@ -979,35 +858,28 @@
     })
     state.componentsBatch.userIds = nameIdArr
     nameList = nameArr.join('、')
-    if (item.name === '批量停用') {
+    if (item.name === 't-zgj-dept.BatchDeactivation') {
       state.JyElMessageBox.header.data = '批量停用'
       state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量停用吗？`
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '批量停用'
     }
-    if (item.name === '批量启用') {
+    if (item.name === 't-zgj-dept.BatchEnable') {
       state.JyElMessageBox.header.data = '批量启用'
       state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量启用吗？`
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '批量启用'
     }
-    if (item.name === '批量删除') {
+    if (item.name === 't-zgj-seal.BatchDelete') {
       state.JyElMessageBox.header.data = '批量删除'
       state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量删除吗？`
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '批量删除'
     }
-    if (item.name === '批量重置密码') {
+    if (item.name === 't-zgj-findpwd.batchResetPassword') {
       passTitle.value = '批量重置密码'
       showPass.value = true
     }
-    if (item.name === '刷新') {
-      console.log('刷新')
-      getFormPage()
-    }
-  }
-  const refreshButton = (item, index) => {
-    console.log(item)
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
@@ -1020,33 +892,33 @@
     console.log(colum)
     nameIdArr.push(colum.userId)
     state.componentsBatch.userIds = nameIdArr
-    if (cell.name === '修改') {
+    if (cell.name === 't-zgj-Edit') {
       state.title = '修改'
       showStaffDialog.value = true
     }
-    if (cell.name === '停用') {
+    if (cell.name === 't-zgj-seal.deactivated') {
       state.JyElMessageBox.header.data = '停用'
       state.JyElMessageBox.content.data = '确认要停用该员工吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '停用'
     }
-    if (cell.name === '启用') {
+    if (cell.name === 't-zgj-Enable') {
       state.JyElMessageBox.header.data = '启用'
       state.JyElMessageBox.content.data = '确认要启用该员工吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '启用'
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
       state.JyElMessageBox.header.data = '删除'
       state.JyElMessageBox.content.data = '确认要删除该员工吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '删除'
     }
-    if (cell.name === '修改密码') {
+    if (cell.name === 't-zgj-index.updatePwd') {
       passTitle.value = '重置密码'
       showPass.value = true
     }
-    if (cell.name === '设置人脸') {
+    if (cell.name === 't-zgj-F_SEAL_CONSOLE_FACE_SETTING') {
       showUpload.value = true
     }
   }
@@ -1091,16 +963,6 @@
     state.componentsDocumentsDetails.show = false
   }
 
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
-  }
   // 提交新增表单
   const submitStaffForm = data => {
     console.log(data)
@@ -1119,22 +981,11 @@
   const closeStaffFrom = () => {
     showStaffDialog.value = false
   }
-  // 分页页数变化
-  const currentChange = data => {
-    console.log(data)
-    state.componentsPagination.index = data
-    getFormPage()
-  }
-  // 每页请求数量变化
-  const sizeChange = data => {
-    console.log(data)
-    state.componentsPagination.pageNumber = data
-    getFormPage()
-  }
-  const getUserTreeMenu = () => {
-    api.userTreeMenu().then(res => {
-      console.log(res)
-    })
+  // 树形变化
+  const currentChange = type => {
+    console.log(type)
+    organId.value = type.organId
+    table.value.reloadData()
   }
   // 初始化
   onBeforeMount(() => {

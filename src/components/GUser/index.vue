@@ -171,7 +171,8 @@
       }
       selectedList.value.push(element)
       // 只有ID
-      currentValue.value.push(records[index].id)
+      // currentValue.value.push(records[index].id)
+      currentValue.value.push(records[index].gunsSysId)
     }
     emit('update:modelValue', currentValue.value)
     emit(

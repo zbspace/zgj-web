@@ -84,11 +84,11 @@ api.sealDetailInfo = params => {
   })
 }
 // 印章基本信息
-api.sealInfo = params => {
+api.sealInfo = sealId => {
+  console.log(sealId)
   return request({
     method: 'GET',
-    url: '/sealInfo',
-    params
+    url: `/sealInfo/${sealId}`
   })
 }
 // 印章类型列表
