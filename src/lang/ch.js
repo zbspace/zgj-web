@@ -372,6 +372,7 @@ export const ch = {
   't-zgj-copyAll': '（抄送）',
   't-zgj-add': '新增',
   't-zgj-Edit': '修改',
+  't-zgj-Save': '保存',
   't-zgj-Delete': '删除',
   't-zgj-list.outRegistration': '外带登记',
   't-zgj-list.restitution': '归还登记',
