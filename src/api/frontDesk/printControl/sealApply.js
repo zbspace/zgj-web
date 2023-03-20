@@ -3,6 +3,22 @@ import request from '@/utils/request'
 // 用印申请
 
 const api = {}
+// 申请列表
+api.list = params => {
+  return request({
+    method: 'GET',
+    url: '/form/applyUseForm',
+    params
+  })
+}
+// 获取申请表单的动态表单
+api.formQuery = params => {
+  return request({
+    method: 'GET',
+    url: '/form/query',
+    params
+  })
+}
 // 用印申请新增
 api.add = data => {
   return request({
@@ -60,11 +76,11 @@ api.uploadFile = data => {
   })
 }
 // 用印流程
-api.flowList = data => {
+api.flowList = params => {
   return request({
     method: 'GET',
-    url: '/sealApply/flowList',
-    params: data
+    url: '/flow/getEnableProcessByForm',
+    params
   })
 }
 export default api

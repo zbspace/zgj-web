@@ -182,6 +182,7 @@
       @include mixin-padding-right(0);
       box-sizing: border-box;
       padding-top: 1rem;
+      margin-bottom: 0.8rem;
     }
 
     .ap-box-tabs {
