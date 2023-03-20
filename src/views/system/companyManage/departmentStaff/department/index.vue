@@ -2,19 +2,27 @@
   <div>
     <JyTable
       url="/organ/page"
+      ref="table"
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
+      :queryParams="{ organId }"
+      statusColoum="status"
+      openValue="1"
       hasTree
       tableClick="organName"
       @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
     >
       <template #title>
         <div class="title">
           <div>部门管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="add">+ 新增部门</el-button>
+              <el-button type="primary" @click="add"
+                >+ {{ $t('t-zgj-add') }}</el-button
+              >
             </div>
             <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
@@ -38,12 +46,31 @@
         </div>
       </template>
       <template #tree>
-        <div>
-          <componentsTree
+        <div class="components-tree">
+          <el-tree
+            ref="deptTreeRef"
             :data="state.componentsTree.data"
-            :defaultAttribute="state.componentsTree.defaultAttribute"
+            :props="state.componentsTree.defaultProps"
+            v-bind="state.componentsTree.defaultAttribute"
+            lazy
+            :load="loadFn"
+            @current-change="currentChange"
+            @node-contextmenu="nodeContextmenu"
+          ></el-tree>
+          <el-card
+            class="box-card"
+            ref="card"
+            v-show="menuVisible"
+            :body-style="{ padding: '0 10px' }"
           >
-          </componentsTree>
+            <div class="add" @click="addChildNode">添加子部门</div>
+            <div class="delete" @click="editNode" v-show="firstLevel">
+              编辑部门
+            </div>
+            <div class="edit" @click="deleteNode" v-show="firstLevel">
+              删除部门
+            </div>
+          </el-card>
         </div>
       </template>
     </JyTable>
@@ -61,7 +88,7 @@
     <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
-      title="新增"
+      :title="form.organId ? $t('t-zgj-Edit') : $t('t-zgj-add')"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
@@ -78,16 +105,16 @@
         <el-form-item label="部门名称" prop="organName">
           <el-input v-model="form.organName" clearable />
         </el-form-item>
-        <el-form-item label="组织类型" prop="organTypeNo">
-          <el-radio-group v-model="form.organTypeNo">
-            <el-radio :label="1" size="large">部门</el-radio>
-            <el-radio :label="2" size="large">单位</el-radio>
+        <el-form-item label="组织类型" prop="organTypeId">
+          <el-radio-group v-model="form.organTypeId">
+            <el-radio label="ot1" size="large">部门</el-radio>
+            <el-radio label="ot2" size="large">单位</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="部门编码" prop="organNo">
           <el-input v-model="form.organNo" clearable />
         </el-form-item>
-        <el-form-item label="上级部门" prop="organPid">
+        <el-form-item label="上级部门" prop="organPName">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
@@ -97,7 +124,7 @@
             />
             <div class="ap-box-contBox-icon">
               <el-icon
-                v-if="form.organPid"
+                v-if="form.organPName"
                 style="margin-right: 5px"
                 color="#aaaaaa"
                 @click="clear('organP')"
@@ -151,17 +178,43 @@
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
     />
+    <!-- 批量操作 -->
+    <actionMoreDialog
+      @update:modelValue="showToastDialog = false"
+      :show="showToastDialog"
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="showToastDialogContent"
+      label="organName"
+      @sureAction="deleteMore"
+    ></actionMoreDialog>
+    <!-- 单个操作 -->
+    <JyElMessageBox
+      :modelValue="state.showOneAction.show"
+      :defaultAttribute="{}"
+      @confirmClick="confirmOneClick"
+    >
+      <template #header>
+        <div class="header-div">
+          <img src="@/assets/svg/common/warning.svg" />
+          <span>{{ state.showOneAction.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showOneAction.content.data }}</div>
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 
 <script setup>
   import { reactive, onBeforeMount, ref, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsTree from '@/views/components/tree'
   import JyDialog from '@/views/components/modules/JyDialog.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import department from '@/api/system/companyManagement/department'
+  import actionMoreDialog from '@/views/components/actionMoreDialog'
+  import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/department.json'
   import { CircleClose } from '@element-plus/icons-vue'
 
   const showFormDialog = ref(false)
@@ -171,11 +224,26 @@
   const searchSelected = ref([])
   const tabsShow = ref(['organ'])
   const kDepartOrPerson = ref(null)
+  const organId = ref('-1')
+  const table = ref(null)
+  const menuVisible = ref(false)
+  const firstLevel = ref(false)
+  const card = ref(null)
+  const currentDept = ref(null)
+  const showToastDialog = ref(false)
+  const currentActionType = ref(null)
+  const showToastDialogContent = ref(null)
+  const currentActionDept = ref(null)
+  const currentAction = ref(null)
+  const firstNode = ref(null)
+  const firstTreeData = ref([])
+  const deptTreeRef = ref(null)
 
   const form = reactive({
+    organId: '',
     organNo: '',
     organName: '',
-    organTypeNo: 1,
+    organTypeId: 'ot1',
     organPid: '',
     organPName: '',
     leaderUserId: '',
@@ -190,7 +258,7 @@
         trigger: 'change'
       }
     ],
-    organPid: [
+    organPName: [
       {
         required: true,
         message: '请选择上级部门',
@@ -200,6 +268,15 @@
   })
 
   const state = reactive({
+    showOneAction: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
+    },
     componentsSearchForm: {
       data: [
         {
@@ -213,7 +290,7 @@
           }
         },
         {
-          id: 'status',
+          id: 'flag',
           label: '状态',
           type: 'select',
           inCommonUse: true,
@@ -224,7 +301,7 @@
             },
             {
               label: '停用',
-              value: 2
+              value: 0
             }
           ],
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -266,99 +343,28 @@
     },
 
     componentsTable: {
-      header: [
-        {
-          prop: 'organName',
-          label: '部门名称',
-          'min-width': 150,
-          fixed: true
-        },
-        {
-          prop: 'organNo',
-          label: '部门编码',
-          'min-width': 150
-        },
-        {
-          prop: 'organType',
-          label: '组织类型',
-          'min-width': 150
-        },
-        {
-          prop: 'number',
-          label: '部门人数',
-          sortable: 'custom',
-          align: 'center',
-          width: 150
-        },
-        {
-          prop: 'leaderUserName',
-          label: '部门主管',
-          'min-width': 150
-        },
-        {
-          prop: 'organPName',
-          label: '上级组织',
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '操作',
-          width: 170,
-          fixed: 'right',
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '上移'
-            },
-            {
-              name: '下移'
-            },
-            {
-              name: '停用'
-            }
-          ]
-        }
-      ]
+      header: tableHeader
     },
 
     componentsTree: {
-      data: [
-        {
-          label: '企业名称',
-          children: [
-            {
-              label: '单位名称',
-              children: [
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                },
-                {
-                  label: '部门名称'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': true,
         'show-checkbox': false,
-        'default-expand-all': true,
         'expand-on-click-node': false,
         'check-strictly': true,
         'highlight-current': true,
-        'node-key': 'sealTypeId',
-        'current-node-key': 'all'
-      }
+        'node-key': 'organId',
+        'current-node-key': '-1',
+        accordion: true
+      },
+      defaultProps: {
+        label: 'organName',
+        children: 'children',
+        isLeaf: 'haveChildren'
+      },
+      value: ''
     },
     componentsDocumentsDetails: {
       show: false,
@@ -378,15 +384,16 @@
       ]
     },
     componentsBatch: {
+      selectionData: [],
       data: [
         {
-          name: '批量停用'
+          name: 't-zgj-dept.BatchDeactivation'
         },
         {
-          name: '批量启用'
+          name: 't-zgj-dept.BatchEnable'
         },
         {
-          name: '批量删除'
+          name: 't-zgj-seal.BatchDelete'
         }
       ]
     }
@@ -394,6 +401,95 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     state.componentsDocumentsDetails.show = true
+  }
+
+  function customClick(row, column, cell, event) {
+    console.log(cell)
+    if (cell.name === 't-zgj-Edit') {
+      showFormDialog.value = true
+      form.organId = column.organId
+      nextTick(() => {
+        vFormLibraryRef.value.resetFields()
+        department.detail(column.organId).then(res => {
+          const data = res.data
+          console.log(data)
+          form.organId = data.organId
+          form.organNo = data.organNo
+          form.organName = data.organName
+          form.organTypeId = data.organTypeId
+          form.organPid = data.organPid
+          form.organPName =
+            data.organPName ||
+            JSON.parse(localStorage.getItem('departLists')).find(
+              i => i.tenantId === localStorage.getItem('tenantId')
+            ).tenantName
+          form.leaderUserId = data.leaderUserId
+          form.leaderUserName = data.leaderUserName
+          form.leaderUserName = data.leaderUserName
+          console.log(form)
+        })
+      })
+    } else if (cell.name === 't-zgj-F_SEAL_INFO_UP') {
+      console.log('t-zgj-F_SEAL_INFO_UP')
+    } else if (cell.name === 't-zgj-F_SEAL_INFO_DOWN') {
+      console.log('t-zgj-F_SEAL_INFO_DOWN')
+    } else if (cell.name === 'status') {
+      currentAction.value = column.flag
+      currentActionDept.value = column.organId
+      state.showOneAction.show = true
+      state.showOneAction.header.data = '提示'
+      state.showOneAction.content.data = '是否禁用该部门'
+    }
+  }
+
+  function confirmOneClick() {
+    if (currentAction.value === '启用') {
+      department
+        .batchDisable([currentActionDept.value])
+        .then(res => {
+          console.log(res)
+          table.value.reloadData()
+        })
+        .finally(() => {
+          state.showOneAction.show = false
+        })
+    }
+  }
+
+  function clickBatchButton(item, selectionData) {
+    console.log(item.name)
+    currentActionType.value = item.name
+    if (item.name === 't-zgj-dept.BatchDeactivation') {
+      showToastDialogContent.value = {
+        header: {
+          data: '批量停用'
+        },
+        content: {
+          data: '是否批量停用这些部门？'
+        }
+      }
+    } else if (item.name === 't-zgj-dept.BatchEnable') {
+      showToastDialogContent.value = {
+        header: {
+          data: '批量启用'
+        },
+        content: {
+          data: '是否批量启用这些部门？'
+        }
+      }
+    } else if (item.name === 't-zgj-seal.BatchDelete') {
+      showToastDialogContent.value = {
+        header: {
+          data: '批量删除'
+        },
+        content: {
+          data: '是否批量删除这些部门？'
+        }
+      }
+    }
+    state.componentsBatch.selectionData = selectionData
+    console.log(item, JSON.parse(JSON.stringify(selectionData)))
+    showToastDialog.value = true
   }
 
   // 点击关闭
@@ -449,6 +545,8 @@
   const add = () => {
     showFormDialog.value = true
     nextTick(() => {
+      form.organPid = ''
+      form.organId = ''
       vFormLibraryRef.value.resetFields()
     })
   }
@@ -456,10 +554,28 @@
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         console.log(form)
-        department.add(form).then(() => {
-          showFormDialog.value = false
-          // reloadData()
-        })
+        if (form.organId) {
+          department.edit(form).then(() => {
+            showFormDialog.value = false
+            firstNode.value.loaded = false
+            firstNode.value.expand()
+            table.value.reloadData()
+          })
+        } else {
+          department.add(form).then(() => {
+            firstNode.value = deptTreeRef.value.getNode(form.organPid)
+            if (firstNode.value) {
+              state.componentsTree.defaultAttribute['current-node-key'] =
+                form.organPid
+              organId.value = form.organPid
+              showFormDialog.value = false
+              firstNode.value.loaded = false
+              firstNode.value.expand()
+            }
+
+            table.value.reloadData()
+          })
+        }
       }
     })
   }
@@ -472,10 +588,124 @@
       form.leaderUserName = value.length ? value[0].name : ''
     }
   }
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-    // departPage()
-  })
+
+  function loadFn(node, resolve) {
+    console.log(node)
+    if (node.level === 0) {
+      firstNode.value = node
+      department
+        .subOrganList(-1)
+        .then(res => {
+          res.data.forEach(i => (i.haveChildren = !i.haveChildren))
+          firstTreeData.value = res.data
+          return resolve([
+            {
+              organName: JSON.parse(localStorage.getItem('departLists')).find(
+                i => i.tenantId === localStorage.getItem('tenantId')
+              ).tenantName,
+              organId: '-1',
+              haveChildren: false,
+              children: []
+            }
+          ])
+        })
+        .then(() => {
+          nextTick(() => {
+            console.log(state.componentsTree.data)
+            const nodeData = firstNode.value.childNodes[0]
+            nodeData.expanded = true
+            nodeData.loadData()
+          })
+        })
+    } else if (node.level === 1) {
+      return resolve(firstTreeData.value)
+    } else {
+      console.log(node.data)
+      department.subOrganList(node.data.organId).then(res => {
+        res.data.forEach(i => (i.haveChildren = !i.haveChildren))
+        return resolve(res.data)
+      })
+    }
+  }
+
+  function currentChange(type, node) {
+    firstNode.value = node
+    organId.value = type.organId
+    table.value.reloadData()
+  }
+
+  function nodeContextmenu(event, data, node) {
+    console.log(node.level)
+    if (node.level === 1) {
+      firstLevel.value = false
+    } else {
+      firstLevel.value = true
+    }
+    menuVisible.value = true
+    currentDept.value = data
+    card.value.$el.style.right = 0
+    card.value.$el.style.top = event.layerY + 10 + 'px'
+    document.addEventListener('click', foo)
+  }
+
+  //  取消鼠标监听事件 菜单栏
+  function foo() {
+    menuVisible.value = false
+    //  要及时关掉监听，不关掉的是一个坑，不信你试试，虽然前台显示的时候没有啥毛病，加一个alert你就知道了
+    document.removeEventListener('click', foo)
+  }
+
+  // 添加子部门
+  function addChildNode() {
+    showFormDialog.value = true
+    nextTick(() => {
+      vFormLibraryRef.value.resetFields()
+      form.organPid = currentDept.value.organId
+      form.organPName = currentDept.value.organName
+    })
+  }
+
+  // 编辑部门
+  function editNode() {}
+
+  // 删除部门
+  function deleteNode() {}
+
+  const deleteMore = () => {
+    if (currentActionType.value === 't-zgj-dept.BatchDeactivation') {
+      department
+        .batchDisable(state.componentsBatch.selectionData.map(i => i.organId))
+        .then(res => {
+          console.log(res)
+          table.value.reloadData()
+        })
+        .finally(() => {
+          showToastDialog.value = false
+        })
+    } else if (currentActionType.value === 't-zgj-dept.BatchEnable') {
+      department
+        .batchEnable(state.componentsBatch.selectionData.map(i => i.organId))
+        .then(res => {
+          console.log(res)
+          table.value.reloadData()
+        })
+        .finally(() => {
+          showToastDialog.value = false
+        })
+    } else if (currentActionType.value === 't-zgj-seal.BatchDelete') {
+      department
+        .batchDelete(state.componentsBatch.selectionData.map(i => i.organId))
+        .then(res => {
+          console.log(res)
+          table.value.reloadData()
+        })
+        .finally(() => {
+          showToastDialog.value = false
+        })
+    }
+  }
+
+  onBeforeMount(() => {})
 </script>
 
 <style lang="scss" scoped>
@@ -499,6 +729,93 @@
         height: 100%;
         display: flex;
         align-items: center;
+      }
+    }
+  }
+
+  .components-Layout .ap-box-tree {
+    position: relative;
+  }
+
+  .box-card {
+    width: 110px;
+    position: absolute;
+    z-index: 1000;
+
+    div {
+      height: 35px;
+      line-height: 35px;
+      border-bottom: 1px solid var(--el-color-primary);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    div:nth-last-of-type(1) {
+      border-bottom: none;
+    }
+  }
+
+  .components-tree {
+    margin: 0%;
+    .custom-tree-node {
+      display: flex;
+      align-items: center;
+      .custom-tree-node-icon {
+        margin-right: 0.4rem;
+      }
+    }
+    :deep {
+      margin-bottom: 0%;
+      .el-tree-node__content {
+        @include mixin-height(32);
+      }
+      .el-tree .el-icon svg {
+        //原有的箭头 去掉
+        display: none !important;
+        height: 0;
+        width: 0;
+      }
+      .el-tree-node__expand-icon {
+        //引入的图标（图片）size大小 => 树节点前的预留空间大小
+        font-size: 16px;
+      }
+
+      //图标是否旋转，如果是箭头类型的，可以设置旋转90度。如果是两张图片，则设为0
+      .el-tree .el-tree-node__expand-icon.expanded {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      .el-tree .el-tree-node__expand-icon:before {
+        // 未展开的节点
+        background: url('~@/assets/svg/tree-fangxiang-zuo.svg') no-repeat 0;
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+
+      .el-tree .el-tree-node__expand-icon.expanded:before {
+        //展开的节点
+        background: url('~@/assets/svg/tree-fangxiang-xia.svg') no-repeat 0 0;
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+        margin-top: 4px;
+      }
+
+      .el-tree .is-leaf.el-tree-node__expand-icon::before {
+        //叶子节点（不显示图标）
+        display: block;
+        background: none !important;
+        content: '';
+        width: 18px;
+        height: 18px;
+      }
+
+      .el-tree-node__expand-icon.is-leaf {
+        width: 0px;
       }
     }
   }

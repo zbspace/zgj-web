@@ -37,5 +37,10 @@ export default [
     name: 'components-template',
     meta: { title: 'components-template', authRequired: true },
     component: () => import('../views/components/template')
+  },
+  {
+    path: '/:pathMatch(.*)',
+    component: () => import('@/views/errorPage/404'),
+    hidden: true
   }
 ]

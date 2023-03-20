@@ -5,6 +5,7 @@
       url="/sealInfo/page"
       ref="table"
       :hasTree="true"
+      :needAutoRequest="false"
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
@@ -274,7 +275,7 @@
               <span class="waixian">外显是指在其他业务系统上显示的标识</span>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item label="印章状态" prop="sealState">
               <el-radio-group v-model="state.form.sealState" class="ml-4">
                 <el-radio :label="1" size="large">正常</el-radio>
@@ -282,7 +283,7 @@
                 <el-radio :label="3" size="large">已销毁</el-radio>
               </el-radio-group>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -310,7 +311,10 @@
             type="textarea"
             placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
           /> -->
-          <JyRichEdit :value="state.form.sealExplain" @updateValue="getMsg" />
+          <JyRichEdit
+            :value="state.form.sealExplain"
+            @update:content="getMsg"
+          />
         </el-form-item>
         <el-form-item
           label="印模"
@@ -362,6 +366,64 @@
       :searchSelected="state.searchSelected"
     >
     </kDepartOrPersonVue>
+    <!-- 弹窗提示 -->
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.JyElMessageBox.header.icon" alt="" />
+          <span>{{ state.JyElMessageBox.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.JyElMessageBox.content.data }}</div>
+      </template>
+      <template #footer>
+        <el-button
+          type="primary"
+          @click="submitElMessageBox(state.JyElMessageBox.type)"
+        >
+          提交
+        </el-button>
+        <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
+      </template>
+    </JyElMessageBox>
+    <!-- 批量操作弹框提示 -->
+    <JyElMessageBox
+      v-model="state.showToastDialog.show"
+      :show="state.showToastDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.showToastDialog.header.icon" alt="" />
+          <span>{{ state.showToastDialog.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <p
+            v-for="item in state.componentsBatch.selectionData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{ item.name }}</p
+          >
+        </el-scrollbar>
+      </template>
+      <template #footer>
+        <el-button
+          v-for="item in state.butDatas"
+          :key="item.name"
+          :type="item.type"
+          @click="item.clickName"
+          >{{ item.name }}</el-button
+        >
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
@@ -378,7 +440,6 @@
   import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
   import dayjs from 'dayjs'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
-
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
   const vFormLibraryRef = ref(null)
@@ -401,6 +462,7 @@
         api.add(state.form).then(res => {
           console.log(res)
           ElMessage.success('新增成功印章成功！')
+          table.value.reloadData()
         })
       } else {
         ElMessage.error('校验失败')
@@ -441,8 +503,10 @@
   }
   // const emit = defineEmits([])
   const state = reactive({
+    butDatas: [],
+    sealIds: '',
     msg: '',
-    tabsShow: ['organ'],
+    tabsShow: [],
     searchSelected: [],
     title: '新增',
     typeList: [],
@@ -462,12 +526,33 @@
       keepOrganId: '',
       keepOrganName: '',
       extShow: 1,
-      sealState: 1,
+      // sealState: 1,
       hardwareVersionId: '',
       firmwareVersionId: '',
       bylawsUrl: '',
       sealExplain: '',
       stampAttachments: ''
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '删除'
+    },
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
     },
     rules: {
       sealName: [
@@ -740,7 +825,7 @@
         'check-strictly': true,
         'highlight-current': true,
         'node-key': 'sealTypeId',
-        'current-node-key': ''
+        'current-node-key': 'all'
       },
       defaultProps: {
         label: 'sealTypeName',
@@ -800,13 +885,16 @@
       },
       data: [
         {
-          name: '批量设置可见范围'
+          name: 't-zgj-seal.BatchSetVisibility',
+          label: '批量设置可见范围'
         },
         {
-          name: '批量设置可用范围'
+          name: 't-zgj-seal.BatchSetAvailable',
+          label: '批量设置可用范围'
         },
         {
-          name: '批量删除'
+          name: 't-zgj-seal.BatchDelete',
+          label: '批量删除'
         }
       ]
     }
@@ -828,31 +916,193 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(column)
-    if (cell.name === '修改') {
+    state.sealIds = column.sealId
+    if (cell.name === 't-zgj-Edit') {
       state.title = '修改'
       showLibraryDialog.value = true
+      getSealsInfo()
     }
-    if (cell.name === '设置维护范围' || cell.name === '设置可用范围') {
+    if (
+      cell.name === 't-zgj-seal.SetVisibility' ||
+      cell.name === 't-zgj-seal.SetAvailable'
+    ) {
+      showDepPerDialog.value = true
+    }
+    if (cell.name === 't-zgj-Delete') {
+      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.content.data = '请问确定要删除吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '删除'
+    }
+    if (cell.name === 't-zgj-seal.deactivated') {
+      state.JyElMessageBox.header.data = '停用'
+      state.JyElMessageBox.content.data = '请问确定停用该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '停用'
+    }
+    if (cell.name === '启用') {
+      state.JyElMessageBox.header.data = '启用'
+      state.JyElMessageBox.content.data = '请问确定启用该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '启用'
+    }
+    if (cell.name === '销毁') {
+      state.JyElMessageBox.header.data = '销毁'
+      state.JyElMessageBox.content.data = '请问确定销毁该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '销毁'
+    }
+  }
+  const getSealsInfo = () => {
+    api.sealInfo(state.sealIds).then(res => {
+      console.log(res)
+      state.form = res.data
+    })
+  }
+  const clickBatchButton = (item, datas) => {
+    console.log(item)
+    state.componentsBatch.selectionData = datas
+    const idList = []
+    datas.forEach(element => {
+      idList.push(element.sealId)
+    })
+    state.sealIds = idList.join(',')
+    if (item.name === 't-zgj-seal.BatchDelete') {
+      state.showToastDialog.header.data = '批量删除'
+      state.showToastDialog.content.data =
+        '已选中以下表单，请问确定要批量删除吗？'
+      state.showToastDialog.show = true
+      // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+      state.butDatas = [
+        {
+          name: '确定',
+          type: 'primary',
+          clickName: sureBatchDel
+        },
+        {
+          name: '取消',
+          type: '',
+          clickName: closeBatchTabel
+        }
+      ]
+    }
+    if (
+      item.name === 't-zgj-seal.BatchSetVisibility' ||
+      item.name === 't-zgj-seal.BatchSetAvailable'
+    ) {
       showDepPerDialog.value = true
     }
   }
+  // 批量删除
+  function batchDel() {
+    state.showToastDialog.header.data = '批量删除'
+    state.showToastDialog.content.data =
+      '已选中以下表单，请问确定要批量删除吗？'
+    state.showToastDialog.show = true
+    // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+    state.componentsBatch.butDatas = [
+      {
+        name: '确定',
+        type: 'primary',
+        clickName: sureBatchDel
+      },
+      {
+        name: '取消',
+        type: '',
+        clickName: closeBatchTabel
+      }
+    ]
+    console.log('批量删除')
+  }
+  // 确定批量删除
+  const sureBatchDel = () => {
+    const list = state.componentsBatch.selectionData
+    const idList = []
+    const idObj = { formMessageId: '' }
+    list.forEach(v => {
+      idObj.formMessageId = v.formMessageId
+      idList.push(idObj)
+    })
+    api.relationContractType(idList).then(res => {
+      if (res.code === 200) {
+        if (res.data.length > 0) {
+          state.showToastDialog.header.data = '删除'
+          state.showToastDialog.content.data =
+            '选中的以下表单已关联了流程，不允许删除'
+          state.showToastDialog.show = true
+          state.showToastDialog.header.icon =
+            '/src/assets/svg/common/danger.svg'
+          state.componentsBatch.butDatas = [
+            {
+              name: '知道了',
+              type: 'primary',
+              clickName: closeBatchTabel
+            }
+          ]
+        } else {
+          api.sealInfoDelete({ ids: state.sealIds }).then(res => {
+            console.log(res)
+          })
+        }
+      } else {
+        console.log(res)
+      }
+    })
+  }
+  // 关闭表单复制弹窗
+  function closeBatchTabel() {
+    state.showToastDialog.show = false
+  }
+  // 提交弹窗
+  const submitElMessageBox = type => {
+    state.JyElMessageBox.show = false
+    if (type === '删除') {
+      apiOpt(type, api.sealInfoDelete(type, { ids: state.sealId }))
+    }
+    if (type === '停用') {
+      apiOpt(type, api.sealInfoDisable(type, { ids: state.sealId }))
+    }
+    if (type === '启用') {
+      apiOpt(type, api.sealInfoEnable(type, { ids: state.sealId }))
+    }
+    if (type === '销毁') {
+      apiOpt(type, api.sealInfoDestroy(type, { ids: state.sealId }))
+    }
+  }
+  const apiOpt = (typeName, apiName) => {
+    apiName.then(res => {
+      if (res.code === 200) {
+        ElMessage.success(`${typeName}成功！`)
+      } else {
+        ElMessage.success(`${typeName}失败，请重试`)
+      }
+    })
+  }
+  // 获取印章类型
   const typeList = () => {
     typeApis.list({ searchKey: '' }).then(res => {
       state.typeList = res.data
       state.componentsTree.data = [
         {
           sealTypeName: '印章类型',
-          sealTypeId: '',
+          sealTypeId: 'all',
           children: res.data
         }
       ]
-      state.componentsTree.defaultAttribute['current-node-key'] =
-        res.data[0].sealTypeId
+      // if (res.data && res.data.length) {
+      //   // state.componentsTree.defaultAttribute['current-node-key'] =
+      //   //   res.data[0].sealTypeId
+      //   queryParams.value = {
+      //     sealTypeIds: res.data[0].sealTypeId
+      //   }
+      // }
+      table.value.reloadData()
     })
   }
 
   const chooseOrgan = (type, tabs) => {
     depChoose.value = type
+    state.tabsShow = []
     state.searchSelected = []
     if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
       state.searchSelected.push({
@@ -861,6 +1111,7 @@
         type: tabs[0]
       })
     }
+    console.log(tabs)
     state.tabsShow = tabs
     showDepPerDialog.value = true
   }
@@ -870,7 +1121,11 @@
     state.form[type + 'Name'] = ''
   }
   const currentChange = e => {
-    queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
+    console.log(e)
+    queryParams.value =
+      e.sealTypeId && e.sealTypeId !== 'all'
+        ? { sealTypeIds: e.sealTypeId }
+        : null
     table.value.reloadData()
   }
 
@@ -940,7 +1195,10 @@
       width: 100%;
     }
   }
-
+  .el-icon {
+    color: #aaaaaa;
+    margin-right: 5px;
+  }
   .btnContainer {
     width: 100%;
     border-bottom: 1px solid var(--el-border-color);

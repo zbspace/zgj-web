@@ -190,7 +190,13 @@
 </template>
 
 <script setup>
-  import { reactive, ref, defineAsyncComponent, onBeforeMount } from 'vue'
+  import {
+    reactive,
+    ref,
+    defineAsyncComponent,
+    onBeforeMount,
+    watch
+  } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
@@ -540,6 +546,15 @@
       }
     }
   })
+
+  watch(
+    () => state.componentsAddForm.dialogVisible,
+    value => {
+      if (!value) {
+        getFormPage()
+      }
+    }
+  )
   // 点击树节点
   function clickTreeNode(data, node) {
     console.log('ref', refTree.value)
@@ -1025,6 +1040,7 @@
   // 每页请求数量变化
   function sizeChange(data) {
     console.log(data)
+    state.componentsPagination.index = 1
     state.componentsPagination.pageNumber = data
     getFormPage()
   }

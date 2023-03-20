@@ -16,45 +16,14 @@
     </div>
   </div>
 </template>
-<script setup>
-  import { reactive, onBeforeMount, onMounted } from 'vue'
-  const props = defineProps({
-    // 标识
-    refs: {
-      type: String,
-      default: ''
-    },
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    },
-    data: {
-      type: Array,
-      default: []
-    },
-    // 默认属性
-    defaultAttribute: {
-      type: Object,
-      default: {}
-    }
-  })
-  const emit = defineEmits([])
-  const state = reactive({})
-
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
-</script>
+<script setup></script>
 <style lang="scss" scoped>
   .documentsDetails-portion {
     margin: 0%;
 
     .ap-cont-box {
       .ap-cont-box-title {
+        width: 100%;
         border-bottom: 1px solid var(--jy-color-border-2);
         padding: 0rem 0 0rem 0.8rem;
         box-sizing: border-box;
@@ -63,9 +32,11 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 2.3rem;
+        height: 3.5rem;
 
         .ap-cont-box-title-label {
+          display: inline-block;
+          width: 100%;
           font-size: var(--jy-font-size-title-1);
           font-weight: var(--jy-font-weight-600);
         }

@@ -5,6 +5,7 @@
       :refs="refs"
       :data="props.data"
       :props="props.defaultProps"
+      :load="loadFn"
       @node-click="nodeClick"
       @check-change="checkChange"
       @check="check"
@@ -35,6 +36,9 @@
     refs: {
       type: String,
       default: ''
+    },
+    loadFn: {
+      type: Function
     },
     // 处理类型
     type: {
@@ -70,7 +74,8 @@
     'node-click',
     'check-change',
     'check',
-    'current-change'
+    'current-change',
+    'load'
   ])
   //   const state = reactive({})
   //	当节点被点击的时候触发   	四个参数：对应于节点点击的节点对象，TreeNode 的 node 属性, TreeNode和事件对象
@@ -95,6 +100,12 @@
     // console.log(node, data)
     // emit('node-click', data)
   }
+
+  // function load(node, resolve) {
+  //   console.log(node)
+  //   emit('load', node)
+  //   resolve()
+  // }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })

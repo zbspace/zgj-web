@@ -10,8 +10,6 @@
     :sub-form-col-index="subFormColIndex"
     :sub-form-row-id="subFormRowId"
   >
-    <el-input v-model="organId" v-if="false"></el-input>
-    <el-input v-model="fieldModel.unitIds" v-if="false"></el-input>
     <el-row :gutter="12">
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <el-form-item
@@ -24,28 +22,29 @@
             field.options.required ? 'required' : ''
           ]"
         >
-          <el-input
-            v-model="fieldModel.unitNames"
-            v-show="!field.options.hidden"
+          <el-select
+            v-model="fieldModel"
             :size="field.options.size"
             :disabled="field.options.disabled"
             :readonly="field.options.readonly"
             :clearable="field.options.clearable"
-            @blur="validate"
-            @click="openSelectWin"
-            @clear="onClear"
-            @change="valueChange"
+            multiple
+            collapse-tags
+            collapse-tags-tooltip
+            :max-collapse-tags="3"
+            placeholder="请选择"
+            style="width: 100%"
+            @focus="openSelectWin"
+            popper-class="select-hidden"
+            ref="contactUnitRef"
           >
-            <template #append>
-              <el-button
-                icon="el-icon-search"
-                :size="field.options.size"
-                :readonly="field.options.readonly"
-                :disabled="field.options.disabled"
-                @click="openSelectWin(index)"
-              ></el-button>
-            </template>
-          </el-input>
+            <el-option
+              v-for="item in fieldModel"
+              :key="item.relatedCompanyId"
+              :label="item.relatedCompanyName"
+              :value="item.relatedCompanyId"
+            />
+          </el-select>
           <div
             class="el-form-item__error"
             v-if="field.options.requiredTextShow && field.options.required"
@@ -55,11 +54,13 @@
       </el-col>
     </el-row>
     <!-- 往来单位 -->
-    <JyRelatedCompany
-      v-model="xzyzDialogVisible"
-      v-if="xzyzDialogVisible"
-      @on-submit="submit"
-    />
+    <template>
+      <JyRelatedCompany
+        v-model="xzyzDialogVisible"
+        @on-submit="submit"
+        :haveSelectList="fieldModel"
+      />
+    </template>
   </static-content-wrapper>
 </template>
 
@@ -68,7 +69,7 @@
   import emitter from '@/lib/vform/utils/emitter'
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
-  import { ElMessage } from 'element-plus'
+  import { nextTick } from 'vue'
 
   export default {
     name: 'ContactUnitWidget',
@@ -80,12 +81,10 @@
       parentList: Array,
       indexOfParentList: Number,
       designer: Object,
-
       designState: {
         type: Boolean,
         default: false
       },
-
       subFormRowIndex: {
         /* 子表单组件行索引，从0开始计数 */ type: Number,
         default: -1
@@ -104,36 +103,14 @@
     },
     data() {
       return {
-        searchPara: '',
-        total: 0,
-        currentPage: 1,
-        pageSizes: [10, 20, 30, 40, 50, 100],
-        pageSize: null,
-        organId: '123456789',
-        editFlag: 'add',
-        fieldModel: {
-          unitIds: '',
-          unitNames: ''
-        },
-        oldFieldValue: null, // field组件change之前的值
+        // fieldModel: {
+        //   unitIds: '',
+        //   unitNames: ''
+        // },
+        fieldModel: [],
         rules: [],
         thisIndex: null,
-        xzyzDialogVisible: false,
-        xzyzEditDialogVisible: false,
-        tmpObject: {
-          tenantId: '',
-          relatedCompanyName: '',
-          organId: '',
-          contactName: '',
-          contactInformation: '',
-          remark: ''
-        },
-        xzyzEditDialogTitle: '',
-        contactUnitTableData: [],
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        }
+        xzyzDialogVisible: false
       }
     },
     computed: {
@@ -157,7 +134,6 @@
         if (this.field.options.type === 'number') {
           return 'text' // 当input的type设置为number时，如果输入非数字字符，则v-model拿到的值为空字符串，无法实现输入校验！故屏蔽之！！
         }
-
         return this.field.options.type
       }
     },
@@ -182,10 +158,6 @@
     },
 
     methods: {
-      // 供外部使用,设置组件的organId
-      setOrganId(organId) {
-        this.organId = organId
-      },
       setRequiredTextShow(v) {
         this.field.options.requiredTextShow = v
       },
@@ -216,40 +188,24 @@
       },
       // 打开弹窗选择数据
       openSelectWin() {
+        nextTick(() => {
+          this.$refs.contactUnitRef.blur()
+        })
         this.xzyzDialogVisible = true
       },
       selectData(row, column, event) {
-        this.field.options.filedList[this.thisIndex].seal = row.f1
         this.xzyzDialogVisible = false
       },
 
       submit(list) {
-        const selectRecords = list
         this.xzyzDialogVisible = false
-        if (selectRecords.length === 0) {
-          return
-        }
-        let tenantIds = ''
-        let relatedCompanyNames = ''
-        for (let i = 0; i < selectRecords.length; i++) {
-          if (i === 0) {
-            tenantIds = selectRecords[i].tenantId
-            relatedCompanyNames = selectRecords[i].relatedCompanyName
-          } else {
-            tenantIds = tenantIds + ',' + selectRecords[i].tenantId
-            relatedCompanyNames =
-              relatedCompanyNames + ',' + selectRecords[i].relatedCompanyName
-          }
-        }
-        this.fieldModel.unitIds = tenantIds
-        this.fieldModel.unitNames = relatedCompanyNames
+        this.fieldModel = list
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  @import '@/lib/vform/styles/global.scss'; /* form-item-wrapper已引入，还需要重复引入吗？ */
   .required :deep(.el-form-item__label)::before {
     content: '*';
     color: #f56c6c;
@@ -287,5 +243,10 @@
   :deep(.label-right-align) .el-form-item__label {
     text-align: right;
     justify-content: flex-end !important;
+  }
+</style>
+<style>
+  .select-hidden {
+    display: none;
   }
 </style>

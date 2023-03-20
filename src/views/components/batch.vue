@@ -2,14 +2,14 @@
   <div class="components-batch">
     <div class="ap-box">
       <slot>
-        <div class="ap-box-left" v-if="state.props.data.length > 0">
+        <div class="ap-box-left" v-if="state.props.data.length">
           <el-button
             v-bind="state.props.defaultAttribute"
             v-for="(item, index) in state.props.data"
             :key="index"
             @click="clickBatchButton(item, index)"
           >
-            {{ item.name }}
+            {{ $t(item.name) }}
           </el-button>
         </div>
       </slot>

@@ -1,0 +1,62 @@
+[
+  {
+    "prop": "organName",
+    "label": "部门名称",
+    "min-width": 150,
+    "fixed": "left",
+    "show": true
+  },
+  {
+    "prop": "organNo",
+    "label": "部门编码",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "organTypeName",
+    "label": "组织类型",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "organUserNum",
+    "label": "部门人数",
+    "sortable": "custom",
+    "align": "center",
+    "width": 150,
+    "show": true
+  },
+  {
+    "prop": "leaderUserName",
+    "label": "部门主管",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "organPName",
+    "label": "上级组织",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "caozuo",
+    "label": "操作",
+    "width": 200,
+    "fixed": "right",
+    "show": true,
+    "rankDisplayData": [
+      {
+        "name": "t-zgj-Edit"
+      },
+      {
+        "name": "t-zgj-F_SEAL_INFO_UP"
+      },
+      {
+        "name": "t-zgj-F_SEAL_INFO_DOWN"
+      },
+      {
+        "name": "status"
+      }
+    ]
+  }
+]
