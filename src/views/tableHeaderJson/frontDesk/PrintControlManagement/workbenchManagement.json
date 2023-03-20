@@ -1,0 +1,55 @@
+[
+  {
+    "prop": "benchSn",
+    "label": "设备串号",
+    "min-width": 150
+  },
+  {
+    "prop": "benchName",
+    "label": "工作台名称",
+    "min-width": 150
+  },
+  {
+    "prop": "benchNo",
+    "label": "工作台编码",
+    "min-width": 300
+  },
+  {
+    "prop": "flag",
+    "label": "设备状态",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "manUserName",
+    "label": "保管人",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "manOrganName",
+    "label": "保管部门",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "modifyDatetime",
+    "label": "更新时间",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "caozuo",
+    "label": "操作",
+    "fixed": "right",
+    "min-width": 150,
+    "rankDisplayData": [
+      {
+        "name": "t-zgj-Edit"
+      },
+      {
+        "name": "t-zgj-Delete"
+      }
+    ]
+  }
+]

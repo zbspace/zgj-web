@@ -90,7 +90,7 @@
     <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
-      :title="form.organId ? '编辑' : '新增'"
+      :title="form.organId ? $t('t-zgj-Edit') : $t('t-zgj-add')"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
