@@ -3,6 +3,7 @@
   <JyElMessageBox
     :modelValue="props.show"
     :defaultAttribute="{}"
+    @update:modelValue="closeCallBack"
     @confirmClick="confirmClick"
   >
     <template #header>
@@ -44,10 +45,14 @@
       type: Object
     }
   })
-  const emit = defineEmits(['sureAction'])
+  const emit = defineEmits(['sureAction', 'update:modelValue'])
 
   const confirmClick = () => {
     emit('sureAction')
+  }
+
+  const closeCallBack = () => {
+    emit('update:modelValue')
   }
 
   onBeforeMount(() => {

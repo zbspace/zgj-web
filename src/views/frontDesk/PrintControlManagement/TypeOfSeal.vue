@@ -18,8 +18,8 @@
           <div>印章类型</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="clickEditor('新增')"
-                >+ 增加</el-button
+              <el-button type="primary" @click="clickEditor('t-zgj-add')"
+                >+ {{ $t('t-zgj-add') }}</el-button
               >
             </div>
             <div class="title-more-down"> </div>
@@ -127,7 +127,7 @@
       }
     ]
   })
-  const fromStateTitle = ref('新增')
+  const fromStateTitle = ref('t-zgj-add')
   const showDialog = ref(false)
   const vFormLibraryRef = ref(null)
   const sealTypeId = ref(null)
@@ -263,29 +263,30 @@
     showDialog.value = true
     nextTick(() => {
       vFormLibraryRef.value.resetFields()
-    })
-    if (title === '新增') {
-      sealTypeId.value = null
-      formData.value.sealTypeNo =
-        dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
-    } else {
-      if (column) {
-        const columns = JSON.parse(JSON.stringify(column))
-        formData.value = {
-          sealTypeNo: columns.sealTypeNo,
-          sealTypeName: columns.sealTypeName,
-          readme: columns.readme
+      if (title === 't-zgj-add') {
+        sealTypeId.value = null
+        formData.value.sealTypeNo =
+          dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+      } else {
+        if (column) {
+          const columns = JSON.parse(JSON.stringify(column))
+          formData.value = {
+            sealTypeNo: columns.sealTypeNo,
+            sealTypeName: columns.sealTypeName,
+            readme: columns.readme
+          }
         }
       }
-    }
+    })
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    if (cell.name === '修改') {
+    console.log(column)
+    if (cell.name === 't-zgj-Edit') {
       sealTypeId.value = column.sealTypeId
       clickEditor(cell.name, column)
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
       sealTypeId.value = column.sealTypeId
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '请问确定要删除吗？'
