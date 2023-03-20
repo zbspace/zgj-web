@@ -311,7 +311,10 @@
             type="textarea"
             placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
           /> -->
-          <JyRichEdit :value="state.form.sealExplain" @updateValue="getMsg" />
+          <JyRichEdit
+            :value="state.form.sealExplain"
+            @update:content="getMsg"
+          />
         </el-form-item>
         <el-form-item
           label="印模"

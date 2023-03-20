@@ -95,7 +95,13 @@
                         :key="num"
                         @click="customClick(scope.$index, scope.row, data)"
                       >
-                        {{ data.name }}
+                        {{
+                          data.name === 'status'
+                            ? scope.row[props.statusColoum] !== props.openValue
+                              ? $t('t-zgj-Enable')
+                              : $t('t-zgj-seal.deactivated')
+                            : $t(data.name)
+                        }}
                       </el-dropdown-item>
                     </el-dropdown-menu>
                   </template>

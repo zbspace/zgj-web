@@ -32,16 +32,26 @@
 <script setup>
   import { QuillEditor } from '@vueup/vue-quill'
   import '@vueup/vue-quill/dist/vue-quill.snow.css'
-  import { reactive, onMounted, ref, toRaw } from 'vue'
+  import { reactive, onMounted, ref, toRaw, watch, nextTick } from 'vue'
 
   const props = defineProps(['value'])
   const emit = defineEmits(['updateValue', 'onEditorBlur', 'onEditorFocus'])
   const content = ref('')
   const myQuillEditor = ref()
-  // watch(() => props.value, (val) => {
-  //   console.log(toRaw(myQuillEditor.value))
-  //   toRaw(myQuillEditor.value).setHTML(val)
-  // }, { deep: true })
+  watch(
+    () => props.value,
+    val => {
+      // console.log(toRaw(myQuillEditor.value))
+
+      toRaw(myQuillEditor.value).setHTML(val)
+      // 处理光标问题
+      nextTick(() => {
+        const quill = toRaw(myQuillEditor.value).getQuill()
+        quill.setSelection(quill.getLength(), quill.getLength() + 1)
+      })
+    },
+    { deep: true }
+  )
   const fileBtn = ref()
   const data = reactive({
     content: '',
