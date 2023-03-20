@@ -237,6 +237,8 @@
   const showToastDialogContent = ref(null)
   const currentActionDept = ref(null)
   const currentAction = ref(null)
+  const firstNode = ref(null)
+  const firstTreeData = ref([])
 
   const form = reactive({
     organId: '',
@@ -580,16 +582,32 @@
   function loadFn(node, resolve) {
     console.log(node.level)
     if (node.level === 0) {
-      return resolve([
-        {
-          organName: JSON.parse(localStorage.getItem('departLists')).find(
-            i => i.tenantId === localStorage.getItem('tenantId')
-          ).tenantName,
-          organId: '-1',
-          isLeaf: false,
-          children: []
-        }
-      ])
+      firstNode.value = node
+      department
+        .subOrganList(-1)
+        .then(res => {
+          firstTreeData.value = res.data
+          return resolve([
+            {
+              organName: JSON.parse(localStorage.getItem('departLists')).find(
+                i => i.tenantId === localStorage.getItem('tenantId')
+              ).tenantName,
+              organId: '-1',
+              isLeaf: false,
+              children: []
+            }
+          ])
+        })
+        .then(() => {
+          nextTick(() => {
+            console.log(state.componentsTree.data)
+            const nodeData = firstNode.value.childNodes[0]
+            nodeData.expanded = true
+            nodeData.loadData()
+          })
+        })
+    } else if (node.level === 1) {
+      return resolve(firstTreeData.value)
     } else {
       console.log(node.data)
       department.subOrganList(node.data.organId).then(res => {
