@@ -18,7 +18,7 @@
         :style="{ cursor: handelScreen ? '' : 'move' }"
       >
         <div class="h-title" v-if="props.title">
-          <div>{{ props.title }}</div>
+          <div>{{ $t(props.title) }}</div>
 
           <div class="fullscreen-icon">
             <div

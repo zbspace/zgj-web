@@ -20,7 +20,9 @@
           <div>部门管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="add">+ 新增部门</el-button>
+              <el-button type="primary" @click="add"
+                >+ {{ $t('t-zgj-add') }}</el-button
+              >
             </div>
             <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
@@ -180,6 +182,7 @@
     />
     <!-- 批量操作 -->
     <actionMoreDialog
+      @update:modelValue="showToastDialog = false"
       :show="showToastDialog"
       :selectionData="state.componentsBatch.selectionData"
       :showToastDialogContent="showToastDialogContent"
@@ -383,13 +386,13 @@
       selectionData: [],
       data: [
         {
-          name: '批量停用'
+          name: 't-zgj-dept.BatchDeactivation'
         },
         {
-          name: '批量启用'
+          name: 't-zgj-dept.BatchEnable'
         },
         {
-          name: '批量删除'
+          name: 't-zgj-seal.BatchDelete'
         }
       ]
     }
@@ -401,7 +404,7 @@
 
   function customClick(row, column, cell, event) {
     console.log(cell)
-    if (cell.name === '修改') {
+    if (cell.name === 't-zgj-Edit') {
       showFormDialog.value = true
       form.organId = column.organId
       nextTick(() => {
@@ -425,11 +428,11 @@
           console.log(form)
         })
       })
-    } else if (cell.name === '上移') {
-      console.log('上移')
-    } else if (cell.name === '下移') {
-      console.log('下移')
-    } else if (cell.name === '状态') {
+    } else if (cell.name === 't-zgj-F_SEAL_INFO_UP') {
+      console.log('t-zgj-F_SEAL_INFO_UP')
+    } else if (cell.name === 't-zgj-F_SEAL_INFO_DOWN') {
+      console.log('t-zgj-F_SEAL_INFO_DOWN')
+    } else if (cell.name === 'status') {
       currentAction.value = column.flag
       currentActionDept.value = column.organId
       state.showOneAction.show = true
@@ -453,8 +456,9 @@
   }
 
   function clickBatchButton(item, selectionData) {
+    console.log(item.name)
     currentActionType.value = item.name
-    if (item.name === '批量停用') {
+    if (item.name === 't-zgj-dept.BatchDeactivation') {
       showToastDialogContent.value = {
         header: {
           data: '批量停用'
@@ -463,7 +467,7 @@
           data: '是否批量停用这些部门？'
         }
       }
-    } else if (item.name === '批量启用') {
+    } else if (item.name === 't-zgj-dept.BatchEnable') {
       showToastDialogContent.value = {
         header: {
           data: '批量启用'
@@ -472,7 +476,7 @@
           data: '是否批量启用这些部门？'
         }
       }
-    } else if (item.name === '批量删除') {
+    } else if (item.name === 't-zgj-seal.BatchDelete') {
       showToastDialogContent.value = {
         header: {
           data: '批量删除'
@@ -642,7 +646,7 @@
   function deleteNode() {}
 
   const deleteMore = () => {
-    if (currentActionType.value === '批量停用') {
+    if (currentActionType.value === 't-zgj-dept.BatchDeactivation') {
       department
         .batchDisable(state.componentsBatch.selectionData.map(i => i.organId))
         .then(res => {
@@ -652,7 +656,7 @@
         .finally(() => {
           showToastDialog.value = false
         })
-    } else if (currentActionType.value === '批量启用') {
+    } else if (currentActionType.value === 't-zgj-dept.BatchEnable') {
       department
         .batchEnable(state.componentsBatch.selectionData.map(i => i.organId))
         .then(res => {
@@ -662,7 +666,7 @@
         .finally(() => {
           showToastDialog.value = false
         })
-    } else if (currentActionType.value === '批量删除') {
+    } else if (currentActionType.value === 't-zgj-seal.BatchDelete') {
       department
         .batchDelete(state.componentsBatch.selectionData.map(i => i.organId))
         .then(res => {

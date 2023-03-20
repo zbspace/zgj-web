@@ -69,11 +69,11 @@
                 @click="customClick(scope.$index, scope.row, data)"
               >
                 <span>{{
-                  data.name === '状态'
-                    ? scope.row[props.statusColoum] === props.openValue
-                      ? '停用'
-                      : '启用'
-                    : data.name
+                  data.name === 'status'
+                    ? scope.row[props.statusColoum] !== props.openValue
+                      ? $t('t-zgj-Enable')
+                      : $t('t-zgj-seal.deactivated')
+                    : $t(data.name)
                 }}</span>
               </div>
               <div

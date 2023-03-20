@@ -9,7 +9,7 @@
             :key="index"
             @click="clickBatchButton(item, index)"
           >
-            {{ item.name }}
+            {{ $t(item.name) }}
           </el-button>
         </div>
       </slot>

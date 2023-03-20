@@ -62,10 +62,10 @@
     "show": true,
     "rankDisplayData": [
       {
-        "name": "修改"
+        "name": "t-zgj-Edit"
       },
       {
-        "name": "删除"
+        "name": "t-zgj-Delete"
       }
     ]
   }
