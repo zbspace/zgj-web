@@ -133,8 +133,6 @@
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
   import { regionData } from 'element-china-area-data'
-  import axios from 'axios'
-  import { TEST_API_URL, OUT_PAGE } from '@/lib/vform/utils/config'
   import JySealLoanInfo from '@/components/business/JySealLoanInfo'
 
   export default {
@@ -248,13 +246,7 @@
       setValue(value) {
         this.fieldModel = value
       },
-      httpRequest(requestURL, requestType, params) {
-        if (requestType === 'post') {
-          return axios.post(TEST_API_URL + requestURL, params)
-        } else {
-          return axios.get(TEST_API_URL + requestURL, { params })
-        }
-      },
+
       handleChange(value) {
         if (!value) {
           this.setAddRequiredShow(true)
