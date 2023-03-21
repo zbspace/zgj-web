@@ -231,13 +231,13 @@
     }
   }
 
-  const loaded = () => {
+  const loaded = async () => {
     if (props.columnData.formMessageId) {
       vformRef.value.setFormJson(props.columnData.formInfo)
     } else {
-      vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
+      await vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
     }
-    vformRef.value.setFormTemplate(formData.value.applyTypeId)
+    await vformRef.value.setFormTemplate(formData.value.applyTypeId)
     getFormColumnMust()
   }
 
