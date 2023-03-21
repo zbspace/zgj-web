@@ -139,7 +139,7 @@
       default: () => []
     }
   })
-  const emit = defineEmits(['update:modelValue', 'close'])
+  const emit = defineEmits(['update:modelValue', 'close', 'reloadData'])
   const state = reactive({
     processTabs: {
       checkedNode: {},
@@ -282,9 +282,11 @@
           formMessageId: props.columnData.formMessageId
         })
         messageSuccess('表单修改成功')
+        emit('reloadData')
       } else {
         await formManageService.formAdd(formData.value)
         messageSuccess('表单添加成功')
+        emit('reloadData')
       }
       vformRef.value.setFormJson('')
       isVisible.value = false
