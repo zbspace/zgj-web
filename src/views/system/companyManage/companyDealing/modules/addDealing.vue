@@ -102,7 +102,6 @@
 </template>
 <script setup>
   import { ref, reactive, computed, watch } from 'vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog.vue'
   import { ElMessage } from 'element-plus'
   import { CircleClose } from '@element-plus/icons-vue'

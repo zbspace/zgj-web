@@ -111,7 +111,6 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import RealTimeConfirmlJson from '@/views/addDynamicFormJson/RealTimeConfirm.json'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'

@@ -113,7 +113,6 @@
   import componentsLayout from '@/views/components/Layout'
   // import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
 
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   const state = reactive({
     cache: {
       setLicense: '',

@@ -107,7 +107,6 @@
   import componentsPagination from '../../../components/pagination.vue'
   import componentsTabs from '../../../components/tabs.vue'
   import componentsLayout from '../../../components/Layout.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import componentsDocumentsDetails from '../../../components/documentsDetails.vue'

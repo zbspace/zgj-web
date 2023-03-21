@@ -158,8 +158,6 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
-
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import dialogProcessJson from '@/views/addDynamicFormJson/ProcessStopJson.json'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'

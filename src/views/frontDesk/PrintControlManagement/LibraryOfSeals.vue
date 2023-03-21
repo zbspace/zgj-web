@@ -429,7 +429,6 @@
   import { Paperclip, CircleClose } from '@element-plus/icons-vue'
   import componentsTree from '../../components/tree'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import JyTable from '@/views/components/JyTable.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'

@@ -163,7 +163,6 @@
   import { ref, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import { Search } from '@element-plus/icons-vue'
 

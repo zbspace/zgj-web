@@ -104,7 +104,6 @@
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import WarningOperateJson from '@/views/addDynamicFormJson/WarningOperate.json'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   const props = defineProps({
     // 处理类型
     type: {

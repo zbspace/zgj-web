@@ -101,7 +101,6 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { useRouter } from 'vue-router'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import { UploadFilled } from '@element-plus/icons-vue'
   import fileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   const router = useRouter()

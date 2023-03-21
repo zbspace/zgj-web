@@ -209,7 +209,6 @@
 <script setup>
   import { reactive, onBeforeMount, ref, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import department from '@/api/system/companyManagement/department'

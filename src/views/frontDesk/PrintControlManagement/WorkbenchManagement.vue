@@ -193,7 +193,6 @@
   import { ref, reactive, nextTick, onBeforeMount, onMounted } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails'
-  import JyDialog from '@/views/components/modules/JyDialog'
   import { ElMessage } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import workbenchManagement from '@/api/frontDesk/printControl/workbenchManagement'

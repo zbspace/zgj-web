@@ -337,7 +337,7 @@
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
-  import JyDialog from '@/components/common/JyDialog/index.vue'
+  import JyDialog from '@/components/common/JyDialog/index2.vue'
 
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'

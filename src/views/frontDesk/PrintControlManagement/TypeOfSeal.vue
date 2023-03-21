@@ -101,7 +101,6 @@
 <script setup>
   import { ref, reactive, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import JyDialog from '@/views/components/modules/JyDialog'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/typeOfSeal.json'

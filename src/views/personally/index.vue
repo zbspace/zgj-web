@@ -256,7 +256,7 @@
   import { reactive, ref } from 'vue'
   import { ElMessage } from 'element-plus'
   import { Plus } from '@element-plus/icons-vue'
-  import JyDialog from '@/components/common/JyDialog/index.vue'
+  import JyDialog from '@/components/common/JyDialog/index2.vue'
   import VerificationBtn from '@/views/login/components/VerificationBtn.vue'
   const imageUrl = ref('')
 

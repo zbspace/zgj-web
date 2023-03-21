@@ -125,7 +125,6 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/editorCabinet.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
