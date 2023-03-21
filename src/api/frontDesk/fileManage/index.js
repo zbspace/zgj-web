@@ -8,11 +8,11 @@ export const fileManageService = {
    * @param {*} params {tenantId: string}
    * @returns
    */
-  getTreeList: params => {
+  getTreeList: data => {
     return request({
       method: 'POST',
       url: '/fileType/treeList',
-      params
+      data
     })
   },
 
@@ -21,10 +21,60 @@ export const fileManageService = {
    * @param {*} data {formMessageId: string, relationRule: string}
    * @returns
    */
-  getFileTypeList: data => {
+  getFileTypeList: params => {
     return request({
       method: 'POST',
-      url: `/fileType/queryList/${data}`
+      url: `/fileType/queryList`,
+      params
+    })
+  },
+  /**
+   * 文件类型列表 - 分页
+   * @param {*} data {formMessageId: string, relationRule: string}
+   * @returns
+   */
+  getFileTypeListPage: data => {
+    return request({
+      method: 'POST',
+      url: `/fileType/page`,
+      data
+    })
+  },
+
+  /**
+   * 新增文件类型
+   * @param {*} data
+   * @returns
+   */
+  fileTypeAdd: data => {
+    return request({
+      method: 'POST',
+      url: `fileType/add`,
+      data
+    })
+  },
+
+  /**
+   * 删除文件类型
+   * @param {*} fileTypeId
+   * @returns
+   */
+  fileTypeDelete: fileTypeId => {
+    return request({
+      method: 'POST',
+      url: `fileType/delete/${fileTypeId}`
+    })
+  },
+
+  /**
+   * 查看文件类型的可见范围
+   * @param {*} fileTypeId
+   * @returns
+   */
+  queryVisibleRByFileType: fileTypeId => {
+    return request({
+      method: 'POST',
+      url: `fileType/queryVisibleRByFileType/${fileTypeId}`
     })
   }
 }

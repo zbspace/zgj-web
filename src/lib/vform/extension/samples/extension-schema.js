@@ -472,44 +472,6 @@ export const limitAddressSealSchema = {
   }
 }
 
-// 用印文件old
-export const uploadFileSchema = {
-  type: 'uploadFile',
-  icon: 'uploadFile',
-  formItemFlag: true,
-  options: {
-    name: 'uploadFile',
-    // label: '用印文件',
-    labelAlign: 'right',
-    columnWidth: '200px',
-    labelWidth: 100,
-    labelHidden: false,
-    disabled: false,
-    hidden: false,
-    dsEnabled: false, // 是否使用数据源数据
-    // defaultValue: false,
-    // -------------------
-    customClass: '', // 自定义css类名
-    labelIconClass: null,
-    labelIconPosition: 'rear',
-    labelTooltip: null,
-    switchWidth: 40,
-    activeText: '',
-    inactiveText: '',
-    activeColor: null,
-    inactiveColor: null,
-    fieldLinkage: [
-      { value: '1', linkages: [] },
-      { value: '2', linkages: [] }
-    ],
-    // -------------------
-    onCreated: '',
-    onMounted: '',
-    onChange: '',
-    onValidate: ''
-  }
-}
-
 // 用印文件
 export const sealFileSchema = {
   type: 'sealFile',
@@ -517,7 +479,7 @@ export const sealFileSchema = {
   formItemFlag: true,
   options: {
     name: 'sealFile',
-    // label: '用印文件',
+    label: '用印文件',
     labelAlign: 'right',
     columnWidth: '200px',
     labelWidth: 100,

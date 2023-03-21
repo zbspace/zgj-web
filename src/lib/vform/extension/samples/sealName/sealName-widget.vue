@@ -14,7 +14,7 @@
       <el-row :gutter="12">
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <el-form-item
-            :label="sealNameLabel(index)"
+            :label="'印章名称' + (index + 1)"
             :label-width="field.options.labelWidth"
             :class="[
               labelAlign,
@@ -270,9 +270,6 @@
       },
       deleteItem(idx) {
         this.filedList.splice(idx, 1)
-      },
-      sealNameLabel(index) {
-        return '印章名称' + (index + 1)
       },
 
       onBlur(e, index) {

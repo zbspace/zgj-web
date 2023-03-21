@@ -15,12 +15,7 @@
           </div>
         </div>
       </template>
-      <template #tabs>
-        <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
-        </div>
-      </template>
+
       <template #searchForm>
         <div>
           <componentsSearchForm
@@ -45,6 +40,8 @@
           <componentsTree
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
+            :defaultProps="{ children: 'child', label: 'fileTypeName' }"
+            @node-click="nodeClick"
           >
           </componentsTree>
         </div>
@@ -60,6 +57,7 @@
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
+            :loading="loading"
           >
           </componentsTable>
         </div>
@@ -88,6 +86,8 @@
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
       v-if="showDepPerDialog"
+      :searchSelected="userSelected"
+      :tabsShow="['user', 'organ', 'role']"
     >
     </kDepartOrPersonVue>
 
@@ -95,6 +95,7 @@
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      @confirmClick="deleteFileType"
     >
       <template #header>
         {{ state.JyElMessageBox.header.data }}
@@ -105,33 +106,25 @@
     </JyElMessageBox>
   </div>
 
-  <!-- 新增文件类型 -->
-  <JyDialog title="新增文件类型" v-model="dialogVisible">
-    <el-form
-      ref="formRef"
-      :model="formData"
-      :rules="rules"
-      label-width="120px"
-      class="demo-ruleForm"
-    >
-      <el-form-item label="文件类型编码" prop="fileTypeNo">
-        <el-input v-model="formData.fileTypeNo" />
-      </el-form-item>
-      <el-form-item label="文件类型名称" prop="fileTypeName">
-        <el-input v-model="formData.fileTypeName" />
-      </el-form-item>
-      <el-form-item label="文件类型字号" prop="fileTypeSn">
-        <el-input v-model="formData.fileTypeSn" />
-      </el-form-item>
-      <el-form-item label="上级文件夹" prop="fileTypePid">
-        <el-input v-model="formData.fileTypePid" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <el-button type="primary" @click="submit">提交</el-button>
-      <el-button @click="calcel">取消</el-button>
-    </template>
-  </JyDialog>
+  <!-- 新增/修改文件类型 -->
+  <AddFileType
+    v-model="dialogVisible"
+    :optionsTree="state.componentsTree.data"
+    @refresh="refresh"
+    :curFromData="curFromData"
+  />
+
+  <!-- 设置可见范围 -->
+  <!-- <kDepartOrPersonVue
+    :show="xzyzDialogVisible"
+    @update:show="xzyzDialogVisible = $event"
+    :searchSelected="[]"
+    @update:searchSelected="submit"
+    :tabsShow="tabsShow"
+    apiModule="systemOrganOrPerson"
+    :queryParams="queryParams"
+    v-if="xzyzDialogVisible"
+  /> -->
 </template>
 
 <script setup>
@@ -140,44 +133,28 @@
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
   import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import { fileManageService } from '@/api/frontDesk/fileManage'
+  import { messageError, messageSuccess } from '@/hooks/useMessage'
+  import AddFileType from './addFileType'
+  import { GetFileTypeList } from '@/utils/domain/fileManage'
+  import { PaginationInfo } from '@/utils/domain/paginationInfo'
+  import { getArrFromTree } from '@/utils/tools'
 
   const showDepPerDialog = ref(false)
-  const showFormDialog = ref(false)
-  const formRef = ref(null)
-  const formData = reactive({
-    fileTypeNo: '',
-    fileTypeName: '',
-    fileTypeSn: '',
-    fileTypePid: ''
-  })
-  const dialogVisible = ref(true)
+  const searchForm = ref(new GetFileTypeList())
+  const paginationInfo = ref(new PaginationInfo())
 
-  const rules = {
-    fileTypeName: [{ required: true, message: '请输入', trigger: 'blur' }]
-  }
+  const dialogVisible = ref(false)
+  const loading = ref(false)
+  const curFromData = ref({})
+  const curFileTypeId = ref('')
+  const userSelected = ref([])
 
   const state = reactive({
-    componentsTabs: {
-      data: [
-        {
-          label: '待签章',
-          name: '1'
-        },
-        {
-          label: '已签章',
-          name: '2'
-        },
-        {
-          label: '不可用',
-          name: '3'
-        }
-      ]
-    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -189,7 +166,7 @@
       },
       data: [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -199,7 +176,7 @@
           }
         },
         {
-          id: 'picker',
+          id: 'beginTime',
           label: '创建时间',
           type: 'picker',
           inCommonUse: true,
@@ -246,130 +223,57 @@
     componentsTable: {
       header: [
         {
-          prop: '1',
+          prop: 'fileTypeName',
           label: '文件类型名称',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '2',
+          prop: 'fileTypeSn',
           label: '文件类型说明',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'fileSum',
           label: '文件数',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'createUser',
           label: '创建人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'createDatetime',
           label: '创建时间',
           sortable: true,
-          'min-width': 150
+          'min-width': 160
         },
         {
           prop: 'caozuo',
           label: '操作',
           fixed: 'right',
-          'min-width': 400,
+          'min-width': 250,
           rankDisplayData: [
             {
               name: '修改'
             },
             {
-              name: '设置维护范围'
+              name: '删除'
             },
             {
-              name: '设置可用范围'
+              name: '设置可见范围'
             },
             {
-              name: '新增子文件类型'
+              name: '特殊类型隐私配置'
             }
           ]
         }
       ],
-      data: [
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        },
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        },
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        },
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        },
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        },
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        },
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        },
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        },
-        {
-          1: '文件',
-          2: '',
-          3: '',
-          4: '往往',
-          5: '',
-          6: '2022/10/30'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -388,63 +292,7 @@
       }
     },
     componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': true,
@@ -452,6 +300,12 @@
         'default-expand-all': true,
         'expand-on-click-node': false,
         'check-strictly': true
+      },
+      defaultProps: {
+        label: 'fileTypeName',
+        children: 'child',
+        isLeaf: 'haveChildren',
+        nodeKey: 'fileTypeId'
       }
     },
     componentsPagination: {
@@ -523,15 +377,69 @@
     }
   })
 
-  const submit = async () => {
-    try {
-      await formRef.value.validate()
-    } catch (error) {}
-    dialogVisible.value = false
+  const nodeClick = (NodeObjects, node, TreeNode, event) => {
+    console.log('--->', getArrFromTree([NodeObjects], 'child', 'fileTypeId'))
+    searchForm.value.fileTypeIds = getArrFromTree(
+      [NodeObjects],
+      'child',
+      'fileTypeId'
+    )
+    getFileTypeList()
   }
 
-  const calcel = () => {
-    dialogVisible.value = false
+  const getFileTypeList = async () => {
+    try {
+      loading.value = true
+      const res = await fileManageService.getFileTypeListPage({
+        ...searchForm.value,
+        ...paginationInfo
+      })
+      state.componentsTable.data = res.data.records || []
+      paginationInfo.value.total = res.data && res.data.total
+      paginationInfo.value.pages = res.data && res.data.pages
+    } catch (error) {
+      messageError(error)
+    }
+    loading.value = false
+  }
+
+  const getFileTypeTree = async () => {
+    try {
+      const res = await fileManageService.getTreeList({})
+      state.componentsTree.data = res.data || []
+    } catch (error) {
+      messageError(error)
+    }
+  }
+
+  const refresh = () => {
+    getFileTypeList()
+    getFileTypeTree()
+    curFromData.value = {}
+  }
+
+  const deleteFileType = async () => {
+    try {
+      await fileManageService.fileTypeDelete(curFileTypeId.value)
+      messageSuccess('成功删除文件类型')
+      state.JyElMessageBox.show = false
+      refresh()
+    } catch (error) {
+      messageError(error)
+    }
+  }
+
+  const queryVisibleRByFileType = async fileTypeId => {
+    try {
+      const res = await fileManageService.queryVisibleRByFileType(fileTypeId)
+      userSelected.value = [
+        ...res.data.visibleOrganR,
+        ...res.data.visibleRoleR,
+        ...res.data.visibleUserR
+      ]
+    } catch (error) {
+      messageError(error)
+    }
   }
 
   // 点击表格单元格
@@ -548,22 +456,26 @@
 
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(cell.name)
+    console.log(cell.name, column)
     if (cell.name === '修改') {
-      showFormDialog.value = true
+      dialogVisible.value = true
+      curFromData.value = { ...curFromData.value, ...column }
     }
     if (cell.name === '删除') {
+      curFileTypeId.value = column.fileTypeId
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
       state.JyElMessageBox.show = true
     }
-    if (cell.name === '设置维护范围') {
+    if (cell.name === '设置可见范围') {
       showDepPerDialog.value = true
+      queryVisibleRByFileType(column.fileTypeId)
     }
-    if (cell.name === '设置可用范围') {
+    if (cell.name === '特殊类型隐私配置') {
       showDepPerDialog.value = true
     }
   }
+
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
@@ -575,13 +487,14 @@
     }
   }
 
-  onMounted(() => {})
+  onMounted(() => {
+    refresh()
+  })
 </script>
 
 <style lang="scss" scoped>
   .fileManagement-documentType {
     margin: 0%;
-
     .title {
       display: flex;
       align-items: center;
@@ -612,6 +525,70 @@
 
       .batch-desc {
         @include mixin-margin-right(12);
+      }
+    }
+    .components-tree {
+      margin: 0%;
+      .custom-tree-node {
+        display: flex;
+        align-items: center;
+        .custom-tree-node-icon {
+          margin-right: 0.4rem;
+        }
+      }
+      :deep {
+        margin-bottom: 0%;
+        .el-tree-node__content {
+          @include mixin-height(32);
+        }
+        .el-tree .el-icon svg {
+          //原有的箭头 去掉
+          display: none !important;
+          height: 0;
+          width: 0;
+        }
+        .el-tree-node__expand-icon {
+          //引入的图标（图片）size大小 => 树节点前的预留空间大小
+          font-size: 16px;
+        }
+
+        //图标是否旋转，如果是箭头类型的，可以设置旋转90度。如果是两张图片，则设为0
+        .el-tree .el-tree-node__expand-icon.expanded {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        .el-tree .el-tree-node__expand-icon:before {
+          // 未展开的节点
+          background: url('~@/assets/svg/tree-fangxiang-zuo.svg') no-repeat 0;
+          content: '';
+          display: block;
+          width: 18px;
+          height: 18px;
+        }
+
+        .el-tree .el-tree-node__expand-icon.expanded:before {
+          //展开的节点
+          background: url('~@/assets/svg/tree-fangxiang-xia.svg') no-repeat 0 0;
+          content: '';
+          display: block;
+          width: 18px;
+          height: 18px;
+          margin-top: 4px;
+        }
+
+        .el-tree .is-leaf.el-tree-node__expand-icon::before {
+          //叶子节点（不显示图标）
+          display: block;
+          background: none !important;
+          content: '';
+          width: 18px;
+          height: 18px;
+        }
+
+        .el-tree-node__expand-icon.is-leaf {
+          width: 0px;
+        }
       }
     }
   }

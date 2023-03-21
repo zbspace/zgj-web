@@ -183,3 +183,23 @@ export function arr2tree(list, pid = 0) {
       .map(o => ((o.children = this.arr2tree(list, o.id)), o))
   }
 }
+
+/**
+ * 获取树节点
+ * @param {*} arr
+ * @param {*} child
+ * @param {*} key
+ */
+export function getArrFromTree(arr, child, key) {
+  const tempArr = []
+  const fn = arr => {
+    arr.forEach(v => {
+      tempArr.push(v[key])
+      if (v[child] && v[child].length) {
+        fn(v[child])
+      }
+    })
+  }
+  fn(arr)
+  return tempArr
+}
