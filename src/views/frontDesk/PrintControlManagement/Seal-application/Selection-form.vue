@@ -119,6 +119,12 @@
                 </i>
               </div>
             </div>
+            <div class="empty">
+              <el-empty
+                description="您暂无可用的申请表单"
+                v-if="!applyLists.length && !loading"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -170,6 +176,7 @@
   const showFormDialog = ref(false)
   const applyLists = ref([])
   const keyword = ref('')
+  const loading = ref(false)
 
   // 点击列表按钮
   function clickListBut(formMessageId) {
@@ -190,9 +197,16 @@
   }
 
   const applyList = () => {
-    sealApply.list({ keyword: keyword.value }).then(res => {
-      applyLists.value = res.data
-    })
+    loading.value = true
+    applyLists.value = []
+    sealApply
+      .list({ keyword: keyword.value })
+      .then(res => {
+        applyLists.value = res.data
+      })
+      .finally(() => {
+        loading.value = false
+      })
   }
 
   onBeforeMount(() => {
@@ -211,6 +225,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+
+    .empty {
+      width: 100%;
     }
 
     .custom {
