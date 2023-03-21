@@ -19,6 +19,14 @@ api.formQuery = params => {
     params
   })
 }
+// 获取表单的审批流程详情
+api.flowDetail = params => {
+  return request({
+    method: 'GET',
+    url: '/model/design',
+    params
+  })
+}
 // 用印申请新增
 api.add = data => {
   return request({

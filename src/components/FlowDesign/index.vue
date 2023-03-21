@@ -121,15 +121,17 @@
     if (!route.query.definitionId) {
       // back();
     }
-    modelId.value = route.query.modelId
-    definitionId.value = route.query.definitionId
-    // 当默认初始化时
-    if (!props.node) {
-      // 当前模型是否为自由流程,则添加自由流程
-      flowStore.initFreeFlow(modelId.value, definitionId.value)
-    } else {
-      // 初始化
-      handleSetData(props.node)
+    if (route.query.modelId && route.query.definitionId) {
+      modelId.value = route.query.modelId
+      definitionId.value = route.query.definitionId
+      // 当默认初始化时
+      if (!props.node) {
+        // 当前模型是否为自由流程,则添加自由流程
+        flowStore.initFreeFlow(modelId.value, definitionId.value)
+      } else {
+        // 初始化
+        handleSetData(props.node)
+      }
     }
   })
 

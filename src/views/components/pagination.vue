@@ -10,7 +10,6 @@
           v-bind="state.props.sizeAttribute"
           @size-change="sizeChange"
           @current-change="currentChange"
-          :page-sizes="[10, 50, 100]"
         >
           <slot></slot>
         </el-pagination>

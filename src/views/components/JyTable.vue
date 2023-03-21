@@ -44,7 +44,7 @@
       <template #table>
         <div class="components-table">
           <el-table
-            v-bind="state.defaultAttribute"
+            v-bind="state.componentsTable.defaultAttribute"
             v-loading="props.loading"
             ref="table"
             :data="state.componentsTable.data"
@@ -71,9 +71,9 @@
             >
               <template #default="scope">
                 <span>{{
-                  (props.paginationData.index
-                    ? (props.paginationData.index - 1) *
-                      props.paginationData.pageNumber
+                  (state.componentsPagination.index
+                    ? (state.componentsPagination.data.index - 1) *
+                      state.componentsPagination.data.pageNumber
                     : 0) +
                   scope.$index +
                   1
