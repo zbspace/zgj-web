@@ -737,7 +737,7 @@
                 .list-cont-time {
                   color: var(--jy-color-text-3);
                   text-align: right;
-                  width: 2.5rem;
+                  width: 50px;
                   .list-cont-time-o {
                     margin-bottom: 0.3rem;
                   }
@@ -746,7 +746,7 @@
                   }
                 }
                 .list-cont-desc {
-                  width: calc(100% - 2.5rem);
+                  width: calc(100% - 50px);
                   .list-cont-desc-title {
                     color: var(--jy-color-text-1);
                     margin-bottom: 0.3rem;
@@ -815,7 +815,7 @@
                 .list-cont-time {
                   color: var(--jy-color-text-3);
                   text-align: right;
-                  width: 2.5rem;
+                  width: 50px;
                   .list-cont-time-o {
                     margin-bottom: 0.3rem;
                   }
@@ -824,7 +824,7 @@
                   }
                 }
                 .list-cont-desc {
-                  width: calc(100% - 2.5rem);
+                  width: calc(100% - 50px);
                   .list-cont-desc-title {
                     color: var(--jy-color-text-1);
                     margin-bottom: 0.3rem;
