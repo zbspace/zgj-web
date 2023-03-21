@@ -348,7 +348,7 @@
   }
   const clickSubmit = item => {
     if (item.id === 'reset') {
-      table.value.clearSorts()
+      table.value.clearSort()
       props.componentsSearchForm.data.forEach(item => {
         if (item.type === 'checkButton') {
           item.data.forEach(i => {
