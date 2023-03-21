@@ -77,6 +77,7 @@
   import { compManageService } from '@/api/system/compManage'
   import { CompanyAddInfo } from '@/utils/domain/compManage'
   import { ElMessage } from 'element-plus'
+  import JyDialog from '@/components/common/JyDialog/index2.vue'
 
   const formData = ref(new CompanyAddInfo())
   const formRef = ref(null)
