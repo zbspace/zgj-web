@@ -39,7 +39,11 @@
               <div class="process-save-down">
                 <el-popover placement="bottom" :width="400" trigger="click">
                   <template #reference>
-                    <div class="process-save-down-text"> 0项不完善 </div>
+                    <div class="process-save-down-text">
+                      <span v-show="errorInfo.length !== 0">
+                        {{ errorInfo.length }}项不完善
+                      </span>
+                    </div>
                   </template>
                   <div class="popover-cont">
                     <div class="popover-cont-title">
@@ -48,11 +52,17 @@
                     <div class="popover-cont-subTitle">
                       以下内容不完善，请修改后发布
                     </div>
-                    <div class="popover-cont-list">
-                      <div class="popover-cont-list-li" v-for="n in 6" :key="n">
-                        <div class="popover-cont-list-li-name">基础信息</div>
+                    <div class="popover-cont-list" v-if="errorInfo">
+                      <div
+                        class="popover-cont-list-li"
+                        v-for="(item, index) in errorInfo"
+                        :key="index"
+                      >
+                        <div class="popover-cont-list-li-name">
+                          {{ item.type }}
+                        </div>
                         <div class="popover-cont-list-li-desc">
-                          流程名称不能为空
+                          {{ item.message }}
                         </div>
                         <div class="popover-cont-list-li-but">去修改 </div>
                       </div>
@@ -74,19 +84,19 @@
               v-show="state.checkedIndex == '1'"
               ref="refBasicsInfo"
               :businessList="props.businessList"
+              v-model="linkId"
             ></BasicsInfo>
             <AssociationForm
-              :getModelValue="getModelValue"
-              @update:getModelValue="getModelValue = $event"
               :businessList="props.businessList"
               v-show="state.checkedIndex == '2'"
               ref="refAssociationForm"
+              v-model="linkId"
             ></AssociationForm>
             <VFlowDesign
               v-show="state.checkedIndex == '3'"
-              v-if="getModelValue"
+              v-if="modelIds"
               ref="refVFlowDesign"
-              :initObj="getModelValue"
+              :initObj="modelIds"
             ></VFlowDesign>
             <AdvancedSetup
               v-show="state.checkedIndex == '4'"
@@ -96,6 +106,23 @@
         </div>
       </div>
     </AntModalBox>
+
+    <JyElMessageBox
+      v-model="state.jyBoxShow"
+      :show="state.jyBoxShow"
+      :defaultAttribute="{}"
+      @on-cancel="jyBoxCancel"
+    >
+      <template #header>
+        {{ state.jyBoxHeader }}
+      </template>
+      <template #content>
+        {{ state.jyBoxCont }}
+      </template>
+      <template #footer>
+        <el-button type="primary" @click="jyBoxCancel">确定</el-button>
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 
@@ -104,10 +131,11 @@
   import AssociationForm from './AssociationForm.vue'
   import AdvancedSetup from './AdvancedSetup.vue'
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
-  import { reactive, computed, defineAsyncComponent, ref } from 'vue'
+  import { reactive, computed, defineAsyncComponent, ref, watch } from 'vue'
   import apiFlow from '@/api/system/flowManagement'
   import { useFlowStore } from '@/components/FlowDesign/store/flow'
   const flowStore = useFlowStore()
+
   // 异步组件
   const VFlowDesign = defineAsyncComponent({
     loader: () => import('@/views/components/FlowDesign/index.vue')
@@ -116,9 +144,25 @@
     modelValue: {
       type: Boolean,
       default: false
+    },
+    businessList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    openType: {
+      type: String,
+      default: 'add'
+    },
+    treeSelectedId: {
+      type: String,
+      default: ''
     }
   })
-  const emits = defineEmits('update:modelValue')
+
+  const emits = defineEmits('update:modelValue', 'update:treeSelectedId')
+
   const state = reactive({
     checkedIndex: '1',
     tabsData: [
@@ -139,9 +183,13 @@
         index: '4',
         label: '高级设置'
       }
-    ]
+    ],
+    jyBoxHeader: '',
+    jyBoxCont: '',
+    jyBoxShow: false
   })
 
+  // model show
   const show = computed({
     get() {
       return props.modelValue
@@ -151,11 +199,47 @@
     }
   })
 
+  // 联动Id - 业务类型
+  const linkId = computed({
+    get() {
+      return props.treeSelectedId
+    },
+    set(value) {
+      emits('update:treeSelectedId', value)
+    }
+  })
+
   const clickClose = () => {
     show.value = false
   }
+  const refVFlowDesign = ref(null)
+  const refAssociationForm = ref(null)
+  const refBasicsInfo = ref(null)
+  const refAdvancedSetup = ref(null)
+  const errorInfo = ref([])
+  const modelIds = ref(null)
+  const changeTabs = async attr => {
+    if (attr.index === '3') {
+      modelIds.value = await refAssociationForm.value
+        .saveAddModel()
+        .catch(err => {
+          state.jyBoxHeader = '提示？'
+          state.jyBoxCont = err
+          state.jyBoxShow = true
+        })
 
-  const changeTabs = attr => {
+      if (!modelIds.value) {
+        // 新增 - 初次 流程设计模型
+        if (props.openType === 'add') {
+          state.jyBoxHeader = '提示？'
+          state.jyBoxCont = '请填写完整信息'
+          state.jyBoxShow = true
+          return
+        }
+        return
+      }
+    }
+
     state.tabsData.forEach(item => {
       item.checked = false
       if (item.index === attr.index) {
@@ -164,32 +248,53 @@
       }
     })
   }
-  const refVFlowDesign = ref(null)
-  const refAssociationForm = ref(null)
-  const refBasicsInfo = ref(null)
-  const refAdvancedSetup = ref(null)
-  const errorInfo = ref([])
+
+  const jyBoxCancel = () => {
+    state.jyBoxShow = false
+  }
+
   // 点击保存
   const clickSave = async () => {
     errorInfo.value = []
-    if (!refVFlowDesign.value)
-      return {
-        // 提示信息
-      }
+
+    // 基础信息
     const basicsResult = await refBasicsInfo.value.getBasicsFormValue()
     if (Array.isArray(basicsResult)) {
-      errorInfo.value = errorInfo.value.concat(basicsResult)
+      for (const k in basicsResult[0]) {
+        errorInfo.value.push({
+          type: '基础信息',
+          message: basicsResult[0][k][0].message
+        })
+      }
     }
-    const associationResult =
-      await refAssociationForm.value.getAssociationValue()
-
+    const associationResult = refAssociationForm.value.getAssociationValue()
+    console.log(associationResult, '表单', Array.isArray(associationResult))
     if (Array.isArray(associationResult)) {
-      errorInfo.value = errorInfo.value.concat(associationResult)
+      for (const k in associationResult[0]) {
+        errorInfo.value.push({
+          type: '关联表单',
+          message: associationResult[0][k][0].message
+        })
+      }
     }
-    const designResult = await refVFlowDesign.value.designSave()
-    if (Array.isArray(designResult)) {
-      errorInfo.value = errorInfo.value.concat(designResult)
+    let designResult = []
+    if (refVFlowDesign.value) {
+      designResult = await refVFlowDesign.value.designSave()
+      if (Array.isArray(designResult)) {
+        for (const k in designResult[0]) {
+          errorInfo.value.push({
+            type: '流程设计',
+            message: designResult[0][k][0].message
+          })
+        }
+      }
+    } else {
+      errorInfo.value.push({
+        type: '流程设计',
+        message: '请设计流程'
+      })
     }
+
     console.log(errorInfo.value.length, '错误信息', errorInfo.value)
     if (errorInfo.value.length > 0) return
 
@@ -203,6 +308,16 @@
       clickClose()
     })
   }
+
+  watch(
+    () => modelIds.value,
+    val => {
+      if (val) {
+        if (!val) return
+        flowStore.setModelId(val.modelId, val.definitionId)
+      }
+    }
+  )
 </script>
 
 <style scoped lang="scss">

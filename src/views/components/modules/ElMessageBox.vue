@@ -1,9 +1,11 @@
 <template>
-  <div class="components-ElMessageBox">
+  <div class="container-box">
     <el-dialog
       v-model="state.props.modelValue"
       v-bind="state.props.defaultAttribute"
       @close="closeCallBack"
+      append-to-body
+      class="components-ElMessageBox"
     >
       <div
         class="dialog"
@@ -193,7 +195,7 @@
   })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .components-ElMessageBox {
     .dialog {
       display: flex;
@@ -239,7 +241,7 @@
         color: var(--jy-color-text-2);
       }
       .dialog-footer {
-        padding: 1rem 2rem;
+        padding: 16px 24px 0;
         box-sizing: border-box;
         display: flex;
         justify-content: flex-end;
@@ -255,14 +257,14 @@
         justify-content: center;
       }
     }
-    :deep(.el-dialog) {
-      .el-dialog__header {
-        display: none;
-      }
-      .el-dialog__body {
-        padding: 0%;
-        height: 100%;
-      }
+  }
+  .components-ElMessageBox.el-dialog {
+    .el-dialog__header {
+      display: none;
+    }
+    .el-dialog-body {
+      padding: 0;
+      overflow: unset;
     }
   }
 </style>

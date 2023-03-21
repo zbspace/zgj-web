@@ -1,5 +1,5 @@
 <template>
-  <div class="flowManage-layout">
+  <div class="layout-contanier">
     <div class="process">
       <div class="header">
         <div class="process-back">
@@ -137,7 +137,7 @@
   onMounted(() => {})
 </script>
 <style lang="scss" scoped>
-  .flowManage-layout {
+  .layout-contanier {
     margin: 0%;
     width: 100%;
     height: 100%;
@@ -146,7 +146,7 @@
       height: 100%;
       .header {
         position: relative;
-        z-index: 1;
+        z-index: 20;
         display: flex;
         height: 4rem;
         align-items: center;

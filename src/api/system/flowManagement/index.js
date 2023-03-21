@@ -137,4 +137,22 @@ api.getProcessFormColum = data => {
     data
   })
 }
+
+// 流程配置时查询可用表单
+api.flowSettingForm = params => {
+  return request({
+    method: 'GET',
+    url: '/form/flowSettingForm',
+    params
+  })
+}
+
+// 通过 id查询动态表单json
+api.getFormJsonById = params => {
+  return request({
+    method: 'GET',
+    url: '/form/query',
+    params
+  })
+}
 export default api
