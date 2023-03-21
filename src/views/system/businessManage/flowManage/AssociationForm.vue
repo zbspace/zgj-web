@@ -6,7 +6,7 @@
 !-->
 <template>
   <div class="flowManage-Association-form">
-    <div class="choice" v-if="state.currentState === '1'">
+    <div class="choice" v-show="state.currentState === '1'">
       <div class="info-box">
         <div class="info-title"> 选择表单进行关联 </div>
         <div class="info-remind">
@@ -32,13 +32,7 @@
           </div>
         </div>
         <div class="info-form">
-          <el-form
-            :model="form"
-            label-width="80px"
-            :rules="form.rules"
-            ref="ruleFormRef"
-            status-icon
-          >
+          <el-form :model="form" label-width="80px" status-icon>
             <el-form-item label="业务类型" prop="applyTypeId" required>
               <el-select v-model="form.applyTypeId">
                 <el-option-group
@@ -65,21 +59,6 @@
                 <el-radio :label="2" size="large">电子签章</el-radio>
               </el-radio-group>
             </el-form-item>
-            <!-- <el-form-item
-              label="文件类型"
-              prop="fileType"
-              required
-              v-if="form.applyTypeId === '2'"
-            >
-              <el-select v-model="form.fileType" placeholder="请选择" multiple>
-                <el-option
-                  :label="item.fileTypeName"
-                  :value="item.fileTypeId"
-                  v-for="item in fileTypeList"
-                  :key="item.fileTypeId"
-                />
-              </el-select>
-            </el-form-item> -->
           </el-form>
         </div>
         <div
@@ -99,53 +78,25 @@
           class="info-list"
           v-if="form.applyTypeId && state.list.data.length !== 0"
         >
-          <div
-            class="info-list-box"
-            v-for="(item, index) in state.list.data"
-            :key="index"
-          >
-            <div class="info-list-box-redio">
-              <el-radio-group
-                v-model="state.list.radio"
-                class="ml-4"
-                @change="redioChange"
-              >
-                <el-radio :label="item.formMessageId" size="large">
-                  <div class="info-list-box-text">
-                    {{ item.formName }}
-                  </div>
-                </el-radio>
-              </el-radio-group>
-            </div>
-            <div class="info-list-box-but">
-              <div class="Have-been-enabled">已启用</div>
-              <div
-                @click.stop.prevent="clickEditForm"
-                class="look-detail"
-                v-if="false"
-              >
-                查看
+          <div class="ap-cont-liebiao">
+            <div
+              class="ap-cont-liebiao-list"
+              v-for="(item, index) in state.list.data"
+              :key="index"
+            >
+              <div class="ap-cont-liebiao-list-desc">
+                {{ item.formName }}
               </div>
+              <el-button
+                type="primary"
+                class="btn"
+                @click="clickEditForm(item)"
+              >
+                选择
+              </el-button>
             </div>
           </div>
         </div>
-      </div>
-      <div class="info-footer">
-        <el-button
-          type="primary"
-          @click="clickEdit"
-          v-if="form.applyTypeId && state.list.data.length === 0"
-        >
-          去创建
-        </el-button>
-        <el-button type="primary" v-else @click="saveAddModel">
-          <!--   @click="
-            () => {
-              state.currentState = '2'
-            }
-          " -->
-          确定
-        </el-button>
       </div>
     </div>
     <div class="exhibition" v-if="state.currentState === '2'">
@@ -173,10 +124,6 @@
           height: '100%'
         }"
       >
-        <!-- <AddFrom
-          v-model="state.JyElMessageBox.show"
-          @close="state.JyElMessageBox.show = false"
-        /> -->
         <AddFrom
           v-model="state.JyElMessageBox.show"
           v-if="state.JyElMessageBox.show"
@@ -192,15 +139,11 @@
 <script setup>
   import { reactive, ref, watch } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
-  import { FetchFormListInfo } from '@/utils/domain/formManage'
-  import FormManageService from '@/api/system/formManagement'
-  import { fileManageService } from '@/api/frontDesk/fileManage'
+  import FlowApi from '@/api/system/flowManagement'
   import { ModelApi } from '@/api/flow/ModelApi'
   const refFillFormInformation = ref(null)
-  const fileTypeList = ref([])
   const formJson = ref('')
   const vformObj = ref(null)
-
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
@@ -224,23 +167,7 @@
     ProcessType: false,
     sealUseTypeId: 1,
     applyTypeId: '',
-    formMessageId: '',
-    rules: {
-      applyTypeId: [
-        {
-          required: true,
-          message: '请选择业务类型',
-          trigger: ['blur', 'change']
-        }
-      ],
-      fileType: [
-        {
-          required: true,
-          message: '请选择文件类型',
-          trigger: ['blur', 'change']
-        }
-      ]
-    }
+    formMessageId: ''
   })
   const flagStatus = ref(false)
 
@@ -248,20 +175,25 @@
     businessList: {
       type: Array,
       default: () => {
-        return [] // ['table', 'rate', 'switch'] 自定义组件的type
+        return []
       }
     },
-    getModelValue: {
-      type: Object,
-      default: null
+    modelValue: {
+      type: String,
+      default: ''
     }
   })
 
-  const emits = defineEmits('update:getModelValue')
+  const emits = defineEmits('update:modelValue')
 
-  // 点击去创建
-  const clickEditForm = () => {
-    state.currentState = '2'
+  // 选中
+  const clickEditForm = attr => {
+    FlowApi.getFormJsonById({ formMessageId: attr.formMessageId }).then(res => {
+      form.formMessageId = res.data.formMessageId
+      state.currentState = '2'
+      formJson.value = (res.success && JSON.parse(res.data.formInfo)) || ''
+      vformObj.value = attr
+    })
   }
 
   // 点击重新选择
@@ -275,107 +207,111 @@
   }
 
   // 获取信息值
-  const getAssociationValue = async () => {
-    if (state.list.radio) {
-      form.formMessageId = state.list.radio
-    } else {
-      return {
-        formMessageId: [
-          {
-            message: '请选择表单',
-            fieldValue: '',
-            field: 'formMessageId'
-          }
-        ]
-      }
+  const getAssociationValue = () => {
+    if (!form.formMessageId) {
+      return [
+        {
+          formMessageId: [
+            {
+              message: '请选择关联表单',
+              fieldValue: '',
+              field: 'formMessageId'
+            }
+          ]
+        }
+      ]
     }
-    const valid = await ruleFormRef.value.validate().catch(err => err)
-    if (typeof valid === 'boolean' && valid) {
-      return form
-    } else {
-      return [valid]
-    }
-  }
-
-  // 单选框发生变化
-  const redioChange = value => {
-    const obj = state.list.data.find(v => v.formMessageId === state.list.radio)
-    formJson.value = (obj && JSON.parse(obj.formInfo)) || ''
-    vformObj.value = obj
+    return form
   }
 
   // 获取表单列表
   const getFromList = async () => {
     try {
-      const params = new FetchFormListInfo()
-      params.applyTypeId = form.applyTypeId
-      const res = await FormManageService.formPage(new FetchFormListInfo())
-      state.list.data = res.data.records || []
+      const params = {
+        applyTypeId: form.applyTypeId,
+        sealUseTypeId: form.sealUseTypeId
+      }
+      const res = await FlowApi.flowSettingForm(params)
+      state.list.data = res.data || []
       flagStatus.value = true
     } catch (error) {}
   }
-
-  // // 获取文件类型列表
-  // const setFileTypeList = async () => {
-  //   try {
-  //     const res = await fileManageService.getFileTypeList(form.applyTypeId)
-  //     fileTypeList.value = res.data || []
-  //   } catch (error) {}
-  // }
 
   watch(
     () => form.applyTypeId,
     val => {
       if (!val) return (flagStatus.value = false)
-      if (form.applyTypeId === '2') {
-        // setFileTypeList()
-      } else {
-        getFromList()
-      }
+      state.list.data = []
+      getFromList()
+      emits('update:modelValue', val)
+    },
+    {
+      deep: true,
+      immediate: true
     }
   )
+
   watch(
-    () => form.fileType,
+    () => props.modelValue,
+    val => {
+      form.applyTypeId = val
+    },
+    {
+      deep: true,
+      immediate: true
+    }
+  )
+
+  watch(
+    () => form.sealUseTypeId,
     val => {
       getFromList()
-      flagStatus.value = true
+    },
+    {
+      deep: true,
+      immediate: true
     }
   )
-  const ruleFormRef = ref(null)
+
   const saveAddModel = () => {
-    ruleFormRef.value.validate(validate => {
-      if (validate && state.list.radio) {
-        const random = Math.random()
-        ModelApi.add({ modelKey: random, formIdList: [state.list.radio] }).then(
-          () => {
-            ModelApi.getModelKey({
-              modelKey: random
-            }).then(res => {
-              emits('update:getModelValue', {
-                modelId: res.modelId,
-                definitionId: res.definitionId
-              })
-            })
-          }
-        )
+    return new Promise((resolve, reject) => {
+      if (!form.formMessageId) {
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject('请选择表单')
+        return
       }
+
+      const random = Math.random()
+      ModelApi.add({
+        modelKey: random,
+        formIdList: [form.formMessageId]
+      }).then(() => {
+        ModelApi.getModelKey({
+          modelKey: random
+        }).then(res => {
+          resolve({
+            modelId: res.modelId,
+            definitionId: res.definitionId
+          })
+        })
+      })
     })
   }
   // 提供方法
   defineExpose({
-    getAssociationValue
+    getAssociationValue,
+    saveAddModel
   })
 </script>
 <style lang="scss" scoped>
   .flowManage-Association-form {
-    margin: 0%;
-    width: 90%;
-    height: calc(95% - 1rem);
+    width: 1194px;
+    min-height: calc(95% - 1rem);
     margin-top: 1rem;
     background-color: var(--jy-color-fill--5);
     position: relative;
     color: var(--jy-color-text-1);
-
+    padding-bottom: 24px;
     .choice {
       width: 100%;
       height: 100%;
@@ -390,10 +326,8 @@
     }
 
     .info-box {
-      width: 60%;
-      margin: 0% auto;
+      margin: auto;
       text-align: center;
-
       .info-title {
         padding-top: 3rem;
         font-size: var(--jy-font-size-title-2);
@@ -417,6 +351,8 @@
     }
 
     .info-remind {
+      width: 654px;
+      margin: auto;
       background: var(--jy-warning-1);
       /* 警告 Warning/禁用 */
 
@@ -451,9 +387,9 @@
     }
 
     .info-form {
-      margin-top: 1rem;
-      padding: 0% 10%;
+      margin-top: 24px;
       box-sizing: border-box;
+      padding: 0 357px;
     }
 
     .info-noContent {
@@ -484,50 +420,91 @@
       .info-noContent-desc {
         width: 100%;
         margin-top: 16px;
+
         img {
-          width: 16pxl;
+          width: 16px;
         }
       }
     }
 
     .info-list {
       margin-top: 16px;
-      height: 400px;
-      overflow-y: auto;
-      .info-list-box {
+      padding: 0 54px;
+      .ap-cont-liebiao {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        text-align: left;
-        padding: 8px 14px;
-        box-sizing: border-box;
-        background: var(--jy-color-fill--2);
-        border-radius: var(--jy-border-radius-2);
-        box-sizing: border-box;
-        margin: 0.5rem 0rem;
-        cursor: pointer;
+        flex-flow: wrap;
 
-        .info-list-box-redio {
-          // width: 1rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .info-list-box-but {
-          display: flex;
-
-          .look-detail {
-            margin-left: 8px;
-            font-size: 14px;
-            color: rgba(0, 0, 0, 0.6);
+        @media screen and (max-width: 900px) {
+          .ap-cont-liebiao-list {
+            width: 100%;
+            margin: 0;
           }
         }
-        .info-list-box-text {
-          width: calc(100% - 5rem);
+
+        @media screen and (min-width: 900px) and (max-width: 1200px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 15px) / 2);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(2n) {
+            margin: 0 0 15px 0;
+          }
         }
 
-        .info-list-box-sub {
-          width: 4rem;
+        @media screen and (min-width: 1200px) and (max-width: 1500px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 45px) / 4);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(4n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1500px) and (max-width: 1750px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 45px) / 4);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(4n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1750px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 60px) / 5);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(5n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        .ap-cont-liebiao-list {
+          margin: 0 15px 15px 0;
+          padding: 10px;
+          box-sizing: border-box;
+          display: flex;
+          flex-flow: wrap;
+          justify-content: center;
+          border: 1px solid var(--jy-color-border-1);
+          border-radius: var(--jy-border-radius-4);
+          background-color: var(--jy-color-fill--1);
+          position: relative;
+          overflow: hidden;
+
+          .ap-cont-liebiao-list-desc {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            color: var(--jy-color-text-1);
+            cursor: pointer;
+          }
+          .btn {
+            width: 60px;
+            height: 32px;
+            font-size: 14px;
+          }
         }
       }
     }
