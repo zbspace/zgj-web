@@ -58,6 +58,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
+      destroy-on-close
       @confirm="submitLibraryForm"
     >
       <el-form
@@ -269,8 +270,8 @@
           <el-col :span="12">
             <el-form-item label="是否外显" prop="extShow">
               <el-radio-group v-model="state.form.extShow">
-                <el-radio :label="1" size="large">是</el-radio>
-                <el-radio :label="2" size="large">否</el-radio>
+                <el-radio :label="'1'" size="large">是</el-radio>
+                <el-radio :label="'2'" size="large">否</el-radio>
               </el-radio-group>
               <span class="waixian">外显是指在其他业务系统上显示的标识</span>
             </el-form-item>
@@ -311,10 +312,7 @@
             type="textarea"
             placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
           /> -->
-          <JyRichEdit
-            :value="state.form.sealExplain"
-            @update:content="getMsg"
-          />
+          <JyRichEdit :value="state.form.sealExplain" @updateValue="getMsg" />
         </el-form-item>
         <el-form-item
           label="印模"
@@ -446,24 +444,39 @@
   const depChoose = ref(null)
   const table = ref(null)
   const queryParams = ref({})
+
+  // 新增印章
   const add = () => {
     state.title = '新增'
     if (vFormLibraryRef.value) {
       vFormLibraryRef.value.resetFields()
     }
+    for (const i in state.form) {
+      state.form[i] = ''
+    }
     state.form.sealNo =
       dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
     showLibraryDialog.value = true
   }
+
+  // 保存新增/修改数据
   const submitLibraryForm = type => {
     console.log(state.form)
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
-        api.add(state.form).then(res => {
-          console.log(res)
-          ElMessage.success('新增成功印章成功！')
-          table.value.reloadData()
-        })
+        if (state.form.sealId) {
+          api.edit(state.form).then(res => {
+            console.log(res)
+            ElMessage.success('修改印章成功！')
+          })
+        } else {
+          api.add(state.form).then(res => {
+            console.log(res)
+            ElMessage.success('新增印章成功！')
+          })
+        }
+        showLibraryDialog.value = false
+        table.value.reloadData()
       } else {
         ElMessage.error('校验失败')
       }
@@ -511,6 +524,7 @@
     title: '新增',
     typeList: [],
     form: {
+      sealId: '',
       sealNo: '',
       sealName: '',
       sealAlias: '',
@@ -525,7 +539,7 @@
       keepUserName: '',
       keepOrganId: '',
       keepOrganName: '',
-      extShow: 1,
+      extShow: '1',
       // sealState: 1,
       hardwareVersionId: '',
       firmwareVersionId: '',
@@ -919,7 +933,6 @@
     state.sealIds = column.sealId
     if (cell.name === 't-zgj-Edit') {
       state.title = '修改'
-      showLibraryDialog.value = true
       getSealsInfo()
     }
     if (
@@ -956,7 +969,10 @@
   const getSealsInfo = () => {
     api.sealInfo(state.sealIds).then(res => {
       console.log(res)
-      state.form = res.data
+      if (res.code === 200) {
+        state.form = res.data
+        showLibraryDialog.value = true
+      }
     })
   }
   const clickBatchButton = (item, datas) => {

@@ -36,18 +36,21 @@
 
   const props = defineProps(['value'])
   const emit = defineEmits(['updateValue', 'onEditorBlur', 'onEditorFocus'])
-  const content = ref('')
+  const content = ref(props.value)
   const myQuillEditor = ref()
+  console.log('props.value', props.value)
   watch(
     () => props.value,
     val => {
       // console.log(toRaw(myQuillEditor.value))
-
-      toRaw(myQuillEditor.value).setHTML(val)
       // 处理光标问题
       nextTick(() => {
-        const quill = toRaw(myQuillEditor.value).getQuill()
-        quill.setSelection(quill.getLength(), quill.getLength() + 1)
+        console.log(1)
+        // toRaw(myQuillEditor.value).setHTML(val)
+        // const quill = toRaw(myQuillEditor.value).getQuill()
+        // const length = quill.getLength()
+        // quill.insertEmbed(length, 'text', '')
+        // quill.setSelection(quill.getLength(), quill.getLength() + 1)
       })
     },
     { deep: true }
@@ -190,9 +193,9 @@
     }
   }
 
-  const onEditorChange = ({ quill, html, text }) => {
-    console.log('editor change!', quill, html, text)
-  }
+  // const onEditorChange = ({ quill, html, text }) => {
+  //   console.log('editor change!', quill, html, text)
+  // }
   // 上传图片
   const handleUpload = e => {
     const files = Array.prototype.slice.call(e.target.files)
@@ -214,7 +217,6 @@
     // })
   }
   onMounted(() => {
-    console.log('onMounted')
     const quill = toRaw(myQuillEditor.value).getQuill()
     console.log(quill)
     if (myQuillEditor.value) {
@@ -230,5 +232,11 @@
   :deep(.ql-formats) {
     height: 21px;
     line-height: 21px;
+  }
+  .ql-clipboard {
+    position: fixed;
+    display: none;
+    left: 50%;
+    top: 50%;
   }
 </style>
