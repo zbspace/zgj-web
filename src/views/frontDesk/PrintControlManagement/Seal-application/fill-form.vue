@@ -61,7 +61,7 @@
                 </div>
               </template>
               <template #content>
-                <div style="height: 800px" v-if="initObj">
+                <div style="height: calc(100vh - 400px)" v-if="initObj">
                   <VFlowDesign
                     ref="refVFlowDesign"
                     :defaultAttribute="{
@@ -307,9 +307,14 @@
 
   function flowDetail(modelId, definitionId) {
     initObj.value = { modelId, definitionId }
-    sealApply.flowDetail(initObj.value).then(res => {
-      refVFlowDesign.value.handleSetData(res.data.data)
-    })
+    sealApply
+      .flowDetail({
+        ...initObj.value,
+        edit: true
+      })
+      .then(res => {
+        refVFlowDesign.value.handleSetData(res.data.data)
+      })
   }
 
   // 上一步
@@ -347,6 +352,12 @@
   .Seal-application-fill-form {
     margin: 0%;
     position: relative;
+
+    .contanier-flow {
+      width: 100%;
+      padding: 0;
+      margin-top: 0;
+    }
 
     .title {
       display: flex;

@@ -22,6 +22,13 @@ const processErrorResponse = function (response) {
       grouping: true,
       type: 'error'
     })
+    localStorage.removeItem('tenantId')
+    localStorage.removeItem('menusInfo')
+    localStorage.removeItem('departLists')
+    const accountInfo = JSON.parse(localStorage.getItem('accountInfo'))
+    accountInfo.token = ''
+    accountInfo.userName = ''
+    localStorage.setItem('accountInfo', JSON.stringify(accountInfo))
     router.replace({
       path: '/login/account',
       // 保存我们所在的位置，以便以后再来
