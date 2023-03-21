@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 流程管理
+* @FileName index.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-20 16:37:56
+!-->
 <template>
   <div class="flowManage-index">
     <JyTable
@@ -46,14 +52,12 @@
     <!-- <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
       <template #title>
         <div class="title">
-          <div>流程管理</div>
+          <div>{{ $t('t-zgj-cg-menu-liucheng-guanli') }}</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button
-                type="primary"
-                @click="state.JyElMessageBox.show = true"
-                >+ 新建</el-button
-              >
+              <el-button type="primary" @click="addFlowModalShow = true">
+                + {{ $t('t-zgj-sync.add') }}
+              </el-button>
             </div>
           </div>
         </div>
@@ -136,6 +140,12 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 新建弹框 -->
+    <Addflow
+      v-if="addFlowModalShow"
+      v-model="addFlowModalShow"
+      :openType="openType"
+      :treeValue="state.componentsTree.value"
+    ></Addflow>
     <div v-if="state.JyElMessageBox.show">
       <AntModalBox
         v-model="state.JyElMessageBox.show"
@@ -213,6 +223,10 @@
 </template>
 
 <script setup>
+  /**
+   * openType edit、add
+   * treeValue 树型选择值 - 携带；编辑时不生效
+   */
   import {
     reactive,
     onBeforeMount,
@@ -228,15 +242,21 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   // import componentsBatch from '@/views/components/batch.vue'
   // import newlyIncreased from './newly-increased.vue'
+  // import AntModalBox from '@/views/components/modules/AntModalBox.vue'
+  import Addflow from './AddOrEditFlow.vue'
+  import apiFlow from '@/api/system/flowManagement'
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
   import apiForm from '@/api/system/formManagement'
   import JyTable from '@/views/components/JyTable.vue'
-  import apiFlow from '@/api/system/flowManagement'
   import { ElMessage } from 'element-plus'
   // 异步组件
   const newlyIncreased = defineAsyncComponent(() =>
     import('./newly-increased.vue')
   )
+  // =========↓
+  const addFlowModalShow = ref(false)
+  const openType = ref(null)
+  // =========↑
 
   const loading = ref(false)
   const table = ref(null)
@@ -488,7 +508,7 @@
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === 'formName') {
+          if (column.property === 'flowName') {
             return {
               color: 'var(--jy-info-6)',
               cursor: 'pointer'
@@ -585,8 +605,7 @@
   })
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
-    // console.log(row, column, cell, event)
-    if (column.property === 'formName') {
+    if (column.property === 'flowName') {
       state.componentsDocumentsDetails.show = true
     }
   }
