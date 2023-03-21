@@ -42,18 +42,18 @@ export const sealNameSchema = {
   formItemFlag: true,
   options: {
     name: '',
-    // label: '',
+    label: '印章名称',
     labelAlign: 'right',
-    defaultValue: [
-      {
-        seal: '',
-        sealId: '',
-        routineSeal: '',
-        sealRequiredTextShow: false,
-        sealTypeId: [],
-        routineSealRequiredTextShow: false
-      }
-    ],
+    // defaultValue: [
+    //   {
+    //     seal: '',
+    //     sealId: '',
+    //     applySealNum: '',
+    //     sealRequiredTextShow: false,
+    //     routineSealRequiredTextShow: false
+    //   }
+    // ],
+    nameDisabled: true,
     applyTypeId: '2',
     placeholder: '',
     columnWidth: '200px',
@@ -75,7 +75,7 @@ export const sealNameSchema = {
       {
         seal: '',
         sealId: '',
-        routineSeal: '',
+        applySealNum: '',
         sealRequiredTextShow: false,
         routineSealRequiredTextShow: false
       }
@@ -90,7 +90,8 @@ export const contactUnitSchema = {
   formItemFlag: true,
   options: {
     name: '',
-    // label: '',
+    label: '往来单位',
+    nameDisabled: true,
     labelAlign: 'right',
     type: 'text',
     size: '',
@@ -103,7 +104,7 @@ export const contactUnitSchema = {
     required: false,
     requiredHint: '',
     dsEnabled: false, // 是否使用数据源数据
-    defaultValue: { unitIds: '', unitNames: '' },
+    // defaultValue: { unitIds: '', unitNames: '' },
     // -------------------
     customClass: '', // 自定义css类名
 
@@ -119,8 +120,10 @@ export const usesealBesidesSchema = {
   formItemFlag: true,
   options: {
     name: '',
-    title: 'Good things are coming...',
+    label: '印章外带',
+    title: '',
     type: 'info',
+    nameDisabled: true,
     labelAlign: 'right',
     size: '',
     labelWidth: 100,
@@ -132,13 +135,13 @@ export const usesealBesidesSchema = {
     addTitle: '详细',
     onClose: '',
     customClass: '',
-    dsEnabled: false, // 是否使用数据源数据
-    defaultValue: {
-      isTrue: false,
-      besidesTime: [],
-      Add: [],
-      detailAdd: ''
-    }
+    dsEnabled: false // 是否使用数据源数据
+    // defaultValue: {
+    //   extSeal: false,
+    //   besidesTime: [],
+    //   Add: [],
+    //   detailAdd: ''
+    // }
   }
 }
 
@@ -200,6 +203,7 @@ export const remoteSealSchema = {
   options: {
     name: 'remoteSeal',
     label: '远程盖章',
+    nameDisabled: true,
     labelAlign: 'right',
     columnWidth: '200px',
     labelWidth: 100,
@@ -238,6 +242,7 @@ export const videoSealSchema = {
   options: {
     name: 'videoSeal',
     label: '视频盖章',
+    nameDisabled: true,
     labelAlign: 'right',
     columnWidth: '200px',
     labelWidth: 100,
@@ -275,14 +280,15 @@ export const applicantInfoSchema = {
   formItemFlag: true,
   options: {
     name: 'applicantInfo',
-    // label: '',
+    label: '申请人信息',
     labelAlign: 'right',
     type: 'text',
-    defaultValue: {
-      applicant: '',
-      departmentName: '',
-      departmentId: ''
-    },
+    // defaultValue: {
+    //   applicant: '',
+    //   departmentName: '',
+    //   departmentId: ''
+    // },
+    nameDisabled: true,
     placeholder: '',
     columnWidth: '200px',
     size: 'default',
@@ -340,43 +346,6 @@ export const applicantInfoSchema = {
   }
 }
 
-// 骑缝盖章
-// export const seamingSealSchema = {
-//   type: 'seamingSeal',
-//   icon: 'seamingSeal',
-//   formItemFlag: true,
-//   options: {
-//     name: 'seamingSeal',
-//     label: '骑缝盖章',
-//     labelAlign: 'right',
-//     columnWidth: '200px',
-//     labelWidth: 100,
-//     labelHidden: false,
-//     disabled: false,
-//     hidden: false,
-//     defaultValue: false,
-//     //-------------------
-//     customClass: '',  //自定义css类名
-//     labelIconClass: null,
-//     labelIconPosition: 'rear',
-//     labelTooltip: null,
-//     switchWidth: 40,
-//     activeText: '',
-//     inactiveText: '',
-//     activeColor: null,
-//     inactiveColor: null,
-//     fieldLinkage: [
-//       { value: "1", linkages: [] },
-//       { value: "2", linkages: [] },
-//     ],
-//     //-------------------
-//     onCreated: '',
-//     onMounted: '',
-//     onChange: '',
-//     onValidate: '',
-//   },
-// }
-
 // 限时用印
 export const limitTimeSealSchema = {
   type: 'limitTimeSeal',
@@ -384,7 +353,8 @@ export const limitTimeSealSchema = {
   formItemFlag: true,
   options: {
     name: 'limitTimeSeal',
-    // label: '限时用印',
+    label: '限时用印',
+    nameDisabled: true,
     labelAlign: 'right',
     columnWidth: '200px',
     labelWidth: 100,
@@ -480,6 +450,7 @@ export const sealFileSchema = {
   options: {
     name: 'sealFile',
     label: '用印文件',
+    nameDisabled: true,
     labelAlign: 'right',
     columnWidth: '200px',
     labelWidth: 100,
@@ -520,8 +491,9 @@ export const fileTypeSchema = {
   icon: 'fileType',
   formItemFlag: true,
   options: {
-    name: '',
+    name: 'fileTypeId',
     label: '文件类型',
+    nameDisabled: true,
     labelAlign: 'right',
     defaultValue: '',
     placeholder: '',
@@ -578,10 +550,12 @@ export const agentManSchema = {
   icon: 'agentMan',
   formItemFlag: true,
   options: {
-    name: '',
+    name: 'agentMan',
+    label: '代办人',
     labelAlign: 'right',
     type: 'text',
     size: '',
+    nameDisabled: true,
     labelWidth: 100,
     readonly: false,
     disabled: false,

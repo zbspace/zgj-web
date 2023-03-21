@@ -233,11 +233,13 @@
 
   const loaded = async () => {
     if (props.columnData.formMessageId) {
-      vformRef.value.setFormJson(props.columnData.formInfo)
+      await vformRef.value.setFormJson(props.columnData.formInfo)
     } else {
       await vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
     }
-    await vformRef.value.setFormTemplate(formData.value.applyTypeId)
+    nextTick(() => {
+      vformRef.value.setFormTemplate(formData.value.applyTypeId)
+    })
     getFormColumnMust()
   }
 

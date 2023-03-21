@@ -55,6 +55,19 @@ export const fileManageService = {
   },
 
   /**
+   * 修改文件类型
+   * @param {*} data
+   * @returns
+   */
+  fileTypeEdit: data => {
+    return request({
+      method: 'POST',
+      url: `/fileType/edit`,
+      data
+    })
+  },
+
+  /**
    * 删除文件类型
    * @param {*} fileTypeId
    * @returns
@@ -75,6 +88,31 @@ export const fileManageService = {
     return request({
       method: 'POST',
       url: `fileType/queryVisibleRByFileType/${fileTypeId}`
+    })
+  },
+
+  /**
+   * 生成文件类型编码
+   * @param {*} bizType
+   * @returns
+   */
+  generateBizNo: (bizType = 1) => {
+    return request({
+      method: 'GET',
+      url: `fileType/generateBizNo/${bizType}`
+    })
+  },
+
+  /**
+   * 设置可见范围
+   * @param {*} bizType
+   * @returns
+   */
+  viewRangSet: data => {
+    return request({
+      method: 'GET',
+      url: `/fileType/viewRangSet`,
+      data
     })
   }
 }

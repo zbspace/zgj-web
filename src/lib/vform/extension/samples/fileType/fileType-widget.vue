@@ -53,6 +53,7 @@
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
   import { fileManageService } from '@/api/frontDesk/fileManage'
   import { messageError } from '@/hooks/useMessage'
+  import { GetFileTypeList } from '@/utils/domain/fileManage'
 
   export default {
     name: 'FileTypeWidget',
@@ -116,8 +117,10 @@
       },
       async getFileTypeList() {
         try {
-          const res = await fileManageService.getFileTypeList()
-          this.fileTypeOptions = res.data || []
+          const res = await fileManageService.getFileTypeListPage(
+            new GetFileTypeList()
+          )
+          this.fileTypeOptions = res.data.records || []
         } catch (error) {
           messageError(error)
         }

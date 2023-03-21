@@ -10,6 +10,7 @@
     :title="curFromData.fileTypeId ? '修改文件类型' : '新增文件类型'"
     v-model="isVisible"
     @on-opened="opened"
+    @on-closed="closed"
   >
     <el-form
       ref="formRef"
@@ -33,8 +34,15 @@
           :data="props.optionsTree"
           check-strictly
           style="width: 100%"
-          :props="{ children: 'child', label: 'fileTypeName' }"
+          :props="{
+            children: 'child',
+            label: 'fileTypeName',
+            disabled: data =>
+              data.fileTypeId === props.curFromData.fileTypeId ||
+              data.fileTypePid === props.curFromData.fileTypeId
+          }"
           value-key="fileTypeId"
+          :default-checked-keys="['1638091635105542145']"
         />
       </el-form-item>
     </el-form>
@@ -72,7 +80,7 @@
     }
   })
 
-  const emit = defineEmits(['update:modelValue', 'refresh'])
+  const emit = defineEmits(['update:modelValue', 'refresh', 'on-closed'])
 
   const isVisible = computed({
     get() {
@@ -89,11 +97,26 @@
       if (!formData.value.fileTypePid) {
         formData.value.fileTypePid = '0'
       }
-      await fileManageService.fileTypeAdd(formData.value)
+      if (formData.value.fileTypeId) {
+        await fileManageService.fileTypeEdit(formData.value)
+        messageSuccess('文件类型修改成功')
+      } else {
+        await fileManageService.fileTypeAdd(formData.value)
+        messageSuccess('文件类型添加成功')
+      }
       isVisible.value = false
       formData.value = new AddFileTypeInfo()
-      messageSuccess('文件类型添加成功')
+
       emit('refresh')
+    } catch (error) {
+      messageError(error)
+    }
+  }
+
+  const getGenerateBizNo = async () => {
+    try {
+      const res = await fileManageService.generateBizNo()
+      formData.value.fileTypeNo = res.data || ''
     } catch (error) {
       messageError(error)
     }
@@ -103,11 +126,18 @@
     console.log('--->', props.curFromData)
     if (props.curFromData.fileTypeId) {
       formData.value = { ...formData.value, ...props.curFromData }
+    } else {
+      getGenerateBizNo()
     }
   }
 
   const calcel = () => {
     isVisible.value = false
+  }
+
+  const closed = () => {
+    formData.value = new AddFileTypeInfo()
+    emit('on-closed')
   }
 </script>
 

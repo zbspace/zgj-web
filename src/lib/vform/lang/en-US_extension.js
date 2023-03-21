@@ -10,7 +10,6 @@ export default {
       videoSeal: 'Video Seal',
       sealFile: 'Seal File',
       applicantInfo: 'Applicant Info',
-      seamingSeal: 'Seaming Seal',
       limitTimeSeal: 'Limit Time Seal',
       contactUnit: 'Contact Unit',
       filrType: 'File Type'

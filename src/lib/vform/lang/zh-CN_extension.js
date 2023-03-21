@@ -10,7 +10,6 @@ export default {
       videoSeal: '视频盖章',
       sealFile: '用印文件',
       applicantInfo: '申请人信息',
-      seamingSeal: '骑缝盖章',
       limitTimeSeal: '限时用印',
       limitAddressSeal: '外带用印',
       uploadFile: '用印文件',

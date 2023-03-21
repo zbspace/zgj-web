@@ -18,7 +18,7 @@
           :class="[labelAlign, customClass]"
           :size="field.options.size"
         >
-          <el-input v-model="fieldModel.applicant" disabled></el-input>
+          <el-input v-model="fieldModel.applyUserId" disabled></el-input>
         </el-form-item>
       </el-col>
 
@@ -34,7 +34,7 @@
           ]"
         >
           <el-input
-            v-model="fieldModel.departmentName"
+            v-model="fieldModel.applyOrganName"
             v-show="!field.options.hidden"
             :size="field.options.size"
             :disabled="field.options.disabled"
@@ -59,7 +59,7 @@
             class="el-form-item__error"
             v-if="field.options.requiredTextShow && field.options.required"
           >
-            {{ field.options.requiredHint || '字段值不可为空' }}
+            {{ field.options.requiredHint || '请选择' }}
           </div>
           <div class="el-form-item__error" v-if="field.options.requiredHint">{{
             field.options.requiredHint
@@ -128,9 +128,9 @@
         queryParams: { roleId: 'r1' },
         tabsShow: ['organ'],
         fieldModel: {
-          applicant: '',
-          departmentId: '',
-          departmentName: ''
+          applyUserId: '',
+          applyOrganId: '',
+          applyOrganName: ''
         },
         rules: []
       }
@@ -184,13 +184,7 @@
       getSelectedLabel() {
         return this.$refs.fieldEditor.selectedLabel
       },
-      onChange(value) {
-        if (!value) {
-          this.field.options.requiredHint = '请选择部门'
-        } else {
-          this.field.options.requiredHint = ''
-        }
-      },
+      onChange(value) {},
       // 打开弹窗选择数据
       openSelectUser() {
         this.xzyzDialogVisible = true
@@ -202,35 +196,38 @@
         if (selectRecords.length === 0) {
           return
         }
-        let departmentName = ''
-        let departmentId = ''
+        let applyOrganName = ''
+        let applyOrganId = ''
         for (let i = 0; i < selectRecords.length; i++) {
           if (i === 0) {
-            departmentId = selectRecords[i].id
-            departmentName = selectRecords[i].name
+            applyOrganId = selectRecords[i].id
+            applyOrganName = selectRecords[i].name
           } else {
-            departmentId = departmentId + ',' + selectRecords[i].id
-            departmentName = departmentName + ',' + selectRecords[i].name
+            applyOrganId = applyOrganId + ',' + selectRecords[i].id
+            applyOrganName = applyOrganName + ',' + selectRecords[i].name
           }
         }
-        this.fieldModel.departmentId = departmentId
-        this.fieldModel.departmentName = departmentName
-      },
-      valueChange(v) {
-        if (!v) {
-          this.fieldModel.applicantId = ''
-          this.fieldModel.departmentName = ''
+        this.fieldModel.applyOrganId = applyOrganId
+        this.fieldModel.applyOrganName = applyOrganName
+
+        if (!this.fieldModel.applyOrganId) {
+          this.field.options.requiredHint = '请选择部门'
+          this.fieldModel.applyUserId = ''
+          this.fieldModel.applyOrganName = ''
+        } else {
+          this.field.options.requiredHint = ''
         }
         this.validate()
       },
+
       onClear() {
-        this.fieldModel.applicant = null
-        this.fieldModel.departmentId = ''
-        this.fieldModel.departmentName = ''
+        this.fieldModel.applyUserId = null
+        this.fieldModel.applyOrganId = ''
+        this.fieldModel.applyOrganName = ''
         this.validate()
       },
       validate() {
-        if (!this.fieldModel.departmentName) {
+        if (!this.fieldModel.applyOrganName) {
           this.setRequiredTextShow(true)
         } else {
           this.setRequiredTextShow(false)

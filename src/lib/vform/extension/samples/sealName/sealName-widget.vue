@@ -81,7 +81,7 @@
             ]"
           >
             <el-input-number
-              v-model="obj.routineSeal"
+              v-model="obj.applySealNum"
               :precision="0"
               :step="1"
               :min="1"
@@ -104,7 +104,7 @@
             :label-width="field.options.labelWidth"
             :class="[labelAlign, customClass]"
           >
-            <el-switch v-model="obj.seamingSeal" />
+            <el-switch v-model="obj.markSeal" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -226,9 +226,8 @@
       const newRecord = {
         seal: '',
         sealId: '',
-        routineSeal: 1,
-        seamingSeal: false,
-        sealTypeId: '',
+        applySealNum: 1,
+        markSeal: false,
         sealRequiredTextShow: false,
         routineSealRequiredTextShow: false
       }
@@ -266,7 +265,7 @@
       },
 
       addItem() {
-        this.filedList.push({ seal: '', sealId: '', routineSeal: 1 })
+        this.filedList.push({ seal: '', sealId: '', applySealNum: 1 })
       },
       deleteItem(idx) {
         this.filedList.splice(idx, 1)

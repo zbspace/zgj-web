@@ -22,6 +22,7 @@
             :data="state.componentsSearchForm.data"
             :butData="state.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
+            @clickSubmit="clickSubmit"
           >
           </componentsSearchForm>
         </div>
@@ -85,6 +86,7 @@
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
+      @update:searchSelected="submit"
       v-if="showDepPerDialog"
       :searchSelected="userSelected"
       :tabsShow="['user', 'organ', 'role']"
@@ -112,6 +114,7 @@
     :optionsTree="state.componentsTree.data"
     @refresh="refresh"
     :curFromData="curFromData"
+    @on-closed="closed"
   />
 
   <!-- 设置可见范围 -->
@@ -140,7 +143,7 @@
   import { fileManageService } from '@/api/frontDesk/fileManage'
   import { messageError, messageSuccess } from '@/hooks/useMessage'
   import AddFileType from './addFileType'
-  import { GetFileTypeList } from '@/utils/domain/fileManage'
+  import { GetFileTypeList, ViewRangSetInfo } from '@/utils/domain/fileManage'
   import { PaginationInfo } from '@/utils/domain/paginationInfo'
   import { getArrFromTree } from '@/utils/tools'
 
@@ -153,6 +156,7 @@
   const curFromData = ref({})
   const curFileTypeId = ref('')
   const userSelected = ref([])
+  const viewRangSetInfo = ref(new ViewRangSetInfo())
 
   const state = reactive({
     componentsSearchForm: {
@@ -440,6 +444,38 @@
     } catch (error) {
       messageError(error)
     }
+  }
+
+  const submit = async list => {
+    list.forEach(v => {
+      if (v.type === 'user') {
+        viewRangSetInfo.value.visibleUserR.push({})
+      }
+      if (v.type === 'organ') {
+        viewRangSetInfo.value.visibleOrganR.push()
+      }
+      if (v.type === 'role') {
+        viewRangSetInfo.value.visibleRoleR.push()
+      }
+    })
+    // try {
+    //   await fileManageService.viewRangSet()
+    // } catch (error) {
+    //   messageError(error)
+    // }
+  }
+
+  const clickSubmit = (item, index) => {
+    // 查询
+    console.log('xxx--->', item)
+    if (item.id === 'inquire') {
+      getFileTypeList()
+    }
+  }
+
+  const closed = () => {
+    console.log('--->', 222222)
+    curFromData.value = {}
   }
 
   // 点击表格单元格

@@ -1,5 +1,6 @@
 import Clipboard from 'clipboard'
 import axios from 'axios'
+import { customComponents } from '@/lib/vform/extension/samples/extension-schema.js'
 
 export function isNull(value) {
   return value === null || value === undefined
@@ -369,7 +370,8 @@ export function getAllFieldWidgets(widgetList, staticWidgetsIncluded = false) {
       type: w.type,
       name: w.options.name,
       field: JSON.stringify(w),
-      label: w.options.label
+      label: w.options.label,
+      dynamicColumn: customComponents.includes(w.type) ? 0 : 1 // 1动态字段 0固定字段
     })
   }
   traverseFieldWidgets(widgetList, handlerFn, null, staticWidgetsIncluded)
