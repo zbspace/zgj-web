@@ -39,6 +39,11 @@
     "show": true
   },
   {
+    "prop": "flag",
+    "label": "状态",
+    "show": true
+  },
+  {
     "prop": "caozuo",
     "label": "操作",
     "width": 200,

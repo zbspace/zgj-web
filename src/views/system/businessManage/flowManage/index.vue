@@ -16,7 +16,7 @@
       :componentsBatch="state.componentsBatch"
       :queryParams="queryParams"
       statusColoum="flag"
-      openValue="1"
+      openValue="0"
       tableClick="flowName"
       @cellClick="cellClick"
       @customClick="customClick"

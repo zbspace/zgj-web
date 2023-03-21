@@ -17,7 +17,7 @@
       :queryParams="{ organId }"
       tableClick="userName"
       statusColoum="status"
-      openValue="1"
+      openValue="0"
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
