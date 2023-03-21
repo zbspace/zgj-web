@@ -414,6 +414,7 @@ export const en = {
   't-zgj-copyAll': 'Copy to',
   't-zgj-add': 'Add',
   't-zgj-Edit': 'Edit',
+  't-zgj-Save': 'Save',
   't-zgj-Delete': 'Delete',
   't-zgj-list.outRegistration': 'Taking out Regist',
   't-zgj-list.restitution': 'Return Registration ',

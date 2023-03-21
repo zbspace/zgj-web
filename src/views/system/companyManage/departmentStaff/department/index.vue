@@ -48,6 +48,7 @@
       <template #tree>
         <div class="components-tree">
           <el-tree
+            ref="deptTreeRef"
             :data="state.componentsTree.data"
             :props="state.componentsTree.defaultProps"
             v-bind="state.componentsTree.defaultAttribute"
@@ -236,6 +237,7 @@
   const currentAction = ref(null)
   const firstNode = ref(null)
   const firstTreeData = ref([])
+  const deptTreeRef = ref(null)
 
   const form = reactive({
     organId: '',
@@ -555,11 +557,22 @@
         if (form.organId) {
           department.edit(form).then(() => {
             showFormDialog.value = false
+            firstNode.value.loaded = false
+            firstNode.value.expand()
             table.value.reloadData()
           })
         } else {
           department.add(form).then(() => {
-            showFormDialog.value = false
+            firstNode.value = deptTreeRef.value.getNode(form.organPid)
+            if (firstNode.value) {
+              state.componentsTree.defaultAttribute['current-node-key'] =
+                form.organPid
+              organId.value = form.organPid
+              showFormDialog.value = false
+              firstNode.value.loaded = false
+              firstNode.value.expand()
+            }
+
             table.value.reloadData()
           })
         }
@@ -577,7 +590,7 @@
   }
 
   function loadFn(node, resolve) {
-    console.log(node.level)
+    console.log(node)
     if (node.level === 0) {
       firstNode.value = node
       department
@@ -615,7 +628,8 @@
     }
   }
 
-  function currentChange(type) {
+  function currentChange(type, node) {
+    firstNode.value = node
     organId.value = type.organId
     table.value.reloadData()
   }
