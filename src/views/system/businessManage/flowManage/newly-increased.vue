@@ -98,10 +98,10 @@
     watch
   } from 'vue'
   import layout from './layout.vue'
-  import basicsInfo from './basics-info.vue'
-  import AssociationForm from './Association-form.vue'
+  import basicsInfo from './BasicsInfo.vue'
+  import AssociationForm from './AssociationForm.vue'
   // import VFlowDesign from '@/views/components/FlowDesign/index.vue'
-  import advancedSetup from './advanced-setup.vue'
+  import advancedSetup from './AdvancedSetup.vue'
   import apiFlow from '@/api/system/flowManagement'
   import { useFlowStore } from '@/components/FlowDesign/store/flow'
   // Store

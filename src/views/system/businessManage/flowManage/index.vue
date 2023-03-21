@@ -592,6 +592,15 @@
           name: 'operating-record'
         }
       ]
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
     }
   })
   // 点击表格单元格
