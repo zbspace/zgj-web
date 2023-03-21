@@ -47,6 +47,16 @@
           <template #default="scope" v-if="item.customDisplayType == 'format'">
             <span>{{ scope.row[item.prop] }} {{ item.unit }}</span>
           </template>
+          <!-- 状态 -->
+          <template #default="scope" v-if="item.prop == 'flag'">
+            <span>{{
+              scope.row[item.prop] === '1'
+                ? '正常'
+                : scope.row[item.prop] === '0'
+                ? '停用'
+                : scope.row[item.prop]
+            }}</span>
+          </template>
           <!-- 自定义内容显示 -->
           <template #default="scope" v-if="item.customDisplayType == 'custom'">
             <div class="custom" :index="scope.$index">

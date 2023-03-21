@@ -91,15 +91,15 @@
           class="default-footer-btns"
           :class="props.centerBtn ? 'one-btn' : 'two-btn'"
         >
-          <div
-            class="confirm btn"
+          <el-button
+            type="primary"
+            :loading="props.confirmLoading"
             @click.stop="handleShow(false, true, 'confrim')"
+            >{{ props.confirmText }}</el-button
           >
-            {{ props.confirmText }}
-          </div>
-          <div class="concel btn" @click.stop="handleShow(false, true)">
-            {{ props.concelText }}
-          </div>
+          <el-button plain @click.stop="handleShow(false, true)">{{
+            props.concelText
+          }}</el-button>
         </div>
 
         <!-- 一个按钮 -->
@@ -108,9 +108,9 @@
           v-if="oneBtn"
           :class="!props.centerBtn ? 'one-btn' : 'two-btn'"
         >
-          <div class="confirm btn" @click.stop="handleShow(false, true)">
-            {{ props.confirmText }}
-          </div>
+          <el-button type="primary" @click.stop="handleShow(false, true)">{{
+            props.confirmText
+          }}</el-button>
         </div>
       </div>
     </template>
@@ -157,6 +157,10 @@
     confirmText: {
       type: String,
       default: '确定'
+    },
+    confirmLoading: {
+      type: Boolean,
+      default: false
     },
     concelText: {
       type: String,

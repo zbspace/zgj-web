@@ -37,6 +37,7 @@
         .ap-cont-box-title-label {
           display: inline-block;
           width: 100%;
+          text-align: left;
           font-size: var(--jy-font-size-title-1);
           font-weight: var(--jy-font-weight-600);
         }
