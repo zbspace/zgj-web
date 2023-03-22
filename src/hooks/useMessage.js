@@ -8,3 +8,7 @@ export function messageError(error) {
 export function messageSuccess(msg) {
   ElMessage.success(msg)
 }
+
+export function messageWarning(msg) {
+  ElMessage.warning(msg)
+}
