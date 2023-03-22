@@ -566,9 +566,9 @@
     console.log(state.props)
   }
   // 获取全部表单的值
-  function getCurrentValueAll() {
-    emit('getCurrentValueAll', props.data)
-  }
+  // function getCurrentValueAll() {
+  //   emit('getCurrentValueAll', props.data)
+  // }
   // 点击表单
   function clickElement(item, index) {
     showDeptDialog.value = true
