@@ -78,9 +78,9 @@
           class="info-list"
           v-if="form.applyTypeId && state.list.data.length !== 0"
         >
-          <div class="ap-cont-liebiao">
+          <div class="container-list">
             <div
-              class="ap-cont-liebiao-list"
+              class="list"
               v-for="(item, index) in state.list.data"
               :key="index"
             >
@@ -95,6 +95,7 @@
                 选择
               </el-button>
             </div>
+            <i></i><i></i>
           </div>
         </div>
       </div>
@@ -103,6 +104,7 @@
       <div class="info-box">
         <JyVform
           mode="render"
+          v-if="resetFlag"
           :formJson="formJson"
           :formData="state.SealformData"
           :optionData="state.SealoptionData"
@@ -131,7 +133,8 @@
           addTitle="编辑"
           :columnData="vformObj"
           @close="state.JyElMessageBox.show = false"
-          :optionData="optionData"
+          :optionData="props.businessList"
+          @reloadData="clickEditForm"
         />
       </JyElMessageBox>
     </div>
@@ -186,14 +189,16 @@
   })
 
   const emits = defineEmits('update:modelValue')
-
+  const resetFlag = ref(true)
   // 选中
   const clickEditForm = attr => {
+    resetFlag.value = false
     FlowApi.getFormJsonById({ formMessageId: attr.formMessageId }).then(res => {
       form.formMessageId = res.data.formMessageId
       state.currentState = '2'
       formJson.value = (res.success && JSON.parse(res.data.formInfo)) || ''
       vformObj.value = attr
+      resetFlag.value = true
     })
   }
 
@@ -431,82 +436,33 @@
     .info-list {
       margin-top: 16px;
       padding: 0 54px;
-      .ap-cont-liebiao {
+
+      .container-list {
         display: flex;
-        flex-flow: wrap;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-right: -15px;
+      }
+      .list {
+        width: 258px;
+        height: 110px;
+        margin: 15px 10px 0 0;
+        padding: 12px 24px;
+        border: 1px solid var(--jy-color-border-1);
+        border-radius: var(--jy-border-radius-4);
+        background-color: var(--jy-color-fill--1);
+      }
+      /* 和列表一样的宽度和margin值 */
+      .container-list > i {
+        width: 258px;
+        margin-right: 15px;
+      }
 
-        @media screen and (max-width: 900px) {
-          .ap-cont-liebiao-list {
-            width: 100%;
-            margin: 0;
-          }
-        }
-
-        @media screen and (min-width: 900px) and (max-width: 1200px) {
-          .ap-cont-liebiao-list {
-            width: calc((100% - 15px) / 2);
-          }
-
-          .ap-cont-liebiao-list:nth-of-type(2n) {
-            margin: 0 0 15px 0;
-          }
-        }
-
-        @media screen and (min-width: 1200px) and (max-width: 1500px) {
-          .ap-cont-liebiao-list {
-            width: calc((100% - 45px) / 4);
-          }
-
-          .ap-cont-liebiao-list:nth-of-type(4n) {
-            margin: 0 0 15px 0;
-          }
-        }
-
-        @media screen and (min-width: 1500px) and (max-width: 1750px) {
-          .ap-cont-liebiao-list {
-            width: calc((100% - 45px) / 4);
-          }
-
-          .ap-cont-liebiao-list:nth-of-type(4n) {
-            margin: 0 0 15px 0;
-          }
-        }
-
-        @media screen and (min-width: 1750px) {
-          .ap-cont-liebiao-list {
-            width: calc((100% - 60px) / 5);
-          }
-
-          .ap-cont-liebiao-list:nth-of-type(5n) {
-            margin: 0 0 15px 0;
-          }
-        }
-
-        .ap-cont-liebiao-list {
-          margin: 0 15px 15px 0;
-          padding: 10px;
-          box-sizing: border-box;
-          display: flex;
-          flex-flow: wrap;
-          justify-content: center;
-          border: 1px solid var(--jy-color-border-1);
-          border-radius: var(--jy-border-radius-4);
-          background-color: var(--jy-color-fill--1);
-          position: relative;
-          overflow: hidden;
-
-          .ap-cont-liebiao-list-desc {
-            width: 100%;
-            margin-bottom: 0.5rem;
-            color: var(--jy-color-text-1);
-            cursor: pointer;
-          }
-          .btn {
-            width: 60px;
-            height: 32px;
-            font-size: 14px;
-          }
-        }
+      .btn {
+        width: 60px;
+        height: 32px;
+        margin-top: 16px;
+        font-size: 14px;
       }
     }
 

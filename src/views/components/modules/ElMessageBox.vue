@@ -203,7 +203,7 @@
       .dialog-header {
         display: flex;
         position: relative;
-        padding: 24px 2.5rem 1rem 2.5rem;
+        padding: 24px 0rem 16px 24px;
         box-sizing: border-box;
         align-items: center;
         .dialog-header-icon {
@@ -241,7 +241,7 @@
         color: var(--jy-color-text-2);
       }
       .dialog-footer {
-        padding: 16px 24px 0;
+        padding: 16px 24px 16px;
         box-sizing: border-box;
         display: flex;
         justify-content: flex-end;
@@ -262,7 +262,7 @@
     .el-dialog__header {
       display: none;
     }
-    .el-dialog-body {
+    .el-dialog__body {
       padding: 0;
       overflow: unset;
     }
