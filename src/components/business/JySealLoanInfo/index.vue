@@ -49,6 +49,7 @@
   import { ElMessage } from 'element-plus'
   import { PaginationInfo } from '@/utils/domain/paginationInfo'
   import sealloanInfoService from '@/api/frontDesk/sealManage/sealloanInformation'
+  import JyDialog from '@/components/common/JyDialog/index2.vue'
 
   const dataList = ref([])
   const loading = ref(false)

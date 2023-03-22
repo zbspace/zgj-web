@@ -35,6 +35,14 @@ api.add = data => {
     data
   })
 }
+// 提交流程申请
+api.submit = data => {
+  return request({
+    method: 'POST',
+    url: '/approver/start',
+    data
+  })
+}
 // 查询是否有强制归档且未归档的单据
 api.queryIsMustUpload = data => {
   return request({
