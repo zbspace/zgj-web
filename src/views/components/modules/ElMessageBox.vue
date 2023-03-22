@@ -203,7 +203,7 @@
       .dialog-header {
         display: flex;
         position: relative;
-        padding: 24px 2.5rem 1rem 2.5rem;
+        padding: 0 2.5rem 1rem 2.5rem;
         box-sizing: border-box;
         align-items: center;
         .dialog-header-icon {
