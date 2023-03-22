@@ -330,6 +330,7 @@
   // 点击提交
   function clickSubmit() {
     console.log(JSON.stringify(state.cache.formData))
+    // const fixedParams = []
     sealApply
       .add({
         formMessageId: router.currentRoute.value.params.id,
@@ -339,7 +340,12 @@
         ...state.cache.formData
       })
       .then(res => {
-        router.replace({ name: 'Accomplish' })
+        router.replace({
+          name: 'Accomplish',
+          query: {
+            applyNo: state.cache.formData.applyNo
+          }
+        })
       })
   }
 

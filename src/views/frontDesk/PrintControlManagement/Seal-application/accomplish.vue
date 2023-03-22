@@ -41,10 +41,10 @@
             </div>
             <div class="custom-cont-title"> 操作成功 </div>
             <div class="custom-cont-p"> 请等待单据审批完成 </div>
-            <div class="custom-cont-p"> 单据编号：KNCH554879994000 </div>
-            <div class="custom-cont-p">
+            <div class="custom-cont-p"> 单据编号：{{ applyNo }} </div>
+            <!-- <div class="custom-cont-p">
               用印文件名称：单据名称单据名称单据名称单据名称
-            </div>
+            </div> -->
             <div class="custom-cont-but">
               <el-button type="primary">查看单据详情</el-button>
               <el-button @click="clickBackPage">返回</el-button>
@@ -59,19 +59,8 @@
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
-  import documentsDetailsPortion from '../../../components/documentsDetails/portion.vue'
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
-  import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
-  import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
   const router = useRouter()
-  const emit = defineEmits([])
   const state = reactive({
     cache: {
       flowList: [
@@ -85,94 +74,17 @@
           name: '完成',
           active: true
         }
-      ],
-      formData: {},
-      optionData: {},
-      SealformData: {},
-      SealoptionData: {},
-      PrintingProcess: {
-        list: [
-          {
-            title: '盖前',
-            list: [
-              {
-                name: '说明详情后续补上'
-              }
-            ]
-          },
-          {
-            title: '实时视频盖章',
-            list: [
-              {
-                name: '说明详情后续补上'
-              },
-              {
-                name: '说明详情后续补上'
-              },
-              {
-                name: '说明详情后续补上'
-              }
-            ]
-          },
-          {
-            title: '盖中',
-            list: [
-              {
-                name: '说明详情后续补上'
-              },
-              {
-                name: '说明详情后续补上'
-              },
-              {
-                name: '说明详情后续补上'
-              },
-              {
-                name: '说明详情后续补上'
-              },
-              {
-                name: '说明详情后续补上'
-              }
-            ]
-          },
-          {
-            title: '盖后',
-            list: [
-              {
-                name: '说明详情后续补上'
-              }
-            ]
-          },
-          {
-            title: '归档',
-            list: [
-              {
-                name: '说明详情后续补上'
-              }
-            ]
-          }
-        ]
-      }
+      ]
     }
   })
-  const refFillFormInformation = ref(null)
+  const applyNo = ref(router.currentRoute.value.query.applyNo)
 
   // 点击返回上一页
   function clickBackPage() {
     router.go(-1)
   }
 
-  // 点击提交
-  function clickSubmit() {
-    router.push({
-      path: '/frontDesk/PrintControlManagement/Seal-application/fill-form'
-    })
-  }
-
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-    // vFormLibraryRef.value.resetForm()
-    // vFormLibraryRef.value.getFormData().then()
-  })
+  onBeforeMount(() => {})
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
