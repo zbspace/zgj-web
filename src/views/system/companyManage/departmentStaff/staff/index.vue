@@ -1027,7 +1027,7 @@
     margin: 0;
   }
   .el-icon {
-    color: #aaaaaa;
+    // color: #aaaaaa;
     margin-right: 5px;
   }
 

@@ -36,7 +36,6 @@
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
                   clearable
-                  @input="getCurrentValue(item, index)"
                 />
               </div>
             </div>
@@ -51,16 +50,26 @@
                 >
                 {{ item.label }}
               </div>
-              <div
-                class="ap-box-contBox width-0"
-                @click="clickElement(item, index)"
-              >
-                <el-input
-                  class="ap-box-contBox-input width-100"
+              <div class="ap-box-contBox width-0">
+                <el-select
+                  v-model="item.values"
                   v-bind="item.defaultAttribute"
-                  readonly
-                />
-                <div class="ap-box-contBox-icon">
+                  tag-type="waring"
+                  disabled
+                  style="width: 100%"
+                  @click="clickElement(item, index)"
+                >
+                  <el-option
+                    v-for="one in item.options"
+                    :key="one.value"
+                    :label="one.label"
+                    :value="one.value"
+                  />
+                </el-select>
+                <div
+                  class="ap-box-contBox-icon"
+                  @click="clickElement(item, index)"
+                >
                   <img
                     class="ap-box-contBox-icon-img"
                     src="../../assets/svg/ketanchude.svg"
@@ -88,7 +97,7 @@
                       ? item.defaultAttribute.multiple
                       : false
                   "
-                  @change="getCurrentValue(item, index)"
+                  @change="getCurrentValue"
                 >
                   <el-option
                     v-for="data in item.options"
@@ -112,7 +121,6 @@
                   class="width-100"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue(item, index)"
                 />
               </div>
             </div>
@@ -136,7 +144,6 @@
                   v-bind="data.defaultAttribute"
                   :style="data.style"
                   v-model="data.value"
-                  @change="getCurrentValue(item, index)"
                 />
               </div>
             </div>
@@ -149,7 +156,7 @@
                 <el-radio-group
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue(item, index)"
+                  @change="getCurrentValue"
                 >
                   <el-radio
                     v-for="(data, num) in item.radio"
@@ -177,7 +184,7 @@
                   style="width: 100%"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue(item, index)"
+                  @change="getCurrentValue"
                 />
               </div>
             </div>
@@ -279,7 +286,6 @@
                     class="width-100"
                     v-bind="item.startAttribute"
                     v-model="item.startValue"
-                    @input="getCurrentValue(item, index)"
                   />
                 </div>
                 <div class="ap-box-contBox-cut"> - </div>
@@ -288,7 +294,6 @@
                     class="width-100"
                     v-bind="item.endAttribute"
                     v-model="item.endValue"
-                    @input="getCurrentValue(item, index)"
                   />
                 </div>
               </div>
@@ -362,10 +367,20 @@
         </div>
       </el-scrollbar>
     </div>
+    <!-- 用户、部门弹框 -->
+    <kDepartOrPersonVue
+      v-if="showDeptDialog"
+      :show="showDepPerDialog"
+      @update:show="closeShow"
+      :searchSelected="searchSelected"
+      @update:searchSelected="submit"
+      :tabsShow="tabsShow"
+    />
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted, computed, watch } from 'vue'
+  import { reactive, onBeforeMount, onMounted, computed, watch, ref } from 'vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   const props = defineProps({
     // 标识
     refs: {
@@ -425,12 +440,12 @@
     }
   })
   // console.log(props.defaultAttribute['scrollbar-max-height']);
-  const emit = defineEmits([
-    'getCurrentValue',
-    'getCurrentValueAll',
-    'clickElement',
-    'clickSubmit'
-  ])
+  const showDeptDialog = ref(false)
+  const showDepPerDialog = ref(false)
+  const searchSelected = ref([])
+  const kDepartOrPerson = ref(null)
+  const tabsShow = ref([])
+  const emit = defineEmits(['getCurrentValueAll', 'clickSubmit'])
   const state = reactive({
     props: {
       // 默认属性
@@ -547,10 +562,8 @@
     state.cache.formData = formData
   }
   // 获取当前表单的值
-  function getCurrentValue(item, index) {
-    // console.log(item, index)
-    emit('getCurrentValue', item, index)
-    getCurrentValueAll()
+  function getCurrentValue() {
+    console.log(state.props)
   }
   // 获取全部表单的值
   function getCurrentValueAll() {
@@ -558,7 +571,42 @@
   }
   // 点击表单
   function clickElement(item, index) {
-    emit('clickElement', item, index)
+    showDeptDialog.value = true
+    kDepartOrPerson.value = item.id
+    if (item.defaultAttribute.type === 'user') {
+      tabsShow.value = ['user']
+      searchSelected.value = []
+    } else {
+      tabsShow.value = ['organ']
+      searchSelected.value = []
+    }
+    setTimeout(() => {
+      showDepPerDialog.value = true
+    }, 200)
+  }
+  const closeShow = () => {
+    showDepPerDialog.value = false
+    setTimeout(() => {
+      showDeptDialog.value = false
+    }, 200)
+  }
+  const submit = value => {
+    console.log(value)
+    console.log(kDepartOrPerson.value)
+    console.log(state.cache.formData)
+    const index = state.cache.formData.findIndex(
+      i => i.id === kDepartOrPerson.value
+    )
+    console.log(index)
+    if (index > -1) {
+      state.cache.formData[index].values = value.map(i => i.id)
+      state.cache.formData[index].options = value.map(i => {
+        return {
+          label: i.name,
+          value: i.id
+        }
+      })
+    }
   }
   // 点击按钮
   function clickSubmit(item, index) {
@@ -613,8 +661,12 @@
     // console.log(props.data)
   })
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .components-searchForm {
+    .el-input.is-disabled .el-input__wrapper {
+      background-color: transparent;
+    }
+
     .ap-dis {
       padding: 0rem 0% 0.5rem 0%;
       display: flex;
@@ -771,6 +823,18 @@
     }
 
     .derivable {
+      .el-input__suffix {
+        display: none;
+      }
+
+      .el-select .el-input.is-disabled .el-input__wrapper {
+        cursor: pointer;
+      }
+
+      .el-select .el-input.is-disabled .el-input__inner {
+        cursor: pointer;
+      }
+
       .ap-box-contBox {
         position: relative;
         display: flex;
@@ -780,7 +844,7 @@
           position: absolute;
           right: 0.8rem;
           cursor: pointer;
-          height: 50%;
+          height: 14px;
           display: flex;
           align-items: center;
 
