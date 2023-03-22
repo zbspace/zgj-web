@@ -107,6 +107,7 @@
           :formData="state.SealformData"
           :optionData="state.SealoptionData"
           ref="refFillFormInformation"
+          @on-loaded="refFillFormInformation.disableForm()"
         />
       </div>
       <div class="info-footer">
