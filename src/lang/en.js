@@ -439,6 +439,7 @@ export const en = {
   't-zgj-list.TypeUse': 'Application Type',
   't-zgj-list.PleaseChoose': 'Please select',
   't-zgj-list.SelectionDepartment': 'Department',
+  't-zgj-list.SelectionPerson': 'Select Person',
   't-zgj-list.ApprovalStatus': 'Approval Status',
   't-zgj-list.NoApproval': 'Not Submitted',
   't-zgj-list.Approvaling': 'Under Approval',

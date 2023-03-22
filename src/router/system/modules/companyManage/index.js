@@ -83,6 +83,16 @@ const routes = {
           },
           component: () =>
             import('@/views/system/companyManage/permission/index.vue')
+        },
+        {
+          path: 'config',
+          name: 'ConfigPermission',
+          meta: {
+            title: '权限配置',
+            authRequired: true
+          },
+          component: () =>
+            import('@/views/system/companyManage/permission/config.vue')
         }
       ]
     }

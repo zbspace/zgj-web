@@ -27,7 +27,7 @@
 
 <script setup>
   import { ref } from 'vue'
-  import VTabs from '@/components/modules/tabs.vue'
+  import VTabs from '@/components/common/JyTabs.vue'
   import ExportTemplate from './export-template'
   import File from './file'
   import SmartTerminal from './smart-terminal'
