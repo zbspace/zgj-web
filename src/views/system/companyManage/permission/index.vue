@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 角色权限管理
+* @FileName index.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-22 14:19:54
+!-->
 <template>
   <div>
     <componentsLayout Layout="title,searchForm,table,pagination,batch">
@@ -6,9 +12,9 @@
           <div>角色权限管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
-                >+ 新建</el-button
-              >
+              <el-button type="primary" @click="showFormDialog = true">
+                + 新建
+              </el-button>
             </div>
             <div class="title-more-down">
               <el-dropdown>
@@ -111,6 +117,8 @@
   import componentsLayout from '@/views/components/Layout'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -326,6 +334,9 @@
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
       state.JyElMessageBox.show = true
+    }
+    if (cell.name === '权限配置') {
+      router.push({ name: 'ConfigPermission' })
     }
   }
 

@@ -2,7 +2,7 @@
   <JyDialog
     @update:show="props.show"
     :show="props.show"
-    :title="$t('t-zgj-list.SelectionDepartment')"
+    :title="title"
     @close="closeDialog"
     @confirm="confirmDialog"
     :confirmText="$t('t-zgj-select.confirm')"
@@ -217,8 +217,9 @@
    * tabsShow ['organ', 'user', 'role'] 展示按照数字顺序排
    * activeTab 选中tab
    */
-  import { ref } from 'vue'
-  import VTabs from '@/components/modules/tabs.vue'
+  // import i18n from '@/utils/i18n'
+  import { ref, watch } from 'vue'
+  import VTabs from '@/components/common/JyTabs.vue'
   import KDepartTab from './modules/KDepartTab.vue'
   import KUserTab from './modules/KUserTab.vue'
   import Api from '@/api/common/organOrPerson'
@@ -266,7 +267,52 @@
 
   // 消息 tabs
   const active = ref(props.activeTab || props.tabsShow[0])
+  const title = ref('')
 
+  watch(
+    () => active.value,
+    val => {
+      // if (active.value === 'user') {
+      //   title.value = i18n.global.t('t-zgj-list.SelectionPerson')
+      // } else if (active.value === 'organ') {
+      //   title.value = i18n.global.t('t-zgj-list.SelectionDepartment')
+      // } else if (active.value === 'role') {
+      //   title.value = i18n.global.t('t-zgj-person.selectRole')
+      // } else {
+      //   title.value = i18n.global.t('t-zgj-select')
+      // }
+      const str = '请选择'
+      let newStr = ''
+      props.tabsShow.forEach((item, index) => {
+        if (index === 0) {
+          if (item === 'user') {
+            newStr = '人员'
+          }
+          if (item === 'organ') {
+            newStr = '/部门'
+          }
+          if (item === 'role') {
+            newStr = '/角色'
+          }
+        } else {
+          if (item === 'user') {
+            newStr = newStr + '/人员'
+          }
+          if (item === 'organ') {
+            newStr = newStr + '/部门'
+          }
+          if (item === 'role') {
+            newStr = newStr + '/角色'
+          }
+        }
+      })
+      title.value = str + newStr
+    },
+    {
+      deep: true,
+      immediate: true
+    }
+  )
   const tabsLabel = ref([
     {
       name: 't-zgj-person.Role',

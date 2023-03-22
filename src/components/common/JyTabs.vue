@@ -1,3 +1,9 @@
+<!--
+* @Descripttion JyTabs.vue
+* @FileName JyTabs.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-22 15:02:04
+!-->
 <template>
   <div class="custom-tabs" :class="border ? 'tabs-border' : ''">
     <div v-for="(item, index) in props.label" :key="index">
