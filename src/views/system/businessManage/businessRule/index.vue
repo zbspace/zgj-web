@@ -1,6 +1,6 @@
 <template>
   <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,batch">
+    <!-- <componentsLayout Layout="title,searchForm,table,pagination,batch">
       <template #title>
         <div class="title">
           <div>业务规则管理</div>
@@ -57,7 +57,34 @@
         >
         </componentsPagination>
       </template>
-    </componentsLayout>
+    </componentsLayout> -->
+    <JyTable
+      url="/biz/rule/page"
+      ref="table"
+      :needAutoRequest="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      tableClick="ruleBusinessName"
+      statusColoum="status"
+      openValue="0"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
+      <template #title>
+        <div class="title">
+          <div>业务规则管理</div>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="showFormDialog = true"
+                >+ 增加</el-button
+              >
+            </div>
+          </div>
+        </div>
+      </template>
+    </JyTable>
     <!-- 业务规则详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -69,7 +96,7 @@
     </div>
 
     <!-- 业务规则弹框 -->
-    <JyDialog
+    <!-- <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="新增业务规则"
@@ -78,7 +105,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
-      @close="submitForm"
+      @confirm="submitForm(true)"
     >
       <v-form-render
         :form-json="formJson"
@@ -87,20 +114,25 @@
         ref="vFormRef"
       >
       </v-form-render>
-    </JyDialog>
+    </JyDialog> -->
+    <Add :showAdd="showFormDialog" @on-cancel="closeAddForm"></Add>
   </div>
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { reactive, ref, onMounted } from 'vue'
+  import JyTable from '@/views/components/JyTable.vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
+  import tabHeaderJson from '@/views/tableHeaderJson/system/companyManage/departmentStaff/businessRule.json'
   import componentsBatch from '@/views/components/batch.vue'
   import FormJson from '@/views/addDynamicFormJson/documentType.json'
-  import { ElMessage } from 'element-plus'
+  import Add from '@/views/system/businessManage/businessRule/modules/add.vue'
+  import { fileManageService } from '@/api/frontDesk/fileManage'
+  import { messageError, messageSuccess } from '@/hooks/useMessage'
 
   const formJson = reactive(FormJson)
   const formData = reactive({})
@@ -109,6 +141,7 @@
 
   const vFormRef = ref(null)
   const submitForm = type => {
+    console.log(type)
     if (!type) {
       vFormRef.value.resetForm()
       return
@@ -118,12 +151,12 @@
       .then(formData => {
         // Form Validation OK
         alert(JSON.stringify(formData))
-        showFormDialog.value = false
+        // showFormDialog.value = false
       })
       .catch(error => {
         // Form Validation failed
 
-        ElMessage.error(error)
+        messageError(error)
       })
   }
 
@@ -140,23 +173,17 @@
 
       data: [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '表单名称/创建人'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
+            placeholder: '业务规则名称/业务规则编码/创建人'
+          }
         },
         {
-          id: 'name',
+          id: 'status',
           label: '状态',
           type: 'select',
           inCommonUse: true,
@@ -166,8 +193,16 @@
           },
           options: [
             {
-              value: '1',
+              value: '0',
               label: '全部'
+            },
+            {
+              value: '1',
+              label: '启用'
+            },
+            {
+              value: '2',
+              label: '停用'
             }
           ]
         },
@@ -185,8 +220,8 @@
           style: {}
         },
         {
-          id: 'name',
-          label: '业务类型',
+          id: 'sealUseTypeId',
+          label: '用印类型',
           type: 'select',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -195,13 +230,21 @@
           },
           options: [
             {
-              value: '1',
+              value: '0',
               label: '全部'
+            },
+            {
+              value: '1',
+              label: '物理用印'
+            },
+            {
+              value: '2',
+              label: '电子签章'
             }
           ]
         },
         {
-          id: 'name',
+          id: 'fileTypeId',
           label: '文件类型',
           type: 'select',
           inCommonUse: true,
@@ -251,103 +294,7 @@
     },
 
     componentsTable: {
-      header: [
-        {
-          prop: '1',
-          label: '业务规则名称',
-          sortable: true,
-          'min-width': 150,
-          fixed: true
-        },
-        {
-          prop: '2',
-          label: '业务规则编码',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '一盖一码',
-          sortable: true,
-          align: 'center',
-          width: 120
-        },
-        {
-          prop: '4',
-          label: '远程盖章',
-          sortable: true,
-          align: 'center',
-          width: 120
-        },
-        {
-          prop: '5',
-          label: '骑缝盖章',
-          sortable: true,
-          align: 'center',
-          width: 120
-        },
-        {
-          prop: '6',
-          label: '批量盖章',
-          sortable: true,
-          align: 'center',
-          width: 120
-        },
-        {
-          prop: '7',
-          label: '智感盖章',
-          sortable: true,
-          align: 'center',
-          width: 120
-        },
-        {
-          prop: '8',
-          label: '盖后自动存档',
-          sortable: true,
-          align: 'center',
-          width: 160
-        },
-        {
-          prop: '9',
-          label: '防伪水印验证',
-          sortable: false,
-          align: 'center',
-          'min-width': 140
-        },
-        {
-          prop: '10',
-          label: '创建时间',
-          sortable: true,
-          align: 'center',
-          width: 170
-        },
-        {
-          prop: '11',
-          label: '创建人',
-          align: 'center',
-          'min-width': 150
-        },
-        {
-          prop: '12',
-          label: '操作',
-          width: 180,
-          fixed: 'right',
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '删除'
-            },
-            {
-              name: '上移'
-            },
-            {
-              name: '下移'
-            }
-          ]
-        }
-      ],
+      header: tabHeaderJson,
       data: [
         {
           1: '业务规则1',
@@ -471,6 +418,17 @@
       ]
     }
   })
+  const closeAddForm = () => {
+    showFormDialog.value = false
+  }
+  const getFileTypeTree = async () => {
+    try {
+      const res = await fileManageService.getTreeList({})
+      console.log(res)
+    } catch (error) {
+      messageError(error)
+    }
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     console.log(row, column, cell, event)
@@ -503,6 +461,9 @@
       state.componentsBatch.defaultAttribute.disabled = true
     }
   }
+  onMounted(() => {
+    getFileTypeTree()
+  })
 </script>
 
 <style lang="scss" scoped>

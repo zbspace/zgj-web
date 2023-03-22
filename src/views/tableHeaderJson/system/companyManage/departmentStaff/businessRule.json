@@ -1,0 +1,69 @@
+[
+  {
+    "prop": "ruleBusinessName",
+    "label": "业务规则名称",
+    "sortable": true,
+    "min-width": 150,
+    "fixed": true
+  },
+  {
+    "prop": "ruleBusinessCode",
+    "label": "业务规则编码",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "fileTypeName",
+    "label": "文件类型",
+    "sortable": true,
+    "align": "center",
+    "width": 120
+  },
+  {
+    "prop": "sealUseTypeName",
+    "label": "用印类型",
+    "sortable": true,
+    "align": "center",
+    "width": 120
+  },
+  {
+    "prop": "status",
+    "label": "状态",
+    "sortable": true,
+    "align": "center",
+    "width": 120
+  },
+  {
+    "prop": "modifyDatetime",
+    "label": "更新时间",
+    "sortable": true,
+    "align": "center",
+    "width": 170
+  },
+  {
+    "prop": "createUserName",
+    "label": "创建人",
+    "align": "center",
+    "min-width": 150
+  },
+  {
+    "prop": "caozuo",
+    "label": "操作",
+    "width": 180,
+    "fixed": "right",
+    "rankDisplayData": [
+      {
+        "name": "t-zgj-Edit"
+      },
+      {
+        "name": "t-zgj-Delete"
+      },
+      {
+        "name": "t-zgj-Enable"
+      },
+      {
+        "name": "t-zgj-qyWechat.Copy"
+      }
+    ]
+  }
+]
