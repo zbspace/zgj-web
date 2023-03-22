@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed } from 'vue'
+  import { ref, onMounted, computed, nextTick } from 'vue'
   import VFormRender from '@/lib/vform/components/form-render'
   import VFormDesigner from '@/lib/vform/components/form-designer'
   import { designerConfig } from './designerConfig'
@@ -180,6 +180,10 @@
   const showDialog = () => {
     vFormRef.value.showDialog()
   }
+  // 禁用编辑
+  const disableForm = () => {
+    vFormRef.value.disableForm()
+  }
 
   // ---------------------------------VFormRender+VFormDesigner api 通过组件实例调用-----------
   // 获取设计器组件实例
@@ -256,9 +260,11 @@
       templateList.value = res.data.map(v => JSON.parse(v.formTemplateInfo))
       const widgetList = vFormRef.value.getFieldWidgets()
       // 如果是设计器，且内容为空，需要加载指定模板
-      if (!props.mode && !widgetList.length) {
-        vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
-      }
+      nextTick(() => {
+        if (!props.mode && !widgetList.length) {
+          vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
+        }
+      })
     } catch (error) {
       ElMessage.error(error)
     }
@@ -291,7 +297,8 @@
     showDialog,
     setFormColumnBasic,
     setFormTemplate,
-    initDesigner
+    initDesigner,
+    disableForm
   })
 </script>
 

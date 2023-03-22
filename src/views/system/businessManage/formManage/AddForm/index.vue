@@ -106,6 +106,7 @@
   import { ElMessage } from 'element-plus'
   import layout from '@/views/system/businessManage/flowManage/layout'
   import formManageService from '@/api/system/formManagement'
+  import flowManageService from '@/api/system/flowManagement'
   import { AddFormInfo } from '@/utils/domain/formManage'
   import { messageError, messageSuccess } from '@/hooks/useMessage'
 
@@ -113,6 +114,8 @@
   const formData = ref(new AddFormInfo())
   const formRef = ref(null)
   const mustProps = ref([])
+  const formInfo = ref({})
+
   const props = defineProps({
     addTitle: {
       type: String,
@@ -139,7 +142,7 @@
       default: () => []
     }
   })
-  const emit = defineEmits(['update:modelValue', 'close'])
+  const emit = defineEmits(['update:modelValue', 'close', 'reloadData'])
   const state = reactive({
     processTabs: {
       checkedNode: {},
@@ -231,13 +234,15 @@
     }
   }
 
-  const loaded = () => {
+  const loaded = async () => {
     if (props.columnData.formMessageId) {
-      vformRef.value.setFormJson(props.columnData.formInfo)
+      await vformRef.value.setFormJson(formInfo.value.formInfo)
     } else {
-      vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
+      await vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
     }
-    vformRef.value.setFormTemplate(formData.value.applyTypeId)
+    nextTick(() => {
+      vformRef.value.setFormTemplate(formData.value.applyTypeId)
+    })
     getFormColumnMust()
   }
 
@@ -282,9 +287,11 @@
           formMessageId: props.columnData.formMessageId
         })
         messageSuccess('表单修改成功')
+        emit('reloadData')
       } else {
         await formManageService.formAdd(formData.value)
         messageSuccess('表单添加成功')
+        emit('reloadData')
       }
       vformRef.value.setFormJson('')
       isVisible.value = false
@@ -306,9 +313,21 @@
     }
   }
 
+  const getFormJson = async formMessageId => {
+    try {
+      const res = await flowManageService.getFormJsonById({ formMessageId })
+      formInfo.value = res.data
+    } catch (error) {
+      messageError(error)
+    }
+  }
+
   const opened = () => {
     if (props.columnData.formName) {
       formData.value = { ...formData.value, ...props.columnData }
+    }
+    if (props.columnData.formMessageId) {
+      getFormJson(props.columnData.formMessageId)
     }
   }
 

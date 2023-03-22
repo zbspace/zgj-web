@@ -10,7 +10,7 @@
     <JyDialog
       v-model="isVisible"
       :width="1080"
-      title="选择印章"
+      :title="$t('t-zgj-list.SelecSeal')"
       :mode="1"
       @on-opened="opened"
       @on-closed="closed"
@@ -105,6 +105,7 @@
   import libraryOfSealsService from '@/api/frontDesk/sealManage/libraryOfSeals'
   import { FeatchSealInfo, FeatchSealTypeInfo } from '@/utils/domain/sealManage'
   import { PaginationInfo } from '@/utils/domain/paginationInfo'
+  import JyDialog from '@/components/common/JyDialog/index2.vue'
 
   const props = defineProps({
     modelValue: {

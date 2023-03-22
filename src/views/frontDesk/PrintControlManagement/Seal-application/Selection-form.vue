@@ -119,6 +119,12 @@
                 </i>
               </div>
             </div>
+            <div class="empty">
+              <el-empty
+                description="您暂无可用的申请表单"
+                v-if="!applyLists.length && !loading"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -163,7 +169,6 @@
   import { ref, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import { Search } from '@element-plus/icons-vue'
 
@@ -171,6 +176,7 @@
   const showFormDialog = ref(false)
   const applyLists = ref([])
   const keyword = ref('')
+  const loading = ref(false)
 
   // 点击列表按钮
   function clickListBut(formMessageId) {
@@ -191,9 +197,16 @@
   }
 
   const applyList = () => {
-    sealApply.list({ keyword: keyword.value }).then(res => {
-      applyLists.value = res.data
-    })
+    loading.value = true
+    applyLists.value = []
+    sealApply
+      .list({ keyword: keyword.value })
+      .then(res => {
+        applyLists.value = res.data
+      })
+      .finally(() => {
+        loading.value = false
+      })
   }
 
   onBeforeMount(() => {
@@ -212,6 +225,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+
+    .empty {
+      width: 100%;
     }
 
     .custom {

@@ -46,7 +46,11 @@
               <template #title>
                 <div class="topTitles">
                   <div>审批流程</div>
-                  <el-select v-model="flowMessageId" placeholder="请选择流程">
+                  <el-select
+                    v-model="flowMessageId"
+                    placeholder="请选择流程"
+                    @change="changeFlow"
+                  >
                     <el-option
                       v-for="item in flowLists"
                       :key="item.flowMessageId"
@@ -57,7 +61,7 @@
                 </div>
               </template>
               <template #content>
-                <div style="height: 1000px">
+                <div style="height: calc(100vh - 400px)" v-if="initObj">
                   <VFlowDesign
                     ref="refVFlowDesign"
                     :defaultAttribute="{
@@ -66,6 +70,7 @@
                       scroll: false,
                       top: '100'
                     }"
+                    :initObj="initObj"
                   ></VFlowDesign>
                 </div>
               </template>
@@ -173,8 +178,11 @@
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
+  import VFlowDesign from '@/views/components/FlowDesign/index.vue'
 
   const router = useRouter()
+  const refVFlowDesign = ref(null)
+  const initObj = ref(null)
   // const emit = defineEmits([])
   const state = reactive({
     cache: {
@@ -283,11 +291,30 @@
           formMessageId: router.currentRoute.value.params.id
         })
         .then(res => {
-          console.log(res)
           flowLists.value = res.data
           flowMessageId.value = res.data[0].flowMessageId
+          flowDetail(res.data[0].modelId, res.data[0].definitionId)
         })
     })
+  }
+
+  function changeFlow() {
+    const item = flowLists.value.find(
+      i => i.flowMessageId === flowMessageId.value
+    )
+    flowDetail(item.modelId, item.definitionId)
+  }
+
+  function flowDetail(modelId, definitionId) {
+    initObj.value = { modelId, definitionId }
+    sealApply
+      .flowDetail({
+        ...initObj.value,
+        edit: true
+      })
+      .then(res => {
+        refVFlowDesign.value.handleSetData(res.data.data)
+      })
   }
 
   // 上一步
@@ -325,6 +352,12 @@
   .Seal-application-fill-form {
     margin: 0%;
     position: relative;
+
+    .contanier-flow {
+      width: 100%;
+      padding: 0;
+      margin-top: 0;
+    }
 
     .title {
       display: flex;

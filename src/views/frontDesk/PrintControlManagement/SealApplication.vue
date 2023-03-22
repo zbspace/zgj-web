@@ -133,7 +133,6 @@
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import FormJson from '@/views/addDynamicFormJson/sealApplication.json'
   const props = defineProps({
     // 处理类型

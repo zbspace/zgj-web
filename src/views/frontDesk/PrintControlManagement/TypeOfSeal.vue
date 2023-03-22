@@ -31,6 +31,7 @@
     <JyDialog
       @update:show="showDialog = $event"
       :show="showDialog"
+      :confirmLoading="confirmLoading"
       :title="fromStateTitle"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
@@ -100,17 +101,9 @@
 <script setup>
   import { ref, reactive, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import JyDialog from '@/views/components/modules/JyDialog'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/typeOfSeal.json'
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
 
   // 印章类型 新增弹框
   const formData = ref({
@@ -132,6 +125,7 @@
   const vFormLibraryRef = ref(null)
   const sealTypeId = ref(null)
   const jyTable = ref(null)
+  const confirmLoading = ref(false)
 
   // const emit = defineEmits([])
   const state = reactive({
@@ -330,6 +324,7 @@
   const submitLibraryForm = () => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
+        confirmLoading.value = true
         if (sealTypeId.value) {
           apis
             .edit({
@@ -343,12 +338,20 @@
               showDialog.value = false
               reloadData()
             })
+            .finally(() => {
+              confirmLoading.value = false
+            })
         } else {
-          apis.add(formData.value).then(res => {
-            sealTypeId.value = null
-            showDialog.value = false
-            reloadData()
-          })
+          apis
+            .add(formData.value)
+            .then(res => {
+              sealTypeId.value = null
+              showDialog.value = false
+              reloadData()
+            })
+            .finally(() => {
+              confirmLoading.value = false
+            })
         }
       }
     })

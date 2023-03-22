@@ -7,8 +7,8 @@
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
       :queryParams="{ organId }"
-      statusColoum="status"
-      openValue="1"
+      statusColoum="flag"
+      openValue="启用"
       hasTree
       tableClick="organName"
       @cellClick="cellClick"
@@ -189,7 +189,9 @@
     ></actionMoreDialog>
     <!-- 单个操作 -->
     <JyElMessageBox
-      :modelValue="state.showOneAction.show"
+      v-model="state.showOneAction.show"
+      :mode="1"
+      :showClose="false"
       :defaultAttribute="{}"
       @confirmClick="confirmOneClick"
     >
@@ -209,7 +211,6 @@
 <script setup>
   import { reactive, onBeforeMount, ref, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import department from '@/api/system/companyManagement/department'
@@ -404,7 +405,6 @@
   }
 
   function customClick(row, column, cell, event) {
-    console.log(cell)
     if (cell.name === 't-zgj-Edit') {
       showFormDialog.value = true
       form.organId = column.organId
@@ -412,7 +412,6 @@
         vFormLibraryRef.value.resetFields()
         department.detail(column.organId).then(res => {
           const data = res.data
-          console.log(data)
           form.organId = data.organId
           form.organNo = data.organNo
           form.organName = data.organName
@@ -425,8 +424,7 @@
             ).tenantName
           form.leaderUserId = data.leaderUserId
           form.leaderUserName = data.leaderUserName
-          form.leaderUserName = data.leaderUserName
-          console.log(form)
+          form.readme = data.readme
         })
       })
     } else if (cell.name === 't-zgj-F_SEAL_INFO_UP') {
@@ -434,23 +432,49 @@
     } else if (cell.name === 't-zgj-F_SEAL_INFO_DOWN') {
       console.log('t-zgj-F_SEAL_INFO_DOWN')
     } else if (cell.name === 'status') {
-      currentAction.value = column.flag
+      currentAction.value =
+        column.flag === '启用' ? 't-zgj-Disable' : 't-zgj-Enable'
       currentActionDept.value = column.organId
       state.showOneAction.show = true
       state.showOneAction.header.data = '提示'
-      state.showOneAction.content.data = '是否禁用该部门'
+      if (currentAction.value === '启用') {
+        state.showOneAction.content.data = '是否停用该部门？'
+      } else {
+        state.showOneAction.content.data = '是否启用该部门？'
+      }
     }
   }
 
   function confirmOneClick() {
-    if (currentAction.value === '启用') {
+    if (currentAction.value === 't-zgj-Enable') {
       department
-        .batchDisable([currentActionDept.value])
+        .batchEnable([currentActionDept.value])
         .then(res => {
-          console.log(res)
           table.value.reloadData()
         })
         .finally(() => {
+          state.showOneAction.show = false
+        })
+    } else if (currentAction.value === 't-zgj-Disable') {
+      department
+        .batchDisable([currentActionDept.value])
+        .then(res => {
+          table.value.reloadData()
+        })
+        .finally(() => {
+          state.showOneAction.show = false
+        })
+    } else if (currentAction.value === 't-zgj-Delete') {
+      department
+        .batchDelete([currentActionDept.value])
+        .then(res => {
+          table.value.reloadData()
+          firstNode.value.loaded = false
+          firstNode.value.expand()
+          table.value.reloadData()
+        })
+        .finally(() => {
+          showToastDialog.value = false
           state.showOneAction.show = false
         })
     }
@@ -488,7 +512,6 @@
       }
     }
     state.componentsBatch.selectionData = selectionData
-    console.log(item, JSON.parse(JSON.stringify(selectionData)))
     showToastDialog.value = true
   }
 
@@ -553,7 +576,6 @@
   const submitLibraryForm = () => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
-        console.log(form)
         if (form.organId) {
           department.edit(form).then(() => {
             showFormDialog.value = false
@@ -590,7 +612,6 @@
   }
 
   function loadFn(node, resolve) {
-    console.log(node)
     if (node.level === 0) {
       firstNode.value = node
       department
@@ -611,7 +632,6 @@
         })
         .then(() => {
           nextTick(() => {
-            console.log(state.componentsTree.data)
             const nodeData = firstNode.value.childNodes[0]
             nodeData.expanded = true
             nodeData.loadData()
@@ -620,7 +640,6 @@
     } else if (node.level === 1) {
       return resolve(firstTreeData.value)
     } else {
-      console.log(node.data)
       department.subOrganList(node.data.organId).then(res => {
         res.data.forEach(i => (i.haveChildren = !i.haveChildren))
         return resolve(res.data)
@@ -635,7 +654,6 @@
   }
 
   function nodeContextmenu(event, data, node) {
-    console.log(node.level)
     if (node.level === 1) {
       firstLevel.value = false
     } else {
@@ -666,17 +684,44 @@
   }
 
   // 编辑部门
-  function editNode() {}
+  function editNode() {
+    showFormDialog.value = true
+    form.organId = currentDept.value.organId
+    nextTick(() => {
+      vFormLibraryRef.value.resetFields()
+      department.detail(currentDept.value.organId).then(res => {
+        const data = res.data
+        form.organId = data.organId
+        form.organNo = data.organNo
+        form.organName = data.organName
+        form.organTypeId = data.organTypeId
+        form.organPid = data.organPid
+        form.organPName =
+          data.organPName ||
+          JSON.parse(localStorage.getItem('departLists')).find(
+            i => i.tenantId === localStorage.getItem('tenantId')
+          ).tenantName
+        form.leaderUserId = data.leaderUserId
+        form.leaderUserName = data.leaderUserName
+        form.readme = data.readme
+      })
+    })
+  }
 
   // 删除部门
-  function deleteNode() {}
+  function deleteNode() {
+    currentActionDept.value = currentDept.value.organId
+    currentAction.value = 't-zgj-Delete'
+    state.showOneAction.show = true
+    state.showOneAction.header.data = '提示'
+    state.showOneAction.content.data = '是否删除该部门'
+  }
 
   const deleteMore = () => {
     if (currentActionType.value === 't-zgj-dept.BatchDeactivation') {
       department
         .batchDisable(state.componentsBatch.selectionData.map(i => i.organId))
         .then(res => {
-          console.log(res)
           table.value.reloadData()
         })
         .finally(() => {
@@ -686,7 +731,6 @@
       department
         .batchEnable(state.componentsBatch.selectionData.map(i => i.organId))
         .then(res => {
-          console.log(res)
           table.value.reloadData()
         })
         .finally(() => {
@@ -696,7 +740,6 @@
       department
         .batchDelete(state.componentsBatch.selectionData.map(i => i.organId))
         .then(res => {
-          console.log(res)
           table.value.reloadData()
         })
         .finally(() => {

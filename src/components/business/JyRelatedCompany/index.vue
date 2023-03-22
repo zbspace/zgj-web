@@ -91,6 +91,7 @@
   import { compManageService } from '@/api/system/compManage'
   import { FeatchRelatedCompanyListInfo } from '@/utils/domain/compManage'
   import AddCompany from './AddCompany'
+  import JyDialog from '@/components/common/JyDialog/index2.vue'
 
   const searchRelatedCompanyInfo = ref(new FeatchRelatedCompanyListInfo())
   const paginationInfo = ref(new PaginationInfo())

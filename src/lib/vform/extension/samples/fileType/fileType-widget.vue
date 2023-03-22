@@ -28,9 +28,9 @@
       "
       :remote="field.options.remote"
       :remote-method="remoteQuery"
-      @focus="handleFocusCustomEvent"
+      @focus="getFileTypeList"
       @blur="handleBlurCustomEvent"
-      @change="handleChangeEvent"
+      @change="onChange"
     >
       <el-option
         v-for="item in fileTypeOptions"
@@ -47,80 +47,95 @@
 </template>
 
 <script>
-import FormItemWrapper from "@/lib/vform/components/form-designer/form-widget/field-widget/form-item-wrapper";
-import emitter from "@/lib/vform/utils/emitter";
-import i18n from "@/lib/vform/utils/i18n";
-import fieldMixin from "@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin";
+  import FormItemWrapper from '@/lib/vform/components/form-designer/form-widget/field-widget/form-item-wrapper'
+  import emitter from '@/lib/vform/utils/emitter'
+  import i18n from '@/lib/vform/utils/i18n'
+  import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
+  import { fileManageService } from '@/api/frontDesk/fileManage'
+  import { messageError } from '@/hooks/useMessage'
+  import { GetFileTypeList } from '@/utils/domain/fileManage'
 
-export default {
-  name: "fileType-widget",
-  componentName: "FieldWidget", //必须固定为FieldWidget，用于接收父级组件的broadcast事件
-  mixins: [emitter, fieldMixin, i18n],
-  inject: ["getFileTypeList"],
-  props: {
-    field: Object,
-    parentWidget: Object,
-    parentList: Array,
-    indexOfParentList: Number,
-    designer: Object,
+  export default {
+    name: 'FileTypeIdWidget',
+    componentName: 'FieldWidget', // 必须固定为FieldWidget，用于接收父级组件的broadcast事件
+    mixins: [emitter, fieldMixin, i18n],
+    props: {
+      field: Object,
+      parentWidget: Object,
+      parentList: Array,
+      indexOfParentList: Number,
+      designer: Object,
 
-    designState: {
-      type: Boolean,
-      default: false,
-    },
+      designState: {
+        type: Boolean,
+        default: false
+      },
 
-    subFormRowIndex: {
-      /* 子表单组件行索引，从0开始计数 */ type: Number,
-      default: -1,
-    },
-    subFormColIndex: {
-      /* 子表单组件列索引，从0开始计数 */ type: Number,
-      default: -1,
-    },
-    subFormRowId: {
-      /* 子表单组件行Id，唯一id且不可变 */ type: String,
-      default: "",
-    },
-  },
-  components: {
-    FormItemWrapper,
-  },
-  data() {
-    return {
-      fieldModel: null,
-      rules: [{
-        required: true,
-        message: '请选择文件类型',
-        trigger: 'change'
-      }],
-    };
-  },
-  computed: {
-    fileTypeOptions() {
-      return this.getFileTypeList();
-    },
-  },
-  created() {
-    this.registerToRefList();
-    this.initEventHandler();
-    this.initFieldModel();
-  },
-  beforeUnmount() {
-    this.unregisterFromRefList();
-  },
-  methods: {
-    handleCloseCustomEvent() {
-      if (!!this.field.options.onClose) {
-        let changeFn = new Function(this.field.options.onClose);
-        changeFn.call(this);
+      subFormRowIndex: {
+        /* 子表单组件行索引，从0开始计数 */ type: Number,
+        default: -1
+      },
+      subFormColIndex: {
+        /* 子表单组件列索引，从0开始计数 */ type: Number,
+        default: -1
+      },
+      subFormRowId: {
+        /* 子表单组件行Id，唯一id且不可变 */ type: String,
+        default: ''
       }
     },
-  },
-};
+    components: {
+      FormItemWrapper
+    },
+    data() {
+      return {
+        fieldModel: null,
+        fileTypeName: '',
+        fileTypeOptions: [],
+        rules: [
+          {
+            required: true,
+            message: '请选择文件类型',
+            trigger: 'change'
+          }
+        ]
+      }
+    },
+    created() {
+      this.registerToRefList()
+      this.initEventHandler()
+      this.initFieldModel()
+    },
+    beforeUnmount() {
+      this.unregisterFromRefList()
+    },
+    methods: {
+      handleCloseCustomEvent() {
+        if (this.field.options.onClose) {
+          const changeFn = new Function(this.field.options.onClose)
+          changeFn.call(this)
+        }
+      },
+      async getFileTypeList() {
+        try {
+          const res = await fileManageService.getFileTypeListPage(
+            new GetFileTypeList()
+          )
+          this.fileTypeOptions = res.data.records || []
+        } catch (error) {
+          messageError(error)
+        }
+      },
+      onChange(value, name) {
+        console.log('--->', value)
+        this.handleChangeEvent(value, name)
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
-.full-width-input {
+  .full-width-input {
     width: 100% !important;
   }
 </style>

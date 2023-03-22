@@ -1,6 +1,21 @@
 <template>
   <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
+    <JyTable
+      url="/form/page"
+      ref="table"
+      :hasTree="true"
+      :needAutoRequest="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      :queryParams="queryParams"
+      statusColoum="flag"
+      openValue="0"
+      tableClick="formName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="batchDel"
+    >
       <template #title>
         <div class="title">
           <div>表单管理</div>
@@ -9,69 +24,18 @@
           </div>
         </div>
       </template>
-
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-            @clickBatchButton="batchDel"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-
       <template #tree>
         <div>
           <componentsTree
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
-            @node-click="clickTreeNode"
-            @current-change="treeCurrentChange"
+            :defaultProps="state.componentsTree.defaultProps"
+            @current-change="currentChange"
           >
           </componentsTree>
         </div>
       </template>
-
-      <template #table>
-        <div>
-          <componentsTable
-            :loading="state.componentsTable.loading"
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :paginationData="state.componentsPagination.data"
-            :header="state.componentsTable.header"
-            :isSelection="true"
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-          >
-          </componentsTable>
-        </div>
-      </template>
-
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-          @size-change="sizeChange"
-          @current-change="currentChange"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
+    </JyTable>
     <!-- 表单管理详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -88,6 +52,7 @@
       :addTitle="state.componentsAddForm.addTitle"
       :columnData="state.componentsAddForm.data"
       @close="state.componentsAddForm.dialogVisible = false"
+      @reloadData="reloadData"
       :optionData="optionData"
     />
     <!-- 弹窗提示 -->
@@ -154,62 +119,30 @@
       </template>
     </JyElMessageBox>
     <!-- 批量操作弹框提示 -->
-    <JyElMessageBox
-      v-model="state.showToastDialog.show"
+    <actionMoreDialog
+      @update:modelValue="state.showToastDialog.show = false"
       :show="state.showToastDialog.show"
-      :defaultAttribute="{}"
-    >
-      <template #header>
-        <div class="header-div">
-          <img :src="state.showToastDialog.header.icon" alt="" />
-          <span>{{ state.showToastDialog.header.data }}</span>
-        </div>
-      </template>
-      <template #content>
-        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
-        <el-scrollbar class="scrollbar" max-height="200px">
-          <p
-            v-for="item in state.componentsBatch.selectionData"
-            :key="item"
-            class="scrollbar-demo-item"
-            >{{ item.formName }}</p
-          >
-        </el-scrollbar>
-      </template>
-      <template #footer>
-        <el-button
-          v-for="item in state.componentsBatch.butDatas"
-          :key="item.name"
-          :type="item.type"
-          @click="item.clickName"
-          >{{ item.name }}</el-button
-        >
-      </template>
-    </JyElMessageBox>
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="showToastDialogContent"
+      label="formName"
+      @sureAction="deleteMore"
+    ></actionMoreDialog>
   </div>
 </template>
 
 <script setup>
-  import {
-    reactive,
-    ref,
-    defineAsyncComponent,
-    onBeforeMount,
-    watch
-  } from 'vue'
-  import componentsTable from '@/views/components/table'
-  import componentsSearchForm from '@/views/components/searchForm'
-  import componentsPagination from '@/views/components/pagination.vue'
-  import componentsLayout from '@/views/components/Layout.vue'
+  import { reactive, ref, defineAsyncComponent, onBeforeMount } from 'vue'
   import componentsTree from '@/views/components/tree'
+  import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import componentsBatch from '@/views/components/batch.vue'
+  import actionMoreDialog from '@/views/components/actionMoreDialog'
   import api from '@/api/system/formManagement'
   import dayjs from 'dayjs'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
-  const applyTypeId = ref(2)
-  const refTree = ref(null)
   const optionData = ref([])
+  const table = ref(null)
+  const queryParams = ref(null)
+  const showToastDialogContent = ref(null)
   const state = reactive({
     componentsAddForm: {
       dialogVisible: false,
@@ -217,14 +150,6 @@
       data: {}
     },
     componentsSearchForm: {
-      style: {
-        lineStyle: {
-          width: 'calc(100% / 3)'
-        },
-        labelStyle: {
-          width: '100px'
-        }
-      },
       data: [
         {
           id: 'keyword',
@@ -243,7 +168,7 @@
           ]
         },
         {
-          id: 'applyTypeName',
+          id: 'sealUseTypeId',
           label: '用印类型',
           type: 'select',
           inCommonUse: true,
@@ -429,25 +354,7 @@
             }
           ]
         }
-      ],
-      data: [],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        stripe: true,
-        'header-cell-style': {
-          background: 'var(--jy-color-fill--3)'
-        },
-        'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === 'formName') {
-            return {
-              color: 'var(--jy-info-6)',
-              cursor: 'pointer'
-            }
-          }
-        }
-      },
-      loading: false
+      ]
     },
 
     componentsBatch: {
@@ -467,21 +374,6 @@
           clickName: closeBatchTabel
         }
       ]
-    },
-    componentsPagination: {
-      show: false,
-      data: {
-        amount: 10,
-        index: 1,
-        pageNumber: 10
-      },
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
-        background: true
-      }
     },
 
     componentsTree: {
@@ -547,20 +439,10 @@
     }
   })
 
-  watch(
-    () => state.componentsAddForm.dialogVisible,
-    value => {
-      if (!value) {
-        getFormPage()
-      }
-    }
-  )
-  // 点击树节点
-  function clickTreeNode(data, node) {
-    console.log('ref', refTree.value)
-    console.log('树节点node', node)
-    applyTypeId.value = data.applyTypeId
-    if (data.applyTypePid === '5' || data.applyTypeName === '印章申请') {
+  const currentChange = e => {
+    console.log(e)
+    queryParams.value = e.applyTypeId ? { applyTypeId: e.applyTypeId } : null
+    if (e.applyTypePid === '5' || e.applyTypeName === '印章申请') {
       state.componentsTable.header = [
         {
           prop: 'formName',
@@ -784,10 +666,7 @@
         }
       ]
     }
-    if (data.applyTypePid === null) {
-      applyTypeId.value = data.children[0].applyTypeId
-    }
-    getFormPage()
+    table.value.reloadData()
   }
   // 请求表单树
   function getListApplyTypeTree() {
@@ -796,7 +675,6 @@
       const { code, data } = res
       if (code === 200) {
         const listApplyTypeTree = []
-        const applyTypeId = []
         optionData.value = data
         data.forEach(element => {
           element.label = element.applyTypeName
@@ -804,78 +682,20 @@
             element.children = []
             element.disabled = false
             listApplyTypeTree.push(element)
-            applyTypeId.push(element.applyTypeId)
-          }
-        })
-        console.log(applyTypeId)
-        data.forEach(element => {
-          const index = applyTypeId.indexOf(element.applyTypePid)
-          if (index > -1) {
-            listApplyTypeTree[index].children.push(element)
+          } else {
+            const index = listApplyTypeTree.findIndex(
+              i => i.applyTypeId === element.applyTypePid
+            )
+            if (index > -1) {
+              listApplyTypeTree[index].children.push(element)
+            }
           }
         })
         state.componentsTree.data = listApplyTypeTree
-        applyTypeId.value = state.componentsTree.data[0].children[0].applyTypeId
-        console.log('applyTypeId.value', applyTypeId.value)
-        getFormPage()
+        queryParams.value = { applyTypeId: '2' }
+        table.value.reloadData()
       }
     })
-  }
-  // 请求表单列表
-  const getFormPage = () => {
-    const searchData = state.componentsSearchForm.data
-    const queryParams = {}
-    queryParams.applyTypeId = applyTypeId.value
-    searchData.forEach(item => {
-      if (item.type === 'picker') {
-        if (item.pickerType === 'date') {
-          if (item.value) {
-            queryParams.updateStartTime = dayjs(item.value[0]).format(
-              'YYYY-MM-DD HH:mm:ss'
-            )
-            queryParams.updateEndTime = dayjs(item.value[1]).format(
-              'YYYY-MM-DD HH:mm:ss'
-            )
-          }
-        }
-      } else {
-        queryParams[item.id] = item.value
-      }
-    })
-    queryParams.current = state.componentsPagination.index || 1
-    queryParams.size = state.componentsPagination.pageNumber || 10
-    state.componentsTable.loading = true
-    api.formPage(queryParams).then(res => {
-      console.log(res)
-      state.componentsTable.data = res.data.records
-      // 处理后台返回时间带T
-      state.componentsTable.data.forEach(item => {
-        item.modifyDatetime = dayjs(item.modifyDatetime).format(
-          'YYYY-MM-DD HH:mm:ss'
-        )
-      })
-      state.componentsPagination.data.amount = res.data.total
-      state.componentsPagination.data.pageNumber = res.data.size
-      state.componentsPagination.defaultAttribute.total = res.data.total
-      state.componentsTable.loading = false
-    })
-  }
-  // 筛选条件按钮
-  const clickSubmit = (item, index) => {
-    console.log(item)
-    if (item.id === 'reset') {
-      state.componentsSearchForm.data.forEach(v => {
-        delete v.value
-      })
-    }
-    getFormPage()
-  }
-  // 点击表格单元格
-  const cellClick = (row, column, cell, event) => {
-    // console.log(row, column, cell, event)
-    if (column.property === 'formName') {
-      state.componentsDocumentsDetails.show = true
-    }
   }
 
   // 打开新增
@@ -884,6 +704,7 @@
     state.componentsAddForm.addTitle = '新建'
     state.componentsAddForm.data = {}
   }
+
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '修改') {
@@ -905,6 +726,7 @@
       state.componentsAddForm.data.formName = `${column.formName}-副本`
     }
   }
+
   // 删除提交
   function submitDel() {
     const data = {
@@ -927,37 +749,54 @@
         ]
       } else {
         api.formPage(data).then(res => {
-          if (res.code === 200) {
-            getFormPage()
-          }
+          table.value.reloadData()
         })
       }
     })
     state.JyElMessageBox.show = false
   }
   // 批量删除
-  function batchDel() {
-    state.showToastDialog.header.data = '批量删除'
-    state.showToastDialog.content.data =
-      '已选中以下表单，请问确定要批量删除吗？'
+  function batchDel(item, selectionData) {
+    console.log(selectionData)
+    state.componentsBatch.selectionData = selectionData
+    showToastDialogContent.value = {
+      header: {
+        data: '批量删除'
+      },
+      content: {
+        data: '是否删除表单？'
+      }
+    }
     state.showToastDialog.show = true
     // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
-    state.componentsBatch.butDatas = [
-      {
-        name: '确定',
-        type: 'primary',
-        clickName: sureBatchDel
-      },
-      {
-        name: '取消',
-        type: '',
-        clickName: closeBatchTabel
-      }
-    ]
+    // state.componentsBatch.butDatas = [
+    //   {
+    //     name: '确定',
+    //     type: 'primary',
+    //     clickName: sureBatchDel
+    //   },
+    //   {
+    //     name: '取消',
+    //     type: '',
+    //     clickName: closeBatchTabel
+    //   }
+    // ]
     console.log('批量删除')
   }
+
+  // 点击表格单元格
+  const cellClick = (row, column, cell, event) => {
+    if (column.property === 'formName') {
+      state.componentsDocumentsDetails.show = true
+    }
+  }
+
+  const reloadData = () => {
+    table.value.reloadData()
+  }
+
   // 确定批量删除
-  const sureBatchDel = () => {
+  const deleteMore = () => {
     const list = state.componentsBatch.selectionData
     const idList = []
     const idObj = { formMessageId: '' }
@@ -965,7 +804,7 @@
       idObj.formMessageId = v.formMessageId
       idList.push(idObj)
     })
-    api.relationContractType(idList).then(res => {
+    api.batchDelete(idList).then(res => {
       if (res.code === 200) {
         if (res.data.length > 0) {
           state.showToastDialog.header.data = '删除'
@@ -983,9 +822,7 @@
           ]
         } else {
           api.batchDelete(idList).then(res => {
-            if (res.code === 200) {
-              getFormPage()
-            }
+            table.value.reloadData()
           })
         }
       } else {
@@ -1021,35 +858,11 @@
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
-  }
-  // 分页页数变化
-  function currentChange(data) {
-    console.log(data)
-    state.componentsPagination.index = data
-    getFormPage()
-  }
-  // 每页请求数量变化
-  function sizeChange(data) {
-    console.log(data)
-    state.componentsPagination.index = 1
-    state.componentsPagination.pageNumber = data
-    getFormPage()
-  }
-  function treeCurrentChange() {}
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 加载表单列表
     getListApplyTypeTree()
-    // getFormPage()
   })
 </script>
 

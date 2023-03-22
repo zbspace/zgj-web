@@ -85,18 +85,12 @@ a {
 }
 
 .scrollbar {
-  padding: 0 20px;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.04);
+  margin-left: 40px;
 
   .scrollbar-demo-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    margin: 20px;
-    text-align: center;
-    border-radius: 4px;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
+    padding: 6px 0;
   }
 }
 

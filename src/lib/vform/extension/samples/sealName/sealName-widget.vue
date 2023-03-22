@@ -14,7 +14,7 @@
       <el-row :gutter="12">
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <el-form-item
-            :label="sealNameLabel(index)"
+            :label="'印章名称' + (index + 1)"
             :label-width="field.options.labelWidth"
             :class="[
               labelAlign,
@@ -22,7 +22,7 @@
               field.options.required ? 'required' : ''
             ]"
           >
-            <div style="width: 100%; display: flex">
+            <div style="width: 100%; display: flex; height: 32px">
               <el-input v-model="obj.sealId" v-if="false"></el-input>
               <el-input
                 v-model="obj.seal"
@@ -81,7 +81,7 @@
             ]"
           >
             <el-input-number
-              v-model="obj.routineSeal"
+              v-model="obj.applySealNum"
               :precision="0"
               :step="1"
               :min="1"
@@ -104,7 +104,7 @@
             :label-width="field.options.labelWidth"
             :class="[labelAlign, customClass]"
           >
-            <el-switch v-model="obj.seamingSeal" />
+            <el-switch v-model="obj.markSeal" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -226,9 +226,8 @@
       const newRecord = {
         seal: '',
         sealId: '',
-        routineSeal: 1,
-        seamingSeal: false,
-        sealTypeId: '',
+        applySealNum: 1,
+        markSeal: false,
         sealRequiredTextShow: false,
         routineSealRequiredTextShow: false
       }
@@ -266,13 +265,10 @@
       },
 
       addItem() {
-        this.filedList.push({ seal: '', sealId: '', routineSeal: 1 })
+        this.filedList.push({ seal: '', sealId: '', applySealNum: 1 })
       },
       deleteItem(idx) {
         this.filedList.splice(idx, 1)
-      },
-      sealNameLabel(index) {
-        return '印章名称' + (index + 1)
       },
 
       onBlur(e, index) {

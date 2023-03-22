@@ -41,7 +41,7 @@
           </el-button>
           <template #tip>
             <div class="el-upload__tip">
-              可上传图片以及doc、pdf、xls、xlsx类型文件、单个文件大小不能超过199M
+              可上传图片以及doc、docx、pdf、xls、xlsx类型文件、单个文件大小不能超过199M
             </div>
           </template>
         </el-upload>
@@ -83,7 +83,7 @@
           </div>
           <template #tip>
             <div class="el-upload__tip">
-              可上传图片以及doc、pdf、xls、xlsx类型文件、单个文件大小不能超过199M
+              可上传图片以及doc、docx、pdf、xls、xlsx类型文件、单个文件大小不能超过199M
             </div>
           </template>
         </el-upload>
@@ -201,7 +201,7 @@
       onProgress() {},
       async uploadFile(rawFile, type) {
         if (
-          !['doc', 'pdf', 'xls', 'xlsx', 'application/pdf'].includes(
+          !['doc', 'docx', 'pdf', 'xls', 'xlsx', 'application/pdf'].includes(
             rawFile.type
           )
         ) {

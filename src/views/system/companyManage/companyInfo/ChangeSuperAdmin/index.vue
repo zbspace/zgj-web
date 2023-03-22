@@ -105,6 +105,7 @@
 
 <script setup>
   import { ref, reactive, computed, watch } from 'vue'
+  import JyDialog from '@/components/common/JyDialog/index2'
   import apis from '@/api/system/companyManagement/companyInfo'
   import userApi from '@/api/system/companyManagement/departmentStaff'
   import { ElMessage } from 'element-plus'

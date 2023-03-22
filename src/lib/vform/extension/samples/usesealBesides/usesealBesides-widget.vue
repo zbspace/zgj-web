@@ -18,16 +18,16 @@
           :class="[labelAlign, customClass]"
         >
           <el-checkbox
-            v-model="fieldModel.isTrue"
+            v-model="fieldModel.extSeal"
             :size="field.options.size"
             @change="onChange"
             :disabled="field.options.disabled"
           />
-          <el-divider direction="vertical" v-show="fieldModel.isTrue" />
+          <el-divider direction="vertical" v-show="fieldModel.extSeal" />
           <el-button
             type="primary"
             link
-            v-show="fieldModel.isTrue"
+            v-show="fieldModel.extSeal"
             @click="sealLoanInfoVisible = true"
             >查看印章外带情况</el-button
           >
@@ -43,7 +43,7 @@
             customClass,
             field.options.required ? 'required' : ''
           ]"
-          v-show="fieldModel.isTrue"
+          v-show="fieldModel.extSeal"
         >
           <el-date-picker
             v-model="fieldModel.besidesTime"
@@ -71,7 +71,7 @@
           :label-width="field.options.labelWidth"
           label="外带地点"
           class="limit-item"
-          v-show="fieldModel.isTrue"
+          v-show="fieldModel.extSeal"
           :class="[
             labelAlign,
             customClass,
@@ -84,7 +84,7 @@
             :size="field.options.size"
             :disabled="field.options.disabled"
             :options="addressData"
-            v-model="fieldModel.Add"
+            v-model="fieldModel.provinceId"
             clearable
             @change="handleChange"
           >
@@ -101,7 +101,7 @@
           :label="addTitle"
           :label-width="field.options.labelWidth"
           class="limit-item"
-          v-show="fieldModel.isTrue"
+          v-show="fieldModel.extSeal"
           :class="[
             labelAlign,
             customClass,
@@ -109,7 +109,7 @@
           ]"
         >
           <el-input
-            v-model="fieldModel.detailAdd"
+            v-model="fieldModel.detailAddress"
             :size="field.options.size"
             @change="onAddChange"
             :disabled="field.options.disabled"
@@ -175,10 +175,10 @@
         detailAddRequiredShow: false,
         radio: 6,
         fieldModel: {
-          isTrue: false,
+          extSeal: false,
           besidesTime: [],
-          Add: [],
-          detailAdd: ''
+          provinceId: [],
+          detailAddress: ''
         },
         sealLoanInfoVisible: false,
         wdqkTableData: [],
@@ -258,8 +258,8 @@
       onChange(value) {
         if (!value) {
           this.fieldModel.besidesTime = []
-          this.fieldModel.Add = []
-          this.fieldModel.detailAdd = ''
+          this.fieldModel.provinceId = []
+          this.fieldModel.detailAddress = ''
         }
       },
 

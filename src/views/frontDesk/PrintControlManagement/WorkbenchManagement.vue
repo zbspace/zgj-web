@@ -40,6 +40,7 @@
     <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
+      :confirmLoading="confirmLoading"
       :title="form.benchId ? $t('t-zgj-Edit') : $t('t-zgj-add')"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
@@ -192,7 +193,6 @@
   import { ref, reactive, nextTick, onBeforeMount, onMounted } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails'
-  import JyDialog from '@/views/components/modules/JyDialog'
   import { ElMessage } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import workbenchManagement from '@/api/frontDesk/printControl/workbenchManagement'
@@ -207,6 +207,7 @@
   const searchSelected = ref([])
   const kDepartOrPerson = ref(null)
   const currentActionWorkbench = ref(null)
+  const confirmLoading = ref(false)
 
   const form = reactive({
     benchId: '',
@@ -479,19 +480,30 @@
   const submitForm = () => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
+        confirmLoading.value = true
         console.log(form)
         if (form.benchId) {
-          workbenchManagement.edit(form).then(() => {
-            showFormDialog.value = false
-            ElMessage.success('编辑成功')
-            table.value.reloadData()
-          })
+          workbenchManagement
+            .edit(form)
+            .then(() => {
+              showFormDialog.value = false
+              ElMessage.success('编辑成功')
+              table.value.reloadData()
+            })
+            .finally(() => {
+              confirmLoading.value = false
+            })
         } else {
-          workbenchManagement.add(form).then(() => {
-            showFormDialog.value = false
-            ElMessage.success('新增成功')
-            table.value.reloadData()
-          })
+          workbenchManagement
+            .add(form)
+            .then(() => {
+              showFormDialog.value = false
+              ElMessage.success('新增成功')
+              table.value.reloadData()
+            })
+            .finally(() => {
+              confirmLoading.value = false
+            })
         }
       }
     })
@@ -521,22 +533,22 @@
           const data = res.data
           console.log(data)
           form.benchId = data.benchId
-          form.benchNo = data.benchNo
-          form.benchSn = data.benchSn
-          form.benchName = data.benchName
-          form.manUserId = data.manUserId
-          form.manUserName = data.manUserName
-          form.manOrganId = data.manOrganId
-          form.manOrganName = data.manOrganName
-          form.flag = data.flag
-          form.sealCode = data.sealCode
-          form.faceSeal = data.faceSeal
-          form.voiceDialogue = data.voiceDialogue
-          form.irFence = data.irFence
-          form.faceLogin = data.faceLogin
-          form.autoLock = data.autoLock
-          form.location = data.location
-          form.readme = data.readme
+          form.benchNo = data.benchNo || ''
+          form.benchSn = data.benchSn || ''
+          form.benchName = data.benchName || ''
+          form.manUserId = data.manUserId || ''
+          form.manUserName = data.manUserName || ''
+          form.manOrganId = data.manOrganId || ''
+          form.manOrganName = data.manOrganName || ''
+          form.flag = data.flag || '1'
+          form.sealCode = data.sealCode || '1'
+          form.faceSeal = data.faceSeal || '1'
+          form.voiceDialogue = data.voiceDialogue || '1'
+          form.irFence = data.irFence || '1'
+          form.faceLogin = data.faceLogin || '1'
+          form.autoLock = data.autoLock || '1'
+          form.location = data.location || ''
+          form.readme = data.readme || ''
           console.log(form)
         })
       })

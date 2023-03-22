@@ -16,7 +16,7 @@
       :componentsBatch="state.componentsBatch"
       :queryParams="queryParams"
       statusColoum="flag"
-      openValue="1"
+      openValue="0"
       tableClick="flowName"
       @cellClick="cellClick"
       @customClick="customClick"
@@ -24,14 +24,12 @@
     >
       <template #title>
         <div class="title">
-          <div>流程管理</div>
+          <div>{{ $t('t-zgj-cg-menu-liucheng-guanli') }}</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button
-                type="primary"
-                @click="state.JyElMessageBox.show = true"
-                >+ 增加</el-button
-              >
+              <el-button type="primary" @click="openAddFlow">
+                + {{ $t('t-zgj-sync.add') }}
+              </el-button>
             </div>
             <div class="title-more-down"> </div>
           </div>
@@ -49,87 +47,7 @@
         </div>
       </template>
     </JyTable>
-    <!-- <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
-      <template #title>
-        <div class="title">
-          <div>{{ $t('t-zgj-cg-menu-liucheng-guanli') }}</div>
-          <div class="title-more">
-            <div class="title-more-add">
-              <el-button type="primary" @click="addFlowModalShow = true">
-                + {{ $t('t-zgj-sync.add') }}
-              </el-button>
-            </div>
-          </div>
-        </div>
-      </template>
 
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-            @clickBatchButton="batchOpt"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-
-      <template #tree>
-        <div>
-          <componentsTree
-            :data="state.componentsTree.data"
-            :defaultAttribute="state.componentsTree.defaultAttribute"
-            :defaultProps="state.componentsTree.defaultProps"
-            @current-change="currentChange"
-          >
-          </componentsTree>
-        </div>
-      </template>
-
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            refs="tables"
-            ref="table"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            :isSelection="true"
-            :loading="loading"
-            :statusColoum="flagName"
-            :openValue="启用"
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-            @sort-change="sortChange"
-          >
-          </componentsTable>
-        </div>
-      </template>
-
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-          @current-change="currentPageChange"
-          @size-change="sizeChange"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout> -->
     <!-- 流程详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -144,23 +62,10 @@
       v-if="addFlowModalShow"
       v-model="addFlowModalShow"
       :openType="openType"
-      :treeValue="state.componentsTree.value"
+      :treeSelectedId="state.componentsTree.value"
+      @update:treeSelectedId="state.componentsTree.value = $event"
+      :businessList="state.componentsTree.data"
     ></Addflow>
-    <div v-if="state.JyElMessageBox.show">
-      <AntModalBox
-        v-model="state.JyElMessageBox.show"
-        :custom-content="true"
-        :defaultAttribute="{
-          fullscreen: true,
-          height: '100%'
-        }"
-      >
-        <newlyIncreased
-          :businessList="state.componentsTree.data"
-          @close="state.JyElMessageBox.show = false"
-        ></newlyIncreased>
-      </AntModalBox>
-    </div>
     <!-- 弹窗提示 -->
     <JyElMessageBox
       v-model="state.MessageBox.show"
@@ -227,40 +132,25 @@
    * openType edit、add
    * treeValue 树型选择值 - 携带；编辑时不生效
    */
-  import {
-    reactive,
-    onBeforeMount,
-    onMounted,
-    defineAsyncComponent,
-    ref
-  } from 'vue'
-  // import componentsTable from '@/views/components/table'
-  // import componentsSearchForm from '@/views/components/searchForm'
-  // import componentsPagination from '@/views/components/pagination.vue'
-  // import componentsLayout from '@/views/components/Layout.vue'
+  import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  // import componentsBatch from '@/views/components/batch.vue'
-  // import newlyIncreased from './newly-increased.vue'
-  // import AntModalBox from '@/views/components/modules/AntModalBox.vue'
   import Addflow from './AddOrEditFlow.vue'
   import apiFlow from '@/api/system/flowManagement'
-  import AntModalBox from '@/views/components/modules/AntModalBox.vue'
   import apiForm from '@/api/system/formManagement'
   import JyTable from '@/views/components/JyTable.vue'
   import { ElMessage } from 'element-plus'
-  // 异步组件
-  const newlyIncreased = defineAsyncComponent(() =>
-    import('./newly-increased.vue')
-  )
   // =========↓
   const addFlowModalShow = ref(false)
   const openType = ref(null)
+
+  const openAddFlow = () => {
+    addFlowModalShow.value = true
+    openType.value = 'add'
+  }
   // =========↑
 
-  const loading = ref(false)
   const table = ref(null)
-  const orderBy = ref(null)
   const queryParams = ref({ sealTypeIds: '2' })
 
   const state = reactive({
@@ -594,6 +484,7 @@
       ]
     }
   })
+
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'flowName') {
@@ -631,10 +522,12 @@
       state.MessageBox.type = '启用'
     }
   }
+
   // 关闭表单复制弹窗
   function closeBatchTabel() {
     state.showToastDialog.show = false
   }
+
   // 提交弹窗
   const submitElMessageBox = type => {
     if (type === '取消删除') {
@@ -665,6 +558,7 @@
       )
     }
   }
+
   const apiOpt = (typeName, apiName) => {
     apiName.then(res => {
       if (res.code === 200) {
@@ -674,6 +568,7 @@
       }
     })
   }
+
   // 批量删除
   function batchOpt(item) {
     state.batchColumnData = []
@@ -698,6 +593,7 @@
       }
     ]
   }
+
   // 确定批量操作
   const sureBatchOpt = () => {
     const list = state.componentsBatch.selectionData
@@ -744,6 +640,7 @@
         break
     }
   }
+
   const batchOptApi = (type, apiName) => {
     apiName.then(res => {
       if (res.code === 200) {
@@ -753,11 +650,13 @@
       }
     })
   }
+
   // 点击关闭
   const clickClose = () => {
     console.log('--->', state.componentsDocumentsDetails.show)
     // state.componentsDocumentsDetails.show = false
   }
+
   // 发送api请求 查询表单树解构
   const listApplyTypeTreeApi = () => {
     apiForm.listApplyTypeTree({}).then(result => {
@@ -780,211 +679,15 @@
     })
   }
 
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
-  }
-
-  // 筛选条件按钮
-  const clickSubmit = (item, index) => {
-    if (item.id === 'reset') {
-      table.value.clearSorts()
-      state.componentsSearchForm.data.forEach(item => {
-        if (item.type === 'checkButton') {
-          item.data.forEach(i => {
-            delete i.checked
-          })
-        } else if (item.type === 'checkbox') {
-          console.log(JSON.parse(JSON.stringify(item.checkbox)))
-          item.checkbox.forEach(i => {
-            i.value = false
-          })
-          console.log(JSON.parse(JSON.stringify(item.checkbox)))
-        } else {
-          delete item.value
-        }
-      })
-    }
-    reloadData()
-  }
-
-  // 自定义排序
-  function sortChange(orderBack) {
-    console.log(JSON.parse(JSON.stringify(orderBack)))
-    orderBy.value = orderBack
-    reloadData()
-  }
-
-  const reloadData = () => {
-    state.componentsPagination.data.index = 1
-    state.componentsTable.data = []
-    state.componentsPagination.data.amount = 0
-    flowPageApi()
-  }
-
-  // // 发送api请求 流程列表
-  // const flowPageApi = () => {
-  //   loading.value = true
-  //   const params = {}
-  //   state.componentsSearchForm.data.forEach(item => {
-  //     if (item.type === 'checkButton') {
-  //       params[item.id] = item.data
-  //         .filter(i => i.checked)
-  //         .map(i => i.id)
-  //         .join(',')
-  //     } else if (item.type === 'checkbox') {
-  //       params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
-  //     } else if (item.type === 'picker') {
-  //       if (item.value) {
-  //         params[item.id] =
-  //           item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
-  //       }
-  //     } else {
-  //       params[item.id] = item.value
-  //     }
-  //   })
-  //   apiFlow
-  //     .page({
-  //       ...{
-  //         current: state.componentsPagination.data.index,
-  //         size: state.componentsPagination.data.pageNumber,
-  //         applyTypeId: state.componentsTree.value,
-  //         sorts: orderBy.value
-  //           ? orderBy.value.prop +
-  //             ',' +
-  //             (orderBy.value.order === 'ascending' ? 'asc' : 'desc')
-  //           : ''
-  //       },
-  //       ...params
-  //     })
-  //     .then(
-  //       result => {
-  //         console.log(result)
-  //         result.data.records.forEach(item => {})
-  //         state.componentsTable.data = result.data.records
-  //         state.componentsPagination.data.amount = result.data.total
-  //         state.componentsPagination.defaultAttribute.total = result.data.total
-  //         loading.value = false
-  //       },
-  //       () => {
-  //         loading.value = false
-  //       }
-  //     )
-  // }
-  // // 发送api请求 删除流程
-  // const flowDeleteApi = () => {
-  //   return apiFlow
-  //     .delete({
-  //       processId: ''
-  //     })
-  //     .then(result => {
-  //       console.log(result)
-  //       return result
-  //     })
-  // }
-  // // 发送api请求 启用/停用
-  // const flowEnableApi = () => {
-  //   return apiFlow
-  //     .enable({
-  //       processId: '',
-  //       processStatus: ''
-  //     })
-  //     .then(result => {
-  //       console.log(result)
-  //       return result
-  //     })
-  // }
-  // // 发送api请求 复制流程
-  // const flowCopyApi = () => {
-  //   return apiFlow
-  //     .copy({
-  //       processId: '',
-  //       processName: ''
-  //     })
-  //     .then(result => {
-  //       console.log(result)
-  //       return result
-  //     })
-  // }
-  // // 发送api请求 批量删除
-  // const batchDeleteApi = () => {
-  //   return apiFlow
-  //     .batchDelete([
-  //       {
-  //         processId: '主键'
-  //       },
-  //       {
-  //         processId: '主键'
-  //       }
-  //     ])
-  //     .then(result => {
-  //       console.log(result)
-  //       return result
-  //     })
-  // }
-  // // 发送api请求 批量启用
-  // const batachEnableApi = () => {
-  //   return apiFlow
-  //     .batachEnable([
-  //       {
-  //         processId: '主键'
-  //       },
-  //       {
-  //         processId: '主键'
-  //       }
-  //     ])
-  //     .then(result => {
-  //       console.log(result)
-  //       return result
-  //     })
-  // }
-  // // 发送api请求 批量停用
-  // const batachDisableApi = () => {
-  //   return apiFlow
-  //     .batachDisable([
-  //       {
-  //         processId: '主键'
-  //       },
-  //       {
-  //         processId: '主键'
-  //       }
-  //     ])
-  //     .then(result => {
-  //       console.log(result)
-  //       return result
-  //     })
-  // }
   const currentChange = e => {
     queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
     table.value.reloadData()
+    state.componentsTree.value = e.applyTypeId
   }
+
   onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
     // 发送api请求 查询表单树解构
     listApplyTypeTreeApi()
-    // 发送api请求 流程列表
-    // flowPageApi()
-    // // 发送api请求 删除流程
-    // flowDeleteApi()
-    // // 发送api请求 启用/停用
-    // flowEnableApi()
-    // // 发送api请求 复制流程
-    // flowCopyApi()
-    // // 发送api请求 批量删除
-    // batchDeleteApi()
-    // // 发送api请求 批量启用
-    // batachEnableApi()
-    // // 发送api请求 批量停用
-    // batachDisableApi()
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
   })
 </script>
 

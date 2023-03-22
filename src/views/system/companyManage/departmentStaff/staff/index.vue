@@ -17,7 +17,7 @@
       :queryParams="{ organId }"
       tableClick="userName"
       statusColoum="status"
-      openValue="1"
+      openValue="0"
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
@@ -367,7 +367,6 @@
   import { CircleClose, Plus } from '@element-plus/icons-vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import UpdatePassword from './modules/updatePassword.vue'
   import UploadFace from './modules/uploadFace.vue'

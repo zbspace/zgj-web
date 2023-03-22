@@ -3,17 +3,16 @@ export default {
     widgetLabel: {
       card: 'Card',
       alert: 'Alert',
-			sealName: 'Seal Name',
-			usesealBesides:'UseSeal Besides',
+      sealName: 'Seal Name',
+      usesealBesides: 'UseSeal Besides',
       normalSealNum: 'Normal Seal Num',
       remoteSeal: 'Remote Seal',
       videoSeal: 'Video Seal',
       sealFile: 'Seal File',
       applicantInfo: 'Applicant Info',
-      seamingSeal: 'Seaming Seal',
       limitTimeSeal: 'Limit Time Seal',
-      contactUnit:"Contact Unit",
-      filrType: "File Type"
+      contactUnit: 'Contact Unit',
+      filrType: 'File Type'
     },
 
     setting: {
@@ -29,9 +28,7 @@ export default {
       closeText: 'Text On Close Btn',
       center: 'Center',
       showIcon: 'Show Icon',
-      effect: 'Effect',
-
-    },
-
+      effect: 'Effect'
+    }
   }
 }

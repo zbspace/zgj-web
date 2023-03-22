@@ -2,7 +2,7 @@
   <div class="jy-message-box">
     <el-dialog
       v-model="isVisible"
-      :before-close="handleClose"
+      :closed="cancel"
       destroy-on-close
       :show-close="mode === 2 || showClose"
       align-center

@@ -106,10 +106,15 @@
     businessList: {
       type: Array,
       default: () => {
-        return [] // ['table', 'rate', 'switch'] 自定义组件的type
+        return []
       }
+    },
+    modelValue: {
+      type: String,
+      default: ''
     }
   })
+  const emits = defineEmits('update:modelValue')
   const showDepPerDialog = ref(false)
   const searchSelected = ref([])
   const tabsShow = ref(['user', 'organ'])
@@ -179,6 +184,7 @@
       fileTypeList.value = res.data || []
     } catch (error) {}
   }
+
   watch(
     () => searchSelected.value,
     val => {
@@ -195,7 +201,6 @@
           })
         })
         form.showDataScope = arr.join(',')
-        console.log(form.dataScope, '== form.dataScope')
       } else {
         form.showDataScope = ''
         form.dataScope = []
@@ -209,6 +214,18 @@
       if (val === '2') {
         setFileTypeList()
       }
+      emits('update:modelValue', val)
+    }
+  )
+
+  watch(
+    () => props.modelValue,
+    val => {
+      form.applyTypeId = val
+    },
+    {
+      deep: true,
+      immediate: true
     }
   )
 

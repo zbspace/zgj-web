@@ -1101,7 +1101,7 @@ export function createDesigner(vueInstance) {
     },
 
     initHistoryData() {
-      this.loadFormContentFromStorage()
+      // this.loadFormContentFromStorage()
       this.historyData.index++
       this.historyData.steps[this.historyData.index] = {
         widgetList: deepClone(this.widgetList),
@@ -1121,7 +1121,7 @@ export function createDesigner(vueInstance) {
         formConfig: deepClone(this.formConfig)
       }
 
-      this.saveFormContentToStorage()
+      // this.saveFormContentToStorage()
 
       if (this.historyData.index < this.historyData.steps.length - 1) {
         this.historyData.steps = this.historyData.steps.slice(
@@ -1137,7 +1137,7 @@ export function createDesigner(vueInstance) {
         formConfig: this.formConfig
       })
 
-      this.saveFormContentToStorage()
+      // this.saveFormContentToStorage()
     },
 
     undoHistoryStep() {

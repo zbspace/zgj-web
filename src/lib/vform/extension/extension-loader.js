@@ -136,8 +136,15 @@ export const loadExtension = function (app) {
   /* -------------------------------------------------- */
   //   app.component(AlertWidget.name, AlertWidget)  //注册组件
 
-  // PERegister.registerCPEditor(app, 'remoteSeal-defaultValue', 'remoteSeal-defaultValue-editor',
-  //     PEFactory.createBooleanEditor('remoteSealDefaultValue', 'extension.setting.defaultValue'))
+  PERegister.registerCPEditor(
+    app,
+    'remoteSeal-defaultValue',
+    'remoteSeal-defaultValue-editor',
+    PEFactory.createBooleanEditor(
+      'remoteSealDefaultValue',
+      'extension.setting.defaultValue'
+    )
+  )
 
   PERegister.registerCPEditor(
     app,

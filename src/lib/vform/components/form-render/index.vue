@@ -816,7 +816,7 @@
                         )
                       }
                     }
-                    if (propName == 'routineSeal') {
+                    if (propName == 'applySealNum') {
                       if (!data[propName]) {
                         count++
                         widgetInstance.setRequiredTextShow(
@@ -840,12 +840,12 @@
               }
               if (widget.type === 'usesealBesides') {
                 // 印章外带
-                let isTrue = false
+                let extSeal = false
                 const str = '印章外带信息未完善'
                 let count = 0
                 Object.keys(widgetData).forEach(propName => {
-                  if (propName === 'isTrue') {
-                    isTrue = widgetData[propName]
+                  if (propName === 'extSeal') {
+                    extSeal = widgetData[propName]
                   } else {
                     if (propName === 'besidesTime') {
                       if (widgetData[propName].length === 0) {
@@ -855,7 +855,7 @@
                         widgetInstance.setBesidesTimeRequiredShow(false)
                       }
                     }
-                    if (propName === 'Add') {
+                    if (propName === 'provinceId') {
                       if (widgetData[propName].length === 0) {
                         count++
                         widgetInstance.setAddRequiredShow(true)
@@ -863,7 +863,7 @@
                         widgetInstance.setAddRequiredShow(false)
                       }
                     }
-                    if (propName === 'detailAdd') {
+                    if (propName === 'detailAddress') {
                       if (!widgetData[propName]) {
                         count++
                         widgetInstance.setDetailAddRequiredShow(true)
@@ -873,14 +873,14 @@
                     }
                   }
                 })
-                if (isTrue && count > 0) {
+                if (extSeal && count > 0) {
                   _self.requiredMsgList.push(str)
                 }
               }
               if (widget.type === 'applicantInfo') {
                 // 申请人信息
                 Object.keys(widgetData).forEach(propName => {
-                  if (propName === 'departmentName') {
+                  if (propName === 'applyOrganName') {
                     if (!widgetData[propName]) {
                       _self.requiredMsgList.push('部门未选择')
                       widgetInstance.field.options.requiredHint = '请选择部门'
@@ -893,7 +893,7 @@
               if (widget.type === 'limitTimeSeal') {
                 // 限时盖章
                 Object.keys(widgetData).forEach(propName => {
-                  if (propName == 'sealTime' && widgetData.timeLimit === 1) {
+                  if (propName === 'sealTime' && widgetData.timeLimit === 1) {
                     if (!widgetData[propName] || !widgetData[propName].length) {
                       _self.requiredMsgList.push('限时盖章时间未选择')
                       widgetInstance.field.options.requiredHint =

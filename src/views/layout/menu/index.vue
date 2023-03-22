@@ -109,6 +109,8 @@
   import { useLanguageStore } from '@/store/language'
   import { getItem } from '@/utils/storage.js'
   import { LANGUAGE } from '@/utils/constants'
+  import { systemService } from '@/api/common/system'
+  import { messageError } from '@/hooks/useMessage'
 
   const route = useRoute()
   const activeMenu = ref('')
@@ -120,30 +122,45 @@
   watch(reactive(route), o => {
     currentIndex.value = ''
     activeMenu.value = route.path
-    setMenus()
+    // setMenus()
+    getLeftMenu()
   })
 
   const getMenus = computed(() => {
     return menusInfoStore.tempMenus || menusInfoStore.menus
   })
 
-  initData()
-  function initData() {
+  const initData = () => {
     languageStore.setLanguage(getItem(LANGUAGE) ? getItem(LANGUAGE).lang : 'ch')
-    setMenus()
+    getLeftMenu()
   }
 
   // 设置menus集合
-  function setMenus() {
+  const getLeftMenu = () => {
     activeMenu.value = route.path
     if (layoutStore.sidebarType === '2') return // 直接在Aside组件中设置
     const menus = menusInfoStore.currentType === 'business' ? business : system
     menusInfoStore.setMenus(menus)
   }
 
-  function handleSelect(url) {
+  const handleSelect = url => {
     activeMenu.value = url
   }
+
+  // const getLeftMenu = async () => {
+  //   try {
+  //     const menus = await systemService.getLeftMenu({
+  //       systemTypeId: 'st1',
+  //       functionGroupId: 'fg2'
+  //     })
+  //     activeMenu.value = route.path
+  //     menusInfoStore.setMenus(menus.data || [])
+  //   } catch (error) {
+  //     messageError(error)
+  //   }
+  // }
+
+  initData()
 
   // /**
   //  * 设置激活menuitem

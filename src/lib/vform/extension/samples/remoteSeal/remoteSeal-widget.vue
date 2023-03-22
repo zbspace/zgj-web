@@ -2,7 +2,6 @@
   <form-item-wrapper
     :designer="designer"
     :field="field"
-    :rules="rules"
     :design-state="designState"
     :parent-widget="parentWidget"
     :parent-list="parentList"
@@ -70,8 +69,7 @@
     },
     data() {
       return {
-        fieldModel: null,
-        rules: []
+        fieldModel: null
       }
     },
     created() {

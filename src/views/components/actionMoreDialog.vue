@@ -2,6 +2,8 @@
   <!-- 批量操作弹框提示 -->
   <JyElMessageBox
     :modelValue="props.show"
+    :mode="1"
+    :showClose="false"
     :defaultAttribute="{}"
     @update:modelValue="closeCallBack"
     @confirmClick="confirmClick"

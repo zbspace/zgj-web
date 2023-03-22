@@ -316,7 +316,6 @@
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'

@@ -38,7 +38,6 @@
 </template>
 
 <script setup>
-  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import { computed } from 'vue'
 
   const props = defineProps({
