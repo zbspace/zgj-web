@@ -20,13 +20,16 @@
         <div class="title">
           <div>表单管理</div>
           <div>
-            <el-button type="primary" @click="showAddForm">+ 新建</el-button>
+            <el-button type="primary" @click="showAddForm"
+              >+ {{ $t('t-zgj-add') }}</el-button
+            >
           </div>
         </div>
       </template>
       <template #tree>
         <div>
           <componentsTree
+            ref="tree"
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="state.componentsTree.defaultProps"
@@ -143,6 +146,7 @@
   const table = ref(null)
   const queryParams = ref(null)
   const showToastDialogContent = ref(null)
+  const tree = ref(null)
   const state = reactive({
     componentsAddForm: {
       dialogVisible: false,
@@ -439,10 +443,13 @@
     }
   })
 
-  const currentChange = e => {
-    console.log(e)
+  const currentChange = (e, node) => {
+    if (node.level === 1) {
+      tree.value.setCurrentKey(e.applyTypeId === '5' ? '6' : '2')
+      return
+    }
     queryParams.value = e.applyTypeId ? { applyTypeId: e.applyTypeId } : null
-    if (e.applyTypePid === '5' || e.applyTypeName === '印章申请') {
+    if (e.applyTypePid === '5') {
       state.componentsTable.header = [
         {
           prop: 'formName',

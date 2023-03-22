@@ -363,7 +363,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive, onBeforeMount, watch } from 'vue'
+  import { ref, reactive, onBeforeMount, watch, nextTick } from 'vue'
   import { CircleClose, Plus } from '@element-plus/icons-vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
@@ -390,6 +390,8 @@
   // 侧边栏树选中id
   const organId = ref('-1')
   const table = ref(null)
+  const firstNode = ref(null)
+  const firstTreeData = ref([])
 
   const state = reactive({
     title: '新增',
@@ -647,7 +649,7 @@
       defaultProps: {
         label: 'organName',
         children: 'children',
-        isLeaf: 'isLeaf'
+        isLeaf: 'haveChildren'
       },
       value: ''
     },
@@ -690,19 +692,35 @@
   function loadFn(node, resolve) {
     console.log(node.level)
     if (node.level === 0) {
-      return resolve([
-        {
-          organName: JSON.parse(localStorage.getItem('departLists')).find(
-            i => i.tenantId === localStorage.getItem('tenantId')
-          ).tenantName,
-          organId: '-1',
-          isLeaf: false,
-          children: []
-        }
-      ])
+      firstNode.value = node
+      department
+        .subOrganList(-1)
+        .then(res => {
+          res.data.forEach(i => (i.haveChildren = !i.haveChildren))
+          firstTreeData.value = res.data
+          return resolve([
+            {
+              organName: JSON.parse(localStorage.getItem('departLists')).find(
+                i => i.tenantId === localStorage.getItem('tenantId')
+              ).tenantName,
+              organId: '-1',
+              haveChildren: false,
+              children: []
+            }
+          ])
+        })
+        .then(() => {
+          nextTick(() => {
+            const nodeData = firstNode.value.childNodes[0]
+            nodeData.expanded = true
+            nodeData.loadData()
+          })
+        })
+    } else if (node.level === 1) {
+      return resolve(firstTreeData.value)
     } else {
-      console.log(node.data)
       department.subOrganList(node.data.organId).then(res => {
+        res.data.forEach(i => (i.haveChildren = !i.haveChildren))
         return resolve(res.data)
       })
     }
@@ -1009,7 +1027,72 @@
     margin: 0;
   }
   .el-icon {
-    color: #aaaaaa;
+    // color: #aaaaaa;
     margin-right: 5px;
+  }
+
+  .components-tree {
+    margin: 0%;
+    .custom-tree-node {
+      display: flex;
+      align-items: center;
+      .custom-tree-node-icon {
+        margin-right: 0.4rem;
+      }
+    }
+    :deep {
+      margin-bottom: 0%;
+      .el-tree-node__content {
+        @include mixin-height(32);
+      }
+      .el-tree .el-icon svg {
+        //原有的箭头 去掉
+        display: none !important;
+        height: 0;
+        width: 0;
+      }
+      .el-tree-node__expand-icon {
+        //引入的图标（图片）size大小 => 树节点前的预留空间大小
+        font-size: 16px;
+      }
+
+      //图标是否旋转，如果是箭头类型的，可以设置旋转90度。如果是两张图片，则设为0
+      .el-tree .el-tree-node__expand-icon.expanded {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      .el-tree .el-tree-node__expand-icon:before {
+        // 未展开的节点
+        background: url('~@/assets/svg/tree-fangxiang-zuo.svg') no-repeat 0;
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+
+      .el-tree .el-tree-node__expand-icon.expanded:before {
+        //展开的节点
+        background: url('~@/assets/svg/tree-fangxiang-xia.svg') no-repeat 0 0;
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+        margin-top: 4px;
+      }
+
+      .el-tree .is-leaf.el-tree-node__expand-icon::before {
+        //叶子节点（不显示图标）
+        display: block;
+        background: none !important;
+        content: '';
+        width: 18px;
+        height: 18px;
+      }
+
+      .el-tree-node__expand-icon.is-leaf {
+        width: 0px;
+      }
+    }
   }
 </style>

@@ -38,6 +38,7 @@
       <template #tree>
         <div>
           <componentsTree
+            ref="tree"
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="state.componentsTree.defaultProps"
@@ -143,6 +144,7 @@
   // =========↓
   const addFlowModalShow = ref(false)
   const openType = ref(null)
+  const tree = ref(null)
 
   const openAddFlow = () => {
     addFlowModalShow.value = true
@@ -679,7 +681,11 @@
     })
   }
 
-  const currentChange = e => {
+  const currentChange = (e, node) => {
+    if (node.level === 1) {
+      tree.value.setCurrentKey(e.applyTypeId === '5' ? '6' : '2')
+      return
+    }
     queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
     table.value.reloadData()
     state.componentsTree.value = e.applyTypeId
