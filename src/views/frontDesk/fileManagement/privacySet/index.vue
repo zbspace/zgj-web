@@ -11,21 +11,17 @@
     v-model="isVisible"
     @on-opened="opened"
     @on-closed="closed"
+    width="500"
+    appendToBody
+    class="privacy-set-form"
   >
-    <el-form
-      ref="formRef"
-      :model="formData"
-      :rules="rules"
-      label-width="240px"
-      class="demo-ruleForm"
-    >
+    <el-form ref="formRef" :model="formData" :rules="rules">
       <el-form-item
         label="用印单据上传附件仅申请人能预览"
         prop="applicantPreview"
       >
         <el-switch
           v-model="formData.applicantPreview"
-          style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
           active-value="1"
           inactive-value="0"
         />
@@ -36,7 +32,6 @@
       >
         <el-switch
           v-model="formData.applicantDownload"
-          style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
           active-value="1"
           inactive-value="0"
         />
@@ -122,6 +117,13 @@
   }
 </script>
 <script>
-  export default { name: '' }
+  export default { name: 'PrivacySet' }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss">
+  .privacy-set-form {
+    .el-dialog__body {
+      display: flex;
+      justify-content: center;
+    }
+  }
+</style>
