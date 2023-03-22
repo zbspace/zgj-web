@@ -200,9 +200,10 @@
       onError() {},
       onProgress() {},
       async uploadFile(rawFile, type) {
+        const str = rawFile.name.split('.').pop()
         if (
           !['doc', 'docx', 'pdf', 'xls', 'xlsx', 'application/pdf'].includes(
-            rawFile.type
+            str
           )
         ) {
           messageError('请上传指定格式文件')
