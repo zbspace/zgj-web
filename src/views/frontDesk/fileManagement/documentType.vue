@@ -1,7 +1,7 @@
 <!-- 文件类型 -->
 <template>
   <div class="fileManagement-documentType">
-    <componentsLayout Layout="title,searchForm,table,pagination,batch,tree">
+    <!-- <componentsLayout Layout="title,searchForm,table,pagination,batch,tree">
       <template #title>
         <div class="title">
           <div>文件类型</div>
@@ -32,6 +32,7 @@
           <componentsBatch
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
+            @clickBatchButton="clickBatchButton"
           >
           </componentsBatch>
         </div>
@@ -59,6 +60,7 @@
             @custom-click="customClick"
             @selection-change="selectionChange"
             :loading="loading"
+            ref="tableRef"
           >
           </componentsTable>
         </div>
@@ -70,7 +72,49 @@
         >
         </componentsPagination>
       </template>
-    </componentsLayout>
+    </componentsLayout> -->
+
+    <JyTable
+      url="/fileType/page"
+      ref="table"
+      method="POST"
+      :hasTree="true"
+      :needAutoRequest="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      :queryParams="searchForm"
+      tableClick="sealName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
+      <template #title>
+        <div class="title">
+          <div>文件类型</div>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="dialogVisible = true"
+                >+ 增加</el-button
+              >
+            </div>
+            <div class="title-more-down"> </div>
+          </div>
+        </div>
+      </template>
+
+      <template #tree>
+        <div>
+          <componentsTree
+            :data="state.componentsTree.data"
+            :defaultAttribute="state.componentsTree.defaultAttribute"
+            :defaultProps="{ children: 'child', label: 'fileTypeName' }"
+            @node-click="nodeClick"
+          >
+          </componentsTree>
+        </div>
+      </template>
+    </JyTable>
 
     <!-- 单据详情 -->
     <div class="ap-box">
@@ -82,7 +126,7 @@
       </componentsDocumentsDetails>
     </div>
 
-    <!-- 人员选择  -->
+    <!-- 设置可见范围  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
@@ -117,35 +161,27 @@
     @on-closed="closed"
   />
 
-  <!-- 设置可见范围 -->
-  <!-- <kDepartOrPersonVue
-    :show="xzyzDialogVisible"
-    @update:show="xzyzDialogVisible = $event"
-    :searchSelected="[]"
-    @update:searchSelected="submit"
-    :tabsShow="tabsShow"
-    apiModule="systemOrganOrPerson"
-    :queryParams="queryParams"
-    v-if="xzyzDialogVisible"
-  /> -->
+  <!-- 特殊类型隐私配置 -->
+  <PrivacySet v-model="privacyVisible" :fileTypeId="curFileTypeId"></PrivacySet>
 </template>
 
 <script setup>
   import { reactive, onMounted, ref } from 'vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { fileManageService } from '@/api/frontDesk/fileManage'
-  import { messageError, messageSuccess } from '@/hooks/useMessage'
+  import {
+    messageError,
+    messageSuccess,
+    messageWarning
+  } from '@/hooks/useMessage'
   import AddFileType from './addFileType'
+  import PrivacySet from './privacySet'
   import { GetFileTypeList, ViewRangSetInfo } from '@/utils/domain/fileManage'
   import { PaginationInfo } from '@/utils/domain/paginationInfo'
   import { getArrFromTree } from '@/utils/tools'
+  import JyTable from '@/views/components/JyTable.vue'
 
   const showDepPerDialog = ref(false)
   const searchForm = ref(new GetFileTypeList())
@@ -157,6 +193,9 @@
   const curFileTypeId = ref('')
   const userSelected = ref([])
   const viewRangSetInfo = ref(new ViewRangSetInfo())
+  const curFileTypeIds = ref([])
+  const privacyVisible = ref(false)
+  const table = ref(null)
 
   const state = reactive({
     componentsSearchForm: {
@@ -188,9 +227,18 @@
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': time => {
+              return time.getTime() > Date.now() - 8.64e7 // 如果没有后面的-8.64e7就是不可以选择今天的
+            },
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
-          style: {}
+          style: {},
+          requestType: 'array'
         }
       ],
       butData: [
@@ -263,16 +311,20 @@
           'min-width': 250,
           rankDisplayData: [
             {
-              name: '修改'
+              name: '修改',
+              code: 1
             },
             {
-              name: '删除'
+              name: '删除',
+              code: 2
             },
             {
-              name: '设置可见范围'
+              name: '设置可见范围',
+              code: 3
             },
             {
-              name: '特殊类型隐私配置'
+              name: '特殊类型隐私配置',
+              code: 4
             }
           ]
         }
@@ -312,34 +364,6 @@
         nodeKey: 'fileTypeId'
       }
     },
-    componentsPagination: {
-      data: {
-        amount: 400,
-        index: 1,
-        pageNumber: 80
-      },
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
-        background: true
-      }
-    },
-    componentsBreadcrumb: {
-      data: [
-        {
-          name: 'ceshi'
-        },
-        {
-          name: 'ceshi'
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        separator: '/'
-      }
-    },
     componentsDocumentsDetails: {
       show: false,
       visible: [
@@ -360,13 +384,12 @@
       },
       data: [
         {
-          name: '批量删除'
+          name: '批量删除',
+          code: 1
         },
         {
-          name: '批量设置可见范围'
-        },
-        {
-          name: '批量设置可用范围'
+          name: '批量设置可见范围',
+          code: 2
         }
       ]
     },
@@ -388,7 +411,7 @@
       'child',
       'fileTypeId'
     )
-    getFileTypeList()
+    table.value.reloadData()
   }
 
   const getFileTypeList = async () => {
@@ -410,7 +433,14 @@
   const getFileTypeTree = async () => {
     try {
       const res = await fileManageService.getTreeList({})
-      state.componentsTree.data = res.data || []
+      state.componentsTree.data = [
+        {
+          fileTypeName: '文件类型',
+          fileTypeId: '',
+          child: res.data || []
+        }
+      ]
+      table.value.reloadData()
     } catch (error) {
       messageError(error)
     }
@@ -424,8 +454,15 @@
 
   const deleteFileType = async () => {
     try {
-      await fileManageService.fileTypeDelete(curFileTypeId.value)
-      messageSuccess('成功删除文件类型')
+      if (curFileTypeIds.value.length) {
+        await fileManageService.batchDelete({
+          fileTypeIds: curFileTypeIds.value
+        })
+        messageSuccess('批量删除成功')
+      } else {
+        await fileManageService.fileTypeDelete(curFileTypeId.value)
+        messageSuccess('成功删除文件类型')
+      }
       state.JyElMessageBox.show = false
       refresh()
     } catch (error) {
@@ -437,10 +474,11 @@
     try {
       const res = await fileManageService.queryVisibleRByFileType(fileTypeId)
       userSelected.value = [
-        ...res.data.visibleOrganR,
-        ...res.data.visibleRoleR,
-        ...res.data.visibleUserR
+        ...res.data.organs,
+        ...res.data.roles,
+        ...res.data.users
       ]
+      showDepPerDialog.value = true
     } catch (error) {
       messageError(error)
     }
@@ -449,38 +487,45 @@
   const submit = async list => {
     list.forEach(v => {
       if (v.type === 'user') {
-        viewRangSetInfo.value.visibleUserR.push({})
+        viewRangSetInfo.value.users = list.filter(v => v.type === 'user')
       }
       if (v.type === 'organ') {
-        viewRangSetInfo.value.visibleOrganR.push()
+        viewRangSetInfo.value.organs = list.filter(v => v.type === 'organ')
       }
       if (v.type === 'role') {
-        viewRangSetInfo.value.visibleRoleR.push()
+        viewRangSetInfo.value.roles = list.filter(v => v.type === 'role')
       }
     })
-    // try {
-    //   await fileManageService.viewRangSet()
-    // } catch (error) {
-    //   messageError(error)
-    // }
-  }
-
-  const clickSubmit = (item, index) => {
-    // 查询
-    console.log('xxx--->', item)
-    if (item.id === 'inquire') {
-      getFileTypeList()
+    try {
+      await fileManageService.viewRangSet(viewRangSetInfo.value)
+      showDepPerDialog.value = false
+      messageSuccess('可见范围设置成功')
+    } catch (error) {
+      messageError(error)
     }
   }
 
   const closed = () => {
-    console.log('--->', 222222)
     curFromData.value = {}
+  }
+
+  const clickBatchButton = async (item, index) => {
+    const row = table.value.getSelectionRows()
+    curFileTypeIds.value = row.map(v => v.fileTypeId)
+    // 批量删除
+    if (item.code === 1) {
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = '请问确定要删除么？'
+      state.JyElMessageBox.show = true
+    }
+    // 批量设置可见范围
+    if (item.code === 2) {
+      messageWarning('待产品确认回显功能')
+    }
   }
 
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    // console.log(row, column, cell, event);
     if (column.property === '1') {
       state.componentsDocumentsDetails.show = true
     }
@@ -492,40 +537,35 @@
 
   // 点击表格按钮
   function customClick(row, column, cell, event) {
+    curFileTypeId.value = column.fileTypeId
     console.log(cell.name, column)
-    if (cell.name === '修改') {
+    if (cell.code === 1) {
       dialogVisible.value = true
       curFromData.value = { ...curFromData.value, ...column }
     }
-    if (cell.name === '删除') {
-      curFileTypeId.value = column.fileTypeId
+    if (cell.code === 2) {
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
       state.JyElMessageBox.show = true
     }
-    if (cell.name === '设置可见范围') {
-      showDepPerDialog.value = true
+    if (cell.code === 3) {
+      viewRangSetInfo.value.fileTypeId = column.fileTypeId
       queryVisibleRByFileType(column.fileTypeId)
     }
-    if (cell.name === '特殊类型隐私配置') {
-      showDepPerDialog.value = true
-    }
-  }
-
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
+    if (cell.code === 4) {
+      privacyVisible.value = true
     }
   }
 
   onMounted(() => {
     refresh()
   })
+</script>
+
+<script>
+  export default {
+    name: 'DocumentType'
+  }
 </script>
 
 <style lang="scss" scoped>
