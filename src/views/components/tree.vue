@@ -1,6 +1,7 @@
 <template>
   <div class="components-tree">
     <el-tree
+      ref="tree"
       v-bind="props.defaultAttribute"
       :refs="refs"
       :data="props.data"
@@ -26,11 +27,8 @@
   </div>
 </template>
 <script setup>
-  import {
-    // reactive,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, onBeforeMount, onMounted } from 'vue'
+  const tree = ref(null)
   const props = defineProps({
     // 标识
     refs: {
@@ -77,6 +75,12 @@
     'current-change',
     'load'
   ])
+  defineExpose({
+    setCurrentKey
+  })
+  function setCurrentKey(id) {
+    tree.value.setCurrentKey(id)
+  }
   //   const state = reactive({})
   //	当节点被点击的时候触发   	四个参数：对应于节点点击的节点对象，TreeNode 的 node 属性, TreeNode和事件对象
   function nodeClick(NodeObjects, node, TreeNode, event) {
