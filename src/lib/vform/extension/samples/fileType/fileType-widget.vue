@@ -30,7 +30,7 @@
       :remote-method="remoteQuery"
       @focus="getFileTypeList"
       @blur="handleBlurCustomEvent"
-      @change="handleChangeEvent"
+      @change="onChange"
     >
       <el-option
         v-for="item in fileTypeOptions"
@@ -56,7 +56,7 @@
   import { GetFileTypeList } from '@/utils/domain/fileManage'
 
   export default {
-    name: 'FileTypeWidget',
+    name: 'FileTypeIdWidget',
     componentName: 'FieldWidget', // 必须固定为FieldWidget，用于接收父级组件的broadcast事件
     mixins: [emitter, fieldMixin, i18n],
     props: {
@@ -90,6 +90,7 @@
     data() {
       return {
         fieldModel: null,
+        fileTypeName: '',
         fileTypeOptions: [],
         rules: [
           {
@@ -124,6 +125,10 @@
         } catch (error) {
           messageError(error)
         }
+      },
+      onChange(value, name) {
+        console.log('--->', value)
+        this.handleChangeEvent(value, name)
       }
     }
   }

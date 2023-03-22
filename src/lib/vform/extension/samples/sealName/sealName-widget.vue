@@ -22,7 +22,7 @@
               field.options.required ? 'required' : ''
             ]"
           >
-            <div style="width: 100%; display: flex">
+            <div style="width: 100%; display: flex; height: 32px">
               <el-input v-model="obj.sealId" v-if="false"></el-input>
               <el-input
                 v-model="obj.seal"
