@@ -39,10 +39,12 @@
         <div>
           <componentsTree
             ref="tree"
+            v-model="state.componentsTree.value"
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="state.componentsTree.defaultProps"
             @current-change="currentChange"
+            v-if="state.componentsTree.value"
           >
           </componentsTree>
         </div>
@@ -133,7 +135,7 @@
    * openType edit、add
    * treeValue 树型选择值 - 携带；编辑时不生效
    */
-  import { reactive, onBeforeMount, ref } from 'vue'
+  import { reactive, onBeforeMount, ref, watch } from 'vue'
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import Addflow from './AddOrEditFlow.vue'
@@ -442,7 +444,7 @@
         label: 'applyTypeName',
         children: 'children'
       },
-      value: '2'
+      value: ''
     },
     componentsBatch: {
       selectionData: [],
@@ -677,6 +679,7 @@
         }
       })
       state.componentsTree.data = listApplyTypeTree
+      state.componentsTree.value = listApplyTypeTree[0].children[0].applyTypeId
       table.value.reloadData()
     })
   }
@@ -691,6 +694,14 @@
     state.componentsTree.value = e.applyTypeId
   }
 
+  watch(
+    () => state.componentsTree.value,
+    val => {
+      // 重新加载
+      state.componentsTree.value = val
+      table.value.reloadData()
+    }
+  )
   onBeforeMount(() => {
     // 发送api请求 查询表单树解构
     listApplyTypeTreeApi()
