@@ -11,6 +11,7 @@
       @check-change="checkChange"
       @check="check"
       @current-change="currentChange"
+      :current-node-key="props.modelValue"
     >
       <template #default="{ node, data }">
         <span class="custom-tree-node" @click="clickTreeNode(node, data)">
@@ -66,6 +67,10 @@
       default: () => {
         return {}
       }
+    },
+    modelValue: {
+      type: String,
+      default: ''
     }
   })
   const emit = defineEmits([
