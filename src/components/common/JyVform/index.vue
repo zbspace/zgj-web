@@ -180,6 +180,10 @@
   const showDialog = () => {
     vFormRef.value.showDialog()
   }
+  // 禁用编辑
+  const disableForm = () => {
+    vFormRef.value.disableForm()
+  }
 
   // ---------------------------------VFormRender+VFormDesigner api 通过组件实例调用-----------
   // 获取设计器组件实例
@@ -293,7 +297,8 @@
     showDialog,
     setFormColumnBasic,
     setFormTemplate,
-    initDesigner
+    initDesigner,
+    disableForm
   })
 </script>
 
