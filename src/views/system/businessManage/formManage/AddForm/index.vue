@@ -106,6 +106,7 @@
   import { ElMessage } from 'element-plus'
   import layout from '@/views/system/businessManage/flowManage/layout'
   import formManageService from '@/api/system/formManagement'
+  import flowManageService from '@/api/system/flowManagement'
   import { AddFormInfo } from '@/utils/domain/formManage'
   import { messageError, messageSuccess } from '@/hooks/useMessage'
 
@@ -113,6 +114,8 @@
   const formData = ref(new AddFormInfo())
   const formRef = ref(null)
   const mustProps = ref([])
+  const formInfo = ref({})
+
   const props = defineProps({
     addTitle: {
       type: String,
@@ -233,7 +236,7 @@
 
   const loaded = async () => {
     if (props.columnData.formMessageId) {
-      await vformRef.value.setFormJson(props.columnData.formInfo)
+      await vformRef.value.setFormJson(formInfo.value.formInfo)
     } else {
       await vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
     }
@@ -310,9 +313,21 @@
     }
   }
 
+  const getFormJson = async formMessageId => {
+    try {
+      const res = await flowManageService.getFormJsonById({ formMessageId })
+      formInfo.value = res.data
+    } catch (error) {
+      messageError(error)
+    }
+  }
+
   const opened = () => {
     if (props.columnData.formName) {
       formData.value = { ...formData.value, ...props.columnData }
+    }
+    if (props.columnData.formMessageId) {
+      getFormJson(props.columnData.formMessageId)
     }
   }
 

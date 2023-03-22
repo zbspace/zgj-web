@@ -487,11 +487,11 @@ export const sealFileSchema = {
 
 // 文件类型
 export const fileTypeSchema = {
-  type: 'fileType',
-  icon: 'fileType',
+  type: 'fileTypeId',
+  icon: 'fileTypeId',
   formItemFlag: true,
   options: {
-    name: 'fileTypeId',
+    name: '',
     label: '文件类型',
     nameDisabled: true,
     labelAlign: 'right',
@@ -584,6 +584,6 @@ export const customComponents = [
   'uploadFile',
   'applicantInfo',
   'sealFile',
-  'fileType',
+  'fileTypeId',
   'agentMan'
 ]

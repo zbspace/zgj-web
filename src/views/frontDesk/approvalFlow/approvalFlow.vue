@@ -20,7 +20,7 @@
       <template #tabs>
         <div>
           <componentsTabs
-            activeName="1"
+            :activeName="state.componentsTabs.activeName"
             :data="state.componentsTabs.data"
             @tab-change="tabChange"
           >
@@ -59,6 +59,7 @@
             :loading="state.componentsTable.loading"
             @selection-change="selectionChange"
             @custom-click="customClick"
+            @cellClick="cellClick"
           >
           </componentsTable>
         </div>
@@ -71,6 +72,15 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+    <!-- 单据详情 -->
+    <div class="ap-box">
+      <componentsDocumentsDetails
+        :show="state.componentsDocumentsDetails.show"
+        :visible="state.componentsDocumentsDetails.visible"
+        @clickClose="clickClose"
+      >
+      </componentsDocumentsDetails>
+    </div>
     <!-- 处理弹窗 -->
     <JyDialog
       @update:show="dialogProcess.show = $event"
@@ -79,25 +89,155 @@
       :oneBtn="false"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      @close="submitLibraryForm"
+      :height="700"
+      :width="900"
+      :footer="false"
     >
-      <v-form-render
-        :form-json="dialogProcess.formJson"
-        :form-data="dialogProcess.formJson"
-        :option-data="dialogProcess.optionData"
-        ref="vFormLibraryRef"
-        :key="dialogProcess.title"
-      >
-      </v-form-render>
-      <div class="select-person">
-        <span>添加抄送</span>
-        <div @click="showDepPerDialog = true">+请选择抄送人</div>
+      <div class="ap-cont-tabsCont">
+        <div class="scrollbar-div">
+          <div class="ap-cont-box sealDetails-basic-information">
+            <documentsDetailsPortion>
+              <template #title>
+                <div class="ap-cont-box-title-label">基本信息</div>
+              </template>
+              <template #content>
+                <div>
+                  <el-scrollbar style="height: 369px; overflow: auto">
+                    <documentsDetailsInformationList
+                      :data="state.ParticularsOfSeal.basicInformation.data"
+                      :labelStyle="
+                        state.ParticularsOfSeal.basicInformation.labelStyle
+                      "
+                    >
+                    </documentsDetailsInformationList>
+                  </el-scrollbar>
+                </div>
+              </template>
+            </documentsDetailsPortion>
+          </div>
+        </div>
+      </div>
+      <div class="approval-footer">
+        <!-- <v-form-render
+          :form-json="dialogProcess.formJson"
+          :form-data="dialogProcess.formJson"
+          :option-data="dialogProcess.optionData"
+          ref="vFormLibraryRef"
+          :key="dialogProcess.title"
+        >
+        </v-form-render> -->
+        <!-- <div class="select-person">
+          <span>添加抄送</span>
+          <div @click="showDepPerDialog = true">+请选择抄送人</div>
+        </div> -->
+        <el-form
+          :model="state.form"
+          :rules="state.rules"
+          ref="vFormRef"
+          label-width="100px"
+        >
+          <!-- <el-form-item label="审批选项">
+            <el-radio-group>
+              <el-radio :label="'1'" size="large">同意</el-radio>
+              <el-radio :label="'2'" size="large">不同意</el-radio>
+              <el-radio :label="'3'" size="large">转交</el-radio>
+              <el-radio :label="'4'" size="large">加签</el-radio>
+              <el-radio :label="'5'" size="large">征询他人意见</el-radio>
+              <el-radio :label="'6'" size="large">退回</el-radio>
+            </el-radio-group>
+          </el-form-item> -->
+          <el-form-item label="审批选项" prop="approvals">
+            <el-radio-group v-model="state.form.approvals">
+              <el-radio label="1">同意</el-radio>
+              <el-radio label="2">不同意</el-radio>
+              <el-radio label="3">转交</el-radio>
+              <el-radio label="4">加签</el-radio>
+              <el-radio label="5">征询他人意见</el-radio>
+              <el-radio label="6">退回</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="下一步审批人">
+            <span class="footer-approver">李旺</span>
+            <span class="footer-approver">李旺</span>
+            <span class="footer-approver">李旺</span>
+            <span class="footer-approver">李旺</span>
+          </el-form-item>
+          <el-form-item label="添加抄送" prop="subOrganId">
+            <div class="select-box-contBox">
+              <el-checkbox
+                v-model="checked"
+                style="margin-right: 12px"
+                size="mini"
+              ></el-checkbox>
+              <div class="footer-tagcon"
+                ><el-tag
+                  class="footer-tag"
+                  closable
+                  type="info"
+                  v-for="item in state.searchSelected"
+                  :key="item.id"
+                  @close="delTags(item)"
+                >
+                  {{ item.name }}
+                </el-tag>
+                <!-- <el-tag
+                  class="footer-tag"
+                  closable
+                  @close="delTags"
+                  type="info"
+                >
+                  选中
+                </el-tag> -->
+              </div>
+              <el-input
+                class="ap-box-contBox-input width-100"
+                type="hidden"
+                v-model="state.form.subOrganId"
+                placeholder=""
+              />
+              <div class="ap-box-contBox-icon">
+                <el-icon
+                  v-if="state.form.subOrganName"
+                  style="margin-right: 5px"
+                  color="#aaaaaa"
+                  @click="clear('subOrgan')"
+                  ><CircleClose
+                /></el-icon>
+                <img
+                  @click="chooseOrgan('subOrgan', ['user'])"
+                  class="ap-box-contBox-icon-img"
+                  src="@/assets/svg/ketanchude.svg"
+                  alt=""
+                />
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="审批意见" prop="sealExplain">
+            <el-input
+              v-model="state.form.sealExplain"
+              maxlength="100"
+              show-word-limit
+              type="textarea"
+              placeholder="请输入"
+            />
+          </el-form-item>
+        </el-form>
+        <div class="footer-btns">
+          <el-button type="primary" :loading="btnLoading" @click="sumitForm"
+            >提交</el-button
+          >
+          <el-button @click="close">取消</el-button>
+        </div>
       </div>
     </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
+      v-if="showDepPerDialog"
+      :tabsShow="['user']"
+      @update:searchSelected="submitSelectDepart"
+      :searchSelected="state.searchSelected"
     >
     </kDepartOrPersonVue>
   </div>
@@ -110,11 +250,18 @@
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
+  import componentsDocumentsDetails from '../../components/documentsDetails.vue'
+  import JyDialog from '@/views/components/modules/JyDialog.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
+  import documentsDetailsInformationList from '@/views/components/documentsDetails/informationList.vue'
   import dayjs from 'dayjs'
-  import api from '@/views/frontDesk/approvalFlow/approvalFlow.vue'
+  import { ElMessage } from 'element-plus'
+  import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
+  // import api from '@/api/frontDesk/approvalFlow/approvalFlow'
+  import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
 
   const showDepPerDialog = ref(false)
   const dialogProcess = reactive({
@@ -122,26 +269,327 @@
     title: '处理',
     formJson: RecordSealToReviewJson
   })
-  const vFormLibraryRef = ref(null)
-  const submitLibraryForm = type => {
-    if (!type) {
-      vFormLibraryRef.value.resetForm()
-      return
+  const vFormRef = ref(null)
+  const btnLoading = ref(false)
+  // const submitLibraryForm = type => {
+  //   if (!type) {
+  //     vFormLibraryRef.value.resetForm()
+  //     return
+  //   }
+  //   vFormLibraryRef.value
+  //     .getFormData()
+  //     .then(formData => {
+  //       alert(JSON.stringify(formData))
+  //       // fromState.showDialog = false
+  //     })
+  //     .catch(error => {
+  //       // Form Validation failed
+  //       // ElMessage.error(error)
+  //       console.log(error)
+  //     })
+  // }
+  // 删除操作人
+  const delTags = item => {
+    console.log('delTags')
+    for (let i = 0; i < state.searchSelected.length; i++) {
+      console.log(state.searchSelected[i])
+      if (item.id === state.searchSelected[i].id) {
+        state.searchSelected.splice(i, 1)
+      }
     }
-    vFormLibraryRef.value
-      .getFormData()
-      .then(formData => {
-        alert(JSON.stringify(formData))
-        // fromState.showDialog = false
-      })
-      .catch(error => {
-        // Form Validation failed
-        // ElMessage.error(error)
-        console.log(error)
-      })
   }
-
+  // 提交审批
+  const sumitForm = () => {
+    console.log('提交')
+    btnLoading.value = true
+    vFormRef.value.validate(valid => {
+      if (valid) {
+        ElMessage.success('审批成功')
+        btnLoading.value = false
+      } else {
+        ElMessage.error('校验失败')
+      }
+    })
+  }
   const state = reactive({
+    searchSelected: [],
+    detailInfo: {
+      createTime: '2022-11-27 01:04:49',
+      createUser: '1339550467939639299',
+      updateTime: '2023-02-17 11:51:27',
+      updateUser: '1339550467939639299',
+      modelId: '1596550552731209730',
+      definitionId: '1638009270522269697',
+      categoryId: '1596550398875750401',
+      modelName: '合同审批',
+      modelKey: 'hetong',
+      modelType: null,
+      modelIcon: 'A(1).png',
+      remark: null,
+      modelSort: null,
+      currentVersion: '1.2',
+      statusFlag: 1,
+      versionFlag: '2',
+      tenantId: null,
+      delFlag: 'N',
+      formIdList: ['1589976128312606721'],
+      formDefinitions: [
+        {
+          createTime: '2022-11-08 21:40:24',
+          createUser: '1339550467939639299',
+          updateTime: null,
+          updateUser: null,
+          formDefinitionId: '1589976128312606721',
+          formModelId: '1589976128245497857',
+          formModelCode: 'ContractReview',
+          formModelRef: 'contractReview',
+          flowDefinitionName: '合同评审',
+          preDefinitionId: '0',
+          formJson: null,
+          definitionVersion: '1.0',
+          statusFlag: null,
+          versionFlag: null,
+          delFlag: null,
+          tenantId: null
+        }
+      ],
+      assignees: ['1339550467939639299'],
+      node: {
+        createTime: '2023-03-21 10:46:58',
+        createUser: '1339550467939639299',
+        updateTime: null,
+        updateUser: null,
+        nodeId: '1638009270539046913',
+        modelId: '1596550552731209730',
+        definitionId: '1638009270522269697',
+        nodePid: null,
+        nodeName: '发起人',
+        nodeType: 0,
+        addable: true,
+        deletable: false,
+        error: false,
+        content: '已设置',
+        remark: null,
+        nodeStatus: null,
+        delFlag: 'N',
+        versionFlag: '1',
+        tenantId: null,
+        attr: null,
+        childNode: null,
+        conditionNodes: [],
+        privileges: [],
+        approverGroups: [],
+        conditionGroup: [],
+        buttons: [
+          {
+            createTime: '2023-03-21 10:46:57',
+            createUser: '1339550467939639299',
+            updateTime: null,
+            updateUser: null,
+            buttonId: '1638009270539046919',
+            modelId: '1596550552731209730',
+            definitionId: '1638009270522269697',
+            nodeId: '1638009270539046913',
+            buttonType: 1,
+            buttonName: '保存',
+            buttonCode: 'save',
+            checked: true,
+            disabled: false,
+            color: 'default',
+            content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
+            statusFlag: 1,
+            versionFlag: '0',
+            delFlag: 'N',
+            tenantId: null
+          },
+          {
+            createTime: '2023-03-21 10:46:57',
+            createUser: '1339550467939639299',
+            updateTime: null,
+            updateUser: null,
+            buttonId: '1638009270539046920',
+            modelId: '1596550552731209730',
+            definitionId: '1638009270522269697',
+            nodeId: '1638009270539046913',
+            buttonType: 1,
+            buttonName: '提交',
+            buttonCode: 'submit',
+            checked: false,
+            disabled: false,
+            color: 'primary',
+            content:
+              '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
+            statusFlag: 1,
+            versionFlag: '0',
+            delFlag: 'N',
+            tenantId: null
+          },
+          {
+            createTime: '2023-03-21 10:46:57',
+            createUser: '1339550467939639299',
+            updateTime: null,
+            updateUser: null,
+            buttonId: '1638009270539046921',
+            modelId: '1596550552731209730',
+            definitionId: '1638009270522269697',
+            nodeId: '1638009270539046913',
+            buttonType: 1,
+            buttonName: '同意',
+            buttonCode: 'agree',
+            checked: false,
+            disabled: true,
+            color: 'success',
+            content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
+            statusFlag: 1,
+            versionFlag: '0',
+            delFlag: 'N',
+            tenantId: null
+          },
+          {
+            createTime: '2023-03-21 10:46:57',
+            createUser: '1339550467939639299',
+            updateTime: null,
+            updateUser: null,
+            buttonId: '1638009270539046922',
+            modelId: '1596550552731209730',
+            definitionId: '1638009270522269697',
+            nodeId: '1638009270539046913',
+            buttonType: 1,
+            buttonName: '拒绝',
+            buttonCode: 'reject',
+            checked: false,
+            disabled: true,
+            color: 'error',
+            content:
+              '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
+            statusFlag: 1,
+            versionFlag: '0',
+            delFlag: 'N',
+            tenantId: null
+          },
+          {
+            createTime: '2023-03-21 10:46:57',
+            createUser: '1339550467939639299',
+            updateTime: null,
+            updateUser: null,
+            buttonId: '1638009270539046923',
+            modelId: '1596550552731209730',
+            definitionId: '1638009270522269697',
+            nodeId: '1638009270539046913',
+            buttonType: 1,
+            buttonName: '转交',
+            buttonCode: 'turn',
+            checked: false,
+            disabled: true,
+            color: 'cyan',
+            content: '转交给他人办理，依然在当前节点',
+            statusFlag: 1,
+            versionFlag: '0',
+            delFlag: 'N',
+            tenantId: null
+          },
+          {
+            createTime: '2023-03-21 10:46:57',
+            createUser: '1339550467939639299',
+            updateTime: null,
+            updateUser: null,
+            buttonId: '1638009270539046924',
+            modelId: '1596550552731209730',
+            definitionId: '1638009270522269697',
+            nodeId: '1638009270539046913',
+            buttonType: 1,
+            buttonName: '退回',
+            buttonCode: 'back',
+            checked: false,
+            disabled: true,
+            color: 'default',
+            content: '退回给申请人，申请人修改完成后，流程按节点开始走',
+            statusFlag: 1,
+            versionFlag: '0',
+            delFlag: 'N',
+            tenantId: null
+          },
+          {
+            createTime: '2023-03-21 10:46:57',
+            createUser: '1339550467939639299',
+            updateTime: null,
+            updateUser: null,
+            buttonId: '1638009270539046925',
+            modelId: '1596550552731209730',
+            definitionId: '1638009270522269697',
+            nodeId: '1638009270539046913',
+            buttonType: 1,
+            buttonName: '撤回',
+            buttonCode: 'revoke',
+            checked: false,
+            disabled: true,
+            color: 'default',
+            content:
+              '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+            statusFlag: 1,
+            versionFlag: '0',
+            delFlag: 'N',
+            tenantId: null
+          },
+          {
+            createTime: '2023-03-21 10:46:57',
+            createUser: '1339550467939639299',
+            updateTime: null,
+            updateUser: null,
+            buttonId: '1638009270539046926',
+            modelId: '1596550552731209730',
+            definitionId: '1638009270522269697',
+            nodeId: '1638009270539046913',
+            buttonType: 1,
+            buttonName: '加签',
+            buttonCode: 'addSign',
+            checked: false,
+            disabled: true,
+            color: 'warning',
+            content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
+            statusFlag: 1,
+            versionFlag: '0',
+            delFlag: 'N',
+            tenantId: null
+          }
+        ],
+        notice: null,
+        update: false
+      }
+    },
+    form: {
+      sealId: '',
+      sealNo: '',
+      sealName: '',
+      sealAlias: '',
+      subOrganId: [],
+      subOrgans: [],
+      subOrganName: '',
+      // manageUserId: '',
+      // manageUserName: '',
+      // manageOrganId: '',
+      // manageOrganName: '',
+      keepUserId: '',
+      keepUserName: '',
+      keepOrganId: '',
+      keepOrganName: '',
+      approvals: '1',
+      // sealState: 1,
+      hardwareVersionId: '',
+      firmwareVersionId: '',
+      bylawsUrl: '',
+      sealExplain: '',
+      stampAttachments: ''
+    },
+    rules: {
+      approvals: [
+        {
+          required: true,
+          message: '请选择审批选项',
+          trigger: 'blur'
+        }
+      ]
+    },
     componentsTabs: {
       data: [
         {
@@ -151,6 +599,24 @@
         {
           label: '已审批',
           name: '2'
+        }
+      ],
+      activeName: '1'
+    },
+    componentsDocumentsDetails: {
+      show: false,
+      visible: [
+        {
+          label: '用印详情',
+          name: 'approval-process'
+        },
+        {
+          label: '保管记录',
+          name: 'Record-of-custody'
+        },
+        {
+          label: '操作记录',
+          name: 'operating-record'
         }
       ]
     },
@@ -284,7 +750,7 @@
     componentsTable: {
       header: [
         {
-          prop: '1',
+          prop: 'instanceTitle',
           label: '流程名称',
           sortable: true,
           'min-width': 150
@@ -296,19 +762,19 @@
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'positionName',
           label: '申请人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'orgName',
           label: '申请部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'createTime',
           label: '申请时间',
           sortable: true,
           'min-width': 150
@@ -325,70 +791,196 @@
           ]
         }
       ],
+      // data: [
+      //   {
+      //     1: 'TradeCode21',
+      //     2: '',
+      //     3: '往往',
+      //     4: '',
+      //     5: '2022/10/30  15:00:00',
+      //     6: ''
+      //   },
+      //   {
+      //     1: 'TradeCode21',
+      //     2: '',
+      //     3: '往往',
+      //     4: '',
+      //     5: '2022/10/30  15:00:00',
+      //     6: ''
+      //   },
+      //   {
+      //     1: 'TradeCode21',
+      //     2: '',
+      //     3: '往往',
+      //     4: '',
+      //     5: '2022/10/30  15:00:00',
+      //     6: ''
+      //   },
+      //   {
+      //     1: 'TradeCode21',
+      //     2: '',
+      //     3: '往往',
+      //     4: '',
+      //     5: '2022/10/30  15:00:00',
+      //     6: ''
+      //   },
+      //   {
+      //     1: 'TradeCode21',
+      //     2: '',
+      //     3: '往往',
+      //     4: '',
+      //     5: '2022/10/30  15:00:00',
+      //     6: ''
+      //   },
+      //   {
+      //     1: 'TradeCode21',
+      //     2: '',
+      //     3: '往往',
+      //     4: '',
+      //     5: '2022/10/30  15:00:00',
+      //     6: ''
+      //   },
+      //   {
+      //     1: 'TradeCode21',
+      //     2: '',
+      //     3: '往往',
+      //     4: '',
+      //     5: '2022/10/30  15:00:00',
+      //     6: ''
+      //   },
+      //   {
+      //     1: 'TradeCode21',
+      //     2: '',
+      //     3: '往往',
+      //     4: '',
+      //     5: '2022/10/30  15:00:00',
+      //     6: ''
+      //   }
+      // ],
       data: [
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
+          taskId: '1626429401690722306',
+          modelId: '1596550552731209730',
+          definitionId: '1626429088493654017',
+          instanceId: '1626429141186695170',
+          instanceTitle: '[管理员]提交的合同审批',
+          instanceName: '',
+          applicant: '1339550467939639299',
+          applicantWrapper: '管理员',
+          summary: null,
+          createTime: '2023-02-17 11:51:40',
+          completionTime: null,
+          handleName: null,
+          ruNodeId: '1626429401690722305',
+          reNodeId: '1626429088506236933',
+          instanceStatus: 1,
+          instanceStatusWrapper: '处理中',
+          nodeName: '审批人',
+          taskStatus: 2,
+          taskStatusWrapper: '审批中',
+          suggest: null,
+          currentApproverList: ['1339550467939639299', '1596710445991956482'],
+          currentApproverListWrapper: ['管理员', '关羽'],
+          approvalMode: 4,
+          orgId: '1339554696976781407',
+          orgName: 'Guns总公司',
+          positionId: '1339554696976781332',
+          positionName: '总监',
+          updateTime: null,
+          remark: null
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
+          taskId: '1626421084482359298',
+          modelId: '1596550552731209730',
+          definitionId: '1596550552739598338',
+          instanceId: '1626421084461387777',
+          instanceTitle: '[管理员]提交的合同审批',
+          instanceName: '',
+          applicant: '1339550467939639299',
+          applicantWrapper: '管理员',
+          summary: null,
+          createTime: '2023-02-17 11:19:39',
+          completionTime: null,
+          handleName: null,
+          ruNodeId: '1626421084469776385',
+          reNodeId: '1596723224647921666',
+          instanceStatus: 1,
+          instanceStatusWrapper: '处理中',
+          nodeName: '审批人',
+          taskStatus: 2,
+          taskStatusWrapper: '审批中',
+          suggest: null,
+          currentApproverList: ['1339550467939639299'],
+          currentApproverListWrapper: ['管理员'],
+          approvalMode: 2,
+          orgId: '1339554696976781407',
+          orgName: 'Guns总公司',
+          positionId: '1339554696976781332',
+          positionName: '总监',
+          updateTime: null,
+          remark: null
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
+          taskId: '1623924257451331585',
+          modelId: '1596550552731209730',
+          definitionId: '1596550552739598338',
+          instanceId: '1623924065234767874',
+          instanceTitle: '[管理员]提交的合同审批',
+          instanceName: '',
+          applicant: '1339550467939639299',
+          applicantWrapper: '管理员',
+          summary: null,
+          createTime: '2023-02-10 13:57:23',
+          completionTime: null,
+          handleName: null,
+          ruNodeId: '1623924257447137281',
+          reNodeId: '1596723224647921665',
+          instanceStatus: 1,
+          instanceStatusWrapper: '处理中',
+          nodeName: '发起人',
+          taskStatus: 2,
+          taskStatusWrapper: '审批中',
+          suggest: null,
+          currentApproverList: ['1339550467939639299'],
+          currentApproverListWrapper: ['管理员'],
+          approvalMode: null,
+          orgId: '1339554696976781407',
+          orgName: 'Guns总公司',
+          positionId: '1339554696976781332',
+          positionName: '总监',
+          updateTime: null,
+          remark: null
         },
         {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
+          taskId: '1623884669504638977',
+          modelId: '1623858138803785730',
+          definitionId: '1623883960453353474',
+          instanceId: '1623884013859426305',
+          instanceTitle: '[管理员]提交的测试0210-1',
+          instanceName: '',
+          applicant: '1339550467939639299',
+          applicantWrapper: '管理员',
+          summary: null,
+          createTime: '2023-02-10 11:18:14',
+          completionTime: null,
+          handleName: null,
+          ruNodeId: '1623884669492056065',
+          reNodeId: '1623883960465936385',
+          instanceStatus: 1,
+          instanceStatusWrapper: '处理中',
+          nodeName: '发起人',
+          taskStatus: 2,
+          taskStatusWrapper: '审批中',
+          suggest: null,
+          currentApproverList: ['1339550467939639299'],
+          currentApproverListWrapper: ['管理员'],
+          approvalMode: null,
+          orgId: '1339554696976781407',
+          orgName: 'Guns总公司',
+          positionId: '1339554696976781332',
+          positionName: '总监',
+          updateTime: null,
+          remark: null
         }
       ],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -396,76 +988,17 @@
         stripe: true,
         'header-cell-style': {
           background: 'var(--jy-color-fill--3)'
+        },
+        'cell-style': ({ row, column, rowIndex, columnIndex }) => {
+          if (column.property === 'instanceTitle') {
+            return {
+              color: 'var(--jy-info-6)',
+              cursor: 'pointer'
+            }
+          }
         }
       },
       loading: false
-    },
-    componentsTree: {
-      data: [
-        {
-          label: 'Level one 1',
-          children: [
-            {
-              label: 'Level two 1-1',
-              children: [
-                {
-                  label: 'Level three 1-1-1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'Level one 2',
-          children: [
-            {
-              label: 'Level two 2-1',
-              children: [
-                {
-                  label: 'Level three 2-1-1'
-                }
-              ]
-            },
-            {
-              label: 'Level two 2-2',
-              children: [
-                {
-                  label: 'Level three 2-2-1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'Level one 3',
-          children: [
-            {
-              label: 'Level two 3-1',
-              children: [
-                {
-                  label: 'Level three 3-1-1'
-                }
-              ]
-            },
-            {
-              label: 'Level two 3-2',
-              children: [
-                {
-                  label: 'Level three 3-2-1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': true,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
-      }
     },
     componentsPagination: {
       data: {
@@ -501,16 +1034,91 @@
         disabled: true
       },
       data: []
+    },
+    // 印章详情
+    ParticularsOfSeal: {
+      basicInformation: {
+        title: '基本信息',
+        show: true,
+        data: [
+          {
+            label: '单据名称',
+            value: '上海建筑材料清单合同明细'
+          },
+          {
+            label: '文件类型：',
+            value: '1份'
+          },
+          {
+            label: '金额：',
+            value: '110,88,00'
+          },
+          {
+            label: '申请事由：',
+            value: '20次'
+          },
+          // {
+          //   label: '印章状态',
+          //   value: '状态',
+          //   iconPath: yuanLvSvg,
+          //   iconStyle: {},
+          //   valStyle: {
+          //     color: 'var(--jy-success-6)'
+          //   }
+          // },
+          // {
+          //   label: '印模',
+          //   value: '查看',
+          //   valStyle: {
+          //     color: 'var(--jy-info-7)'
+          //   }
+          // },
+          {
+            label: '印章名称：',
+            value: '销售合同'
+          },
+          {
+            label: '常规盖章：',
+            value: '20次'
+          },
+          {
+            label: '盖章码：',
+            value: '554778'
+          },
+          {
+            label: '申请人员：',
+            value: '20次'
+          },
+          {
+            label: '申请时间：',
+            value: '2022-11-12 19:00:12'
+          },
+          {
+            label: '所属部门：',
+            value: '20次'
+          }
+        ],
+        labelStyle: {
+          width: '8rem'
+        }
+      }
     }
   })
-
+  const chooseOrgan = () => {
+    showDepPerDialog.value = true
+  }
+  // 关闭弹窗
+  const close = () => {
+    dialogProcess.show = false
+  }
   // 切换分页
   function tabChange(activeName) {
     // console.log(activeName);
+    state.componentsTabs.activeName = activeName
     if (activeName === '1') {
       state.componentsTable.header = [
         {
-          prop: '1',
+          prop: 'instanceTitle',
           label: '流程名称',
           sortable: true,
           'min-width': 150
@@ -522,19 +1130,19 @@
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'positionName',
           label: '申请人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'orgName',
           label: '申请部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'createTime',
           label: '申请时间',
           sortable: true,
           'min-width': 150
@@ -938,11 +1546,16 @@
         }
       ]
     }
+    getFormPage()
   }
-
+  // 选择部门员工
+  const submitSelectDepart = data => {
+    console.log(data)
+    state.searchSelected = data
+  }
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
-    //    console.log(selection);
+    console.log(selection)
     state.componentsBatch.selectionData = selection
     if (state.componentsBatch.selectionData.length > 0) {
       state.componentsBatch.defaultAttribute.disabled = false
@@ -960,6 +1573,11 @@
     }
     if (cell.name === '审批') {
       dialogProcess.formJson = ApprovalJson
+    }
+  }
+  const cellClick = (row, column, cell, event) => {
+    if (column.property === 'instanceTitle') {
+      state.componentsDocumentsDetails.show = true
     }
   }
   const clickSubmit = (item, index) => {
@@ -999,13 +1617,43 @@
     queryParams.pageNo = state.componentsPagination.index || 1
     queryParams.pageSize = state.componentsPagination.pageNumber || 10
     state.componentsTable.loading = true
-    api.getPageNoApproval(queryParams).then(
+    if (state.componentsTabs.activeName === '1') {
+      queryTodoTask(queryParams)
+    } else {
+      queryDoneTask(queryParams)
+    }
+  }
+  /**
+   *查询待审批
+   * @param {*} queryParams
+   */
+  const queryTodoTask = queryParams => {
+    QueryTaskApi.queryTodoTask(queryParams).then(
       res => {
         console.log(res)
-        state.componentsTable.data = res.data.rows
-        state.componentsPagination.data.amount = res.data.totalRows
-        state.componentsPagination.data.pageNumber = res.data.totalPage
-        state.componentsPagination.defaultAttribute.total = res.data.totalRows
+        // state.componentsTable.data = res.data.rows
+        // state.componentsPagination.data.amount = res.data.totalRows
+        // state.componentsPagination.data.pageNumber = res.data.totalPage
+        // state.componentsPagination.defaultAttribute.total = res.data.totalRows
+        state.componentsTable.loading = false
+      },
+      () => {
+        state.componentsTable.loading = false
+      }
+    )
+  }
+  /**
+   * 查询已审批
+   * @param {*} queryParams
+   */
+  const queryDoneTask = queryParams => {
+    QueryTaskApi.queryDoneTask(queryParams).then(
+      res => {
+        console.log(res)
+        // state.componentsTable.data = res.data.rows
+        // state.componentsPagination.data.amount = res.data.totalRows
+        // state.componentsPagination.data.pageNumber = res.data.totalPage
+        // state.componentsPagination.defaultAttribute.total = res.data.totalRows
         state.componentsTable.loading = false
       },
       () => {
@@ -1049,6 +1697,392 @@
     }
     > div {
       cursor: pointer;
+    }
+  }
+  .approval-footer {
+    border-radius: 4px;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 260px;
+    left: 0;
+    box-sizing: border-box;
+    padding: 20px 24px 12px 24px;
+    background: #ffffff;
+    box-shadow: 0px -9px 22px rgb(0 0 0 / 3%);
+    overflow: auto;
+    .footer-tagcon {
+      width: 100%;
+      border: 1px solid var(--el-border-color);
+      border-radius: var(
+        --el-input-border-radius,
+        var(--el-border-radius-base)
+      );
+      box-sizing: border-box;
+      padding: 0 12px;
+      height: 32px;
+      .footer-tag {
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: 3px;
+        border-color: rgba(0, 0, 0, 0.04);
+        color: rgba(0, 0, 0, 0.65);
+        margin-right: 12px;
+      }
+    }
+    .footer-approver {
+      font: size 14px;
+      color: rgba($color: #000000, $alpha: 0.45);
+      margin-right: 16px;
+    }
+    .footer-btns {
+      text-align: center;
+      padding-top: 6px;
+    }
+    .el-form-item {
+      margin-bottom: 10px;
+    }
+  }
+  .components-documentsDetails {
+    margin: 0%;
+
+    .ap-cont {
+      height: 100%;
+    }
+
+    .ap-title {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .title-name-span {
+        font-size: var(--jy-font-size-title-2);
+      }
+
+      .title-cion-img {
+        width: 1rem;
+        margin-right: 1rem;
+        cursor: pointer;
+      }
+
+      .quanping {
+        width: 1.2rem;
+      }
+    }
+
+    .ap-Tabs {
+      display: flex;
+
+      .ap-Tabs-cont {
+        flex-grow: 1;
+      }
+
+      .ap-Tabs-sub {
+        width: 5rem;
+        margin-bottom: 14px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        border-bottom: 1px solid var(--jy-color-border-2);
+
+        .ap-Tabs-sub-icon {
+          margin-right: 0.5rem;
+        }
+
+        .ap-Tabs-sub-text {
+          cursor: pointer;
+          color: var(-color-text-2);
+        }
+      }
+    }
+
+    .ap-cont-tabsCont {
+      width: calc(100% + 18px);
+      height: calc(100% - 80px);
+
+      .arco-scrollbar {
+        height: 100%;
+      }
+
+      .scrollbar-div {
+        padding-right: 18px;
+        box-sizing: border-box;
+      }
+
+      .ap-cont-box-title {
+        border-bottom: 1px solid var(--jy-color-border-2);
+        padding: 0rem 0 0rem 0.8rem;
+        box-sizing: border-box;
+        background: url(../../assets/svg/shuxian-after.svg) no-repeat left
+          center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 2.3rem;
+
+        .ap-cont-box-title-label {
+          font-size: var(--jy-font-size-title-1);
+          font-weight: var(--jy-font-weight-400);
+        }
+
+        .ap-cont-box-title-xiazai {
+          display: flex;
+          align-items: center;
+
+          .ap-cont-box-title-xiazai-icon {
+            margin-right: 0.5rem;
+          }
+
+          .ap-cont-box-title-xiazai-text {
+            color: var(--jy-color-text-2);
+          }
+        }
+
+        .ap-cont-box-title-but {
+          .ap-cont-box-title-but-box {
+            display: flex;
+            align-items: center;
+          }
+
+          .ap-cont-box-title-but-icon {
+            width: 0.8rem;
+            margin-right: 0.2rem;
+          }
+        }
+      }
+
+      .ap-cont-box-details {
+        padding: 0.5rem 0;
+        box-sizing: border-box;
+      }
+
+      .Details-of-Printing {
+        .sealDetails-basic-information {
+          .sealDetails-basic-information-details {
+            display: flex;
+            flex-flow: wrap;
+            padding: 0.5rem 0;
+            box-sizing: border-box;
+
+            .sealDetails-basic-information-list {
+              display: flex;
+              align-items: center;
+              width: 50%;
+              padding: 0.5rem 0;
+              box-sizing: border-box;
+
+              .sealDetails-basic-information-list-label {
+                width: 4.5rem;
+                display: flex;
+                justify-content: flex-end;
+                color: var(--jy-color-text-3);
+              }
+
+              .sealDetails-basic-information-list-value {
+                padding: 0rem 0 0rem 0.5rem;
+                box-sizing: border-box;
+              }
+            }
+          }
+        }
+      }
+
+      .Particulars-of-Seal {
+        .sealDetails-basic-information {
+          .sealDetails-basic-information-details {
+            display: flex;
+            flex-flow: wrap;
+            padding: 0.5rem 0;
+            box-sizing: border-box;
+
+            .sealDetails-basic-information-list {
+              display: flex;
+              align-items: center;
+              width: 50%;
+              padding: 0.5rem 0;
+              box-sizing: border-box;
+
+              .sealDetails-basic-information-list-label {
+                width: 7rem;
+                display: flex;
+                justify-content: flex-end;
+                color: var(--jy-color-text-3);
+              }
+
+              .sealDetails-basic-information-list-value {
+                padding: 0rem 0 0rem 0.5rem;
+                box-sizing: border-box;
+              }
+            }
+          }
+        }
+      }
+
+      .Details-of-Document {
+        .sealDetails-basic-information {
+          .sealDetails-basic-information-details {
+            display: flex;
+            flex-flow: wrap;
+            padding: 0.5rem 0;
+            box-sizing: border-box;
+
+            .sealDetails-basic-information-list {
+              display: flex;
+              align-items: center;
+              width: 50%;
+              padding: 0.5rem 0;
+              box-sizing: border-box;
+
+              .sealDetails-basic-information-list-label {
+                width: 7rem;
+                display: flex;
+                justify-content: flex-end;
+                color: var(--jy-color-text-3);
+              }
+
+              .sealDetails-basic-information-list-value {
+                padding: 0rem 0 0rem 0.5rem;
+                box-sizing: border-box;
+              }
+            }
+          }
+        }
+      }
+
+      .Record-of-requisition {
+        .ap-cont-ma {
+          height: 3rem;
+          display: flex;
+          align-items: center;
+
+          .ap-cont-ma-text {
+            color: var(--jy-color-text-3);
+          }
+
+          .ap-cont-ma-value {
+            color: var(--jy-primary-6);
+            font-size: var(--jy-font-size-title-2);
+          }
+        }
+
+        .SealInformation {
+          .SealInformation-details-list {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 2.5rem;
+
+            .SealInformation-details-list-cont {
+              display: flex;
+              align-items: center;
+
+              .SealInformation-details-list-cont-icon {
+                display: flex;
+                align-items: center;
+                margin-right: 0.5rem;
+              }
+
+              .SealInformation-details-list-cont-val {
+                display: flex;
+                align-items: center;
+
+                .iconPathValue {
+                  margin-right: 0.5rem;
+                }
+              }
+            }
+          }
+
+          .SealInformation-details-image {
+            .SealInformation-details-image-title {
+              display: flex;
+              align-items: center;
+              height: 2.5rem;
+
+              .SealInformation-details-image-title-icon {
+                display: flex;
+                align-items: center;
+                margin-right: 0.5rem;
+              }
+            }
+
+            .SealInformation-details-image-cont {
+              display: flex;
+              flex-flow: wrap;
+
+              .SealInformation-details-image-cont-list {
+                width: 50%;
+                display: flex;
+                min-width: 25rem;
+                padding: 0.5rem 0;
+                box-sizing: border-box;
+
+                .SealInformation-details-image-cont-list-img {
+                  position: relative;
+                  width: auto;
+
+                  .SealInformation-details-image-cont-list-img-icon {
+                    position: absolute;
+                    right: 0%;
+                    top: 0%;
+                    width: 40%;
+                  }
+
+                  .SealInformation-details-image-cont-list-img-time {
+                    position: absolute;
+                    bottom: 0%;
+                    text-align: center;
+                    width: 100%;
+                    background-color: var(--jy-color-fill-65);
+                    color: var(--jy-in-common-use-1);
+                    height: 2rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                }
+
+                .SealInformation-details-image-cont-list-cont {
+                  flex-grow: 1;
+                  padding: 0 0.5rem;
+                  box-sizing: border-box;
+                  display: flex;
+                  align-content: space-between;
+                  flex-flow: wrap;
+
+                  .SealInformation-details-image-cont-list-cont-list {
+                    width: 100%;
+                    display: flex;
+
+                    .SealInformation-details-image-cont-list-cont-list-label {
+                      width: 4.5rem;
+                      display: flex;
+                      justify-content: flex-end;
+                      color: var(--jy-color-text-3);
+                    }
+
+                    .SealInformation-details-image-cont-list-cont-list-subValue {
+                      display: flex;
+                      align-items: center;
+                      padding-left: 0.5rem;
+                      box-sizing: border-box;
+
+                      .SealInformation-details-image-cont-list-cont-list-subValue-icon {
+                        margin-right: 0.2rem;
+                      }
+
+                      .SealInformation-details-image-cont-list-cont-list-subValue-text {
+                        color: var(--jy-danger-6);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 </style>

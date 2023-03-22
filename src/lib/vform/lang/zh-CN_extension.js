@@ -14,7 +14,7 @@ export default {
       limitAddressSeal: '外带用印',
       uploadFile: '用印文件',
       contactUnit: '往来单位',
-      fileType: '文件类型',
+      fileTypeId: '文件类型',
       agentMan: '代办人'
     },
 
