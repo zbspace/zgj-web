@@ -50,12 +50,12 @@
                     @change="onChange"
                   >
                     <el-option-group
-                      v-for="group in optionData"
+                      v-for="group in props.optionData"
                       :key="group.applyTypeName"
                       :label="group.applyTypeName"
                     >
                       <el-option
-                        v-for="item in group.options"
+                        v-for="item in group.children"
                         :key="item.applyTypeId"
                         :label="item.applyTypeName"
                         :value="item.applyTypeId"
@@ -171,28 +171,28 @@
     }
   })
 
-  const optionData = computed(() => {
-    const arr = []
-    props.optionData.forEach(v => {
-      if (!v.applyTypePid) {
-        arr.push({
-          applyTypeName: v.applyTypeName,
-          applyTypeId: v.applyTypeId,
-          options: []
-        })
-      }
-    })
-    props.optionData
-      .filter(v => v.applyTypePid)
-      .forEach(v => {
-        arr.forEach(x => {
-          if (v.applyTypePid === x.applyTypeId) {
-            x.options.push(v)
-          }
-        })
-      })
-    return arr
-  })
+  // const optionData = computed(() => {
+  //   const arr = []
+  //   props.optionData.forEach(v => {
+  //     if (!v.applyTypePid) {
+  //       arr.push({
+  //         applyTypeName: v.applyTypeName,
+  //         applyTypeId: v.applyTypeId,
+  //         options: []
+  //       })
+  //     }
+  //   })
+  //   props.optionData
+  //     .filter(v => v.applyTypePid)
+  //     .forEach(v => {
+  //       arr.forEach(x => {
+  //         if (v.applyTypePid === x.applyTypeId) {
+  //           x.options.push(v)
+  //         }
+  //       })
+  //     })
+  //   return arr
+  // })
 
   const prefabricationFieldList = ref([])
 
@@ -287,7 +287,7 @@
           formMessageId: props.columnData.formMessageId
         })
         messageSuccess('表单修改成功')
-        emit('reloadData')
+        emit('reloadData', props.columnData)
       } else {
         await formManageService.formAdd(formData.value)
         messageSuccess('表单添加成功')

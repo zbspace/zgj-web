@@ -300,22 +300,30 @@
           style: {}
         },
         {
-          id: 'manUserId',
+          id: 'manUser',
           label: '保管人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+保管人'
-          }
+            placeholder: '+保管人',
+            type: 'user',
+            multiple: false
+          },
+          options: [],
+          values: []
         },
         {
-          id: 'derivable',
+          id: 'manOrgan',
           label: '保管部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+保管部门'
-          }
+            placeholder: '+保管部门',
+            type: 'organ',
+            multiple: false
+          },
+          options: [],
+          values: []
         },
         {
           id: 'flag',

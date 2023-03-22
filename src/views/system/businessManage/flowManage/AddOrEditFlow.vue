@@ -202,6 +202,7 @@
   // 联动Id - 业务类型
   const linkId = computed({
     get() {
+      console.log(props.treeSelectedId, '----')
       return props.treeSelectedId
     },
     set(value) {

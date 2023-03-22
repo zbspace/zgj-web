@@ -358,6 +358,9 @@
           item.checkbox.forEach(i => {
             i.value = false
           })
+        } else if (item.type === 'derivable') {
+          item.options = []
+          item.values = []
         } else {
           delete item.value
         }
@@ -394,6 +397,7 @@
   const page = () => {
     loading.value = true
     const params = {}
+    console.log(props.componentsSearchForm.data)
     props.componentsSearchForm.data.forEach(item => {
       if (item.type === 'checkButton') {
         params[item.id] = item.data
@@ -410,6 +414,16 @@
           } else {
             params[item.id] =
               item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
+          }
+        }
+      } else if (item.type === 'derivable') {
+        if (item.values.length) {
+          if (item.defaultAttribute.multiple) {
+            params[item.requestParams] = item.defaultAttribute.joinStr
+              ? item.values.join(item.defaultAttribute.joinStr)
+              : item.values
+          } else {
+            params[item.requestParams] = item.values[0]
           }
         }
       } else {

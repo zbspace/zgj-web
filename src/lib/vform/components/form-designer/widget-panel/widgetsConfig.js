@@ -573,6 +573,7 @@ export const basicFields = [
     options: {
       name: '',
       label: '',
+      nameDisabled: false,
       labelAlign: '',
       type: 'text',
       defaultValue: '',

@@ -165,8 +165,8 @@
     vFormRef.value.setFormData(data)
   }
   // 设置表单单个字段值
-  const setFieldValue = value => {
-    vFormRef.value.setFieldValue(value)
+  const setFieldValue = (key, value) => {
+    vFormRef.value.setFieldValue(key, value)
   }
   // 重置表单数据，并清除校验状态
   const resetForm = () => {

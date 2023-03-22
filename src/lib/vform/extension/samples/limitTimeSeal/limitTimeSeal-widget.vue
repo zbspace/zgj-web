@@ -18,10 +18,19 @@
           :size="field.options.size"
           :class="[labelAlign, customClass]"
         >
-          <el-radio-group v-model="fieldModel.timeLimit" @change="handleChangeEvent($event,'timeLimit')">
-            <el-radio v-for="(item, index) in field.options.optionItems" :key="index" :label="item.value"
-                  :disabled="item.disabled" :border="field.options.border"
-                  :style="{display: field.options.displayStyle}">{{item.label}}</el-radio>
+          <el-radio-group
+            v-model="fieldModel.timeLimit"
+            @change="handleChangeEvent($event, 'timeLimit')"
+          >
+            <el-radio
+              v-for="(item, index) in field.options.optionItems"
+              :key="index"
+              :label="item.value"
+              :disabled="item.disabled"
+              :border="field.options.border"
+              :style="{ display: field.options.displayStyle }"
+              >{{ item.label }}</el-radio
+            >
           </el-radio-group>
         </el-form-item>
       </el-col>
@@ -30,35 +39,42 @@
           label="盖章时间"
           multiple
           :label-width="field.options.labelWidth"
-          :class="[selected ? 'selected' : '', labelAlign, customClass, field.options.required ? 'required' : '']"
+          :class="[
+            selected ? 'selected' : '',
+            labelAlign,
+            customClass,
+            field.options.required ? 'required' : ''
+          ]"
           :size="field.options.size"
           v-if="fieldModel.timeLimit === 1"
         >
-            <el-date-picker
-              ref="fieldEditor"
-              :type="field.options.type"
-              v-model="fieldModel.sealTime"
-              :disabled="field.options.disabled"
-              :readonly="field.options.readonly"
-              :clearable="field.options.clearable"
-              :editable="field.options.editable"
-              :format="field.options.format"
-              :value-format="field.options.valueFormat"
-              :start-placeholder="
-                field.options.startPlaceholder ||
-                i18nt('render.hint.startDatePlaceholder')
-              "
-              :end-placeholder="
-                field.options.endPlaceholder ||
-                i18nt('render.hint.endDatePlaceholder')
-              "
-              @change="onChange"
-            >
-            </el-date-picker>
-            <template v-if="isReadMode">
-              <span class="readonly-mode-field">{{ contentForReadMode }}</span>
-            </template>
-          <div class="el-form-item__error" v-if="field.options.requiredHint">{{ field.options.requiredHint }}</div>
+          <el-date-picker
+            ref="fieldEditor"
+            :type="field.options.type"
+            v-model="fieldModel.sealTime"
+            :disabled="field.options.disabled"
+            :readonly="field.options.readonly"
+            :clearable="field.options.clearable"
+            :editable="field.options.editable"
+            format="YYYY-MM-DD HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            :start-placeholder="
+              field.options.startPlaceholder ||
+              i18nt('render.hint.startDatePlaceholder')
+            "
+            :end-placeholder="
+              field.options.endPlaceholder ||
+              i18nt('render.hint.endDatePlaceholder')
+            "
+            @change="onChange"
+          >
+          </el-date-picker>
+          <template v-if="isReadMode">
+            <span class="readonly-mode-field">{{ contentForReadMode }}</span>
+          </template>
+          <div class="el-form-item__error" v-if="field.options.requiredHint">{{
+            field.options.requiredHint
+          }}</div>
         </el-form-item>
       </el-col>
     </el-row>
@@ -66,158 +82,158 @@
 </template>
 
 <script>
-import StaticContentWrapper from "@/lib/vform/components/form-designer/form-widget/field-widget/static-content-wrapper";
-import emitter from "@/lib/vform/utils/emitter";
-import i18n from "@/lib/vform/utils/i18n";
-import fieldMixin from "@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin";
+  import StaticContentWrapper from '@/lib/vform/components/form-designer/form-widget/field-widget/static-content-wrapper'
+  import emitter from '@/lib/vform/utils/emitter'
+  import i18n from '@/lib/vform/utils/i18n'
+  import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
 
-export default {
-  name: "limitTimeSeal-widget",
-  componentName: "FieldWidget", //必须固定为FieldWidget，用于接收父级组件的broadcast事件
-  mixins: [emitter, fieldMixin, i18n],
-  props: {
-    field: Object,
-    parentWidget: Object,
-    parentList: Array,
-    indexOfParentList: Number,
-    designer: Object,
+  export default {
+    name: 'LimitTimeSealWidget',
+    componentName: 'FieldWidget', // 必须固定为FieldWidget，用于接收父级组件的broadcast事件
+    mixins: [emitter, fieldMixin, i18n],
+    props: {
+      field: Object,
+      parentWidget: Object,
+      parentList: Array,
+      indexOfParentList: Number,
+      designer: Object,
 
-    designState: {
-      type: Boolean,
-      default: false,
-    },
+      designState: {
+        type: Boolean,
+        default: false
+      },
 
-    subFormRowIndex: {
-      /* 子表单组件行索引，从0开始计数 */ type: Number,
-      default: -1,
-    },
-    subFormColIndex: {
-      /* 子表单组件列索引，从0开始计数 */ type: Number,
-      default: -1,
-    },
-    subFormRowId: {
-      /* 子表单组件行Id，唯一id且不可变 */ type: String,
-      default: "",
-    },
-  },
-  components: {
-    StaticContentWrapper,
-  },
-  data() {
-    return {
-      fieldModel: {
-        timeLimit: 2,
-        sealTime: []
-			},
-      rules: [
-        // {
-        //   required: true,
-        //   trigger: ["blur", "change"],
-        //   message:
-        //     this.field.options.requiredHint ||
-        //     this.i18nt("designer.setting.fieldValueRequired"),
-        // },
-      ],
-    };
-  },
-  computed: {
-    customClass() {
-      return this.field.options.customClass;
-    },
-    labelAlign() {
-        if (!!this.field.options.labelAlign) {
-        return this.field.options.labelAlign;
-        }
-
-        if (!!this.designer) {
-        return this.designer.formConfig.labelAlign || "label-left-align";
-        } else {
-        return this.formConfig.labelAlign || "label-left-align";
-        }
-    },
-  },
-  created() {
-    this.registerToRefList();
-    this.initFieldModel()
-    this.initEventHandler();
-    this.buildFieldRules();
-    this.handleOnCreated();
-  },
-  beforeUnmount() {
-    this.unregisterFromRefList();
-  },
-  mounted() {
-    this.handleOnMounted();
-  },
-  methods: {
-    getValue(){
-			return this.fieldModel
-		},
-		setValue(value){
-			this.fieldModel = value
-		},
-    handleCloseCustomEvent() {
-      if (!!this.field.options.onClose) {
-        let changeFn = new Function(this.field.options.onClose);
-        changeFn.call(this);
+      subFormRowIndex: {
+        /* 子表单组件行索引，从0开始计数 */ type: Number,
+        default: -1
+      },
+      subFormColIndex: {
+        /* 子表单组件列索引，从0开始计数 */ type: Number,
+        default: -1
+      },
+      subFormRowId: {
+        /* 子表单组件行Id，唯一id且不可变 */ type: String,
+        default: ''
       }
     },
-    getSelectedLabel() {
-      return this.$refs.fieldEditor.selectedLabel;
+    components: {
+      StaticContentWrapper
     },
-    onChange(value){
-      if(!value){
-        this.field.options.requiredHint = '请选择限时盖章时间'
-      }else{
-        this.field.options.requiredHint = ''
+    data() {
+      return {
+        fieldModel: {
+          timeLimit: 2,
+          sealTime: []
+        },
+        rules: [
+          // {
+          //   required: true,
+          //   trigger: ["blur", "change"],
+          //   message:
+          //     this.field.options.requiredHint ||
+          //     this.i18nt("designer.setting.fieldValueRequired"),
+          // },
+        ]
+      }
+    },
+    computed: {
+      customClass() {
+        return this.field.options.customClass
+      },
+      labelAlign() {
+        if (this.field.options.labelAlign) {
+          return this.field.options.labelAlign
+        }
+
+        if (this.designer) {
+          return this.designer.formConfig.labelAlign || 'label-left-align'
+        } else {
+          return this.formConfig.labelAlign || 'label-left-align'
+        }
+      }
+    },
+    created() {
+      this.registerToRefList()
+      this.initFieldModel()
+      this.initEventHandler()
+      this.buildFieldRules()
+      this.handleOnCreated()
+    },
+    beforeUnmount() {
+      this.unregisterFromRefList()
+    },
+    mounted() {
+      this.handleOnMounted()
+    },
+    methods: {
+      getValue() {
+        return this.fieldModel
+      },
+      setValue(value) {
+        this.fieldModel = value
+      },
+      handleCloseCustomEvent() {
+        if (this.field.options.onClose) {
+          const changeFn = new Function(this.field.options.onClose)
+          changeFn.call(this)
+        }
+      },
+      getSelectedLabel() {
+        return this.$refs.fieldEditor.selectedLabel
+      },
+      onChange(value) {
+        if (!value) {
+          this.field.options.requiredHint = '请选择限时盖章时间'
+        } else {
+          this.field.options.requiredHint = ''
+        }
       }
     }
-  },
-};
+  }
 </script>
 
 <style lang="scss" scoped>
-.full-width-input {
-  width: 100% !important;
-}
+  .full-width-input {
+    width: 100% !important;
+  }
 
-:deep(.static-content-item) {
-  .el-form-item.left {
-    .el-form-item__label {
-      justify-content: flex-start;
+  :deep(.static-content-item) {
+    .el-form-item.left {
+      .el-form-item__label {
+        justify-content: flex-start;
+      }
+    }
+
+    .el-form-item.right {
+      .el-form-item__label {
+        justify-content: flex-end;
+      }
+    }
+
+    .el-form-item.center {
+      .el-form-item__label {
+        justify-content: center;
+      }
     }
   }
 
-  .el-form-item.right {
-    .el-form-item__label {
-      justify-content: flex-end;
-    }
+  :deep(.label-left-align) .el-form-item__label {
+    text-align: left;
+    justify-content: flex-start !important;
   }
 
-  .el-form-item.center {
-    .el-form-item__label {
-      justify-content: center;
-    }
+  :deep(.label-center-align) .el-form-item__label {
+    text-align: center;
+    justify-content: center !important;
   }
-}
 
-:deep(.label-left-align) .el-form-item__label {
-  text-align: left;
-  justify-content: flex-start !important;
-}
-
-:deep(.label-center-align) .el-form-item__label {
-  text-align: center;
-  justify-content: center !important;
-}
-
-:deep(.label-right-align) .el-form-item__label {
-  text-align: right;
-  justify-content: flex-end !important;
-}
-.required :deep(.el-form-item__label)::before {
-  content: "*";
-  color: #f56c6c;
-  margin-right: 4px;
-}
+  :deep(.label-right-align) .el-form-item__label {
+    text-align: right;
+    justify-content: flex-end !important;
+  }
+  .required :deep(.el-form-item__label)::before {
+    content: '*';
+    color: #f56c6c;
+    margin-right: 4px;
+  }
 </style>

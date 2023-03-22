@@ -172,17 +172,20 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref, nextTick } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import VFlowDesign from '@/views/components/FlowDesign/index.vue'
+  import dayjs from 'dayjs'
 
   const router = useRouter()
   const refVFlowDesign = ref(null)
   const initObj = ref(null)
+  const applyTypeId = ref(null)
+  const sealUseTypeId = ref(null)
   // const emit = defineEmits([])
   const state = reactive({
     cache: {
@@ -282,7 +285,7 @@
   // 点击下一步
   function clickNextStep() {
     refFillFormInformation.value.getFormData().then(formData => {
-      console.log(JSON.parse(JSON.stringify(formData)))
+      state.cache.formData = formData
       state.cache.flowList[0].active = false
       state.cache.flowList[1].active = true
       step.value = 'two'
@@ -326,7 +329,18 @@
 
   // 点击提交
   function clickSubmit() {
-    router.replace({ name: 'Accomplish' })
+    console.log(JSON.stringify(state.cache.formData))
+    sealApply
+      .add({
+        formMessageId: router.currentRoute.value.params.id,
+        applyTypeId: applyTypeId.value,
+        sealUseTypeId: sealUseTypeId.value,
+        flowMessageId: flowMessageId.value,
+        ...state.cache.formData
+      })
+      .then(res => {
+        router.replace({ name: 'Accomplish' })
+      })
   }
 
   const infoDetail = () => {
@@ -335,7 +349,15 @@
         formMessageId: router.currentRoute.value.params.id
       })
       .then(res => {
+        applyTypeId.value = res.data.applyTypeId
+        sealUseTypeId.value = res.data.sealUseTypeId
         fillFormInformationJson.value = JSON.parse(res.data.formInfo)
+        nextTick(() => {
+          refFillFormInformation.value.setFieldValue(
+            'applyNo',
+            dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+          )
+        })
       })
   }
 
