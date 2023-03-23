@@ -23,7 +23,7 @@
           v-for="item in props.selectionData"
           :key="item"
           class="scrollbar-demo-item"
-          >{{ item[props.label] }}</p
+          >{{ item[props.curKey || props.label] }}</p
         >
       </el-scrollbar>
     </template>
@@ -45,6 +45,10 @@
     },
     showToastDialogContent: {
       type: Object
+    },
+    curKey: {
+      type: String,
+      default: ''
     }
   })
   const emit = defineEmits(['sureAction', 'update:modelValue'])
