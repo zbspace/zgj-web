@@ -11,12 +11,12 @@
       </template>
 
       <template #tabs>
-        <VTabs
-          :active="activeName"
-          :label="tabsLabel"
-          @update:active="activeName = $event"
+        <componentsTabs
+          :activeName="state.componentsTabs.activeName"
+          :data="state.componentsTabs.data"
+          @tab-change="tabChange"
           style="margin-top: 12px"
-        ></VTabs>
+        ></componentsTabs>
       </template>
 
       <template #searchForm>
@@ -46,7 +46,7 @@
             :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
-            v-if="activeName === 'first'"
+            v-if="state.componentsTabs.activeName === 'first'"
           >
           </componentsTable>
 
@@ -57,7 +57,7 @@
             :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
-            v-if="activeName === 'second'"
+            v-if="state.componentsTabs.activeName === 'second'"
           >
           </componentsTable>
 
@@ -70,7 +70,7 @@
             :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
-            v-if="activeName === 'third'"
+            v-if="state.componentsTabs.activeName === 'third'"
           >
           </componentsTable>
 
@@ -83,7 +83,7 @@
             :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
-            v-if="activeName === 'fourth'"
+            v-if="state.componentsTabs.activeName === 'fourth'"
           >
           </componentsTable>
         </div>
@@ -106,29 +106,30 @@
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
-  import VTabs from '@/components/modules/tabs.vue'
+  import componentsTabs from '@/views/components/tabs.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  const activeName = ref('first')
-
-  const tabsLabel = ref([
-    {
-      name: 't-zgj-logRecord.Workbench',
-      value: 'first'
-    },
-    {
-      name: 't-app',
-      value: 'second'
-    },
-    {
-      name: 't-zgj-cg-menu-zhineng-yinzhang-gui',
-      value: 'third'
-    },
-    {
-      name: 't-zgj-cg-menu-zhineng-yinzhang-he',
-      value: 'fourth'
-    }
-  ])
   const state = reactive({
+    componentsTabs: {
+      data: [
+        {
+          label: 't-zgj-logRecord.Workbench',
+          name: 'first'
+        },
+        {
+          label: 't-app',
+          name: 'second'
+        },
+        {
+          label: 't-zgj-cg-menu-zhineng-yinzhang-gui',
+          name: 'third'
+        },
+        {
+          label: 't-zgj-cg-menu-zhineng-yinzhang-he',
+          name: 'fourth'
+        }
+      ],
+      activeName: 'first'
+    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -703,74 +704,6 @@
         total: 60,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
-      }
-    },
-
-    componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': false,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
       }
     }
   })
