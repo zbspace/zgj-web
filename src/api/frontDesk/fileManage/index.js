@@ -21,11 +21,10 @@ export const fileManageService = {
    * @param {*} data {formMessageId: string, relationRule: string}
    * @returns
    */
-  getFileTypeList: params => {
+  getFileTypeList: applyTypeId => {
     return request({
       method: 'POST',
-      url: `/fileType/queryList`,
-      params
+      url: `/fileType/queryList/${applyTypeId}`
     })
   },
   /**
@@ -80,6 +79,19 @@ export const fileManageService = {
   },
 
   /**
+   * 批量删除文件类型
+   * @param {*} fileTypeIds
+   * @returns
+   */
+  batchDelete: data => {
+    return request({
+      method: 'POST',
+      url: `fileType/batchDelete`,
+      data
+    })
+  },
+
+  /**
    * 查看文件类型的可见范围
    * @param {*} fileTypeId
    * @returns
@@ -110,9 +122,34 @@ export const fileManageService = {
    */
   viewRangSet: data => {
     return request({
-      method: 'GET',
+      method: 'POST',
       url: `/fileType/viewRangSet`,
       data
+    })
+  },
+
+  /**
+   * 设置可见范围
+   * @param {*} bizType
+   * @returns
+   */
+  privacySet: data => {
+    return request({
+      method: 'POST',
+      url: `/fileType/privacySet`,
+      data
+    })
+  },
+
+  /**
+   * 查看文件类型的隐私设置
+   * @param {*} bizType
+   * @returns
+   */
+  queryPrivacyByType: fileTypeId => {
+    return request({
+      method: 'GET',
+      url: `/fileTypePrivacyConfig/queryByType/${fileTypeId}`
     })
   }
 }

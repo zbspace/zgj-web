@@ -398,6 +398,7 @@ export const ch = {
   't-zgj-list.TypeUse': '文件类型',
   't-zgj-list.PleaseChoose': '请选择',
   't-zgj-list.SelectionDepartment': '选择部门',
+  't-zgj-list.SelectionPerson': '选择人员',
   't-zgj-list.ApprovalStatus': '审批状态',
   't-zgj-list.NoApproval': '未送审',
   't-zgj-list.Approvaling': '审批中',

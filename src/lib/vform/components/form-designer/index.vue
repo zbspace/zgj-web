@@ -43,7 +43,7 @@
         </el-main>
       </el-container>
 
-      <el-aside>
+      <el-aside style="overflow-y: hidden">
         <setting-panel
           :designer="designer"
           :selected-widget="designer.selectedWidget"
@@ -217,17 +217,19 @@
     },
     created() {
       this.designer.initDesigner(!!this.designerConfig.resetFormJson)
-      this.vsCodeFlag = getQueryParam('vscode') == 1
+      this.vsCodeFlag = Number(getQueryParam('vscode')) === 1
       this.caseName = getQueryParam('case')
     },
     mounted() {
       this.initLocale()
 
-      const logoHeaderHeight = this.designerConfig.logoHeader !== false ? 48 : 0
-      this.scrollerHeight = window.innerHeight - logoHeaderHeight + 'px'
+      // this.scrollerHeight = window.innerHeight - 56 + 'px'
+      this.scrollerHeight = 'calc(100vh - 105px)'
       addWindowResizeHandler(() => {
         this.$nextTick(() => {
-          this.scrollerHeight = window.innerHeight - logoHeaderHeight + 'px'
+          // this.scrollerHeight = window.innerHeight - 56 + 'px'
+          this.scrollerHeight = 'calc(100vh - 105px)'
+          // console.log(this.scrollerHeight)
         })
       })
 
@@ -558,8 +560,8 @@
   }
 
   .el-container.full-height {
-    height: 100%;
-    overflow-y: hidden;
+    height: calc(100vh - 60px);
+    overflow: hidden;
   }
 
   .el-container.center-layout-container {

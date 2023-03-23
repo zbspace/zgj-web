@@ -55,6 +55,7 @@
             @custom-click="customClick"
             @sort-change="sortChange"
             class="ap-table"
+            @getSelectionRows="getSelectionRows"
           >
             <el-table-column
               v-if="props.isSelection"
@@ -311,7 +312,8 @@
   const emit = defineEmits(['cellClick', 'customClick', 'clickBatchButton'])
 
   defineExpose({
-    reloadData
+    reloadData,
+    getSelectionRows
   })
 
   const clickBatchButton = (item, index) => {
@@ -383,6 +385,10 @@
   const sizeChange = data => {
     state.componentsPagination.data.pageNumber = data
     reloadData()
+  }
+
+  function getSelectionRows() {
+    return table.value.getSelectionRows()
   }
 
   function reloadData() {

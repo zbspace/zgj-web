@@ -179,6 +179,7 @@
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import VFlowDesign from '@/views/components/FlowDesign/index.vue'
+  import { ElMessage } from 'element-plus'
   import dayjs from 'dayjs'
 
   const router = useRouter()
@@ -294,9 +295,11 @@
           formMessageId: router.currentRoute.value.params.id
         })
         .then(res => {
-          flowLists.value = res.data
-          flowMessageId.value = res.data[0].flowMessageId
-          flowDetail(res.data[0].modelId, res.data[0].definitionId)
+          if (res.data && res.data.length) {
+            flowLists.value = res.data
+            flowMessageId.value = res.data[0].flowMessageId
+            flowDetail(res.data[0].modelId, res.data[0].definitionId)
+          }
         })
     })
   }
@@ -329,17 +332,79 @@
 
   // 点击提交
   function clickSubmit() {
-    console.log(JSON.stringify(state.cache.formData))
+    // if (!flowMessageId.value) {
+    //   ElMessage.warning('请选择审批流程')
+    //   return
+    // }
+    console.log(state.cache.formData)
+    const fixedParamsArr = [
+      'applyNo',
+      'applyName',
+      'sealName',
+      'fileCount',
+      'contactUnit',
+      'usesealBesides',
+      'remoteSeal',
+      'videoSeal',
+      'sealFile',
+      'applicantInfo',
+      'fileTypeId',
+      'agentMan',
+      'limitTimeSeal'
+    ]
+    let fixedParams = {}
+    let customApplyField = {}
+    for (const item in state.cache.formData) {
+      console.log(item)
+      const index = fixedParamsArr.indexOf(item)
+      console.log(index)
+      console.log({
+        [item]: state.cache.formData[item]
+      })
+      if (index > -1) {
+        fixedParams = {
+          ...fixedParams,
+          ...{
+            [item]: state.cache.formData[item]
+          }
+        }
+      } else {
+        customApplyField = {
+          ...customApplyField,
+          ...{
+            [item]: state.cache.formData[item]
+          }
+        }
+      }
+    }
+    console.log(fixedParams)
+    console.log(customApplyField)
     sealApply
       .add({
         formMessageId: router.currentRoute.value.params.id,
         applyTypeId: applyTypeId.value,
         sealUseTypeId: sealUseTypeId.value,
         flowMessageId: flowMessageId.value,
-        ...state.cache.formData
+        customApplyField:
+          JSON.stringify(customApplyField) === '{}' ? null : customApplyField,
+        ...fixedParams
       })
-      .then(res => {
-        router.replace({ name: 'Accomplish' })
+      .then(() => {
+        const params = {
+          modelId: initObj.value.modelId,
+          definitionId: initObj.value.definitionId,
+          instanceName: '',
+          suggest: null,
+          formData: state.cache.formData
+        }
+        sealApply.submit(params).then(() => {
+          router.replace({
+            name: 'Accomplish',
+            query: {
+              applyNo: state.cache.formData.applyNo
+            }
+          })
+        })
       })
   }
 

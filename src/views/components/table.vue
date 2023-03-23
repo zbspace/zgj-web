@@ -14,6 +14,7 @@
       @row-click="rowClick"
       @sort-change="sortChange"
       class="ap-table"
+      @getSelectionRows="getSelectionRows"
     >
       <el-table-column v-if="isSelection" type="selection" width="50" />
       <el-table-column
@@ -133,7 +134,8 @@
     onMounted
   } from 'vue'
   defineExpose({
-    clearSorts
+    clearSorts,
+    getSelectionRows
   })
   const props = defineProps({
     // 标识
@@ -238,6 +240,9 @@
   function customClick(index, row, item) {
     // console.log(index, row, item);
     emit('custom-click', index, row, item)
+  }
+  function getSelectionRows() {
+    return tableRefs.value.getSelectionRows()
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

@@ -58,6 +58,7 @@
                 </div>
               </div>
             </el-scrollbar>
+            <slot name="noScroll"></slot>
           </div>
         </div>
         <div class="ap-box-fixed" v-if="state.Layout.fixed">
@@ -146,14 +147,15 @@
     }
     .ap-deliberate {
       width: 100%;
-      height: 100%;
+      // height: 100%;
+      min-height: calc(100vh - 96px);
       display: flex;
       // flex-flow: wrap;
       align-content: flex-start;
       justify-content: flex-start;
       align-items: flex-start;
       flex-direction: column;
-      @include mixin-padding-top(16);
+      @include mixin-padding-top(10);
       @include mixin-padding-bottom(16);
       @include mixin-padding-left(20);
       @include mixin-padding-right(20);
@@ -162,6 +164,7 @@
       background-color: var(--jy-in-common-use-1);
       // margin-top: 18px;
       position: relative;
+      // overflow: auto;
     }
     .ap-free {
       width: 100%;
@@ -197,7 +200,7 @@
       // width: calc(100% + 1rem);
       // padding-right: 1rem;
       flex-grow: 1;
-      overflow: auto;
+      // overflow: auto;
     }
 
     .ap-box-searchForm {

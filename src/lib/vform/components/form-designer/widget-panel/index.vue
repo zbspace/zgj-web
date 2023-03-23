@@ -9,137 +9,138 @@
               {{ i18nt('designer.componentLib') }}</span
             >
           </template>
-
-          <el-collapse v-model="activeNames" class="widget-collapse">
-            <el-collapse-item
-              name="1"
-              :title="i18nt('designer.containerTitle')"
-            >
-              <draggable
-                tag="ul"
-                :list="containers"
-                item-key="key"
-                :group="{ name: 'dragGroup', pull: 'clone', put: false }"
-                :clone="handleContainerWidgetClone"
-                ghost-class="ghost"
-                :sort="false"
-                :move="checkContainerMove"
-                @end="onContainerDragEnd"
+          <el-scrollbar height="calc(100vh - 110px)">
+            <el-collapse v-model="activeNames" class="widget-collapse">
+              <el-collapse-item
+                name="1"
+                :title="i18nt('designer.containerTitle')"
               >
-                <template #item="{ element: ctn }">
-                  <li
-                    class="container-widget-item"
-                    :title="ctn.displayName"
-                    @dblclick="addContainerByDbClick(ctn)"
-                  >
-                    <span
-                      ><svg-icon
-                        :icon-class="ctn.icon"
-                        class-name="color-svg-icon"
-                      />{{ getWidgetLabel(ctn) }}</span
+                <draggable
+                  tag="ul"
+                  :list="containers"
+                  item-key="key"
+                  :group="{ name: 'dragGroup', pull: 'clone', put: false }"
+                  :clone="handleContainerWidgetClone"
+                  ghost-class="ghost"
+                  :sort="false"
+                  :move="checkContainerMove"
+                  @end="onContainerDragEnd"
+                >
+                  <template #item="{ element: ctn }">
+                    <li
+                      class="container-widget-item"
+                      :title="ctn.displayName"
+                      @dblclick="addContainerByDbClick(ctn)"
                     >
-                  </li>
-                </template>
-              </draggable>
-            </el-collapse-item>
+                      <span
+                        ><svg-icon
+                          :icon-class="ctn.icon"
+                          class-name="color-svg-icon"
+                        />{{ getWidgetLabel(ctn) }}</span
+                      >
+                    </li>
+                  </template>
+                </draggable>
+              </el-collapse-item>
 
-            <el-collapse-item
-              name="2"
-              :title="i18nt('designer.basicFieldTitle')"
-            >
-              <draggable
-                tag="ul"
-                :list="basicFields"
-                item-key="key"
-                :group="{ name: 'dragGroup', pull: 'clone', put: false }"
-                :move="checkFieldMove"
-                :clone="handleFieldWidgetClone"
-                ghost-class="ghost"
-                :sort="false"
+              <el-collapse-item
+                name="2"
+                :title="i18nt('designer.basicFieldTitle')"
               >
-                <template #item="{ element: fld }">
-                  <li
-                    class="field-widget-item"
-                    :title="fld.displayName"
-                    @dblclick="addFieldByDbClick(fld)"
-                  >
-                    <span
-                      ><svg-icon
-                        :icon-class="fld.icon"
-                        class-name="color-svg-icon"
-                      />{{ getWidgetLabel(fld) }}</span
+                <draggable
+                  tag="ul"
+                  :list="basicFields"
+                  item-key="key"
+                  :group="{ name: 'dragGroup', pull: 'clone', put: false }"
+                  :move="checkFieldMove"
+                  :clone="handleFieldWidgetClone"
+                  ghost-class="ghost"
+                  :sort="false"
+                >
+                  <template #item="{ element: fld }">
+                    <li
+                      class="field-widget-item"
+                      :title="fld.displayName"
+                      @dblclick="addFieldByDbClick(fld)"
                     >
-                  </li>
-                </template>
-              </draggable>
-            </el-collapse-item>
+                      <span
+                        ><svg-icon
+                          :icon-class="fld.icon"
+                          class-name="color-svg-icon"
+                        />{{ getWidgetLabel(fld) }}</span
+                      >
+                    </li>
+                  </template>
+                </draggable>
+              </el-collapse-item>
 
-            <el-collapse-item
-              name="3"
-              :title="i18nt('designer.advancedFieldTitle')"
-            >
-              <draggable
-                tag="ul"
-                :list="advancedFields"
-                item-key="key"
-                :group="{ name: 'dragGroup', pull: 'clone', put: false }"
-                :move="checkFieldMove"
-                :clone="handleFieldWidgetClone"
-                ghost-class="ghost"
-                :sort="false"
+              <el-collapse-item
+                name="3"
+                :title="i18nt('designer.advancedFieldTitle')"
               >
-                <template #item="{ element: fld }">
-                  <li
-                    class="field-widget-item"
-                    :title="fld.displayName"
-                    @dblclick="addFieldByDbClick(fld)"
-                  >
-                    <span
-                      ><svg-icon
-                        :icon-class="fld.icon"
-                        class-name="color-svg-icon"
-                      />{{ getWidgetLabel(fld) }}</span
+                <draggable
+                  tag="ul"
+                  :list="advancedFields"
+                  item-key="key"
+                  :group="{ name: 'dragGroup', pull: 'clone', put: false }"
+                  :move="checkFieldMove"
+                  :clone="handleFieldWidgetClone"
+                  ghost-class="ghost"
+                  :sort="false"
+                >
+                  <template #item="{ element: fld }">
+                    <li
+                      class="field-widget-item"
+                      :title="fld.displayName"
+                      @dblclick="addFieldByDbClick(fld)"
                     >
-                  </li>
-                </template>
-              </draggable>
-            </el-collapse-item>
+                      <span
+                        ><svg-icon
+                          :icon-class="fld.icon"
+                          class-name="color-svg-icon"
+                        />{{ getWidgetLabel(fld) }}</span
+                      >
+                    </li>
+                  </template>
+                </draggable>
+              </el-collapse-item>
 
-            <el-collapse-item
-              name="4"
-              :title="i18nt('designer.customFieldTitle')"
-            >
-              <draggable
-                tag="ul"
-                :list="customFields"
-                item-key="key"
-                :group="{ name: 'dragGroup', pull: 'clone', put: false }"
-                :move="checkFieldMove"
-                draggable=".can-move"
-                :clone="handleFieldWidgetClone"
-                ghost-class="ghost"
-                :sort="false"
+              <el-collapse-item
+                name="4"
+                :title="i18nt('designer.customFieldTitle')"
               >
-                <template #item="{ element: fld }">
-                  <li
-                    class="field-widget-item"
-                    :class="[
-                      haveWidgets.includes(fld.type) ? 'disabled' : 'can-move'
-                    ]"
-                    :title="fld.displayName"
-                    @dblclick="addFieldByDbClick(fld)"
-                  >
-                    <span>
-                      <svg-icon
-                        :icon-class="fld.icon"
-                        class-name="color-svg-icon"
-                      />{{ getWidgetLabel(fld) }}</span
+                <draggable
+                  tag="ul"
+                  :list="customFields"
+                  item-key="key"
+                  :group="{ name: 'dragGroup', pull: 'clone', put: false }"
+                  :move="checkFieldMove"
+                  draggable=".can-move"
+                  :clone="handleFieldWidgetClone"
+                  ghost-class="ghost"
+                  :sort="false"
+                >
+                  <template #item="{ element: fld }">
+                    <li
+                      class="field-widget-item"
+                      :class="[
+                        haveWidgets.includes(fld.type) ? 'disabled' : 'can-move'
+                      ]"
+                      :title="fld.displayName"
+                      @dblclick="addFieldByDbClick(fld)"
                     >
-                  </li>
-                </template>
-              </draggable>
-            </el-collapse-item>
-          </el-collapse>
+                      <span>
+                        <svg-icon
+                          :icon-class="fld.icon"
+                          class-name="color-svg-icon"
+                        />{{ getWidgetLabel(fld) }}</span
+                      >
+                    </li>
+                  </template>
+                </draggable>
+              </el-collapse-item>
+            </el-collapse>
+          </el-scrollbar>
         </el-tab-pane>
 
         <el-tab-pane
@@ -153,35 +154,36 @@
               {{ i18nt('designer.formLib') }}</span
             >
           </template>
-
-          <template v-for="(ft, idx) in formTemplates">
-            <el-card
-              :bord-style="{ padding: '0' }"
-              shadow="hover"
-              class="ft-card"
-            >
-              <el-popover placement="right" trigger="hover">
-                <template #reference>
-                  <img :src="ftImages[idx].imgUrl" style="width: 200px" />
-                </template>
-                <img
-                  :src="ftImages[idx].imgUrl"
-                  style="height: 600px; width: 720px"
-                />
-              </el-popover>
-              <div class="bottom clear-fix">
-                <span class="ft-title">#{{ idx + 1 }} {{ ft.title }}</span>
-                <el-button
-                  link
-                  type="primary"
-                  class="right-button"
-                  @click="loadFormTemplate(ft.jsonUrl)"
-                >
-                  {{ i18nt('designer.hint.loadFormTemplate') }}</el-button
-                >
-              </div>
-            </el-card>
-          </template>
+          <el-scrollbar height="calc(100vh - 110px)">
+            <template v-for="(ft, idx) in formTemplates" :key="idx">
+              <el-card
+                :bordStyle="{ padding: '0' }"
+                shadow="hover"
+                class="ft-card"
+              >
+                <el-popover placement="right" trigger="hover">
+                  <template #reference>
+                    <img :src="ftImages[idx].imgUrl" style="width: 200px" />
+                  </template>
+                  <img
+                    :src="ftImages[idx].imgUrl"
+                    style="height: 600px; width: 720px"
+                  />
+                </el-popover>
+                <div class="bottom clear-fix">
+                  <span class="ft-title">#{{ idx + 1 }} {{ ft.title }}</span>
+                  <el-button
+                    link
+                    type="primary"
+                    class="right-button"
+                    @click="loadFormTemplate(ft.jsonUrl)"
+                  >
+                    {{ i18nt('designer.hint.loadFormTemplate') }}</el-button
+                  >
+                </div>
+              </el-card>
+            </template>
+          </el-scrollbar>
         </el-tab-pane>
       </el-tabs>
     </div>

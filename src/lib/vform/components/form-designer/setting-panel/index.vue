@@ -33,6 +33,7 @@
                 >
                   <template v-for="(editorName, propName) in commonProps">
                     <component
+                      :key="propName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -49,6 +50,7 @@
                 >
                   <template v-for="(editorName, propName) in advProps">
                     <component
+                      :key="propName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -69,6 +71,7 @@
                 >
                   <template v-for="(editorName, propName) in eventProps">
                     <component
+                      :key="propName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -106,6 +109,7 @@
                 >
                   <template v-for="(editorName, propName) in commonProps">
                     <component
+                      :key="propName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -122,6 +126,7 @@
                 >
                   <template v-for="(editorName, propName) in advProps">
                     <component
+                      :key="propName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -138,6 +143,7 @@
                 >
                   <template v-for="(editorName, propName) in eventProps">
                     <component
+                      :key="propName"
                       v-if="hasPropEditor(propName, editorName)"
                       :is="getPropEditor(propName, editorName)"
                       :designer="designer"
@@ -347,10 +353,12 @@
         this.activeTab = '1'
       }
 
-      this.scrollerHeight = window.innerHeight - 56 + 'px'
+      // this.scrollerHeight = window.innerHeight - 56 + 'px'
+      this.scrollerHeight = 'calc(100vh - 105px)'
       addWindowResizeHandler(() => {
         this.$nextTick(() => {
-          this.scrollerHeight = window.innerHeight - 56 + 'px'
+          // this.scrollerHeight = window.innerHeight - 56 + 'px'
+          this.scrollerHeight = 'calc(100vh - 105px)'
           // console.log(this.scrollerHeight)
         })
       })

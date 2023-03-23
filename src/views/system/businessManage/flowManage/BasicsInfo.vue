@@ -102,6 +102,7 @@
   import { reactive, ref, watch } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { fileManageService } from '@/api/frontDesk/fileManage'
+  import { messageError } from '@/hooks/useMessage'
   const props = defineProps({
     businessList: {
       type: Array,
@@ -182,7 +183,10 @@
     try {
       const res = await fileManageService.getFileTypeList(form.applyTypeId)
       fileTypeList.value = res.data || []
-    } catch (error) {}
+    } catch (error) {
+      console.log('--->', error)
+      messageError(error)
+    }
   }
 
   watch(
