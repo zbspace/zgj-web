@@ -14,7 +14,7 @@
       destroy-on-close
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      width="40%"
+      width="600"
       align-center
       draggable
     >

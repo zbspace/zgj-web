@@ -371,25 +371,27 @@
         }
       }
     }
-    sealApply
-      .add({
-        formMessageId: router.currentRoute.value.params.id,
-        applyTypeId: applyTypeId.value,
-        sealUseTypeId: sealUseTypeId.value,
-        flowMessageId: flowMessageId.value,
-        customApplyField:
-          JSON.stringify(customApplyField) === '{}' ? null : customApplyField,
-        ...fixedParams
-      })
-      .then(() => {
-        const params = {
-          modelId: initObj.value.modelId,
-          definitionId: initObj.value.definitionId,
-          instanceName: state.cache.formData.applyName,
-          suggest: null,
-          formData: state.cache.formData
-        }
-        sealApply.submit(params).then(() => {
+    const params = {
+      modelId: initObj.value.modelId,
+      definitionId: initObj.value.definitionId,
+      instanceName: state.cache.formData.applyName,
+      suggest: null,
+      formData: state.cache.formData
+    }
+    sealApply.submit(params).then(res => {
+      console.log(res)
+      sealApply
+        .add({
+          formMessageId: router.currentRoute.value.params.id,
+          applyTypeId: applyTypeId.value,
+          sealUseTypeId: sealUseTypeId.value,
+          flowMessageId: flowMessageId.value,
+          gunsSysId: res.data.data.instanceId,
+          customApplyField:
+            JSON.stringify(customApplyField) === '{}' ? null : customApplyField,
+          ...fixedParams
+        })
+        .then(() => {
           router.replace({
             name: 'Accomplish',
             query: {
@@ -397,7 +399,7 @@
             }
           })
         })
-      })
+    })
   }
 
   const infoDetail = () => {
