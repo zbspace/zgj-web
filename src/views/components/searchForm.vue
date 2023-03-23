@@ -97,7 +97,7 @@
                       ? item.defaultAttribute.multiple
                       : false
                   "
-                  @change="getCurrentValue"
+                  @change="reloadData"
                 >
                   <el-option
                     v-for="data in item.options"
@@ -121,6 +121,7 @@
                   class="width-100"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
+                  @change="changeDatePicker"
                 />
               </div>
             </div>
@@ -156,7 +157,7 @@
                 <el-radio-group
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue"
+                  @change="reloadData"
                 >
                   <el-radio
                     v-for="(data, num) in item.radio"
@@ -184,7 +185,7 @@
                   style="width: 100%"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue"
+                  @change="reloadData"
                 />
               </div>
             </div>
@@ -445,7 +446,7 @@
   const searchSelected = ref([])
   const kDepartOrPerson = ref(null)
   const tabsShow = ref([])
-  const emit = defineEmits(['getCurrentValueAll', 'clickSubmit'])
+  const emit = defineEmits(['clickSubmit', 'reloadData'])
   const state = reactive({
     props: {
       // 默认属性
@@ -562,13 +563,9 @@
     state.cache.formData = formData
   }
   // 获取当前表单的值
-  function getCurrentValue() {
-    console.log(state.props)
+  function reloadData() {
+    emit('reloadData')
   }
-  // 获取全部表单的值
-  // function getCurrentValueAll() {
-  //   emit('getCurrentValueAll', props.data)
-  // }
   // 点击表单
   function clickElement(item, index) {
     showDeptDialog.value = true
@@ -643,6 +640,11 @@
       arr[index].checked = false
     } else {
       arr[index].checked = true
+    }
+  }
+  function changeDatePicker(val) {
+    if (!val) {
+      emit('reloadData')
     }
   }
 

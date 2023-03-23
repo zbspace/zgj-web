@@ -332,11 +332,10 @@
 
   // 点击提交
   function clickSubmit() {
-    // if (!flowMessageId.value) {
-    //   ElMessage.warning('请选择审批流程')
-    //   return
-    // }
-    console.log(state.cache.formData)
+    if (!flowMessageId.value) {
+      ElMessage.warning('请选择审批流程')
+      return
+    }
     const fixedParamsArr = [
       'applyNo',
       'applyName',
@@ -355,12 +354,7 @@
     let fixedParams = {}
     let customApplyField = {}
     for (const item in state.cache.formData) {
-      console.log(item)
       const index = fixedParamsArr.indexOf(item)
-      console.log(index)
-      console.log({
-        [item]: state.cache.formData[item]
-      })
       if (index > -1) {
         fixedParams = {
           ...fixedParams,
@@ -377,8 +371,6 @@
         }
       }
     }
-    console.log(fixedParams)
-    console.log(customApplyField)
     sealApply
       .add({
         formMessageId: router.currentRoute.value.params.id,
@@ -393,7 +385,7 @@
         const params = {
           modelId: initObj.value.modelId,
           definitionId: initObj.value.definitionId,
-          instanceName: '',
+          instanceName: state.cache.formData.applyName,
           suggest: null,
           formData: state.cache.formData
         }

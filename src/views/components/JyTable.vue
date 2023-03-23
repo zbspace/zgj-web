@@ -19,6 +19,7 @@
             :butData="props.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
             @clickSubmit="clickSubmit"
+            @reloadData="reloadData"
           >
           </componentsSearchForm>
         </div>

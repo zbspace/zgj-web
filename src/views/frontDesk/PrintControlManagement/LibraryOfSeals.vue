@@ -688,7 +688,9 @@
             'start-placeholder': '开始时间',
             'end-placeholder': '结束时间',
             'value-format': 'YYYY-MM-DD',
-            'disabled-date': disabledDate,
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+            },
             'default-value': [
               new Date(new Date().setMonth(new Date().getMonth() - 1)),
               new Date()
@@ -912,9 +914,6 @@
       ]
     }
   })
-  function disabledDate(time) {
-    return time.getTime() > Date.now() - 8.64e7 // 如果没有后面的-8.64e7就是不可以选择今天的
-  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
