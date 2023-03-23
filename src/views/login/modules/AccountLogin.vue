@@ -453,6 +453,7 @@
           token: loginResult.data.tokenValue
         })
         accountInfo.setUserName('曹春青')
+        accountInfo.setUserId(loginResult.data.loginId)
 
         // 记住密码
         if (state.rememberPas) {
