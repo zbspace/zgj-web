@@ -5,9 +5,11 @@
       :Layout="
         'title,searchForm,table,pagination,batch' +
         (props.hasTree ? ',tree' : '') +
-        (props.hasTabs ? ',tabs' : '')
+        (props.hasTabs ? ',tabs' : '') +
+        (props.breadcrumb ? ',breadcrumb' : '')
       "
     >
+      <template #breadcrumb><slot name="breadcrumb"></slot></template>
       <template #title><slot name="title"></slot></template>
       <template #tabs>
         <slot name="tabs"></slot>
@@ -20,6 +22,7 @@
             :style="state.componentsSearchForm.style"
             @clickSubmit="clickSubmit"
             @reloadData="reloadData"
+            @clickElement="clickElement"
           >
           </componentsSearchForm>
         </div>
@@ -89,49 +92,44 @@
                 :key="index"
                 v-if="item.show !== false"
               >
-                <!-- 自定义内容显示 -->
-                <template
-                  #default="scope"
-                  v-if="item.customDisplayType == 'switch'"
-                >
-                  <div class="switch">
+                <template #default="scope">
+                  <div class="switch" v-if="item.customDisplayType == 'switch'">
                     <el-switch v-model="scope.row.switchValue" />
                   </div>
-                </template>
-                <template
-                  #default="scope"
-                  v-if="item.customDisplayType == 'format'"
-                >
-                  <span>{{ scope.row[item.prop] }} {{ item.unit }}</span>
-                </template>
-                <!-- 状态 -->
-                <template #default="scope" v-if="item.prop == 'flag'">
-                  <span>{{
-                    scope.row[item.prop] === '1'
-                      ? '正常'
-                      : scope.row[item.prop] === '0'
-                      ? '停用'
-                      : scope.row[item.prop]
-                  }}</span>
-                </template>
-                <!-- 自定义内容显示 -->
-                <template
-                  #default="scope"
-                  v-if="item.customDisplayType == 'custom'"
-                >
-                  <div class="custom" :index="scope.$index">
+
+                  <span v-if="item.customDisplayType == 'format'">
+                    {{ scope.row[item.prop] }} {{ item.unit }}
+                  </span>
+
+                  <!-- 状态 -->
+                  <span v-if="item.prop == 'flag'">
+                    {{
+                      scope.row[item.prop] === '1'
+                        ? '正常'
+                        : scope.row[item.prop] === '0'
+                        ? '停用'
+                        : scope.row[item.prop]
+                    }}
+                  </span>
+
+                  <div
+                    class="custom"
+                    :index="scope.$index"
+                    v-if="item.customDisplayType == 'custom'"
+                  >
                     <slot
                       :name="'custom_' + item.prop"
                       :value="scope.row[item.prop]"
-                    ></slot>
+                    >
+                    </slot>
                   </div>
-                </template>
-                <!-- 自定义内容显示 -->
-                <template
-                  #default="scope"
-                  v-if="item.rankDisplayData && item.rankDisplayData.length > 0"
-                >
-                  <div class="rankDisplayData">
+
+                  <div
+                    class="rankDisplayData"
+                    v-if="
+                      item.rankDisplayData && item.rankDisplayData.length > 0
+                    "
+                  >
                     <div
                       class="rankDisplayData-node"
                       v-for="(data, num) in item.rankDisplayData.slice(0, 4)"
@@ -231,6 +229,7 @@
       type: Boolean,
       default: true
     },
+    isNo: { type: Boolean, default: true },
     queryParams: {
       type: Object
     },
@@ -249,7 +248,11 @@
     statusColoum: {
       type: String
     },
-    openValue: {}
+    openValue: {},
+    breadcrumb: {
+      type: Boolean,
+      default: false
+    }
   })
 
   const state = reactive({
@@ -310,13 +313,21 @@
   const table = ref(null)
   const orderBy = ref(null)
 
-  const emit = defineEmits(['cellClick', 'customClick', 'clickBatchButton'])
+  const emit = defineEmits([
+    'cellClick',
+    'customClick',
+    'clickBatchButton',
+    'clickElement'
+  ])
 
   defineExpose({
     reloadData,
     getSelectionRows
   })
 
+  const clickElement = (item, index) => {
+    emit('clickElement', item, index)
+  }
   const clickBatchButton = (item, index) => {
     if (item.name === 'refresh') {
       reloadData()
@@ -477,6 +488,7 @@
     )
   }
 
+  const rowClick = (row, column, event) => {}
   onBeforeMount(() => {
     // 初始化布局
     console.log(JSON.parse(JSON.stringify(props.componentsTableHeader)))

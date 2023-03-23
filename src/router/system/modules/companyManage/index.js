@@ -93,6 +93,16 @@ const routes = {
           },
           component: () =>
             import('@/views/system/companyManage/permission/config.vue')
+        },
+        {
+          path: 'person',
+          name: 'PersonManage',
+          meta: {
+            title: '人员管理',
+            authRequired: true
+          },
+          component: () =>
+            import('@/views/system/companyManage/permission/personManage.vue')
         }
       ]
     }

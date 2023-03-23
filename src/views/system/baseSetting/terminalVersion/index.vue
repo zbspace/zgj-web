@@ -101,7 +101,7 @@
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { reactive } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'

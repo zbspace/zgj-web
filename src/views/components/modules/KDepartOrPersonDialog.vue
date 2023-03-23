@@ -284,15 +284,16 @@
       const str = '请选择'
       let newStr = ''
       props.tabsShow.forEach((item, index) => {
+        console.log('123123', item)
         if (index === 0) {
           if (item === 'user') {
             newStr = '人员'
           }
           if (item === 'organ') {
-            newStr = '/部门'
+            newStr = '部门'
           }
           if (item === 'role') {
-            newStr = '/角色'
+            newStr = '角色'
           }
         } else {
           if (item === 'user') {
