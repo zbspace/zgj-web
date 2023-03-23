@@ -110,7 +110,6 @@
                 @click="chooseOrgan('manOrgan')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
-                alt=""
               />
             </div>
           </div>
@@ -122,6 +121,17 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="盖章码盖章" prop="sealCode">
+          <template #label>
+            <span>盖章码盖章 </span>
+            <el-popover
+              placement="top"
+              effect="dark"
+              trigger="hover"
+              content="仅控制工作台未登录情况下的入口显示"
+            >
+              <template #reference>1</template>
+            </el-popover>
+          </template>
           <el-radio-group v-model="form.sealCode">
             <el-radio label="1" size="large">是</el-radio>
             <el-radio label="0" size="large">否</el-radio>
