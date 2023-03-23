@@ -212,9 +212,9 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="审批意见" prop="sealExplain">
+          <el-form-item label="审批意见" prop="remark">
             <el-input
-              v-model="state.form.sealExplain"
+              v-model="state.form.remark"
               maxlength="100"
               show-word-limit
               type="textarea"
@@ -260,6 +260,7 @@
   import { ElMessage } from 'element-plus'
   import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
   // import api from '@/api/frontDesk/approvalFlow/approvalFlow'
+  import { ModelApi } from '@/api/flow/ModelApi'
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import { ApproverApi } from '@/api/flow/ApproverApi'
@@ -272,6 +273,17 @@
   })
   const vFormRef = ref(null)
   const btnLoading = ref(false)
+  // 子组件
+  const flowDesign = ref()
+  // 模型id
+  const modelId = ref(null)
+  // 模型名称
+  const modelName = ref('')
+  // 最新定义ID
+  const definitionId = ref(null)
+  // 最新实例ID
+  const instanceId = ref(null)
+  const formData = ref(null)
   // const submitLibraryForm = type => {
   //   if (!type) {
   //     vFormLibraryRef.value.resetForm()
@@ -305,12 +317,39 @@
     btnLoading.value = true
     vFormRef.value.validate(valid => {
       if (valid) {
-        ElMessage.success('审批成功')
-        btnLoading.value = false
+        console.log(state.form.approvals)
+        // ElMessage.success('审批成功')
+        // btnLoading.value = false
+        if (state.form.approvals === '1') {
+          onAgree()
+        }
       } else {
         ElMessage.error('校验失败')
       }
     })
+  }
+  const onAgree = res => {
+    const params = {
+      instanceId: instanceId.value,
+      modelId: modelId.value,
+      formData: formData.value,
+      definitionId: definitionId.value,
+      remark: state.form.remark,
+      suggest: 1
+    }
+    console.log(params)
+    ApproverApi.agree(params)
+      .then(result => {
+        if (result.code === '00000') {
+          console.info(result)
+          dialogProcess.show = false
+          getFormPage()
+        }
+        btnLoading.value = false
+      })
+      .catch(() => {
+        btnLoading.value = false
+      })
   }
   const state = reactive({
     searchSelected: [],
@@ -559,21 +598,7 @@
       }
     },
     form: {
-      sealId: '',
-      sealNo: '',
-      sealName: '',
-      sealAlias: '',
-      subOrganId: [],
-      subOrgans: [],
-      subOrganName: '',
-      // manageUserId: '',
-      // manageUserName: '',
-      // manageOrganId: '',
-      // manageOrganName: '',
-      keepUserId: '',
-      keepUserName: '',
-      keepOrganId: '',
-      keepOrganName: '',
+      remark: '',
       approvals: '1',
       // sealState: 1,
       hardwareVersionId: '',
@@ -969,72 +994,7 @@
           ]
         }
       ]
-      state.componentsTable.data = [
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: ''
-        }
-      ]
+      state.componentsTable.data = []
     } else if (activeName === '2') {
       state.componentsTable.header = [
         {
@@ -1091,73 +1051,7 @@
           ]
         }
       ]
-      state.componentsTable.data = [
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: '2022/10/30  15:00:00',
-          7: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: '2022/10/30  15:00:00'
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: '2022/10/30  15:00:00'
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: '2022/10/30  15:00:00'
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: '2022/10/30  15:00:00'
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: '2022/10/30  15:00:00'
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: '2022/10/30  15:00:00'
-        },
-        {
-          1: 'TradeCode21',
-          2: '',
-          3: '往往',
-          4: '',
-          5: '2022/10/30  15:00:00',
-          6: '2022/10/30  15:00:00'
-        }
-      ]
+      state.componentsTable.data = []
     }
 
     // 查询条件
@@ -1376,13 +1270,13 @@
 
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    dialogProcess.show = true
     console.log(column)
     dialogProcess.title = cell.name
     if (cell.name === '处理') {
       dialogProcess.formJson = RecordSealToReviewJson
     }
     if (cell.name === '审批') {
+      instanceId.value = column.instanceId
       getDetail(column.instanceId)
     }
   }
@@ -1393,12 +1287,17 @@
     const params = {
       instanceId
     }
+
     InstanceApi.detail(params)
       .then(data => {
+        dialogProcess.show = true
+
         console.log(data)
-        // modelName.value = data.modelName
-        // modelId.value = data.modelId
-        // definitionId.value = data.definitionId
+        console.log(JSON.parse(data.formJson))
+        formData.value = JSON.parse(data.formJson)
+        modelName.value = data.modelName
+        modelId.value = data.modelId
+        definitionId.value = data.definitionId
         // attrState.instanceName = data.instanceName
         // loading.value = false
         // initAffix()
@@ -1406,6 +1305,20 @@
       .catch(() => {
         // loading.value = false
       })
+  }
+  const getDesign = () => {
+    const params = {
+      modelId: modelId.value,
+      definitionId: definitionId.value,
+      edit: false
+    }
+    ModelApi.getDesign(params)
+      .then(result => {
+        if (result) {
+          flowDesign.value.handleSetData(result)
+        }
+      })
+      .catch(() => {})
   }
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'instanceTitle') {
