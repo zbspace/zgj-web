@@ -1,79 +1,6 @@
 <!-- 文件类型 -->
 <template>
   <div class="fileManagement-documentType">
-    <!-- <componentsLayout Layout="title,searchForm,table,pagination,batch,tree">
-      <template #title>
-        <div class="title">
-          <div>文件类型</div>
-          <div class="title-more">
-            <div class="title-more-add">
-              <el-button type="primary" @click="dialogVisible = true"
-                >+ 增加</el-button
-              >
-            </div>
-            <div class="title-more-down"> </div>
-          </div>
-        </div>
-      </template>
-
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-            @clickBatchButton="clickBatchButton"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-      <template #tree>
-        <div>
-          <componentsTree
-            :data="state.componentsTree.data"
-            :defaultAttribute="state.componentsTree.defaultAttribute"
-            :defaultProps="{ children: 'child', label: 'fileTypeName' }"
-            @node-click="nodeClick"
-          >
-          </componentsTree>
-        </div>
-      </template>
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            isSelection
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-            :loading="loading"
-            ref="tableRef"
-          >
-          </componentsTable>
-        </div>
-      </template>
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout> -->
-
     <JyTable
       url="/fileType/page"
       ref="table"
@@ -163,6 +90,17 @@
 
   <!-- 特殊类型隐私配置 -->
   <PrivacySet v-model="privacyVisible" :fileTypeId="curFileTypeId"></PrivacySet>
+
+  <!-- 批量操作弹框提示 -->
+  <actionMoreDialog
+    @update:modelValue="state.showToastDialog.show = false"
+    :show="state.showToastDialog.show"
+    :selectionData="state.componentsBatch.selectionData"
+    :showToastDialogContent="showToastDialogContent"
+    label="formName"
+    @sureAction="deleteFileType"
+    curKey="fileTypeName"
+  ></actionMoreDialog>
 </template>
 
 <script setup>
@@ -171,6 +109,7 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { fileManageService } from '@/api/frontDesk/fileManage'
+  import actionMoreDialog from '@/views/components/actionMoreDialog'
   import {
     messageError,
     messageSuccess,
@@ -196,6 +135,7 @@
   const curFileTypeIds = ref([])
   const privacyVisible = ref(false)
   const table = ref(null)
+  const showToastDialogContent = ref(null)
 
   const state = reactive({
     componentsSearchForm: {
@@ -230,7 +170,7 @@
             'end-placeholder': '结束时间',
             'value-format': 'YYYY-MM-DD',
             'disabled-date': time => {
-              return time.getTime() > Date.now() - 8.64e7 // 如果没有后面的-8.64e7就是不可以选择今天的
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
             },
             'default-value': [
               new Date(new Date().setMonth(new Date().getMonth() - 1)),
@@ -386,10 +326,6 @@
         {
           name: '批量删除',
           code: 1
-        },
-        {
-          name: '批量设置可见范围',
-          code: 2
         }
       ]
     },
@@ -397,6 +333,16 @@
       show: false,
       header: {
         data: ''
+      },
+      content: {
+        data: ''
+      }
+    },
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
       },
       content: {
         data: ''
@@ -459,6 +405,7 @@
           fileTypeIds: curFileTypeIds.value
         })
         messageSuccess('批量删除成功')
+        state.showToastDialog.show = false
       } else {
         await fileManageService.fileTypeDelete(curFileTypeId.value)
         messageSuccess('成功删除文件类型')
@@ -509,14 +456,21 @@
     curFromData.value = {}
   }
 
-  const clickBatchButton = async (item, index) => {
+  const clickBatchButton = async (item, selectionData) => {
     const row = table.value.getSelectionRows()
     curFileTypeIds.value = row.map(v => v.fileTypeId)
     // 批量删除
     if (item.code === 1) {
-      state.JyElMessageBox.header.data = '提示？'
-      state.JyElMessageBox.content.data = '请问确定要删除么？'
-      state.JyElMessageBox.show = true
+      state.componentsBatch.selectionData = selectionData
+      showToastDialogContent.value = {
+        header: {
+          data: '批量删除'
+        },
+        content: {
+          data: '是否删除以下文件类型？'
+        }
+      }
+      state.showToastDialog.show = true
     }
     // 批量设置可见范围
     if (item.code === 2) {

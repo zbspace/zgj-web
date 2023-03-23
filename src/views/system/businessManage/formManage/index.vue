@@ -30,10 +30,12 @@
         <div>
           <componentsTree
             ref="tree"
+            v-model="state.componentsTree.value"
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="state.componentsTree.defaultProps"
             @current-change="currentChange"
+            v-if="state.componentsTree.value"
           >
           </componentsTree>
         </div>
@@ -140,7 +142,6 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import api from '@/api/system/formManagement'
-  import dayjs from 'dayjs'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const optionData = ref([])
   const table = ref(null)
@@ -392,7 +393,12 @@
         'highlight-current': true,
         'node-key': 'applyTypeId',
         'current-node-key': '2'
-      }
+      },
+      defaultProps: {
+        label: 'applyTypeName',
+        children: 'children'
+      },
+      value: ''
     },
     componentsDocumentsDetails: {
       show: false,
@@ -684,7 +690,7 @@
         const listApplyTypeTree = []
         optionData.value = data
         data.forEach(element => {
-          element.label = element.applyTypeName
+          // element.label = element.applyTypeName
           if (element.applyTypePid === null) {
             element.children = []
             element.disabled = false
@@ -699,6 +705,8 @@
           }
         })
         state.componentsTree.data = listApplyTypeTree
+        state.componentsTree.value =
+          listApplyTypeTree[0].children[0].applyTypeId
         queryParams.value = { applyTypeId: '2' }
         table.value.reloadData()
       }

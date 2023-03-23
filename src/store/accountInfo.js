@@ -10,7 +10,8 @@ export const useAccountInfoStore = defineStore({
       accountNo: '',
       accountPass: '',
       token: '',
-      userName: ''
+      userName: '',
+      userId: ''
     }
   },
   getters: {},
@@ -24,6 +25,9 @@ export const useAccountInfoStore = defineStore({
     },
     setUserName(name) {
       this.userName = name || ''
+    },
+    setUserId(userId) {
+      this.userId = userId || ''
     }
   },
   // 开启数据缓存

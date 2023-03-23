@@ -20,16 +20,16 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="超级管理员">
-              <span>{{ superAdminInfo.userName }}</span>
+              <span>{{ superAdminInfo.adminName }}</span>
             </el-form-item>
             <el-form-item label="超级管理员账号">
-              <span>{{ superAdminInfo.account }}</span>
+              <span>{{ superAdminInfo.accountNo }}</span>
             </el-form-item>
             <el-form-item label="超级管理员手机号">
-              <span>{{ superAdminInfo.phone }}</span>
+              <span>{{ superAdminInfo.adminTel }}</span>
             </el-form-item>
             <el-form-item label="超级管理员邮箱号">
-              <span>{{ superAdminInfo.email }}</span>
+              <span>{{ superAdminInfo.adminEmail }}</span>
             </el-form-item>
             <el-form-item label="验证码" prop="vcode">
               <div class="vcode">
@@ -54,10 +54,10 @@
 
           <div v-if="step === 2">
             <el-form-item label="超级管理员">
-              <span>{{ superAdminInfo.userName }}</span>
+              <span>{{ superAdminInfo.adminName }}</span>
             </el-form-item>
             <el-form-item label="超级管理员账号">
-              <span>{{ superAdminInfo.account }}</span>
+              <span>{{ superAdminInfo.accountNo }}</span>
             </el-form-item>
             <el-form-item label="新的超管姓名" prop="adminId">
               <el-select
@@ -191,12 +191,12 @@
   const getUserList = () => {
     userApi
       .userPage({
-        status: 1,
-        pageNo: 1,
-        pageSize: 10000
+        flag: 1,
+        current: 1,
+        size: 10000
       })
       .then(res => {
-        userList.value = res.data.rows
+        userList.value = res.data.records
       })
   }
 
@@ -221,6 +221,8 @@
               type: 'success'
             })
             emit('updateSuperAdminInfo')
+            step.value = 1
+            formData.value = ref(new SuperAdmin())
           })
       } else {
         console.log('error', fields)

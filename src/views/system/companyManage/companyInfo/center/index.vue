@@ -73,13 +73,13 @@
           <div class="rows">
             <span class="label">超级管理员</span>
             <div>
-              <span class="content">{{ adminInfo.userName }}</span>
+              <span class="content">{{ props.tenantAdminInfo.adminName }}</span>
             </div>
           </div>
           <div class="rows">
             <span class="label">超级管理员账号</span>
             <div>
-              <span class="content">{{ adminInfo.account }}</span>
+              <span class="content">{{ props.tenantAdminInfo.accountNo }}</span>
             </div>
           </div>
         </div>
@@ -227,7 +227,7 @@
   <!-- 变更超级管理员 -->
   <ChangeSuperAdmin
     v-model="changeSAVisible"
-    :superAdminInfo="adminInfo"
+    :superAdminInfo="props.tenantAdminInfo"
     @updateSuperAdminInfo="updateSuperAdminInfo"
   />
 </template>
@@ -240,6 +240,10 @@
   const emit = defineEmits(['reloadData'])
   const props = defineProps({
     tenantBaseInfo: {
+      type: Object,
+      required: true
+    },
+    tenantAdminInfo: {
       type: Object,
       required: true
     },
@@ -285,12 +289,6 @@
         trigger: 'change'
       }
     ]
-  })
-  const adminInfo = ref({
-    userName: '章管家',
-    account: 'zgj-001',
-    phone: '18888888888',
-    email: '18888888888@163.com'
   })
   const passwordRuleList = ref([
     {
@@ -400,8 +398,8 @@
 
   // 变更超管
   const updateSuperAdminInfo = () => {
-    console.log(111)
     changeSAVisible.value = false
+    emit('reloadData')
   }
 
   // 密码设置

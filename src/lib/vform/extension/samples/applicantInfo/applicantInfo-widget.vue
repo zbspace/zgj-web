@@ -18,7 +18,11 @@
           :class="[labelAlign, customClass]"
           :size="field.options.size"
         >
-          <el-input v-model="fieldModel.applyUserId" disabled></el-input>
+          <el-input
+            v-model="fieldModel.applyUserId"
+            style="display: none"
+          ></el-input>
+          <el-input v-model="fieldModel.applyUserName" disabled></el-input>
         </el-form-item>
       </el-col>
 
@@ -128,7 +132,9 @@
         queryParams: { roleId: 'r1' },
         tabsShow: ['organ'],
         fieldModel: {
-          applyUserId: '',
+          applyUserId: JSON.parse(localStorage.getItem('accountInfo')).userId,
+          applyUserName: JSON.parse(localStorage.getItem('accountInfo'))
+            .userName,
           applyOrganId: '',
           applyOrganName: ''
         },
