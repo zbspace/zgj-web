@@ -252,7 +252,7 @@
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
-  import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
+  // import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import documentsDetailsInformationList from '@/views/components/documentsDetails/informationList.vue'

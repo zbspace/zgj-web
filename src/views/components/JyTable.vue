@@ -417,7 +417,7 @@
           }
         }
       } else if (item.type === 'derivable') {
-        if (item.values.length) {
+        if (item.values && item.values.length) {
           if (item.defaultAttribute.multiple) {
             params[item.requestParams] = item.defaultAttribute.joinStr
               ? item.values.join(item.defaultAttribute.joinStr)

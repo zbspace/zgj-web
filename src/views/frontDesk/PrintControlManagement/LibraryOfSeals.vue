@@ -359,7 +359,7 @@
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
       v-if="showDepPerDialog"
-      :tabsShow="tabsShow"
+      :tabsShow="state.tabsShow"
       @update:searchSelected="submitSelectDepart"
       :searchSelected="state.searchSelected"
     >
@@ -697,34 +697,22 @@
           style: {}
         },
         {
-          id: 'keepUser',
-          requestParams: 'keepUserIds',
+          id: 'keepUserIds',
           label: '保管人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+保管人',
-            type: 'user',
-            multiple: true,
-            joinStr: ','
-          },
-          values: [],
-          options: []
+            placeholder: '+保管人'
+          }
         },
         {
-          id: 'keepOrgan',
-          requestParams: 'keepOrganIds',
+          id: 'keepOrganIds',
           label: '保管部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+保管部门',
-            type: 'organ',
-            multiple: true,
-            joinStr: ','
-          },
-          values: [],
-          options: []
+            placeholder: '+保管部门'
+          }
         },
         {
           id: 'sealStatus',
@@ -951,6 +939,7 @@
       cell.name === 't-zgj-seal.SetAvailable'
     ) {
       showDepPerDialog.value = true
+      state.tabsShow = ['user']
     }
     if (cell.name === 't-zgj-Delete') {
       state.JyElMessageBox.header.data = '删除'
@@ -979,7 +968,7 @@
   }
   const getSealsInfo = () => {
     api.sealInfo(state.sealIds).then(res => {
-      console.log(res)
+      console.log('infro', res)
       if (res.code === 200) {
         state.form = res.data
         showLibraryDialog.value = true
@@ -1013,11 +1002,13 @@
         }
       ]
     }
-    if (
-      item.name === 't-zgj-seal.BatchSetVisibility' ||
-      item.name === 't-zgj-seal.BatchSetAvailable'
-    ) {
+    if (item.name === 't-zgj-seal.BatchSetVisibility') {
       showDepPerDialog.value = true
+      state.tabsShow = ['user']
+    }
+    if (item.name === 't-zgj-seal.BatchSetAvailable') {
+      showDepPerDialog.value = true
+      state.tabsShow = ['user']
     }
   }
   // 批量删除
@@ -1084,22 +1075,23 @@
   const submitElMessageBox = type => {
     state.JyElMessageBox.show = false
     if (type === '删除') {
-      apiOpt(type, api.sealInfoDelete(type, { ids: state.sealId }))
+      apiOpt(type, api.sealInfoDelete({ ids: state.sealIds }))
     }
     if (type === '停用') {
-      apiOpt(type, api.sealInfoDisable(type, { ids: state.sealId }))
+      apiOpt(type, api.sealInfoDisable({ ids: state.sealIds }))
     }
     if (type === '启用') {
-      apiOpt(type, api.sealInfoEnable(type, { ids: state.sealId }))
+      apiOpt(type, api.sealInfoEnable({ ids: state.sealIds }))
     }
     if (type === '销毁') {
-      apiOpt(type, api.sealInfoDestroy(type, { ids: state.sealId }))
+      apiOpt(type, api.sealInfoDestroy({ ids: state.sealIds }))
     }
   }
   const apiOpt = (typeName, apiName) => {
     apiName.then(res => {
       if (res.code === 200) {
         ElMessage.success(`${typeName}成功！`)
+        table.value.reloadData()
       } else {
         ElMessage.success(`${typeName}失败，请重试`)
       }

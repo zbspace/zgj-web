@@ -27,7 +27,7 @@
           <div>员工管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="add">+ 增加</el-button>
+              <el-button type="primary" @click="addStaff">+ 增加</el-button>
             </div>
             <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
@@ -115,6 +115,7 @@
             ></el-input>
             <div class="ap-box-contBox-icon">
               <el-icon
+                style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.hostOrgan"
                 @click="clear('hostOrgan')"
                 ><CircleClose
@@ -145,6 +146,7 @@
             />
             <div class="ap-box-contBox-icon">
               <el-icon
+                style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.partTimeOrganIds"
                 @click="clear('partTimeOrgan')"
                 ><CircleClose
@@ -193,6 +195,7 @@
             />
             <div class="ap-box-contBox-icon">
               <el-icon
+                style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.directLeaderUserId"
                 @click="clear('directLeaderUser')"
                 ><CircleClose
@@ -222,6 +225,7 @@
             />
             <div class="ap-box-contBox-icon">
               <el-icon
+                style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.roleIds"
                 @click="clear('roles')"
                 ><CircleClose
@@ -747,7 +751,7 @@
   // 新增员工
   const addStaff = () => {
     state.title = '新增'
-    formStaffRef.value.resetFields()
+    if (formStaffRef.value) formStaffRef.value.resetFields()
     showStaffDialog.value = true
   }
   // 清除部门信息
@@ -791,7 +795,7 @@
       console.log(state.tabSelects.searchSelected)
     }
     if (depChoose.value === 'roles') {
-      state.tabsShow = ['role']
+      state.tabsShow = ['organ']
       state.tabSelects.searchSelected = JSON.parse(
         JSON.stringify(state.tabSelects.rolesSelected)
       )
@@ -1093,6 +1097,10 @@
       .el-tree-node__expand-icon.is-leaf {
         width: 0px;
       }
+    }
+    .el-icon {
+      color: #aaaaaa;
+      margin-right: 5px;
     }
   }
 </style>
