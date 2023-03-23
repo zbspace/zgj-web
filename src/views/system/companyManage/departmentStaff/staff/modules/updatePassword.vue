@@ -141,22 +141,29 @@
   const comifrm = value => {
     console.log(passwordForm)
     const queryData = {}
-    queryData.newPassword = passwordForm.value.newPassword
+    queryData.newPassword = state.formData.newPassword
     passwordForm.value.validate(valid => {
       if (valid) {
         if (props.title === '重置密码') {
-          emit('on-confirm', props.title)
           queryData.userId = props.userIds[0]
-          // api.userResetPassword(queryData).then(res => {
-          //   console.log(res)
-          // })
+          console.log(queryData)
+          api.userResetPassword(queryData).then(res => {
+            if (res.code === 200) {
+              emit('on-confirm', { title: props.title, res })
+            } else {
+              ElMessage.error('重置密码失败，请重试！')
+            }
+          })
         }
         if (props.title === '批量重置密码') {
-          queryData.userId = props.userIds
-          emit('on-confirm', props.title)
-          // api.userBatchResetPassword(queryData).then(res => {
-          //   console.log(res)
-          // })
+          queryData.userIds = props.userIds
+          api.userBatchResetPassword(queryData).then(res => {
+            if (res.code === 200) {
+              emit('on-confirm', { title: props.title, res })
+            } else {
+              ElMessage.error('重置密码失败，请重试！')
+            }
+          })
         }
       } else {
         ElMessage.error('请输入新密码')

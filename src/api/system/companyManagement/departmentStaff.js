@@ -20,11 +20,10 @@ api.userAdd = data => {
   })
 }
 // 获取员工信息
-api.userGet = data => {
+api.userGet = params => {
   return request({
     method: 'GET',
-    url: '/user/get/',
-    data
+    url: `/user/${params}`
   })
 }
 // 修改员工
@@ -36,11 +35,10 @@ api.userEdit = data => {
   })
 }
 // 删除员工
-api.userDelete = data => {
+api.userDelete = params => {
   return request({
     method: 'GET',
-    url: '/user/delete/',
-    data
+    url: `/user/delete/${params}`
   })
 }
 // 批量删除
@@ -52,11 +50,10 @@ api.userBatchDelete = data => {
   })
 }
 // 启用员工
-api.userEnable = data => {
+api.userEnable = params => {
   return request({
     method: 'GET',
-    url: '/user/enable/',
-    data
+    url: `/user/enable/${params}`
   })
 }
 // 批量启用员工
@@ -68,11 +65,10 @@ api.userBatchEnable = data => {
   })
 }
 // 停用员工
-api.userDisable = data => {
+api.userDisable = params => {
   return request({
     method: 'GET',
-    url: '/user/disable/',
-    data
+    url: `/user/disable/${params}`
   })
 }
 // 批量停用

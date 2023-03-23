@@ -31,7 +31,7 @@
     "min-width": 150
   },
   {
-    "prop": "status",
+    "prop": "flag",
     "label": "状态",
     "sortable": true,
     "min-width": 150
@@ -46,7 +46,7 @@
         "name": "t-zgj-Edit"
       },
       {
-        "name": "t-zgj-seal.deactivated"
+        "name": "status"
       },
       {
         "name": "t-zgj-Delete"

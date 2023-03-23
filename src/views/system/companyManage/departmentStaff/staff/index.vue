@@ -16,8 +16,8 @@
       :componentsBatch="state.componentsBatch"
       :queryParams="{ organId }"
       tableClick="userName"
-      statusColoum="status"
-      openValue="0"
+      statusColoum="flag"
+      openValue="启用"
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
@@ -70,9 +70,11 @@
       :show="showStaffDialog"
       :title="state.title"
       :centerBtn="true"
+      :confirmLoading="confirmLoading"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       :width="900"
+      destroy-on-close
       :height="600"
       @close="closeStaffFrom"
       @confirm="submitStaffForm"
@@ -89,7 +91,7 @@
             placeholder="请输入姓名"
           />
         </el-form-item>
-        <el-form-item label="帐号" prop="userName">
+        <el-form-item label="帐号" prop="accountNo">
           <el-input
             v-model="state.componentsAddForm.formData.accountNo"
             placeholder="请输入帐号"
@@ -101,22 +103,22 @@
             placeholder="请输入手机号"
           />
         </el-form-item>
-        <el-form-item label="所属部门" prop="hostOrganId">
+        <el-form-item label="所属部门" prop="hostOrganName">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="state.componentsAddForm.formData.hostOrgan"
+              v-model="state.componentsAddForm.formData.hostOrganName"
               placeholder="请选择"
             />
-            <el-input
+            <!-- <el-input
               type="hidden"
               v-model="state.componentsAddForm.formData.hostOrganId"
-            ></el-input>
+            ></el-input> -->
             <div class="ap-box-contBox-icon">
               <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
-                v-if="state.componentsAddForm.formData.hostOrgan"
+                v-if="state.componentsAddForm.formData.hostOrganName"
                 @click="clear('hostOrgan')"
                 ><CircleClose
               /></el-icon>
@@ -129,25 +131,25 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="兼职部门" prop="partTimeOrganIds">
+        <el-form-item label="兼职部门" prop="partTimeOrganNames">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="state.componentsAddForm.formData.partTimeOrgan"
+              v-model="state.componentsAddForm.formData.partTimeOrganNames"
               placeholder="请选择"
             />
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
               type="hidden"
-              v-model="state.componentsAddForm.formData.partTimeOrganIds"
+              v-model="state.componentsAddForm.formData.partTimeOrgans"
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
               <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
-                v-if="state.componentsAddForm.formData.partTimeOrganIds"
+                v-if="state.componentsAddForm.formData.partTimeOrganNames"
                 @click="clear('partTimeOrgan')"
                 ><CircleClose
               /></el-icon>
@@ -178,30 +180,30 @@
             placeholder="请输入工号"
           />
         </el-form-item>
-        <el-form-item label="主管" prop="directLeaderUserId">
+        <el-form-item label="主管" prop="leaderUserName">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="state.componentsAddForm.formData.directLeaderUser"
+              v-model="state.componentsAddForm.formData.leaderUserName"
               placeholder="请选择"
             />
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
               type="hidden"
-              v-model="state.componentsAddForm.formData.directLeaderUserId"
+              v-model="state.componentsAddForm.formData.leaderUserId"
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
               <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
-                v-if="state.componentsAddForm.formData.directLeaderUserId"
-                @click="clear('directLeaderUser')"
+                v-if="state.componentsAddForm.formData.leaderUserId"
+                @click="clear('leaderUser')"
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('directLeaderUser')"
+                @click="chooseOrgan('leaderUser')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -209,24 +211,24 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="角色" prop="roleIds">
+        <el-form-item label="角色" prop="roleNames">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="state.componentsAddForm.formData.roles"
+              v-model="state.componentsAddForm.formData.roleNames"
               placeholder="请选择"
             />
             <el-input
               class="ap-box-contBox-input width-100"
               type="hidden"
-              v-model="state.componentsAddForm.formData.roleIds"
+              v-model="state.componentsAddForm.formData.roles"
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
               <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
-                v-if="state.componentsAddForm.formData.roleIds"
+                v-if="state.componentsAddForm.formData.roleNames"
                 @click="clear('roles')"
                 ><CircleClose
               /></el-icon>
@@ -367,7 +369,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive, onBeforeMount, watch, nextTick } from 'vue'
+  import { ref, reactive, onMounted, watch, nextTick } from 'vue'
   import { CircleClose, Plus } from '@element-plus/icons-vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
@@ -396,6 +398,7 @@
   const table = ref(null)
   const firstNode = ref(null)
   const firstTreeData = ref([])
+  const confirmLoading = ref(false)
 
   const state = reactive({
     title: '新增',
@@ -408,7 +411,7 @@
       // 角色选中信息
       rolesSelected: [],
       // 主管选中信息
-      directLeaderUserSelected: [],
+      leaderUserSelected: [],
       // 兼职部门选中信息
       partTimehostOrganSelected: []
     },
@@ -425,21 +428,23 @@
     },
     componentsAddForm: {
       formData: {
+        userId: '',
         userName: '',
         accountNo: '',
         userTel: '',
         hostOrganId: '',
-        hostOrgan: '',
-        partTimeOrganIds: '',
+        hostOrganName: '',
+        partTimeOrganNames: '',
+        partTimeOrgans: [],
         userTitle: '',
         userMail: '',
-        roleIds: '',
-        roles: '',
+        roleNames: '',
+        roles: [],
         qweiNo: '',
         dingdingNo: '',
         userNo: '',
-        directLeaderUserId: '',
-        directLeaderUser: '',
+        leaderUserId: '',
+        leaderUserName: '',
         userFaceId: '',
         readme: ''
       },
@@ -466,14 +471,14 @@
           }
           // { min: 11, type: 'number', message: '手机号必须为11位数字' }
         ],
-        hostOrganId: [
+        hostOrganName: [
           {
             required: true,
             message: '请选择所属部门',
             trigger: 'change'
           }
         ],
-        roleIds: [
+        roleNames: [
           {
             required: true,
             message: '请选择角色',
@@ -504,7 +509,7 @@
           }
         },
         {
-          id: 'status',
+          id: 'flag',
           label: '状态',
           type: 'select',
           inCommonUse: true,
@@ -687,7 +692,7 @@
           name: 't-zgj-seal.BatchDelete'
         },
         {
-          name: '批量重置密码'
+          name: 't-zgj-findpwd.batchResetPassword'
         }
       ],
       userIds: []
@@ -751,7 +756,14 @@
   // 新增员工
   const addStaff = () => {
     state.title = '新增'
-    if (formStaffRef.value) formStaffRef.value.resetFields()
+    if (formStaffRef.value) {
+      nextTick(() => {
+        formStaffRef.value.resetFields()
+      })
+    }
+    for (const item in state.componentsAddForm.formData) {
+      state.componentsAddForm.formData[item] = ''
+    }
     showStaffDialog.value = true
   }
   // 清除部门信息
@@ -759,23 +771,23 @@
     console.log('type', type)
     if (type === 'hostOrgan') {
       state.tabSelects.hostOrganSelected = []
-      state.componentsAddForm.formData.hostOrgan = ''
+      state.componentsAddForm.formData.hostOrganName = ''
       state.componentsAddForm.formData.hostOrganId = ''
     }
-    if (depChoose.value === 'partTimeOrgan') {
+    if (type === 'partTimeOrgan') {
       state.tabSelects.partTimehostOrganSelected = []
-      state.componentsAddForm.formData.partTimeOrganIds = ''
-      state.componentsAddForm.formData.partTimeOrgan = ''
+      state.componentsAddForm.formData.partTimeOrgans = []
+      state.componentsAddForm.formData.partTimeOrganNames = ''
     }
-    if (depChoose.value === 'roles') {
+    if (type === 'roles') {
       state.tabSelects.rolesSelected = []
-      state.componentsAddForm.formData.roleIds = ''
-      state.componentsAddForm.formData.roles = ''
+      state.componentsAddForm.formData.roleNames = ''
+      state.componentsAddForm.formData.roles = []
     }
-    if (depChoose.value === 'directLeaderUser') {
-      state.tabSelects.directLeaderUserSelected = []
-      state.componentsAddForm.formData.directLeaderUserId = ''
-      state.componentsAddForm.formData.directLeaderUser = ''
+    if (type === 'leaderUser') {
+      state.tabSelects.leaderUserSelected = []
+      state.componentsAddForm.formData.leaderUserId = ''
+      state.componentsAddForm.formData.leaderUserName = ''
     }
   }
   // 选择部门弹窗
@@ -800,10 +812,10 @@
         JSON.stringify(state.tabSelects.rolesSelected)
       )
     }
-    if (depChoose.value === 'directLeaderUser') {
+    if (depChoose.value === 'leaderUser') {
       state.tabsShow = ['user']
       state.tabSelects.searchSelected = JSON.parse(
-        JSON.stringify(state.tabSelects.directLeaderUserSelected)
+        JSON.stringify(state.tabSelects.leaderUserSelected)
       )
     }
     showDepPerDialog.value = true
@@ -816,34 +828,54 @@
   )
   // 获取部门
   const submitSelectDepart = item => {
-    const organIds = []
-    const organNames = []
     console.log(item)
-    if (item.length > 0) {
-      item.forEach(el => {
-        organIds.push(el.id)
-        organNames.push(el.name)
-      })
-      if (depChoose.value === 'hostOrgan') {
-        state.tabSelects.hostOrganSelected = item
-        state.componentsAddForm.formData.hostOrgan = item[0].name
-        state.componentsAddForm.formData.hostOrganId = item[0].id
-      }
-      if (depChoose.value === 'partTimeOrgan') {
+    if (depChoose.value === 'hostOrgan') {
+      state.tabSelects.hostOrganSelected = item
+      state.componentsAddForm.formData.hostOrganName = item[0].name
+      state.componentsAddForm.formData.hostOrganId = item[0].id
+    }
+    if (depChoose.value === 'partTimeOrgan') {
+      const organNames = []
+      const organs = []
+      if (item.length > 0) {
+        item.forEach(el => {
+          const organ = {
+            organId: el.id,
+            organName: el.name,
+            haveChildren: el.haveChildren
+          }
+          organs.push(organ)
+          organNames.push(el.name)
+        })
+
         state.tabSelects.partTimehostOrganSelected = item
-        state.componentsAddForm.formData.partTimeOrganIds = organIds
-        state.componentsAddForm.formData.partTimeOrgan = organNames.join('、')
+        state.componentsAddForm.formData.partTimeOrgans = organs
+        state.componentsAddForm.formData.partTimeOrganNames =
+          organNames.join('、')
       }
-      if (depChoose.value === 'roles') {
-        state.tabSelects.rolesSelected = item
-        state.componentsAddForm.formData.roleIds = organIds
-        state.componentsAddForm.formData.roles = organNames.join('、')
+    }
+    if (depChoose.value === 'roles') {
+      const roles = []
+      const roleNames = []
+      if (item.length > 0) {
+        item.forEach(el => {
+          const role = {
+            roleId: 'r1',
+            roleName: el.name
+          }
+          roles.push(role)
+          roleNames.push(el.name)
+        })
       }
-      if (depChoose.value === 'directLeaderUser') {
-        state.tabSelects.directLeaderUserSelected = item
-        state.componentsAddForm.formData.directLeaderUserId = item[0].id
-        state.componentsAddForm.formData.directLeaderUser = item[0].name
-      }
+      console.log(roleNames)
+      state.tabSelects.rolesSelected = item
+      state.componentsAddForm.formData.roles = roles
+      state.componentsAddForm.formData.roleNames = roleNames.join('、')
+    }
+    if (depChoose.value === 'leaderUser') {
+      state.tabSelects.leaderUserSelected = item
+      state.componentsAddForm.formData.leaderUserId = item[0].id
+      state.componentsAddForm.formData.leaderUserName = item[0].name
     }
     showDepPerDialog.value = false
   }
@@ -866,8 +898,8 @@
     return isJPG && isLt2M
   }
   // 批量操作
-  const clickBatchButton = (item, index) => {
-    const list = state.componentsBatch.selectionData
+  const clickBatchButton = (item, selection) => {
+    const list = (state.componentsBatch.selectionData = selection)
     console.log('list', list)
     console.log(list[0])
     let nameList = ''
@@ -908,22 +940,56 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  const customClick = (row, colum, cell, event) => {
+  const customClick = (row, column, cell, event) => {
     const nameIdArr = []
-    console.log(colum)
-    nameIdArr.push(colum.userId)
+    console.log(column)
+    nameIdArr.push(column.userId)
     state.componentsBatch.userIds = nameIdArr
     if (cell.name === 't-zgj-Edit') {
       state.title = '修改'
       showStaffDialog.value = true
+      api.userGet(column.userId).then(res => {
+        console.log(res)
+        for (const item in res.data) {
+          state.componentsAddForm.formData[item] = res.data[item]
+          if (item === 'partTimeOrgans' && res.data[item].length > 0) {
+            const organs = []
+            res.data[item].forEach(item => {
+              organs.push(item.organName)
+            })
+            state.tabSelects.partTimehostOrganSelected.push({
+              id: item.organId,
+              name: item.organName,
+              type: 'organ'
+            })
+            state.componentsAddForm.formData.partTimeOrganNames =
+              organs.join('、')
+          }
+          if (item === 'roles' && res.data[item].length > 0) {
+            const rolesNames = []
+            res.data[item].forEach(item => {
+              rolesNames.push(item.roleName)
+            })
+            state.tabSelects.rolesSelected.push({
+              id: item.roleId,
+              name: item.roleName
+            })
+            state.componentsAddForm.formData.roles = rolesNames.join('、')
+          }
+        }
+        console.log(
+          'state.componentsAddForm.formData',
+          state.componentsAddForm.formData
+        )
+      })
     }
-    if (cell.name === 't-zgj-seal.deactivated') {
+    if (cell.name === 'status' && column.flag === '启用') {
       state.JyElMessageBox.header.data = '停用'
       state.JyElMessageBox.content.data = '确认要停用该员工吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '停用'
     }
-    if (cell.name === 't-zgj-Enable') {
+    if (cell.name === 'status' && column.flag === '停用') {
       state.JyElMessageBox.header.data = '启用'
       state.JyElMessageBox.content.data = '确认要启用该员工吗？'
       state.JyElMessageBox.show = true
@@ -946,36 +1012,75 @@
   // 提交弹窗
   const submitElMessageBox = type => {
     console.log(state.componentsBatch.userIds)
-    const singleData = {
-      userId: state.componentsBatch.userIds[0]
-    }
-    const batchData = {
-      userIds: state.componentsBatch.userIds
-    }
     if (type === '停用') {
-      singleOpt(type, api.userDisable(singleData))
+      api.userDisable(state.componentsBatch.userIds[0]).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          ElMessage.success(`${type}成功！`)
+          state.JyElMessageBox.show = false
+          table.value.reloadData()
+        }
+      })
     }
     if (type === '启用') {
-      singleOpt(type, api.userEnable(singleData))
+      api.userEnable(state.componentsBatch.userIds[0]).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          ElMessage.success(`${type}成功！`)
+          state.JyElMessageBox.show = false
+          table.value.reloadData()
+        }
+      })
     }
     if (type === '删除') {
-      singleOpt(type, api.userDelete(singleData))
+      console.log(state.componentsBatch.userIds[0])
+      api.userDelete(state.componentsBatch.userIds[0]).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          ElMessage.success(`${type}成功！`)
+          state.JyElMessageBox.show = false
+          table.value.reloadData()
+        }
+      })
     }
     if (type === '批量停用') {
-      singleOpt(type, api.userBatchDisable(batchData))
+      api.userBatchDisable(state.componentsBatch.userIds).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          ElMessage.success(`${type}成功！`)
+          state.JyElMessageBox.show = false
+          table.value.reloadData()
+        }
+      })
     }
     if (type === '批量启用') {
-      singleOpt(type, api.userBatchEnable(batchData))
+      api.userBatchEnable(state.componentsBatch.userIds).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          ElMessage.success(`${type}成功！`)
+          state.JyElMessageBox.show = false
+          table.value.reloadData()
+        }
+      })
     }
     if (type === '批量删除') {
-      singleOpt(type, api.userBatchDelete(batchData))
+      api.userBatchDelete(state.componentsBatch.userIds).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          ElMessage.success(`${type}成功！`)
+          state.JyElMessageBox.show = false
+          table.value.reloadData()
+        }
+      })
     }
   }
   // 员工操作
   const singleOpt = (typeName, apiName) => {
     apiName.then(res => {
+      console.log(res)
       if (res.data.code === 200) {
-        console.log(typeName)
+        ElMessage.success(`${typeName}成功！`)
+        state.JyElMessageBox.show = true
       }
     })
   }
@@ -990,13 +1095,67 @@
     // if (!data) {
     //   return false
     // }
+    confirmLoading.value = true
     formStaffRef.value.validate(valid => {
       if (valid) {
         console.log(state.componentsAddForm.formData)
-        api.formAdd(state.componentsAddForm.formData).then(res => {})
+        if (state.componentsAddForm.formData.userId) {
+          submitEditStaff(state.componentsAddForm.formData)
+        } else {
+          submitAddStaff(state.componentsAddForm.formData)
+        }
       } else {
         ElMessage.error('校验失败')
+        confirmLoading.value = false
       }
+    })
+  }
+  const submitAddStaff = data => {
+    api.userAdd(state.componentsAddForm.formData).then(res => {
+      if (res.code === 200) {
+        ElMessage.success('新增员工成功！')
+        table.value.reloadData()
+        formStaffRef.value.resetFields()
+        showStaffDialog.value = false
+        state.tabSelects = {
+          // 部门弹窗选中信息
+          searchSelected: [],
+          // 部门选中信息
+          hostOrganSelected: [],
+          // 角色选中信息
+          rolesSelected: [],
+          // 主管选中信息
+          leaderUserSelected: [],
+          // 兼职部门选中信息
+          partTimehostOrganSelected: []
+        }
+      } else {
+        confirmLoading.value = false
+      }
+      confirmLoading.value = false
+    })
+  }
+  const submitEditStaff = data => {
+    api.userEdit(data).then(res => {
+      if (res.code === 200) {
+        ElMessage.success('修改员工成功！')
+        formStaffRef.value.resetFields()
+        table.value.reloadData()
+        showStaffDialog.value = false
+        state.tabSelects = {
+          // 部门弹窗选中信息
+          searchSelected: [],
+          // 部门选中信息
+          hostOrganSelected: [],
+          // 角色选中信息
+          rolesSelected: [],
+          // 主管选中信息
+          leaderUserSelected: [],
+          // 兼职部门选中信息
+          partTimehostOrganSelected: []
+        }
+      }
+      confirmLoading.value = false
     })
   }
   const closeStaffFrom = () => {
@@ -1008,10 +1167,9 @@
     organId.value = type.organId
     table.value.reloadData()
   }
-  // 初始化
-  onBeforeMount(() => {
-    // getFormPage()
-    // getUserTreeMenu()
+  onMounted(() => {
+    table.value.reloadData()
+    // console.log(`the component is now mounted.`)
   })
 </script>
 

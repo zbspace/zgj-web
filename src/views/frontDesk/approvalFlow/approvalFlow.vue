@@ -261,6 +261,8 @@
   import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
   // import api from '@/api/frontDesk/approvalFlow/approvalFlow'
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
+  import { InstanceApi } from '@/api/flow/InstanceApi'
+  import { ApproverApi } from '@/api/flow/ApproverApi'
 
   const showDepPerDialog = ref(false)
   const dialogProcess = reactive({
@@ -1375,13 +1377,35 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     dialogProcess.show = true
+    console.log(column)
     dialogProcess.title = cell.name
     if (cell.name === '处理') {
       dialogProcess.formJson = RecordSealToReviewJson
     }
     if (cell.name === '审批') {
-      // dialogProcess.formJson = ApprovalJson
+      getDetail(column.instanceId)
     }
+  }
+  /**
+   * 获取当前流程模型详情
+   */
+  const getDetail = instanceId => {
+    const params = {
+      instanceId
+    }
+    InstanceApi.detail(params)
+      .then(data => {
+        console.log(data)
+        // modelName.value = data.modelName
+        // modelId.value = data.modelId
+        // definitionId.value = data.definitionId
+        // attrState.instanceName = data.instanceName
+        // loading.value = false
+        // initAffix()
+      })
+      .catch(() => {
+        // loading.value = false
+      })
   }
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'instanceTitle') {
