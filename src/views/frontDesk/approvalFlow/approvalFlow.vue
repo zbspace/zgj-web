@@ -790,198 +790,7 @@
           ]
         }
       ],
-      // data: [
-      //   {
-      //     1: 'TradeCode21',
-      //     2: '',
-      //     3: '往往',
-      //     4: '',
-      //     5: '2022/10/30  15:00:00',
-      //     6: ''
-      //   },
-      //   {
-      //     1: 'TradeCode21',
-      //     2: '',
-      //     3: '往往',
-      //     4: '',
-      //     5: '2022/10/30  15:00:00',
-      //     6: ''
-      //   },
-      //   {
-      //     1: 'TradeCode21',
-      //     2: '',
-      //     3: '往往',
-      //     4: '',
-      //     5: '2022/10/30  15:00:00',
-      //     6: ''
-      //   },
-      //   {
-      //     1: 'TradeCode21',
-      //     2: '',
-      //     3: '往往',
-      //     4: '',
-      //     5: '2022/10/30  15:00:00',
-      //     6: ''
-      //   },
-      //   {
-      //     1: 'TradeCode21',
-      //     2: '',
-      //     3: '往往',
-      //     4: '',
-      //     5: '2022/10/30  15:00:00',
-      //     6: ''
-      //   },
-      //   {
-      //     1: 'TradeCode21',
-      //     2: '',
-      //     3: '往往',
-      //     4: '',
-      //     5: '2022/10/30  15:00:00',
-      //     6: ''
-      //   },
-      //   {
-      //     1: 'TradeCode21',
-      //     2: '',
-      //     3: '往往',
-      //     4: '',
-      //     5: '2022/10/30  15:00:00',
-      //     6: ''
-      //   },
-      //   {
-      //     1: 'TradeCode21',
-      //     2: '',
-      //     3: '往往',
-      //     4: '',
-      //     5: '2022/10/30  15:00:00',
-      //     6: ''
-      //   }
-      // ],
-      data: [
-        {
-          taskId: '1626429401690722306',
-          modelId: '1596550552731209730',
-          definitionId: '1626429088493654017',
-          instanceId: '1626429141186695170',
-          instanceTitle: '[管理员]提交的合同审批',
-          instanceName: '',
-          applicant: '1339550467939639299',
-          applicantWrapper: '管理员',
-          summary: null,
-          createTime: '2023-02-17 11:51:40',
-          completionTime: null,
-          handleName: null,
-          ruNodeId: '1626429401690722305',
-          reNodeId: '1626429088506236933',
-          instanceStatus: 1,
-          instanceStatusWrapper: '处理中',
-          nodeName: '审批人',
-          taskStatus: 2,
-          taskStatusWrapper: '审批中',
-          suggest: null,
-          currentApproverList: ['1339550467939639299', '1596710445991956482'],
-          currentApproverListWrapper: ['管理员', '关羽'],
-          approvalMode: 4,
-          orgId: '1339554696976781407',
-          orgName: 'Guns总公司',
-          positionId: '1339554696976781332',
-          positionName: '总监',
-          updateTime: null,
-          remark: null
-        },
-        {
-          taskId: '1626421084482359298',
-          modelId: '1596550552731209730',
-          definitionId: '1596550552739598338',
-          instanceId: '1626421084461387777',
-          instanceTitle: '[管理员]提交的合同审批',
-          instanceName: '',
-          applicant: '1339550467939639299',
-          applicantWrapper: '管理员',
-          summary: null,
-          createTime: '2023-02-17 11:19:39',
-          completionTime: null,
-          handleName: null,
-          ruNodeId: '1626421084469776385',
-          reNodeId: '1596723224647921666',
-          instanceStatus: 1,
-          instanceStatusWrapper: '处理中',
-          nodeName: '审批人',
-          taskStatus: 2,
-          taskStatusWrapper: '审批中',
-          suggest: null,
-          currentApproverList: ['1339550467939639299'],
-          currentApproverListWrapper: ['管理员'],
-          approvalMode: 2,
-          orgId: '1339554696976781407',
-          orgName: 'Guns总公司',
-          positionId: '1339554696976781332',
-          positionName: '总监',
-          updateTime: null,
-          remark: null
-        },
-        {
-          taskId: '1623924257451331585',
-          modelId: '1596550552731209730',
-          definitionId: '1596550552739598338',
-          instanceId: '1623924065234767874',
-          instanceTitle: '[管理员]提交的合同审批',
-          instanceName: '',
-          applicant: '1339550467939639299',
-          applicantWrapper: '管理员',
-          summary: null,
-          createTime: '2023-02-10 13:57:23',
-          completionTime: null,
-          handleName: null,
-          ruNodeId: '1623924257447137281',
-          reNodeId: '1596723224647921665',
-          instanceStatus: 1,
-          instanceStatusWrapper: '处理中',
-          nodeName: '发起人',
-          taskStatus: 2,
-          taskStatusWrapper: '审批中',
-          suggest: null,
-          currentApproverList: ['1339550467939639299'],
-          currentApproverListWrapper: ['管理员'],
-          approvalMode: null,
-          orgId: '1339554696976781407',
-          orgName: 'Guns总公司',
-          positionId: '1339554696976781332',
-          positionName: '总监',
-          updateTime: null,
-          remark: null
-        },
-        {
-          taskId: '1623884669504638977',
-          modelId: '1623858138803785730',
-          definitionId: '1623883960453353474',
-          instanceId: '1623884013859426305',
-          instanceTitle: '[管理员]提交的测试0210-1',
-          instanceName: '',
-          applicant: '1339550467939639299',
-          applicantWrapper: '管理员',
-          summary: null,
-          createTime: '2023-02-10 11:18:14',
-          completionTime: null,
-          handleName: null,
-          ruNodeId: '1623884669492056065',
-          reNodeId: '1623883960465936385',
-          instanceStatus: 1,
-          instanceStatusWrapper: '处理中',
-          nodeName: '发起人',
-          taskStatus: 2,
-          taskStatusWrapper: '审批中',
-          suggest: null,
-          currentApproverList: ['1339550467939639299'],
-          currentApproverListWrapper: ['管理员'],
-          approvalMode: null,
-          orgId: '1339554696976781407',
-          orgName: 'Guns总公司',
-          positionId: '1339554696976781332',
-          positionName: '总监',
-          updateTime: null,
-          remark: null
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
@@ -1571,7 +1380,7 @@
       dialogProcess.formJson = RecordSealToReviewJson
     }
     if (cell.name === '审批') {
-      dialogProcess.formJson = ApprovalJson
+      // dialogProcess.formJson = ApprovalJson
     }
   }
   const cellClick = (row, column, cell, event) => {
@@ -1630,10 +1439,9 @@
     QueryTaskApi.queryTodoTask(queryParams).then(
       res => {
         console.log(res)
-        // state.componentsTable.data = res.data.rows
-        // state.componentsPagination.data.amount = res.data.totalRows
-        // state.componentsPagination.data.pageNumber = res.data.totalPage
-        // state.componentsPagination.defaultAttribute.total = res.data.totalRows
+        state.componentsTable.data = res.records
+        state.componentsPagination.data.amount = res.total
+        state.componentsPagination.defaultAttribute.total = res.total
         state.componentsTable.loading = false
       },
       () => {
@@ -1664,6 +1472,7 @@
     // console.log(`the component is now onBeforeMount.`)
   })
   onMounted(() => {
+    getFormPage()
     // console.log(`the component is now mounted.`)
   })
 </script>
