@@ -203,8 +203,10 @@
             :rules="[
               {
                 required: true,
-                message: '新手机号不能为空',
-                trigger: 'blur'
+                message: '请输入正确的手机号',
+                pattern:
+                  /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/,
+                trigger: 'change'
               }
             ]"
           >
@@ -215,6 +217,8 @@
               v-model="loginform.phone"
               placeholder="请输入"
               style="width: 210px"
+              maxlength="11"
+              oninput="value=value.replace(/^\.+|[^\d.]/g,'')"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -224,8 +228,9 @@
             :rules="[
               {
                 required: true,
-                message: '验证码不能为空',
-                trigger: 'blur'
+                message: '验证码是6位数字',
+                trigger: 'change',
+                pattern: /^\d{6}$/
               }
             ]"
           >
@@ -236,6 +241,8 @@
               v-model="loginform.code"
               placeholder="请输入验证码"
               style="width: 210px"
+              maxlength="6"
+              oninput="value=value.replace(/^\.+|[^\d.]/g,'')"
             ></el-input>
             <VerificationBtn :customStyle="customStyle"></VerificationBtn>
           </el-form-item>

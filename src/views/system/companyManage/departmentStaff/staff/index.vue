@@ -100,6 +100,7 @@
         <el-form-item label="手机号" prop="userTel">
           <el-input
             v-model="state.componentsAddForm.formData.userTel"
+            maxlength="11"
             placeholder="请输入手机号"
           />
         </el-form-item>
@@ -466,10 +467,11 @@
         userTel: [
           {
             required: true,
-            message: '请输入手机号',
+            message: '请输入正确的手机号',
+            pattern:
+              /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/,
             trigger: 'change'
           }
-          // { min: 11, type: 'number', message: '手机号必须为11位数字' }
         ],
         hostOrganName: [
           {
@@ -488,15 +490,6 @@
       }
     },
     componentsSearchForm: {
-      style: {
-        lineStyle: {
-          width: '30%'
-        },
-        labelStyle: {
-          width: '100px'
-        }
-      },
-
       data: [
         {
           id: 'keyWord',
@@ -596,50 +589,7 @@
     },
 
     componentsTable: {
-      header: tableHeader,
-      data: [
-        {
-          userId: '1',
-          userName: '小红',
-          accountNo: '1666',
-          hostOrganName: '往往',
-          userTitle: '科员',
-          faceState: '启用',
-          status: '启用'
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        stripe: true,
-        'header-cell-style': {
-          background: 'var(--jy-color-fill--3)'
-        },
-        'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === 'userName') {
-            return {
-              color: 'var(--jy-info-6)',
-              cursor: 'pointer'
-            }
-          }
-        }
-      },
-      laoding: false
-    },
-
-    componentsPagination: {
-      data: {
-        amount: 400,
-        index: 1,
-        pageNumber: 80
-      },
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
-        background: true
-      }
+      header: tableHeader
     },
 
     componentsTree: {
@@ -946,7 +896,7 @@
     nameIdArr.push(column.userId)
     state.componentsBatch.userIds = nameIdArr
     if (cell.name === 't-zgj-Edit') {
-      state.title = '修改'
+      state.title = 't-zgj-Edit'
       showStaffDialog.value = true
       api.userGet(column.userId).then(res => {
         console.log(res)
