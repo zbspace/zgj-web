@@ -196,10 +196,10 @@
             <template #label>
               <div class="from-label">已绑定手机号</div>
             </template>
-            <div>12345678901</div>
+            <div>18888888888</div>
           </el-form-item>
           <el-form-item
-            prop="username"
+            prop="phone"
             :rules="[
               {
                 required: true,
@@ -212,7 +212,7 @@
               <div class="from-label">新手机号</div>
             </template>
             <el-input
-              v-model="loginform.username"
+              v-model="loginform.phone"
               placeholder="请输入"
               style="width: 210px"
             ></el-input>
@@ -220,7 +220,7 @@
           <el-form-item
             class="clearfix"
             label="验证码"
-            prop="password"
+            prop="code"
             :rules="[
               {
                 required: true,
@@ -233,8 +233,7 @@
               <div class="from-label">验证码</div>
             </template>
             <el-input
-              v-model="loginform.password"
-              show-password
+              v-model="loginform.code"
               placeholder="请输入验证码"
               style="width: 210px"
             ></el-input>
@@ -253,12 +252,18 @@
 
 <script setup>
   import router from '@/router'
-  import { reactive, ref } from 'vue'
+  import { nextTick, reactive, ref } from 'vue'
   import { ElMessage } from 'element-plus'
   import { Plus } from '@element-plus/icons-vue'
   import JyDialog from '@/components/common/JyDialog/index2.vue'
   import VerificationBtn from '@/views/login/components/VerificationBtn.vue'
   const imageUrl = ref('')
+
+  const loginform = reactive({
+    phone: '',
+    code: ''
+  })
+  const loginformRef = ref(null)
 
   const handleAvatarSuccess = (response, uploadFile) => {
     console.log(response, uploadFile)
@@ -266,10 +271,14 @@
   }
 
   const beforeAvatarUpload = rawFile => {
-    // if (rawFile.type !== 'image/jpeg') {
-    //   ElMessage.error('Avatar picture must be JPG format!')
-    //   return false
-    // }
+    if (
+      rawFile.type !== 'image/jpeg' ||
+      rawFile.type !== 'image/png' ||
+      rawFile.type !== 'image/jpg'
+    ) {
+      ElMessage.error('Avatar picture must be JPG format!')
+      return false
+    }
     if (rawFile.size / 1024 / 1024 > 2) {
       ElMessage.error('Avatar picture size can not exceed 2MB!')
       return false
@@ -284,17 +293,16 @@
 
   const changePhoneNumber = () => {
     showFormDialog.value = true
+    nextTick(() => {
+      loginformRef.value.resetFields()
+      loginform.phone = ''
+      loginform.code = ''
+    })
   }
 
   const onClose = value => {
     showFormDialog.value = false
   }
-
-  const loginform = reactive({
-    username: '',
-    password: ''
-  })
-  const loginformRef = ref(null)
 
   const login = () => {
     loginformRef.value.validate(valid => {

@@ -13,6 +13,7 @@
       <Top :tenant="tenant" @reloadData="tenantInfo" />
       <Centers
         :tenantBaseInfo="tenantBaseInfo"
+        :tenantAdminInfo="tenantAdminInfo"
         :passwordPolicy="passwordPolicy"
         @reloadData="tenantInfo"
       />
@@ -43,6 +44,7 @@
         tenant.value = res.data.tenant
         tenantBaseInfo.value = res.data.tenantBaseInfo
         tenantAdminInfo.value = res.data.tenantAdminInfo
+        console.log(tenantAdminInfo.value)
         tenantShowInfo.value = res.data.tenantShowInfo
         res.data.passwordPolicy.passwordRules = []
         if (res.data.passwordPolicy.passUppercase === '1') {
