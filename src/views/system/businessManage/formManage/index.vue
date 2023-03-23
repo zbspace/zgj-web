@@ -140,7 +140,6 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import api from '@/api/system/formManagement'
-  import dayjs from 'dayjs'
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const optionData = ref([])
   const table = ref(null)

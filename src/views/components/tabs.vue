@@ -7,7 +7,7 @@
         @tab-change="tabChange"
       >
         <el-tab-pane
-          :label="item.label"
+          :label="$t(item.label)"
           :name="item.name"
           v-for="(item, index) in state.data"
           :key="index"

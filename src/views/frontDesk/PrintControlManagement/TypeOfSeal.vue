@@ -169,7 +169,9 @@
             'start-placeholder': '开始时间',
             'end-placeholder': '结束时间',
             'value-format': 'YYYY-MM-DD',
-            'disabled-date': disabledDate,
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+            },
             'default-value': [
               new Date(new Date().setMonth(new Date().getMonth() - 1)),
               new Date()
@@ -286,10 +288,6 @@
       state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
     }
-  }
-
-  function disabledDate(time) {
-    return time.getTime() > Date.now() // 如果没有后面的-8.64e7就是不可以选择今天的
   }
 
   const confirmClick = () => {

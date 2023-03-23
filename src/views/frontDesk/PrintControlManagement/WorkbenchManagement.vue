@@ -5,6 +5,7 @@
       url="/bench/page"
       method="POST"
       ref="table"
+      :isSelection="false"
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       statusColoum="flag"
@@ -58,11 +59,11 @@
         <el-form-item label="工作台编码" prop="benchNo">
           <el-input v-model="form.benchNo" disabled />
         </el-form-item>
+        <el-form-item label="工作台名称" prop="benchName">
+          <el-input v-model="form.benchName" clearable />
+        </el-form-item>
         <el-form-item label="设备串号" prop="benchSn">
           <el-input v-model="form.benchSn" clearable />
-        </el-form-item>
-        <el-form-item label="设备名称" prop="benchName">
-          <el-input v-model="form.benchName" clearable />
         </el-form-item>
         <el-form-item label="保管人" prop="manUserId">
           <div class="select-box-contBox">
@@ -134,31 +135,59 @@
         </el-form-item>
         <el-form-item label="语音交互" prop="voiceDialogue">
           <el-radio-group v-model="form.voiceDialogue">
-            <el-radio label="1" size="large">是</el-radio>
-            <el-radio label="0" size="large">否</el-radio>
+            <el-radio label="1" size="large">启用</el-radio>
+            <el-radio label="0" size="large">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="红外电子围栏" prop="irFence">
           <el-radio-group v-model="form.irFence">
-            <el-radio label="1" size="large">是</el-radio>
-            <el-radio label="0" size="large">否</el-radio>
+            <el-radio label="1" size="large">启用</el-radio>
+            <el-radio label="0" size="large">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="人脸识别登录" prop="faceLogin">
           <el-radio-group v-model="form.faceLogin">
-            <el-radio label="1" size="large">是</el-radio>
-            <el-radio label="0" size="large">否</el-radio>
+            <el-radio label="1" size="large">启用</el-radio>
+            <el-radio label="0" size="large">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="自动锁屏" prop="autoLock">
           <el-radio-group v-model="form.autoLock">
-            <el-radio label="1" size="large">是</el-radio>
-            <el-radio label="0" size="large">否</el-radio>
+            <el-radio label="1" size="large">启用</el-radio>
+            <el-radio label="0" size="large">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="使用地点" prop="location">
-          <el-input v-model="form.location" clearable />
-        </el-form-item>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="休眠" prop="dormantOpen">
+              <el-radio-group v-model="form.dormantOpen">
+                <el-radio label="1" size="large">启用</el-radio>
+                <el-radio label="0" size="large">禁用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="form.dormantOpen === '1'">
+            <el-form-item
+              prop="dormantValue"
+              :rules="{
+                required: true,
+                message: '请输入静默休眠时间',
+                trigger: 'blur'
+              }"
+            >
+              <div style="display: flex; align-items: center">
+                <div>静默</div>
+                <el-input-number
+                  v-model="form.dormantValue"
+                  :min="1"
+                  :precision="0"
+                  style="margin: 0 5px"
+                />
+                <div>分钟后休眠</div>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="备注" prop="readme">
           <el-input v-model="form.readme" type="textarea" clearable />
         </el-form-item>
@@ -225,7 +254,8 @@
     irFence: '1',
     faceLogin: '1',
     autoLock: '1',
-    location: '',
+    dormantOpen: '0',
+    dormantValue: '',
     readme: ''
   })
 
@@ -240,7 +270,7 @@
     benchName: [
       {
         required: true,
-        message: '请输入设备名称',
+        message: '请输入工作台名称',
         trigger: 'change'
       }
     ],
@@ -276,7 +306,7 @@
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '设备串号/使用地点/工作台编码'
+            placeholder: '设备串号/工作台名称/工作台编码'
           }
         },
         {
@@ -291,7 +321,9 @@
             'start-placeholder': '开始时间',
             'end-placeholder': '结束时间',
             'value-format': 'YYYY-MM-DD',
-            'disabled-date': disabledDate,
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果没有后面的-8.64e7就是不可以选择今天的
+            },
             'default-value': [
               new Date(new Date().setMonth(new Date().getMonth() - 1)),
               new Date()
@@ -301,6 +333,7 @@
         },
         {
           id: 'manUser',
+          requestParams: 'manUserId',
           label: '保管人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -314,6 +347,7 @@
         },
         {
           id: 'manOrgan',
+          requestParams: 'manOrganId',
           label: '保管部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -413,10 +447,6 @@
     }
   })
 
-  function disabledDate(time) {
-    return time.getTime() > Date.now() // 如果没有后面的-8.64e7就是不可以选择今天的
-  }
-
   const add = () => {
     showFormDialog.value = true
     nextTick(() => {
@@ -489,7 +519,6 @@
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         confirmLoading.value = true
-        console.log(form)
         if (form.benchId) {
           workbenchManagement
             .edit(form)
@@ -519,7 +548,6 @@
 
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
     if (column.property === 'benchName') {
       state.componentsDocumentsDetails.show = true
     }
@@ -531,7 +559,6 @@
 
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(cell.name)
     if (cell.name === 't-zgj-Edit') {
       showFormDialog.value = true
       form.benchId = column.benchId
@@ -539,7 +566,6 @@
         vFormLibraryRef.value.resetFields()
         workbenchManagement.detail(column.benchId).then(res => {
           const data = res.data
-          console.log(data)
           form.benchId = data.benchId
           form.benchNo = data.benchNo || ''
           form.benchSn = data.benchSn || ''
@@ -555,9 +581,9 @@
           form.irFence = data.irFence || '1'
           form.faceLogin = data.faceLogin || '1'
           form.autoLock = data.autoLock || '1'
-          form.location = data.location || ''
+          form.dormantOpen = data.dormantOpen || '0'
+          form.dormantValue = data.dormantValue || null
           form.readme = data.readme || ''
-          console.log(form)
         })
       })
     }
@@ -573,7 +599,6 @@
     workbenchManagement
       .delete(currentActionWorkbench.value)
       .then(res => {
-        console.log(res)
         table.value.reloadData()
       })
       .finally(() => {
