@@ -60,8 +60,8 @@
             lazy
             :load="loadFn"
             @current-change="currentChange"
-            @node-contextmenu="nodeContextmenu"
           ></el-tree>
+          <!-- @node-contextmenu="nodeContextmenu" -->
         </div>
       </template>
     </JyTable>

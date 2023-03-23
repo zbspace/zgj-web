@@ -106,7 +106,7 @@
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
-  import VTabs from '@/components/modules/tabs.vue'
+  import VTabs from '@/components/modules/JyTabs.vue'
   import componentsBatch from '@/views/components/batch.vue'
   const activeName = ref('first')
 
