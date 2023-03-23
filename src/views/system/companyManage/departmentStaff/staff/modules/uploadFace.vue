@@ -13,8 +13,10 @@
       :show-close="false"
       destroy-on-close
       :close-on-click-modal="false"
+      :close-on-press-escape="false"
       width="40%"
       align-center
+      draggable
     >
       <template #header>
         <!-- mode1 -->
