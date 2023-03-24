@@ -281,7 +281,7 @@
     }
     formData.value.formColumnInfos = vformRef.value.getFieldWidgets()
     try {
-      if (props.columnData.formMessageId) {
+      if (props.columnData && props.columnData.formMessageId) {
         await formManageService.formEdit({
           ...formData.value,
           formMessageId: props.columnData.formMessageId
@@ -323,10 +323,10 @@
   }
 
   const opened = () => {
-    if (props.columnData.formName) {
+    if (props.columnData && props.columnData.formName) {
       formData.value = { ...formData.value, ...props.columnData }
     }
-    if (props.columnData.formMessageId) {
+    if (props.columnData && props.columnData.formMessageId) {
       getFormJson(props.columnData.formMessageId)
     }
   }
