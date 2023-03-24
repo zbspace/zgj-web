@@ -466,7 +466,14 @@
 
         // 获取用户信息 - 缓存
         navBarApi.getUserInfo().then(userInfo => {
-          accountInfo.setUserInfo(userInfo.data || {})
+          const obj = {
+            userId: userInfo.data && userInfo.data.userId,
+            userName: userInfo.data && userInfo.data.userName,
+            userTitle: userInfo.data && userInfo.data.userTitle,
+            userNo: userInfo.data && userInfo.data.userNo,
+            userMail: userInfo.data && userInfo.data.userMail
+          }
+          accountInfo.setUserInfo(obj)
         })
 
         // 获取登录列表
