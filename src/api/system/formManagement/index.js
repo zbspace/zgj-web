@@ -172,4 +172,13 @@ api.getFormColumnMust = params => {
     params
   })
 }
+
+// 查询动态表单必有字段
+api.queryColumInfoByFormId = params => {
+  return request({
+    method: 'GET',
+    url: '/form/column/queryColumInfoByFormId',
+    params
+  })
+}
 export default api
