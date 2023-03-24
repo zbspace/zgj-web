@@ -149,15 +149,4 @@
       background: #d0963e;
     }
   }
-
-  .left-aside.dark {
-  }
-  .left-aside.light {
-    .item {
-      .iconpark-icon {
-      }
-      span {
-      }
-    }
-  }
 </style>
