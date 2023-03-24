@@ -17,7 +17,9 @@ export const useLayoutStore = defineStore({
       topbar: 'light', // 顶栏颜色
       themeType: 'light', // 配色方案
       sidebarType: '1', // 菜单侧边栏模式
-      rightBarVisible: false // 右侧菜单显隐
+      rightBarVisible: false, // 右侧菜单显隐
+      globStyle: 'light', // 整体风格
+      menuColor: 'light' // 侧边栏颜色
     }
   },
   getters: {},

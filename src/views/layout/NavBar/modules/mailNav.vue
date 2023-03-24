@@ -7,17 +7,19 @@
 <template>
   <div style="margin: 0 12px" ref="dropdownMailRef">
     <el-badge :value="5" :hidden="hiddenBadge">
-      <el-button
-        text
-        style="width: 28px; height: 28px"
+      <svg
         @click="showMailPop = !showMailPop"
+        class="iconpark-icon"
+        :style="
+          !showMailPop && layoutStore.topbar === 'light'
+            ? ''
+            : !showMailPop && layoutStore.topbar === 'dark'
+            ? 'color: #fff'
+            : 'color: var(--jy-primary-6)'
+        "
       >
-        <img v-show="!showMailPop" src="@/assets/images/navbar/mail_icon.svg" />
-        <img
-          v-show="showMailPop"
-          src="@/assets/images/navbar/mail_select_icon.svg"
-        />
-      </el-button>
+        <use href="#email"></use>
+      </svg>
     </el-badge>
 
     <!-- 抽屉 -->
@@ -171,6 +173,9 @@
 <script setup>
   import { ref, watch, onMounted } from 'vue'
   import useClickQutside from '@/utils/useClickQutside.js'
+  import { useLayoutStore } from '@/store/layout'
+
+  const layoutStore = useLayoutStore()
 
   const dropdownMailRef = ref(null)
   const showMailPop = ref(false)
@@ -231,6 +236,15 @@
 </script>
 
 <style lang="scss" scoped>
+  .iconpark-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  :deep(.el-badge) {
+    display: flex;
+    align-items: center;
+  }
   .nav-msg {
     .msg-title {
       display: flex;

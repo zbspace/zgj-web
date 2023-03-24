@@ -13,7 +13,7 @@
       @closed="closed"
       @opened="opened"
       class="jy-dialog"
-      :class="[`mode-${props.mode}`]"
+      :class="[`mode-${props.mode}`, props.class]"
       center
       :append-to-body="appendToBody"
     >
@@ -59,6 +59,10 @@
     appendToBody: {
       type: Boolean,
       default: false
+    },
+    class: {
+      type: String,
+      default: ''
     }
   })
 

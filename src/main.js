@@ -10,8 +10,6 @@ import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 
-import '@/utils/svgIconPack'
-
 // 全局自定义组件
 import { requireComp } from '@/components/index'
 // import { requireAntIcons } from '@/utils/antIcons'

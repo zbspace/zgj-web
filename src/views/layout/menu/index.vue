@@ -2,7 +2,7 @@
   <div class="menus" :class="layoutStore.isCollapse ? 'contraction-menus' : ''">
     <svg
       class="iconpark-icon contraction-icon"
-      @click="layoutStore.changeCollapse(!layoutStore.isCollapse)"
+      @click="layoutStore.isCollapse = !layoutStore.isCollapse"
       v-if="layoutStore.isCollapse"
     >
       <use href="#cebianshousuo"></use>
@@ -15,6 +15,7 @@
       :unique-opened="true"
       :collapse-transition="false"
       class="el-menu-vertical-demo"
+      :class="layoutStore.menuColor"
     >
       <template v-for="(item, j) in getMenus" :key="j">
         <el-sub-menu
@@ -83,7 +84,7 @@
             <svg
               class="iconpark-icon contraction-icon"
               @click.stop.prevent="
-                layoutStore.changeCollapse(!layoutStore.isCollapse)
+                layoutStore.isCollapse = !layoutStore.isCollapse
               "
             >
               <use href="#cebianshousuo"></use>
@@ -109,8 +110,6 @@
   import { useLanguageStore } from '@/store/language'
   import { getItem } from '@/utils/storage.js'
   import { LANGUAGE } from '@/utils/constants'
-  import { systemService } from '@/api/common/system'
-  import { messageError } from '@/hooks/useMessage'
 
   const route = useRoute()
   const activeMenu = ref('')

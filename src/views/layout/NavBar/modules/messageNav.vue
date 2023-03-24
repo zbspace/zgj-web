@@ -16,7 +16,7 @@
     >
       <template #reference>
         <el-badge is-dot class="badge-item" :hidden="hiddenBadge">
-          <el-button
+          <!-- <el-button
             class="btn-drown"
             text
             @click="showNotifyPop = !showNotifyPop"
@@ -30,10 +30,24 @@
               v-show="showNotifyPop"
               src="@/assets/images/navbar/notify_select_icon.svg"
             />
+            
             <span
               class="position-absolute translate-middle p-1 bg-danger border border-light rounded-circle"
             ></span>
-          </el-button>
+          </el-button> -->
+          <svg
+            class="iconpark-icon"
+            @click="showNotifyPop = !showNotifyPop"
+            :style="
+              !showNotifyPop && layoutStore.topbar === 'light'
+                ? ''
+                : !showNotifyPop && layoutStore.topbar === 'dark'
+                ? 'color: #fff'
+                : 'color: var(--jy-primary-6)'
+            "
+          >
+            <use href="#messagetip"></use>
+          </svg>
         </el-badge>
       </template>
 
@@ -87,6 +101,10 @@
   import { ref, watch } from 'vue'
   import useClickQutside from '@/utils/useClickQutside.js'
   import VTabs from '@/components/common/JyTabs.vue'
+  import { useLayoutStore } from '@/store/layout'
+
+  const layoutStore = useLayoutStore()
+
   const dropdownNotifyRef = ref(null)
   const showNotifyPop = ref(false)
   const isClickOutsideNotify = useClickQutside(dropdownNotifyRef)
@@ -174,9 +192,16 @@
     margin: 0 10px;
 
     .badge-item {
+      display: flex;
+      align-items: center;
       :deep(.is-dot) {
         margin-right: 6px;
         margin-top: 4px;
+      }
+      .iconpark-icon {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
       }
     }
   }
