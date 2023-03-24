@@ -21,6 +21,7 @@
               class="process-save-but"
               type="primary"
               @click="clickSave"
+              :loading="saveLoading"
             >
               保存
             </el-button>
@@ -48,6 +49,7 @@
                     v-model="formData.applyTypeId"
                     style="width: 430px"
                     @change="onChange"
+                    :disabled="props.applyTypeId"
                   >
                     <el-option-group
                       v-for="group in props.optionData"
@@ -68,7 +70,10 @@
                   label="用印类型"
                   v-if="formData.applyTypeId === '2'"
                 >
-                  <el-radio-group v-model="formData.sealUseTypeId">
+                  <el-radio-group
+                    v-model="formData.sealUseTypeId"
+                    :disabled="props.sealUseTypeId"
+                  >
                     <el-radio label="1">物理用印</el-radio>
                     <el-radio label="2">电子签章</el-radio>
                   </el-radio-group>
@@ -115,6 +120,7 @@
   const formRef = ref(null)
   const mustProps = ref([])
   const formInfo = ref({})
+  const saveLoading = ref(false)
 
   const props = defineProps({
     addTitle: {
@@ -140,6 +146,18 @@
     optionData: {
       type: Array,
       default: () => []
+    },
+
+    // 业务类型
+    applyTypeId: {
+      type: String,
+      default: null
+    },
+
+    // 用印类型
+    sealUseTypeId: {
+      type: String,
+      default: null
     }
   })
   const emit = defineEmits(['update:modelValue', 'close', 'reloadData'])
@@ -280,6 +298,7 @@
       return messageError('请勿删除必要字段，请重新加载模板进行编辑')
     }
     formData.value.formColumnInfos = vformRef.value.getFieldWidgets()
+    saveLoading.value = true
     try {
       if (props.columnData && props.columnData.formMessageId) {
         await formManageService.formEdit({
@@ -298,6 +317,7 @@
     } catch (error) {
       messageError(error)
     }
+    saveLoading.value = false
   }
 
   // 查询表单必有字段
@@ -329,6 +349,8 @@
     if (props.columnData && props.columnData.formMessageId) {
       getFormJson(props.columnData.formMessageId)
     }
+    if (props.applyTypeId) formData.value.applyTypeId = props.applyTypeId
+    if (props.sealUseTypeId) formData.value.sealUseTypeId = props.sealUseTypeId
   }
 
   onMounted(() => {
