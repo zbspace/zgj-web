@@ -25,6 +25,8 @@
   import inputIcon from '@/assets/svg/system/comp-info/input.svg'
   import companyInfoApi from '@/api/system/companyManagement/companyInfo'
   import { ElMessage } from 'element-plus'
+  import { useAccountInfoStore } from '@/store/accountInfo'
+  const accountInfo = useAccountInfoStore()
   const emit = defineEmits(['reloadData'])
 
   const props = defineProps({
@@ -49,6 +51,7 @@
         })
         edit.value = !edit.value
         emit('reloadData')
+        accountInfo.setOneDeaprtTitle(input.value)
       })
   }
   const cancel = () => {
