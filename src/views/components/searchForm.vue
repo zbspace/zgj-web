@@ -727,7 +727,9 @@
     } else if (item.defaultAttribute.type === 'JySelectSeal') {
       yzDialogVisible.value = true
       console.log(item)
-      selectedData.value = item.values
+      selectedData.value = item.defaultAttribute.multiple
+        ? item.options
+        : item.values
     }
     dialogCurrent.value = item.id
   }
@@ -773,7 +775,8 @@
         state.cache.formData[index].options = value.map(i => {
           return {
             label: i.sealName,
-            value: i.sealId
+            value: i.sealId,
+            ...i
           }
         })
       } else {
@@ -781,7 +784,8 @@
         state.cache.formData[index].options = [
           {
             label: value.sealName,
-            value: value.sealId
+            value: value.sealId,
+            ...value
           }
         ]
       }

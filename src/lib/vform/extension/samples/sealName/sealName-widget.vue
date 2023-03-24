@@ -113,7 +113,7 @@
     <!-- 选择印章 弹窗 -->
     <JySelectSeal
       v-model="xzyzDialogVisible"
-      :selectedData="selectedData"
+      :haveSelectList="selectedData"
       @on-submit="getSelection"
     />
   </static-content-wrapper>

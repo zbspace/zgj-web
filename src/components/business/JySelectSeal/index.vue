@@ -191,7 +191,9 @@
     } else {
       sealList.value.forEach(item => {
         console.log(props.haveSelectList.indexOf(item.sealId))
-        if (props.haveSelectList.indexOf(item.sealId) > -1) {
+        if (
+          props.haveSelectList.findIndex(i => i.sealId === item.sealId) > -1
+        ) {
           tableRef.value.toggleRowSelection(item, true)
         }
       })
