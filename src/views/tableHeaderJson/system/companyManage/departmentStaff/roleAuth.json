@@ -1,0 +1,45 @@
+[
+  {
+    "prop": "roleNo",
+    "label": "角色编码",
+    "sortable": true,
+    "flex": true,
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "roleName",
+    "label": "角色名称",
+    "sortable": true,
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "roleUserNumber",
+    "label": "角色人员数",
+    "sortable": true,
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "caozuo",
+    "label": "操作",
+    "fixed": "right",
+    "min-width": 200,
+    "show": true,
+    "rankDisplayData": [
+      {
+        "name": "t-zgj-Edit"
+      },
+      {
+        "name": "t-zgj-Delete"
+      },
+      {
+        "name": "t-zgj-sync.AuthSetting"
+      },
+      {
+        "name": "t-zgj-sync.PersonManage"
+      }
+    ]
+  }
+]
