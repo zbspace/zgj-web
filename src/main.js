@@ -1,3 +1,4 @@
+import '@/style/variable.css'
 import '@/style/base.scss'
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -9,8 +10,7 @@ import store from './store'
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
-
-import '@/utils/svgIconPack'
+import '@/utils/SvgIconPack.js'
 
 // 全局自定义组件
 import { requireComp } from '@/components/index'

@@ -1,7 +1,64 @@
 <!-- 用印记录 -->
 <template>
   <div class="PrintControlManagement-recordWithSeal">
-    <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
+    <JyTable
+      :url="`/sealApply/${currentActiveName}`"
+      ref="jyTable"
+      hasTabs
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      tableClick="useSealFileName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
+      <template #title>
+        <div class="title">
+          <div>用印记录</div>
+          <div class="title-more">
+            <div class="title-more-add"> </div>
+            <div
+              class="title-more-down"
+              v-if="state.componentsTitle.more.data.length > 0"
+            >
+              <el-dropdown>
+                <el-button>
+                  <img
+                    class="button-icon"
+                    src="../../../assets/svg/gengduo-caozuo.svg"
+                    alt=""
+                    srcset=""
+                  />
+                  <span>更多操作</span>
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      v-for="(item, index) in state.componentsTitle.more.data"
+                      :key="index"
+                    >
+                      {{ item.name }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template #tabs>
+        <div>
+          <componentsTabs
+            :activeName="currentActiveName"
+            :data="state.componentsTabs.data"
+            @tab-change="tabChange"
+          >
+          </componentsTabs>
+        </div>
+      </template>
+    </JyTable>
+    <!-- <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
       <template #title>
         <div class="title">
           <div>用印记录</div>
@@ -88,7 +145,7 @@
         >
         </componentsPagination>
       </template>
-    </componentsLayout>
+    </componentsLayout> -->
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -139,39 +196,25 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
-  // import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
+  import { ref, reactive, onBeforeMount, onMounted, nextTick } from 'vue'
+  import JyTable from '@/views/components/JyTable.vue'
+  import componentsTabs from '@/views/components/tabs.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import dialogProcessJson from '@/views/addDynamicFormJson/ProcessStopJson.json'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
+  import listApproving from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listApproving.json'
+  import listFileVerification from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listFileVerification.json'
+  import listNoResult from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listNoResult.json'
+  import listNotUse from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listNotUse.json'
+  import listNoUse from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listNoUse.json'
+  import listResultDone from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listResultDone.json'
+  import listUseDone from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listUseDone.json'
+  import listUsing from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listUsing.json'
 
-  // import { ConsoleWriter } from "istanbul-lib-report";
   const router = useRouter()
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
-  // const emit = defineEmits([])
   const showDepPerDialog = ref(false)
   const dialogProcess = reactive({
     show: false,
@@ -179,6 +222,19 @@
     formJson: dialogProcessJson
   })
   const vFormLibraryRef = ref(null)
+  const currentActiveName = ref('listApproving')
+  const tableHeaders = ref({
+    listApproving,
+    listFileVerification,
+    listNoResult,
+    listNotUse,
+    listNoUse,
+    listResultDone,
+    listUseDone,
+    listUsing
+  })
+  const jyTable = ref(null)
+
   const submitLibraryForm = type => {
     if (!type) {
       vFormLibraryRef.value.resetForm()
@@ -209,50 +265,42 @@
       data: [
         {
           label: '待审批',
-          name: '1'
+          name: 'listApproving'
         },
         {
           label: '待文件核验',
-          name: '2'
+          name: 'listFileVerification'
         },
         {
           label: '待智能用印',
-          name: '3'
+          name: 'listNoUse'
         },
         {
           label: '智能用印中',
-          name: '4'
+          name: 'listUsing'
         },
         {
           label: '已完成用印',
-          name: '5'
+          name: 'listUseDone'
         },
         {
           label: '待上传文件归档',
-          name: '6'
+          name: 'listNoResult'
         },
         {
           label: '已完成归档',
-          name: '7'
+          name: 'listResultDone'
         },
         {
           label: '不可用',
-          name: '8'
+          name: 'listNotUse'
         }
       ]
     },
     componentsSearchForm: {
-      style: {
-        lineStyle: {
-          width: 'calc(100% / 3)'
-        },
-        labelStyle: {
-          width: '100px'
-        }
-      },
       data: [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -262,20 +310,31 @@
           }
         },
         {
-          id: 'picker',
+          id: 'applyTime',
           label: '申请时间',
           type: 'picker',
+          requestType: 'array',
+          startRequest: 'applyStartTime',
+          endRequest: 'applyEndTime',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+            },
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         },
         {
-          id: 'wjlx',
+          id: 'fileTypeId',
           label: '文件类型',
           type: 'select',
           options: [
@@ -322,101 +381,131 @@
           ]
         },
         {
-          id: 'derivable',
+          id: 'sealId',
           label: '印章名称',
-          type: 'derivable',
+          type: 'dialog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'JySelectSeal',
+            multiple: false,
             placeholder: '+印章名称'
-          }
+          },
+          options: [],
+          values: []
         },
         {
-          id: 'derivable',
+          id: 'applyUser',
+          requestParams: 'applyUserId',
           label: '申请人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'user',
+            multiple: false,
             placeholder: '+申请人'
-          }
+          },
+          options: [],
+          values: null
         },
         {
-          id: 'derivable',
+          id: 'applyOrgan',
+          requestParams: 'applyOrganId',
           label: '申请部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'organ',
+            multiple: false,
             placeholder: '+申请部门'
-          }
+          },
+          options: [],
+          values: null
         },
         {
-          id: 'derivable',
+          id: 'relatedCompanyId',
           label: '往来单位',
-          type: 'derivable',
+          type: 'dialog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'JyRelatedCompany',
             placeholder: '+往来单位'
-          }
+          },
+          options: [],
+          values: []
         },
         {
-          id: 'name',
+          id: 'totalMoney',
           label: '金额',
           type: 'scopeInput',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           startAttribute: {
-            placeholder: '最小金额'
+            placeholder: '最小金额',
+            id: 'totalMoneyMin'
           },
           endAttribute: {
-            placeholder: '最大金额'
+            placeholder: '最大金额',
+            id: 'totalMoneyMax'
           }
         },
         {
-          id: 'picker',
+          id: 'applyTime',
           label: '盖章时间',
           type: 'picker',
+          requestType: 'array',
+          startRequest: 'applyStartTime',
+          endRequest: 'applyEndTime',
+          inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD'
           },
           style: {}
         },
         {
-          id: 'wdyy',
+          id: 'status',
           label: '用印状态',
           type: 'checkButton',
           data: [
             {
+              id: '1',
               name: '正常'
             },
             {
+              id: '0',
               name: '异常'
             }
           ]
         },
         {
-          id: 'wdyy',
+          id: 'extSeal',
           label: '',
           type: 'checkbox',
           checkbox: [
             {
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
-                label: '印章外带'
+                label: '印章外带',
+                'true-label': 1,
+                'false-label': 0
               },
               style: {}
             }
           ]
         },
         {
-          id: 'wdyy',
+          id: 'querySelf',
           label: '',
           type: 'checkbox',
           checkbox: [
             {
               // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
               defaultAttribute: {
-                label: '我的申请单据'
+                label: '我的申请单据',
+                'true-label': 1,
+                'false-label': 0
               },
               style: {}
             }
@@ -455,263 +544,7 @@
       ]
     },
     componentsTable: {
-      header: [
-        {
-          prop: '1',
-          label: '单据编号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '文件名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '6',
-          label: '审批状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '撤销'
-            },
-            {
-              name: '作废'
-            }
-          ]
-        }
-      ],
-      data: [
-        {
-          1: 'XXXXXXXXXX',
-          2: '用印申请',
-          3: '',
-          4: '',
-          5: '往往',
-          6: '',
-          7: '2022/10/30  15:00:00',
-          8: ''
-        },
-        {
-          1: 'XXXXXXXXXX',
-          2: '用印申请',
-          3: '',
-          4: '',
-          5: '往往',
-          6: '',
-          7: '2022/10/30  15:00:00',
-          8: ''
-        },
-        {
-          1: 'XXXXXXXXXX',
-          2: '用印申请',
-          3: '',
-          4: '',
-          5: '往往',
-          6: '',
-          7: '2022/10/30  15:00:00',
-          8: ''
-        },
-        {
-          1: 'XXXXXXXXXX',
-          2: '用印申请',
-          3: '',
-          4: '',
-          5: '往往',
-          6: '',
-          7: '2022/10/30  15:00:00',
-          8: ''
-        },
-        {
-          1: 'XXXXXXXXXX',
-          2: '用印申请',
-          3: '',
-          4: '',
-          5: '往往',
-          6: '',
-          7: '2022/10/30  15:00:00',
-          8: ''
-        },
-        {
-          1: 'XXXXXXXXXX',
-          2: '用印申请',
-          3: '',
-          4: '',
-          5: '往往',
-          6: '',
-          7: '2022/10/30  15:00:00',
-          8: ''
-        },
-        {
-          1: 'XXXXXXXXXX',
-          2: '用印申请',
-          3: '',
-          4: '',
-          5: '往往',
-          6: '',
-          7: '2022/10/30  15:00:00',
-          8: ''
-        },
-        {
-          1: 'XXXXXXXXXX',
-          2: '用印申请',
-          3: '',
-          4: '',
-          5: '往往',
-          6: '',
-          7: '2022/10/30  15:00:00',
-          8: ''
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        stripe: true,
-        'header-cell-style': {
-          background: 'var(--jy-color-fill--3)'
-        },
-        'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '2') {
-            return {
-              color: 'var(--jy-info-6)',
-              cursor: 'pointer'
-            }
-          }
-        }
-      }
-    },
-    componentsTree: {
-      data: [
-        {
-          label: 'Level one 1',
-          children: [
-            {
-              label: 'Level two 1-1',
-              children: [
-                {
-                  label: 'Level three 1-1-1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'Level one 2',
-          children: [
-            {
-              label: 'Level two 2-1',
-              children: [
-                {
-                  label: 'Level three 2-1-1'
-                }
-              ]
-            },
-            {
-              label: 'Level two 2-2',
-              children: [
-                {
-                  label: 'Level three 2-2-1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'Level one 3',
-          children: [
-            {
-              label: 'Level two 3-1',
-              children: [
-                {
-                  label: 'Level three 3-1-1'
-                }
-              ]
-            },
-            {
-              label: 'Level two 3-2',
-              children: [
-                {
-                  label: 'Level three 3-2-1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': true,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
-      }
-    },
-    componentsPagination: {
-      data: {
-        amount: 400,
-        index: 1,
-        pageNumber: 80
-      },
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
-        background: true
-      }
-    },
-    componentsBreadcrumb: {
-      data: [
-        {
-          name: 'ceshi'
-        },
-        {
-          name: 'ceshi'
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        separator: '/'
-      }
+      header: listApproving
     },
     componentsDocumentsDetails: {
       show: false,
@@ -815,958 +648,32 @@
     state.componentsDocumentsDetails.show = false
   }
 
-  // 切换分页
+  // 切换tab
   function tabChange(activeName) {
-    // console.log(activeName);
-    if (activeName === '1') {
-      state.componentsTable.header = [
-        {
-          prop: '1',
-          label: '单据编号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '文件名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '8',
-          label: '审批状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '撤销'
-            },
-            {
-              name: '作废'
-            }
-          ]
-        }
-      ]
-      state.componentsTable.data = [
-        {
-          1: 'zsz009',
-          2: '测试文件01',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '审批已完成'
-        },
-        {
-          1: 'zsz011',
-          2: '测试文件05',
-          3: '智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '审批已完成'
-        },
-        {
-          1: 'zsz019',
-          2: '测试文件12',
-          3: '普通智能印章',
-          4: '研发专用章',
-          5: '汤博',
-          6: '建业科技',
-          7: '2022-10-30  08:00:50',
-          8: '待审批'
-        },
-        {
-          1: 'zsz009',
-          2: '测试文件03',
-          3: '智能印章',
-          4: '技术部专用章',
-          5: '郭光林',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '审批已完成'
-        },
-        {
-          1: 'zsz012',
-          2: '测试文件08',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '岳海涛',
-          6: '测试部',
-          7: '2022-10-30  08:00:50',
-          8: '待审批'
-        }
-      ]
-    } else if (activeName === '2' || activeName === '3') {
-      state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
-          prop: '1',
-          label: '单据编号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '文件名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '6',
-          label: '审批状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '8',
-          label: '用印状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 250,
-          rankDisplayData: [
-            {
-              name: '流程终止'
-            },
-            {
-              name: '解除用印限制'
-            },
-            {
-              name: '作废'
-            }
-          ]
-        }
-      ]
-      state.componentsTable.data = [
-        {
-          0: 1,
-          1: 'zsz009',
-          2: '测试文件01',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '审批已完成'
-        },
-        {
-          0: 2,
-          1: 'zsz011',
-          2: '测试文件05',
-          3: '智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '审批已完成'
-        },
-        {
-          0: 3,
-          1: 'zsz012',
-          2: '测试文件08',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '岳海涛',
-          6: '测试部',
-          7: '2022-10-30  08:00:50',
-          8: '待审批'
-        }
-      ]
-    } else if (activeName === '4') {
-      state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
-          prop: '1',
-          label: '单据编号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '文件名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '8',
-          label: '用印状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 250,
-          rankDisplayData: [
-            {
-              name: '流程终止'
-            },
-            {
-              name: '解除用印限制'
-            },
-            {
-              name: '作废'
-            }
-          ]
-        }
-      ]
-      state.componentsTable.data = [
-        {
-          0: 1,
-          1: 'zsz009',
-          2: '测试文件01',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '审批已完成'
-        },
-        {
-          0: 2,
-          1: 'zsz011',
-          2: '测试文件05',
-          3: '智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '审批已完成'
-        },
-        {
-          0: 3,
-          1: 'zsz019',
-          2: '测试文件12',
-          3: '普通智能印章',
-          4: '研发专用章',
-          5: '汤博',
-          6: '建业科技',
-          7: '2022-10-30  08:00:50',
-          8: '待审批'
-        },
-        {
-          0: 4,
-          1: 'zsz009',
-          2: '测试文件03',
-          3: '智能印章',
-          4: '技术部专用章',
-          5: '郭光林',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '审批已完成'
-        },
-        {
-          0: 5,
-          1: 'zsz012',
-          2: '测试文件08',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '岳海涛',
-          6: '测试部',
-          7: '2022-10-30  08:00:50',
-          8: '待审批'
-        }
-      ]
-    } else if (activeName === '5') {
-      state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
-          prop: '1',
-          label: '单据编号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '文件名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '8',
-          label: '用印状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '9',
-          label: '用印情况',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '复核'
-            },
-            {
-              name: '作废'
-            }
-          ]
-        }
-      ]
-      state.componentsTable.data = [
-        {
-          0: 1,
-          1: 'zsz009',
-          2: '测试文件01',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 2,
-          1: 'zsz011',
-          2: '测试文件05',
-          3: '智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 3,
-          1: 'zsz009',
-          2: '测试文件03',
-          3: '智能印章',
-          4: '技术部专用章',
-          5: '郭光林',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 4,
-          1: 'zsz012',
-          2: '测试文件08',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '岳海涛',
-          6: '测试部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        }
-      ]
-    } else if (activeName === '6') {
-      state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
-          prop: '1',
-          label: '单据编号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '文件名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '8',
-          label: '用印状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '9',
-          label: '用印情况',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 200,
-          rankDisplayData: [
-            {
-              name: '流程终止'
-            },
-            {
-              name: '复核'
-            },
-            {
-              name: '作废'
-            }
-          ]
-        }
-      ]
-      state.componentsTable.data = [
-        {
-          0: 1,
-          1: 'zsz009',
-          2: '测试文件01',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 2,
-          1: 'zsz011',
-          2: '测试文件05',
-          3: '智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 3,
-          1: 'zsz019',
-          2: '测试文件12',
-          3: '普通智能印章',
-          4: '研发专用章',
-          5: '汤博',
-          6: '建业科技',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 4,
-          1: 'zsz009',
-          2: '测试文件03',
-          3: '智能印章',
-          4: '技术部专用章',
-          5: '郭光林',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 5,
-          1: 'zsz012',
-          2: '测试文件08',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '岳海涛',
-          6: '测试部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        }
-      ]
-    } else if (activeName === '7') {
-      state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
-          prop: '1',
-          label: '单据编号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '文件名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '8',
-          label: '用印状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '9',
-          label: '用印情况',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '复核'
-            },
-            {
-              name: '作废'
-            }
-          ]
-        }
-      ]
-      state.componentsTable.data = [
-        {
-          0: 1,
-          1: 'zsz009',
-          2: '测试文件01',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 2,
-          1: 'zsz011',
-          2: '测试文件05',
-          3: '智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 3,
-          1: 'zsz019',
-          2: '测试文件12',
-          3: '普通智能印章',
-          4: '研发专用章',
-          5: '汤博',
-          6: '建业科技',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 4,
-          1: 'zsz009',
-          2: '测试文件03',
-          3: '智能印章',
-          4: '技术部专用章',
-          5: '郭光林',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 5,
-          1: 'zsz012',
-          2: '测试文件08',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '岳海涛',
-          6: '测试部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        }
-      ]
-    } else if (activeName === '8') {
-      state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
-          prop: '1',
-          label: '单据编号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '文件名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '8',
-          label: '审批状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '9',
-          label: '用印状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '去送审'
-            },
-            {
-              name: '作废'
-            }
-          ]
-        }
-      ]
-      state.componentsTable.data = [
-        {
-          0: 1,
-          1: 'zsz009',
-          2: '测试文件01',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 2,
-          1: 'zsz011',
-          2: '测试文件05',
-          3: '智能印章',
-          4: '测试专用章',
-          5: '肖世康',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 3,
-          1: 'zsz019',
-          2: '测试文件12',
-          3: '普通智能印章',
-          4: '研发专用章',
-          5: '汤博',
-          6: '建业科技',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 4,
-          1: 'zsz009',
-          2: '测试文件03',
-          3: '智能印章',
-          4: '技术部专用章',
-          5: '郭光林',
-          6: '技术部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        },
-        {
-          0: 5,
-          1: 'zsz012',
-          2: '测试文件08',
-          3: '普通智能印章',
-          4: '测试专用章',
-          5: '岳海涛',
-          6: '测试部',
-          7: '2022-10-30  08:00:50',
-          8: '正常',
-          9: '待审批'
-        }
-      ]
-    }
+    console.log(activeName)
+    state.componentsTable.header = tableHeaders.value[activeName]
+    currentActiveName.value = activeName
+    nextTick(() => {
+      jyTable.value.reloadData()
+    })
 
     // 批量
-    if (activeName === '1' || activeName === '7' || activeName === '8') {
+    if (
+      activeName === 'listApproving' ||
+      activeName === 'listUseDone' ||
+      activeName === 'listUsing'
+    ) {
       state.componentsBatch.data = [
         {
           name: '批量作废'
         }
       ]
     } else if (
-      activeName === '2' ||
-      activeName === '3' ||
-      activeName === '4' ||
-      activeName === '5' ||
-      activeName === '6'
+      activeName === 'listFileVerification' ||
+      activeName === 'listNoResult' ||
+      activeName === 'listNotUse' ||
+      activeName === 'listNoUse' ||
+      activeName === 'listResultDone'
     ) {
       state.componentsBatch.data = [
         {
@@ -1780,13 +687,13 @@
 
     // 更多操作
     if (
-      activeName === '1' ||
-      activeName === '2' ||
-      activeName === '3' ||
-      activeName === '4' ||
-      activeName === '5' ||
-      activeName === '6' ||
-      activeName === '7'
+      activeName === 'listApproving' ||
+      activeName === 'listFileVerification' ||
+      activeName === 'listNoResult' ||
+      activeName === 'listNotUse' ||
+      activeName === 'listNoUse' ||
+      activeName === 'listResultDone' ||
+      activeName === 'listUseDone'
     ) {
       state.componentsTitle.more.data = [
         {
@@ -1796,7 +703,7 @@
           name: '导出台账'
         }
       ]
-    } else if (activeName === '8') {
+    } else if (activeName === 'listUsing') {
       state.componentsTitle.more.data = [
         {
           name: '查看已作废的单据'
@@ -1806,10 +713,10 @@
 
     // 搜索条件
     if (
-      activeName === '1' ||
-      activeName === '2' ||
-      activeName === '3' ||
-      activeName === '8'
+      activeName === 'listApproving' ||
+      activeName === 'listFileVerification' ||
+      activeName === 'listNoResult' ||
+      activeName === 'listUsing'
     ) {
       state.componentsSearchForm.data = [
         {
@@ -1959,7 +866,7 @@
           ]
         }
       ]
-    } else if (activeName === '4') {
+    } else if (activeName === 'listNotUse') {
       state.componentsSearchForm.data = [
         {
           id: 'name',
@@ -2121,7 +1028,11 @@
           ]
         }
       ]
-    } else if (activeName === '5' || activeName === '6' || activeName === '7') {
+    } else if (
+      activeName === 'listNoUse' ||
+      activeName === 'listResultDone' ||
+      activeName === 'listUseDone'
+    ) {
       state.componentsSearchForm.data = [
         {
           id: 'name',
@@ -2298,29 +1209,8 @@
     }
   }
 
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
-  }
-
-  // 点击搜索表单
-  function clickElement(item, index) {
-    // console.log(item, index)
-    if (item.type === 'derivable') {
-      showDepPerDialog.value = true
-    }
-  }
-
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
-    // 切换分页
-    tabChange('1')
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

@@ -84,13 +84,17 @@
               v-show="state.checkedIndex == '1'"
               ref="refBasicsInfo"
               :businessList="props.businessList"
+              :sealApplyInitId="props.sealApplyInitId"
               v-model="linkId"
+              v-model:sealId="linkSealUseTypeId"
             ></BasicsInfo>
             <AssociationForm
               :businessList="props.businessList"
+              :sealApplyInitId="props.sealApplyInitId"
               v-show="state.checkedIndex == '2'"
               ref="refAssociationForm"
               v-model="linkId"
+              v-model:sealId="linkSealUseTypeId"
             ></AssociationForm>
             <VFlowDesign
               v-show="state.checkedIndex == '3'"
@@ -135,7 +139,7 @@
   import apiFlow from '@/api/system/flowManagement'
   import { useFlowStore } from '@/components/FlowDesign/store/flow'
   const flowStore = useFlowStore()
-
+  const linkSealUseTypeId = ref('1')
   // 异步组件
   const VFlowDesign = defineAsyncComponent({
     loader: () => import('@/views/components/FlowDesign/index.vue')
@@ -158,10 +162,18 @@
     treeSelectedId: {
       type: String,
       default: ''
+    },
+    sealApplyInitId: {
+      type: String,
+      default: ''
     }
   })
 
-  const emits = defineEmits('update:modelValue', 'update:treeSelectedId')
+  const emits = defineEmits(
+    'update:modelValue',
+    'update:treeSelectedId',
+    'reloadData'
+  )
 
   const state = reactive({
     checkedIndex: '1',
@@ -202,14 +214,12 @@
   // 联动Id - 业务类型
   const linkId = computed({
     get() {
-      console.log(props.treeSelectedId, '----')
       return props.treeSelectedId
     },
     set(value) {
       emits('update:treeSelectedId', value)
     }
   })
-
   const clickClose = () => {
     show.value = false
   }
@@ -307,6 +317,7 @@
     // 保存流程设计
     apiFlow.add(params).then(() => {
       clickClose()
+      emits('reloadData')
     })
   }
 

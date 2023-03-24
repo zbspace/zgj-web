@@ -39,6 +39,51 @@
                 />
               </div>
             </div>
+            <!-- dialog 选择弹出框-->
+            <div
+              class="ap-box-cont derivable"
+              v-else-if="item.type == 'dialog'"
+            >
+              <div class="ap-box-label" :style="props.style.labelStyle">
+                <span class="ap-box-label-necessary" v-if="item.isNecessary"
+                  >*</span
+                >
+                {{ item.label }}
+              </div>
+              <div class="ap-box-contBox width-0">
+                <el-select
+                  v-model="item.values"
+                  v-bind="item.defaultAttribute"
+                  tag-type="waring"
+                  disabled
+                  style="width: 100%"
+                  :class="
+                    (item.defaultAttribute.multiple && item.values.length) ||
+                    (!item.defaultAttribute.multiple && item.values)
+                      ? 'hasContent'
+                      : ''
+                  "
+                  @click="clickDialog(item, index)"
+                >
+                  <el-option
+                    v-for="one in item.options"
+                    :key="one.value"
+                    :label="one.label"
+                    :value="one.value"
+                  />
+                </el-select>
+                <div
+                  class="ap-box-contBox-icon"
+                  @click="clickDialog(item, index)"
+                >
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="../../assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
             <!-- derivable 选择弹出框-->
             <div
               class="ap-box-cont derivable"
@@ -57,6 +102,12 @@
                   tag-type="waring"
                   disabled
                   style="width: 100%"
+                  :class="
+                    (item.defaultAttribute.multiple && item.values.length) ||
+                    (!item.defaultAttribute.multiple && item.values)
+                      ? 'hasContent'
+                      : ''
+                  "
                   @click="clickElement(item, index)"
                 >
                   <el-option
@@ -377,6 +428,20 @@
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
     />
+    <!-- 往来单位弹框选择 -->
+    <JyRelatedCompany
+      v-model="wldwDialogVisible"
+      @on-submit="relatedCompanySubmit"
+      :checkType="checkType"
+      :haveSelectList="fieldModel"
+    />
+    <!-- 印章选择弹框 -->
+    <JySelectSeal
+      v-model="yzDialogVisible"
+      :haveSelectList="selectedData"
+      :checkType="checkType"
+      @on-submit="getSelection"
+    />
   </div>
 </template>
 <script setup>
@@ -446,6 +511,12 @@
   const searchSelected = ref([])
   const kDepartOrPerson = ref(null)
   const tabsShow = ref([])
+  const wldwDialogVisible = ref(false)
+  const yzDialogVisible = ref(false)
+  const selectedData = ref(null)
+  const fieldModel = ref(null)
+  const dialogCurrent = ref(null)
+  const checkType = ref(null)
   const emit = defineEmits(['clickSubmit', 'reloadData'])
   const state = reactive({
     props: {
@@ -588,15 +659,15 @@
     }, 200)
   }
   const submit = value => {
-    console.log(value)
-    console.log(kDepartOrPerson.value)
-    console.log(state.cache.formData)
     const index = state.cache.formData.findIndex(
       i => i.id === kDepartOrPerson.value
     )
-    console.log(index)
     if (index > -1) {
-      state.cache.formData[index].values = value.map(i => i.id)
+      if (state.cache.formData[index].defaultAttribute.multiple) {
+        state.cache.formData[index].values = value.map(i => i.id)
+      } else {
+        state.cache.formData[index].values = value[0].id
+      }
       state.cache.formData[index].options = value.map(i => {
         return {
           label: i.name,
@@ -645,6 +716,79 @@
   function changeDatePicker(val) {
     if (!val) {
       emit('reloadData')
+    }
+  }
+  // dialog
+  function clickDialog(item, index) {
+    checkType.value = item.defaultAttribute.multiple ? 'checkbox' : 'radio'
+    if (item.defaultAttribute.type === 'JyRelatedCompany') {
+      wldwDialogVisible.value = true
+      fieldModel.value = item.values
+    } else if (item.defaultAttribute.type === 'JySelectSeal') {
+      yzDialogVisible.value = true
+      console.log(item)
+      selectedData.value = item.defaultAttribute.multiple
+        ? item.options
+        : item.values
+    }
+    dialogCurrent.value = item.id
+  }
+
+  // 往来单位
+  function relatedCompanySubmit(value) {
+    console.log(value)
+    wldwDialogVisible.value = false
+    const index = state.cache.formData.findIndex(
+      i => i.id === dialogCurrent.value
+    )
+    if (index > -1) {
+      if (state.cache.formData[index].defaultAttribute.multiple) {
+        state.cache.formData[index].values = value.map(i => i.relatedCompanyId)
+        state.cache.formData[index].options = value.map(i => {
+          return {
+            label: i.relatedCompanyName,
+            value: i.relatedCompanyId
+          }
+        })
+      } else {
+        state.cache.formData[index].values = value.relatedCompanyId
+        state.cache.formData[index].options = [
+          {
+            label: value.relatedCompanyName,
+            value: value.relatedCompanyId
+          }
+        ]
+      }
+    }
+  }
+
+  // 印章
+  function getSelection(value) {
+    console.log(value)
+    yzDialogVisible.value = false
+    const index = state.cache.formData.findIndex(
+      i => i.id === dialogCurrent.value
+    )
+    if (index > -1) {
+      if (state.cache.formData[index].defaultAttribute.multiple) {
+        state.cache.formData[index].values = value.map(i => i.sealId)
+        state.cache.formData[index].options = value.map(i => {
+          return {
+            label: i.sealName,
+            value: i.sealId,
+            ...i
+          }
+        })
+      } else {
+        state.cache.formData[index].values = value.sealId
+        state.cache.formData[index].options = [
+          {
+            label: value.sealName,
+            value: value.sealId,
+            ...value
+          }
+        ]
+      }
     }
   }
 
@@ -835,6 +979,16 @@
 
       .el-select .el-input.is-disabled .el-input__inner {
         cursor: pointer;
+      }
+
+      .hasContent {
+        .el-input__wrapper {
+          -webkit-text-fill-color: #000;
+        }
+
+        .el-input__inner {
+          -webkit-text-fill-color: #000;
+        }
       }
 
       .ap-box-contBox {

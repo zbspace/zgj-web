@@ -17,11 +17,25 @@ export const useLayoutStore = defineStore({
       topbar: 'light', // 顶栏颜色
       themeType: 'light', // 配色方案
       sidebarType: '1', // 菜单侧边栏模式
-      rightBarVisible: false // 右侧菜单显隐
+      rightBarVisible: false, // 右侧菜单显隐
+      globStyle: 'light', // 整体风格
+      menuColor: 'light', // 侧边栏颜色
+      customColor: '#D0963E' // 主题色
     }
   },
   getters: {},
   actions: {
+    reset() {
+      this.isCollapse = false
+      this.themeType = 'light'
+      this.topbar = 'light'
+      this.sidebarType = '1'
+      this.menuColor = 'light'
+      this.customColor = '#D0963E'
+      document
+        .getElementsByTagName('body')[0]
+        .style.setProperty('--jy-primary-6', this.customColor)
+    },
     changeLayoutType(layoutType) {
       this.layoutType = layoutType
       document.body.removeAttribute('style')

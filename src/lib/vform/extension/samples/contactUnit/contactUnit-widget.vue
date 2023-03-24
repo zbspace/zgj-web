@@ -23,7 +23,7 @@
           ]"
         >
           <el-select
-            v-model="fieldModel"
+            v-model="fieldModels"
             :size="field.options.size"
             :disabled="field.options.disabled"
             :readonly="field.options.readonly"
@@ -31,10 +31,12 @@
             multiple
             collapse-tags
             collapse-tags-tooltip
-            :max-collapse-tags="3"
+            :max-collapse-tags="5"
             placeholder="请选择"
             style="width: 100%"
             @focus="openSelectWin"
+            @remove-tag="removeTag"
+            tag-type="warning"
             popper-class="select-hidden"
             ref="contactUnitRef"
           >
@@ -108,6 +110,7 @@
         //   unitNames: ''
         // },
         fieldModel: [],
+        fieldModels: null,
         rules: [],
         thisIndex: null,
         xzyzDialogVisible: false
@@ -159,6 +162,7 @@
 
     methods: {
       setRequiredTextShow(v) {
+        // eslint-disable-next-line vue/no-mutating-props
         this.field.options.requiredTextShow = v
       },
       getValue() {
@@ -200,6 +204,13 @@
       submit(list) {
         this.xzyzDialogVisible = false
         this.fieldModel = list
+        this.fieldModels = list.map(i => i.relatedCompanyId)
+      },
+      removeTag(val) {
+        const index = this.fieldModel.findIndex(i => i.relatedCompanyId === val)
+        if (index > -1) {
+          this.fieldModel.splice(index, 1)
+        }
       }
     }
   }

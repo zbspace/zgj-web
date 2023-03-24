@@ -1,16 +1,23 @@
+<!--
+* @Descripttion 新建流程弹框
+* @FileName AntModalBox.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-24 17:53:17
+!-->
 <template>
   <div class="components-ElMessageBox">
     <a-modal
       v-model:visible="state.props.modelValue"
       v-bind="state.props.defaultAttribute"
       :footer="null"
-      @onCancel="closeCallBack"
-      @onOk="closeCallBack"
+      :keyboard="false"
       width="100%"
       wrap-class-name="full-modal"
       :getContainer="false"
       :closable="false"
       :zIndex="1003"
+      @onCancel="closeCallBack"
+      @onOk="closeCallBack"
     >
       <div
         class="dialog"

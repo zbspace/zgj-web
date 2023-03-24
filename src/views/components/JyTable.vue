@@ -49,7 +49,7 @@
         <div class="components-table">
           <el-table
             v-bind="state.componentsTable.defaultAttribute"
-            v-loading="props.loading"
+            v-loading="loading"
             ref="table"
             :data="state.componentsTable.data"
             style="width: 100%"
@@ -76,7 +76,7 @@
             >
               <template #default="scope">
                 <span>{{
-                  (state.componentsPagination.index
+                  (state.componentsPagination.data.index
                     ? (state.componentsPagination.data.index - 1) *
                       state.componentsPagination.data.pageNumber
                     : 0) +
@@ -102,7 +102,7 @@
                   </span>
 
                   <!-- 状态 -->
-                  <span v-if="item.prop == 'flag'">
+                  <div v-if="item.prop === 'flag'" class="flag-cell">
                     {{
                       scope.row[item.prop] === '1'
                         ? '正常'
@@ -110,7 +110,15 @@
                         ? '停用'
                         : scope.row[item.prop]
                     }}
-                  </span>
+                    <div
+                      class="diot diot-0"
+                      v-show="scope.row[item.prop] === '1'"
+                    ></div>
+                    <div
+                      class="diot diot-1"
+                      v-show="scope.row[item.prop] === '0'"
+                    ></div>
+                  </div>
 
                   <div
                     class="custom"
@@ -137,7 +145,7 @@
                       @click="customClick(scope.$index, scope.row, data)"
                     >
                       <span>{{
-                        data.name === 'status'
+                        data.name === 't-zgj-invite.Enable'
                           ? scope.row[props.statusColoum] !== props.openValue
                             ? $t('t-zgj-Enable')
                             : $t('t-zgj-seal.deactivated')
@@ -237,6 +245,10 @@
       type: Boolean,
       default: false
     },
+    hasTabs: {
+      type: Boolean,
+      default: false
+    },
     method: {
       type: String,
       default: 'GET'
@@ -322,7 +334,8 @@
 
   defineExpose({
     reloadData,
-    getSelectionRows
+    getSelectionRows,
+    setTableHeader
   })
 
   const clickElement = (item, index) => {
@@ -372,9 +385,12 @@
           item.checkbox.forEach(i => {
             i.value = false
           })
-        } else if (item.type === 'derivable') {
+        } else if (item.type === 'derivable' || item.type === 'dialog') {
           item.options = []
-          item.values = []
+          item.values = item.defaultAttribute.multiple ? [] : null
+        } else if (item.type === 'scopeInput') {
+          item.startValue = null
+          item.endValue = null
         } else {
           delete item.value
         }
@@ -415,7 +431,6 @@
   const page = () => {
     loading.value = true
     const params = {}
-    console.log(props.componentsSearchForm.data)
     props.componentsSearchForm.data.forEach(item => {
       if (item.type === 'checkButton') {
         params[item.id] = item.data
@@ -423,27 +438,35 @@
           .map(i => i.id)
           .join(',')
       } else if (item.type === 'checkbox') {
-        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
+        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : null
       } else if (item.type === 'picker') {
         if (item.defaultAttribute.type === 'daterange' && item.value) {
           if (item.requestType === 'array') {
-            params.beginTime = item.value[0] + ' 00:00:00'
-            params.endTime = item.value[0] + ' 23:59:59'
+            params[item.startRequest ? item.startRequest : 'beginTime'] =
+              item.value[0] + ' 00:00:00'
+            params[item.endRequest ? item.endRequest : 'endTime'] =
+              item.value[0] + ' 23:59:59'
           } else {
             params[item.id] =
               item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
           }
         }
       } else if (item.type === 'derivable') {
-        if (item.values && item.values.length) {
-          if (item.defaultAttribute.multiple) {
-            params[item.requestParams] = item.defaultAttribute.joinStr
-              ? item.values.join(item.defaultAttribute.joinStr)
-              : item.values
-          } else {
-            params[item.requestParams] = item.values[0]
-          }
+        if (item.defaultAttribute.multiple) {
+          params[item.requestParams] =
+            item.values && item.values.length
+              ? item.defaultAttribute.joinStr
+                ? item.values.join(item.defaultAttribute.joinStr)
+                : item.values
+              : null
+        } else {
+          params[item.requestParams] = item.values
         }
+      } else if (item.type === 'scopeInput') {
+        params[item.startAttribute.id] = item.startValue
+        params[item.endAttribute.id] = item.endValue
+      } else if (item.type === 'dialog') {
+        params[item.id] = item.values || null
       } else {
         params[item.id] = item.value
       }
@@ -552,6 +575,26 @@
       }
       .el-table tbody tr:hover > td {
         background-color: var(--jy-background-color-1);
+      }
+    }
+
+    .flag-cell {
+      position: relative;
+      .diot {
+        position: absolute;
+        top: 50%;
+        left: -12px;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .diot-1 {
+        background: rgba($color: #000000, $alpha: 0.45);
+      }
+
+      .diot-0 {
+        background: rgba($color: green, $alpha: 0.65);
       }
     }
   }

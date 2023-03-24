@@ -4,7 +4,11 @@
     :class="'layout-container-' + layoutStore.sidebarType"
     :data-topbar="layoutStore.topbar"
   >
-    <el-aside class="left-aside-div" v-if="layoutStore.sidebarType === '2'">
+    <el-aside
+      class="left-aside-div"
+      :class="layoutStore.menuColor"
+      v-if="layoutStore.sidebarType === '2'"
+    >
       <Asides />
     </el-aside>
 
@@ -73,6 +77,7 @@
       position: relative;
       z-index: 10;
       height: 64px;
+      padding: 0;
     }
     :deep {
       .el-scrollbar__view {
@@ -90,7 +95,7 @@
     }
   }
   .layout-container-2 {
-    .left-aside-div {
+    .left-aside-div.light {
       background: linear-gradient(
         180.03deg,
         #2a313d 5.3%,
@@ -99,6 +104,17 @@
       );
       box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.06);
       width: 72px;
+    }
+    .left-aside-div.dark {
+      background: #fff;
+      // box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.06);
+      width: 72px;
+      background: linear-gradient(
+        180.03deg,
+        #2a313d 5.3%,
+        #35394f 42.55%,
+        #29303a 97.47%
+      );
     }
     :deep(.el-main) {
       padding: 0px;

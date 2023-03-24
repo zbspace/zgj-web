@@ -16,8 +16,8 @@
       :componentsBatch="state.componentsBatch"
       :queryParams="queryParams"
       statusColoum="flag"
-      openValue="0"
       tableClick="flowName"
+      openValue="1"
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="batchOpt"
@@ -65,9 +65,11 @@
       v-if="addFlowModalShow"
       v-model="addFlowModalShow"
       :openType="openType"
+      :sealApplyInitId="sealApplyInitId"
       :treeSelectedId="state.componentsTree.value"
       @update:treeSelectedId="state.componentsTree.value = $event"
       :businessList="state.componentsTree.data"
+      @reloadData="reloadData"
     ></Addflow>
     <!-- 弹窗提示 -->
     <JyElMessageBox
@@ -135,7 +137,7 @@
    * openType edit、add
    * treeValue 树型选择值 - 携带；编辑时不生效
    */
-  import { reactive, onBeforeMount, ref, watch } from 'vue'
+  import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import Addflow from './AddOrEditFlow.vue'
@@ -143,6 +145,8 @@
   import apiForm from '@/api/system/formManagement'
   import JyTable from '@/views/components/JyTable.vue'
   import { ElMessage } from 'element-plus'
+  import tableHeaderSealApply from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSealApply.json'
+  import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
   // =========↓
   const addFlowModalShow = ref(false)
   const openType = ref(null)
@@ -155,7 +159,9 @@
   // =========↑
 
   const table = ref(null)
-  const queryParams = ref({ sealTypeIds: '2' })
+  const queryParams = ref({})
+  // 用印申请id
+  const sealApplyInitId = ref('')
 
   const state = reactive({
     columnData: {},
@@ -333,66 +339,7 @@
     },
 
     componentsTable: {
-      header: [
-        {
-          prop: 'flowName',
-          label: '流程名称',
-          sortable: true,
-          'min-width': 150,
-          fixed: true
-        },
-        {
-          prop: 'applyTypeName',
-          label: '业务类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'fileTypeName',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'status',
-          label: '状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'createUserName',
-          label: '创建人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'modifyDatetime',
-          label: '更新时间',
-          sortable: true,
-          width: 180
-        },
-
-        {
-          prop: '8',
-          label: '操作',
-          width: 180,
-          fixed: 'right',
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '删除'
-            },
-            {
-              name: '状态'
-            },
-            {
-              name: '复制'
-            }
-          ]
-        }
-      ],
+      header: tableHeaderSealApply,
       data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
@@ -401,7 +348,6 @@
           background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === 'flowName') {
             return {
               color: 'var(--jy-info-6)',
@@ -446,6 +392,7 @@
       },
       value: ''
     },
+
     componentsBatch: {
       selectionData: [],
       defaultAttribute: {
@@ -470,6 +417,7 @@
         }
       ]
     },
+
     componentsDocumentsDetails: {
       show: false,
       visible: [
@@ -495,6 +443,7 @@
       state.componentsDocumentsDetails.show = true
     }
   }
+
   const customClick = (row, column, cell, event) => {
     console.log(cell)
     state.sealIds = column.id
@@ -670,6 +619,10 @@
           element.children = []
           listApplyTypeTree.push(element)
         } else {
+          // 获取用印申请id
+          if (element.applyTypeName === '用印申请') {
+            sealApplyInitId.value = element.applyTypeId
+          }
           const index = listApplyTypeTree.findIndex(
             i => i.applyTypeId === element.applyTypePid
           )
@@ -686,22 +639,27 @@
 
   const currentChange = (e, node) => {
     if (node.level === 1) {
-      tree.value.setCurrentKey(e.applyTypeId === '5' ? '6' : '2')
+      // tree.value.setCurrentKey(e.applyTypeId === '5' ? '6' : '2')
       return
     }
-    queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
+    queryParams.value.sealTypeIds = e.sealTypeId ? e.sealTypeId : null
     table.value.reloadData()
     state.componentsTree.value = e.applyTypeId
-  }
 
-  watch(
-    () => state.componentsTree.value,
-    val => {
-      // 重新加载
-      state.componentsTree.value = val
-      table.value.reloadData()
+    // 更新列表头 和 搜索条件
+    if (e.applyTypeId === sealApplyInitId.value) {
+      // 用印申请
+      table.value.setTableHeader(tableHeaderSealApply)
+      state.componentsTable.header = tableHeaderSealApply
+    } else {
+      // 非用印申请
+      table.value.setTableHeader(tableHeaderSeal)
+      state.componentsTable.header = tableHeaderSeal
     }
-  )
+  }
+  const reloadData = () => {
+    table.value.reloadData()
+  }
   onBeforeMount(() => {
     // 发送api请求 查询表单树解构
     listApplyTypeTreeApi()

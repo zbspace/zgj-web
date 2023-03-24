@@ -111,7 +111,11 @@
     </template>
 
     <!-- 选择印章 弹窗 -->
-    <JySelectSeal v-model="xzyzDialogVisible" @on-submit="getSelection" />
+    <JySelectSeal
+      v-model="xzyzDialogVisible"
+      :haveSelectList="selectedData"
+      @on-submit="getSelection"
+    />
   </static-content-wrapper>
 </template>
 
@@ -158,6 +162,7 @@
     },
     data() {
       return {
+        selectedData: null,
         searchPara: '',
         searchKey: '', // 外传参数印章类型ID
         filedList: [],
@@ -253,6 +258,7 @@
       openSelectWin(index) {
         this.thisIndex = index
         this.xzyzDialogVisible = true
+        this.selectedData = this.filedList[index].sealId
       },
 
       getSelection(row) {

@@ -15,12 +15,24 @@
       @after-leave="hidePop"
     >
       <template #reference>
-        <el-button class="btn-drown" text>
+        <!-- <el-button class="btn-drown" text>
           <img
             src="@/assets/images/navbar/application_icon.svg"
             :class="actived ? 'image' : ''"
           />
-        </el-button>
+        </el-button> -->
+        <svg
+          class="iconpark-icon"
+          :style="
+            !actived && layoutStore.topbar === 'light'
+              ? ''
+              : !actived && layoutStore.topbar === 'dark'
+              ? 'color: #fff'
+              : 'color: var(--jy-primary-6)'
+          "
+        >
+          <use href="#functions"></use>
+        </svg>
       </template>
       <div class="ap-moreDropdown">
         <div class="dropdown-list">
@@ -52,6 +64,9 @@
   import icon3 from '@/assets/images/navbar/more-file-document.svg'
   import icon4 from '@/assets/images/navbar/more-Application-Seal.svg'
   import icon5 from '@/assets/images/navbar/more-document-library.svg'
+  import { useLayoutStore } from '@/store/layout'
+
+  const layoutStore = useLayoutStore()
   const state = reactive({
     appEntrance: [
       {
@@ -115,7 +130,15 @@
   .application-drown {
     overflow: hidden;
     margin: 0 10px;
-
+    :deep(.el-only-child__content) {
+      display: flex;
+      align-items: center;
+    }
+    .iconpark-icon {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
     .btn-drown {
       width: 28px;
       height: 28px;

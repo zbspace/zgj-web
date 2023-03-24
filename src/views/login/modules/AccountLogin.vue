@@ -263,6 +263,7 @@
   import md5 from 'js-md5'
   import { setItem, getItem } from '@/utils/storage.js'
   import loginApi from '@/api/login'
+  import navBarApi from '@/api/common/navbar.js'
   import Verify from '../components/verifition/Verify'
   const { proxy } = getCurrentInstance()
   const accountInfo = useAccountInfoStore()
@@ -452,8 +453,6 @@
         accountInfo.setToken({
           token: loginResult.data.tokenValue
         })
-        accountInfo.setUserName('曹春青')
-        accountInfo.setUserId(loginResult.data.loginId)
 
         // 记住密码
         if (state.rememberPas) {
@@ -464,6 +463,11 @@
         } else {
           accountInfo.setAccountAndPassword(null)
         }
+
+        // 获取用户信息 - 缓存
+        navBarApi.getUserInfo().then(userInfo => {
+          accountInfo.setUserInfo(userInfo.data || {})
+        })
 
         // 获取登录列表
         loginApi.tenantInfoList().then(departListResult => {
@@ -480,16 +484,23 @@
                   setItem('tenantId', Number(departListResult.data[0].tenantId))
                   goHome()
                 })
+              emits('getWater', true)
             } else {
               // 进入列表选择页面
               emits('update:modelValue', true)
               emits('update:departLists', departListResult.data)
+              emits('getWater', false)
             }
           } else {
+            if (departListResult.data && departListResult.data.length === 1) {
+              emits('getWater', true)
+            } else {
+              emits('getWater', false)
+            }
+            // 已经选择企业
             goHome()
             setItem('tenantId', Number(loginResult.data.lastTenantId))
           }
-          emits('getWater')
         })
       },
       () => {
