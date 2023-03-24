@@ -17,7 +17,18 @@
         </router-link>
 
         <!-- 公司选择 -->
-        <el-button class="depart-dropdown" text>
+        <el-button
+          class="depart-dropdown"
+          text
+          v-show="state.departLists.length < 2"
+        >
+          {{ accountInfoStore.oneDepartTitle }}
+        </el-button>
+        <el-button
+          class="depart-dropdown"
+          text
+          v-show="state.departLists.length > 2"
+        >
           <el-dropdown
             trigger="hover"
             :teleported="false"
@@ -36,9 +47,9 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <div class="ap-enterprise">
-                  <div class="ap-enterprise-text">
+                  <!-- <div class="ap-enterprise-text">
                     <div class="ap-enterprise-text-list"> 企业/组织/团队 </div>
-                  </div>
+                  </div> -->
                   <div class="ap-enterprise-cont">
                     <el-dropdown-item
                       v-for="(item, index) in state.departLists"
@@ -123,26 +134,14 @@
             @after-leave="hideUserPop"
           >
             <template #reference>
-              <!-- <el-button class="ap-personalCenter">
-                <div class="ap-personalCenter-text">
-                  <span class="ap-personalCenter-name">{{
-                    accountInfoStore.userName.substr(1)
-                  }}</span>
-                  <img
-                    v-show="!showUserInfoPop"
-                    src="@/assets/images/navbar/user_info_close.svg"
-                  />
-                  <img
-                    v-show="showUserInfoPop"
-                    src="@/assets/images/navbar/user_info_open.svg"
-                  />
-                </div>
-              </el-button> -->
               <div class="ap-personalCenter">
                 <div class="ap-personalCenter-text">
-                  <span class="ap-personalCenter-name">{{
-                    accountInfoStore.userName.substr(1)
-                  }}</span>
+                  <span class="ap-personalCenter-name">
+                    {{
+                      accountInfoStore.userInfo &&
+                      accountInfoStore.userInfo.userName.substr(1)
+                    }}
+                  </span>
                 </div>
                 <svg
                   class="iconpark-icon"
@@ -163,10 +162,16 @@
               <div class="dropdown-box">
                 <div class="dropdown-name">
                   <div class="dropdown-name-icon">
-                    {{ accountInfoStore.userName.substr(1) }}
+                    {{
+                      accountInfoStore.userInfo &&
+                      accountInfoStore.userInfo.userName.substr(1)
+                    }}
                   </div>
                   <div class="dropdown-name-text">
-                    {{ accountInfoStore.userName }}
+                    {{
+                      accountInfoStore.userInfo &&
+                      accountInfoStore.userInfo.userName
+                    }}
                   </div>
                 </div>
               </div>
@@ -373,8 +378,7 @@
       CurrentSystemType: 'business' // business / system
     },
     language: i18n.global.locale,
-    // departLists: JSON.parse(localStorage.getItem('departLists')),
-    departLists: [{ tenantName: '章管家', tenantId: 1 }],
+    departLists: JSON.parse(localStorage.getItem('departLists')),
     tenantId: null,
     currentDepart: {},
     chooseTenant: {},
@@ -492,13 +496,13 @@
     loginApi.logOut().then(res => {
       if (res.success) {
         accountInfoStore.setToken(null)
-        accountInfoStore.setUserName(null)
+        accountInfoStore.setUserInfo(null)
         localStorage.removeItem('tenantId')
         localStorage.removeItem('menusInfo')
         localStorage.removeItem('departLists')
         const accountInfo = JSON.parse(localStorage.getItem('accountInfo'))
         accountInfo.token = ''
-        accountInfo.userName = ''
+        accountInfo.userInfo.userName = ''
         localStorage.setItem('accountInfo', accountInfo)
         // 跳转到登录页
         ElMessage.success('退出登录！')

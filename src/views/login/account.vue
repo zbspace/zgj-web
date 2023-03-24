@@ -190,6 +190,8 @@
   import companyApi from '@/api/system/companyManagement/companyInfo'
   import { setWaterMark, removeWatermark } from '@/utils/water'
   import dayjs from 'dayjs'
+  import { useAccountInfoStore } from '@/store/accountInfo'
+  const accountInfo = useAccountInfoStore()
   const router = useRouter()
   const route = useRoute()
 
@@ -249,7 +251,6 @@
   const goHome = tenantId => {
     loginApi.chooseOrgan(tenantId).then(res => {
       localStorage.setItem('tenantId', Number(tenantId))
-      getWater()
       let redirect = route.query.redirect
         ? decodeURIComponent(route.query.redirect)
         : '/frontDesk/home'
@@ -260,7 +261,7 @@
     })
   }
 
-  function getWater() {
+  function getWater(isOneDepart) {
     companyApi.getTenantInfo().then(res => {
       if (res.data.tenantShowInfo) {
         localStorage.setItem('watermark', res.data.tenantShowInfo.pageWatermark)
@@ -269,12 +270,15 @@
       }
       if (localStorage.getItem('watermark') === '1') {
         const text =
-          JSON.parse(localStorage.getItem('accountInfo')).userName +
+          JSON.parse(localStorage.getItem('accountInfo')).userInfo.userName +
           ' ' +
           dayjs().format('YYYY-MM-DD HH:mm')
         setWaterMark(text)
       } else {
         removeWatermark()
+      }
+      if (isOneDepart) {
+        accountInfo.setOneDeaprtTitle(res.data && res.data.tenant.tenantTitle)
       }
     })
   }
