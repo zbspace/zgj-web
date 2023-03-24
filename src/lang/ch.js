@@ -1998,6 +1998,8 @@ export const ch = {
   't-zgj-sync.add': '新建',
   't-zgj-sync.update': '更新',
   't-zgj-sync.Person': '人员',
+  't-zgj-sync.PersonManage': '人员管理',
+  't-zgj-sync.AuthSetting': '权限配置',
   't-zgj-sync.Department': '部门',
   't-zgj-batchImport.templatError':
     '您使用的excel模版列数不正确，请下载最新模板',

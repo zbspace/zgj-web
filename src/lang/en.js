@@ -2177,6 +2177,8 @@ export const en = {
   't-zgj-sync.add': 'Add',
   't-zgj-sync.update': 'Update',
   't-zgj-sync.Person': 'Person',
+  't-zgj-sync.PersonManage': 'Personnel management',
+  't-zgj-sync.AuthSetting': 'Permission configuration',
   't-zgj-sync.Department': 'Department',
   't-zgj-batchImport.templatError':
     'The number of columns in the excel template you are using is incorrect. Please download the latest template',
