@@ -288,6 +288,7 @@
           .then(res => {
             ElMessage.success('操作成功')
             state.JyElMessageBox.show = false
+            state.searchSelected = []
             table.value.reloadData()
           })
       } else if (state.activeTab === 'organ') {

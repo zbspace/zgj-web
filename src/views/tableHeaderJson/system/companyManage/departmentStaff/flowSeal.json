@@ -1,0 +1,59 @@
+[
+  {
+    "prop": "flowName",
+    "label": "流程名称",
+    "sortable": true,
+    "flex": true,
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "applyTypeName",
+    "label": "业务类型",
+    "sortable": true,
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "flag",
+    "label": "状态",
+    "sortable": true,
+    "min-width": 120,
+    "show": true
+  },
+  {
+    "prop": "createUserName",
+    "label": "创建人",
+    "sortable": true,
+    "min-width": 120,
+    "show": true
+  },
+  {
+    "prop": "modifyDatetime",
+    "label": "更新时间",
+    "sortable": true,
+    "min-width": 180,
+    "show": true
+  },
+  {
+    "prop": "caozuo",
+    "label": "操作",
+    "fixed": "right",
+    "min-width": 200,
+    "show": true,
+    "rankDisplayData": [
+      {
+        "name": "t-zgj-Edit"
+      },
+      {
+        "name": "t-zgj-Delete"
+      },
+      {
+        "name": "t-zgj-invite.Enable"
+      },
+      {
+        "name": "t-zgj-qyWechat.Copy"
+      }
+    ]
+  }
+]

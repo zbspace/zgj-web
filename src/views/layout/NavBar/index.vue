@@ -6,7 +6,7 @@
 !-->
 <template>
   <header id="page-topbar">
-    <div class="nav-bar-container header-content">
+    <div class="nav-bar-container header-content" :class="layoutStore.topbar">
       <!-- nav-left -->
       <div class="nav-left">
         <!-- logo -->
@@ -70,14 +70,14 @@
         <div class="ap-sys">
           <div class="ap-sys-but" @click="changeSystemHome">
             <div v-if="menusInfoStore.currentType === 'business'">
-              <svg class="ap-sys-but-icon">
+              <svg class="iconpark-icon">
                 <use href="#xitonghoutai"></use>
               </svg>
               <span>{{ $t('t-back-system-platform') }}</span>
             </div>
 
             <div v-if="menusInfoStore.currentType === 'system'">
-              <svg class="ap-sys-but-icon">
+              <svg class="iconpark-icon">
                 <use href="#Property1yewuqiantai"></use>
               </svg>
               <span>{{ $t('t-front-platform') }}</span>
@@ -95,7 +95,8 @@
               :show-arrow="true"
             >
               <div :class="showHelpPop ? '' : 'svg-img'" class="svg-img-hover">
-                <img src="@/assets/images/navbar/help_select_icon.svg" />
+                <!-- <img src="@/assets/images/navbar/help_select_icon.svg" /> -->
+                <svg class="iconpark-icon"><use href="#help"></use></svg>
               </div>
             </el-tooltip>
           </el-button>
@@ -122,7 +123,7 @@
             @after-leave="hideUserPop"
           >
             <template #reference>
-              <el-button class="ap-personalCenter">
+              <!-- <el-button class="ap-personalCenter">
                 <div class="ap-personalCenter-text">
                   <span class="ap-personalCenter-name">{{
                     accountInfoStore.userName.substr(1)
@@ -136,7 +137,26 @@
                     src="@/assets/images/navbar/user_info_open.svg"
                   />
                 </div>
-              </el-button>
+              </el-button> -->
+              <div class="ap-personalCenter">
+                <div class="ap-personalCenter-text">
+                  <span class="ap-personalCenter-name">{{
+                    accountInfoStore.userName.substr(1)
+                  }}</span>
+                </div>
+                <svg
+                  class="iconpark-icon"
+                  :style="
+                    !showUserInfoPop && layoutStore.topbar === 'light'
+                      ? ''
+                      : !showUserInfoPop && layoutStore.topbar === 'dark'
+                      ? 'color: #fff'
+                      : 'color: var(--jy-primary-6);transform: rotate(180deg);'
+                  "
+                >
+                  <use href="#weizhankai"></use>
+                </svg>
+              </div>
             </template>
 
             <div class="ap-personalCenterDropdown">
@@ -337,6 +357,7 @@
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
+  import { useLayoutStore } from '@/store/layout'
   import JyDialog from '@/components/common/JyDialog/index2.vue'
 
   import { ArrowDown } from '@element-plus/icons-vue'
@@ -345,6 +366,7 @@
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
   const languageStore = useLanguageStore()
+  const layoutStore = useLayoutStore()
 
   const state = reactive({
     application: {
@@ -538,7 +560,7 @@
     justify-content: space-between;
     align-items: center;
     height: 64px;
-    // padding-left: 32px;
+    padding: 0 32px;
     .nav-left {
       display: flex;
 
@@ -657,21 +679,21 @@
             filter: drop-shadow(rgba(#000000, 0.65) 80px 0);
           }
         }
-
-        .svg-img-hover {
-          height: 24px;
-        }
       }
       .ap-personalCenter {
+        display: flex;
+        align-items: center;
         font-size: 14px;
         width: 88px;
         height: 42px;
         border: none;
         --el-button-hover-bg-color: rgba(0, 0, 0, 0.04);
+        margin-left: 10px;
         .ap-personalCenter-text {
           display: flex;
           align-items: center;
           cursor: pointer;
+          margin-right: 20px;
 
           .ap-personalCenter-name {
             @include mixin-width(34);
@@ -692,6 +714,9 @@
           img {
             margin-left: 8px;
           }
+        }
+        .iconpark-icon {
+          width: 8px;
         }
       }
 
@@ -811,6 +836,10 @@
           background-size: 100%;
         }
       }
+      .iconpark-icon {
+        width: 20px;
+        height: 20px;
+      }
     }
   }
 
@@ -824,5 +853,39 @@
     font-weight: 400;
     width: 100%;
     color: rgba(0, 0, 0, 0.65);
+  }
+  .nav-bar-container.light {
+    background-color: #fff;
+  }
+  .nav-bar-container.dark {
+    background: linear-gradient(
+      90deg,
+      #2a313d 5.28%,
+      #35394f 42.55%,
+      #29303a 97.5%
+    );
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.06);
+
+    .nav-left {
+      :deep(.depart-dropdown) {
+        .el-dropdown-link {
+          color: #fff;
+        }
+      }
+    }
+    .nav-right {
+      .ap-sys-but {
+        background-color: var(--jy-primary-6);
+        color: #fff;
+        .iconpark-icon {
+          margin-right: 8px;
+        }
+      }
+      .btn-ghost {
+      }
+      .iconpark-icon {
+        color: #fff;
+      }
+    }
   }
 </style>

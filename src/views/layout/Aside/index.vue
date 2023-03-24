@@ -1,5 +1,5 @@
 <template>
-  <div class="left-aside">
+  <div class="left-aside" :class="layoutStore.menuColor">
     <div
       v-for="(item, i) in menusInfoStore.asides"
       :key="i"
@@ -147,6 +147,17 @@
     }
     .item.isActive {
       background: #d0963e;
+    }
+  }
+
+  .left-aside.dark {
+  }
+  .left-aside.light {
+    .item {
+      .iconpark-icon {
+      }
+      span {
+      }
     }
   }
 </style>

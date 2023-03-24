@@ -37,17 +37,17 @@
           <el-form-item
             label="用印类型"
             prop="sealUseTypeId"
-            v-if="form.applyTypeId === '2'"
+            v-if="form.applyTypeId === props.sealApplyInitId"
           >
             <el-radio-group v-model="form.sealUseTypeId">
-              <el-radio :label="1" size="large">物理用印</el-radio>
-              <el-radio :label="2" size="large">电子签章</el-radio>
+              <el-radio label="1" size="large">物理用印</el-radio>
+              <el-radio label="2" size="large">电子签章</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item
             label="文件类型"
             prop="fileTypeIds"
-            v-if="form.applyTypeId === '2'"
+            v-if="form.applyTypeId === props.sealApplyInitId"
           >
             <el-select v-model="form.fileTypeIds" placeholder="请选择" multiple>
               <el-option
@@ -99,7 +99,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, ref, watch } from 'vue'
+  import { reactive, ref, watch, computed } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { fileManageService } from '@/api/frontDesk/fileManage'
   import { messageError } from '@/hooks/useMessage'
@@ -113,18 +113,28 @@
     modelValue: {
       type: String,
       default: ''
+    },
+    sealId: {
+      type: String,
+      default: ''
+    },
+    sealApplyInitId: {
+      type: String,
+      default: ''
     }
   })
-  const emits = defineEmits('update:modelValue')
+  const emits = defineEmits('update:modelValue', 'update:sealId')
   const showDepPerDialog = ref(false)
   const searchSelected = ref([])
   const tabsShow = ref(['user', 'organ'])
   const activeTab = ref('user')
   const fileTypeList = ref([])
+  const ruleFormRef = ref(null)
+
   const form = reactive({
     flowName: '',
     applyTypeId: '',
-    sealUseTypeId: 1,
+    sealUseTypeId: '1',
     fileTypeIds: [],
     showDataScope: '',
     dataScope: [],
@@ -169,7 +179,6 @@
     ]
   })
 
-  const ruleFormRef = ref(null)
   const getBasicsFormValue = async () => {
     const valid = await ruleFormRef.value.validate().catch(err => err)
     if (typeof valid === 'boolean' && valid) {
@@ -184,10 +193,18 @@
       const res = await fileManageService.getFileTypeList(form.applyTypeId)
       fileTypeList.value = res.data || []
     } catch (error) {
-      console.log('--->', error)
       messageError(error)
     }
   }
+
+  form.sealUseTypeId = computed({
+    get() {
+      return props.sealId
+    },
+    set(value) {
+      emits('update:sealId', value)
+    }
+  })
 
   watch(
     () => searchSelected.value,
@@ -215,7 +232,7 @@
   watch(
     () => form.applyTypeId,
     val => {
-      if (val === '2') {
+      if (val === props.sealApplyInitId) {
         setFileTypeList()
       }
       emits('update:modelValue', val)
