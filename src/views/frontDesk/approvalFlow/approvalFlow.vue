@@ -322,11 +322,36 @@
         // btnLoading.value = false
         if (state.form.approvals === '1') {
           onAgree()
+        } else if (state.form.approvals === '2') {
+          onReject()
         }
       } else {
         ElMessage.error('校验失败')
       }
     })
+  }
+  const onReject = res => {
+    const params = {
+      instanceId: instanceId.value,
+      modelId: modelId.value,
+      formData: formData.value,
+      definitionId: definitionId.value,
+      remark: state.form.remark,
+      suggest: 2
+    }
+    console.log(params)
+    ApproverApi.reject(params)
+      .then(result => {
+        if (result.code === '00000') {
+          console.info(result)
+          dialogProcess.show = false
+          getFormPage()
+        }
+        btnLoading.value = false
+      })
+      .catch(() => {
+        btnLoading.value = false
+      })
   }
   const onAgree = res => {
     const params = {
@@ -998,7 +1023,7 @@
     } else if (activeName === '2') {
       state.componentsTable.header = [
         {
-          prop: 'flowName',
+          prop: 'instanceTitle',
           label: '流程名称',
           sortable: true,
           'min-width': 150
@@ -1010,19 +1035,19 @@
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'positionName',
           label: '申请人',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '4',
+          prop: 'orgName',
           label: '申请部门',
           sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
+          prop: 'createTime',
           label: '申请时间',
           sortable: true,
           'min-width': 150
@@ -1394,10 +1419,10 @@
     QueryTaskApi.queryDoneTask(queryParams).then(
       res => {
         console.log(res)
-        // state.componentsTable.data = res.data.rows
-        // state.componentsPagination.data.amount = res.data.totalRows
-        // state.componentsPagination.data.pageNumber = res.data.totalPage
-        // state.componentsPagination.defaultAttribute.total = res.data.totalRows
+        state.componentsTable.data = res.records
+        state.componentsPagination.data.amount = res.total
+        state.componentsPagination.defaultAttribute.total = res.total
+        state.componentsTable.loading = false
         state.componentsTable.loading = false
       },
       () => {

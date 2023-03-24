@@ -187,6 +187,8 @@
   const initObj = ref(null)
   const applyTypeId = ref(null)
   const sealUseTypeId = ref(null)
+  const formVersionId = ref(router.currentRoute.value.query.formVersionId)
+  const flowVersionId = ref(null)
   // const emit = defineEmits([])
   const state = reactive({
     cache: {
@@ -298,6 +300,7 @@
           if (res.data && res.data.length) {
             flowLists.value = res.data
             flowMessageId.value = res.data[0].flowMessageId
+            flowVersionId.value = res.data[0].flowVersionId
             flowDetail(res.data[0].modelId, res.data[0].definitionId)
           }
         })
@@ -308,6 +311,7 @@
     const item = flowLists.value.find(
       i => i.flowMessageId === flowMessageId.value
     )
+    flowVersionId.value = item.flowVersionId
     flowDetail(item.modelId, item.definitionId)
   }
 
@@ -376,13 +380,21 @@
       definitionId: initObj.value.definitionId,
       instanceName: state.cache.formData.applyName,
       suggest: null,
-      formData: state.cache.formData
+      formData: {
+        ...state.cache.formData,
+        formVersionId: formVersionId.value,
+        flowVersionId: flowVersionId.value,
+        formMessageId: router.currentRoute.value.params.id,
+        flowMessageId: flowMessageId.value
+      }
     }
     sealApply.submit(params).then(res => {
       console.log(res)
       sealApply
         .add({
           formMessageId: router.currentRoute.value.params.id,
+          formVersionId: formVersionId.value,
+          flowVersionId: flowVersionId.value,
           applyTypeId: applyTypeId.value,
           sealUseTypeId: sealUseTypeId.value,
           flowMessageId: flowMessageId.value,

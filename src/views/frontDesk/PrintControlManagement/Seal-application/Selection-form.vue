@@ -104,7 +104,7 @@
               <div class="ap-cont-liebiao-list-but">
                 <el-button
                   type="primary"
-                  @click="clickListBut(item.formMessageId)"
+                  @click="clickListBut(item.formMessageId, item.formVersionId)"
                 >
                   去申请
                 </el-button>
@@ -179,10 +179,11 @@
   const loading = ref(false)
 
   // 点击列表按钮
-  function clickListBut(formMessageId) {
+  function clickListBut(formMessageId, formVersionId) {
     router.push({
       name: 'selectionForms',
-      params: { id: formMessageId }
+      params: { id: formMessageId },
+      query: { formVersionId }
     })
   }
 

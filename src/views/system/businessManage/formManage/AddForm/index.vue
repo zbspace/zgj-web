@@ -235,7 +235,7 @@
   }
 
   const loaded = async () => {
-    if (props.columnData.formMessageId) {
+    if (props.columnData && props.columnData.formMessageId) {
       await vformRef.value.setFormJson(formInfo.value.formInfo)
     } else {
       await vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
