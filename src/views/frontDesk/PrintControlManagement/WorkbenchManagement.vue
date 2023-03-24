@@ -129,7 +129,15 @@
               trigger="hover"
               content="仅控制工作台未登录情况下的入口显示"
             >
-              <template #reference>1</template>
+              <template #reference>
+                <svg
+                  class="svg-icon el-tooltip__trigger"
+                  aria-hidden="true"
+                  data-v-11cc4082=""
+                >
+                  <use xlink:href="#icon-el-info" data-v-11cc4082=""></use>
+                </svg>
+              </template>
             </el-popover>
           </template>
           <el-radio-group v-model="form.sealCode">

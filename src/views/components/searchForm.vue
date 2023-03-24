@@ -588,21 +588,24 @@
     }, 200)
   }
   const submit = value => {
-    console.log(value)
-    console.log(kDepartOrPerson.value)
-    console.log(state.cache.formData)
     const index = state.cache.formData.findIndex(
       i => i.id === kDepartOrPerson.value
     )
     console.log(index)
     if (index > -1) {
-      state.cache.formData[index].values = value.map(i => i.id)
+      if (state.cache.formData[index].defaultAttribute.multiple) {
+        state.cache.formData[index].values = value.map(i => i.id)
+      } else {
+        state.cache.formData[index].values = value[0].id
+      }
       state.cache.formData[index].options = value.map(i => {
         return {
           label: i.name,
           value: i.id
         }
       })
+      console.log(state.cache.formData[index].values)
+      console.log(state.cache.formData[index].options)
     }
   }
   // 点击按钮

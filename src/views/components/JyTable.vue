@@ -49,7 +49,7 @@
         <div class="components-table">
           <el-table
             v-bind="state.componentsTable.defaultAttribute"
-            v-loading="props.loading"
+            v-loading="loading"
             ref="table"
             :data="state.componentsTable.data"
             style="width: 100%"
@@ -76,7 +76,7 @@
             >
               <template #default="scope">
                 <span>{{
-                  (state.componentsPagination.index
+                  (state.componentsPagination.data.index
                     ? (state.componentsPagination.data.index - 1) *
                       state.componentsPagination.data.pageNumber
                     : 0) +
@@ -234,6 +234,10 @@
       type: Object
     },
     hasTree: {
+      type: Boolean,
+      default: false
+    },
+    hasTabs: {
       type: Boolean,
       default: false
     },
@@ -435,14 +439,15 @@
           }
         }
       } else if (item.type === 'derivable') {
-        if (item.values && item.values.length) {
-          if (item.defaultAttribute.multiple) {
-            params[item.requestParams] = item.defaultAttribute.joinStr
-              ? item.values.join(item.defaultAttribute.joinStr)
-              : item.values
-          } else {
-            params[item.requestParams] = item.values[0]
-          }
+        if (item.defaultAttribute.multiple) {
+          params[item.requestParams] =
+            item.values && item.values.length
+              ? item.defaultAttribute.joinStr
+                ? item.values.join(item.defaultAttribute.joinStr)
+                : item.values
+              : null
+        } else {
+          params[item.requestParams] = item.values
         }
       } else {
         params[item.id] = item.value
