@@ -19,7 +19,8 @@ export const useLayoutStore = defineStore({
       sidebarType: '1', // 菜单侧边栏模式
       rightBarVisible: false, // 右侧菜单显隐
       globStyle: 'light', // 整体风格
-      menuColor: 'light' // 侧边栏颜色
+      menuColor: 'light', // 侧边栏颜色
+      customColor: '#D0963E' // 主题色
     }
   },
   getters: {},
@@ -30,6 +31,10 @@ export const useLayoutStore = defineStore({
       this.topbar = 'light'
       this.sidebarType = '1'
       this.menuColor = 'light'
+      this.customColor = '#D0963E'
+      document
+        .getElementsByTagName('body')[0]
+        .style.setProperty('--jy-primary-6', this.customColor)
     },
     changeLayoutType(layoutType) {
       this.layoutType = layoutType

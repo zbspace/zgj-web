@@ -41,13 +41,13 @@
           <span class="color-7"></span>
           <span class="color-8"></span>
         </div>
-
         <div class="custom-color">
-          <span>自定义</span>
-          <div>
-            <span></span>
-          </div>
-          <span>#D0963E</span>
+          <span class="custom-label">自定义</span>
+          <el-color-picker
+            v-model="layoutStore.customColor"
+            @change="colorChange"
+          />
+          <span>{{ layoutStore.customColor }}</span>
         </div>
       </div>
 
@@ -148,9 +148,6 @@
 
   const reset = () => {
     layoutStore.reset()
-    // layoutStore.setThemeType()
-    // layoutStore.changeTopbar()
-    // layoutStore.setSidebarType()
   }
 
   const sidebarTypeChange = value => {
@@ -160,6 +157,12 @@
         menusInfoStore.currentType === 'business' ? business : system
       menusInfoStore.setMenus(menus)
     }
+  }
+
+  const colorChange = value => {
+    document
+      .getElementsByTagName('body')[0]
+      .style.setProperty('--jy-primary-6', layoutStore.customColor)
   }
 </script>
 
@@ -254,32 +257,27 @@
         display: flex;
         align-items: center;
         margin-bottom: 40px;
-        span {
+        .custom-label {
           font-weight: 400;
           font-size: 14px;
           line-height: 22px;
           color: #000000;
         }
-        div {
-          width: 86px;
-          height: 26px;
-          left: 54px;
-          top: 0px;
-          border: 1px solid rgba(0, 0, 0, 0.15);
-          border-radius: 2px;
-          margin: 0 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          span {
-            display: inline-block;
-            width: 78px;
-            height: 18px;
-            left: 58px;
-            top: 4px;
-            background: #d0963e;
-            border-radius: 2px;
+        .el-color-picker {
+          .el-color-picker__trigger {
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            width: 86px;
+            height: 26px;
+            margin: 0 12px;
+          }
+          i {
+            display: none;
+          }
+          .el-color-picker__color {
+            border: 0;
+          }
+          .el-color-picker__color-inner {
+            // display: none;
           }
         }
       }

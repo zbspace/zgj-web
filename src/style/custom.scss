@@ -1,5 +1,5 @@
 // 变量
-@import './variable.scss';
+// @import './variable.css';
 
 $unify-primary-color: var(--jy-primary-6);
 
@@ -24,7 +24,7 @@ $unify-primary-color: var(--jy-primary-6);
     background: #{$unify-primary-color};
   }
 
-  .el-radio__input.is-checked+.el-radio__label {
+  .el-radio__input.is-checked + .el-radio__label {
     color: #{$unify-primary-color};
   }
 }
@@ -333,7 +333,11 @@ element table 样式
 }
 
 /* 左侧菜单 */
-[data-layout='vertical'][data-sidebar-size='sm'] .navbar-menu .navbar-nav .nav-item:hover>a.menu-link {
+[data-layout='vertical'][data-sidebar-size='sm']
+  .navbar-menu
+  .navbar-nav
+  .nav-item:hover
+  > a.menu-link {
   background-color: rgba(208, 150, 62, 0.12);
   color: var(--jy-vz-vertical-menu-sub-item-color);
   border-top-right-radius: 0px !important;
