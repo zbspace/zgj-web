@@ -21,10 +21,10 @@ export const fileManageService = {
    * @param {*} data {formMessageId: string, relationRule: string}
    * @returns
    */
-  getFileTypeList: applyTypeId => {
+  getFileTypeList: () => {
     return request({
       method: 'POST',
-      url: `/fileType/queryList/${applyTypeId}`
+      url: `/fileType/queryList`
     })
   },
   /**
