@@ -102,7 +102,7 @@
                   </span>
 
                   <!-- 状态 -->
-                  <span v-if="item.prop == 'flag'">
+                  <div v-if="item.prop === 'flag'" class="flag-cell">
                     {{
                       scope.row[item.prop] === '1'
                         ? '正常'
@@ -110,7 +110,15 @@
                         ? '停用'
                         : scope.row[item.prop]
                     }}
-                  </span>
+                    <div
+                      class="diot diot-0"
+                      v-show="scope.row[item.prop] === '1'"
+                    ></div>
+                    <div
+                      class="diot diot-1"
+                      v-show="scope.row[item.prop] === '0'"
+                    ></div>
+                  </div>
 
                   <div
                     class="custom"
@@ -137,7 +145,7 @@
                       @click="customClick(scope.$index, scope.row, data)"
                     >
                       <span>{{
-                        data.name === 'status'
+                        data.name === 't-zgj-invite.Enable'
                           ? scope.row[props.statusColoum] !== props.openValue
                             ? $t('t-zgj-Enable')
                             : $t('t-zgj-seal.deactivated')
@@ -322,7 +330,8 @@
 
   defineExpose({
     reloadData,
-    getSelectionRows
+    getSelectionRows,
+    setTableHeader
   })
 
   const clickElement = (item, index) => {
@@ -552,6 +561,26 @@
       }
       .el-table tbody tr:hover > td {
         background-color: var(--jy-background-color-1);
+      }
+    }
+
+    .flag-cell {
+      position: relative;
+      .diot {
+        position: absolute;
+        top: 50%;
+        left: -12px;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .diot-1 {
+        background: rgba($color: #000000, $alpha: 0.45);
+      }
+
+      .diot-0 {
+        background: rgba($color: green, $alpha: 0.65);
       }
     }
   }

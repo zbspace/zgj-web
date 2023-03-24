@@ -52,11 +52,11 @@
             <el-form-item
               label="用印类型"
               prop="sealUseTypeId"
-              v-if="form.applyTypeId === '2'"
+              v-if="form.applyTypeId === props.sealApplyInitId"
             >
               <el-radio-group v-model="form.sealUseTypeId">
-                <el-radio :label="1" size="large">物理用印</el-radio>
-                <el-radio :label="2" size="large">电子签章</el-radio>
+                <el-radio label="1" size="large">物理用印</el-radio>
+                <el-radio label="2" size="large">电子签章</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-form>
@@ -133,6 +133,8 @@
           addTitle="编辑"
           :columnData="vformObj"
           @close="state.JyElMessageBox.show = false"
+          :sealUseTypeId="form.sealUseTypeId"
+          :applyTypeId="form.applyTypeId"
           :optionData="props.businessList"
           @reloadData="clickEditForm"
         />
@@ -141,13 +143,16 @@
   </div>
 </template>
 <script setup>
-  import { reactive, ref, watch } from 'vue'
+  import { reactive, ref, watch, computed } from 'vue'
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
   import FlowApi from '@/api/system/flowManagement'
   import { ModelApi } from '@/api/flow/ModelApi'
   const refFillFormInformation = ref(null)
   const formJson = ref('')
   const vformObj = ref(null)
+  const resetFlag = ref(true)
+  const flagStatus = ref(false)
+
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
     list: {
@@ -166,14 +171,14 @@
     SealformData: {},
     SealoptionData: {}
   })
+
   const form = reactive({
     ProcessName: '',
     ProcessType: false,
-    sealUseTypeId: 1,
+    sealUseTypeId: '1',
     applyTypeId: '',
     formMessageId: ''
   })
-  const flagStatus = ref(false)
 
   const props = defineProps({
     businessList: {
@@ -185,11 +190,19 @@
     modelValue: {
       type: String,
       default: ''
+    },
+    sealId: {
+      type: String,
+      default: '1'
+    },
+    sealApplyInitId: {
+      type: String,
+      default: ''
     }
   })
 
-  const emits = defineEmits('update:modelValue')
-  const resetFlag = ref(true)
+  const emits = defineEmits('update:modelValue', 'update:sealId')
+
   // 选中
   const clickEditForm = attr => {
     resetFlag.value = false
@@ -267,6 +280,15 @@
       immediate: true
     }
   )
+
+  form.sealUseTypeId = computed({
+    get() {
+      return props.sealId
+    },
+    set(value) {
+      emits('update:sealId', value)
+    }
+  })
 
   watch(
     () => form.sealUseTypeId,
