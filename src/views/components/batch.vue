@@ -626,10 +626,20 @@
     emit('setTableHeader', state.tableHeader)
   }
 
-  watch(props, () => {
-    // 初始化数据
-    initData()
-  })
+  watch(
+    props,
+    () => {
+      // 初始化数据
+      initData()
+      state.tableHeader = JSON.parse(JSON.stringify(props.tableHeader))
+      initHeaderData()
+      initTopCheckBox()
+    },
+    {
+      deep: true,
+      immediate: true
+    }
+  )
   onBeforeMount(() => {
     // 初始化数据
     initData()
