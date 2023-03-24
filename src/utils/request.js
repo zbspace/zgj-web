@@ -27,8 +27,8 @@ const processErrorResponse = function (response) {
     localStorage.removeItem('departLists')
     const accountInfo = JSON.parse(localStorage.getItem('accountInfo'))
     accountInfo.token = ''
-    accountInfo.userName = ''
-    accountInfo.userId = ''
+    accountInfo.userInfo.userName = ''
+    accountInfo.userInfo.userId = ''
     localStorage.setItem('accountInfo', JSON.stringify(accountInfo))
     console.log(router.currentRoute.value)
     router.replace({
