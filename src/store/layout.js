@@ -24,6 +24,13 @@ export const useLayoutStore = defineStore({
   },
   getters: {},
   actions: {
+    reset() {
+      this.isCollapse = false
+      this.themeType = 'light'
+      this.topbar = 'light'
+      this.sidebarType = '1'
+      this.menuColor = 'light'
+    },
     changeLayoutType(layoutType) {
       this.layoutType = layoutType
       document.body.removeAttribute('style')

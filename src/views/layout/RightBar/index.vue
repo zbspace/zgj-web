@@ -147,9 +147,10 @@
   const menusInfoStore = useMenusInfoStore()
 
   const reset = () => {
-    layoutStore.setThemeType()
-    layoutStore.changeTopbar()
-    layoutStore.setSidebarType()
+    layoutStore.reset()
+    // layoutStore.setThemeType()
+    // layoutStore.changeTopbar()
+    // layoutStore.setSidebarType()
   }
 
   const sidebarTypeChange = value => {
