@@ -9,7 +9,7 @@
   <div>
     <JyDialog
       v-model="isVisible"
-      :width="1080"
+      :width="1000"
       :title="$t('t-zgj-list.SelecSeal')"
       :mode="1"
       @on-opened="opened"
@@ -60,16 +60,27 @@
               :loading="loading"
               ref="tableRef"
               rowKey="sealId"
+              @select-all="selectAll"
               @selection-change="selectionChange"
+              @select="select"
               :highlightCurrentRow="true"
             >
-              <el-table-column width="60" label="">
+              <el-table-column
+                width="60"
+                label=""
+                v-if="props.checkType === 'radio'"
+              >
                 <template #default="scope">
                   <el-radio v-model="radio" :label="scope.row.sealId"
                     >&emsp;</el-radio
                   >
                 </template>
               </el-table-column>
+              <el-table-column
+                type="selection"
+                width="55"
+                v-if="props.checkType === 'checkbox'"
+              />
               <el-table-column type="index" label="序号" width="80">
               </el-table-column>
               <el-table-column label="ID" prop="sealId" v-if="false">
@@ -100,7 +111,7 @@
 </template>
 
 <script setup>
-  import { computed, ref } from 'vue'
+  import { computed, nextTick, ref } from 'vue'
   import typeOfSealService from '@/api/frontDesk/sealManage/typeOfSeal'
   import libraryOfSealsService from '@/api/frontDesk/sealManage/libraryOfSeals'
   import { FeatchSealInfo, FeatchSealTypeInfo } from '@/utils/domain/sealManage'
@@ -111,6 +122,13 @@
     modelValue: {
       type: Boolean,
       defult: false
+    },
+    checkType: {
+      type: String,
+      default: 'radio'
+    },
+    haveSelectList: {
+      type: [Array, String]
     }
   })
 
@@ -126,6 +144,7 @@
   const loading = ref(false)
   const leftLoading = ref(true)
   const radio = ref('')
+  const tableRef = ref(null)
 
   const isVisible = computed({
     get() {
@@ -141,9 +160,6 @@
       leftLoading.value = true
       const res = await typeOfSealService.list({ searchKey: '' })
       sealTypeTreeData.value = res.data
-      // if (sealTypeTreeData.value.length) {
-      //   sealTypeSelect(sealTypeTreeData.value[0].sealTypeId)
-      // }
     } catch (error) {}
     leftLoading.value = false
   }
@@ -155,8 +171,31 @@
       sealList.value = res.data.records
       paginationInfo.value.total = res.data && res.data.total
       paginationInfo.value.pages = res.data && res.data.pages
+      nextTick(() => {
+        toggleRowSelection()
+      })
     } catch (error) {}
     loading.value = false
+  }
+
+  const toggleRowSelection = () => {
+    console.log(props.haveSelectList)
+    if (props.checkType === 'radio') {
+      const index = sealList.value.findIndex(
+        i => i.sealId === props.haveSelectList
+      )
+      if (index > -1) {
+        tableRef.value.toggleRowSelection(sealList.value[index], true)
+        radio.value = sealList.value[index].sealId
+      }
+    } else {
+      sealList.value.forEach(item => {
+        console.log(props.haveSelectList.indexOf(item.sealId))
+        if (props.haveSelectList.indexOf(item.sealId) > -1) {
+          tableRef.value.toggleRowSelection(item, true)
+        }
+      })
+    }
   }
 
   const sealTypeSelect = sealTypeId => {
@@ -177,15 +216,52 @@
   }
 
   const selectionChange = selectArr => {
-    selectList.value = selectArr
-    radio.value = selectArr.sealId
+    if (props.checkType === 'radio') {
+      radio.value = selectArr.sealId
+      selectList.value = selectArr
+    }
+  }
+
+  const selectAll = selection => {
+    if (selection.length) {
+      selection.forEach(i => {
+        if (selectList.value.findIndex(o => o.sealId === i.sealId) === -1) {
+          selectList.value.push(i)
+        }
+      })
+    } else {
+      sealList.value.forEach(i => {
+        const index = selectList.value.findIndex(o => o.sealId === i.sealId)
+        if (index > -1) {
+          selectList.value.splice(index, 1)
+        }
+      })
+    }
+  }
+
+  const select = (selection, row) => {
+    const bool = selection.filter(v => v.sealId === row.sealId)
+    if (bool.length) {
+      selectList.value.push(row)
+    } else {
+      selectList.value = selectList.value.filter(v => v.sealId !== row.sealId)
+    }
+    console.log(selectList.value)
   }
 
   const closed = () => {
     radio.value = ''
+    selectList.value = []
   }
 
   const opened = () => {
+    if (props.checkType === 'radio') {
+      radio.value = props.haveSelectList
+      selectList.value = props.haveSelectList ? [props.haveSelectList] : []
+    } else {
+      selectList.value = selectList.value.concat(props.haveSelectList)
+      console.log(selectList.value)
+    }
     getTypeOfSeal()
     getLibraryOfSeal()
   }

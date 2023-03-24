@@ -376,9 +376,12 @@
           item.checkbox.forEach(i => {
             i.value = false
           })
-        } else if (item.type === 'derivable') {
+        } else if (item.type === 'derivable' || item.type === 'dialog') {
           item.options = []
-          item.values = []
+          item.values = item.defaultAttribute.multiple ? [] : null
+        } else if (item.type === 'scopeInput') {
+          item.startValue = null
+          item.endValue = null
         } else {
           delete item.value
         }
@@ -419,7 +422,6 @@
   const page = () => {
     loading.value = true
     const params = {}
-    console.log(props.componentsSearchForm.data)
     props.componentsSearchForm.data.forEach(item => {
       if (item.type === 'checkButton') {
         params[item.id] = item.data
@@ -427,12 +429,14 @@
           .map(i => i.id)
           .join(',')
       } else if (item.type === 'checkbox') {
-        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : ''
+        params[item.id] = item.checkbox[0].value ? item.checkbox[0].value : null
       } else if (item.type === 'picker') {
         if (item.defaultAttribute.type === 'daterange' && item.value) {
           if (item.requestType === 'array') {
-            params.beginTime = item.value[0] + ' 00:00:00'
-            params.endTime = item.value[0] + ' 23:59:59'
+            params[item.startRequest ? item.startRequest : 'beginTime'] =
+              item.value[0] + ' 00:00:00'
+            params[item.endRequest ? item.endRequest : 'endTime'] =
+              item.value[0] + ' 23:59:59'
           } else {
             params[item.id] =
               item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
@@ -449,6 +453,11 @@
         } else {
           params[item.requestParams] = item.values
         }
+      } else if (item.type === 'scopeInput') {
+        params[item.startAttribute.id] = item.startValue
+        params[item.endAttribute.id] = item.endValue
+      } else if (item.type === 'dialog') {
+        params[item.id] = item.values || null
       } else {
         params[item.id] = item.value
       }

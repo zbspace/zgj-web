@@ -28,7 +28,9 @@ const processErrorResponse = function (response) {
     const accountInfo = JSON.parse(localStorage.getItem('accountInfo'))
     accountInfo.token = ''
     accountInfo.userName = ''
+    accountInfo.userId = ''
     localStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+    console.log(router.currentRoute.value)
     router.replace({
       path: '/login/account',
       // 保存我们所在的位置，以便以后再来

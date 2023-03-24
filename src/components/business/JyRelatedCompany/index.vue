@@ -13,6 +13,7 @@
       title="往来单位"
       :mode="1"
       @on-opened="opened"
+      @on-closed="closed"
       :appendToBody="true"
     >
       <div class="select-block jy-constact-uit">
@@ -21,6 +22,7 @@
             v-model="searchRelatedCompanyInfo.relatedCompanyName"
             prefix-icon="el-icon-search"
             placeholder="请输入"
+            clearable
             style="width: 400px"
           >
             <template #append>
@@ -38,12 +40,37 @@
         :loading="loading"
         ref="tableRef"
         rowKey="relatedCompanyId"
+        @select-all="selectAll"
         @selection-change="selectionChange"
         @select="select"
         class="relate-comp-table"
       >
-        <el-table-column type="selection" width="55" />
+        <el-table-column
+          width="60"
+          label=""
+          v-if="props.checkType === 'radio'"
+          fixed="left"
+        >
+          <template #default="scope">
+            <el-radio v-model="radio" :label="scope.row.relatedCompanyId"
+              >&emsp;</el-radio
+            >
+          </template>
+        </el-table-column>
+        <el-table-column
+          type="selection"
+          width="55"
+          fixed="left"
+          v-if="props.checkType === 'checkbox'"
+        />
         <el-table-column type="index" label="序号" width="80" fixed="left">
+          <template #default="scope">
+            <span>{{
+              (paginationInfo.current - 1) * paginationInfo.size +
+              scope.$index +
+              1
+            }}</span>
+          </template>
         </el-table-column>
         <el-table-column label="单位编码" prop="relatedCompanyNo">
         </el-table-column>
@@ -101,6 +128,7 @@
   const editInfo = ref(null)
   const tableRef = ref(null)
   const selectList = ref([])
+  const radio = ref(null)
 
   const props = defineProps({
     modelValue: {
@@ -108,8 +136,11 @@
       defult: false
     },
     haveSelectList: {
-      type: Array,
-      default: () => []
+      type: [Array, String]
+    },
+    checkType: {
+      type: String,
+      default: 'checkbox'
     }
   })
 
@@ -139,16 +170,47 @@
     loading.value = false
   }
 
+  const selectAll = selection => {
+    if (selection.length) {
+      selection.forEach(i => {
+        if (
+          selectList.value.findIndex(
+            o => o.relatedCompanyId === i.relatedCompanyId
+          ) === -1
+        ) {
+          selectList.value.push(i)
+        }
+      })
+    } else {
+      relatedCompanyList.value.forEach(i => {
+        const index = selectList.value.findIndex(
+          o => o.relatedCompanyId === i.relatedCompanyId
+        )
+        if (index > -1) {
+          selectList.value.splice(index, 1)
+        }
+      })
+    }
+  }
+
   const select = (selection, row) => {
     const bool = selection.filter(
       v => v.relatedCompanyId === row.relatedCompanyId
     )
-    if (bool) {
+    console.log('bool', bool)
+    if (bool && bool.length) {
       selectList.value.push(row)
     } else {
       selectList.value = selectList.value.filter(
         v => v.relatedCompanyId !== row.relatedCompanyId
       )
+    }
+  }
+
+  const selectionChange = selectArr => {
+    if (props.checkType === 'radio' && selectArr) {
+      radio.value = selectArr.relatedCompanyId
+      selectList.value = selectArr
     }
   }
 
@@ -158,6 +220,7 @@
   }
 
   const submit = () => {
+    console.log(selectList.value)
     emit('on-submit', selectList.value)
   }
 
@@ -166,20 +229,44 @@
   }
 
   const opened = async () => {
-    selectList.value = [...props.haveSelectList]
+    if (props.checkType === 'radio') {
+      radio.value = props.haveSelectList
+      selectList.value = props.haveSelectList ? [props.haveSelectList] : []
+    } else {
+      selectList.value = selectList.value.concat(props.haveSelectList)
+      console.log(selectList.value)
+    }
     await getRelatedCompanyList()
+  }
+
+  const closed = () => {
+    radio.value = ''
+    selectList.value = []
   }
 
   const initSelect = () => {
     nextTick(() => {
-      selectList.value.forEach(item => {
-        const obj = relatedCompanyList.value.find(
-          v => v.relatedCompanyId === item.relatedCompanyId
+      if (props.checkType === 'radio') {
+        const index = relatedCompanyList.value.findIndex(
+          i => i.relatedCompanyId === selectList.value
         )
-        if (obj) {
-          tableRef.value.toggleRowSelection(obj, true)
+        if (index > -1) {
+          tableRef.value.toggleRowSelection(
+            relatedCompanyList.value[index],
+            true
+          )
+          radio.value = relatedCompanyList.value[index].relatedCompanyId
         }
-      })
+      } else {
+        selectList.value.forEach(item => {
+          const obj = relatedCompanyList.value.find(
+            v => v.relatedCompanyId === item.relatedCompanyId
+          )
+          if (obj) {
+            tableRef.value.toggleRowSelection(obj, true)
+          }
+        })
+      }
     })
   }
 </script>
@@ -202,11 +289,11 @@
     }
   }
 
-  .jy-table.relate-comp-table {
-    .el-table__header-wrapper {
-      .el-checkbox {
-        display: none;
-      }
-    }
-  }
+  // .jy-table.relate-comp-table {
+  //   .el-table__header-wrapper {
+  //     .el-checkbox {
+  //       display: none;
+  //     }
+  //   }
+  // }
 </style>
