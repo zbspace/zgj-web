@@ -322,11 +322,36 @@
         // btnLoading.value = false
         if (state.form.approvals === '1') {
           onAgree()
+        } else if (state.form.approvals === '2') {
+          onReject()
         }
       } else {
         ElMessage.error('校验失败')
       }
     })
+  }
+  const onReject = res => {
+    const params = {
+      instanceId: instanceId.value,
+      modelId: modelId.value,
+      formData: formData.value,
+      definitionId: definitionId.value,
+      remark: state.form.remark,
+      suggest: 2
+    }
+    console.log(params)
+    ApproverApi.reject(params)
+      .then(result => {
+        if (result.code === '00000') {
+          console.info(result)
+          dialogProcess.show = false
+          getFormPage()
+        }
+        btnLoading.value = false
+      })
+      .catch(() => {
+        btnLoading.value = false
+      })
   }
   const onAgree = res => {
     const params = {
