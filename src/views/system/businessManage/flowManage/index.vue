@@ -69,6 +69,7 @@
       :treeSelectedId="state.componentsTree.value"
       @update:treeSelectedId="state.componentsTree.value = $event"
       :businessList="state.componentsTree.data"
+      @reloadData="reloadData"
     ></Addflow>
     <!-- 弹窗提示 -->
     <JyElMessageBox
@@ -656,7 +657,9 @@
       state.componentsTable.header = tableHeaderSeal
     }
   }
-
+  const reloadData = () => {
+    table.value.reloadData()
+  }
   onBeforeMount(() => {
     // 发送api请求 查询表单树解构
     listApplyTypeTreeApi()

@@ -169,7 +169,11 @@
     }
   })
 
-  const emits = defineEmits('update:modelValue', 'update:treeSelectedId')
+  const emits = defineEmits(
+    'update:modelValue',
+    'update:treeSelectedId',
+    'reloadData'
+  )
 
   const state = reactive({
     checkedIndex: '1',
@@ -313,6 +317,7 @@
     // 保存流程设计
     apiFlow.add(params).then(() => {
       clickClose()
+      emits('reloadData')
     })
   }
 
