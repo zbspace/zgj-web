@@ -91,6 +91,7 @@
       return {
         fieldModel: null,
         fileTypeName: '',
+        fileTypeId: '',
         fileTypeOptions: [],
         rules: [
           {
@@ -104,7 +105,7 @@
     created() {
       this.registerToRefList()
       this.initEventHandler()
-      this.initFieldModel()
+      // this.initFieldModel()
     },
     beforeUnmount() {
       this.unregisterFromRefList()

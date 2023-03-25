@@ -124,7 +124,10 @@
                     <li
                       class="field-widget-item"
                       :class="[
-                        haveWidgets.includes(fld.type) ? 'disabled' : 'can-move'
+                        haveWidgets.includes(fld.type) &&
+                        fld.type !== 'moduleContainer'
+                          ? 'disabled'
+                          : 'can-move'
                       ]"
                       :title="fld.displayName"
                       @dblclick="addFieldByDbClick(fld)"
@@ -201,6 +204,7 @@
   // import {formTemplates} from './templatesConfig'
   import { addWindowResizeHandler, generateId } from '@/lib/vform/utils/util'
   import i18n from '@/lib/vform/utils/i18n'
+  import { getArrFromTree } from '@/utils/tools'
 
   import ftImg1 from '@/lib/vform/assets/ft-images/t1.png'
   import ftImg2 from '@/lib/vform/assets/ft-images/t2.png'
@@ -255,9 +259,7 @@
         return this.getTemplateList()
       },
       haveWidgets() {
-        return this.designer.widgetList.map(v => {
-          return v.type
-        })
+        return getArrFromTree(this.designer.widgetList, 'widgetList', 'type')
       }
     },
     created() {

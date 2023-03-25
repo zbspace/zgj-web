@@ -62,8 +62,8 @@
       v-if="designer.selectedId === widget.id && !widget.internal"
     >
       <i :title="i18nt('designer.hint.dragHandler')"
-        ><svg-icon icon-class="el-drag-move"
-      /></i>
+        ><el-icon><Rank /></el-icon
+      ></i>
       <i>{{
         i18n2t(
           `designer.widgetLabel.${widget.type}`,
@@ -81,12 +81,14 @@
   import i18n from '@/lib/vform/utils/i18n'
   import containerMixin from '@/lib/vform/components/form-designer/form-widget/container-widget/containerMixin'
   import SvgIcon from '@/lib/vform/components/svg-icon'
+  import { Rank } from '@element-plus/icons-vue'
 
   export default {
     name: 'ContainerWrapper',
     mixins: [i18n, containerMixin],
     components: {
-      SvgIcon
+      SvgIcon,
+      Rank
     },
     props: {
       widget: Object,

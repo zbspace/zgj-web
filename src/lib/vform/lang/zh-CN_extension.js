@@ -15,7 +15,8 @@ export default {
       uploadFile: '用印文件',
       contactUnit: '往来单位',
       fileTypeId: '文件类型',
-      agentMan: '代办人'
+      agentMan: '代办人',
+      moduleContainer: '模块/容器'
     },
 
     setting: {

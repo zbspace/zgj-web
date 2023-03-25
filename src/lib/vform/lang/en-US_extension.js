@@ -12,7 +12,9 @@ export default {
       applicantInfo: 'Applicant Info',
       limitTimeSeal: 'Limit Time Seal',
       contactUnit: 'Contact Unit',
-      filrType: 'File Type'
+      filrType: 'File Type',
+      agentMan: 'Agent Man',
+      moduleContainer: 'Module Container'
     },
 
     setting: {
