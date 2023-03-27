@@ -6,95 +6,6 @@
 !-->
 <template>
   <div>
-    <!-- <componentsLayout Layout="title,searchForm,table,pagination,batch">
-      <template #title>
-        <div class="title">
-          <div>往来企业</div>
-          <div class="title-more">
-            <div class="title-more-add">
-              <el-button
-                type="primary"
-                @click="
-                  () => {
-                    ;(showFormDialog = true),
-                      (state.title = '新增'),
-                      (state.column = {})
-                  }
-                "
-                >+ 增加</el-button
-              >
-            </div>
-            <div class="title-more-down">
-              <el-dropdown>
-                <el-button>
-                  <img
-                    class="button-icon"
-                    src="@/assets/svg/gengduo-caozuo.svg"
-                    alt=""
-                    srcset=""
-                  />
-                  <span>更多操作</span>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>导入</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
-          </div>
-        </div>
-      </template>
-
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-            @clickBatchButton="clickBatchButton"
-          ></componentsBatch>
-        </div>
-      </template>
-
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            :isSelection="true"
-            :loading="state.componentsTable.loading"
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-          >
-          </componentsTable>
-        </div>
-      </template>
-
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-          @size-change="sizeChange"
-          @current-change="currentChange"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout> -->
     <JyTable
       url="/tenant/relatedCompany/list"
       ref="table"
@@ -186,12 +97,7 @@
 <script setup>
   import { ref, reactive, onBeforeMount } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsTable from '@/views/components/table'
-  import componentsSearchForm from '@/views/components/searchForm'
-  import componentsPagination from '@/views/components/pagination'
-  import componentsLayout from '@/views/components/Layout'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import componentsBatch from '@/views/components/batch.vue'
   import componetsAddForm from './modules/addDealing.vue'
   import { ElMessage } from 'element-plus'
   import api from '@/api/system/companyManagement/companyDealing'
@@ -320,10 +226,10 @@
           width: '120px',
           rankDisplayData: [
             {
-              name: '修改'
+              name: 't-zgj-Edit'
             },
             {
-              name: '删除'
+              name: 't-zgj-Delete'
             }
           ]
         }
@@ -398,56 +304,6 @@
       type: '删除'
     }
   })
-  // 筛选条件按钮
-  const clickSubmit = (item, index) => {
-    console.log(item)
-    if (item.id === 'reset') {
-      state.componentsSearchForm.data.forEach(v => {
-        delete v.value
-      })
-    }
-    getFormPage()
-  }
-  // 分页页数变化
-  const currentChange = data => {
-    console.log(data)
-    state.componentsPagination.data.index = data
-    getFormPage()
-  }
-  // 每页请求数量变化
-  const sizeChange = data => {
-    console.log(data)
-    state.componentsPagination.data.index = 1
-    state.componentsPagination.data.pageNumber = data
-    getFormPage()
-  }
-  // 获取表格列表
-  const getFormPage = () => {
-    const searchData = state.componentsSearchForm.data
-    console.log(searchData)
-    const queryParams = {}
-    searchData.forEach(item => {
-      queryParams[item.id] = item.value
-    })
-    queryParams.pageNo = state.componentsPagination.index || 1
-    queryParams.pageSize = state.componentsPagination.pageNumber || 10
-    state.componentsTable.loading = true
-    console.log(queryParams)
-    api.getRelatedCompanyList(queryParams).then(
-      res => {
-        console.log(res)
-        if (res.code === 200) {
-          state.componentsTable.data = res.data.records
-          state.componentsPagination.data.amount = res.data.total
-          state.componentsPagination.defaultAttribute.total = res.data.total
-        }
-        state.componentsTable.loading = false
-      },
-      () => {
-        state.componentsTable.loading = false
-      }
-    )
-  }
   // 关闭新增弹窗
   const closeFormDialog = () => {
     showFormDialog.value = false
@@ -458,15 +314,11 @@
     if (data.code === 200) {
       ElMessage.success(`${type}了一条记录！`)
       showFormDialog.value = false
-      getFormPage()
+      table.value.reloadData()
     }
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log('row', row)
-    console.log('column', column)
-    console.log('cell', cell)
-    console.log('event', event)
     if (column.property === 'relatedCompanyName') {
       api.detailRelatedCompany(row.relatedCompanyId).then(res => {
         if (res.code === 200) {
@@ -516,12 +368,17 @@
   function customClick(row, column, cell, event) {
     state.relatedCompanyIds = []
     state.relatedCompanyIds.push(column.relatedCompanyId)
-    if (cell.name === '修改') {
+    if (cell.name === 't-zgj-Edit') {
       state.title = '修改'
-      showFormDialog.value = true
-      state.column = column
+      api.detailRelatedCompany(column.relatedCompanyId).then(res => {
+        if (res.code === 200) {
+          console.log(res)
+          state.column = res.data
+          showFormDialog.value = true
+        }
+      })
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
       state.JyElMessageBox.header.data = '删除'
       state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
@@ -543,16 +400,6 @@
           table.value.reloadData()
         }
       })
-  }
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
   }
   // 批量操作
   const clickBatchButton = (item, index) => {
@@ -576,9 +423,7 @@
       state.JyElMessageBox.type = '批量删除'
     }
   }
-  onBeforeMount(() => {
-    getFormPage()
-  })
+  onBeforeMount(() => {})
 </script>
 
 <style lang="scss" scoped>

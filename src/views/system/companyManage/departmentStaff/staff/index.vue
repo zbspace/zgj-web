@@ -24,10 +24,12 @@
     >
       <template #title>
         <div class="title">
-          <div>员工管理</div>
+          <div>{{ $t('t-zgj-F_SYSTEM_PERSON_MANAGE') }}</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="addStaff">+ 增加</el-button>
+              <el-button type="primary" @click="addStaff"
+                >+ {{ $t('t-zgj-add') }}</el-button
+              >
             </div>
             <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
