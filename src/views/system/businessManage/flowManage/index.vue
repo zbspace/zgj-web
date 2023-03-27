@@ -462,13 +462,13 @@
       state.MessageBox.content.data = ''
       state.MessageBox.type = '删除'
     }
-    if (cell.name === '停用') {
+    if (cell.name === 'status') {
       state.MessageBox.header.data = '停用'
       state.MessageBox.content.data = '请问确定停用该流程吗？'
       state.MessageBox.show = true
       state.MessageBox.type = '停用'
     }
-    if (cell.name === '启用') {
+    if (cell.name === 'status') {
       state.MessageBox.header.data = '启用'
       state.MessageBox.content.data = '请问确定启用该流程吗？'
       state.MessageBox.show = true

@@ -103,21 +103,21 @@
 
                   <!-- 状态 -->
                   <div v-if="item.prop === 'flag'" class="flag-cell">
-                    {{
-                      scope.row[item.prop] === '1'
-                        ? '正常'
-                        : scope.row[item.prop] === '0'
-                        ? '停用'
-                        : scope.row[item.prop]
-                    }}
                     <div
                       class="diot diot-0"
-                      v-show="scope.row[item.prop] === '1'"
+                      v-show="scope.row[props.statusColoum] === props.openValue"
                     ></div>
                     <div
                       class="diot diot-1"
-                      v-show="scope.row[item.prop] === '0'"
+                      v-show="scope.row[props.statusColoum] !== props.openValue"
                     ></div>
+                    {{
+                      scope.row[props.statusColoum] === props.openValue
+                        ? '正常'
+                        : scope.row[props.statusColoum] !== props.openValue
+                        ? '停用'
+                        : scope.row[item.prop]
+                    }}
                   </div>
 
                   <div
@@ -144,13 +144,15 @@
                       :key="num"
                       @click="customClick(scope.$index, scope.row, data)"
                     >
-                      <span>{{
-                        data.name === 'status'
-                          ? scope.row[props.statusColoum] !== props.openValue
-                            ? $t('t-zgj-Enable')
-                            : $t('t-zgj-seal.deactivated')
-                          : $t(data.name)
-                      }}</span>
+                      <span
+                        >{{
+                          data.name === 'status'
+                            ? scope.row[props.statusColoum] !== props.openValue
+                              ? $t('t-zgj-Enable')
+                              : $t('t-zgj-seal.deactivated')
+                            : $t(data.name)
+                        }}
+                      </span>
                     </div>
                     <div
                       class="rankDisplayData-more"
@@ -579,15 +581,13 @@
     }
 
     .flag-cell {
-      position: relative;
+      display: flex;
+      align-items: center;
       .diot {
-        position: absolute;
-        top: 50%;
-        left: -12px;
-        transform: translateY(-50%);
         width: 8px;
         height: 8px;
         border-radius: 50%;
+        margin-right: 5px;
       }
       .diot-1 {
         background: rgba($color: #000000, $alpha: 0.45);
