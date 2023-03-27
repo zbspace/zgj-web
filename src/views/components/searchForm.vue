@@ -447,6 +447,7 @@
 <script setup>
   import { reactive, onBeforeMount, onMounted, computed, watch, ref } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import request from '@/utils/request'
   const props = defineProps({
     // 标识
     refs: {
@@ -606,13 +607,25 @@
     if (props.defaultAttribute.isUnfold) {
       state.cache.isUnfold = props.defaultAttribute.isUnfold
     }
-    props.data.map(item => {
-      if (item.inCommonUse) {
-        // console.log();
-      } else {
+    // props.data.map(item => {
+    //   if (item.inCommonUse) {
+    //     // console.log();
+    //   } else {
+    //     showUnfold = true
+    //   }
+    //   return item
+    // })
+    props.data.forEach(item => {
+      if (!item.inCommonUse) {
         showUnfold = true
       }
-      return item
+      console.log(item.requestObj)
+      if (item.requestObj) {
+        request(item.requestObj).then(res => {
+          console.log(res)
+          item.options = res.data
+        })
+      }
     })
     state.cache.showUnfold = showUnfold
     // 设置表单显示数据
@@ -795,7 +808,7 @@
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
     // 初始化Props数据
-    initPropsData()
+    // initPropsData()
   })
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)

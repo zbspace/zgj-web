@@ -207,13 +207,7 @@
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '表单名称/创建人'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
+          }
         },
         {
           id: 'status',
@@ -229,20 +223,35 @@
           options: [
             {
               value: '1',
-              label: '全部'
+              label: '启用'
+            },
+            {
+              value: '0',
+              label: '停用'
             }
           ]
         },
         {
-          id: 'picker',
+          id: 'updateTime',
           label: '更新时间',
           type: 'picker',
+          requestType: 'array',
+          startRequest: 'updateStartTime',
+          endRequest: 'updateEndTime',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+            },
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         },
@@ -251,18 +260,18 @@
           label: '文件类型',
           type: 'select',
           inCommonUse: true,
-          optionLabel: 'label',
-          optionValue: 'value',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '请选择'
+            placeholder: '请选择',
+            filterable: true
           },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
+          optionValue: 'fileTypeId',
+          optionLabel: 'fileTypeName',
+          options: [],
+          requestObj: {
+            url: '/fileType/queryList',
+            method: 'POST'
+          }
         },
         {
           id: 'sealUseTypeId',
