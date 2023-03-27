@@ -185,6 +185,28 @@ export function arr2tree(list, pid = 0) {
 }
 
 /**
+ * 树变数组
+ * @param tree 树结构
+ */
+export function tree2Array(tree, children = 'children') {
+  const treeObj = JSON.parse(JSON.stringify(tree))
+  const arr = []
+  for (const i of treeObj) {
+    if (i[children]) {
+      const item = this.tree2Array(i[children])
+      delete i[children]
+      arr.push(i)
+      for (const o of item) {
+        arr.push(o)
+      }
+    } else {
+      arr.push(i)
+    }
+  }
+  return arr
+}
+
+/**
  * 获取树节点
  * @param {*} arr
  * @param {*} child

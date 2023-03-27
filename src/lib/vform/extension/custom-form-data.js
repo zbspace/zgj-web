@@ -35,7 +35,8 @@ export const customFormData = {
     timeLimit: false,
     sealTime: []
   },
-  fileType: ''
+  fileTypeId: '',
+  fileTypeName: ''
 }
 
 export class FormData {

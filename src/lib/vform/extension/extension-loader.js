@@ -18,55 +18,44 @@ import {
   applicantInfoSchema,
   limitTimeSealSchema,
   fileTypeSchema,
-  agentManSchema
+  agentManSchema,
+  moduleContainerSchema
 } from '@/lib/vform/extension/samples/extension-schema'
 import CardWidget from '@/lib/vform/extension/samples/card/card-widget'
 import CardItem from '@/lib/vform/extension/samples/card/card-item'
 import { registerCWGenerator } from '@/lib/vform/utils/sfc-generator'
-import { cardTemplateGenerator } from '@/lib/vform/extension/samples/extension-sfc-generator'
+import {
+  cardTemplateGenerator,
+  moduleContainerTemplateGenerator
+} from '@/lib/vform/extension/samples/extension-sfc-generator'
 
 // import {alertSchema} from "@/lib/vform/extension/samples/extension-schema"
 // import AlertWidget from '@/lib/vform/extension/samples/alert/alert-widget'
 // import { registerFWGenerator } from '@/lib/vform/utils/sfc-generator'
 
 // 印章名称
-// import { sealNameSchema } from '@/lib/vform/extension/samples/extension-schema'
 import sealNameWidget from '@/lib/vform/extension/samples/sealName/sealName-widget'
 // 往来单位
-// import { contactUnitSchema } from '@/lib/vform/extension/samples/extension-schema'
 import contactUnitWidget from '@/lib/vform/extension/samples/contactUnit/contactUnit-widget'
 // 印章外带
-// import { usesealBesidesSchema } from '@/lib/vform/extension/samples/extension-schema'
 import usesealBesidesWidget from '@/lib/vform/extension/samples/usesealBesides/usesealBesides-widget'
-// 常规盖章次数
-// import { normalSealNumSchema } from "@/lib/vform/extension/samples/extension-schema"
-// import NormalSealNumWidget from '@/lib/vform/extension/samples/normalSealNum/normalSealNum-widget'
 // 远程盖章
-// import { remoteSealSchema } from '@/lib/vform/extension/samples/extension-schema'
 import RemoteSealWidget from '@/lib/vform/extension/samples/remoteSeal/remoteSeal-widget'
 // 视频盖章
-// import { videoSealSchema } from '@/lib/vform/extension/samples/extension-schema'
 import VideoSealWidget from '@/lib/vform/extension/samples/videoSeal/videoSeal-widget'
 // 用印文件
-// import { uploadFileSchema } from "@/lib/vform/extension/samples/extension-schema"
-// import UploadFileWidget from '@/lib/vform/extension/samples/uploadFile/uploadFile-widget'
-// import { sealFileSchema } from '@/lib/vform/extension/samples/extension-schema'
 import SealFileWidget from '@/lib/vform/extension/samples/sealFile/sealFile-widget'
 // 申请人信息
-// import { applicantInfoSchema } from '@/lib/vform/extension/samples/extension-schema'
 import ApplicantInfoWidget from '@/lib/vform/extension/samples/applicantInfo/applicantInfo-widget'
-// 骑缝盖章
-// import { seamingSealSchema } from "@/lib/vform/extension/samples/extension-schema"
-// import SeamingSealSchema from '@/lib/vform/extension/samples/seamingSeal/seamingSeal-widget'
 // 限时用印
-// import { limitTimeSealSchema } from '@/lib/vform/extension/samples/extension-schema'
 import LimitTimeSealWidget from '@/lib/vform/extension/samples/limitTimeSeal/limitTimeSeal-widget'
 // 文件类型
-// import { fileTypeSchema } from '@/lib/vform/extension/samples/extension-schema'
 import FileTypeWidget from '@/lib/vform/extension/samples/fileType/fileType-widget'
 // 代办人
-// import { agentManSchema } from '@/lib/vform/extension/samples/extension-schema'
 import AgentManWidget from '@/lib/vform/extension/samples/agentMan/agentMan-widget'
+// 模块/容器
+import ModuleContainerWidget from '@/lib/vform/extension/samples/moduleContainer/moduleContainer-widget'
+import ModuleContainerItem from '@/lib/vform/extension/samples/moduleContainer/moduleContainer-item'
 
 // import { limitAddressSealSchema } from "@/lib/vform/extension/samples/extension-schema"
 // import limitAddressSealWidget from "@/lib/vform/extension/samples/limitAddressSeal/limitAddressSeal-widget"
@@ -121,6 +110,7 @@ export const loadExtension = function (app) {
   )
   /* -------------------------------------------------- */
   registerCWGenerator('card', cardTemplateGenerator) // 注册容器组件的代码生成器
+  registerCWGenerator('moduleContainer', moduleContainerTemplateGenerator) // 注册容器组件的代码生成器
   /* -------------------------------------------------- */
   /* 容器组件加载完毕 end */
 
@@ -278,6 +268,11 @@ export const loadExtension = function (app) {
   // 代办人
   addCustomWidgetSchema(agentManSchema) // 加载组件Json Schema
   app.component(AgentManWidget.name, AgentManWidget) // 注册组件
+
+  // 模块/容器
+  addCustomWidgetSchema(moduleContainerSchema) // 加载组件Json Schema
+  app.component(ModuleContainerWidget.name, ModuleContainerWidget) // 注册组件
+  app.component(ModuleContainerItem.name, ModuleContainerItem) // 注册组件
 
   // 外带用印
   // addCustomWidgetSchema(limitAddressSealSchema)  //加载组件Json Schema

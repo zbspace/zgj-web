@@ -1012,7 +1012,6 @@ export function createDesigner(vueInstance) {
     },
 
     addFieldByDbClick(widget) {
-      debugger
       const newWidget = this.copyNewFieldWidget(widget)
       if (!!this.selectedWidget && this.selectedWidget.type === 'tab') {
         // 获取当前激活的tabPane

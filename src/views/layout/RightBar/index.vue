@@ -32,20 +32,20 @@
       <div>
         <p class="label">主题色</p>
         <div class="theme-color-list">
-          <span class="color-1"></span>
-          <span class="color-2"></span>
-          <span class="color-3"></span>
-          <span class="color-4"></span>
-          <span class="color-5"></span>
-          <span class="color-6"></span>
-          <span class="color-7"></span>
-          <span class="color-8"></span>
+          <span class="color-1" @click="colorChange('#448ef7')"></span>
+          <span class="color-2" @click="colorChange('#e13c39')"></span>
+          <span class="color-3" @click="colorChange('#e76033')"></span>
+          <span class="color-4" @click="colorChange('#efb041')"></span>
+          <span class="color-5" @click="colorChange('#5abfc1')"></span>
+          <span class="color-6" @click="colorChange('#72c240')"></span>
+          <span class="color-7" @click="colorChange('#3853e2')"></span>
+          <span class="color-8" @click="colorChange('#6a32c9')"></span>
         </div>
         <div class="custom-color">
           <span class="custom-label">自定义</span>
           <el-color-picker
             v-model="layoutStore.customColor"
-            @change="colorChange"
+            @change="colorChange(layoutStore.customColor)"
           />
           <span>{{ layoutStore.customColor }}</span>
         </div>
@@ -162,7 +162,7 @@
   const colorChange = value => {
     document
       .getElementsByTagName('body')[0]
-      .style.setProperty('--jy-primary-6', layoutStore.customColor)
+      .style.setProperty('--jy-primary-6', value)
   }
 </script>
 
