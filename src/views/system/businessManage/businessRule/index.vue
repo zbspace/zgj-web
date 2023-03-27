@@ -19,7 +19,7 @@
           <div>业务规则管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
+              <el-button type="primary" @click="addBussinessRule"
                 >+ 增加</el-button
               >
             </div>
@@ -48,8 +48,10 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import tabHeaderJson from '@/views/tableHeaderJson/system/companyManage/departmentStaff/businessRule.json'
   import Add from '@/views/system/businessManage/businessRule/modules/add.vue'
+  import { useRouter } from 'vue-router'
 
   const showFormDialog = ref(false)
+  const router = useRouter()
 
   const state = reactive({
     componentsSearchForm: {
@@ -212,6 +214,12 @@
       ]
     }
   })
+
+  const addBussinessRule = () => {
+    router.push({
+      name: 'EditBusinessRule'
+    })
+  }
 
   const closeAddForm = () => {
     showFormDialog.value = false

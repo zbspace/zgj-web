@@ -16,6 +16,16 @@ const routes = {
         import('@/views/system/businessManage/businessRule/index.vue')
     },
     {
+      path: 'editBusinessRule',
+      name: 'EditBusinessRule',
+      meta: {
+        title: '编辑业务规则',
+        authRequired: true
+      },
+      component: () =>
+        import('@/views/system/businessManage/businessRule/edit.vue')
+    },
+    {
       path: 'flowManage',
       name: 'FlowManage',
       meta: {

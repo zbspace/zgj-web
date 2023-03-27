@@ -8,7 +8,10 @@
       <div class="ap-free" v-if="props.free">
         <slot></slot>
       </div>
-      <div class="ap-deliberate" v-else>
+      <div class="ap-deliberate" v-if="props.special">
+        <slot></slot>
+      </div>
+      <div class="ap-deliberate" v-if="!props.free && !props.special">
         <div class="ap-box-breadcrumb" v-if="state.Layout.breadcrumb">
           <slot name="breadcrumb"></slot>
         </div>
@@ -88,6 +91,10 @@
     },
     // 是否全自定义
     free: {
+      type: Boolean,
+      default: false
+    },
+    special: {
       type: Boolean,
       default: false
     },
