@@ -372,7 +372,8 @@
       visible: [
         {
           label: '单位与部门详情',
-          name: 'Unit-Department-Details'
+          name: 'Unit-Department-Details',
+          'basicInformation-data': null
         },
         {
           label: '组织人员',
@@ -401,7 +402,52 @@
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    state.componentsDocumentsDetails.show = true
+    department.detail(row.organId).then(res => {
+      const data = res.data
+      const detail = [
+        {
+          label: '部门名称',
+          value: data.organName
+        },
+        {
+          label: '部门编码',
+          value: data.organNo
+        },
+        {
+          label: '组织类型',
+          value: data.organTypeName
+        },
+        {
+          label: '组织人数',
+          value: data.organUserNum || 0
+        },
+        {
+          label: '组织主管',
+          value: data.leaderUserName
+        },
+        {
+          label: '上级组织',
+          value: data.organPName
+        },
+        {
+          label: '更新时间',
+          value: data.modifyDatetime,
+          lineStyle: {
+            width: '100%'
+          }
+        },
+        {
+          label: '备注',
+          value: data.readme,
+          lineStyle: {
+            width: '100%'
+          }
+        }
+      ]
+      state.componentsDocumentsDetails.visible[0]['basicInformation-data'] =
+        detail
+      state.componentsDocumentsDetails.show = true
+    })
   }
 
   function customClick(row, column, cell, event) {
@@ -437,7 +483,7 @@
       currentActionDept.value = column.organId
       state.showOneAction.show = true
       state.showOneAction.header.data = '提示'
-      if (currentAction.value === '启用') {
+      if (column.flag === '启用') {
         state.showOneAction.content.data = '是否停用该部门？'
       } else {
         state.showOneAction.content.data = '是否启用该部门？'

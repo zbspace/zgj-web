@@ -145,7 +145,7 @@
                       @click="customClick(scope.$index, scope.row, data)"
                     >
                       <span>{{
-                        data.name === 't-zgj-invite.Enable'
+                        data.name === 'status'
                           ? scope.row[props.statusColoum] !== props.openValue
                             ? $t('t-zgj-Enable')
                             : $t('t-zgj-seal.deactivated')
