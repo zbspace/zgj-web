@@ -83,6 +83,7 @@
             <el-input-number
               v-model="obj.applySealNum"
               :precision="0"
+              :disabled="field.options.disabled"
               :step="1"
               :min="1"
               :max="9999"
@@ -104,7 +105,10 @@
             :label-width="field.options.labelWidth"
             :class="[labelAlign, customClass]"
           >
-            <el-switch v-model="obj.markSeal" />
+            <el-switch
+              v-model="obj.markSeal"
+              :disabled="field.options.disabled"
+            />
           </el-form-item>
         </el-col>
       </el-row>

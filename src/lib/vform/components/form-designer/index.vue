@@ -364,7 +364,27 @@
         }
       },
 
+      setWidgetModel(widgetList) {
+        const fn = (arr, model) => {
+          arr.forEach(v => {
+            v.options.model = model
+            if (v.widgetList && v.widgetList.length) {
+              fn(v.widgetList, model)
+            }
+            if (v.cols && v.cols.length) {
+              fn(v.cols, model)
+            }
+          })
+        }
+        widgetList.forEach(v => {
+          if (v.type === 'moduleContainer') {
+            fn(v.widgetList, v.options.label)
+          }
+        })
+      },
+
       getFormJson() {
+        this.setWidgetModel(this.designer.widgetList)
         return {
           widgetList: deepClone(this.designer.widgetList),
           formConfig: deepClone(this.designer.formConfig)
