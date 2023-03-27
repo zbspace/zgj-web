@@ -110,7 +110,7 @@
   import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import componentsDocumentsDetails from '../../../components/documentsDetails.vue'
-  import MouthStatus from '@/views/frontDesk/PrintControlManagement/Grid-management/components/MouthStatus'
+  import MouthStatus from '@/views/frontDesk/PrintControlManagement/Grid-management/components/mouthStatus.vue'
   import MouthCard from '@/views/frontDesk/PrintControlManagement/Grid-management/components/mouthCard'
   import { useRouter } from 'vue-router'
 
