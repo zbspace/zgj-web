@@ -1,14 +1,17 @@
 <template>
   <div class="components-tree">
     <el-tree
+      ref="tree"
       v-bind="props.defaultAttribute"
       :refs="refs"
       :data="props.data"
       :props="props.defaultProps"
+      :load="loadFn"
       @node-click="nodeClick"
       @check-change="checkChange"
       @check="check"
       @current-change="currentChange"
+      :current-node-key="props.modelValue"
     >
       <template #default="{ node, data }">
         <span class="custom-tree-node" @click="clickTreeNode(node, data)">
@@ -18,25 +21,23 @@
             alt=""
             v-if="!data.children || data.children.length === 0"
           />
-          <span>{{ data.label }}</span>
+          <span>{{ data[props.defaultProps.label] }}</span>
         </span>
       </template>
     </el-tree>
   </div>
 </template>
 <script setup>
-  import {
-    // reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, onBeforeMount, onMounted } from 'vue'
+  const tree = ref(null)
   const props = defineProps({
     // 标识
     refs: {
       type: String,
       default: ''
+    },
+    loadFn: {
+      type: Function
     },
     // 处理类型
     type: {
@@ -66,14 +67,25 @@
       default: () => {
         return {}
       }
+    },
+    modelValue: {
+      type: String,
+      default: ''
     }
   })
   const emit = defineEmits([
     'node-click',
     'check-change',
     'check',
-    'current-change'
+    'current-change',
+    'load'
   ])
+  defineExpose({
+    setCurrentKey
+  })
+  function setCurrentKey(id) {
+    tree.value.setCurrentKey(id)
+  }
   //   const state = reactive({})
   //	当节点被点击的时候触发   	四个参数：对应于节点点击的节点对象，TreeNode 的 node 属性, TreeNode和事件对象
   function nodeClick(NodeObjects, node, TreeNode, event) {
@@ -94,8 +106,16 @@
 
   // 点击自定义节点
   function clickTreeNode(node, data) {
-    console.log(node, data)
+    // console.log(node, data)
+    // emit('node-click', data)
   }
+
+  // function load(node, resolve) {
+  //   console.log(node)
+  //   emit('load', node)
+  //   resolve()
+  // }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })

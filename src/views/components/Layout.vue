@@ -8,7 +8,10 @@
       <div class="ap-free" v-if="props.free">
         <slot></slot>
       </div>
-      <div class="ap-deliberate" v-else>
+      <div class="ap-deliberate" v-if="props.special">
+        <slot></slot>
+      </div>
+      <div class="ap-deliberate" v-if="!props.free && !props.special">
         <div class="ap-box-breadcrumb" v-if="state.Layout.breadcrumb">
           <slot name="breadcrumb"></slot>
         </div>
@@ -58,6 +61,7 @@
                 </div>
               </div>
             </el-scrollbar>
+            <slot name="noScroll"></slot>
           </div>
         </div>
         <div class="ap-box-fixed" v-if="state.Layout.fixed">
@@ -68,7 +72,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, defineProps, onBeforeMount, onMounted } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   const props = defineProps({
     // 标识
     refs: {
@@ -87,6 +91,10 @@
     },
     // 是否全自定义
     free: {
+      type: Boolean,
+      default: false
+    },
+    special: {
       type: Boolean,
       default: false
     },
@@ -120,7 +128,7 @@
   // function setScrollLeft() {
   //   return -16
   // }
-  console.log(props.free)
+  // console.log(props.free)
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化布局
@@ -146,22 +154,24 @@
     }
     .ap-deliberate {
       width: 100%;
-      height: 100%;
+      // height: 100%;
+      min-height: calc(100vh - 96px);
       display: flex;
       // flex-flow: wrap;
       align-content: flex-start;
       justify-content: flex-start;
       align-items: flex-start;
       flex-direction: column;
-      @include mixin-padding-top(16);
+      @include mixin-padding-top(10);
       @include mixin-padding-bottom(16);
       @include mixin-padding-left(20);
       @include mixin-padding-right(20);
       box-sizing: border-box;
-      border-radius: var(--border-radius-4);
-      background-color: var(--in-common-use-1);
+      border-radius: var(--jy-border-radius-4);
+      background-color: var(--jy-in-common-use-1);
       // margin-top: 18px;
       position: relative;
+      // overflow: auto;
     }
     .ap-free {
       width: 100%;
@@ -172,7 +182,7 @@
       width: 100%;
       padding: 0rem 0 0.5rem 0;
       box-sizing: border-box;
-      font-size: var(--font-size-title-2);
+      font-size: var(--jy-font-size-title-2);
       @include mixin-padding-right(0);
       box-sizing: border-box;
     }
@@ -182,6 +192,7 @@
       @include mixin-padding-right(0);
       box-sizing: border-box;
       padding-top: 1rem;
+      margin-bottom: 0.8rem;
     }
 
     .ap-box-tabs {
@@ -192,10 +203,11 @@
 
     .ap-box-cont {
       display: flex;
-      width: calc(100% + 1rem);
-      padding-right: 1rem;
+      width: 100%;
+      // width: calc(100% + 1rem);
+      // padding-right: 1rem;
       flex-grow: 1;
-      overflow: auto;
+      // overflow: auto;
     }
 
     .ap-box-searchForm {
@@ -214,7 +226,8 @@
 
     .ap-box-tree {
       width: 15%;
-      height: 100%;
+      min-height: 100%;
+      max-height: 100%;
       overflow: auto;
       padding-right: 0rem;
       box-sizing: border-box;
@@ -223,7 +236,7 @@
         height: 100%;
       }
 
-      border-right: 1px solid var(--color-border-2);
+      border-right: 1px solid var(--jy-color-border-2);
     }
 
     .ap-box-cutOffRule {

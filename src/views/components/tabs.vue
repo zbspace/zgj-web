@@ -7,7 +7,7 @@
         @tab-change="tabChange"
       >
         <el-tab-pane
-          :label="item.label"
+          :label="$t(item.label)"
           :name="item.name"
           v-for="(item, index) in state.data"
           :key="index"
@@ -18,14 +18,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    watch
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, watch } from 'vue'
   const props = defineProps({
     // 标识
     refs: {
@@ -98,22 +91,22 @@
     :deep {
       .el-tabs__nav-wrap::after {
         height: 1px;
-        background-color: var(--color-border-2);
+        background-color: var(--jy-color-border-2);
       }
 
       .el-tabs__item.is-active {
-        color: var(--primary-6);
+        color: var(--jy-primary-6);
       }
 
       .el-tabs__active-bar {
-        background-color: var(--primary-6);
+        background-color: var(--jy-primary-6);
       }
 
       .el-tabs__item:hover {
-        color: var(--primary-6);
+        color: var(--jy-primary-6);
       }
       .el-tabs__item {
-        color: var(--color-text-3);
+        color: var(--jy-color-text-3);
       }
       .cancelBottomLine {
         .el-tabs__nav-wrap::after {

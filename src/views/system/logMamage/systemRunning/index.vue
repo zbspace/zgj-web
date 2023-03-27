@@ -22,6 +22,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
           >
           </componentsTable>
@@ -127,12 +128,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '时间',
           sortable: true,
@@ -153,25 +148,21 @@
       ],
       data: [
         {
-          0: 1,
           1: '2022-01-21 09:08:00',
           2: 'plumelog-test',
           3: '警告日志展示'
         },
         {
-          0: 2,
           1: '2022-01-13 19:08:00',
           2: 'plumelog',
           3: '警告日志展示'
         },
         {
-          0: 3,
           1: '2022-08-21 09:00:10',
           2: 'plumelog-01',
           3: '警告日志展示'
         },
         {
-          0: 4,
           1: '2022-01-21 09:08:00',
           2: 'plumelog',
           3: '警告日志展示详情'
@@ -181,7 +172,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },

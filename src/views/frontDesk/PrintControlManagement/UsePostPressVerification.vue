@@ -37,6 +37,8 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
+            isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
           >
@@ -61,7 +63,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- test - dialog -->
-    <KDialog
+    <JyDialog
       @update:show="state.componentsUploadFile.show = $event"
       :width="1000"
       :show="state.componentsUploadFile.show"
@@ -71,7 +73,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
     >
       <fileCheckUpload :data="state.componentsUploadFile"></fileCheckUpload>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -99,10 +101,9 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
   import { useRouter } from 'vue-router'
-  import { UploadFilled } from '@element-plus/icons-vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  // import { UploadFilled } from '@element-plus/icons-vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import fileCheckUpload from '@/views/components/fileCheck/fileCheckUpload.vue'
   const router = useRouter()
   // const props = defineProps({
@@ -254,15 +255,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '单据编号',
           sortable: true,
@@ -379,13 +371,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '2') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -560,15 +552,6 @@
     if (activeName === '1') {
       state.componentsTable.header = [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '单据编号',
           sortable: true,
@@ -683,15 +666,6 @@
       ]
     } else if (activeName === '2') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据编号',
@@ -830,15 +804,6 @@
       ]
     } else if (activeName === '3') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据编号',

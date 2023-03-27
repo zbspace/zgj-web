@@ -28,7 +28,9 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            :loading="loading"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
           >
           </componentsTable>
@@ -39,6 +41,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @current-change="currentPageChange"
+          @size-change="sizeChange"
         >
         </componentsPagination>
       </template>
@@ -55,14 +59,16 @@
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import componentsBatch from '@/views/components/batch.vue'
+  import logs from '@/api/system/logManagement'
   const showDepPerDialog = ref(false)
+  const loading = ref(false)
   const state = reactive({
     componentsSearchForm: {
       style: {
@@ -81,7 +87,7 @@
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '请输入'
+            placeholder: '请输入操作人/操作模块/操作内容'
           }
         },
         {
@@ -143,119 +149,56 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
-          prop: '1',
+          prop: 'accountNo',
           label: '操作人',
           sortable: true,
-          'min-width': 120
-        },
-        {
-          prop: '2',
-          label: '所属部门',
-          sortable: true,
           'min-width': 150
         },
         {
-          prop: '3',
+          prop: 'organName',
+          label: '所在部门',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'createTime',
           label: '操作时间',
           sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '4',
-          label: '操作页面',
-          sortable: true,
           'min-width': 150
         },
         {
-          prop: '5',
-          label: '操作说明',
+          prop: 'module',
+          label: '操作模块',
+          sortable: true,
+          'min-width': 180
+        },
+        {
+          prop: 'contentType',
+          label: '操作内容',
           sortable: true,
           'min-width': 180
         }
       ],
-      data: [
-        {
-          0: 1,
-          1: '郭光林',
-          2: '软件部',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        },
-        {
-          0: 2,
-          1: '郭光林',
-          2: '建业科技',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        },
-        {
-          0: 3,
-          1: '郭光林',
-          2: '建业科技',
-          3: '2023-01-05 13:57:17',
-          4: '用印申请',
-          5: '新增用印申请：010501'
-        },
-        {
-          0: 4,
-          1: '李慧斌',
-          2: '软件部',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        },
-        {
-          0: 5,
-          1: '郭光林',
-          2: '产品研发中心',
-          3: '2023-01-05 13:57:17',
-          4: '用印申请',
-          5: '新增用印申请：010501'
-        },
-        {
-          0: 6,
-          1: '李慧斌',
-          2: '软件部',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        },
-        {
-          0: 7,
-          1: '李慧斌',
-          2: '软件部',
-          3: '2023-01-05 13:57:17',
-          4: '权限',
-          5: '角色授权：二级管理员'
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
 
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
+        total: 0,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
@@ -268,6 +211,38 @@
       showDepPerDialog.value = true
     }
   }
+
+  const systemLogPageApi = () => {
+    loading.value = true
+    return logs
+      .systemOperation({
+        keyword: '',
+        pageNo: state.componentsPagination.data.index,
+        pageSize: state.componentsPagination.data.pageNumber
+      })
+      .then(result => {
+        console.log(result)
+        state.componentsTable.data = result.data.records
+        state.componentsPagination.data.amount = result.data.total
+        state.componentsPagination.defaultAttribute.total = result.data.total
+        loading.value = false
+        return result
+      })
+  }
+
+  const currentPageChange = e => {
+    state.componentsPagination.data.index = e
+    systemLogPageApi()
+  }
+
+  const sizeChange = e => {
+    state.componentsPagination.data.pageNumber = e
+    systemLogPageApi()
+  }
+
+  onBeforeMount(() => {
+    systemLogPageApi()
+  })
 </script>
 
 <style lang="scss" scoped></style>

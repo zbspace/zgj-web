@@ -67,6 +67,8 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
+            isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -92,7 +94,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 动态表单 - 印章申请 -->
-    <KDialog
+    <JyDialog
       @update:show="fromState.showDialog = $event"
       :show="fromState.showDialog"
       :title="fromState.title"
@@ -111,7 +113,7 @@
         :ref="fromState.vFormLibraryRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -154,8 +156,7 @@
   import { ElMessage, ElMessageBox } from 'element-plus'
   import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
   import StampChangeJson from '@/views/addDynamicFormJson/StampChange.json'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   // const props = defineProps({
   //   // 处理类型
   //   type: {
@@ -174,6 +175,7 @@
   const vFormLibraryRef = ref(null)
   const showDepPerDialog = ref(false)
   const submitLibraryForm = type => {
+    console.log(type)
     if (!type) {
       vFormLibraryRef.value.resetForm()
       return
@@ -352,16 +354,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '单据编码',
           sortable: true,
@@ -433,7 +425,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '107873',
           2: '测试类型',
           3: '【智】测试专用章-自动版-Joel-243（全称）',
@@ -444,7 +435,6 @@
           8: '2022-11-30 12:00:08'
         },
         {
-          0: 2,
           1: '107873',
           2: '测试类型',
           3: '【智】研发-易全程二代',
@@ -455,7 +445,6 @@
           8: '2022-11-30 12:00:08'
         },
         {
-          0: 3,
           1: '107878',
           2: '测试类型',
           3: '测试印章',
@@ -466,7 +455,6 @@
           8: '2022-11-30 12:00:08'
         },
         {
-          0: 4,
           1: '107673',
           2: '测试类型',
           3: '【智】测试专用章-自动版-Joel-243（全称）',
@@ -477,7 +465,6 @@
           8: '2022-11-30 09:00:10'
         },
         {
-          0: 5,
           1: '107872',
           2: '测试',
           3: '测试章',
@@ -488,7 +475,6 @@
           8: '2022-11-30 12:00:08'
         },
         {
-          0: 6,
           1: '107876',
           2: '测试类型',
           3: '测试专用章-自动版-243',
@@ -503,13 +489,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '3') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }

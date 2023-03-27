@@ -10,7 +10,7 @@
       </template>
       <template #custom>
         <div class="custom">
-          <div class="ap-cont-info">
+          <!-- <div class="ap-cont-info">
             <div class="ap-cont-info-icon">
               <img
                 class="ap-cont-info-icon-img"
@@ -22,7 +22,7 @@
               有已发起意外退出的用印申请【上海科创招投标建筑制材专属项目合同】
             </div>
             <div class="ap-cont-info-caozuo"> 继续完成用印申请 </div>
-          </div>
+          </div> -->
           <div class="ap-cont-title"> 请选择所需表单 </div>
           <div class="ap-cont-desc">
             请根据以下步骤完善表单内容及确认审批流程
@@ -73,8 +73,24 @@
               <div class="ap-cont-liuc-buzou-text"> 完成用印申请 </div>
             </div>
           </div>
+          <el-input
+            v-model="keyword"
+            placeholder="请输入表单名称"
+            clearable
+            style="margin-bottom: 1rem"
+            @clear="applyList()"
+            @keyup.enter="applyList()"
+          >
+            <template #append>
+              <el-button :icon="Search" @click.stop="applyList()" />
+            </template>
+          </el-input>
           <div class="ap-cont-liebiao">
-            <div class="ap-cont-liebiao-list" v-for="n in 5" :key="n">
+            <div
+              class="ap-cont-liebiao-list"
+              v-for="(item, index) in applyLists"
+              :key="index"
+            >
               <div class="ap-cont-liebiao-list-back">
                 <img
                   class="ap-cont-liebiao-list-back-img"
@@ -83,10 +99,13 @@
                 />
               </div>
               <div class="ap-cont-liebiao-list-desc">
-                上海科创招投标建筑制材专属项目合同
+                {{ item.formName }}
               </div>
               <div class="ap-cont-liebiao-list-but">
-                <el-button type="primary" @click="clickListBut(n)">
+                <el-button
+                  type="primary"
+                  @click="clickListBut(item.formMessageId, item.formVersionId)"
+                >
                   去申请
                 </el-button>
               </div>
@@ -100,12 +119,18 @@
                 </i>
               </div>
             </div>
+            <div class="empty">
+              <el-empty
+                description="您暂无可用的申请表单"
+                v-if="!applyLists.length && !loading"
+              />
+            </div>
           </div>
         </div>
       </template>
     </componentsLayout>
     <!-- 动态表单 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="选择模板"
@@ -117,7 +142,7 @@
       @close="submitForm"
     >
       <div class="optional-module">
-        <div class="optional-module-list" v-for="n in 6" :key="n">
+        <div class="optional-module-list" v-for="n in 15" :key="n">
           <div class="optional-module-list-title">
             <div class="optional-module-list-title-desc">
               文件类型文件类型文件类型文件类型
@@ -137,30 +162,28 @@
           </div>
         </div>
       </div>
-    </KDialog>
+    </JyDialog>
   </div>
 </template>
 <script setup>
-  import { ref, defineProps, onBeforeMount, onMounted, inject } from 'vue'
+  import { ref, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  // eslint-disable-next-line no-unused-vars
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+  import sealApply from '@/api/frontDesk/printControl/sealApply'
+  import { Search } from '@element-plus/icons-vue'
+
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const showFormDialog = ref(false)
+  const applyLists = ref([])
+  const keyword = ref('')
+  const loading = ref(false)
+
   // 点击列表按钮
-  function clickListBut(n) {
-    commonFun.routerPage(router, {
+  function clickListBut(formMessageId, formVersionId) {
+    router.push({
       name: 'selectionForms',
-      params: { id: n }
+      params: { id: formMessageId },
+      query: { formVersionId }
     })
   }
 
@@ -174,11 +197,25 @@
     showFormDialog.value = false
   }
 
+  const applyList = () => {
+    loading.value = true
+    applyLists.value = []
+    sealApply
+      .list({ keyword: keyword.value })
+      .then(res => {
+        applyLists.value = res.data
+      })
+      .finally(() => {
+        loading.value = false
+      })
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
+    applyList()
   })
 </script>
 <style lang="scss" scoped>
@@ -189,6 +226,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+
+    .empty {
+      width: 100%;
     }
 
     .custom {
@@ -202,9 +243,9 @@
         align-items: center;
         padding: 0.5rem;
         box-sizing: border-box;
-        background-color: var(--Info-1);
-        border: 1px solid var(--Info-3);
-        border-radius: var(--border-radius-2);
+        background-color: var(--jy-info-1);
+        border: 1px solid var(--jy-info-3);
+        border-radius: var(--jy-border-radius-2);
         position: relative;
         margin-bottom: 1rem;
 
@@ -215,15 +256,15 @@
         .ap-cont-info-caozuo {
           position: absolute;
           right: 0.5rem;
-          color: var(--Info-6);
+          color: var(--jy-info-6);
         }
       }
 
       .ap-cont-title {
         display: flex;
         justify-content: center;
-        font-size: var(--font-size-title-1);
-        font-weight: var(--font-weight-600);
+        font-size: var(--jy-font-size-title-1);
+        font-weight: var(--jy-font-weight-600);
         margin-bottom: 1rem;
       }
 
@@ -231,7 +272,7 @@
         display: flex;
         justify-content: center;
         margin-bottom: 1rem;
-        color: var(--color-text-2);
+        color: var(--jy-color-text-2);
       }
 
       .ap-cont-liuc {
@@ -259,19 +300,66 @@
         display: flex;
         flex-flow: wrap;
 
+        @media screen and (max-width: 900px) {
+          .ap-cont-liebiao-list {
+            width: 100%;
+            margin: 0;
+          }
+        }
+
+        @media screen and (min-width: 900px) and (max-width: 1200px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 15px) / 2);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(2n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1200px) and (max-width: 1500px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 30px) / 3);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(3n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1500px) and (max-width: 1750px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 45px) / 4);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(4n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
+        @media screen and (min-width: 1750px) {
+          .ap-cont-liebiao-list {
+            width: calc((100% - 60px) / 5);
+          }
+
+          .ap-cont-liebiao-list:nth-of-type(5n) {
+            margin: 0 0 15px 0;
+          }
+        }
+
         .ap-cont-liebiao-list {
-          width: 20rem;
-          margin: 0rem 1rem 1rem 0rem;
-          padding: 0.5rem;
+          // width: 20rem;
+          margin: 0 15px 15px 0;
+          padding: 10px;
           box-sizing: border-box;
           display: flex;
           flex-flow: wrap;
           justify-content: center;
-          border: 1px solid var(--color-border-1);
-          border-radius: var(--border-radius-4);
-          background-color: var(--color-fill--1);
+          border: 1px solid var(--jy-color-border-1);
+          border-radius: var(--jy-border-radius-4);
+          background-color: var(--jy-color-fill--1);
           position: relative;
-
+          overflow: hidden;
           .ap-cont-liebiao-list-back {
             width: 10rem;
             height: 10rem;
@@ -283,17 +371,17 @@
           .ap-cont-liebiao-list-desc {
             width: 100%;
             margin-bottom: 0.5rem;
-            color: var(--color-text-1);
+            color: var(--jy-color-text-1);
           }
 
-          .ap-cont-liebiao-list-but {
-            margin-bottom: 0.5rem;
-          }
+          // .ap-cont-liebiao-list-but {
+          //   margin-bottom: 0.5rem;
+          // }
           .ap-cont-liebiao-list-template {
             position: absolute;
             top: 1rem;
             right: 0%;
-            color: var(--Info-6);
+            color: var(--jy-info-6);
             display: flex;
             cursor: pointer;
             .text {
@@ -319,8 +407,8 @@
     .optional-module {
       .optional-module-list {
         display: flex;
-        border: 1px solid var(--color-border-1);
-        border-radius: var(--border-radius-4);
+        border: 1px solid var(--jy-color-border-1);
+        border-radius: var(--jy-border-radius-4);
         margin: 1rem 0rem;
         padding: 1rem;
         box-sizing: border-box;
@@ -332,13 +420,13 @@
           margin-bottom: 0.5rem;
           .optional-module-list-title-desc {
             width: calc(100% - 10rem);
-            color: var(--color-text-1);
+            color: var(--jy-color-text-1);
           }
           .optional-module-list-title-time {
             width: 10rem;
             text-align: right;
-            color: var(--color-text-3);
-            font-size: var(--font-size-body-1);
+            color: var(--jy-color-text-3);
+            font-size: var(--jy-font-size-body-1);
           }
         }
         .optional-module-list-desc {
@@ -347,22 +435,23 @@
           justify-content: space-between;
           .optional-module-list-desc-text {
             width: calc(100% - 10rem);
-            color: var(--color-text-3);
+            color: var(--jy-color-text-3);
           }
           .optional-module-list-desc-but {
             display: flex;
             .button {
               padding: 0.2rem 1rem;
-              border-radius: var(--border-radius-2);
-              border: 1px solid var(--color-border-1);
-              font-size: var(--font-size-body-1);
+              border-radius: var(--jy-border-radius-2);
+              border: 1px solid var(--jy-color-border-1);
+              font-size: var(--jy-font-size-body-1);
               margin-left: 0.5rem;
-              color: var(--color-text-2);
+              color: var(--jy-color-text-2);
+              cursor: pointer;
             }
             .shiyong {
-              color: var(--Info-6);
-              background-color: var(--Info-1);
-              border-color: var(--Info-1);
+              color: var(--jy-info-6);
+              background-color: var(--jy-info-1);
+              border-color: var(--jy-info-1);
             }
           }
         }

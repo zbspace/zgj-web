@@ -70,14 +70,14 @@
     </componentsLayout>
 
     <!-- test - dialog -->
-    <KDialog
+    <JyDialog
       @update:show="showDialog = $event"
       :show="showDialog"
       title="Demo Dialog"
       :oneBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-    ></KDialog>
+    ></JyDialog>
 
     <!-- 人员选择  -->
     <kDepartOrPersonVue
@@ -88,7 +88,7 @@
     </kDepartOrPersonVue>
 
     <!-- 动态表单 - 用印申请 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="新增（用印申请）"
@@ -106,7 +106,7 @@
         ref="vFormRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
@@ -122,14 +122,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    ref
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -137,10 +130,9 @@
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
-  import kDepartOrPersonVue from '../../components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import KDialog from '@/views/components/modules/kdialog.vue'
   import FormJson from '@/views/addDynamicFormJson/sealApplication.json'
   const props = defineProps({
     // 处理类型
@@ -458,7 +450,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },

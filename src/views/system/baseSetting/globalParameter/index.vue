@@ -27,7 +27,7 @@
 
 <script setup>
   import { ref } from 'vue'
-  import VTabs from '@/components/modules/tabs.vue'
+  import VTabs from '@/components/common/JyTabs.vue'
   import ExportTemplate from './export-template'
   import File from './file'
   import SmartTerminal from './smart-terminal'
@@ -78,8 +78,8 @@
     @include mixin-padding-top(10);
     @include mixin-padding-right(0);
     box-sizing: border-box;
-    border-radius: var(--border-radius-4);
-    background-color: var(--in-common-use-1);
+    border-radius: var(--jy-border-radius-4);
+    background-color: var(--jy-in-common-use-1);
     // margin-top: 18px;
     position: relative;
   }
@@ -88,7 +88,7 @@
     padding: 0rem 0 0.5rem 0;
     @include mixin-padding-left(20);
     box-sizing: border-box;
-    font-size: var(--font-size-title-2);
+    font-size: var(--jy-font-size-title-2);
     @include mixin-padding-right(20);
     box-sizing: border-box;
   }

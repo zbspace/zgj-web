@@ -62,13 +62,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -260,6 +254,7 @@
               color: rgba(0, 0, 0, 0.65);
 
               > h3 {
+                margin: 0 0 10px 0;
                 font-size: 14px;
                 color: rgba(0, 0, 0, 0.85);
                 font-style: normal;

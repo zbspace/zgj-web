@@ -27,6 +27,7 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            :paginationData="state.componentsPagination.data"
             :header="state.componentsTable.header"
             :isSelection="true"
           >
@@ -122,12 +123,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '印章名称',
           sortable: true,
@@ -160,7 +155,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '王锡春测试章',
           2: '806FB012185A',
           3: 'V2.3.0',
@@ -168,7 +162,6 @@
           5: '2022-12-09 13:56:46'
         },
         {
-          0: 2,
           1: '建业测试章',
           2: '806FB012185B',
           3: 'V2.3.0',
@@ -176,7 +169,6 @@
           5: '2022-12-09 13:56:46'
         },
         {
-          0: 3,
           1: '王锡春测试章',
           2: '806FB012185A',
           3: 'V2.3.0',
@@ -184,7 +176,6 @@
           5: '2022-03-09 13:56:46'
         },
         {
-          0: 4,
           1: '技术部测试章',
           2: '806FB012185A',
           3: 'V2.3.1',
@@ -192,7 +183,6 @@
           5: '2021-12-09 13:00:46'
         },
         {
-          0: 5,
           1: '王锡春测试章',
           2: '806FB012185A',
           3: 'V2.3.0',
@@ -200,7 +190,6 @@
           5: '2022-12-09 13:56:00'
         },
         {
-          0: 6,
           1: '王锡春测试章',
           2: '806FB012185A',
           3: 'V2.3.0',
@@ -208,7 +197,6 @@
           5: '2022-12-09 13:56:46'
         },
         {
-          0: 7,
           1: '建业测试章',
           2: '806FB012185A',
           3: 'V2.3.0',
@@ -220,7 +208,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },

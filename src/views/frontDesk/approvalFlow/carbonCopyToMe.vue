@@ -49,6 +49,8 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
+            isSelection
             @selection-change="selectionChange"
           >
           </componentsTable>
@@ -72,14 +74,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -88,7 +83,7 @@
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   const props = defineProps({
     // 处理类型
     type: {
@@ -185,7 +180,10 @@
               label: '启用申请',
               value: '6'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         },
         {
           id: 'picker',
@@ -233,11 +231,6 @@
     },
     componentsTable: {
       header: [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '流程主题',
@@ -315,7 +308,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },

@@ -44,6 +44,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -69,7 +70,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 处理弹窗 -->
-    <KDialog
+    <JyDialog
       @update:show="dialogProcess.show = $event"
       :show="dialogProcess.show"
       :title="dialogProcess.title"
@@ -90,7 +91,7 @@
         <span>添加抄送</span>
         <div @click="showDepPerDialog = true">+请选择抄送人</div>
       </div>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -101,14 +102,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -118,10 +112,9 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
-  import kDepartOrPersonVue from '../../components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   const props = defineProps({
     // 处理类型
     type: {
@@ -223,7 +216,10 @@
               label: '任务类型2',
               value: '2'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         }
       ],
       butData: [
@@ -259,11 +255,6 @@
     },
     componentsTable: {
       header: [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '任务单据名称',
@@ -363,13 +354,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property == '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -500,11 +491,6 @@
     if (activeName == '1') {
       state.componentsTable.header = [
         {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '任务单据名称',
           sortable: true,
@@ -598,11 +584,6 @@
       ]
     } else if (activeName == '2') {
       state.componentsTable.header = [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '任务单据名称',

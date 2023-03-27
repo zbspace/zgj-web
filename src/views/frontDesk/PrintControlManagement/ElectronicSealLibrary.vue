@@ -39,6 +39,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             @cellClick="cellClick"
           >
           </componentsTable>
@@ -64,13 +65,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -201,11 +196,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '印章名称',
           sortable: true,
@@ -232,28 +222,24 @@
       ],
       data: [
         {
-          0: 1,
           1: '印章',
           2: '',
           3: '',
           4: ''
         },
         {
-          0: 2,
           1: '印章',
           2: '',
           3: '',
           4: ''
         },
         {
-          0: 3,
           1: '印章',
           2: '',
           3: '',
           4: ''
         },
         {
-          0: 4,
           1: '印章',
           2: '',
           3: '',
@@ -264,13 +250,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property == '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }

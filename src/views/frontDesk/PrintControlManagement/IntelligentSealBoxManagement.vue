@@ -40,6 +40,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @cellClick="cellClick"
             @custom-click="customClick"
@@ -56,7 +57,7 @@
       </template>
     </componentsLayout>
     <!-- 动态表单 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
       title="新增"
@@ -74,7 +75,7 @@
         ref="vFormRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
     <!-- 印章盒详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -122,11 +123,10 @@
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
   import FormJson from '@/views/addDynamicFormJson/editorSealBox.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   // const props = defineProps({
   //   // 处理类型
   //   type: {
@@ -294,15 +294,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '设备串号',
           sortable: true,
@@ -425,13 +416,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '3') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }

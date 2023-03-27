@@ -121,7 +121,11 @@
                 <div class="fast-cont">
                   <div class="fast-cont-title">快捷申请用印 </div>
                   <div class="fast-cont-but">
-                    <el-button type="primary" class="fast-button">
+                    <el-button
+                      type="primary"
+                      class="fast-button"
+                      @click="toYongyin"
+                    >
                       <i class="fast-icon">
                         <svg class="iconpark-icon">
                           <use href="#shenqing-yongyin"></use>
@@ -235,6 +239,7 @@
   } from 'vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsTabs from '@/views/components/tabs.vue'
+  import { useRouter } from 'vue-router'
   // const props = defineProps({
   //   // 处理类型
   //   type: {
@@ -243,6 +248,7 @@
   //   }
   // })
   // const emit = defineEmits([])
+  const router = useRouter()
   const state = reactive({
     componentsTabs: {
       data: [
@@ -260,15 +266,15 @@
         },
         {
           label: '已审批',
-          name: '3'
+          name: '4'
         },
         {
           label: '已确认',
-          name: '3'
+          name: '5'
         },
         {
           label: '已处理',
-          name: '3'
+          name: '6'
         }
       ]
     },
@@ -452,6 +458,9 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
+  function toYongyin() {
+    router.push({ name: 'SelectionForm' })
+  }
 </script>
 <style lang="scss" scoped>
   .frontDesk-home-page-home {
@@ -479,7 +488,7 @@
         height: 8rem;
         display: flex;
         align-items: center;
-        background-color: var(--color-fill--4);
+        background-color: var(--jy-color-fill--4);
         justify-content: space-between;
         .ap-cont-info-user {
           display: flex;
@@ -490,27 +499,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: var(--border-radius-4);
-            color: var(--color-text-6);
-            background-color: var(--primary-6);
+            border-radius: var(--jy-border-radius-4);
+            color: var(--jy-color-text-6);
+            background-color: var(--jy-primary-6);
             margin: 0% 1rem;
           }
           .user-info-basic-name {
-            color: var(--color-text-1);
-            font-size: var(--font-size-title-2);
+            color: var(--jy-color-text-1);
+            font-size: var(--jy-font-size-title-2);
             margin-right: 0.2rem;
           }
           .user-info-basic-jues {
-            color: var(--color-text-2);
-            font-size: var(--font-size-caption);
-            background-color: var(--color-fill--2);
+            color: var(--jy-color-text-2);
+            font-size: var(--jy-font-size-caption);
+            background-color: var(--jy-color-fill--2);
             margin: 0% 0.2rem;
             padding: 0.1rem 0.2rem;
             box-sizing: border-box;
           }
           .user-info-work-text {
-            color: var(--color-text-2);
-            font-size: var(--font-size-caption);
+            color: var(--jy-color-text-2);
+            font-size: var(--jy-font-size-caption);
             margin-right: 0.2rem;
           }
         }
@@ -521,12 +530,12 @@
             width: 7rem;
             text-align: center;
             .module-box-num {
-              color: var(--color-text-1);
-              font-size: var(--font-size-title-2);
+              color: var(--jy-color-text-1);
+              font-size: var(--jy-font-size-title-2);
             }
             .module-box-text {
-              color: var(--color-text-2);
-              font-size: var(--font-size-body-2);
+              color: var(--jy-color-text-2);
+              font-size: var(--jy-font-size-body-2);
             }
           }
         }
@@ -543,11 +552,13 @@
               position: absolute;
               right: 0%;
               top: 0rem;
-              @include mixin-padding(16);
-              color: var(--color-text-3);
-              height: 72px;
+              // @include mixin-padding(16);
+              color: var(--jy-color-text-3);
+              height: 38px;
               display: flex;
               align-items: center;
+              @include mixin-margin-top(16);
+              @include mixin-margin-right(16);
             }
             .flow-list-li {
               display: flex;
@@ -561,9 +572,9 @@
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  border-radius: var(--border-radius-4);
-                  color: var(--color-text-6);
-                  background-color: var(--primary-6);
+                  border-radius: var(--jy-border-radius-4);
+                  color: var(--jy-color-text-6);
+                  background-color: var(--jy-primary-6);
                 }
                 .flow-list-li-name-icon {
                   position: absolute;
@@ -585,20 +596,21 @@
                 padding: 0% 1rem;
                 box-sizing: border-box;
                 .flow-list-li-desc-cont {
-                  color: var(--color-text-1);
+                  color: var(--jy-color-text-1);
                 }
                 .flow-list-li-desc-jues {
+                  margin-top: 0.2rem;
                   .label {
-                    color: var(--color-text-2);
-                    font-size: var(--font-size-caption);
-                    background-color: var(--color-fill--2);
+                    color: var(--jy-color-text-2);
+                    font-size: var(--jy-font-size-caption);
+                    background-color: var(--jy-color-fill--2);
                     margin: 0% 0.2rem 0% 0rem;
                     padding: 0.1rem 0.2rem;
                     box-sizing: border-box;
                   }
                   .checked {
-                    background-color: var(--primary-1);
-                    color: var(--primary-6);
+                    background-color: var(--jy-primary-1);
+                    color: var(--jy-primary-6);
                   }
                 }
               }
@@ -608,21 +620,26 @@
                 flex-flow: wrap;
                 width: 9rem;
                 .label {
-                  color: var(--Info-6);
-                  font-size: var(--font-size-caption);
-                  background-color: var(--Info-1);
-                  margin: 0% 0.2rem 0% 0rem;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: var(--jy-info-6);
+                  font-size: var(--jy-font-size-caption);
+                  background-color: var(--jy-info-1);
+                  // margin: 0% 0.2rem 0% 0rem;
                   padding: 0.2rem 0.2rem;
                   box-sizing: border-box;
                   width: 4rem;
                   text-align: center;
-                  border-radius: var(--border-radius-4);
+                  border-radius: var(--jy-border-radius-4);
+                  cursor: pointer;
                 }
                 .time {
+                  margin-top: 0.2rem;
                   width: 100%;
                   text-align: right;
-                  color: var(--color-text-3);
-                  font-size: var(--font-size-caption);
+                  color: var(--jy-color-text-3);
+                  font-size: var(--jy-font-size-caption);
                 }
               }
             }
@@ -643,8 +660,8 @@
             }
             .fast-cont {
               .fast-cont-title {
-                font-size: var(--font-size-title-2);
-                color: var(--color-text-1);
+                font-size: var(--jy-font-size-title-2);
+                color: var(--jy-color-text-1);
                 margin-bottom: 1rem;
               }
               .fast-cont-but {
@@ -658,6 +675,12 @@
                 }
                 .fast-icon {
                   margin-right: 0.3rem;
+                  width: 1rem;
+                  height: 1rem;
+                  .iconpark-icon {
+                    width: 1rem;
+                    height: 1rem;
+                  }
                 }
               }
             }
@@ -673,11 +696,13 @@
               position: absolute;
               right: 0%;
               top: 0rem;
-              @include mixin-padding(16);
-              color: var(--color-text-3);
-              height: 72px;
+              // @include mixin-padding(16);
+              color: var(--jy-color-text-3);
+              height: 38px;
               display: flex;
               align-items: center;
+              @include mixin-margin-top(16);
+              @include mixin-margin-right(16);
             }
             .list {
               display: flex;
@@ -692,16 +717,16 @@
                 .list-timeLine-dian {
                   width: 0.4rem;
                   height: 0.4rem;
-                  background-color: var(--color-fill-25);
+                  background-color: var(--jy-color-fill-25);
                   border-radius: 50%;
                 }
                 .list-timeLine-line {
                   height: calc(100% - 0.9rem);
                   width: 1px;
-                  background-color: var(--color-border-1);
+                  background-color: var(--jy-color-border-1);
                 }
                 .dian-new {
-                  background-color: var(--danger-6);
+                  background-color: var(--jy-danger-6);
                 }
               }
               .list-cont {
@@ -710,24 +735,24 @@
                 padding: 0% 0% 1rem 0%;
                 box-sizing: border-box;
                 .list-cont-time {
-                  color: var(--color-text-3);
+                  color: var(--jy-color-text-3);
                   text-align: right;
-                  width: 2.5rem;
+                  width: 50px;
                   .list-cont-time-o {
                     margin-bottom: 0.3rem;
                   }
                   .list-cont-time-t {
-                    font-size: var(--font-size-body-1);
+                    font-size: var(--jy-font-size-body-1);
                   }
                 }
                 .list-cont-desc {
-                  width: calc(100% - 2.5rem);
+                  width: calc(100% - 50px);
                   .list-cont-desc-title {
-                    color: var(--color-text-1);
+                    color: var(--jy-color-text-1);
                     margin-bottom: 0.3rem;
                   }
                   .list-cont-desc-cont {
-                    color: var(--color-text-3);
+                    color: var(--jy-color-text-3);
                   }
                 }
               }
@@ -750,11 +775,11 @@
               justify-content: space-between;
               margin-bottom: 1rem;
               .copy-title-name {
-                font-size: var(--font-size-title-1);
-                color: var(--color-text-1);
+                font-size: var(--jy-font-size-title-1);
+                color: var(--jy-color-text-1);
               }
               .copy-title-more {
-                color: var(--color-text-3);
+                color: var(--jy-color-text-3);
               }
             }
             .list {
@@ -770,16 +795,16 @@
                 .list-timeLine-dian {
                   width: 0.4rem;
                   height: 0.4rem;
-                  background-color: var(--color-fill-25);
+                  background-color: var(--jy-color-fill-25);
                   border-radius: 50%;
                 }
                 .list-timeLine-line {
                   height: calc(100% - 0.9rem);
                   width: 1px;
-                  background-color: var(--color-border-1);
+                  background-color: var(--jy-color-border-1);
                 }
                 .dian-new {
-                  background-color: var(--danger-6);
+                  background-color: var(--jy-danger-6);
                 }
               }
               .list-cont {
@@ -788,24 +813,24 @@
                 padding: 0% 0% 1rem 0%;
                 box-sizing: border-box;
                 .list-cont-time {
-                  color: var(--color-text-3);
+                  color: var(--jy-color-text-3);
                   text-align: right;
-                  width: 2.5rem;
+                  width: 50px;
                   .list-cont-time-o {
                     margin-bottom: 0.3rem;
                   }
                   .list-cont-time-t {
-                    font-size: var(--font-size-body-1);
+                    font-size: var(--jy-font-size-body-1);
                   }
                 }
                 .list-cont-desc {
-                  width: calc(100% - 2.5rem);
+                  width: calc(100% - 50px);
                   .list-cont-desc-title {
-                    color: var(--color-text-1);
+                    color: var(--jy-color-text-1);
                     margin-bottom: 0.3rem;
                   }
                   .list-cont-desc-cont {
-                    color: var(--color-text-3);
+                    color: var(--jy-color-text-3);
                   }
                 }
               }
@@ -822,25 +847,26 @@
           }
         }
         .module-box {
-          background: var(--color-fill--5);
-          border-radius: var(--border-radius-4);
+          background: var(--jy-color-fill--5);
+          border-radius: var(--jy-border-radius-4);
           @include mixin-padding(16);
           @include mixin-margin-bottom(16);
           .module-box-title {
             display: flex;
             justify-content: space-between;
             .module-box-title-name {
-              color: var(--color-text-1);
-              font-size: var(--font-size-title-1);
+              color: var(--jy-color-text-1);
+              font-size: var(--jy-font-size-title-1);
             }
             .module-box-title-cut {
               display: flex;
               .module-box-title-cut-but {
                 margin-left: 1rem;
-                color: var(--color-text-3);
+                color: var(--jy-color-text-3);
+                cursor: pointer;
               }
               .checked {
-                color: var(--primary-6);
+                color: var(--jy-primary-6);
               }
             }
           }

@@ -37,6 +37,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
           >
           </componentsTable>
@@ -130,12 +131,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '姓名',
           sortable: true,
@@ -177,7 +172,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '小黄',
           2: '177777777',
           3: '往往',
@@ -185,7 +179,6 @@
           5: '待审核'
         },
         {
-          0: 2,
           1: '小黄',
           2: '177777777',
           3: '往往',
@@ -193,7 +186,6 @@
           5: '待审核'
         },
         {
-          0: 2,
           1: '小黄',
           2: '177777777',
           3: '往往',
@@ -201,7 +193,6 @@
           5: '待审核'
         },
         {
-          0: 3,
           1: '小黄',
           2: '177777777',
           3: '往往',
@@ -209,7 +200,6 @@
           5: '待审核'
         },
         {
-          0: 4,
           1: '小黄',
           2: '177777777',
           3: '往往',
@@ -217,7 +207,6 @@
           5: '待审核'
         },
         {
-          0: 5,
           1: '小黄',
           2: '177777777',
           3: '往往',
@@ -229,7 +218,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },

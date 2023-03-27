@@ -2,16 +2,15 @@
   <div class="system-home-top">
     <div class="list">
       <div class="item" v-for="(item, index) in data" :key="index">
-        <!-- <div :class="`bg bg-${index}`"> </div> -->
         <img :src="item.img" alt="" />
         <div>
-          <span class="sum" :class="index !== 0 ? 'color-dark' : ''">{{
-            item.sum
-          }}</span>
-          <span class="unit"
-            ><span class="base" v-if="item.base">/{{ item.base }}</span
-            >{{ item.unit }}</span
-          >
+          <span class="sum" :class="index !== 0 ? 'color-dark' : ''">
+            {{ item.sum }}
+          </span>
+          <span class="unit">
+            <span class="base" v-if="item.base">/{{ item.base }} </span>
+            {{ item.unit }}
+          </span>
         </div>
         <div class="type">
           {{ item.type }}
@@ -24,13 +23,14 @@
     <div class="space">
       <p>空间使用情况</p>
       <p><span>22GB</span>/100GB</p>
-      <el-progress :percentage="50" />
+      <el-progress :percentage="22" />
     </div>
   </div>
 </template>
 
 <script setup>
   import { ref } from 'vue'
+  import dayjs from 'dayjs'
   import bgtop1 from '@/assets/svg/system/home/top1.svg'
   import bgtop2 from '@/assets/svg/system/home/top2.svg'
   import bgtop3 from '@/assets/svg/system/home/top3.svg'
@@ -49,9 +49,9 @@
       img: bgtop2
     },
     {
-      sum: 15,
+      sum: dayjs('2023-10-19').diff(dayjs().format('YYYY-MM-DD'), 'day'),
       unit: '天',
-      type: '到期时间：2050-2-15',
+      type: '到期时间：2023-10-19',
       img: bgtop3
     }
   ])
@@ -88,27 +88,6 @@
         top: 0;
         background-color: #fff;
       }
-      // .bg-1 {
-      //   background: linear-gradient(
-      //     179.58deg,
-      //     rgba(255, 255, 255, 0) 6.63%,
-      //     #ffffff 99.8%
-      //   );
-      // }
-      // .bg-2 {
-      //   background: linear-gradient(
-      //     179.61deg,
-      //     rgba(255, 255, 255, 0) 9.77%,
-      //     #ffffff 99.81%
-      //   );
-      // }
-      // .bg-3 {
-      //   background: linear-gradient(
-      //     179.61deg,
-      //     rgba(255, 255, 255, 0) 9.77%,
-      //     #ffffff 99.81%
-      //   );
-      // }
       img {
         height: 116px;
         position: absolute;

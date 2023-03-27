@@ -65,6 +65,8 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
+            isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -111,14 +113,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -128,7 +123,7 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage, ElMessageBox } from 'element-plus'
   const props = defineProps({
     // 处理类型
@@ -297,15 +292,6 @@
     },
     componentsTable: {
       header: [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据编号',
@@ -477,13 +463,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property == '2') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -641,15 +627,6 @@
     // console.log(activeName);
     if (activeName == '1' || activeName == '2' || activeName == '3') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据编号',
@@ -819,15 +796,6 @@
       ]
     } else if (activeName == '4') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据编号',

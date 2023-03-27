@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue'
 
 export function requireComp(app) {
+  // -------------------------- common -------------------------------
   app.component(
     'JyEcharts',
     defineAsyncComponent(() => import('./common/JyEcharts/index.vue'))
@@ -35,5 +36,35 @@ export function requireComp(app) {
     defineAsyncComponent(() =>
       import('@/views/components/modules/ElMessageBox.vue')
     )
+  )
+  app.component(
+    'JyDialog',
+    defineAsyncComponent(() => import('./common/JyDialog/index.vue'))
+  )
+  app.component(
+    'JyDialog2',
+    defineAsyncComponent(() => import('./common/JyDialog/index2.vue'))
+  )
+  app.component(
+    'JyVertifyBox',
+    defineAsyncComponent(() => import('./common/JyVertifyBox/index.vue'))
+  )
+  app.component(
+    'JyPagination',
+    defineAsyncComponent(() => import('./common/JyPagination/index.vue'))
+  )
+  app.component(
+    'JyTable',
+    defineAsyncComponent(() => import('./common/JyTable/index.vue'))
+  )
+
+  // -------------------------- business -------------------------------
+  app.component(
+    'JySelectSeal',
+    defineAsyncComponent(() => import('./business/JySelectSeal/index.vue'))
+  )
+  app.component(
+    'JyRelatedCompany',
+    defineAsyncComponent(() => import('./business/JyRelatedCompany/index.vue'))
   )
 }

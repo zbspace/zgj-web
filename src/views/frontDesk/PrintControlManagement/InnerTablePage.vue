@@ -178,7 +178,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -220,8 +220,8 @@
     @include mixin-padding-left(20);
     @include mixin-padding-right(0);
     box-sizing: border-box;
-    border-radius: var(--border-radius-4);
-    background-color: var(--in-common-use-1);
+    border-radius: var(--jy-border-radius-4);
+    background-color: var(--jy-in-common-use-1);
     margin-top: 20px;
     padding: 16px 20px;
 

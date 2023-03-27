@@ -1,8 +1,62 @@
 /* 
-用来设置预设好的class样式
+**全局class样式
 */
 
+.drawer-class.el-drawer.rtl {
+  top: 65px !important;
+  height: auto !important;
+}
 
-.button-icon{
-    margin-right: 0.5rem;
+.drawer-class.el-drawer {
+  box-shadow: none;
+  border-left: 1px solid #eee;
+  width: 540px !important;
+
+  .el-drawer__body {
+    padding: 0;
+  }
+}
+
+/*
+** message 弹框
+*/
+.el-message--info,
+.el-message--success,
+.el-message--warning,
+.el-message--error {
+  --el-message-bg-color: #ffffff !important;
+  --el-message-border-color: #ffffff !important;
+  box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+  .el-message__content {
+    --el-message-text-color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+/*
+**输入框占位字体颜色
+*/
+:deep(input::-webkit-input-placeholder) {
+  color: #c0c4cc;
+
+  .el-message__content {
+    --el-message-text-color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+:deep(input::-moz-input-placeholder) {
+  color: #c0c4cc;
+}
+
+:deep(input::-ms-input-placeholder) {
+  color: #c0c4cc;
+}
+
+.el-table .cell {
+  line-height: 36px;
+}
+
+.el-table {
+  --el-table-text-color: var(--jy-color-text-2);
 }

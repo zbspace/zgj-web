@@ -1,27 +1,38 @@
 <template>
-  <div class="components-ElMessageBox">
+  <div class="container-box">
     <el-dialog
       v-model="state.props.modelValue"
       v-bind="state.props.defaultAttribute"
       @close="closeCallBack"
+      append-to-body
+      class="components-ElMessageBox"
     >
       <div
         class="dialog"
         :style="{ height: state.props.defaultAttribute.height }"
+        v-if="state.props['customContent']"
+      >
+        <slot> </slot>
+      </div>
+      <div
+        class="dialog"
+        :style="{ height: state.props.defaultAttribute.height }"
+        v-else
       >
         <div
           class="dialog-header"
           v-if="
-            state.props['showIcon'] ||
-            state.props['showTitle'] ||
-            state.props['showCutOffRule']
+            state.props['showHeader'] &&
+            (state.props['showIcon'] ||
+              state.props['showTitle'] ||
+              state.props['showCutOffRule'])
           "
         >
           <div class="dialog-header-icon" v-if="state.props['showIcon']">
             <svg class="iconpark-icon"><use href="#icon4"></use></svg>
           </div>
           <div class="dialog-header-cont" v-if="state.props['showTitle']">
-            <slot name="header">标题 </slot>
+            <slot name="header"> </slot>
           </div>
           <div
             class="dialog-header-remove"
@@ -38,7 +49,7 @@
             'center-content': state.props.defaultAttribute.center ? true : false
           }"
         >
-          <slot name="content"> 内容 </slot>
+          <slot name="content"> </slot>
         </div>
         <div class="cut-off-rule" v-if="state.props['showCutOffRule']"></div>
         <div
@@ -46,9 +57,10 @@
           :class="{
             'center-footer': state.props.defaultAttribute.center ? true : false
           }"
+          v-if="state.props['showFooter']"
         >
           <slot name="footer">
-            <el-button type="primary">确定</el-button>
+            <el-button type="primary" @click="clickSure">确定</el-button>
             <el-button @click="clickClose">取消</el-button>
           </slot>
         </div>
@@ -64,13 +76,14 @@
       show-close 是否显示关闭图标 默认 true
       show-icon 是否显示icon 默认 false   一般警告弹框会显示
       show-title 是否显示title 默认 true
+      show-footer 是否显示footer 默认 true
+      show-header 是否显示header 默认 true
+      custom-content 是否内容全部自定义 默认 false
       defaultAttribute  默认属性   element的对话框属性
   */
   import {
     // ref,
     reactive,
-    defineProps,
-    defineEmits,
     onBeforeMount,
     onMounted,
     watch
@@ -81,6 +94,7 @@
       type: String,
       default: '0'
     },
+    // v-model
     modelValue: {
       type: Boolean,
       default: false
@@ -101,6 +115,18 @@
       type: Boolean,
       default: true
     },
+    'show-footer': {
+      type: Boolean,
+      default: true
+    },
+    'show-header': {
+      type: Boolean,
+      default: true
+    },
+    'custom-content': {
+      type: Boolean,
+      default: false
+    },
     defaultAttribute: {
       type: Object,
       default: () => {
@@ -118,7 +144,7 @@
       }
     }
   })
-  const emit = defineEmits(['close', 'update:modelValue'])
+  const emit = defineEmits(['close', 'confirmClick', 'update:modelValue'])
   // 初始化 props
   function initProps() {
     // console.log('--->', 'initProps')
@@ -138,12 +164,15 @@
         dispose.defaultAttribute[key] = props.defaultAttribute[key]
       }
     }
-    console.log('--->', props, dispose)
+    // console.log('--->', props, dispose)
   }
 
   // 点击关闭弹框
   function clickClose() {
     state.props.modelValue = false
+  }
+  function clickSure() {
+    emit('confirmClick', state.props.modelValue)
   }
   // 点击关闭后回调
   function closeCallBack() {
@@ -166,7 +195,7 @@
   })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .components-ElMessageBox {
     .dialog {
       display: flex;
@@ -174,7 +203,8 @@
       .dialog-header {
         display: flex;
         position: relative;
-        padding: 1rem 2.5rem 1rem 2.5rem;
+        // padding: 0 2.5rem 1rem 2.5rem;
+        padding: 24px 0rem 16px 24px;
         box-sizing: border-box;
         align-items: center;
         .dialog-header-icon {
@@ -189,8 +219,8 @@
           }
         }
         .dialog-header-cont {
-          color: var(--color-text-1);
-          font-size: var(--font-size-title-1);
+          color: var(--jy-color-text-1);
+          font-size: var(--jy-font-size-title-1);
         }
         .dialog-header-remove {
           position: absolute;
@@ -209,17 +239,17 @@
         padding: 0rem 2.5rem;
         box-sizing: border-box;
         flex-grow: 1;
-        color: var(--color-text-2);
+        color: var(--jy-color-text-2);
       }
       .dialog-footer {
-        padding: 1rem 2rem;
+        padding: 16px 24px 16px;
         box-sizing: border-box;
         display: flex;
         justify-content: flex-end;
       }
       .cut-off-rule {
         width: 100%;
-        border-bottom: 1px solid var(--color-border-2);
+        border-bottom: 1px solid var(--jy-color-border-2);
       }
       .center-content {
         text-align: center;
@@ -228,13 +258,14 @@
         justify-content: center;
       }
     }
-    :deep(.el-dialog) {
-      .el-dialog__header {
-        display: none;
-      }
-      .el-dialog__body {
-        padding: 0%;
-      }
+  }
+  .components-ElMessageBox.el-dialog {
+    .el-dialog__header {
+      display: none;
+    }
+    .el-dialog__body {
+      padding: 0;
+      overflow: unset;
     }
   }
 </style>

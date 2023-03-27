@@ -39,6 +39,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             v-if="state.activeName === '1'"
           >
@@ -48,6 +49,7 @@
             :defaultAttribute="state.componentsErrorTable.defaultAttribute"
             :data="state.componentsErrorTable.data"
             :header="state.componentsErrorTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             v-if="state.activeName === '2'"
           >
@@ -169,12 +171,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '登录账号',
           sortable: true,
@@ -231,7 +227,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '15660799999',
           2: '肖世康',
           3: '建业科技',
@@ -243,7 +238,6 @@
           9: '登陆成功'
         },
         {
-          0: 2,
           1: '1566079966666',
           2: '肖世康',
           3: '建业科技',
@@ -255,7 +249,6 @@
           9: '登陆成功'
         },
         {
-          0: 3,
           1: '15660799889',
           2: '郭光林',
           3: '建业科技',
@@ -267,7 +260,6 @@
           9: '登陆成功'
         },
         {
-          0: 4,
           1: '15660799999',
           2: '肖世康',
           3: '建业科技',
@@ -279,7 +271,6 @@
           9: '登陆成功'
         },
         {
-          0: 5,
           1: '15660799999',
           2: '汤博',
           3: '建业科技',
@@ -295,7 +286,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -407,7 +398,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },

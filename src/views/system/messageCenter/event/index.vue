@@ -61,6 +61,7 @@
             :default-attribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :is-selection="true"
             @cell-click="cellClick"
           />
@@ -184,12 +185,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          fixed: true
-        },
-        {
           prop: '2',
           label: '事件名称',
           sortable: true,
@@ -255,7 +250,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
@@ -265,7 +259,6 @@
           7: '钉钉'
         },
         {
-          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
@@ -275,7 +268,6 @@
           7: '钉钉'
         },
         {
-          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
@@ -285,7 +277,6 @@
           7: '钉钉'
         },
         {
-          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
@@ -295,7 +286,6 @@
           7: '钉钉'
         },
         {
-          0: 1,
           1: '用印申请',
           2: '用印申请',
           3: '事件描述',
@@ -309,13 +299,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }

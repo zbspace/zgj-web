@@ -1,90 +1,193 @@
+<!--
+* @Descripttion 流程管理
+* @FileName index.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-20 16:37:56
+!-->
 <template>
-  <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
+  <div class="flowManage-index">
+    <JyTable
+      url="/flow/page"
+      ref="table"
+      :hasTree="true"
+      :needAutoRequest="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      :queryParams="queryParams"
+      statusColoum="flag"
+      tableClick="flowName"
+      openValue="1"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="batchOpt"
+    >
       <template #title>
         <div class="title">
-          <div>流程管理</div>
-          <div>
-            <el-button type="primary">+ 新建</el-button>
+          <div>{{ $t('t-zgj-cg-menu-liucheng-guanli') }}</div>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary" @click="openAddFlow">
+                + {{ $t('t-zgj-sync.add') }}
+              </el-button>
+            </div>
+            <div class="title-more-down"> </div>
           </div>
         </div>
       </template>
-
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
-      <template #batch>
-        <div class="batch">
-          <componentsBatch>
-            <el-button>批量删除</el-button>
-            <el-button>批量启用</el-button>
-            <el-button>批量停用</el-button>
-          </componentsBatch>
-        </div>
-      </template>
-
       <template #tree>
         <div>
           <componentsTree
+            ref="tree"
+            v-model="state.componentsTree.value"
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
+            :defaultProps="state.componentsTree.defaultProps"
+            @current-change="currentChange"
+            v-if="state.componentsTree.value"
           >
           </componentsTree>
         </div>
       </template>
+    </JyTable>
 
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :isSelection="true"
-            @cellClick="cellClick"
-          >
-          </componentsTable>
-        </div>
-      </template>
-
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
     <!-- 流程详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
-        :show="state.componentsDocumentsDetails.show"
+        v-model="state.componentsDocumentsDetails.show"
         :visible="state.componentsDocumentsDetails.visible"
         @clickClose="clickClose"
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 新建弹框 -->
+    <Addflow
+      v-if="addFlowModalShow"
+      v-model="addFlowModalShow"
+      :openType="openType"
+      :sealApplyInitId="sealApplyInitId"
+      :treeSelectedId="state.componentsTree.value"
+      @update:treeSelectedId="state.componentsTree.value = $event"
+      :businessList="state.componentsTree.data"
+      @reloadData="reloadData"
+    ></Addflow>
+    <!-- 弹窗提示 -->
+    <JyElMessageBox
+      v-model="state.MessageBox.show"
+      :show="state.MessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.MessageBox.header.icon" alt="" />
+          <span>{{ state.MessageBox.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.MessageBox.content.data }}</div>
+      </template>
+      <template #footer>
+        <el-button
+          type="primary"
+          @click="submitElMessageBox(state.MessageBox.type)"
+        >
+          确认
+        </el-button>
+        <el-button @click="state.MessageBox.show = false">取消</el-button>
+      </template>
+    </JyElMessageBox>
+    <!-- 批量操作弹框提示 -->
+    <JyElMessageBox
+      v-model="state.showToastDialog.show"
+      :show="state.showToastDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.showToastDialog.header.icon" alt="" />
+          <span>{{ state.showToastDialog.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <p
+            v-for="item in state.batchColumnData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{ item }}</p
+          >
+        </el-scrollbar>
+      </template>
+      <template #footer>
+        <el-button
+          v-for="item in state.componentsBatch.butDatas"
+          :key="item.name"
+          :type="item.type"
+          @click="item.clickName"
+          >{{ item.name }}</el-button
+        >
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 
 <script setup>
-  import { reactive } from 'vue'
-  import componentsTable from '@/views/components/table'
-  import componentsSearchForm from '@/views/components/searchForm'
-  import componentsPagination from '@/views/components/pagination.vue'
-  import componentsLayout from '@/views/components/Layout.vue'
+  /**
+   * openType edit、add
+   * treeValue 树型选择值 - 携带；编辑时不生效
+   */
+  import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTree from '@/views/components/tree'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
-  import componentsBatch from '@/views/components/batch.vue'
+  import Addflow from './AddOrEditFlow.vue'
+  import apiFlow from '@/api/system/flowManagement'
+  import apiForm from '@/api/system/formManagement'
+  import JyTable from '@/views/components/JyTable.vue'
+  import { ElMessage } from 'element-plus'
+  import tableHeaderSealApply from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSealApply.json'
+  import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
+  // =========↓
+  const addFlowModalShow = ref(false)
+  const openType = ref(null)
+  const tree = ref(null)
+
+  const openAddFlow = () => {
+    addFlowModalShow.value = true
+    openType.value = 'add'
+  }
+  // =========↑
+
+  const table = ref(null)
+  const queryParams = ref({})
+  // 用印申请id
+  const sealApplyInitId = ref('')
 
   const state = reactive({
+    columnData: {},
+    batchColumnData: [],
+    MessageBox: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '删除'
+    },
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '删除'
+    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -97,25 +200,21 @@
 
       data: [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '表单名称/创建人'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
+          }
         },
         {
-          id: 'name',
+          id: 'status',
           label: '状态',
           type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -124,59 +223,84 @@
           options: [
             {
               value: '1',
-              label: '全部'
+              label: '启用'
+            },
+            {
+              value: '0',
+              label: '停用'
             }
           ]
         },
         {
-          id: 'picker',
+          id: 'updateTime',
           label: '更新时间',
           type: 'picker',
+          requestType: 'array',
+          startRequest: 'updateStartTime',
+          endRequest: 'updateEndTime',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+            },
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         },
         {
-          id: 'name',
-          label: '业务类型',
-          type: 'select',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
-        },
-        {
-          id: 'name',
+          id: 'fileTypeId',
           label: '文件类型',
           type: 'select',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            placeholder: '请选择',
+            filterable: true
+          },
+          optionValue: 'fileTypeId',
+          optionLabel: 'fileTypeName',
+          options: [],
+          requestObj: {
+            url: '/fileType/queryList',
+            method: 'POST'
+          }
+        },
+        {
+          id: 'sealUseTypeId',
+          label: '用印类型',
+          type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
             placeholder: '请选择'
           },
           options: [
             {
               value: '1',
-              label: '全部'
+              label: '物理用印'
+            },
+            {
+              value: '2',
+              label: '电子签章'
             }
           ]
         },
         {
-          id: 'name',
-          label: '用印类型',
+          id: 'relationForm',
+          label: '关联表单名称',
           type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -224,150 +348,18 @@
     },
 
     componentsTable: {
-      header: [
-        {
-          width: 50,
-          type: 'selection',
-          fixed: true
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          fixed: true
-        },
-        {
-          prop: '1',
-          label: '流程名称',
-          sortable: true,
-          'min-width': 150,
-          fixed: true
-        },
-        {
-          prop: '2',
-          label: '业务类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '文件类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '创建人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '更新时间',
-          sortable: true,
-          width: 180
-        },
-
-        {
-          prop: '8',
-          label: '操作',
-          width: 180,
-          fixed: 'right',
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '删除'
-            },
-            {
-              name: '启用'
-            },
-            {
-              name: '复制'
-            }
-          ]
-        }
-      ],
-      data: [
-        {
-          0: 1,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          0: 1,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          0: 1,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          0: 1,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          0: 1,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        },
-        {
-          0: 1,
-          1: '部门专用',
-          2: '用印申请',
-          3: '电子签章',
-          4: '文件类型',
-          5: '禁用',
-          6: '小红',
-          7: '2022/10/30  15:00:00'
-        }
-      ],
+      header: tableHeaderSealApply,
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '1') {
+          if (column.property === 'flowName') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -377,68 +369,64 @@
 
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
+        total: 0,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
       }
     },
 
     componentsTree: {
-      data: [
-        {
-          label: '用印申请',
-          children: [
-            {
-              label: '用印申请'
-            },
-            {
-              label: '转办申请'
-            },
-            {
-              label: '重置用印申请'
-            }
-          ]
-        },
-        {
-          label: '印章申请',
-          children: [
-            {
-              label: '刻章申请'
-            },
-            {
-              label: '停用申请'
-            },
-            {
-              label: '启用申请'
-            },
-            {
-              label: '销毁申请'
-            },
-            {
-              label: '变更申请'
-            },
-            {
-              label: '换章申请'
-            }
-          ]
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': true,
         'show-checkbox': false,
         'default-expand-all': true,
         'expand-on-click-node': false,
-        'check-strictly': true
-      }
+        'check-strictly': true,
+        'highlight-current': true,
+        'node-key': 'applyTypeId',
+        'current-node-key': '2'
+      },
+      defaultProps: {
+        label: 'applyTypeName',
+        children: 'children'
+      },
+      value: ''
     },
+
+    componentsBatch: {
+      selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
+      data: [
+        {
+          name: '批量删除'
+        },
+        {
+          name: '批量启用'
+        },
+        {
+          name: '批量停用'
+        }
+      ],
+      butDatas: [
+        {
+          name: '知道了',
+          type: '',
+          clickName: closeBatchTabel
+        }
+      ]
+    },
+
     componentsDocumentsDetails: {
       show: false,
       visible: [
@@ -457,23 +445,260 @@
       ]
     }
   })
+
   // 点击表格单元格
-  function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
-    if (column.property === '1') {
+  const cellClick = (row, column, cell, event) => {
+    if (column.property === 'flowName') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  // 点击关闭
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
+
+  const customClick = (row, column, cell, event) => {
+    console.log(cell)
+    state.sealIds = column.id
+    state.columnData = column
+    if (cell.name === '修改') {
+      state.title = '修改'
+      // showLibraryDialog.value = true
+    }
+    if (cell.name === '复制') {
+      state.title = '复制'
+      // showLibraryDialog.value = true
+    }
+    if (cell.name === '删除') {
+      state.MessageBox.header.data = '确认要删除流程吗？'
+      state.MessageBox.show = true
+      state.MessageBox.content.data = ''
+      state.MessageBox.type = '删除'
+    }
+    if (cell.name === 'status') {
+      state.MessageBox.header.data = '停用'
+      state.MessageBox.content.data = '请问确定停用该流程吗？'
+      state.MessageBox.show = true
+      state.MessageBox.type = '停用'
+    }
+    if (cell.name === 'status') {
+      state.MessageBox.header.data = '启用'
+      state.MessageBox.content.data = '请问确定启用该流程吗？'
+      state.MessageBox.show = true
+      state.MessageBox.type = '启用'
+    }
   }
+
+  // 关闭表单复制弹窗
+  function closeBatchTabel() {
+    state.showToastDialog.show = false
+  }
+
+  // 提交弹窗
+  const submitElMessageBox = type => {
+    if (type === '取消删除') {
+      state.MessageBox.show = false
+    }
+    if (type === '删除') {
+      console.log(state.columnData)
+      console.log(state.columnData)
+      if (state.columnData.flag === '1') {
+        state.MessageBox.header.data = '提示'
+        state.MessageBox.content.data = '请将流程停用后再进行删除'
+        state.MessageBox.show = true
+        state.MessageBox.type = '取消删除'
+        return
+      }
+      apiOpt(type, apiFlow.flowDelete(type, { ids: state.sealId }))
+    }
+    if (type === '停用') {
+      apiOpt(
+        type,
+        apiFlow.flowEnable(type, { processId: state.sealId, processStatus: 0 })
+      )
+    }
+    if (type === '启用') {
+      apiOpt(
+        type,
+        apiFlow.flowEnable(type, { processId: state.sealId, processStatus: 1 })
+      )
+    }
+  }
+
+  const apiOpt = (typeName, apiName) => {
+    apiName.then(res => {
+      if (res.code === 200) {
+        ElMessage.success(`${typeName}成功！`)
+      } else {
+        ElMessage.success(`${typeName}失败，请重试`)
+      }
+    })
+  }
+
+  // 批量删除
+  function batchOpt(item) {
+    state.batchColumnData = []
+    state.componentsBatch.selectionData.forEach(v => {
+      state.batchColumnData.push(v.flowName)
+    })
+    state.showToastDialog.header.data = item.name
+    state.showToastDialog.content.data = `已选中以下流程，请问确定要${item.name}吗？`
+    state.showToastDialog.show = true
+    state.showToastDialog.type = item.name
+    // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+    state.componentsBatch.butDatas = [
+      {
+        name: '确定',
+        type: 'primary',
+        clickName: sureBatchOpt
+      },
+      {
+        name: '取消',
+        type: '',
+        clickName: closeBatchTabel
+      }
+    ]
+  }
+
+  // 确定批量操作
+  const sureBatchOpt = () => {
+    const list = state.componentsBatch.selectionData
+    const idList = []
+    switch (state.showToastDialog.type) {
+      case '批量删除':
+        state.batchColumnData = []
+        list.forEach(v => {
+          if (v.flag === '1') {
+            state.batchColumnData.push(v.flowName)
+          }
+          idList.push(v.flowMessageId)
+        })
+        if (state.batchColumnData.length > 0) {
+          state.showToastDialog.header.data = state.showToastDialog.type
+          state.showToastDialog.content.data = `请将以下流程停用后再进行删除`
+          state.showToastDialog.show = false
+          setTimeout(() => {
+            state.showToastDialog.show = true
+          }, 300)
+          // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+          state.componentsBatch.butDatas = [
+            {
+              name: '知道了',
+              type: 'primary',
+              clickName: closeBatchTabel
+            }
+          ]
+        } else {
+          batchOptApi('批量删除', apiFlow.batchDelete(idList))
+        }
+        break
+      case '批量停用':
+        list.forEach(v => {
+          idList.push({ processId: v.flowMessageId })
+        })
+        batchOptApi('批量停用', apiFlow.batachDisable(idList))
+        break
+      case '批量启用':
+        list.forEach(v => {
+          idList.push({ processId: v.flowMessageId })
+        })
+        batchOptApi('批量启用', apiFlow.batachEnable(idList))
+        break
+    }
+  }
+
+  const batchOptApi = (type, apiName) => {
+    apiName.then(res => {
+      if (res.code === 200) {
+        ElMessage.success(`${type}成功！`)
+      } else {
+        ElMessage.error(`${type}失败，请重试！`)
+      }
+    })
+  }
+
+  // 点击关闭
+  const clickClose = () => {
+    console.log('--->', state.componentsDocumentsDetails.show)
+    // state.componentsDocumentsDetails.show = false
+  }
+
+  // 发送api请求 查询表单树解构
+  const listApplyTypeTreeApi = () => {
+    apiForm.listApplyTypeTree({}).then(result => {
+      const listApplyTypeTree = []
+      result.data.forEach(element => {
+        if (!element.applyTypePid) {
+          element.children = []
+          listApplyTypeTree.push(element)
+        } else {
+          // 获取用印申请id
+          if (element.applyTypeName === '用印申请') {
+            sealApplyInitId.value = element.applyTypeId
+          }
+          const index = listApplyTypeTree.findIndex(
+            i => i.applyTypeId === element.applyTypePid
+          )
+          if (index > -1) {
+            listApplyTypeTree[index].children.push(element)
+          }
+        }
+      })
+      state.componentsTree.data = listApplyTypeTree
+      state.componentsTree.value = listApplyTypeTree[0].children[0].applyTypeId
+      table.value.reloadData()
+    })
+  }
+
+  const currentChange = (e, node) => {
+    if (node.level === 1) {
+      // tree.value.setCurrentKey(e.applyTypeId === '5' ? '6' : '2')
+      return
+    }
+    queryParams.value.sealTypeIds = e.sealTypeId ? e.sealTypeId : null
+    table.value.reloadData()
+    state.componentsTree.value = e.applyTypeId
+
+    // 更新列表头 和 搜索条件
+    if (e.applyTypeId === sealApplyInitId.value) {
+      // 用印申请
+      table.value.setTableHeader(tableHeaderSealApply)
+      state.componentsTable.header = tableHeaderSealApply
+    } else {
+      // 非用印申请
+      table.value.setTableHeader(tableHeaderSeal)
+      state.componentsTable.header = tableHeaderSeal
+    }
+  }
+  const reloadData = () => {
+    table.value.reloadData()
+  }
+  onBeforeMount(() => {
+    // 发送api请求 查询表单树解构
+    listApplyTypeTreeApi()
+  })
 </script>
 
 <style lang="scss" scoped>
-  .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .flowManage-index {
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .title-more {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        .title-more-add {
+          // margin-right: 0.5rem;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .title-more-down {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
   }
 </style>

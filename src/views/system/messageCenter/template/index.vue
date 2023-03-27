@@ -47,6 +47,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @cellClick="cellClick"
           >
@@ -188,13 +189,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          fixed: true,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '模版名称',
           sortable: true,
@@ -252,7 +246,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -262,7 +255,6 @@
           7: '备注'
         },
         {
-          0: 2,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -272,7 +264,6 @@
           7: '备注'
         },
         {
-          0: 3,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -282,7 +273,6 @@
           7: '备注'
         },
         {
-          0: 4,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -292,7 +282,6 @@
           7: '备注'
         },
         {
-          0: 5,
           1: '模版名称',
           2: '关联事件',
           3: '事件类别',
@@ -306,13 +295,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -377,11 +366,11 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     console.log(row, column, cell, event)
-    if (column.property == '1') {
+    if (column.property === '1') {
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭
+  // 点击关闭
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }

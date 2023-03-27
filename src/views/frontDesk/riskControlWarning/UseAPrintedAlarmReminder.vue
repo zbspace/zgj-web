@@ -43,6 +43,8 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
+            isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -68,7 +70,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 动态表单 - 处理 -->
-    <KDialog
+    <JyDialog
       @update:show="fromState.show = $event"
       :show="fromState.show"
       :title="fromState.title"
@@ -87,18 +89,11 @@
         ref="vFormLibraryRef"
       >
       </v-form-render>
-    </KDialog>
+    </JyDialog>
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -109,7 +104,6 @@
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import WarningOperateJson from '@/views/addDynamicFormJson/WarningOperate.json'
-  import KDialog from '@/views/components/modules/kdialog.vue'
   const props = defineProps({
     // 处理类型
     type: {
@@ -288,15 +282,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '操作人',
           sortable: true,
@@ -422,13 +407,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property == '2') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -567,19 +552,19 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  //点击关闭详情
+  // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
 
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '处理') {
       fromState.show = true
     }
   }
 
-  //当选择项发生变化时会触发该事件
+  // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     //    console.log(selection);
     state.componentsBatch.selectionData = selection

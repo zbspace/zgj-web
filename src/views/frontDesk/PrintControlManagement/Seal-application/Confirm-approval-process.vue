@@ -37,7 +37,17 @@
                 <div>审批流程</div>
               </template>
               <template #content>
-                <div style="height: 100px"> </div>
+                <div style="height: 1000px">
+                  <VFlowDesign
+                    ref="refVFlowDesign"
+                    :defaultAttribute="{
+                      readable: true,
+                      mapable: false,
+                      scroll: false,
+                      top: '100'
+                    }"
+                  ></VFlowDesign>
+                </div>
               </template>
             </documentsDetailsPortion>
           </div>
@@ -51,6 +61,7 @@
                   <div
                     class="PrintingProcess-content-list"
                     v-for="(item, index) in state.cache.PrintingProcess.list"
+                    :key="index"
                   >
                     <div class="PrintingProcess-content-list-cont">
                       <div class="PrintingProcess-content-list-cont-title">
@@ -66,7 +77,8 @@
                       </div>
                       <div
                         class="PrintingProcess-content-list-cont-list"
-                        v-for="node in item.list"
+                        v-for="(node, num) in item.list"
+                        :key="num"
                       >
                         <div class="PrintingProcess-content-list-cont-list-name"
                           >{{ node.name }}
@@ -131,12 +143,10 @@
 <script setup>
   import {
     reactive,
-    defineProps,
-    defineEmits,
     onBeforeMount,
     onMounted,
-    inject,
-    ref
+    ref,
+    defineAsyncComponent
   } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
@@ -144,6 +154,14 @@
   import SealApplicationStep from '@/views/components/Seal-application/step.vue'
   import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
+  // 异步组件
+  const VFlowDesign = defineAsyncComponent({
+    loader: () => import('@/views/components/FlowDesign/index.vue')
+    // // 加载异步组件时使用的组件
+    // loadingComponent: LoadingComponent,
+    // // 加载失败时使用的组件
+    // errorComponent: ErrorComponent
+  })
   const props = defineProps({
     // 处理类型
     type: {
@@ -152,8 +170,8 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
+  const refVFlowDesign = ref(null)
   const state = reactive({
     cache: {
       flowList: [
@@ -238,17 +256,14 @@
   })
   const refFillFormInformation = ref(null)
 
-  //点击返回上一页
+  // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
-  //点击提交
+  // 点击提交
   function clickSubmit() {
-    commonFun.routerPage(router, {
-      // path: "/frontDesk/PrintControlManagement/Seal-application/accomplish"
-      name: 'Accomplish'
-    })
+    router.push({ name: 'Accomplish' })
   }
 
   onBeforeMount(() => {
@@ -311,15 +326,15 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              background-color: var(--color-fill--3);
-              color: var(--color-text-3);
-              border-radius: var(--border-radius-2);
+              background-color: var(--jy-color-fill--3);
+              color: var(--jy-color-text-3);
+              border-radius: var(--jy-border-radius-2);
               margin-right: 0.5rem;
             }
 
             .custom-buzhou-list-desc-text {
-              font-size: var(--font-size-title-1);
-              color: var(--color-text-3);
+              font-size: var(--jy-font-size-title-1);
+              color: var(--jy-color-text-3);
             }
           }
 
@@ -332,16 +347,16 @@
         }
 
         .indexActive {
-          background-color: var(--primary-6) !important;
-          color: var(--in-common-use-1) !important;
+          background-color: var(--jy-primary-6) !important;
+          color: var(--jy-in-common-use-1) !important;
         }
 
         .textActive {
-          color: var(--color-text-1) !important;
+          color: var(--jy-color-text-1) !important;
         }
 
         .font-color-45 {
-          color: var(--color-text-3) !important;
+          color: var(--jy-color-text-3) !important;
         }
       }
 
@@ -358,11 +373,11 @@
             align-items: center;
 
             .PrintingProcess-content-list-cont {
-              height: 15rem;
+              height: 17rem;
               align-self: flex-start;
-              width: 13rem;
-              border: 1px solid var(--color-border-1);
-              background-color: var(--color-fill--1);
+              width: 15rem;
+              border: 1px solid var(--jy-color-border-1);
+              background-color: var(--jy-color-fill--1);
               padding: 1rem;
               box-sizing: border-box;
 
@@ -371,7 +386,7 @@
                 justify-content: center;
                 height: 2rem;
                 align-items: center;
-                font-size: var(--font-size-title-1);
+                font-size: var(--jy-font-size-title-1);
 
                 .PrintingProcess-content-list-cont-title-img {
                   margin-right: 0.5rem;
@@ -408,8 +423,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border-top: 1px solid var(--color-border-2);
-      background-color: var(--in-common-use-1);
+      border-top: 1px solid var(--jy-color-border-2);
+      background-color: var(--jy-in-common-use-1);
       z-index: 999;
       .ap-fixed-save-icon {
         .iconpark-icon {

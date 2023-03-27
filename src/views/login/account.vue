@@ -1,3 +1,9 @@
+<!--
+* @Descripttion 登录页面
+* @FileName account.vue
+* @Author WalterXsk
+* @LastEditTime 2023-03-09 11:33:37
+!-->
 <template>
   <div class="container-login">
     <!-- header -->
@@ -24,22 +30,12 @@
             <div class="qrcode">
               <div class="ios box">
                 <div class="code"></div>
-                <div class="title">
-                  <img src="../../assets/images/login/ios_down.svg" />
-                  <div>{{ $t('t-zgj-DownloadApp.IOS') }}</div>
-                </div>
-              </div>
-
-              <div class="android box">
-                <div class="code"></div>
-                <div class="title">
-                  <img src="../../assets/images/login/android_down.svg" />
-                  <div>{{ $t('t-zgj-DownloadApp.Android') }}</div>
-                </div>
               </div>
             </div>
-            <div class="tip">{{ $t('t-zgj-tips.downAppTips1') }}</div>
-            <div class="tip">{{ $t('t-zgj-tips.downAppTips2') }}</div>
+            <div class="tip">
+              {{ $t('t-zgj-tips.downAppTips1')
+              }}{{ $t('t-zgj-tips.downAppTips2') }}
+            </div>
           </div>
         </div>
 
@@ -58,19 +54,19 @@
             class="tooltip-lan"
             :style="{ display: showChangeLanPop ? 'block' : 'none' }"
           >
-            <div class="item user-select" @click="changeLanguage('ch')"
-              >简体中文</div
-            >
-            <div class="item user-select" @click="changeLanguage('en')"
-              >English</div
-            >
+            <div class="item user-select" @click="changeLanguage('ch')">
+              简体中文
+            </div>
+            <div class="item user-select" @click="changeLanguage('en')">
+              English
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- content -->
-    <div class="content-login">
+    <div class="content-login" v-show="!state.chooseDepartBox">
       <div
         class="login-type"
         @click="changeLogin"
@@ -87,7 +83,12 @@
 
       <!-- 登录-账号密码 -->
       <div v-show="state.showAccountLogin">
-        <VAccountLogin></VAccountLogin>
+        <VAccountLogin
+          v-model="state.chooseDepartBox"
+          :departLists="departLists"
+          @update:departLists="departLists = $event"
+          @getWater="getWater"
+        ></VAccountLogin>
       </div>
 
       <!-- 登录-扫码 -->
@@ -117,20 +118,82 @@
         </div>
       </div>
     </div>
+    <!-- 企业选择 -->
+    <div v-show="state.chooseDepartBox" class="depart-content">
+      <div class="depart-title">
+        您的账号已经加入<span>&nbsp;{{ departLists.length }}&nbsp; </span>
+        家企业，请选择
+      </div>
+
+      <div class="depart-cont">
+        <div v-for="(item, i) in departLists" :key="i">
+          <div class="column" @click="goHome(item.tenantId)">
+            <svg
+              width="16"
+              height="14"
+              viewBox="0 0 16 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.99984 12.6667H9.33317V4L13.5958 5.82667C13.7158 5.87811 13.8181 5.96365 13.8899 6.07269C13.9617 6.18172 14 6.30944 13.9998 6.44V12.6667H15.3332V14H0.666504V12.6667H1.99984V3.76667C1.99982 3.63768 2.03722 3.51145 2.10751 3.4033C2.1778 3.29514 2.27796 3.2097 2.39584 3.15733L7.53117 0.874667C7.58198 0.852096 7.63762 0.842591 7.69303 0.847015C7.74845 0.85144 7.80188 0.869654 7.84846 0.900001C7.89504 0.930347 7.93329 0.971861 7.95973 1.02076C7.98617 1.06967 7.99996 1.12441 7.99984 1.18V12.6667Z"
+                fill="black"
+                fill-opacity="0.65"
+              />
+            </svg>
+            {{ item.tenantName }}
+          </div>
+        </div>
+      </div>
+      <div class="depart-back">
+        <svg
+          width="12"
+          height="10"
+          viewBox="0 0 12 10"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M12 8.88906L7.92697 5L12 1.11094L10.8365 -5.08576e-08L5.6 5L10.8365 10L12 8.88906ZM6.4 8.88907L2.32698 5L6.4 1.11094L5.23652 4.09996e-06L4.54981e-06 5L5.23652 10L6.4 8.88907Z"
+            fill="#3E78D0"
+          />
+        </svg>
+        <span class="go-back" @click="state.chooseDepartBox = false">
+          返回登录页
+        </span>
+      </div>
+    </div>
 
     <!-- footer -->
-    <div class="footer-login"
-      >Copyright@2012-2022 章管家 沪ICP备13006057号-6
-      上海建业信息科技股份有限公司</div
-    >
+    <div class="footer-login">
+      Copyright@2012-2023 章管家
+      <a
+        style="font-size: 12px"
+        href="https://beian.miit.gov.cn"
+        target="_blank"
+        >沪ICP备13006057号-6</a
+      >
+      上海建业信息科技股份有限公司
+    </div>
   </div>
 </template>
 
 <script setup>
-  import I18n from '../../i18n'
-  import { reactive, onMounted, ref, watch } from 'vue'
+  import I18n from '@/utils/i18n'
+  import { reactive, onMounted, ref, watch, onBeforeUnmount } from 'vue'
   import VAccountLogin from './modules/AccountLogin.vue'
-  import useClickQutside from '@/hooks/useClickQutside.js'
+  import useClickQutside from '@/utils/useClickQutside.js'
+  import { useRouter, useRoute } from 'vue-router'
+  import loginApi from '@/api/login'
+  import companyApi from '@/api/system/companyManagement/companyInfo'
+  import { setWaterMark, removeWatermark } from '@/utils/water'
+  import dayjs from 'dayjs'
+  import { useAccountInfoStore } from '@/store/accountInfo'
+  const accountInfo = useAccountInfoStore()
+  const router = useRouter()
+  const route = useRoute()
 
   // 切换语言弹窗
   const dropdownChangeLanRef = ref(null)
@@ -155,8 +218,10 @@
   const state = reactive({
     showAccountLogin: true, // 账号密码登录页
     languageCh: true, // 中文
-    scanCodeError: true // 二维码失效
+    scanCodeError: true, // 二维码失效
+    chooseDepartBox: false
   })
+  const departLists = ref([])
   // 切换语言
   const changeLanguage = locale => {
     I18n.global.locale = locale
@@ -183,15 +248,58 @@
     state.scanCodeError = false
   }
 
-  onMounted(() => {})
-</script>
+  const goHome = tenantId => {
+    loginApi.chooseOrgan(tenantId).then(res => {
+      localStorage.setItem('tenantId', Number(tenantId))
+      let redirect = route.query.redirect
+        ? decodeURIComponent(route.query.redirect)
+        : '/frontDesk/home'
+      if (typeof redirect !== 'string') {
+        redirect = '/frontDesk/home'
+      }
+      router.replace(redirect)
+    })
+  }
 
+  function getWater(isOneDepart) {
+    companyApi.getTenantInfo().then(res => {
+      if (res.data.tenantShowInfo) {
+        localStorage.setItem('watermark', res.data.tenantShowInfo.pageWatermark)
+      } else {
+        localStorage.setItem('watermark', '1')
+      }
+      if (localStorage.getItem('watermark') === '1') {
+        const text =
+          JSON.parse(localStorage.getItem('accountInfo')).userInfo.userName +
+          ' ' +
+          dayjs().format('YYYY-MM-DD HH:mm')
+        setWaterMark(text)
+      } else {
+        removeWatermark()
+      }
+      if (isOneDepart) {
+        accountInfo.setOneDeaprtTitle(res.data && res.data.tenant.tenantTitle)
+      }
+    })
+  }
+
+  onMounted(() => {})
+
+  onBeforeUnmount(() => {
+    state.chooseDepartBox = false
+  })
+</script>
+<script>
+  export default {
+    name: 'LoginAccount'
+  }
+</script>
 <style lang="scss" scoped>
   .container-login {
     height: 100vh;
     width: 100vw;
-    min-width: 1000px;
-    min-height: 800px;
+    // min-width: 1000px;
+    // min-height: 800px;
     padding: 30px 40px 20px 60px;
     background: #f5f6f7;
 
@@ -248,8 +356,8 @@
           .tooltip-down {
             position: absolute;
             top: 52px;
-            left: -280px;
-            width: 420px;
+            left: -220px;
+            width: 340px;
             background: #ffffff;
             border-radius: 4px;
             border: 1px solid #f0f0f0;
@@ -272,9 +380,9 @@
             }
 
             .qrcode {
-              display: flex;
-              justify-content: space-between;
-              padding: 20px 46px;
+              // display: flex;
+              // justify-content: space-between;
+              padding: 12px 26px;
 
               .box {
                 display: flex;
@@ -310,6 +418,7 @@
               letter-spacing: 0;
               text-align: center;
               line-height: 18px;
+              padding: 0px 8px 8px 8px;
             }
           }
         }
@@ -409,7 +518,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 530px;
+      // height: 530px;
+      height: 450px;
       width: 504px;
       background: #ffffff;
       border: 1px solid #f0f0f0;
@@ -567,6 +677,74 @@
               center center;
             background-size: 100%;
           }
+        }
+      }
+    }
+
+    .depart-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      width: 503px;
+      height: 530px;
+      background: #ffffff;
+      border: 1px solid #f0f0f0;
+      box-shadow: 0px 8px 100px rgba(19, 59, 99, 0.0711593);
+      border-radius: 4px;
+      padding: 44px 40px 22px;
+
+      .depart-title {
+        font-size: 22px;
+        line-height: 30px;
+        text-align: center;
+        color: var(--jy-primary-6);
+        padding-bottom: 16px;
+      }
+
+      .depart-cont {
+        flex: 1;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+          width: 0 !important;
+        }
+
+        & {
+          -ms-overflow-style: none;
+          overflow: -moz-scrollbars-none;
+        }
+        .column {
+          cursor: pointer;
+          margin-top: 24px;
+          color: rgba(0, 0, 0, 0.85);
+          font-size: 16px;
+          &:hover {
+            color: var(--jy-primary-6);
+            svg {
+              position: relative;
+              left: -80px;
+              filter: drop-shadow(#d0963e 80px 0);
+            }
+          }
+        }
+      }
+
+      .depart-back {
+        text-align: center;
+
+        .go-back {
+          color: #3e78d0;
+          text-align: center;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 22px;
+          margin-left: 4px;
+          cursor: pointer;
         }
       }
     }

@@ -495,8 +495,9 @@
                     >
                       <div
                         class="sealDetails-basic-information-list"
-                        v-for="item in state.cache.DetailsOfDocument
+                        v-for="(item, num) in state.cache.DetailsOfDocument
                           .basicInformation.data"
+                        :key="num"
                       >
                         <div class="sealDetails-basic-information-list-label"
                           >{{ item.label }}：
@@ -940,14 +941,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    watch
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, watch } from 'vue'
   import componentsTabs from './tabs.vue'
   import componentsTable from './table'
   import componentsApprovalSteps from './approvalSteps'
@@ -989,10 +983,17 @@
       type: String,
       default: '0'
     },
+    // v-model
+    modelValue: {
+      type: Boolean,
+      default: false
+    },
     // 展示权限
     visible: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 默认显示
     activeName: {
@@ -1006,10 +1007,13 @@
     // 数据
     data: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     }
   })
-  const emit = defineEmits(['clickClose'])
+  // console.log('--->', props)
+  const emit = defineEmits(['clickClose', 'update:modelValue'])
   const state = reactive({
     cache: {
       // 用印详情
@@ -1072,7 +1076,7 @@
               iconPath: yuanLvSvg,
               iconStyle: {},
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             }
           ]
@@ -1314,7 +1318,6 @@
             ],
             data: [
               {
-                0: 1,
                 1: '个人',
                 2: '吴彦琛',
                 3: '137 8651 5262',
@@ -1323,7 +1326,6 @@
                 6: '待签署'
               },
               {
-                0: 2,
                 1: '企业',
                 2: '冯启彬',
                 3: '132 9399 2217',
@@ -1332,7 +1334,6 @@
                 6: '待签署'
               },
               {
-                0: 3,
                 1: '个人',
                 2: '钱若霖',
                 3: '189 2860 9388',
@@ -1341,7 +1342,6 @@
                 6: '待签署'
               },
               {
-                0: 4,
                 1: '个人',
                 2: '郑盈盈',
                 3: '155 5866 1691',
@@ -1350,7 +1350,6 @@
                 6: '待签署'
               },
               {
-                0: 5,
                 1: '企业',
                 2: '李琳颖',
                 3: '158 5666 9874',
@@ -1365,7 +1364,7 @@
               'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
                 // console.log({ row, column, rowIndex, columnIndex });
                 return {
-                  background: 'var(--color-fill--1)'
+                  background: 'var(--jy-color-fill--1)'
                 }
               }
             }
@@ -1463,10 +1462,6 @@
       operatingRecord: {
         header: [
           {
-            prop: '0',
-            label: '序号'
-          },
-          {
             prop: '1',
             label: '操作人',
             sortable: true,
@@ -1493,35 +1488,30 @@
         ],
         data: [
           {
-            0: 1,
             1: '周俊毅',
             2: '2022-11-12 19:00:12',
             3: '新增用印申请',
             4: '新增用印申请：用印申请-客户问题验证'
           },
           {
-            0: 2,
             1: '王凡玄',
             2: '2022-11-12 19:00:12',
             3: '用印申请',
             4: '发起申请'
           },
           {
-            0: 3,
             1: '李豫卓',
             2: '2022-11-12 19:00:12',
             3: '审批',
             4: '授权码自动失效，相关印章：[智]Kevin_预发测试2【简称_9290_2.3.1】'
           },
           {
-            0: 4,
             1: '孙思达',
             2: '2022-11-12 19:00:12',
             3: '文件归档',
             4: '同意'
           },
           {
-            0: 5,
             1: '李梓发',
             2: '2022-11-12 19:00:12',
             3: '文件归档',
@@ -1534,7 +1524,7 @@
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--color-fill--1)'
+              background: 'var(--jy-color-fill--1)'
             }
           }
         }
@@ -1548,7 +1538,7 @@
               label: '印章名称',
               value: 'Kevin_预发_57420F【简称_9290_2.3.1】',
               subStyle: {
-                color: 'var(--Info-6)'
+                color: 'var(--jy-info-6)'
               },
               subText: '查看在柜状态'
             },
@@ -1568,7 +1558,7 @@
               value: '已失效',
               iconPathValue: yuanHuiSvg,
               style: {
-                color: 'var(--color-text-3)'
+                color: 'var(--jy-color-text-3)'
               }
             }
           ],
@@ -1694,10 +1684,6 @@
       RecordOfCustody: {
         header: [
           {
-            prop: '0',
-            label: '序号'
-          },
-          {
             prop: '1',
             label: '保管人',
             sortable: true,
@@ -1718,31 +1704,26 @@
         ],
         data: [
           {
-            0: 1,
             1: '周俊毅',
             2: '2022-12-04 11:55:12 - 2022-12-04 11:55:12',
             3: '研发部'
           },
           {
-            0: 2,
             1: '王凡玄',
             2: '2022-12-04 11:55:12 - 2022-12-04 11:55:12',
             3: '开发部'
           },
           {
-            0: 3,
             1: '李豫卓',
             2: '2022-12-04 11:55:12 - 2022-12-04 11:55:12',
             3: '销售部'
           },
           {
-            0: 4,
             1: '孙思达',
             2: '2022-12-04 11:55:12 - 2022-12-04 11:55:12',
             3: '财务部'
           },
           {
-            0: 5,
             1: '李梓发',
             2: '2022-12-04 11:55:12 - 2022-12-04 11:55:12',
             3: '财务部'
@@ -1754,7 +1735,7 @@
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--color-fill--1)'
+              background: 'var(--jy-color-fill--1)'
             }
           }
         }
@@ -1787,14 +1768,14 @@
               iconPath: yuanLvSvg,
               iconStyle: {},
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
               label: '印模',
               value: '查看',
               valStyle: {
-                color: 'var(--Info-7)'
+                color: 'var(--jy-info-7)'
               }
             },
             {
@@ -1973,7 +1954,7 @@
               value: '状态',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2030,7 +2011,7 @@
               value: '启用',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2133,7 +2114,7 @@
               value: '启用',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2205,8 +2186,8 @@
               value: '开',
               subValue: '静默3分钟后休眠',
               subValueStyle: {
-                color: 'var(--color-text-3)',
-                fontSize: 'var(--font-size-caption)'
+                color: 'var(--jy-color-text-3)',
+                fontSize: 'var(--jy-font-size-caption)'
               }
             }
           ]
@@ -2238,7 +2219,7 @@
               value: '启用',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2344,7 +2325,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2414,7 +2395,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2460,10 +2441,6 @@
       ProcessVersion: {
         header: [
           {
-            prop: '0',
-            label: '序号'
-          },
-          {
             prop: '1',
             label: '版本号',
             sortable: true,
@@ -2478,27 +2455,22 @@
         ],
         data: [
           {
-            0: 1,
             1: 'V20221110-01',
             2: '2022-12-04 11:55:12'
           },
           {
-            0: 2,
             1: 'V20221110-01',
             2: '2022-11-11 05:09:12'
           },
           {
-            0: 3,
             1: 'V20221110-01',
             2: '2022-11-17 22:29:12'
           },
           {
-            0: 4,
             1: 'V20221110-01',
             2: '2022-11-27 12:33:12'
           },
           {
-            0: 5,
             1: 'V20221110-01',
             2: '2022-12-04 06:47:12'
           }
@@ -2509,7 +2481,7 @@
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--color-fill--1)'
+              background: 'var(--jy-color-fill--1)'
             }
           }
         }
@@ -2544,7 +2516,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2606,7 +2578,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2661,7 +2633,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2715,7 +2687,7 @@
               value: '状态字段',
               iconPath: yuanLvSvg,
               valStyle: {
-                color: 'var(--success-6)'
+                color: 'var(--jy-success-6)'
               }
             },
             {
@@ -2796,48 +2768,9 @@
           title: '基本信息',
           show: true,
           labelStyle: {
-            width: '4.5rem'
+            width: '80px'
           },
-          data: [
-            {
-              label: '组织名称',
-              value: '名称'
-            },
-            {
-              label: '组织编码',
-              value: '字段名称'
-            },
-            {
-              label: '组织类型',
-              value: '字段名称'
-            },
-            {
-              label: '组织人数',
-              value: '字段名称'
-            },
-            {
-              label: '组织主管',
-              value: '字段名称'
-            },
-            {
-              label: '上级组织',
-              value: '字段名称'
-            },
-            {
-              label: '更新时间',
-              value: '字段名称',
-              lineStyle: {
-                width: '100%'
-              }
-            },
-            {
-              label: '备注',
-              value: '字段名称',
-              lineStyle: {
-                width: '100%'
-              }
-            }
-          ]
+          data: []
         }
       },
       // 组织人员
@@ -2852,40 +2785,14 @@
             label: '账号'
           }
         ],
-        data: [
-          {
-            0: 1,
-            1: '周俊毅',
-            2: '181 0834 1643'
-          },
-          {
-            0: 2,
-            1: '王凡玄',
-            2: '184 5857 8572'
-          },
-          {
-            0: 3,
-            1: '李豫卓',
-            2: '158 5666 9874'
-          },
-          {
-            0: 4,
-            1: '孙思达',
-            2: '137 8216 9138'
-          },
-          {
-            0: 5,
-            1: '李梓发',
-            2: '136 3348 4128'
-          }
-        ],
+        data: [],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
           border: true,
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--color-fill--1)'
+              background: 'var(--jy-color-fill--3)'
             }
           }
         }
@@ -2925,7 +2832,7 @@
       }
     },
     drawer: {
-      show: true,
+      show: false,
       size: '50%',
       FullScreenStatus: 0
     },
@@ -3112,8 +3019,15 @@
     }
   })
   // 初始化数据
-  function initData() {
-    state.drawer.show = props.show
+  const initData = () => {
+    state.drawer.show = false
+    if (props.show) {
+      state.drawer.show = props.show
+    }
+    if (props.modelValue) {
+      state.drawer.show = props.modelValue
+    }
+    // state.drawer.show = true
     state.componentsTabs.data = props.visible
     if (props.activeName) {
       state.componentsTabs.activeName = props.activeName
@@ -3122,7 +3036,7 @@
     } else {
       state.componentsTabs.activeName = ''
     }
-    console.log(state.componentsTabs.activeName)
+    // console.log(props.show, props.modelValue, state.drawer.show)
     // visible: [
     //         {
     //             label: '用印详情',
@@ -3131,26 +3045,368 @@
     //             layout: [],
     //         },
     //     ]
+
+    props.visible.forEach(element => {
+      if (element.name === 'Details-of-Printing') {
+        // 处理 用印详情 Details-of-Printing
+        disDetailsaOfPrinting(element)
+      } else if (element.name === 'approval-process') {
+        // 处理 审批流程 approval-process
+        disApprovalProcess(element)
+      } else if (element.name === 'operating-record') {
+        // 处理 操作记录 operating-record
+        disOperatingRecord(element)
+      } else if (element.name === 'Record-of-requisition') {
+        // 处理 领用记录 Record-of-requisition
+        disRecordOfRequisition(element)
+      } else if (element.name === 'Record-of-custody') {
+        // 处理 保管记录 Record-of-custody
+        disRecordOfCustody(element)
+      } else if (element.name === 'Particulars-of-Seal') {
+        // 处理 印章详情 Particulars-of-Seal
+        disParticularsOfSeal(element)
+      } else if (element.name === 'Details-of-Document') {
+        // 处理 文件详情 Details-of-Document
+        disDetailsOfDocument(element)
+      } else if (element.name === 'Seal-Application-Details') {
+        // 处理 印章申请详情 Seal-Application-Details
+        disSealApplicationDetails(element)
+      } else if (element.name === 'Workbench-Details') {
+        // 处理 工作台详情 Workbench-Details
+        disWorkbenchDetails(element)
+      } else if (element.name === 'SmartSeal-Box-Detail') {
+        // 处理 智能印章盒详情 SmartSeal-Box-Detail
+        disSmartSealBoxDetails(element)
+      } else if (element.name === 'SmartSeal-Cabinet-Details') {
+        // 处理 智能印章柜详情 SmartSeal-Cabinet-Details
+        disSmartSealCabinetDetails(element)
+      } else if (element.name === 'transfer-Application-Details') {
+        // 处理 转办申请详情 transfer-Application-Details
+        disTransferApplicationDetails(element)
+      } else if (element.name === 'Reset-Application-Details') {
+        // 处理 重置申请详情 Reset-Application-Details
+        disResetApplicationDetails(element)
+      } else if (element.name === 'Process-Details') {
+        // 处理 流程详情 Process-Details
+        disProcessDetails(element)
+      } else if (element.name === 'Process-Version') {
+        // 处理 流程版本 Process-Version
+        disProcessVersion(element)
+      } else if (element.name === 'Form-Details') {
+        // 处理 表单详情 Form-Details
+        disFormDetails(element)
+      } else if (element.name === 'Business-Rule-Details') {
+        // 处理 业务规则详情 Business-Rule-Details
+        disBusinessRuleDetails(element)
+      } else if (element.name === 'Notification-Event-Details') {
+        // 处理 通知事件详情 Notification-Event-Details
+        disNotificationEventDetails(element)
+      } else if (element.name === 'Template-Details') {
+        // 处理 模板详情 Template-Details
+        disTemplateDetails(element)
+      } else if (element.name === 'Current-Business-Details') {
+        // 处理 往来企业详情 Current-Business-Details
+        disCurrentBusinessDetails(element)
+      } else if (element.name === 'Unit-Department-Details') {
+        // 处理 单位与部门详情 Unit-Department-Details
+        disUnitDepartmentDetails(element)
+      } else if (element.name === 'organization-Person') {
+        // 处理 组织人员 organization-Person
+        disOrganizationPerson(element)
+      } else if (element.name === 'Staff-Details') {
+        // 处理 员工详情 Staff-Details
+        disStaffDetails(element)
+      }
+    })
   }
   // 点击全屏
-  function ClickOnFullScreen() {
+  const ClickOnFullScreen = () => {
     state.drawer.size = '100%'
     state.drawer.FullScreenStatus = 1
   }
   // 点击关闭全屏
-  function ClickCloseFullScreen() {
+  const ClickCloseFullScreen = () => {
     state.drawer.size = '50%'
     state.drawer.FullScreenStatus = 0
   }
   // 点击关闭
-  function clickClose() {
+  const clickClose = () => {
     state.drawer.show = false
+    emit('update:modelValue', state.drawer.show)
     emit('clickClose', state.drawer.show)
   }
   // 切换选项
-  function tabChange(activeName) {
+  const tabChange = activeName => {
     state.componentsTabs.activeName = activeName
   }
+  // 处理 用印详情 Details-of-Printing
+  const disDetailsaOfPrinting = element => {
+    const DetailsaOfPrinting = state.cache.DetailsaOfPrinting
+    // console.log('--->', DetailsaOfPrinting)
+
+    // 基本信息
+    if (element.basicInformation && element.basicInformation.show === true) {
+      DetailsaOfPrinting.basicInformation.show = true
+    } else {
+      DetailsaOfPrinting.basicInformation.show = false
+    }
+    if (element.basicInformation && element.basicInformation.data) {
+      DetailsaOfPrinting.basicInformation.data = element.basicInformation.data
+    }
+
+    // 附件 用印文件
+    if (element.accessory && element.accessory.show === true) {
+      DetailsaOfPrinting.accessory.show = true
+    } else {
+      DetailsaOfPrinting.accessory.show = false
+    }
+    if (element.accessory && element.accessory.printedData) {
+      DetailsaOfPrinting.accessory.printedData = element.accessory.printedData
+    }
+
+    // 附件 补充文件
+    if (element.accessory && element.accessory.additionalData) {
+      DetailsaOfPrinting.accessory.additionalData =
+        element.accessory.additionalData
+    }
+
+    // 智能用印
+    if (
+      element.IntelligentPrinting &&
+      element.IntelligentPrinting.show === true
+    ) {
+      DetailsaOfPrinting.IntelligentPrinting.show = true
+    } else {
+      DetailsaOfPrinting.IntelligentPrinting.show = false
+    }
+    if (element.IntelligentPrinting && element.IntelligentPrinting.data) {
+      DetailsaOfPrinting.IntelligentPrinting.data =
+        element.IntelligentPrinting.data
+    }
+
+    // 文件归档
+    if (
+      element.archiveInformation &&
+      element.archiveInformation.show === true
+    ) {
+      DetailsaOfPrinting.archiveInformation.show = true
+    } else {
+      DetailsaOfPrinting.archiveInformation.show = false
+    }
+    if (element.archiveInformation && element.archiveInformation.data) {
+      DetailsaOfPrinting.archiveInformation.data =
+        element.archiveInformation.data
+    }
+
+    // 文件核验
+    if (
+      element.fileocrInformation &&
+      element.fileocrInformation.show === true
+    ) {
+      DetailsaOfPrinting.fileocrInformation.show = true
+    } else {
+      DetailsaOfPrinting.fileocrInformation.show = false
+    }
+    if (element.fileocrInformation && element.fileocrInformation.data) {
+      DetailsaOfPrinting.fileocrInformation.data =
+        element.fileocrInformation.data
+    }
+
+    // 电子签章
+    if (element.sdigitalSeal && element.sdigitalSeal.show === true) {
+      DetailsaOfPrinting.sdigitalSeal.show = true
+    } else {
+      DetailsaOfPrinting.sdigitalSeal.show = false
+    }
+    if (element.sdigitalSeal && element.sdigitalSeal.signatoryData) {
+      DetailsaOfPrinting.sdigitalSeal.signatoryData =
+        element.sdigitalSeal.signatoryData
+    }
+    if (element.sdigitalSeal && element.sdigitalSeal.signatoryFileData) {
+      DetailsaOfPrinting.sdigitalSeal.signatoryFileData =
+        element.sdigitalSeal.signatoryFileData
+    }
+    if (element.sdigitalSeal && element.sdigitalSeal.alreadySignatoryFileData) {
+      DetailsaOfPrinting.sdigitalSeal.alreadySignatoryFileData =
+        element.sdigitalSeal.alreadySignatoryFileData
+    }
+  }
+  // 处理 审批流程 approval-process
+  const disApprovalProcess = element => {
+    if (element.data) {
+      state.cache.approvalProcess.data = element.data
+    }
+  }
+  // 处理 操作记录 operating-record
+  const disOperatingRecord = element => {
+    if (element.data) {
+      state.cache.operatingRecord.header = element.header
+      state.cache.operatingRecord.data = element.data
+    }
+  }
+  // 处理 领用记录 Record-of-requisition
+  const disRecordOfRequisition = element => {
+    if (element['SealInformation-data']) {
+      state.cache.RecordOfRequisition.SealInformation.data =
+        element['SealInformation-data']
+    }
+    if (element['SealInformation-imageData']) {
+      state.cache.RecordOfRequisition.SealInformation.imageData =
+        element['SealInformation-imageData']
+    }
+  }
+  // 处理 保管记录 Record-of-custody
+  const disRecordOfCustody = element => {
+    if (element.data) {
+      state.cache.RecordOfCustody.header = element.header
+      state.cache.RecordOfCustody.data = element.data
+    }
+  }
+  // 处理 印章详情 Particulars-of-Seal
+  const disParticularsOfSeal = element => {
+    if (element.data) {
+      state.cache.basicInformation.data = element.data
+    }
+  }
+  // 处理 文件详情 Details-of-Document
+  const disDetailsOfDocument = element => {
+    if (element['basicInformation-data']) {
+      state.cache.DetailsOfDocument.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 印章申请详情 Seal-Application-Details
+  const disSealApplicationDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.SealApplicationDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+    if (element['SealInformation-data']) {
+      state.cache.SealApplicationDetails.SealInformation.data =
+        element['SealInformation-data']
+    }
+    if (element['ManagementInformation-data']) {
+      state.cache.SealApplicationDetails.ManagementInformation.data =
+        element['ManagementInformation-data']
+    }
+  }
+  // 处理 工作台详情 Workbench-Details
+  const disWorkbenchDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.WorkbenchDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+    if (element['configuration-data']) {
+      state.cache.WorkbenchDetails.configuration.data =
+        element['configuration-data']
+    }
+  }
+
+  // 处理 智能印章盒详情 SmartSeal-Box-Detail
+  const disSmartSealBoxDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.SmartSealBoxDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+    if (element['configuration-data']) {
+      state.cache.SmartSealBoxDetails.configuration.data =
+        element['configuration-data']
+    }
+  }
+  // 处理 智能印章柜详情 SmartSeal-Cabinet-Details
+  const disSmartSealCabinetDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.SmartSealCabinetDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 转办申请详情 transfer-Application-Details
+  const disTransferApplicationDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.transferApplicationDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 重置申请详情 Reset-Application-Details
+  const disResetApplicationDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.ResetApplicationDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 流程详情 Process-Details
+  const disProcessDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.ProcessDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 流程版本 Process-Version
+  const disProcessVersion = element => {
+    if (element.data) {
+      state.cache.ProcessVersion.header = element.header
+      state.cache.ProcessVersion.data = element.data
+    }
+  }
+  // 处理 表单详情 Form-Details
+  const disFormDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.FormDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 业务规则详情 Business-Rule-Details
+  const disBusinessRuleDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.BusinessRuleDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 通知事件详情 Notification-Event-Details
+  const disNotificationEventDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.NotificationEventDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 模板详情 Template-Details
+  const disTemplateDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.TemplateDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 往来企业详情 Current-Business-Details
+  const disCurrentBusinessDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.CurrentBusinessDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 单位与部门详情 Unit-Department-Details
+  const disUnitDepartmentDetails = element => {
+    if (element['basicInformation-data']) {
+      console.log(element['basicInformation-data'])
+      state.cache.UnitDepartmentDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  // 处理 组织人员 organization-Person
+  const disOrganizationPerson = element => {
+    if (element.data) {
+      state.cache.organizationPerson.header = element.header
+      state.cache.organizationPerson.data = element.data
+    }
+  }
+  // 处理 员工详情 Staff-Details
+  const disStaffDetails = element => {
+    if (element['basicInformation-data']) {
+      state.cache.StaffDetails.basicInformation.data =
+        element['basicInformation-data']
+    }
+  }
+  //
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化数据
@@ -3159,14 +3415,10 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
-  watch(
-    () => [props.show],
-    (newValue, oldValue) => {
-      // console.log(newValue, oldValue);
-      // 初始化数据
-      initData()
-    }
-  )
+  watch(props, (newValue, oldValue) => {
+    // console.log(newValue, oldValue);
+    initData()
+  })
 </script>
 <style lang="scss" scoped>
   .components-documentsDetails {
@@ -3183,7 +3435,7 @@
       justify-content: space-between;
 
       .title-name-span {
-        font-size: var(--font-size-title-2);
+        font-size: var(--jy-font-size-title-2);
       }
 
       .title-cion-img {
@@ -3211,7 +3463,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        border-bottom: 1px solid var(--color-border-2);
+        border-bottom: 1px solid var(--jy-color-border-2);
 
         .ap-Tabs-sub-icon {
           margin-right: 0.5rem;
@@ -3238,7 +3490,7 @@
       }
 
       .ap-cont-box-title {
-        border-bottom: 1px solid var(--color-border-2);
+        border-bottom: 1px solid var(--jy-color-border-2);
         padding: 0rem 0 0rem 0.8rem;
         box-sizing: border-box;
         background: url(../../assets/svg/shuxian-after.svg) no-repeat left
@@ -3249,8 +3501,8 @@
         height: 2.3rem;
 
         .ap-cont-box-title-label {
-          font-size: var(--font-size-title-1);
-          font-weight: var(--font-weight-400);
+          font-size: var(--jy-font-size-title-1);
+          font-weight: var(--jy-font-weight-400);
         }
 
         .ap-cont-box-title-xiazai {
@@ -3262,7 +3514,7 @@
           }
 
           .ap-cont-box-title-xiazai-text {
-            color: var(--color-text-2);
+            color: var(--jy-color-text-2);
           }
         }
 
@@ -3303,7 +3555,7 @@
                 width: 4.5rem;
                 display: flex;
                 justify-content: flex-end;
-                color: var(--color-text-3);
+                color: var(--jy-color-text-3);
               }
 
               .sealDetails-basic-information-list-value {
@@ -3334,7 +3586,7 @@
                 width: 7rem;
                 display: flex;
                 justify-content: flex-end;
-                color: var(--color-text-3);
+                color: var(--jy-color-text-3);
               }
 
               .sealDetails-basic-information-list-value {
@@ -3365,7 +3617,7 @@
                 width: 7rem;
                 display: flex;
                 justify-content: flex-end;
-                color: var(--color-text-3);
+                color: var(--jy-color-text-3);
               }
 
               .sealDetails-basic-information-list-value {
@@ -3384,12 +3636,12 @@
           align-items: center;
 
           .ap-cont-ma-text {
-            color: var(--color-text-3);
+            color: var(--jy-color-text-3);
           }
 
           .ap-cont-ma-value {
-            color: var(--primary-6);
-            font-size: var(--font-size-title-2);
+            color: var(--jy-primary-6);
+            font-size: var(--jy-font-size-title-2);
           }
         }
 
@@ -3461,8 +3713,8 @@
                     bottom: 0%;
                     text-align: center;
                     width: 100%;
-                    background-color: var(--color-fill-65);
-                    color: var(--in-common-use-1);
+                    background-color: var(--jy-color-fill-65);
+                    color: var(--jy-in-common-use-1);
                     height: 2rem;
                     display: flex;
                     align-items: center;
@@ -3486,7 +3738,7 @@
                       width: 4.5rem;
                       display: flex;
                       justify-content: flex-end;
-                      color: var(--color-text-3);
+                      color: var(--jy-color-text-3);
                     }
 
                     .SealInformation-details-image-cont-list-cont-list-subValue {
@@ -3500,7 +3752,7 @@
                       }
 
                       .SealInformation-details-image-cont-list-cont-list-subValue-text {
-                        color: var(--danger-6);
+                        color: var(--jy-danger-6);
                       }
                     }
                   }

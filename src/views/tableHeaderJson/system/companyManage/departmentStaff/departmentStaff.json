@@ -1,0 +1,62 @@
+[
+  {
+    "prop": "userName",
+    "label": "姓名",
+    "sortable": true,
+    "flex": true,
+    "min-width": 150
+  },
+  {
+    "prop": "accountNo",
+    "label": "账号",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "hostOrganName",
+    "label": "所属部门",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "userTitle",
+    "label": "职位",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "faceState",
+    "label": "人脸状态",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "flag",
+    "label": "状态",
+    "sortable": true,
+    "min-width": 150
+  },
+  {
+    "prop": "caozuo",
+    "label": "操作",
+    "fixed": "right",
+    "width": 220,
+    "rankDisplayData": [
+      {
+        "name": "t-zgj-Edit"
+      },
+      {
+        "name": "status"
+      },
+      {
+        "name": "t-zgj-Delete"
+      },
+      {
+        "name": "t-zgj-index.updatePwd"
+      },
+      {
+        "name": "t-zgj-F_SEAL_CONSOLE_FACE_SETTING"
+      }
+    ]
+  }
+]

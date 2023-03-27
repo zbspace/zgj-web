@@ -39,6 +39,7 @@
             :defaultAttribute="state.componentsWorkbenchTable.defaultAttribute"
             :data="state.componentsWorkbenchTable.data"
             :header="state.componentsWorkbenchTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
             v-if="activeName === 'first'"
@@ -98,7 +99,7 @@
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
-  import VTabs from '@/components/modules/tabs.vue'
+  import VTabs from '@/components/common/JyTabs.vue'
   import componentsBatch from '@/views/components/batch.vue'
   const activeName = ref('first')
 
@@ -202,17 +203,6 @@
     componentsWorkbenchTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          align: 'center'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '日志名称',
           sortable: true,
@@ -262,7 +252,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '1111',
           2: 'Web',
           3: '10123',
@@ -271,7 +260,6 @@
           6: '2022-12-30 16:41:32'
         },
         {
-          0: 2,
           1: '1111',
           2: 'Web',
           3: '10123',
@@ -280,7 +268,6 @@
           6: '2022-12-30 16:41:32'
         },
         {
-          0: 3,
           1: '测试',
           2: 'Web',
           3: '10123',
@@ -289,7 +276,6 @@
           6: '2022-12-30 16:41:32'
         },
         {
-          0: 4,
           1: '1111',
           2: 'PC',
           3: '2033',
@@ -298,7 +284,6 @@
           6: '2022-12-30 16:41:32'
         },
         {
-          0: 5,
           1: '技术部测试',
           2: 'Web',
           3: '10123',
@@ -311,7 +296,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -410,7 +395,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -536,7 +521,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -626,7 +611,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },

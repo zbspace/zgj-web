@@ -1,64 +1,29 @@
 <!-- 印章库 -->
 <template>
   <div class="PrintControlManagement-LibraryOfSeals">
-    <componentsLayout Layout="title,searchForm,table,pagination,tree,batch">
+    <JyTable
+      url="/sealInfo/page"
+      ref="table"
+      :hasTree="true"
+      :needAutoRequest="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      :queryParams="queryParams"
+      tableClick="sealName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
       <template #title>
         <div class="title">
-          印章库
+          <div>印章库</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showLibraryDialog = true"
-                >+ 增加</el-button
-              >
+              <el-button type="primary" @click="add">+ 增加</el-button>
             </div>
-            <div class="title-more-down">
-              <el-dropdown>
-                <el-button>
-                  <img
-                    class="button-icon"
-                    src="@/assets/svg/gengduo-caozuo.svg"
-                    alt=""
-                    srcset=""
-                  />
-                  <span>更多操作</span>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>印章解绑</el-dropdown-item>
-                    <el-dropdown-item>导入</el-dropdown-item>
-                    <el-dropdown-item>导出台账</el-dropdown-item>
-                    <el-dropdown-item>查看已删除的印章</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
+            <div class="title-more-down"> </div>
           </div>
-        </div>
-      </template>
-      <template #tabs>
-        <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
-        </div>
-      </template>
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickElement="clickElement"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-          >
-          </componentsBatch>
         </div>
       </template>
       <template #tree>
@@ -66,31 +31,13 @@
           <componentsTree
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
+            :defaultProps="state.componentsTree.defaultProps"
+            @current-change="currentChange"
           >
           </componentsTree>
         </div>
       </template>
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-          >
-          </componentsTable>
-        </div>
-      </template>
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
+    </JyTable>
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -101,92 +48,598 @@
       </componentsDocumentsDetails>
     </div>
 
-    <!-- 动态表单 - 印章库 -->
-    <KDialog
+    <!-- 印章库 -->
+    <JyDialog
       @update:show="showLibraryDialog = $event"
       :show="showLibraryDialog"
-      title="新增"
+      :title="state.title"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
-      @close="submitLibraryForm"
+      destroy-on-close
+      @confirm="submitLibraryForm"
     >
-      <v-form-render
-        :form-json="formLibraryJson"
-        :form-data="formLibraryData"
-        :option-data="optionLibraryData"
+      <el-form
+        :model="state.form"
+        :rules="state.rules"
         ref="vFormLibraryRef"
+        label-width="100px"
       >
-      </v-form-render>
-    </KDialog>
+        <el-form-item label="印章全称" prop="sealName">
+          <el-input v-model="state.form.sealName" />
+        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="印章编码" prop="sealNo">
+              <el-input v-model="state.form.sealNo" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="印章类型" prop="sealTypeId">
+              <el-select
+                style="width: 100%"
+                v-model="state.form.sealTypeId"
+                filterable
+              >
+                <el-option
+                  v-for="(item, index) in state.typeList"
+                  :key="index"
+                  :label="item.sealTypeName"
+                  :value="item.sealTypeId"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="印章简称" prop="sealAlias">
+              <el-input v-model="state.form.sealAlias" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="所属单位" prop="subOrganId">
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.subOrganName"
+                  placeholder="请选择"
+                />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
+                  v-model="state.form.subOrganId"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.subOrganName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('subOrgan')"
+                    ><CircleClose
+                  /></el-icon>
+                  <img
+                    @click="chooseOrgan('subOrgan', ['organ'])"
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!-- <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="管理人" prop="manageUserId">
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.manageUserName"
+                  placeholder="请选择"
+                />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
+                  v-model="state.form.manageUserId"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.manageUserName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('manageUser')"
+                    ><CircleClose
+                  /></el-icon>
+                  <img
+                    @click="chooseOrgan('manageUser', ['user'])"
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="管理部门" prop="manageOrganId">
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.manageOrganName"
+                  placeholder="请选择"
+                />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
+                  v-model="state.form.manageOrganId"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.manageOrganName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('manageOrgan')"
+                    ><CircleClose
+                  /></el-icon>
+                  <img
+                    @click="chooseOrgan('manageOrgan', ['organ'])"
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row> -->
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="保管人" prop="keepUserId">
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.keepUserName"
+                  placeholder="请选择"
+                />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
+                  v-model="state.form.keepUserId"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.keepUserName"
+                    @click="clear('keepUser')"
+                    ><CircleClose
+                  /></el-icon>
+                  <img
+                    @click="chooseOrgan('keepUser', ['user'])"
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="保管部门" prop="keepOrganId">
+              <div class="select-box-contBox">
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  readonly
+                  v-model="state.form.keepOrganName"
+                  placeholder="请选择"
+                />
+                <el-input
+                  class="ap-box-contBox-input width-100"
+                  type="hidden"
+                  v-model="state.form.keepOrganId"
+                  placeholder="请选择"
+                />
+                <div class="ap-box-contBox-icon">
+                  <el-icon
+                    v-if="state.form.keepOrganName"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click="clear('keepOrgan')"
+                    ><CircleClose
+                  /></el-icon>
+                  <img
+                    @click="chooseOrgan('keepOrgan', ['organ'])"
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                  />
+                </div>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="是否外显" prop="extShow">
+              <el-radio-group v-model="state.form.extShow">
+                <el-radio :label="'1'" size="large">是</el-radio>
+                <el-radio :label="'2'" size="large">否</el-radio>
+              </el-radio-group>
+              <span class="waixian">外显是指在其他业务系统上显示的标识</span>
+            </el-form-item>
+          </el-col>
+          <!-- <el-col :span="12">
+            <el-form-item label="印章状态" prop="sealState">
+              <el-radio-group v-model="state.form.sealState" class="ml-4">
+                <el-radio :label="1" size="large">正常</el-radio>
+                <el-radio :label="2" size="large">停用</el-radio>
+                <el-radio :label="3" size="large">已销毁</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col> -->
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="硬件版本号" prop="hardwareVersionId">
+              <el-input v-model="state.form.hardwareVersionId" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="固件版本号" prop="firmwareVersionId">
+              <el-input v-model="state.form.firmwareVersionId" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="制度链接" prop="bylawsUrl">
+          <el-input
+            v-model="state.form.bylawsUrl"
+            clearable
+            placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
+          />
+        </el-form-item>
+        <el-form-item label="备注" prop="sealExplain">
+          <!-- <el-input
+            v-model="state.form.sealExplain"
+            :rows="4"
+            type="textarea"
+            placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
+          /> -->
+          <JyRichEdit :value="state.form.sealExplain" @updateValue="getMsg" />
+        </el-form-item>
+        <el-form-item
+          label="印模"
+          prop="stampAttachments"
+          style="margin-top: 10px"
+        >
+          <el-upload
+            v-model:file-list="fileList"
+            class="upload-demo"
+            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            :on-change="handleChange"
+          >
+            <div class="btnContainer">
+              <el-button type="primary" text size="small">
+                <el-icon :size="14"> <Paperclip /> </el-icon>
+                <span style="margin-left: 5px">添加印模</span>
+              </el-button>
+            </div>
+          </el-upload>
+        </el-form-item>
+        <!-- <el-form-item
+          label="印章可见范围"
+          prop="stampAttachments"
+          style="margin-top: 10px"
+        >
+          <el-upload
+            v-model:file-list="fileList"
+            class="upload-demo"
+            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            :on-change="handleChange"
+          >
+            <div class="btnContainer">
+              <el-button type="primary" text size="small">
+                <el-icon :size="14"> <Paperclip /> </el-icon>
+                <span style="margin-left: 5px">添加印模</span>
+              </el-button>
+            </div>
+          </el-upload>
+        </el-form-item> -->
+      </el-form>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
       v-if="showDepPerDialog"
+      :tabsShow="state.tabsShow"
+      @update:searchSelected="submitSelectDepart"
+      :searchSelected="state.searchSelected"
     >
     </kDepartOrPersonVue>
+    <!-- 弹窗提示 -->
+    <JyElMessageBox
+      v-model="state.JyElMessageBox.show"
+      :show="state.JyElMessageBox.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.JyElMessageBox.header.icon" alt="" />
+          <span>{{ state.JyElMessageBox.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.JyElMessageBox.content.data }}</div>
+      </template>
+      <template #footer>
+        <el-button
+          type="primary"
+          @click="submitElMessageBox(state.JyElMessageBox.type)"
+        >
+          提交
+        </el-button>
+        <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
+      </template>
+    </JyElMessageBox>
+    <!-- 批量操作弹框提示 -->
+    <JyElMessageBox
+      v-model="state.showToastDialog.show"
+      :show="state.showToastDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.showToastDialog.header.icon" alt="" />
+          <span>{{ state.showToastDialog.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <p
+            v-for="item in state.componentsBatch.selectionData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{ item.name }}</p
+          >
+        </el-scrollbar>
+      </template>
+      <template #footer>
+        <el-button
+          v-for="item in state.butDatas"
+          :key="item.name"
+          :type="item.type"
+          @click="item.clickName"
+          >{{ item.name }}</el-button
+        >
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted,
-    ref
-  } from 'vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
+  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
+  import { Paperclip, CircleClose } from '@element-plus/icons-vue'
   import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import LibraryJson from '@/views/addDynamicFormJson/LibraryOfSeals.json'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import JyTable from '@/views/components/JyTable.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
+  import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
+  import api from '@/api/frontDesk/sealManage/libraryOfSeals'
+  import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
+  import dayjs from 'dayjs'
+  import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
   // 印章库 新增弹框
-  const formLibraryJson = reactive(LibraryJson)
-  const formLibraryData = reactive({})
-  const optionLibraryData = reactive({})
-  const vFormLibraryRef = ref(null)
   const showLibraryDialog = ref(false)
+  const vFormLibraryRef = ref(null)
+  const depChoose = ref(null)
+  const table = ref(null)
+  const queryParams = ref({})
 
-  const submitLibraryForm = type => {
-    if (!type) {
-      vFormLibraryRef.value.resetForm()
-      return
+  // 新增印章
+  const add = () => {
+    state.title = '新增'
+    if (vFormLibraryRef.value) {
+      vFormLibraryRef.value.resetFields()
     }
-    vFormLibraryRef.value
-      .getFormData()
-      .then(formData => {
-        // Form Validation OK
-        alert(JSON.stringify(formData))
+    for (const i in state.form) {
+      state.form[i] = ''
+    }
+    state.form.sealNo =
+      dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+    showLibraryDialog.value = true
+  }
+
+  // 保存新增/修改数据
+  const submitLibraryForm = type => {
+    console.log(state.form)
+    vFormLibraryRef.value.validate(valid => {
+      if (valid) {
+        if (state.form.sealId) {
+          api.edit(state.form).then(res => {
+            console.log(res)
+            ElMessage.success('修改印章成功！')
+          })
+        } else {
+          api.add(state.form).then(res => {
+            console.log(res)
+            ElMessage.success('新增印章成功！')
+          })
+        }
         showLibraryDialog.value = false
-      })
-      .catch(error => {
-        // Form Validation failed
-        ElMessage.error(error)
-      })
+        table.value.reloadData()
+      } else {
+        // ElMessage.error('校验失败')
+      }
+    })
   }
   const showDepPerDialog = ref(false)
+  const submitSelectDepart = data => {
+    if (data) {
+      state.form[depChoose.value + 'Id'] = data[0].id
+      state.form[depChoose.value + 'Name'] = data[0].name
+    }
 
+    // if (depChoose.value === 'subOrgan') {
+    //   state.form.subOrganName = data[0].name
+    //   state.form.subOrganId = data[0].id
+    // }
+    // if (depChoose.value === 'manageUser') {
+    //   state.form.manageUserName = data[0].name
+    //   state.form.manageUserId = data[0].id
+    // }
+    // if (depChoose.value === 'manageOrgan') {
+    //   state.form.manageOrganName = data[0].name
+    //   state.form.manageOrganId = data[0].id
+    // }
+    // if (depChoose.value === 'keepUser') {
+    //   state.form.keepUserName = data[0].name
+    //   state.form.keepUserId = data[0].id
+    // }
+    // if (depChoose.value === 'keepOrgan') {
+    //   state.form.keepOrganName = data[0].name
+    //   state.form.keepOrganId = data[0].id
+    // }
+    console.log(data)
+  }
+  const getMsg = val => {
+    state.form.sealExplain = val
+  }
   // const emit = defineEmits([])
   const state = reactive({
+    butDatas: [],
+    sealIds: '',
+    msg: '',
+    tabsShow: [],
+    searchSelected: [],
+    title: '新增',
+    typeList: [],
+    form: {
+      sealId: '',
+      sealNo: '',
+      sealName: '',
+      sealAlias: '',
+      sealTypeId: '',
+      subOrganId: '',
+      subOrganName: '',
+      // manageUserId: '',
+      // manageUserName: '',
+      // manageOrganId: '',
+      // manageOrganName: '',
+      keepUserId: '',
+      keepUserName: '',
+      keepOrganId: '',
+      keepOrganName: '',
+      extShow: '1',
+      // sealState: 1,
+      hardwareVersionId: '',
+      firmwareVersionId: '',
+      bylawsUrl: '',
+      sealExplain: '',
+      stampAttachments: ''
+    },
+    JyElMessageBox: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '删除'
+    },
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
+    },
+    rules: {
+      sealName: [
+        {
+          required: true,
+          message: '请输入印章全称',
+          trigger: 'change'
+        },
+        { min: 2, message: '印章全称必须大于2个字符', trigger: 'change' }
+      ],
+      sealNo: [
+        {
+          required: true,
+          message: '请输入印章编码',
+          trigger: 'change'
+        }
+      ],
+      sealTypeId: [
+        {
+          required: true,
+          message: '请选择印章类型',
+          trigger: 'change'
+        }
+      ],
+      sealAlias: [
+        {
+          required: true,
+          message: '请输入印章简称',
+          trigger: 'change'
+        }
+      ],
+      manageUserId: [
+        {
+          required: true,
+          message: '请选择管理人',
+          trigger: 'change'
+        }
+      ],
+      manageOrganId: [
+        {
+          required: true,
+          message: '请选择管理部门',
+          trigger: 'change'
+        }
+      ],
+      keepUserId: [
+        {
+          required: true,
+          message: '请选择保管人',
+          trigger: 'change'
+        }
+      ],
+      keepOrganId: [
+        {
+          required: true,
+          message: '请选择保管部门',
+          trigger: 'change'
+        }
+      ],
+      extShow: [
+        {
+          required: true,
+          message: '请选择是否外显',
+          trigger: 'blur'
+        }
+      ],
+      sealState: [
+        {
+          required: true,
+          message: '请选择印章状态',
+          trigger: 'blur'
+        }
+      ]
+    },
     componentsTabs: {
       data: [
         {
@@ -214,7 +667,7 @@
       },
       data: [
         {
-          id: 'name',
+          id: 'searchKey',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
@@ -224,67 +677,89 @@
           }
         },
         {
-          id: 'picker',
+          id: 'createDate',
           label: '创建时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+            },
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         },
         {
-          id: 'derivable',
+          id: 'keepUser',
+          requestParams: 'keepUserIds',
           label: '保管人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+保管人'
+            type: 'user',
+            placeholder: '+保管人',
+            multiple: true,
+            joinStr: ','
           }
         },
         {
-          id: 'derivable',
+          id: 'keepOrgan',
+          requestParams: 'keepOrganIds',
           label: '保管部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+保管部门'
+            type: 'organ',
+            placeholder: '+保管部门',
+            multiple: true,
+            joinStr: ','
           }
         },
         {
-          id: 'shenqingr',
+          id: 'sealStatus',
           label: '印章状态',
           type: 'checkButton',
           data: [
             {
-              name: '正常  '
+              id: '1',
+              name: '正常'
             },
             {
+              id: '2',
               name: '停用'
             },
             {
+              id: '3',
               name: '已销毁'
             }
           ]
         },
         {
-          id: 'shenqingr',
+          id: 'sealCategory',
           label: '印章种类',
           type: 'checkButton',
           data: [
             {
+              id: '0',
               name: '普通印章'
             },
             {
+              id: '1',
               name: '智能印章'
             }
           ]
         },
         {
-          id: 'wdyy',
+          id: 'takeOut',
           label: '',
           type: 'checkbox',
           checkbox: [
@@ -298,7 +773,7 @@
           ]
         },
         {
-          id: 'wdyy',
+          id: 'onlyMyself',
           label: '',
           type: 'checkbox',
           checkbox: [
@@ -344,141 +819,18 @@
       ]
     },
     componentsTable: {
-      header: [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
-          prop: '1',
-          label: '印章名称',
-          sortable: true,
-          'min-width': 210,
-          'show-overflow-tooltip': true
-        },
-        {
-          prop: '2',
-          label: '印章类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '印章状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '保管人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '保管部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '创建时间',
-          sortable: true,
-          'min-width': 180
-        },
-
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          width: '250',
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '设置维护范围'
-            },
-            {
-              name: '设置可用范围'
-            }
-          ]
-        }
-      ],
-      data: [
-        {
-          0: 1,
-          1: '二代章_新结构_全称',
-          2: '公章',
-          3: '正常',
-          4: '岳海涛',
-          5: '测试部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 2,
-          1: '二代章_新结构_全称',
-          2: '公章',
-          3: '正常',
-          4: '岳海涛',
-          5: '测试部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 3,
-          1: '二代章_新结构_全称',
-          2: '测试章',
-          3: '正常',
-          4: '肖世康',
-          5: '技术部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 4,
-          1: '【智】测试专用章-自动版-Joel-243（全称）',
-          2: '公章',
-          3: '正常',
-          4: '汤博',
-          5: '技术部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 5,
-          1: '【智】研发-易全程二代',
-          2: '合同章',
-          3: '正常',
-          4: '岳海涛',
-          5: '测试部',
-          6: '2022-10-30 08:00:08'
-        },
-        {
-          0: 6,
-          1: '二代章_新结构_全称',
-          2: '公章',
-          3: '正常',
-          4: '周斌',
-          5: '技术部',
-          6: '2022-08-23 18:00:08'
-        }
-      ],
+      header: tableHeader,
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '1') {
+          if (column.property === 'sealName') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -486,83 +838,35 @@
       }
     },
     componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         'check-on-click-node': true,
         'show-checkbox': false,
         'default-expand-all': true,
         'expand-on-click-node': false,
-        'check-strictly': true
-      }
+        'check-strictly': true,
+        'highlight-current': true,
+        'node-key': 'sealTypeId',
+        'current-node-key': ''
+      },
+      defaultProps: {
+        label: 'sealTypeName',
+        children: 'children'
+      },
+      value: ''
     },
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
+        total: 0,
+        'page-sizes': [10, 50, 100],
         background: true
       }
     },
@@ -604,13 +908,20 @@
       },
       data: [
         {
-          name: '批量设置可见范围'
+          name: 't-zgj-seal.BatchSetVisibility',
+          label: '批量设置可见范围'
         },
         {
-          name: '批量设置可用范围'
+          name: 't-zgj-seal.BatchSetAvailable',
+          label: '批量设置可用范围'
         },
         {
-          name: '批量删除'
+          name: 't-zgj-seal.BatchDelete',
+          label: '批量删除'
+        },
+        {
+          name: 't-zgj-view.SealUnbind',
+          label: '印章解绑'
         }
       ]
     }
@@ -618,7 +929,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property === '1') {
+    if (column.property === 'sealName') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -628,35 +939,249 @@
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    if (cell.name === '修改') {
-      showLibraryDialog.value = true
+    console.log(column)
+    state.sealIds = column.sealId
+    if (cell.name === 't-zgj-Edit') {
+      state.title = '修改'
+      getSealsInfo()
     }
-    if (cell.name === '设置维护范围' || cell.name === '设置可用范围') {
+    if (
+      cell.name === 't-zgj-seal.SetVisibility' ||
+      cell.name === 't-zgj-seal.SetAvailable'
+    ) {
       showDepPerDialog.value = true
+      state.tabsShow = ['user']
+    }
+    if (cell.name === 't-zgj-Delete') {
+      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.content.data = '请问确定要删除吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '删除'
+    }
+    if (cell.name === 't-zgj-seal.deactivated') {
+      state.JyElMessageBox.header.data = '停用'
+      state.JyElMessageBox.content.data = '请问确定停用该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '停用'
+    }
+    if (cell.name === '启用') {
+      state.JyElMessageBox.header.data = '启用'
+      state.JyElMessageBox.content.data = '请问确定启用该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '启用'
+    }
+    if (cell.name === '销毁') {
+      state.JyElMessageBox.header.data = '销毁'
+      state.JyElMessageBox.content.data = '请问确定销毁该印章吗？'
+      state.JyElMessageBox.show = true
+      state.JyElMessageBox.type = '销毁'
+    }
+  }
+  const getSealsInfo = () => {
+    api.sealInfo(state.sealIds).then(res => {
+      console.log('infro', res)
+      if (res.code === 200) {
+        state.form = res.data
+        showLibraryDialog.value = true
+      }
+    })
+  }
+  const clickBatchButton = (item, datas) => {
+    console.log(item)
+    state.componentsBatch.selectionData = datas
+    const idList = []
+    datas.forEach(element => {
+      idList.push(element.sealId)
+    })
+    state.sealIds = idList.join(',')
+    if (item.name === 't-zgj-view.SealUnbind') {
+      state.showToastDialog.header.data = '印章解绑'
+      state.showToastDialog.content.data = '已选中以下印章，请问确定要解绑吗？'
+      state.showToastDialog.show = true
+      // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+      state.butDatas = [
+        {
+          name: '确定',
+          type: 'primary',
+          clickName: sureBatchUnbind
+        },
+        {
+          name: '取消',
+          type: '',
+          clickName: closeBatchTabel
+        }
+      ]
+    }
+    if (item.name === 't-zgj-seal.BatchDelete') {
+      state.showToastDialog.header.data = '批量删除'
+      state.showToastDialog.content.data =
+        '已选中以下印章，请问确定要批量删除吗？'
+      state.showToastDialog.show = true
+      // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+      state.butDatas = [
+        {
+          name: '确定',
+          type: 'primary',
+          clickName: sureBatchDel
+        },
+        {
+          name: '取消',
+          type: '',
+          clickName: closeBatchTabel
+        }
+      ]
+    }
+    if (item.name === 't-zgj-seal.BatchSetVisibility') {
+      showDepPerDialog.value = true
+      state.tabsShow = ['user']
+    }
+    if (item.name === 't-zgj-seal.BatchSetAvailable') {
+      showDepPerDialog.value = true
+      state.tabsShow = ['user']
     }
   }
 
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
+  // 确定解绑
+  const sureBatchUnbind = () => {
+    // api.relationContractType(idList).then(res => {
+    //   if (res.code === 200) {
+    //     if (res.data.length > 0) {
+    //       state.showToastDialog.header.data = '删除'
+    //       state.showToastDialog.content.data =
+    //         '选中的以下表单已关联了流程，不允许删除'
+    //       state.showToastDialog.show = true
+    //       state.showToastDialog.header.icon =
+    //         '/src/assets/svg/common/danger.svg'
+    //       state.componentsBatch.butDatas = [
+    //         {
+    //           name: '知道了',
+    //           type: 'primary',
+    //           clickName: closeBatchTabel
+    //         }
+    //       ]
+    //     } else {
+
+    //     }
+    //   } else {
+    //     console.log(res)
+    //   }
+    // })
+    api.sealInfoUnbind({ ids: state.sealIds }).then(res => {
+      ElMessage.success('解绑成功！')
+      table.value.reloadData()
+    })
+  }
+  // 确定批量删除
+  const sureBatchDel = () => {
+    const list = state.componentsBatch.selectionData
+    const idList = []
+    const idObj = { formMessageId: '' }
+    list.forEach(v => {
+      idObj.formMessageId = v.formMessageId
+      idList.push(idObj)
+    })
+    api.relationContractType(idList).then(res => {
+      if (res.code === 200) {
+        if (res.data.length > 0) {
+          state.showToastDialog.header.data = '删除'
+          state.showToastDialog.content.data =
+            '选中的以下表单已关联了流程，不允许删除'
+          state.showToastDialog.show = true
+          state.showToastDialog.header.icon =
+            '/src/assets/svg/common/danger.svg'
+          state.componentsBatch.butDatas = [
+            {
+              name: '知道了',
+              type: 'primary',
+              clickName: closeBatchTabel
+            }
+          ]
+        } else {
+          api.sealInfoDelete({ ids: state.sealIds }).then(res => {
+            ElMessage.success('批量删除成功！')
+            table.value.reloadData()
+          })
+        }
+      } else {
+        console.log(res)
+      }
+    })
+  }
+  // 关闭表单复制弹窗
+  function closeBatchTabel() {
+    state.showToastDialog.show = false
+  }
+  // 提交弹窗
+  const submitElMessageBox = type => {
+    state.JyElMessageBox.show = false
+    if (type === '删除') {
+      apiOpt(type, api.sealInfoDelete({ ids: state.sealIds }))
+    }
+    if (type === '停用') {
+      apiOpt(type, api.sealInfoDisable({ ids: state.sealIds }))
+    }
+    if (type === '启用') {
+      apiOpt(type, api.sealInfoEnable({ ids: state.sealIds }))
+    }
+    if (type === '销毁') {
+      apiOpt(type, api.sealInfoDestroy({ ids: state.sealIds }))
     }
   }
+  const apiOpt = (typeName, apiName) => {
+    apiName.then(res => {
+      if (res.code === 200) {
+        ElMessage.success(`${typeName}成功！`)
+        table.value.reloadData()
+      } else {
+        ElMessage.success(`${typeName}失败，请重试`)
+      }
+    })
+  }
+  // 获取印章类型
+  const typeList = () => {
+    typeApis.list({ searchKey: '' }).then(res => {
+      state.typeList = res.data
+      state.componentsTree.data = [
+        {
+          sealTypeName: '印章类型',
+          sealTypeId: '',
+          children: res.data
+        }
+      ]
+      table.value.reloadData()
+    })
+  }
 
-  // 点击搜索表单
-  function clickElement(item, index) {
-    // console.log(item, index)
-    if (item.type === 'derivable') {
-      showDepPerDialog.value = true
+  const chooseOrgan = (type, tabs) => {
+    depChoose.value = type
+    state.tabsShow = []
+    state.searchSelected = []
+    if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
+      state.searchSelected.push({
+        id: state.form[type + 'Id'],
+        name: state.form[type + 'Name'],
+        type: tabs[0]
+      })
     }
+    console.log(tabs)
+    state.tabsShow = tabs
+    showDepPerDialog.value = true
+  }
+
+  const clear = type => {
+    state.form[type + 'Id'] = ''
+    state.form[type + 'Name'] = ''
+  }
+  const currentChange = e => {
+    console.log(e)
+    queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
+    table.value.reloadData()
   }
 
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
+    typeList()
+    // librarySealPage()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -699,5 +1224,32 @@
         @include mixin-margin-right(12);
       }
     }
+  }
+
+  .waixian {
+    margin-left: 25px;
+    font-size: 13px;
+    color: #666666;
+  }
+</style>
+<style lang="scss">
+  .upload-demo {
+    width: 100%;
+    box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color))
+      inset;
+    border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+    min-height: 100px;
+
+    .el-upload {
+      width: 100%;
+    }
+  }
+  .el-icon {
+    color: #aaaaaa;
+    margin-right: 5px;
+  }
+  .btnContainer {
+    width: 100%;
+    border-bottom: 1px solid var(--el-border-color);
   }
 </style>

@@ -1,92 +1,68 @@
 <!-- 印章类型 -->
 <template>
   <div class="PrintControlManagement-TypeOfSeal">
-    <componentsLayout Layout="title,searchForm,table,pagination,batch">
+    <JyTable
+      url="/sealType/page"
+      ref="jyTable"
+      :hasTree="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      tableClick="organName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
       <template #title>
         <div class="title">
           <div>印章类型</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="clickEditor('新增')"
-                >+ 增加</el-button
+              <el-button type="primary" @click="clickEditor('t-zgj-add')"
+                >+ {{ $t('t-zgj-add') }}</el-button
               >
             </div>
             <div class="title-more-down"> </div>
           </div>
         </div>
       </template>
-      <template #tabs>
-        <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
-        </div>
-      </template>
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            @selection-change="selectionChange"
-            @custom-click="customClick"
-          >
-          </componentsTable>
-        </div>
-      </template>
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
+    </JyTable>
     <!-- 动态表单 - 印章类型新增/修改 -->
-    <KDialog
-      @update:show="fromState.showDialog = $event"
-      :show="fromState.showDialog"
-      :title="fromState.title"
+    <JyDialog
+      @update:show="showDialog = $event"
+      :show="showDialog"
+      :confirmLoading="confirmLoading"
+      :title="fromStateTitle"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      :width="1000"
+      :width="800"
       :height="600"
-      @close="submitLibraryForm"
-      :key="fromState.title"
+      @confirm="submitLibraryForm"
+      :key="fromStateTitle"
     >
-      <v-form-render
-        :form-json="fromState.formJson"
-        :form-data="fromState.formJson"
-        :option-data="fromState.optionData"
-        :ref="fromState.vFormLibraryRef"
+      <el-form
+        :model="formData"
+        :rules="formRules"
+        ref="vFormLibraryRef"
+        label-width="120px"
       >
-      </v-form-render>
-    </KDialog>
+        <el-form-item label="印章类型编码" prop="sealTypeNo">
+          <el-input v-model="formData.sealTypeNo" disabled />
+        </el-form-item>
+        <el-form-item label="印章类型名称" prop="sealTypeName">
+          <el-input v-model="formData.sealTypeName" />
+        </el-form-item>
+        <el-form-item label="描述" prop="readme">
+          <el-input v-model="formData.readme" type="textarea" />
+        </el-form-item>
+      </el-form>
+    </JyDialog>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      @confirmClick="confirmClick"
     >
       <template #header>
         {{ state.JyElMessageBox.header.data }}
@@ -95,45 +71,61 @@
         {{ state.JyElMessageBox.content.data }}
       </template>
     </JyElMessageBox>
+    <!-- 批量操作弹框提示 -->
+    <JyElMessageBox
+      v-model="state.showToastDialog.show"
+      :show="state.showToastDialog.show"
+      :defaultAttribute="{}"
+      @confirmClick="confirmClick"
+    >
+      <template #header>
+        <div class="header-div">
+          <img :src="state.showToastDialog.header.icon" alt="" />
+          <span>{{ state.showToastDialog.header.data }}</span>
+        </div>
+      </template>
+      <template #content>
+        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <p
+            v-for="item in state.componentsBatch.selectionData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{ item.sealTypeName }}</p
+          >
+        </el-scrollbar>
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 <script setup>
-  import {
-    // ref,
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
-  // import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
-  import StampTypeApplicationJson from '@/views/addDynamicFormJson/StampTypeApplication.json'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import { ElMessageBox } from 'element-plus'
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
+  import { ref, reactive, nextTick } from 'vue'
+  import JyTable from '@/views/components/JyTable.vue'
+  import apis from '@/api/frontDesk/sealManage/typeOfSeal'
+  import dayjs from 'dayjs'
+  import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/typeOfSeal.json'
 
   // 印章类型 新增弹框
-  const fromState = reactive({
-    title: '',
-    formJson: StampTypeApplicationJson, // 动态表单内容
-    optionData: null,
-    vFormLibraryRef: 'vFormLibraryRef',
-    showDialog: false
+  const formData = ref({
+    sealTypeNo: '',
+    sealTypeName: '',
+    readme: ''
   })
-  // const vFormLibraryRef = ref(null)
+  const formRules = ref({
+    sealTypeName: [
+      {
+        required: true,
+        message: '请输入印章类型名称',
+        trigger: 'change'
+      }
+    ]
+  })
+  const fromStateTitle = ref('t-zgj-add')
+  const showDialog = ref(false)
+  const vFormLibraryRef = ref(null)
+  const sealTypeId = ref(null)
+  const jyTable = ref(null)
+  const confirmLoading = ref(false)
 
   // const emit = defineEmits([])
   const state = reactive({
@@ -154,35 +146,36 @@
       ]
     },
     componentsSearchForm: {
-      style: {
-        lineStyle: {
-          width: 'calc(100% / 3)'
-        },
-        labelStyle: {
-          width: '100px'
-        }
-      },
       data: [
         {
-          id: 'name',
+          id: 'searchKey',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '请输入'
+            placeholder: '请输入印章类型名称或编码'
           }
         },
         {
-          id: 'picker',
+          id: 'createDate',
           label: '创建时间',
           type: 'picker',
+          pickerType: 'date',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+            },
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         }
@@ -219,234 +212,27 @@
       ]
     },
     componentsTable: {
-      header: [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
-          prop: '1',
-          label: '印章类型编码',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: '2',
-          label: '印章类型名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '描述',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '4',
-          label: '智能印章',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '普通印章',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '创建人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '创建时间',
-          sortable: true,
-          'min-width': 180
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '删除'
-            }
-          ]
-        }
-      ],
-      data: [
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        },
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        },
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        },
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        },
-        {
-          1: '2022122023212245645',
-          2: '1',
-          3: '公章',
-          4: '是',
-          5: '否',
-          6: '邱伟',
-          7: '2022-12-20'
-        }
-      ],
+      header: tableHeader,
+      data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
-    componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': false,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
-      }
-    },
-    componentsPagination: {
-      data: {
-        amount: 400,
-        index: 1,
-        pageNumber: 80
-      },
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
-        background: true
-      }
-    },
-    componentsBreadcrumb: {
-      data: [
-        {
-          name: 'ceshi'
-        },
-        {
-          name: 'ceshi'
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        separator: '/'
-      }
-    },
+
     componentsBatch: {
       selectionData: [],
-      defaultAttribute: {
-        disabled: true
-      },
       data: [
         {
+          id: 'deleteMore',
           name: '批量删除'
         }
       ]
     },
+
     JyElMessageBox: {
       show: false,
       header: {
@@ -455,41 +241,123 @@
       content: {
         data: ''
       }
+    },
+
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
     }
   })
-  function clickEditor(editor) {
-    fromState.title = editor
-    fromState.showDialog = true
+  function clickEditor(title, column) {
+    fromStateTitle.value = title
+    showDialog.value = true
+    nextTick(() => {
+      vFormLibraryRef.value.resetFields()
+      if (title === 't-zgj-add') {
+        sealTypeId.value = null
+        formData.value.sealTypeNo =
+          dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+      } else {
+        if (column) {
+          const columns = JSON.parse(JSON.stringify(column))
+          formData.value = {
+            sealTypeNo: columns.sealTypeNo,
+            sealTypeName: columns.sealTypeName,
+            readme: columns.readme
+          }
+        }
+      }
+    })
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    if (cell.name === '修改') {
-      clickEditor(cell.name)
+    console.log(column)
+    if (cell.name === 't-zgj-Edit') {
+      sealTypeId.value = column.sealTypeId
+      clickEditor(cell.name, column)
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
+      sealTypeId.value = column.sealTypeId
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
     }
   }
 
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    //    console.log(selection);
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
+  const confirmClick = () => {
+    apis
+      .delete({
+        ids:
+          sealTypeId.value ||
+          state.componentsBatch.selectionData.map(i => i.sealTypeId).join(',')
+      })
+      .then(res => {
+        state.JyElMessageBox.show = false
+        state.showToastDialog.show = false
+        reloadData()
+      })
+      .catch(() => {
+        sealTypeId.value = null
+        state.showToastDialog.show = false
+        state.JyElMessageBox.show = false
+      })
+  }
+
+  function clickBatchButton(item, list) {
+    state.componentsBatch.selectionData = list
+    if (item.id === 'deleteMore') {
+      state.showToastDialog.header.data = '批量删除？'
+      state.showToastDialog.content.data =
+        '已选中以下表单，请问确定要批量删除吗？'
+      state.showToastDialog.show = true
     }
   }
 
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
+  const submitLibraryForm = () => {
+    vFormLibraryRef.value.validate(valid => {
+      if (valid) {
+        confirmLoading.value = true
+        if (sealTypeId.value) {
+          apis
+            .edit({
+              ...{
+                sealTypeId: sealTypeId.value
+              },
+              ...formData.value
+            })
+            .then(() => {
+              sealTypeId.value = null
+              showDialog.value = false
+              reloadData()
+            })
+            .finally(() => {
+              confirmLoading.value = false
+            })
+        } else {
+          apis
+            .add(formData.value)
+            .then(res => {
+              sealTypeId.value = null
+              showDialog.value = false
+              reloadData()
+            })
+            .finally(() => {
+              confirmLoading.value = false
+            })
+        }
+      }
+    })
+  }
+
+  const reloadData = () => {
+    jyTable.value.reloadData()
+  }
 </script>
 <style lang="scss" scoped>
   .PrintControlManagement-TypeOfSeal {

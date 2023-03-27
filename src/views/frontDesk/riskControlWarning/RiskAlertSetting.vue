@@ -36,7 +36,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
-            :isSelection="true"
+            :paginationData="state.componentsPagination.data"
             @custom-click="customClick"
           >
           </componentsTable>
@@ -60,14 +60,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -76,7 +69,7 @@
   import componentsTabs from '../../components/tabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   const props = defineProps({
     // 处理类型
     type: {
@@ -187,11 +180,6 @@
     },
     componentsTable: {
       header: [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '风险分类',
@@ -309,7 +297,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -415,11 +403,6 @@
     // console.log(activeName);
     if (activeName == '1') {
       state.componentsTable.header = [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '风险分类',
@@ -535,11 +518,6 @@
       ]
     } else if (activeName == '2' || activeName == '3') {
       state.componentsTable.header = [
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '2',
           label: '风险项',
@@ -723,7 +701,7 @@
       ]
     }
   }
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === '设置提醒人') {
       showDepPerDialog.value = true

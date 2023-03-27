@@ -43,6 +43,8 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
+            isSelection
             @cellClick="cellClick"
             @custom-click="customClick"
           >
@@ -67,7 +69,7 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 处理弹窗 -->
-    <KDialog
+    <JyDialog
       @update:show="dialogProcess.show = $event"
       :show="dialogProcess.show"
       :title="dialogProcess.title"
@@ -88,7 +90,7 @@
         <button>进入盖章</button>
         <p>目前PC端不支持进入视频盖章，请至移动端操作</p>
       </div>
-    </KDialog>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
@@ -99,14 +101,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsTree from '../../components/tree'
@@ -116,10 +111,9 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import RealTimeConfirmlJson from '@/views/addDynamicFormJson/RealTimeConfirm.json'
-  import kDepartOrPersonVue from '../../components/modules/kDepartOrPerson.vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   const props = defineProps({
     // 处理类型
     type: {
@@ -190,6 +184,8 @@
           id: 'wjlx',
           label: '发起类型',
           type: 'select',
+          optionLabel: 'label',
+          optionValue: 'value',
           inCommonUse: true,
           options: [
             {
@@ -200,7 +196,10 @@
               label: '实时视频盖章',
               value: '3'
             }
-          ]
+          ],
+          defaultAttribute: {
+            multiple: false
+          }
         }
       ],
       butData: [
@@ -236,15 +235,6 @@
     },
     componentsTable: {
       header: [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据名称',
@@ -347,13 +337,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property == '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -507,15 +497,6 @@
     if (activeName == '1') {
       state.componentsTable.header = [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
           prop: '1',
           label: '单据名称',
           sortable: true,
@@ -615,15 +596,6 @@
       ]
     } else if (activeName == '2') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
         {
           prop: '1',
           label: '单据名称',

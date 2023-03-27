@@ -22,6 +22,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
           >
           </componentsTable>
@@ -152,13 +153,6 @@
     componentsTable: {
       header: [
         {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          fixed: true,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '通知人',
           sortable: true,
@@ -205,7 +199,6 @@
       ],
       data: [
         {
-          0: 1,
           1: '通知人',
           2: '19999999',
           3: '通知事件',
@@ -215,7 +208,6 @@
           7: '发送状态'
         },
         {
-          0: 2,
           1: '通知人',
           2: '19999999',
           3: '通知事件',
@@ -225,7 +217,6 @@
           7: '发送状态'
         },
         {
-          0: 3,
           1: '通知人',
           2: '19999999',
           3: '通知事件',
@@ -235,7 +226,6 @@
           7: '发送状态'
         },
         {
-          0: 4,
           1: '通知人',
           2: '19999999',
           3: '通知事件',
@@ -245,7 +235,6 @@
           7: '发送状态'
         },
         {
-          0: 5,
           1: '通知人',
           2: '19999999',
           3: '通知事件',
@@ -259,13 +248,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }

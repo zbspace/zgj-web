@@ -2,179 +2,216 @@
   <div class="comp-info-center">
     <div class="left">
       <div class="base">
-        <JyLabel label="基础信息" />
-        <div class="form-content">
-          <div class="rows">
-            <span class="label">单位负责人</span>
-            <div v-if="!edit1">
-              <span class="content">{{ formData.data3 }}</span>
-              <img :src="inputIcon" alt="" @click="edit1 = true" />
-            </div>
-            <div class="input" v-else>
-              <el-input
-                v-model="formData.data3"
-                placeholder="请输入新的头部系统显示名称"
-              />
-              <span class="save" @click="save">保存</span>
-              <span class="cancel" @click="cancel">取消</span>
-            </div>
-          </div>
-
-          <div class="rows">
-            <span class="label">负责人手机号</span>
-            <div v-if="!edit4">
-              <span class="content">{{ formData.data4 }}</span>
-              <img :src="inputIcon" alt="" @click="edit4 = true" />
-            </div>
-            <div class="input" v-else>
-              <el-input
-                v-model="formData.data4"
-                placeholder="请输入新的头部系统显示名称"
-              />
-              <span class="save" @click="save1">保存</span>
-              <span class="cancel" @click="cancel1">取消</span>
-            </div>
-          </div>
-
-          <div class="rows">
-            <span class="label">服务器域名</span>
-            <div v-if="!edit5">
-              <span class="content">{{ formData.data5 }}</span>
-              <img :src="inputIcon" alt="" @click="edit5 = true" />
-            </div>
-            <div class="input" v-else>
-              <el-input
-                v-model="formData.data5"
-                placeholder="请输入新的头部系统显示名称"
-              />
-              <span class="save" @click="save2">保存</span>
-              <span class="cancel" @click="cancel2">取消</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="base">
+        <JyLabel
+          label="基础信息"
+          :btn="editBaseInfo ? '保存' : '修改'"
+          :btn1="editBaseInfo ? '取消' : ''"
+          @on-click="onClickBaseInfo"
+          @on-click-cancel="onClickCancelBaseInfo"
+        />
         <el-form
-          ref="ruleFormRef"
-          :model="formData"
-          :rules="rules"
-          label-width="120px"
+          ref="baseInfoFormRef"
+          :model="baseInfoData"
+          :rules="baseInfoRules"
+          label-width="100px"
+          hide-required-asterisk
           class="demo-ruleForm"
         >
-          <JyLabel
-            label="超级管理员"
-            :btn="edit2 ? '保存' : '变更'"
-            :btn1="edit2 ? '取消' : ''"
-            @on-click="onClick2"
-            @on-click-cancel="onClickCancel2"
-          />
           <div>
-            <div class="rows input">
-              <el-form-item label="超级管理员" prop="data1">
-                <span class="content" v-if="!edit2">{{ formData.data1 }}</span>
-                <el-input
-                  v-if="edit2"
-                  v-model="formData.data1"
-                  placeholder=""
-                />
+            <div class="rows">
+              <el-form-item label="单位负责人" prop="tenantPm">
+                <span class="content" v-if="!editBaseInfo">{{
+                  props.tenantBaseInfo.tenantPm
+                }}</span>
+                <div v-else>
+                  <el-input
+                    v-model="baseInfoData.tenantPm"
+                    style="width: 180px"
+                    placeholder="请输入"
+                  />
+                </div>
               </el-form-item>
             </div>
-            <div class="rows input">
-              <el-form-item label="超级管理员账号" prop="data1">
-                <span class="content" v-if="!edit2">{{ formData.data2 }}</span>
-                <el-input
-                  v-if="edit2"
-                  v-model="formData.data2"
-                  placeholder=""
-                />
+            <div class="rows">
+              <el-form-item label="负责人手机号" prop="tenantPmTel">
+                <span class="content" v-if="!editBaseInfo">{{
+                  props.tenantBaseInfo.tenantPmTel
+                }}</span>
+                <div v-else>
+                  <el-input
+                    v-model="baseInfoData.tenantPmTel"
+                    style="width: 180px"
+                    placeholder="请输入"
+                  />
+                </div>
+              </el-form-item>
+            </div>
+            <div class="rows">
+              <el-form-item label="服务器域名" prop="domainName">
+                <span class="content" v-if="!editBaseInfo">{{
+                  props.tenantBaseInfo.domainName
+                }}</span>
+                <div v-else>
+                  <el-input
+                    v-model="baseInfoData.domainName"
+                    style="width: 180px"
+                    placeholder="请输入"
+                  />
+                </div>
               </el-form-item>
             </div>
           </div>
         </el-form>
       </div>
+      <div class="base">
+        <JyLabel
+          label="超级管理员"
+          btn="变更"
+          @on-click="changeSAVisible = true"
+        />
+        <div class="form-content">
+          <div class="rows">
+            <span class="label">超级管理员</span>
+            <div>
+              <span class="content">{{ props.tenantAdminInfo.adminName }}</span>
+            </div>
+          </div>
+          <div class="rows">
+            <span class="label">超级管理员账号</span>
+            <div>
+              <span class="content">{{ props.tenantAdminInfo.accountNo }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="right">
       <JyLabel
         label="密码设置"
-        :btn="edit3 ? '保存' : '修改'"
-        :btn1="edit3 ? '取消' : ''"
-        @on-click="onClick3"
-        @on-click-cancel="onClickCancel3"
+        :btn="editPasswordSetting ? '保存' : '修改'"
+        :btn1="editPasswordSetting ? '取消' : ''"
+        @on-click="onClickPasswordSetting"
+        @on-click-cancel="onClickCancelPasswordSetting"
       />
       <el-form
-        ref="ruleFormRef"
-        :model="formData"
-        :rules="rules"
+        ref="passwordRuleFormRef"
+        :model="passwordData"
+        :rules="passwordRules"
         label-width="160px"
+        hide-required-asterisk
         class="demo-ruleForm"
       >
         <div>
           <div class="rows">
-            <el-form-item label="首次登录必须修改密码" prop="data6">
-              <span class="content color-3ED096" v-if="!edit3">开</span>
-              <el-switch v-else v-model="formData.data6" />
+            <el-form-item label="首次登录必须修改密码" prop="passInitModfiy">
+              <span class="content color-3ED096" v-if="!editPasswordSetting">{{
+                props.passwordPolicy.passInitModfiy === '1' ? '是' : '否'
+              }}</span>
+              <el-switch
+                v-else
+                active-value="1"
+                inactive-value="0"
+                v-model="passwordData.passInitModfiy"
+              />
             </el-form-item>
           </div>
           <div class="rows">
-            <el-form-item label="弱密码禁止保存" prop="data7">
-              <span class="content color-3ED096" v-if="!edit3">开</span>
-              <el-switch v-else v-model="formData.data7" />
+            <el-form-item label="弱密码禁止保存" prop="passLow">
+              <span class="content color-3ED096" v-if="!editPasswordSetting">{{
+                props.passwordPolicy.passLow === '1' ? '是' : '否'
+              }}</span>
+              <el-switch
+                v-else
+                active-value="1"
+                inactive-value="0"
+                v-model="passwordData.passLow"
+              />
             </el-form-item>
           </div>
           <div class="rows">
-            <!-- <span class="label w-140">密码变更提醒</span>
-            <span class="content color-3ED096">开</span>
-             -->
-            <el-form-item label="密码变更提醒" prop="data8">
-              <div v-if="!edit3">
-                <span class="content color-3ED096">开</span>
-                <span class="color-black-045">（提醒周期5天）</span>
+            <el-form-item label="密码变更提醒" prop="passRemind">
+              <div v-if="!editPasswordSetting">
+                <span class="content color-3ED096">{{
+                  props.passwordPolicy.passRemind === '1' ? '是' : '否'
+                }}</span>
+                <span
+                  class="color-black-045"
+                  v-if="props.passwordPolicy.passRemind === '1'"
+                  >（提醒周期{{ props.passwordPolicy.passRemindNum }}天）</span
+                >
               </div>
-              <div v-else>
-                <el-switch v-model="formData.data8" />
-                <span>&ensp;&ensp;提醒周期&ensp;&ensp;</span>
-                <el-input-number
-                  v-model="formData.data9"
-                  :min="1"
-                  :max="31"
-                  @change="handleChange"
+              <div style="display: flex; align-items: center" v-else>
+                <el-switch
+                  active-value="1"
+                  inactive-value="0"
+                  v-model="passwordData.passRemind"
                 />
-                <span>&ensp;&ensp;天</span>
+                <div v-if="passwordData.passRemind === '1'">
+                  <span>&ensp;&ensp;提醒周期&ensp;&ensp;</span>
+                  <el-input-number
+                    v-model="passwordData.passRemindNum"
+                    :min="0"
+                  />
+                  <span>&ensp;&ensp;天</span>
+                </div>
               </div>
             </el-form-item>
           </div>
           <div class="rows">
-            <el-form-item label="密码至少包含" prop="data10">
-              <span class="tab" v-if="!edit3">小写字母</span>
-              <div v-else>
-                <el-checkbox-group v-model="formData.data10">
-                  <el-checkbox label="大写字母" />
-                  <el-checkbox label="小写字母" />
-                  <el-checkbox label="数字" />
-                  <el-checkbox label="特殊字符" />
+            <el-form-item label="密码至少包含" prop="passwordRules">
+              <div
+                v-if="
+                  !editPasswordSetting &&
+                  props.passwordPolicy.passwordRules &&
+                  props.passwordPolicy.passwordRules.length
+                "
+              >
+                <template v-for="(item, index) in passwordRuleList">
+                  <span
+                    class="tab mr10"
+                    :key="index"
+                    v-if="
+                      props.passwordPolicy.passwordRules.includes(item.value)
+                    "
+                    >{{ item.label }}</span
+                  >
+                </template>
+              </div>
+              <div v-if="editPasswordSetting">
+                <el-checkbox-group v-model="passwordData.passwordRules">
+                  <el-checkbox-button
+                    v-for="(item, index) in passwordRuleList"
+                    :key="index"
+                    :label="item.value"
+                  >
+                    {{ item.label }}
+                  </el-checkbox-button>
                 </el-checkbox-group>
               </div>
             </el-form-item>
           </div>
           <div class="rows">
-            <el-form-item label="限制密码长度至少为" prop="data11">
-              <span class="content tab" v-if="!edit3">8</span>
+            <el-form-item label="限制密码长度至少为" prop="passLength">
+              <span class="content tab" v-if="!editPasswordSetting">{{
+                props.passwordPolicy.passLength
+              }}</span>
               <el-input-number
                 v-else
-                v-model="formData.data11"
+                v-model="passwordData.passLength"
                 :min="1"
-                :max="31"
-                @change="handleChange"
+                :max="18"
               />
-              <span class="color-black-045">&ensp;&ensp;位</span>
+              <span class="color-black-045">&ensp;位</span>
             </el-form-item>
           </div>
           <div class="rows">
-            <el-form-item label="初始密码" prop="data12">
-              <span class="content tab" v-if="!edit3">13780094578</span>
+            <el-form-item label="初始密码" prop="passInit">
+              <span class="content tab" v-if="!editPasswordSetting">{{
+                props.passwordPolicy.passInit
+              }}</span>
               <div v-else>
                 <el-input
-                  v-model="formData.data12"
+                  v-model="passwordData.passInit"
                   type="password"
                   style="width: 126px"
                   placeholder="请输入"
@@ -187,67 +224,228 @@
       </el-form>
     </div>
   </div>
+  <!-- 变更超级管理员 -->
+  <ChangeSuperAdmin
+    v-model="changeSAVisible"
+    :superAdminInfo="props.tenantAdminInfo"
+    @updateSuperAdminInfo="updateSuperAdminInfo"
+  />
 </template>
 
 <script setup>
-  import inputIcon from '@/assets/svg/system/comp-info/input.svg'
+  import ChangeSuperAdmin from '../ChangeSuperAdmin'
+  import companyInfoApi from '@/api/system/companyManagement/companyInfo'
+  import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
-  const edit1 = ref(false)
-  const edit2 = ref(false)
-  const edit3 = ref(false)
-  const edit4 = ref(false)
-  const edit5 = ref(false)
-  const rules = ref([])
-  const formData = ref({
-    data1: '111',
-    data2: '222',
-    data3: '玛丽',
-    data4: '18017607670',
-    data5: 'www.yyy.com',
-    data6: true,
-    data7: true,
-    data8: true,
-    data9: 5,
-    data10: [],
-    data11: 8,
-    data12: '11111111'
+  const emit = defineEmits(['reloadData'])
+  const props = defineProps({
+    tenantBaseInfo: {
+      type: Object,
+      required: true
+    },
+    tenantAdminInfo: {
+      type: Object,
+      required: true
+    },
+    passwordPolicy: {
+      type: Object,
+      required: true
+    }
   })
-  const save = () => {
-    edit1.value = !edit1.value
+  const editBaseInfo = ref(false)
+  const editPasswordSetting = ref(false)
+  const passwordRuleFormRef = ref(null)
+  const baseInfoFormRef = ref(null)
+  const changeSAVisible = ref(false)
+
+  const baseInfoData = ref(null)
+  const validPhone = (rule, value, callback) => {
+    if (!value) {
+      callback(new Error('请输入负责人手机号'))
+    } else {
+      if (
+        !/^((1[3-9][0-9]))\d{8}$|^(5|6|8|9)\d{7}$|^\d{3,4}-\d{7,8}$|^(852)?(2[1-9]|3[145679])\d{6}$/.test(
+          value
+        )
+      ) {
+        callback(new Error('负责人手机号格式不正确'))
+      } else {
+        callback()
+      }
+    }
   }
-  const save1 = () => {
-    edit4.value = !edit4.value
+  const baseInfoRules = ref({
+    tenantPm: [
+      {
+        required: true,
+        message: '请输入单位负责人',
+        trigger: 'change'
+      }
+    ],
+    tenantPmTel: [
+      {
+        required: true,
+        validator: validPhone,
+        trigger: 'change'
+      }
+    ]
+  })
+  const passwordRuleList = ref([
+    {
+      label: '大写字母',
+      value: 'passUppercase'
+    },
+    {
+      label: '小写字母',
+      value: 'passLowercase'
+    },
+    {
+      label: '数字',
+      value: 'passNum'
+    },
+    {
+      label: '特殊字符',
+      value: 'passSpecial'
+    }
+  ])
+  const passwordData = ref(null)
+  const passwordRules = ref({
+    passInitModfiy: [
+      {
+        required: true,
+        message: '请选择',
+        trigger: 'change'
+      }
+    ],
+    passLow: [
+      {
+        required: true,
+        message: '请选择',
+        trigger: 'change'
+      }
+    ],
+    passRemind: [
+      {
+        required: true,
+        message: '请选择',
+        trigger: 'change'
+      }
+    ],
+    passRemindNum: [
+      {
+        required: true,
+        message: '请输入密码变更提醒周期天数',
+        trigger: 'change'
+      },
+      {
+        min: 1,
+        max: 31,
+        message: '提醒周期天数必须在1 ~ 31天之间',
+        trigger: 'change'
+      }
+    ],
+    passwordRules: [
+      {
+        required: true,
+        message: '请选择密码至少包含的内容',
+        trigger: 'change'
+      }
+    ],
+    passLength: [
+      {
+        required: true,
+        message: '请输入密码最小长度',
+        trigger: 'change'
+      }
+    ],
+    passInit: [
+      {
+        required: true,
+        message: '请输入初始密码',
+        trigger: 'change'
+      }
+    ]
+  })
+
+  // 基础信息
+  const onClickBaseInfo = type => {
+    console.log(type)
+    if (type === '修改') {
+      baseInfoData.value = JSON.parse(JSON.stringify(props.tenantBaseInfo))
+      editBaseInfo.value = true
+    } else {
+      baseInfoFormRef.value.validate(valid => {
+        if (valid) {
+          console.log(baseInfoData.value)
+          companyInfoApi.updateTenantBaseInfo(baseInfoData.value).then(() => {
+            emit('reloadData')
+            baseInfoFormRef.value.resetFields()
+            editBaseInfo.value = false
+            ElMessage({
+              message: '基础信息变更成功',
+              type: 'success'
+            })
+          })
+        }
+      })
+    }
   }
 
-  const save2 = () => {
-    edit5.value = !edit5.value
+  const onClickCancelBaseInfo = () => {
+    baseInfoFormRef.value.resetFields()
+    editBaseInfo.value = false
   }
 
-  const cancel = () => {
-    edit1.value = !edit1.value
-  }
-  const cancel1 = () => {
-    edit4.value = !edit4.value
-  }
-  const cancel2 = () => {
-    edit5.value = !edit5.value
+  // 变更超管
+  const updateSuperAdminInfo = () => {
+    changeSAVisible.value = false
+    emit('reloadData')
   }
 
-  const onClick3 = () => {
-    edit3.value = !edit3.value
+  // 密码设置
+  const onClickPasswordSetting = type => {
+    console.log(type)
+    if (type === '修改') {
+      passwordData.value = JSON.parse(JSON.stringify(props.passwordPolicy))
+      editPasswordSetting.value = !editPasswordSetting.value
+    } else {
+      passwordRuleFormRef.value.validate(valid => {
+        if (valid) {
+          const params = JSON.parse(JSON.stringify(passwordData.value))
+          console.log(params)
+          const passwordRules = params.passwordRules
+          delete params.passwordRules
+          const rules = {
+            passUppercase: '0',
+            passLowercase: '0',
+            passNum: '0',
+            passSpecial: '0'
+          }
+          passwordRules.forEach(i => {
+            rules[i] = '1'
+          })
+          companyInfoApi
+            .updateTenantPasswordPolicy({
+              ...params,
+              ...rules
+            })
+            .then(res => {
+              emit('reloadData')
+              passwordData.value = null
+              passwordRuleFormRef.value.resetFields()
+              editPasswordSetting.value = false
+              ElMessage({
+                message: '密码规则变更成功',
+                type: 'success'
+              })
+            })
+        }
+      })
+    }
   }
-  const onClickCancel3 = () => {
-    edit3.value = !edit3.value
-  }
-  const onClick2 = () => {
-    edit2.value = !edit2.value
-  }
-  const onClickCancel2 = () => {
-    edit2.value = !edit2.value
-  }
-
-  const handleChange = () => {
-    //
+  const onClickCancelPasswordSetting = () => {
+    passwordRuleFormRef.value.resetFields()
+    editPasswordSetting.value = !editPasswordSetting.value
   }
 </script>
 
@@ -322,14 +520,17 @@
         cursor: pointer;
       }
       .tab {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+        display: inline-block;
         padding: 0 14px;
         gap: 10px;
         height: 30px;
+        line-height: 30px;
         background: rgba(0, 0, 0, 0.04);
         color: rgba(0, 0, 0, 0.85);
+      }
+
+      .mr10 {
+        margin-right: 10px;
       }
     }
     .w-140 {

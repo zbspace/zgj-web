@@ -35,8 +35,53 @@
                   class="width-100"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @input="getCurrentValue(item, index)"
+                  clearable
                 />
+              </div>
+            </div>
+            <!-- dialog 选择弹出框-->
+            <div
+              class="ap-box-cont derivable"
+              v-else-if="item.type == 'dialog'"
+            >
+              <div class="ap-box-label" :style="props.style.labelStyle">
+                <span class="ap-box-label-necessary" v-if="item.isNecessary"
+                  >*</span
+                >
+                {{ item.label }}
+              </div>
+              <div class="ap-box-contBox width-0">
+                <el-select
+                  v-model="item.values"
+                  v-bind="item.defaultAttribute"
+                  tag-type="waring"
+                  disabled
+                  style="width: 100%"
+                  :class="
+                    (item.defaultAttribute.multiple && item.values.length) ||
+                    (!item.defaultAttribute.multiple && item.values)
+                      ? 'hasContent'
+                      : ''
+                  "
+                  @click="clickDialog(item, index)"
+                >
+                  <el-option
+                    v-for="one in item.options"
+                    :key="one.value"
+                    :label="one.label"
+                    :value="one.value"
+                  />
+                </el-select>
+                <div
+                  class="ap-box-contBox-icon"
+                  @click="clickDialog(item, index)"
+                >
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="../../assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
             <!-- derivable 选择弹出框-->
@@ -50,16 +95,32 @@
                 >
                 {{ item.label }}
               </div>
-              <div
-                class="ap-box-contBox width-0"
-                @click="clickElement(item, index)"
-              >
-                <el-input
-                  class="ap-box-contBox-input width-100"
+              <div class="ap-box-contBox width-0">
+                <el-select
+                  v-model="item.values"
                   v-bind="item.defaultAttribute"
-                  readonly
-                />
-                <div class="ap-box-contBox-icon">
+                  tag-type="waring"
+                  disabled
+                  style="width: 100%"
+                  :class="
+                    (item.defaultAttribute.multiple && item.values.length) ||
+                    (!item.defaultAttribute.multiple && item.values)
+                      ? 'hasContent'
+                      : ''
+                  "
+                  @click="clickElement(item, index)"
+                >
+                  <el-option
+                    v-for="one in item.options"
+                    :key="one.value"
+                    :label="one.label"
+                    :value="one.value"
+                  />
+                </el-select>
+                <div
+                  class="ap-box-contBox-icon"
+                  @click="clickElement(item, index)"
+                >
                   <img
                     class="ap-box-contBox-icon-img"
                     src="../../assets/svg/ketanchude.svg"
@@ -81,13 +142,19 @@
                   class="width-100"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue(item, index)"
+                  clearable
+                  :multiple="
+                    item.defaultAttribute
+                      ? item.defaultAttribute.multiple
+                      : false
+                  "
+                  @change="reloadData"
                 >
                   <el-option
                     v-for="data in item.options"
-                    :key="data.value"
-                    :label="data.label"
-                    :value="data.value"
+                    :key="data[item.optionValue || 'value']"
+                    :label="data[item.optionLabel || 'label']"
+                    :value="data[item.optionValue || 'value']"
                   />
                 </el-select>
               </div>
@@ -105,7 +172,7 @@
                   class="width-100"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue(item, index)"
+                  @change="changeDatePicker"
                 />
               </div>
             </div>
@@ -129,7 +196,6 @@
                   v-bind="data.defaultAttribute"
                   :style="data.style"
                   v-model="data.value"
-                  @change="getCurrentValue(item, index)"
                 />
               </div>
             </div>
@@ -142,7 +208,7 @@
                 <el-radio-group
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue(item, index)"
+                  @change="reloadData"
                 >
                   <el-radio
                     v-for="(data, num) in item.radio"
@@ -170,7 +236,7 @@
                   style="width: 100%"
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
-                  @change="getCurrentValue(item, index)"
+                  @change="reloadData"
                 />
               </div>
             </div>
@@ -272,7 +338,6 @@
                     class="width-100"
                     v-bind="item.startAttribute"
                     v-model="item.startValue"
-                    @input="getCurrentValue(item, index)"
                   />
                 </div>
                 <div class="ap-box-contBox-cut"> - </div>
@@ -281,7 +346,6 @@
                     class="width-100"
                     v-bind="item.endAttribute"
                     v-model="item.endValue"
-                    @input="getCurrentValue(item, index)"
                   />
                 </div>
               </div>
@@ -355,18 +419,35 @@
         </div>
       </el-scrollbar>
     </div>
+    <!-- 用户、部门弹框 -->
+    <kDepartOrPersonVue
+      v-if="showDeptDialog"
+      :show="showDepPerDialog"
+      @update:show="closeShow"
+      :searchSelected="searchSelected"
+      @update:searchSelected="submit"
+      :tabsShow="tabsShow"
+    />
+    <!-- 往来单位弹框选择 -->
+    <JyRelatedCompany
+      v-model="wldwDialogVisible"
+      @on-submit="relatedCompanySubmit"
+      :checkType="checkType"
+      :haveSelectList="fieldModel"
+    />
+    <!-- 印章选择弹框 -->
+    <JySelectSeal
+      v-model="yzDialogVisible"
+      :haveSelectList="selectedData"
+      :checkType="checkType"
+      @on-submit="getSelection"
+    />
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    computed,
-    watch
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted, computed, watch, ref } from 'vue'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import request from '@/utils/request'
   const props = defineProps({
     // 标识
     refs: {
@@ -426,12 +507,18 @@
     }
   })
   // console.log(props.defaultAttribute['scrollbar-max-height']);
-  const emit = defineEmits([
-    'getCurrentValue',
-    'getCurrentValueAll',
-    'clickElement',
-    'clickSubmit'
-  ])
+  const showDeptDialog = ref(false)
+  const showDepPerDialog = ref(false)
+  const searchSelected = ref([])
+  const kDepartOrPerson = ref(null)
+  const tabsShow = ref([])
+  const wldwDialogVisible = ref(false)
+  const yzDialogVisible = ref(false)
+  const selectedData = ref(null)
+  const fieldModel = ref(null)
+  const dialogCurrent = ref(null)
+  const checkType = ref(null)
+  const emit = defineEmits(['clickSubmit', 'reloadData'])
   const state = reactive({
     props: {
       // 默认属性
@@ -520,13 +607,25 @@
     if (props.defaultAttribute.isUnfold) {
       state.cache.isUnfold = props.defaultAttribute.isUnfold
     }
-    props.data.map(item => {
-      if (item.inCommonUse) {
-        // console.log();
-      } else {
+    // props.data.map(item => {
+    //   if (item.inCommonUse) {
+    //     // console.log();
+    //   } else {
+    //     showUnfold = true
+    //   }
+    //   return item
+    // })
+    props.data.forEach(item => {
+      if (!item.inCommonUse) {
         showUnfold = true
       }
-      return item
+      console.log(item.requestObj)
+      if (item.requestObj) {
+        request(item.requestObj).then(res => {
+          console.log(res)
+          item.options = res.data
+        })
+      }
     })
     state.cache.showUnfold = showUnfold
     // 设置表单显示数据
@@ -548,18 +647,47 @@
     state.cache.formData = formData
   }
   // 获取当前表单的值
-  function getCurrentValue(item, index) {
-    // console.log(item, index)
-    emit('getCurrentValue', item, index)
-    getCurrentValueAll()
-  }
-  // 获取全部表单的值
-  function getCurrentValueAll() {
-    emit('getCurrentValueAll', props.data)
+  function reloadData() {
+    emit('reloadData')
   }
   // 点击表单
   function clickElement(item, index) {
-    emit('clickElement', item, index)
+    showDeptDialog.value = true
+    kDepartOrPerson.value = item.id
+    if (item.defaultAttribute.type === 'user') {
+      tabsShow.value = ['user']
+      searchSelected.value = []
+    } else {
+      tabsShow.value = ['organ']
+      searchSelected.value = []
+    }
+    setTimeout(() => {
+      showDepPerDialog.value = true
+    }, 200)
+  }
+  const closeShow = () => {
+    showDepPerDialog.value = false
+    setTimeout(() => {
+      showDeptDialog.value = false
+    }, 200)
+  }
+  const submit = value => {
+    const index = state.cache.formData.findIndex(
+      i => i.id === kDepartOrPerson.value
+    )
+    if (index > -1) {
+      if (state.cache.formData[index].defaultAttribute.multiple) {
+        state.cache.formData[index].values = value.map(i => i.id)
+      } else {
+        state.cache.formData[index].values = value[0].id
+      }
+      state.cache.formData[index].options = value.map(i => {
+        return {
+          label: i.name,
+          value: i.id
+        }
+      })
+    }
   }
   // 点击按钮
   function clickSubmit(item, index) {
@@ -598,11 +726,89 @@
       arr[index].checked = true
     }
   }
+  function changeDatePicker(val) {
+    if (!val) {
+      emit('reloadData')
+    }
+  }
+  // dialog
+  function clickDialog(item, index) {
+    checkType.value = item.defaultAttribute.multiple ? 'checkbox' : 'radio'
+    if (item.defaultAttribute.type === 'JyRelatedCompany') {
+      wldwDialogVisible.value = true
+      fieldModel.value = item.values
+    } else if (item.defaultAttribute.type === 'JySelectSeal') {
+      yzDialogVisible.value = true
+      console.log(item)
+      selectedData.value = item.defaultAttribute.multiple
+        ? item.options
+        : item.values
+    }
+    dialogCurrent.value = item.id
+  }
+
+  // 往来单位
+  function relatedCompanySubmit(value) {
+    console.log(value)
+    wldwDialogVisible.value = false
+    const index = state.cache.formData.findIndex(
+      i => i.id === dialogCurrent.value
+    )
+    if (index > -1) {
+      if (state.cache.formData[index].defaultAttribute.multiple) {
+        state.cache.formData[index].values = value.map(i => i.relatedCompanyId)
+        state.cache.formData[index].options = value.map(i => {
+          return {
+            label: i.relatedCompanyName,
+            value: i.relatedCompanyId
+          }
+        })
+      } else {
+        state.cache.formData[index].values = value.relatedCompanyId
+        state.cache.formData[index].options = [
+          {
+            label: value.relatedCompanyName,
+            value: value.relatedCompanyId
+          }
+        ]
+      }
+    }
+  }
+
+  // 印章
+  function getSelection(value) {
+    console.log(value)
+    yzDialogVisible.value = false
+    const index = state.cache.formData.findIndex(
+      i => i.id === dialogCurrent.value
+    )
+    if (index > -1) {
+      if (state.cache.formData[index].defaultAttribute.multiple) {
+        state.cache.formData[index].values = value.map(i => i.sealId)
+        state.cache.formData[index].options = value.map(i => {
+          return {
+            label: i.sealName,
+            value: i.sealId,
+            ...i
+          }
+        })
+      } else {
+        state.cache.formData[index].values = value.sealId
+        state.cache.formData[index].options = [
+          {
+            label: value.sealName,
+            value: value.sealId,
+            ...value
+          }
+        ]
+      }
+    }
+  }
 
   watch(props, (newValue, oldValue) => {
     // console.log(newValue, oldValue);
     // 初始化Props数据
-    initPropsData()
+    // initPropsData()
   })
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -614,8 +820,12 @@
     // console.log(props.data)
   })
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .components-searchForm {
+    .el-input.is-disabled .el-input__wrapper {
+      background-color: transparent;
+    }
+
     .ap-dis {
       padding: 0rem 0% 0.5rem 0%;
       display: flex;
@@ -663,7 +873,7 @@
         position: relative;
         @include mixin-padding-right(10);
         box-sizing: border-box;
-        color: var(--color-text-1);
+        color: var(--jy-color-text-1);
 
         .ap-box-label-necessary {
           color: red;
@@ -715,7 +925,7 @@
       .unfold {
         display: flex;
         align-items: center;
-        color: var(--Info-6);
+        color: var(--jy-info-6);
         cursor: pointer;
         margin-right: 0.5rem;
 
@@ -734,13 +944,13 @@
     }
 
     .border-bottom {
-      border-bottom: 1px solid var(--color-border-2);
+      border-bottom: 1px solid var(--jy-color-border-2);
     }
 
     .custom-button {
       & {
-        border: 1px dashed var(--color-border-1);
-        border-radius: var(--border-radius-2);
+        border: 1px dashed var(--jy-color-border-1);
+        border-radius: var(--jy-border-radius-2);
         width: auto;
         display: flex;
         justify-content: center;
@@ -749,7 +959,7 @@
         @include mixin-padding-bottom(5);
         @include mixin-padding-right(16);
         @include mixin-padding-left(16);
-        font-size: var(--font-size-body-1);
+        font-size: var(--jy-font-size-body-1);
         position: relative;
       }
       .custom-button-checkIcon {
@@ -760,8 +970,8 @@
       }
     }
     .checked {
-      border: 1px solid var(--primary-6);
-      color: var(--primary-6);
+      border: 1px solid var(--jy-primary-6);
+      color: var(--jy-primary-6);
       .custom-button-checkIcon {
         display: inline-block;
       }
@@ -772,6 +982,28 @@
     }
 
     .derivable {
+      .el-input__suffix {
+        display: none;
+      }
+
+      .el-select .el-input.is-disabled .el-input__wrapper {
+        cursor: pointer;
+      }
+
+      .el-select .el-input.is-disabled .el-input__inner {
+        cursor: pointer;
+      }
+
+      .hasContent {
+        .el-input__wrapper {
+          -webkit-text-fill-color: #000;
+        }
+
+        .el-input__inner {
+          -webkit-text-fill-color: #000;
+        }
+      }
+
       .ap-box-contBox {
         position: relative;
         display: flex;
@@ -781,7 +1013,7 @@
           position: absolute;
           right: 0.8rem;
           cursor: pointer;
-          height: 50%;
+          height: 14px;
           display: flex;
           align-items: center;
 
@@ -821,7 +1053,7 @@
       }
 
       .button-contBox :hover {
-        background-color: var(--primary-2);
+        background-color: var(--jy-primary-2);
       }
 
       .button-contBox {
@@ -851,7 +1083,7 @@
       }
 
       .button-contBox :hover {
-        background-color: var(--primary-2);
+        background-color: var(--jy-primary-2);
       }
 
       .button-contBox {
@@ -881,30 +1113,30 @@
       input::-webkit-input-placeholder {
         /* WebKit browsers */
         // color: #9c9c9c;
-        font-size: var(--font-size-caption);
+        font-size: var(--jy-font-size-caption);
       }
 
       input:-moz-placeholder {
         /* Mozilla Firefox 4 to 18 */
         // color: #9c9c9c;
-        font-size: var(--font-size-caption);
+        font-size: var(--jy-font-size-caption);
       }
 
       input::-moz-placeholder {
         /* Mozilla Firefox 19+ */
         // color: #9c9c9c;
-        font-size: var(--font-size-caption);
+        font-size: var(--jy-font-size-caption);
       }
 
       input::-ms-input-placeholder {
         /* Internet Explorer 10+ */
         // color: #9c9c9c;
-        font-size: var(--font-size-caption);
+        font-size: var(--jy-font-size-caption);
       }
 
       .el-checkbox__label {
-        font-size: var(--font-size-body-2);
-        color: var(--color-text-1);
+        font-size: var(--jy-font-size-body-2);
+        color: var(--jy-color-text-1);
       }
     }
   }

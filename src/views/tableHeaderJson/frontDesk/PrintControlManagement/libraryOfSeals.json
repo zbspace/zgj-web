@@ -1,0 +1,82 @@
+[
+  {
+    "prop": "sealName",
+    "label": "印章名称",
+    "sortable": "custom",
+    "min-width": 210,
+    "show-overflow-tooltip": true,
+    "show": true
+  },
+  {
+    "prop": "sealTypeName",
+    "label": "印章类型",
+    "sortable": "custom",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "sealStatus",
+    "label": "印章状态",
+    "sortable": "custom",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "keepUserName",
+    "label": "保管人",
+    "sortable": "custom",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "keepOrganName",
+    "label": "保管部门",
+    "sortable": "custom",
+    "min-width": 150,
+    "show": true
+  },
+  {
+    "prop": "createDatetime",
+    "label": "创建时间",
+    "sortable": "custom",
+    "min-width": 180,
+    "show": true
+  },
+  {
+    "prop": "caozuo",
+    "label": "操作",
+    "fixed": "right",
+    "width": 300,
+    "show": true,
+    "rankDisplayData": [
+      {
+        "name": "t-zgj-Edit",
+        "label": "修改"
+      },
+      {
+        "name": "t-zgj-Delete",
+        "label": "删除"
+      },
+      {
+        "name": "t-zgj-seal.SetVisibility",
+        "label": "设置可见范围"
+      },
+      {
+        "name": "t-zgj-seal.SetAvailable",
+        "label": "设置可用范围"
+      },
+      {
+        "name": "t-zgj-seal.deactivated",
+        "label": "停用"
+      },
+      {
+        "name": "t-zgj-status.Change",
+        "label": "变更"
+      },
+      {
+        "name": "t-zgj-status.Destroy",
+        "label": "销毁"
+      }
+    ]
+  }
+]

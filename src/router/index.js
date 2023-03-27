@@ -1,10 +1,11 @@
 import { createWebHistory, createRouter } from 'vue-router'
-// import axios from 'axios';
 import routes from './routes'
-// import appConfig from "../../app.config";
 import { useAccountInfoStore } from '@/store/accountInfo'
 import { useMenusInfoStore } from '@/store/menus'
-
+import NProgress from 'nprogress'
+import { setWaterMark, removeWatermark } from '@/utils/water'
+import dayjs from 'dayjs'
+import 'nprogress/nprogress.css'
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -19,6 +20,14 @@ const router = createRouter({
   }
 })
 
+NProgress.configure({
+  easing: 'ease', // 动画方式
+  speed: 500, // 递增进度条的速度
+  showSpinner: false, // 是否显示加载ico
+  trickleSpeed: 200, // 自动递增间隔
+  minimum: 0.3 // 初始化时的最小百分比
+})
+
 router.beforeEach((routeTo, routeFrom) => {
   // 更具url判断是业务前台
   const menusInfoStore = useMenusInfoStore()
@@ -29,15 +38,16 @@ router.beforeEach((routeTo, routeFrom) => {
   }
 
   const accountInfoStore = useAccountInfoStore()
-  if (routeTo.meta.authRequired && !accountInfoStore.name) {
+  if (routeTo.meta.authRequired && !accountInfoStore.token) {
     // 此路由需要授权，请检查是否已登录
     // 如果没有，则重定向到登录页面
     return {
       path: '/login/account',
       // 保存我们所在的位置，以便以后再来
-      query: { redirect: routeTo.fullPath }
+      query: { redirect: encodeURIComponent(routeTo.fullPath) }
     }
   }
+  NProgress.start()
 })
 
 router.beforeResolve(async (routeTo, routeFrom, next) => {
@@ -61,8 +71,21 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
   } catch (error) {
     return
   }
-  // document.title = routeTo.meta.title + ' | ' + appConfig.title;
+  removeWatermark()
+  if (
+    routeTo.path.indexOf('/login/') === -1 &&
+    localStorage.getItem('watermark') === '1'
+  ) {
+    const text =
+      JSON.parse(localStorage.getItem('accountInfo')).userName +
+      ' ' +
+      dayjs().format('YYYY-MM-DD HH:mm')
+    setWaterMark(text)
+  }
   next()
 })
 
+router.afterEach(() => {
+  NProgress.done()
+})
 export default router

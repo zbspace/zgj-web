@@ -34,8 +34,10 @@
         <div>
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
+            isSelection
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             @selection-change="selectionChange"
           >
           </componentsTable>
@@ -153,17 +155,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          align: 'center'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '固件版本号',
           sortable: true,
@@ -231,7 +222,6 @@
       ],
       data: [
         {
-          0: 1,
           1: 'V1.0.9',
           2: '1.0.3',
           3: '启用',
@@ -242,7 +232,6 @@
           8: '说明内容'
         },
         {
-          0: 2,
           1: 'V1.1.9',
           2: '1.0.3',
           3: '启用',
@@ -253,7 +242,6 @@
           8: '说明内容'
         },
         {
-          0: 3,
           1: 'V1.0.9',
           2: '1.0.3',
           3: '启用',
@@ -264,7 +252,6 @@
           8: '说明内容'
         },
         {
-          0: 4,
           1: 'V1.0.9',
           2: '1.0.3',
           3: '启用',
@@ -275,7 +262,6 @@
           8: '说明内容'
         },
         {
-          0: 5,
           1: 'V1.0.9',
           2: '1.0.3',
           3: '启用',
@@ -286,7 +272,6 @@
           8: '说明内容'
         },
         {
-          0: 6,
           1: 'V1.0.9',
           2: '1.0.3',
           3: '启用',
@@ -297,7 +282,6 @@
           8: '说明内容'
         },
         {
-          0: 7,
           1: 'V1.0.9',
           2: '1.0.3',
           3: '启用',
@@ -308,7 +292,6 @@
           8: '说明内容'
         },
         {
-          0: 8,
           1: 'V1.0.9',
           2: '1.0.3',
           3: '启用',
@@ -323,7 +306,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },

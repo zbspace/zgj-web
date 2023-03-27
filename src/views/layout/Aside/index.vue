@@ -1,5 +1,5 @@
 <template>
-  <div class="left-aside">
+  <div class="left-aside" :class="layoutStore.menuColor">
     <div
       v-for="(item, i) in menusInfoStore.asides"
       :key="i"

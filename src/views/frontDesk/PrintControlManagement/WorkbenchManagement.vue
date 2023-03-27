@@ -1,62 +1,32 @@
 <!-- 工作台管理 -->
 <template>
   <div class="PrintControlManagement-WorkbenchManagement">
-    <componentsLayout Layout="title,searchForm,table,pagination,batch">
+    <JyTable
+      url="/bench/page"
+      method="POST"
+      ref="table"
+      :isSelection="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      statusColoum="flag"
+      openValue="启用"
+      tableClick="benchName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+    >
       <template #title>
         <div class="title">
           <div>工作台管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="showFormDialog = true"
-                >+ 增加</el-button
+              <el-button type="primary" @click="add"
+                >+ {{ $t('t-zgj-add') }}</el-button
               >
             </div>
           </div>
         </div>
       </template>
-      <template #tabs>
-        <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
-        </div>
-      </template>
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickElement="clickElement"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-      <template #batch>
-        <div class="batch">
-          <componentsBatch> </componentsBatch>
-        </div>
-      </template>
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :isSelection="true"
-          >
-          </componentsTable>
-        </div>
-      </template>
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
+    </JyTable>
     <!-- 工作台详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -68,36 +38,194 @@
     </div>
 
     <!-- 动态表单 -->
-    <KDialog
+    <JyDialog
       @update:show="showFormDialog = $event"
       :show="showFormDialog"
-      title="新增工作台"
+      :confirmLoading="confirmLoading"
+      :title="form.benchId ? $t('t-zgj-Edit') : $t('t-zgj-add')"
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
-      @close="submitForm"
+      @confirm="submitForm"
     >
-      <v-form-render
-        :form-json="formJson"
-        :form-data="formData"
-        :option-data="optionData"
-        ref="vFormRef"
+      <el-form
+        :model="form"
+        :rules="rules"
+        ref="vFormLibraryRef"
+        label-width="120px"
       >
-      </v-form-render>
-    </KDialog>
+        <el-form-item label="工作台编码" prop="benchNo">
+          <el-input v-model="form.benchNo" disabled />
+        </el-form-item>
+        <el-form-item label="工作台名称" prop="benchName">
+          <el-input v-model="form.benchName" clearable />
+        </el-form-item>
+        <el-form-item label="设备串号" prop="benchSn">
+          <el-input v-model="form.benchSn" clearable />
+        </el-form-item>
+        <el-form-item label="保管人" prop="manUserId">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="form.manUserName"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="form.manUserId"
+                style="margin-right: 5px"
+                color="#aaaaaa"
+                @click="clear('manUser')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('manUser')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="所属部门" prop="manOrganId">
+          <div class="select-box-contBox">
+            <el-input
+              class="ap-box-contBox-input width-100"
+              readonly
+              v-model="form.manOrganName"
+              placeholder="请选择"
+            />
+            <div class="ap-box-contBox-icon">
+              <el-icon
+                v-if="form.manOrganId"
+                style="margin-right: 5px"
+                color="#aaaaaa"
+                @click="clear('manOrgan')"
+                ><CircleClose
+              /></el-icon>
+              <img
+                @click="chooseOrgan('manOrgan')"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="设备状态" prop="flag">
+          <el-radio-group v-model="form.flag">
+            <el-radio label="1" size="large">正常</el-radio>
+            <el-radio label="0" size="large">停用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="盖章码盖章" prop="sealCode">
+          <template #label>
+            <span>盖章码盖章 </span>
+            <el-popover
+              placement="top"
+              effect="dark"
+              trigger="hover"
+              content="仅控制工作台未登录情况下的入口显示"
+            >
+              <template #reference>
+                <svg
+                  class="svg-icon el-tooltip__trigger"
+                  aria-hidden="true"
+                  data-v-11cc4082=""
+                >
+                  <use xlink:href="#icon-el-info" data-v-11cc4082=""></use>
+                </svg>
+              </template>
+            </el-popover>
+          </template>
+          <el-radio-group v-model="form.sealCode">
+            <el-radio label="1" size="large">是</el-radio>
+            <el-radio label="0" size="large">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="人脸快捷盖章" prop="faceSeal">
+          <el-radio-group v-model="form.faceSeal">
+            <el-radio label="1" size="large">是</el-radio>
+            <el-radio label="0" size="large">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="语音交互" prop="voiceDialogue">
+          <el-radio-group v-model="form.voiceDialogue">
+            <el-radio label="1" size="large">启用</el-radio>
+            <el-radio label="0" size="large">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="红外电子围栏" prop="irFence">
+          <el-radio-group v-model="form.irFence">
+            <el-radio label="1" size="large">启用</el-radio>
+            <el-radio label="0" size="large">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="人脸识别登录" prop="faceLogin">
+          <el-radio-group v-model="form.faceLogin">
+            <el-radio label="1" size="large">启用</el-radio>
+            <el-radio label="0" size="large">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="自动锁屏" prop="autoLock">
+          <el-radio-group v-model="form.autoLock">
+            <el-radio label="1" size="large">启用</el-radio>
+            <el-radio label="0" size="large">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="休眠" prop="dormantOpen">
+              <el-radio-group v-model="form.dormantOpen">
+                <el-radio label="1" size="large">启用</el-radio>
+                <el-radio label="0" size="large">禁用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="form.dormantOpen === '1'">
+            <el-form-item
+              prop="dormantValue"
+              :rules="{
+                required: true,
+                message: '请输入静默休眠时间',
+                trigger: 'blur'
+              }"
+            >
+              <div style="display: flex; align-items: center">
+                <div>静默</div>
+                <el-input-number
+                  v-model="form.dormantValue"
+                  :min="1"
+                  :precision="0"
+                  style="margin: 0 5px"
+                />
+                <div>分钟后休眠</div>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="备注" prop="readme">
+          <el-input v-model="form.readme" type="textarea" clearable />
+        </el-form-item>
+      </el-form>
+    </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
+      v-if="showDeptDialog"
       :show="showDepPerDialog"
-      @update:show="showDepPerDialog = $event"
-      v-if="showDepPerDialog"
+      @update:show="closeShow"
+      :searchSelected="searchSelected"
+      @update:searchSelected="submit"
+      :tabsShow="tabsShow"
     >
     </kDepartOrPersonVue>
     <JyElMessageBox
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      @confirmClick="confirmOneClick"
     >
       <template #header>
         {{ state.JyElMessageBox.header.data }}
@@ -109,130 +237,144 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
-  // import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
-  import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import KDialog from '@/views/components/modules/kdialog.vue'
-  import FormJson from '@/views/addDynamicFormJson/WorkbenchManagement.json'
-  import { ElMessage, ElMessageBox } from 'element-plus'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
+  import { ref, reactive, nextTick, onBeforeMount, onMounted } from 'vue'
+  import JyTable from '@/views/components/JyTable.vue'
+  import componentsDocumentsDetails from '../../components/documentsDetails'
+  import { ElMessage } from 'element-plus'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import workbenchManagement from '@/api/frontDesk/printControl/workbenchManagement'
+  import dayjs from 'dayjs'
+  import tableHearder from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/workbenchManagement.json'
   const showFormDialog = ref(false)
-  const formJson = reactive(FormJson)
-  const formData = reactive({})
-  const optionData = reactive({})
-  // const dialogVisible = ref(false)
   const showDepPerDialog = ref(false)
-  const vFormRef = ref(null)
-  const submitForm = type => {
-    if (!type) {
-      vFormRef.value.resetForm()
-      return
-    }
-    vFormRef.value
-      .getFormData()
-      .then(formData => {
-        // Form Validation OK
-        alert(JSON.stringify(formData))
-        showFormDialog.value = false
-      })
-      .catch(error => {
-        // Form Validation failed
+  const vFormLibraryRef = ref(null)
+  const table = ref(null)
+  const showDeptDialog = ref(false)
+  const tabsShow = ref(['organ'])
+  const searchSelected = ref([])
+  const kDepartOrPerson = ref(null)
+  const currentActionWorkbench = ref(null)
+  const confirmLoading = ref(false)
 
-        ElMessage.error(error)
-      })
-  }
-  // const emit = defineEmits([])
+  const form = reactive({
+    benchId: '',
+    benchNo: '',
+    benchSn: '',
+    benchName: '',
+    manUserId: '',
+    manUserName: '',
+    manOrganId: '',
+    manOrganName: '',
+    flag: '1',
+    sealCode: '1',
+    faceSeal: '1',
+    voiceDialogue: '1',
+    irFence: '1',
+    faceLogin: '1',
+    autoLock: '1',
+    dormantOpen: '0',
+    dormantValue: '',
+    readme: ''
+  })
+
+  const rules = reactive({
+    benchNo: [
+      {
+        required: true,
+        message: '请输入工作台编码',
+        trigger: 'change'
+      }
+    ],
+    benchName: [
+      {
+        required: true,
+        message: '请输入工作台名称',
+        trigger: 'change'
+      }
+    ],
+    benchSn: [
+      {
+        required: true,
+        message: '请输入设备串号',
+        trigger: 'change'
+      }
+    ],
+    manUserId: [
+      {
+        required: true,
+        message: '请选择保管人',
+        trigger: 'change'
+      }
+    ],
+    manOrganId: [
+      {
+        required: true,
+        message: '请选择所属部门',
+        trigger: 'change'
+      }
+    ]
+  })
   const state = reactive({
-    componentsTabs: {
-      data: [
-        {
-          label: '待签章',
-          name: '1'
-        },
-        {
-          label: '已签章',
-          name: '2'
-        },
-        {
-          label: '不可用',
-          name: '3'
-        }
-      ]
-    },
     componentsSearchForm: {
-      style: {
-        lineStyle: {
-          width: 'calc(100% / 3)'
-        },
-        labelStyle: {
-          width: '100px'
-        }
-      },
       data: [
         {
-          id: 'name',
+          id: 'keyword',
           label: '关键词',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '设备串号/使用地点/工作台编码'
+            placeholder: '设备串号/工作台名称/工作台编码'
           }
         },
         {
-          id: 'picker',
+          id: 'date',
           label: '创建时间',
           type: 'picker',
+          requestType: 'array',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果没有后面的-8.64e7就是不可以选择今天的
+            },
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         },
         {
-          id: 'derivable',
+          id: 'manUser',
+          requestParams: 'manUserId',
           label: '保管人',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+保管人'
+            placeholder: '+保管人',
+            type: 'user',
+            multiple: false
           }
         },
         {
-          id: 'derivable',
+          id: 'manOrgan',
+          requestParams: 'manOrganId',
           label: '保管部门',
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '+保管部门'
+            placeholder: '+保管部门',
+            type: 'organ',
+            multiple: false
           }
         },
         {
-          id: 'wjlx',
+          id: 'flag',
           label: '设备状态',
           type: 'select',
           options: [
@@ -241,13 +383,13 @@
               value: '1'
             },
             {
-              label: '异常',
-              value: '2'
+              label: '停用',
+              value: '0'
             }
           ]
         },
         {
-          id: 'wdyy',
+          id: 'my',
           label: '',
           type: 'checkbox',
           checkbox: [
@@ -293,246 +435,7 @@
       ]
     },
     componentsTable: {
-      header: [
-        {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60
-        },
-        {
-          prop: '1',
-          label: '设备串号',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '工作台名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '3',
-          label: '工作台编码',
-          sortable: true,
-          'min-width': 300
-        },
-        {
-          prop: '4',
-          label: '设备状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '5',
-          label: '保管人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '保管部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '更新时间',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '修改'
-            },
-            {
-              name: '删除'
-            }
-          ]
-        }
-      ],
-      data: [
-        {
-          1: 'TradeCode21',
-          2: 'TradeCode21',
-          3: '这是一段描述，关于这个应用的描述',
-          4: '',
-          5: '',
-          6: '',
-          7: '',
-          8: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: 'TradeCode21',
-          3: '这是一段描述，关于这个应用的描述',
-          4: '',
-          5: '',
-          6: '',
-          7: '',
-          8: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: 'TradeCode21',
-          3: '这是一段描述，关于这个应用的描述',
-          4: '',
-          5: '',
-          6: '',
-          7: '',
-          8: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: 'TradeCode21',
-          3: '这是一段描述，关于这个应用的描述',
-          4: '',
-          5: '',
-          6: '',
-          7: '',
-          8: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: 'TradeCode21',
-          3: '这是一段描述，关于这个应用的描述',
-          4: '',
-          5: '',
-          6: '',
-          7: '',
-          8: ''
-        },
-        {
-          1: 'TradeCode21',
-          2: 'TradeCode21',
-          3: '这是一段描述，关于这个应用的描述',
-          4: '',
-          5: '',
-          6: '',
-          7: '',
-          8: ''
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        stripe: true,
-        'header-cell-style': {
-          background: 'var(--color-fill--3)'
-        },
-        'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '3') {
-            return {
-              color: 'var(--Info-6)',
-              cursor: 'pointer'
-            }
-          }
-        }
-      }
-    },
-    componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': false,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
-      }
-    },
-    componentsPagination: {
-      data: {
-        amount: 400,
-        index: 1,
-        pageNumber: 80
-      },
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
-        background: true
-      }
-    },
-    componentsBreadcrumb: {
-      data: [
-        {
-          name: 'ceshi'
-        },
-        {
-          name: 'ceshi'
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        separator: '/'
-      }
+      header: tableHearder
     },
     componentsDocumentsDetails: {
       show: false,
@@ -557,10 +460,109 @@
       }
     }
   })
+
+  const add = () => {
+    showFormDialog.value = true
+    nextTick(() => {
+      vFormLibraryRef.value.resetFields()
+      form.benchId = ''
+      form.benchNo =
+        dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+      form.manOrganName = ''
+      form.manUserName = ''
+    })
+  }
+
+  const chooseOrgan = type => {
+    showDeptDialog.value = true
+    kDepartOrPerson.value = type
+    if (type === 'manOrgan') {
+      tabsShow.value = ['organ']
+      searchSelected.value = form.organPid
+        ? [
+            {
+              id: form.organPid,
+              name: form.organPName
+            }
+          ]
+        : []
+    } else {
+      tabsShow.value = ['user']
+      searchSelected.value = form.leaderUserId
+        ? [
+            {
+              id: form.leaderUserId,
+              name: form.leaderUserName
+            }
+          ]
+        : []
+    }
+    setTimeout(() => {
+      showDepPerDialog.value = true
+    }, 200)
+  }
+
+  const closeShow = () => {
+    showDepPerDialog.value = false
+    setTimeout(() => {
+      showDeptDialog.value = false
+    }, 200)
+  }
+
+  const clear = type => {
+    if (type === 'manUser') {
+      form.manUserId = ''
+      form.manUserName = ''
+    } else {
+      form.manOrganId = ''
+      form.manOrganName = ''
+    }
+  }
+
+  const submit = value => {
+    if (kDepartOrPerson.value === 'manUser') {
+      form.manUserId = value.length ? value[0].id : ''
+      form.manUserName = value.length ? value[0].name : ''
+    } else {
+      form.manOrganId = value.length ? value[0].id : ''
+      form.manOrganName = value.length ? value[0].name : ''
+    }
+  }
+
+  const submitForm = () => {
+    vFormLibraryRef.value.validate(valid => {
+      if (valid) {
+        confirmLoading.value = true
+        if (form.benchId) {
+          workbenchManagement
+            .edit(form)
+            .then(() => {
+              showFormDialog.value = false
+              ElMessage.success('编辑成功')
+              table.value.reloadData()
+            })
+            .finally(() => {
+              confirmLoading.value = false
+            })
+        } else {
+          workbenchManagement
+            .add(form)
+            .then(() => {
+              showFormDialog.value = false
+              ElMessage.success('新增成功')
+              table.value.reloadData()
+            })
+            .finally(() => {
+              confirmLoading.value = false
+            })
+        }
+      }
+    })
+  }
+
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
-    if (column.property === '3') {
+    if (column.property === 'benchName') {
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -568,24 +570,54 @@
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
+
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(cell.name)
-    if (cell.name === '修改') {
+    if (cell.name === 't-zgj-Edit') {
       showFormDialog.value = true
+      form.benchId = column.benchId
+      nextTick(() => {
+        vFormLibraryRef.value.resetFields()
+        workbenchManagement.detail(column.benchId).then(res => {
+          const data = res.data
+          form.benchId = data.benchId
+          form.benchNo = data.benchNo || ''
+          form.benchSn = data.benchSn || ''
+          form.benchName = data.benchName || ''
+          form.manUserId = data.manUserId || ''
+          form.manUserName = data.manUserName || ''
+          form.manOrganId = data.manOrganId || ''
+          form.manOrganName = data.manOrganName || ''
+          form.flag = data.flag || '1'
+          form.sealCode = data.sealCode || '1'
+          form.faceSeal = data.faceSeal || '1'
+          form.voiceDialogue = data.voiceDialogue || '1'
+          form.irFence = data.irFence || '1'
+          form.faceLogin = data.faceLogin || '1'
+          form.autoLock = data.autoLock || '1'
+          form.dormantOpen = data.dormantOpen || '0'
+          form.dormantValue = data.dormantValue || null
+          form.readme = data.readme || ''
+        })
+      })
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
+      currentActionWorkbench.value = column.benchId
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
       state.JyElMessageBox.show = true
     }
   }
-  // 点击搜索表单
-  function clickElement(item, index) {
-    // console.log(item, index)
-    if (item.type === 'derivable') {
-      showDepPerDialog.value = true
-    }
+
+  const confirmOneClick = () => {
+    workbenchManagement
+      .delete(currentActionWorkbench.value)
+      .then(res => {
+        table.value.reloadData()
+      })
+      .finally(() => {
+        state.JyElMessageBox.show = false
+      })
   }
 
   onBeforeMount(() => {

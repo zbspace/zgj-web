@@ -11,12 +11,12 @@
       </template>
 
       <template #tabs>
-        <VTabs
-          :active="activeName"
-          :label="tabsLabel"
-          @update:active="activeName = $event"
+        <componentsTabs
+          :activeName="state.componentsTabs.activeName"
+          :data="state.componentsTabs.data"
+          @tab-change="tabChange"
           style="margin-top: 12px"
-        ></VTabs>
+        ></componentsTabs>
       </template>
 
       <template #searchForm>
@@ -43,9 +43,10 @@
             :defaultAttribute="state.componentsWorkbenchTable.defaultAttribute"
             :data="state.componentsWorkbenchTable.data"
             :header="state.componentsWorkbenchTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
-            v-if="activeName === 'first'"
+            v-if="state.componentsTabs.activeName === 'first'"
           >
           </componentsTable>
 
@@ -53,9 +54,10 @@
             :defaultAttribute="state.componentsAPPSealTable.defaultAttribute"
             :data="state.componentsAPPSealTable.data"
             :header="state.componentsAPPSealTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
-            v-if="activeName === 'second'"
+            v-if="state.componentsTabs.activeName === 'second'"
           >
           </componentsTable>
 
@@ -65,9 +67,10 @@
             "
             :data="state.componentsSmartSealCabinetTable.data"
             :header="state.componentsSmartSealCabinetTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
-            v-if="activeName === 'third'"
+            v-if="state.componentsTabs.activeName === 'third'"
           >
           </componentsTable>
 
@@ -77,9 +80,10 @@
             "
             :data="state.componentsSmartSealBoxTable.data"
             :header="state.componentsSmartSealBoxTable.header"
+            :paginationData="state.componentsPagination.data"
             :isSelection="true"
             @selection-change="selectionChange"
-            v-if="activeName === 'fourth'"
+            v-if="state.componentsTabs.activeName === 'fourth'"
           >
           </componentsTable>
         </div>
@@ -97,34 +101,35 @@
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { reactive } from 'vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
   import componentsLayout from '@/views/components/Layout'
-  import VTabs from '@/components/modules/tabs.vue'
+  import componentsTabs from '@/views/components/tabs.vue'
   import componentsBatch from '@/views/components/batch.vue'
-  const activeName = ref('first')
-
-  const tabsLabel = ref([
-    {
-      name: 't-zgj-logRecord.Workbench',
-      value: 'first'
-    },
-    {
-      name: 't-app',
-      value: 'second'
-    },
-    {
-      name: 't-zgj-cg-menu-zhineng-yinzhang-gui',
-      value: 'third'
-    },
-    {
-      name: 't-zgj-cg-menu-zhineng-yinzhang-he',
-      value: 'fourth'
-    }
-  ])
   const state = reactive({
+    componentsTabs: {
+      data: [
+        {
+          label: 't-zgj-logRecord.Workbench',
+          name: 'first'
+        },
+        {
+          label: 't-app',
+          name: 'second'
+        },
+        {
+          label: 't-zgj-cg-menu-zhineng-yinzhang-gui',
+          name: 'third'
+        },
+        {
+          label: 't-zgj-cg-menu-zhineng-yinzhang-he',
+          name: 'fourth'
+        }
+      ],
+      activeName: 'first'
+    },
     componentsSearchForm: {
       style: {
         lineStyle: {
@@ -206,16 +211,6 @@
     componentsWorkbenchTable: {
       header: [
         {
-          width: 50,
-          type: 'selection'
-        },
-        {
-          prop: '0',
-          label: '序号',
-          width: 60,
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '版本号',
           sortable: true,
@@ -277,7 +272,6 @@
       ],
       data: [
         {
-          0: 1,
           1: 'V1.1.2',
           2: '863',
           3: '是',
@@ -287,7 +281,6 @@
           7: '无'
         },
         {
-          0: 2,
           1: 'V4.1.2',
           2: '126',
           3: '否',
@@ -297,7 +290,6 @@
           7: '无'
         },
         {
-          0: 3,
           1: 'V1.1.2',
           2: '863',
           3: '是',
@@ -307,7 +299,6 @@
           7: '无'
         },
         {
-          0: 4,
           1: 'V1.5.2',
           2: '863',
           3: '否',
@@ -321,7 +312,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -433,7 +424,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -555,7 +546,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -697,7 +688,7 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         }
       }
     },
@@ -713,74 +704,6 @@
         total: 60,
         'page-sizes': [10, 100, 200, 300, 400],
         background: true
-      }
-    },
-
-    componentsTree: {
-      data: [
-        {
-          label: 'A层级菜单1',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单2',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: 'A层级菜单3',
-          children: [
-            {
-              label: 'B层级菜单1',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            },
-            {
-              label: 'B层级菜单2',
-              children: [
-                {
-                  label: 'C层级菜单1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        'check-on-click-node': true,
-        'show-checkbox': false,
-        'default-expand-all': true,
-        'expand-on-click-node': false,
-        'check-strictly': true
       }
     }
   })

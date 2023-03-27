@@ -40,6 +40,7 @@
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             @cellClick="cellClick"
             @custom-click="customClick"
           >
@@ -69,15 +70,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    reactive,
-    defineProps,
-    defineEmits,
-    onBeforeMount,
-    onMounted,
-    inject,
-    ref
-  } from 'vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   import componentsTable from '../../../components/table'
@@ -95,7 +88,6 @@
     }
   })
   const router = useRouter()
-  const commonFun = inject('commonFun')
   const emit = defineEmits([])
   const state = reactive({
     cache: {},
@@ -277,13 +269,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property == '1') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -602,17 +594,14 @@
     }
   })
 
-  //点击返回上一页
+  // 点击返回上一页
   function clickBackPage() {
-    commonFun.routerPage(router, -1)
+    router.go(-1)
   }
 
-  //点击提交
+  // 点击提交
   function clickSubmit() {
-    commonFun.routerPage(router, {
-      // path: '/frontDesk/PrintControlManagement/Seal-application/accomplish'
-      name: 'Accomplish'
-    })
+    router.push({ name: 'Accomplish' })
   }
 
   // 点击表格单元格
@@ -620,7 +609,7 @@
     // console.log(row, column, cell, event);
   }
 
-  //点击表格按钮
+  // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(cell.name)
     if (cell.name === '修改') {
@@ -693,15 +682,15 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              background-color: var(--color-fill--3);
-              color: var(--color-text-3);
-              border-radius: var(--border-radius-2);
+              background-color: var(--jy-color-fill--3);
+              color: var(--jy-color-text-3);
+              border-radius: var(--jy-border-radius-2);
               margin-right: 0.5rem;
             }
 
             .custom-buzhou-list-desc-text {
-              font-size: var(--font-size-title-1);
-              color: var(--color-text-3);
+              font-size: var(--jy-font-size-title-1);
+              color: var(--jy-color-text-3);
             }
           }
 
@@ -714,16 +703,16 @@
         }
 
         .indexActive {
-          background-color: var(--primary-6) !important;
-          color: var(--in-common-use-1) !important;
+          background-color: var(--jy-primary-6) !important;
+          color: var(--jy-in-common-use-1) !important;
         }
 
         .textActive {
-          color: var(--color-text-1) !important;
+          color: var(--jy-color-text-1) !important;
         }
 
         .font-color-45 {
-          color: var(--color-text-3) !important;
+          color: var(--jy-color-text-3) !important;
         }
       }
 
@@ -740,11 +729,11 @@
             align-items: center;
 
             .PrintingProcess-content-list-cont {
-              height: 15rem;
+              height: 17rem;
               align-self: flex-start;
-              width: 13rem;
-              border: 1px solid var(--color-border-1);
-              background-color: var(--color-fill--1);
+              width: 15rem;
+              border: 1px solid var(--jy-color-border-1);
+              background-color: var(--jy-color-fill--1);
               padding: 1rem;
               box-sizing: border-box;
 
@@ -753,7 +742,7 @@
                 justify-content: center;
                 height: 2rem;
                 align-items: center;
-                font-size: var(--font-size-title-1);
+                font-size: var(--jy-font-size-title-1);
 
                 .PrintingProcess-content-list-cont-title-img {
                   margin-right: 0.5rem;
@@ -790,8 +779,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border-top: 1px solid var(--color-border-2);
-      background-color: var(--in-common-use-1);
+      border-top: 1px solid var(--jy-color-border-2);
+      background-color: var(--jy-in-common-use-1);
       z-index: 999;
     }
   }

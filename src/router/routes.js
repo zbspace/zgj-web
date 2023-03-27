@@ -19,16 +19,33 @@ export default [
   // 章管家
   {
     path: '/login/account',
-    name: 'login-account',
+    name: 'LoginAccount',
     meta: { title: 'login-account', authRequired: false },
     component: () => import('../views/login/account')
     // component: () => import("../views/login/accountDemo")
   },
 
   {
+    path: '/test',
+    name: 'Test',
+    meta: { title: 'Test', authRequired: false },
+    component: () => import('../views/test')
+  },
+  {
+    path: '/demo',
+    name: 'Demo',
+    meta: { title: 'Test', authRequired: false },
+    component: () => import('../views/demo')
+  },
+  {
     path: '/components/template',
     name: 'components-template',
     meta: { title: 'components-template', authRequired: true },
     component: () => import('../views/components/template')
+  },
+  {
+    path: '/:pathMatch(.*)',
+    component: () => import('@/views/errorPage/404'),
+    hidden: true
   }
 ]

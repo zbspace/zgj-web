@@ -43,7 +43,9 @@
           <componentsTable
             :defaultAttribute="state.componentsTable.defaultAttribute"
             :data="state.componentsTable.data"
+            isSelection
             :header="state.componentsTable.header"
+            :paginationData="state.componentsPagination.data"
             @cellClick="cellClick"
             @custom-click="customClick"
             @selection-change="selectionChange"
@@ -72,6 +74,12 @@
     <kDepartOrPersonVue
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
+      :searchSelected="searchSelected"
+      @update:searchSelected="searchSelected = $event"
+      :queryParams="queryParams"
+      :tabsShow="tabsShow"
+      :activeTab="activeTab"
+      :apiModule="apiModule"
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
@@ -96,7 +104,8 @@
     // defineProps,
     // defineEmits,
     onBeforeMount,
-    onMounted
+    onMounted,
+    watch
   } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
@@ -105,18 +114,10 @@
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '../../components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import kDepartOrPersonVue from '@/views/components/modules/kDepartOrPerson.vue'
-  import { ElMessageBox } from 'element-plus'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { useRouter } from 'vue-router'
   const router = useRouter()
-  // const props = defineProps({
-  //   // 处理类型
-  //   type: {
-  //     type: String,
-  //     default: '0'
-  //   }
-  // })
-  // const emit = defineEmits([])
+
   const state = reactive({
     componentsTabs: {
       data: [
@@ -254,11 +255,6 @@
     componentsTable: {
       header: [
         {
-          width: 50,
-          type: 'selection',
-          align: 'center'
-        },
-        {
           prop: '1',
           label: '单据编号',
           sortable: true,
@@ -345,7 +341,7 @@
           1: '989117',
           2: '测试专用章-李慧斌',
           3: '测试专用',
-          4: '测试专用章',
+          4: '989117',
           5: '989117',
           6: '3',
           7: '7',
@@ -357,7 +353,7 @@
           1: '989117',
           2: '测试专用章-汤博',
           3: '测试专用',
-          4: '测试专用章',
+          4: '989117',
           5: '989117',
           6: '3',
           7: '7',
@@ -369,7 +365,7 @@
           1: '989117',
           2: '测试专用章-李慧斌',
           3: '测试专用',
-          4: '测试专用章',
+          4: '989117',
           5: '989117',
           6: '3',
           7: '7',
@@ -382,13 +378,13 @@
       defaultAttribute: {
         stripe: true,
         'header-cell-style': {
-          background: 'var(--color-fill--3)'
+          background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
           // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === '2') {
             return {
-              color: 'var(--Info-6)',
+              color: 'var(--jy-info-6)',
               cursor: 'pointer'
             }
           }
@@ -533,9 +529,17 @@
       'show-icon': false
     }
   })
+
+  // 测试权限弹框 Demo↓
   const showDepPerDialog = ref(false)
+  const searchSelected = ref([])
+  const queryParams = ref({ roleId: 'r1' })
+  const tabsShow = ref(['organ', 'user'])
+  const activeTab = ref('user')
+  const apiModule = ref('systemOrganOrPerson')
+  // 测试权限弹框 ↑
   const goInnerPage = (path, params) => {
-    const routeObj = { path: path }
+    const routeObj = { path }
     if (params) {
       routeObj.query = { transfer: params }
     }
@@ -598,10 +602,6 @@
     // console.log(activeName);
     if (activeName === '1') {
       state.componentsTable.header = [
-        {
-          width: 50,
-          type: 'selection'
-        },
         {
           prop: '1',
           label: '单据编号',
@@ -1011,6 +1011,13 @@
   onMounted(() => {
     // console.log(`the component is now mounted.`)
   })
+
+  watch(
+    () => searchSelected.value,
+    val => {
+      console.log(val, '===')
+    }
+  )
 </script>
 <style lang="scss" scoped>
   .PrintControlManagement-IntelligentPrinting {
