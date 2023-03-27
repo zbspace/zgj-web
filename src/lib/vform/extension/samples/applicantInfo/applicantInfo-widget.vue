@@ -130,10 +130,10 @@
         tabsShow: ['organ'],
         fieldModel: {
           applyUserId: getItem('accountInfo')
-            ? JSON.parse(getItem('accountInfo')).userId
+            ? getItem('accountInfo').userInfo.userId
             : '',
           applyUserName: getItem('accountInfo')
-            ? JSON.parse(getItem('accountInfo')).userName
+            ? getItem('accountInfo').userInfo.userName
             : '',
           applyOrganId: '',
           applyOrganName: ''
