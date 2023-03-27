@@ -1047,9 +1047,9 @@
     // if (!data) {
     //   return false
     // }
-    confirmLoading.value = true
     formStaffRef.value.validate(valid => {
       if (valid) {
+        confirmLoading.value = true
         console.log(state.componentsAddForm.formData)
         if (state.componentsAddForm.formData.userId) {
           submitEditStaff(state.componentsAddForm.formData)
@@ -1057,8 +1057,8 @@
           submitAddStaff(state.componentsAddForm.formData)
         }
       } else {
-        ElMessage.error('校验失败')
-        confirmLoading.value = false
+        // ElMessage.error('校验失败')
+        // confirmLoading.value = false
       }
     })
   }

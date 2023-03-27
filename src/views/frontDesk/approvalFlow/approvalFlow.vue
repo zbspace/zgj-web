@@ -485,7 +485,7 @@
           onFinish()
         }
       } else {
-        ElMessage.error('校验失败')
+        // ElMessage.error('校验失败')
       }
     })
   }

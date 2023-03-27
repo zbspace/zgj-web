@@ -477,7 +477,7 @@
         showLibraryDialog.value = false
         table.value.reloadData()
       } else {
-        ElMessage.error('校验失败')
+        // ElMessage.error('校验失败')
       }
     })
   }
@@ -918,6 +918,10 @@
         {
           name: 't-zgj-seal.BatchDelete',
           label: '批量删除'
+        },
+        {
+          name: 't-zgj-view.SealUnbind',
+          label: '印章解绑'
         }
       ]
     }
@@ -990,10 +994,28 @@
       idList.push(element.sealId)
     })
     state.sealIds = idList.join(',')
+    if (item.name === 't-zgj-view.SealUnbind') {
+      state.showToastDialog.header.data = '印章解绑'
+      state.showToastDialog.content.data = '已选中以下印章，请问确定要解绑吗？'
+      state.showToastDialog.show = true
+      // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+      state.butDatas = [
+        {
+          name: '确定',
+          type: 'primary',
+          clickName: sureBatchUnbind
+        },
+        {
+          name: '取消',
+          type: '',
+          clickName: closeBatchTabel
+        }
+      ]
+    }
     if (item.name === 't-zgj-seal.BatchDelete') {
       state.showToastDialog.header.data = '批量删除'
       state.showToastDialog.content.data =
-        '已选中以下表单，请问确定要批量删除吗？'
+        '已选中以下印章，请问确定要批量删除吗？'
       state.showToastDialog.show = true
       // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
       state.butDatas = [
@@ -1018,26 +1040,36 @@
       state.tabsShow = ['user']
     }
   }
-  // 批量删除
-  function batchDel() {
-    state.showToastDialog.header.data = '批量删除'
-    state.showToastDialog.content.data =
-      '已选中以下表单，请问确定要批量删除吗？'
-    state.showToastDialog.show = true
-    // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
-    state.componentsBatch.butDatas = [
-      {
-        name: '确定',
-        type: 'primary',
-        clickName: sureBatchDel
-      },
-      {
-        name: '取消',
-        type: '',
-        clickName: closeBatchTabel
-      }
-    ]
-    console.log('批量删除')
+
+  // 确定解绑
+  const sureBatchUnbind = () => {
+    // api.relationContractType(idList).then(res => {
+    //   if (res.code === 200) {
+    //     if (res.data.length > 0) {
+    //       state.showToastDialog.header.data = '删除'
+    //       state.showToastDialog.content.data =
+    //         '选中的以下表单已关联了流程，不允许删除'
+    //       state.showToastDialog.show = true
+    //       state.showToastDialog.header.icon =
+    //         '/src/assets/svg/common/danger.svg'
+    //       state.componentsBatch.butDatas = [
+    //         {
+    //           name: '知道了',
+    //           type: 'primary',
+    //           clickName: closeBatchTabel
+    //         }
+    //       ]
+    //     } else {
+
+    //     }
+    //   } else {
+    //     console.log(res)
+    //   }
+    // })
+    api.sealInfoUnbind({ ids: state.sealIds }).then(res => {
+      ElMessage.success('解绑成功！')
+      table.value.reloadData()
+    })
   }
   // 确定批量删除
   const sureBatchDel = () => {
@@ -1066,7 +1098,8 @@
           ]
         } else {
           api.sealInfoDelete({ ids: state.sealIds }).then(res => {
-            console.log(res)
+            ElMessage.success('批量删除成功！')
+            table.value.reloadData()
           })
         }
       } else {
