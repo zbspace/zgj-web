@@ -6,11 +6,7 @@
       @click.stop="selectWidget(widget)"
       :shadow="widget.options.shadow"
       :style="{ width: widget.options.cardWidth + '!important' || '' }"
-      :class="[
-        selected ? 'selected' : '',
-        !!widget.options.folded ? 'folded' : '',
-        customClass
-      ]"
+      :class="[!!widget.options.folded ? 'folded' : '', customClass]"
       style="width: 100%"
     >
       <div class="model-static-label">
