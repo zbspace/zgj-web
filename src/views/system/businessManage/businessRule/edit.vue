@@ -26,19 +26,80 @@
           :rules="rules"
           label-width="120px"
           class="demo-ruleForm"
-          :size="formSize"
-          status-icon
         >
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="Activity name" prop="name">
-                <el-input v-model="ruleForm.name" />
+              <el-form-item label="业务规则名称" prop="ruleBusinessName">
+                <el-input
+                  v-model="ruleForm.ruleBusinessName"
+                  clearable
+                  placeholder="请输入"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <div class="grid-content ep-bg-purple" />
+              <el-form-item label="业务规则编码" prop="ruleBusinessNo">
+                <el-input v-model="ruleForm.ruleBusinessNo" disabled />
+              </el-form-item>
             </el-col>
           </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="文件类型" prop="fileTypeIds">
+                <el-select
+                  v-model="ruleForm.fileTypeIds"
+                  multiple
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="用印类型" prop="sealUseTypeId">
+                <el-select
+                  v-model="ruleForm.sealUseTypeId"
+                  placeholder="请选择"
+                  style="width: 100%"
+                  disabled
+                >
+                  <el-option label="物理用印" value="1" />
+                  <el-option label="电子签章" value="2" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-tabs type="border-card">
+            <el-tab-pane label="智能用印">
+              <div class="labelTitle">用印设置</div>
+              <div class="grayBg">
+                <el-row :gutter="20">
+                  <el-col :span="12">
+                    <el-form-item label="外借电子围栏" prop="railSwitch">
+                      <el-switch v-model="ruleForm.railSwitch" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="批量用印" prop="batchSwitch">
+                      <el-switch v-model="ruleForm.batchSwitch" />
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="grayBg">
+                <el-form-item label="防伪打印" prop="railSwitch">
+                  <el-switch v-model="ruleForm.railSwitch" />
+                </el-form-item>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="普通用印">User</el-tab-pane>
+          </el-tabs>
         </el-form>
       </div>
     </componentsLayout>
@@ -50,15 +111,25 @@
   import componentsLayout from '@/views/components/Layout'
 
   const ruleForm = ref({
-    a: ''
+    ruleBusinessName: '',
+    ruleBusinessNo: '',
+    fileTypeIds: [],
+    sealUseTypeId: '1'
   })
 
   const rules = ref({
-    a: [
+    ruleBusinessName: [
       {
         required: true,
-        message: 'Please input Activity name',
-        trigger: 'blur'
+        message: '请输入业务规则名称',
+        trigger: 'change'
+      }
+    ],
+    fileTypeIds: [
+      {
+        required: true,
+        message: '请选择文件类型',
+        trigger: 'change'
       }
     ]
   })
@@ -67,8 +138,11 @@
 </script>
 
 <style lang="scss" scoped>
+  .ap-deliberate {
+    width: 100%;
+  }
   .title {
     font-size: 22px;
-    margin-top: 16px;
+    margin: 16px 0;
   }
 </style>
