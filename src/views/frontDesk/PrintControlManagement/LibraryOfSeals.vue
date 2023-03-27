@@ -709,7 +709,8 @@
             placeholder: '+保管人',
             multiple: true,
             joinStr: ','
-          }
+          },
+          values: []
         },
         {
           id: 'keepOrgan',
@@ -722,7 +723,8 @@
             placeholder: '+保管部门',
             multiple: true,
             joinStr: ','
-          }
+          },
+          values: []
         },
         {
           id: 'sealStatus',
@@ -989,6 +991,7 @@
   const clickBatchButton = (item, datas) => {
     console.log(item)
     state.componentsBatch.selectionData = datas
+    console.log(state.componentsBatch.selectionData)
     const idList = []
     datas.forEach(element => {
       idList.push(element.sealId)

@@ -81,277 +81,13 @@
       >
       </componentsDocumentsDetails>
     </div>
-    <!-- 处理弹窗 -->
-    <JyDialog
-      @update:show="dialogProcess.show = $event"
+    <ApprovalDetail
       :show="dialogProcess.show"
+      :params="state.params"
       :title="dialogProcess.title"
-      :oneBtn="false"
-      :confirmText="$t('t-zgj-operation.submit')"
-      :concelText="$t('t-zgj-operation.cancel')"
-      :height="700"
-      :width="900"
-      :footer="false"
-    >
-      <div class="ap-cont-tabsCont">
-        <div class="scrollbar-div">
-          <div class="ap-cont-box sealDetails-basic-information">
-            <documentsDetailsPortion>
-              <template #title>
-                <div class="ap-cont-box-title-label">基本信息</div>
-              </template>
-              <template #content>
-                <div>
-                  <el-scrollbar style="height: 369px; overflow: auto">
-                    <documentsDetailsInformationList
-                      :data="state.ParticularsOfSeal.basicInformation.data"
-                      :labelStyle="
-                        state.ParticularsOfSeal.basicInformation.labelStyle
-                      "
-                    >
-                    </documentsDetailsInformationList>
-                  </el-scrollbar>
-                </div>
-              </template>
-            </documentsDetailsPortion>
-          </div>
-        </div>
-      </div>
-      <div class="approval-footer">
-        <!-- <v-form-render
-          :form-json="dialogProcess.formJson"
-          :form-data="dialogProcess.formJson"
-          :option-data="dialogProcess.optionData"
-          ref="vFormLibraryRef"
-          :key="dialogProcess.title"
-        >
-        </v-form-render> -->
-        <!-- <div class="select-person">
-          <span>添加抄送</span>
-          <div @click="showDepPerDialog = true">+请选择抄送人</div>
-        </div> -->
-        <el-form
-          :model="state.form"
-          :rules="state.rules"
-          ref="vFormRef"
-          label-width="100px"
-        >
-          <el-form-item label="审批选项" prop="suggest">
-            <el-radio-group
-              @change="approvalsChange"
-              v-model="state.form.suggest"
-            >
-              <el-radio label="1">同意</el-radio>
-              <el-radio label="2">不同意</el-radio>
-              <el-radio label="3">转交</el-radio>
-              <el-radio label="4">加签</el-radio>
-              <el-radio label="5">征询他人意见</el-radio>
-              <el-radio label="6">退回</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item
-            label="下一步审批人"
-            v-if="state.form.suggest === '5' || state.form.suggest === '3'"
-            prop="nextApprover"
-          >
-            <!-- <span class="footer-approver">李旺</span>
-            <span class="footer-approver">李旺</span>
-            <span class="footer-approver">李旺</span>
-            <span class="footer-approver">李旺</span> -->
-            <div
-              class="select-box-contBox"
-              @click="chooseOrgan('nextApprover')"
-            >
-              <el-input
-                class="ap-box-contBox-input width-100"
-                readonly
-                v-model="state.form.nextApprover"
-                placeholder="请选择下一步审批人"
-              />
-              <div class="ap-box-contBox-icon">
-                <el-icon
-                  style="color: #aaaaaa; margin-right: 5px"
-                  v-if="state.form.nextApprover"
-                  @click.stop="clear('nextApprover')"
-                  ><CircleClose
-                /></el-icon>
-                <img
-                  class="ap-box-contBox-icon-img"
-                  src="@/assets/svg/ketanchude.svg"
-                  alt=""
-                />
-              </div>
-            </div>
-          </el-form-item>
-          <el-form-item
-            label="审批人"
-            prop="approver"
-            v-if="state.form.suggest === '4'"
-          >
-            <div class="select-box-contBox">
-              <div class="footer-tagcon" @click="chooseOrgan('approver')"
-                ><el-tag
-                  class="footer-tag"
-                  closable
-                  type="info"
-                  v-for="item in state.approverSelected"
-                  :key="item.id"
-                  @close="delTags(item, 'approver')"
-                >
-                  {{ item.name }}
-                </el-tag>
-                <span v-if="state.approverSelected.length <= 10"
-                  >+请添加审批人</span
-                >
-              </div>
-              <div class="ap-box-contBox-icon">
-                <!-- <el-icon
-                  v-if="state.form.approver"
-                  style="margin-right: 5px"
-                  color="#aaaaaa"
-                  @click="clear('approver')"
-                  ><CircleClose
-                /></el-icon> -->
-                <img
-                  class="ap-box-contBox-icon-img"
-                  src="@/assets/svg/ketanchude.svg"
-                  alt=""
-                />
-              </div>
-            </div>
-          </el-form-item>
-          <el-form-item
-            v-if="tasks.length > 0"
-            label="被退回人"
-            name="destTaskId"
-            :rules="[{ required: true, message: '请选择人员!' }]"
-          >
-            <el-radio-group
-              v-model:value="formState.destTaskId"
-              class="w-fill"
-              :size="size"
-            >
-              <el-radio v-for="(task, i) in tasks" :key="i" :value="task.value">
-                <span>{{ task.label }}</span>
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item
-            label="退回后发起审批"
-            prop="approver"
-            v-if="state.form.suggest === '6'"
-          >
-            <el-select
-              style="width: 264px"
-              v-model="formData.adminId"
-              filterable
-              @change="changeAdmin"
-            >
-              <el-option
-                v-for="(data, i) in datas"
-                :key="i"
-                :label="data[labelName]"
-                :value="data[valueName]"
-                >{{ data[labelName] }}</el-option
-              >
-            </el-select>
-          </el-form-item>
-          <!-- <el-form-item
-            label="加签方式"
-            prop="addSignMode"
-            v-if="state.form.suggest === '4'"
-          >
-            <el-radio-group
-              @change="addSignModeChange"
-              v-model="state.form.addSignMode"
-            >
-              <el-radio
-                v-for="(signType, i) in state.signTypes"
-                :key="i"
-                :label="signType.value"
-                :disabled="[2, 3].includes(approvalMode) && signType.value == 4"
-              >
-                <span>{{ signType.name }}</span>
-              </el-radio>
-            </el-radio-group>
-          </el-form-item> -->
-          <el-form-item label="添加抄送" prop="carbon">
-            <div class="select-box-contBox">
-              <el-checkbox
-                v-model="state.form.carbon"
-                style="margin-right: 12px"
-                size="mini"
-              ></el-checkbox>
-              <div
-                v-if="state.form.carbon"
-                @click="chooseOrgan('carbon')"
-                class="footer-tagcon"
-                ><el-tag
-                  class="footer-tag"
-                  closable
-                  type="info"
-                  v-for="item in state.carbonSelected"
-                  :key="item.id"
-                  @close="delTags(item, 'catbon')"
-                >
-                  {{ item.name }}
-                </el-tag>
-                <!-- <el-tag
-                  class="footer-tag"
-                  closable
-                  @close="delTags"
-                  type="info"
-                >
-                  选中
-                </el-tag> -->
-                <span v-if="state.carbonSelected.length <= 10"
-                  >+请添加抄送人</span
-                >
-                <div class="ap-box-contBox-icon">
-                  <!-- <el-icon
-                    v-if="state.form.carbon"
-                    style="margin-right: 5px"
-                    color="#aaaaaa"
-                    @click.stop="clear('carbon')"
-                    ><CircleClose
-                  /></el-icon> -->
-                  <img
-                    class="ap-box-contBox-icon-img"
-                    src="@/assets/svg/ketanchude.svg"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-          </el-form-item>
-          <el-form-item label="审批意见" prop="remark">
-            <el-input
-              v-model="state.form.remark"
-              maxlength="100"
-              show-word-limit
-              type="textarea"
-              placeholder="请输入"
-            />
-          </el-form-item>
-        </el-form>
-        <div class="footer-btns">
-          <el-button type="primary" :loading="btnLoading" @click="sumitForm"
-            >提交</el-button
-          >
-          <el-button @click="close">取消</el-button>
-        </div>
-      </div>
-    </JyDialog>
-    <!-- 人员选择  -->
-    <kDepartOrPersonVue
-      :show="showDepPerDialog"
-      @update:show="showDepPerDialog = $event"
-      v-if="showDepPerDialog"
-      :tabsShow="['user']"
-      @update:searchSelected="submitSelectDepart"
-      :searchSelected="state.searchSelected"
-    >
-    </kDepartOrPersonVue>
+      @on-cancel="closeDetail"
+      @on-confirm="handelSubmit"
+    ></ApprovalDetail>
   </div>
 </template>
 <script setup>
@@ -364,69 +100,20 @@
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
+  import ApprovalDetail from '@/views/frontDesk/approvalFlow/modules/approvalDetail.vue'
   // import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
-  import documentsDetailsInformationList from '@/views/components/documentsDetails/informationList.vue'
   import dayjs from 'dayjs'
-  import { ElMessage } from 'element-plus'
-  import { CircleClose } from '@element-plus/icons-vue'
-  import formApi from '@/api/system/formManagement/index'
-  import { ModelApi } from '@/api/flow/ModelApi'
-  import { TaskApi } from '@/api/flow/TaskApi'
+  import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
-  import { ApproverApi } from '@/api/flow/ApproverApi'
-  import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
-  import { NodeAttrApi } from '@/api/flow/NodeAttrApi'
-  import loadApproverData from '@/components/FlowDesign/data/load-approver-data'
-  import useCommon from '@/components/FlowDesign/hooks/useCommon'
-  import form from '@/mock/form'
-
-  const { toUgroup } = useCommon()
-  // 数据
-  const { backApprovalTypeDatas } = loadApproverData()
-  const showDepPerDialog = ref(false)
+  import formApi from '@/api/system/formManagement/index'
+  import { set } from 'lodash'
+  import CloseOnClickModalEditor from '@/lib/vform/components/form-designer/setting-panel/property-editor/container-vf-dialog/closeOnClickModal-editor.vue'
   const dialogProcess = reactive({
     show: false,
     title: '处理',
     formJson: RecordSealToReviewJson
   })
-  const vFormRef = ref(null)
-  const btnLoading = ref(false)
-  // 子组件
-  const flowDesign = ref()
-  // 模型id
-  const modelId = ref(null)
-  // 节点Id
-  const nodeId = ref(null)
-  // 模型名称
-  const modelName = ref('')
-  // 最新定义ID
-  const definitionId = ref(null)
-  // 最新实例ID
-  const instanceId = ref(null)
-  // 表单内容
-  const formData = ref(null)
-  // 表单json
-  const formJson = ref(null)
-  // 动态表单版本Id
-  const formVersionId = ref('')
-  // 动态表单Id
-  const formMessageId = ref('')
-  // 流程版本Id
-  const flowVersionId = ref('')
-  // 流程Id
-  const flowMessageId = ref('')
-  const taskId = ref('')
-  const approvalMode = ref('')
-  const buttons = ref([])
-  // 退回后发起审批列表
-  const datas = ref([])
-  // 被退回人列表
-  const tasks = ref([])
-
-  const depChoose = ref('')
   // const submitLibraryForm = type => {
   //   if (!type) {
   //     vFormLibraryRef.value.resetForm()
@@ -444,317 +131,84 @@
   //       console.log(error)
   //     })
   // }
-  // 删除操作人
-  const delTags = (item, type) => {
-    if (type === 'approver') {
-      for (let i = 0; i < state.approverSelected.length; i++) {
-        console.log(state.approverSelected[i])
-        if (item.id === state.approverSelected[i].id) {
-          state.approverSelected.splice(i, 1)
-        }
-      }
-    } else if (type === 'carbon') {
-      for (let i = 0; i < state.carbonSelected.length; i++) {
-        console.log(state.carbonSelected[i])
-        if (item.id === state.carbonSelected[i].id) {
-          state.carbonSelected.splice(i, 1)
-        }
-      }
-    }
-  }
-  // 提交审批
-  const sumitForm = () => {
-    console.log('提交')
-    btnLoading.value = true
-    vFormRef.value.validate(valid => {
-      if (valid) {
-        console.log(state.form.suggest)
-        // ElMessage.success('审批成功')
-        // btnLoading.value = false
-        if (state.form.suggest === '1') {
-          onAgree()
-        } else if (state.form.suggest === '2') {
-          onReject()
-        } else if (state.form.suggest === '3') {
-          onTurn()
-        } else if (state.form.suggest === '4') {
-          onAssignee()
-        } else if (state.form.suggest === '5') {
-          consultSubmit()
-        } else if (state.form.suggest === '6') {
-          onFinish()
-        }
-      } else {
-        // ElMessage.error('校验失败')
-      }
-    })
-  }
-  /**
-   * 不同意
-   * @param {*} res
-   */
-  const onReject = res => {
-    const params = {
-      instanceId: instanceId.value,
-      modelId: modelId.value,
-      formData: formData.value,
-      definitionId: definitionId.value,
-      remark: state.form.remark,
-      suggest: 2
-    }
-    console.log(params)
-    ApproverApi.reject(params)
-      .then(result => {
-        if (result.code === '00000') {
-          ElMessage.success('提交成功')
-          dialogProcess.show = false
-          getFormPage()
-        }
-        btnLoading.value = false
-      })
-      .catch(() => {
-        btnLoading.value = false
-      })
-  }
-  /**
-   * 同意
-   * @param {*} res
-   */
-  const onAgree = res => {
-    const params = {
-      instanceId: instanceId.value,
-      modelId: modelId.value,
-      formData: formData.value,
-      definitionId: definitionId.value,
-      remark: state.form.remark,
-      suggest: 1
-    }
-    console.log(params)
-    ApproverApi.agree(params)
-      .then(result => {
-        if (result.code === '00000') {
-          console.info(result)
-          ElMessage.success('提交成功')
-          dialogProcess.show = false
-          getFormPage()
-        }
-        btnLoading.value = false
-      })
-      .catch(() => {
-        btnLoading.value = false
-      })
-  }
-  /**
-   * 加签
-   */
-  const onAssignee = () => {
-    const params = {
-      taskId: taskId.value,
-      assigneeList: state.approverSelected.forEach(item => {
-        const ids = []
-        ids.push(item.id)
-        return ids
-      }),
-      addSignMode: state.form.addSignMode,
-      whisper: state.form.remark
-    }
-    ApproverApi.addSign(params)
-      .then(result => {
-        if (result.code === '00000') {
-          console.info(result)
-          dialogProcess.show = false
-          ElMessage.success('提交成功')
-          getFormPage()
-        }
-        btnLoading.value = false
-      })
-      .catch(() => {
-        btnLoading.value = false
-      })
-  }
-  // 转交
-  const onTurn = () => {
-    const params = {
-      taskId: taskId.value,
-      newApprover: state.form.nextApprover,
-      whisper: state.form.remark
-    }
-    ApproverApi.turn(params)
-      .then(() => {
-        dialogProcess.show = false
-      })
-      .catch(() => {})
-  }
-  /**
-   *  征询提交
-   */
-  const consultSubmit = async () => {
-    try {
-      const params = {
-        instanceId: instanceId.value,
-        modelId: modelId.value,
-        definitionId: definitionId.value,
-        taskId: taskId.value,
-        suggest: state.form.suggest,
-        remark: state.form.remark
-      }
-      ApproverApi.consultSubmit(params)
-        .then(result => {
-          if (result) {
-            console.info(result)
-          }
-          btnLoading.value = false
-          close()
-        })
-        .catch(() => {
-          btnLoading.value = false
-        })
-    } catch (e) {
-      console.log('error', e)
-      btnLoading.value = false
-    }
-  }
-  /**
-   * 退回需要获取的信息
-   */
-  const getBackBaseInfo = async () => {
-    try {
-      const params = {
-        taskId: taskId.value,
-        instanceId: instanceId.value
-      }
-      // 获取节点对退回的配置
-      const nodeAttr = await NodeAttrApi.detailByTaskId(params)
-      const allowBackType = nodeAttr.allowBackType
-      const backApprovalType = nodeAttr.backApprovalType
-      if (backApprovalType) {
-        const backApprovalTypes = toUgroup(backApprovalType)
-        backApprovalTypeDatas.forEach(element => {
-          if (backApprovalTypes.includes(element.value)) {
-            datas.value.push(element)
-          }
-        })
-      }
-      if (allowBackType === 2) {
-        // 获取被退回人
-        const list = await TaskApi.preList(params)
-        if (list && list.length > 0) {
-          tasks.value = []
-          list.forEach(element => {
-            tasks.value.push({
-              label: element.approverWrapper,
-              value: element.taskId,
-              popovers: [
-                {
-                  title: element.nodeName,
-                  content: `任务类型:${element.taskTypeWrapper}`
-                },
-                {
-                  content: `接收时间:${element.createTime}`
-                },
-                {
-                  content: `审批时间:${element.updateTime}`
-                }
-              ]
-            })
-          })
-        }
-      }
-    } finally {
-      // loading.value = false
-    }
-  }
-  /**
-   * 退回
-   */
-  const onFinish = () => {
-    const params = {
-      instanceId: instanceId.value,
-      modelId: modelId.value,
-      definitionId: definitionId.value,
-      // 当前任务ID
-      taskId: taskId.value,
-      // 需要退回到的人(任务),其实也是数据值也是任务ID
-      destTaskId: state.form.destTaskId,
-      backType: state.form.backType,
-      whisper: state.form.remark
-    }
-    ApproverApi.returned(params)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(() => {})
-  }
+  // 动态表单版本Id
+  const formVersionId = ref('')
+  // 动态表单Id
+  const formMessageId = ref('')
+  // 流程版本Id
+  const flowVersionId = ref('')
+  // 流程Id
+  const flowMessageId = ref('')
+  const showDialog = ref(false)
   const state = reactive({
     searchSelected: [],
-    carbonSelected: [],
-    approverSelected: [],
-    nextApproverSelected: [],
-    // 审批人
-    signTypes: [
-      {
-        name: '前加签',
-        value: 1,
-        popovers: [
+    params: {
+      formData: {},
+      formJson: {},
+      taskId: '',
+      // 最新实例ID
+      instanceId: '',
+      approvalMode: '',
+      // 模型名称
+      modelName: '',
+      // 模型Id
+      modelId: '',
+      // 节点Id
+      nodeId: '',
+      // 最新定义ID
+      definitionId: '',
+      // 按钮列表
+      buttons: [],
+      detailData: [],
+      basicInformation: {
+        title: '基本信息',
+        show: true,
+        data: [
           {
-            title: '什么是前加签？',
-            content: '在我之前审批,且只支持会签'
-          }
-        ]
-      },
-      {
-        name: '后加签',
-        value: 2,
-        popovers: [
+            label: '单据名称',
+            value: '上海建筑材料清单合同明细'
+          },
           {
-            title: '什么是后加签？',
-            content: '在我之后审批,且只支持会签'
-          }
-        ]
-      },
-      {
-        name: '加会签',
-        value: 3,
-        popovers: [
+            label: '文件类型：',
+            value: '1份'
+          },
           {
-            title: '什么是加会签？',
-            content: '节点配置为会签时支持添加会签,会签人不存在先后顺序'
-          }
-        ]
-      },
-      {
-        name: '加或签',
-        value: 4,
-        popovers: [
+            label: '金额：',
+            value: '110,88,00'
+          },
           {
-            title: '什么是加或签？',
-            content: '节点配置为或签时支持添加或签,或签人不存在先后顺序'
+            label: '申请事由：',
+            value: '20次'
+          },
+          {
+            label: '印章名称：',
+            value: '销售合同'
+          },
+          {
+            label: '常规盖章：',
+            value: '20次'
+          },
+          {
+            label: '盖章码：',
+            value: '554778'
+          },
+          {
+            label: '申请人员：',
+            value: '20次'
+          },
+          {
+            label: '申请时间：',
+            value: '2022-11-12 19:00:12'
+          },
+          {
+            label: '所属部门：',
+            value: '20次'
           }
-        ]
-      }
-    ],
-    form: {
-      remark: '同意',
-      carbon: false,
-      suggest: '1',
-      nextApprover: '',
-      nextApproverIds: '',
-      addSignMode: [2, 3].includes(approvalMode.value)
-        ? 3
-        : approvalMode.value === 4
-        ? 4
-        : 3,
-      destTaskId: '',
-      backType: ''
-    },
-    rules: {
-      suggest: [
-        {
-          required: true,
-          message: '请选择审批选项',
-          trigger: 'blur'
+        ],
+        labelStyle: {
+          width: '8rem'
         }
-      ]
+      }
     },
     componentsTabs: {
       data: [
@@ -1009,96 +463,14 @@
         disabled: true
       },
       data: []
-    },
-    // 印章详情
-    ParticularsOfSeal: {
-      basicInformation: {
-        title: '基本信息',
-        show: true,
-        data: [
-          {
-            label: '单据名称',
-            value: '上海建筑材料清单合同明细'
-          },
-          {
-            label: '文件类型：',
-            value: '1份'
-          },
-          {
-            label: '金额：',
-            value: '110,88,00'
-          },
-          {
-            label: '申请事由：',
-            value: '20次'
-          },
-          // {
-          //   label: '印章状态',
-          //   value: '状态',
-          //   iconPath: yuanLvSvg,
-          //   iconStyle: {},
-          //   valStyle: {
-          //     color: 'var(--jy-success-6)'
-          //   }
-          // },
-          // {
-          //   label: '印模',
-          //   value: '查看',
-          //   valStyle: {
-          //     color: 'var(--jy-info-7)'
-          //   }
-          // },
-          {
-            label: '印章名称：',
-            value: '销售合同'
-          },
-          {
-            label: '常规盖章：',
-            value: '20次'
-          },
-          {
-            label: '盖章码：',
-            value: '554778'
-          },
-          {
-            label: '申请人员：',
-            value: '20次'
-          },
-          {
-            label: '申请时间：',
-            value: '2022-11-12 19:00:12'
-          },
-          {
-            label: '所属部门：',
-            value: '20次'
-          }
-        ],
-        labelStyle: {
-          width: '8rem'
-        }
-      }
     }
   })
-  const chooseOrgan = type => {
-    depChoose.value = type
-    if (type === 'carbon') {
-      state.searchSelected = state.carbonSelected
-    } else if (type === 'approver') {
-      state.searchSelected = state.approverSelected
-    } else if (type === 'nextApprover') {
-      state.searchSelected = state.nextApproverSelected
-    }
-    showDepPerDialog.value = true
-  }
-  const clear = type => {
-    if (type === 'nextApprover') {
-      state.nextApproverSelected = []
-      state.form.nextApprover = ''
-    }
-  }
-  // 关闭弹窗
-  const close = () => {
+  const closeDetail = data => {
     dialogProcess.show = false
+  }
+  const handelSubmit = data => {
+    dialogProcess.show = false
+    getFormPage()
   }
   // 切换分页
   function tabChange(activeName) {
@@ -1406,93 +778,7 @@
     }
     getFormPage()
   }
-  const approvalsChange = item => {
-    console.log(item)
-    if (item === '1') {
-      state.form.remark = '同意'
-      state.rules = {
-        suggest: [
-          {
-            required: true,
-            message: '请选择审批选项',
-            trigger: 'change'
-          }
-        ]
-      }
-    } else if (item === '2') {
-      state.form.remark = '不同意'
-      state.rules = {
-        suggest: [
-          {
-            required: true,
-            message: '请选择审批选项',
-            trigger: 'change'
-          }
-        ]
-      }
-    } else {
-      state.form.remark = '请审批'
-    }
-    if (item === '3' || item === '5') {
-      state.rules = {
-        suggest: [
-          {
-            required: true,
-            message: '请选择审批选项',
-            trigger: 'change'
-          }
-        ],
-        nextApprover: [
-          {
-            required: true,
-            message: '请选择下一步审批人'
-          }
-        ]
-      }
-    }
-    if (item === '4') {
-      state.rules = {
-        suggest: [
-          {
-            required: true,
-            message: '请选择审批选项',
-            trigger: 'change'
-          }
-        ],
-        approver: [
-          {
-            required: true,
-            message: '请选择审批人'
-          }
-        ]
-        // addSignMode: [
-        //   {
-        //     required: true,
-        //     message: '请选择加签方式'
-        //   }
-        // ]
-      }
-    }
-    if (item === '6') {
-      getBackBaseInfo()
-    }
-  }
   const addSignModeChange = item => {}
-  // 选择部门员工
-  const submitSelectDepart = data => {
-    if (depChoose.value === 'approver') {
-      state.approverSelected = data
-    } else if (depChoose.value === 'carbon') {
-      state.carbonSelected = data
-    } else if (depChoose.value === 'nextApprover') {
-      state.nextApproverSelected = data
-      const nextApproverNames = []
-      data.forEach(v => {
-        nextApproverNames.push(v.name)
-      })
-      state.form.nextApprover = nextApproverNames.join(',')
-    }
-  }
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     console.log(selection)
@@ -1512,10 +798,9 @@
       dialogProcess.formJson = RecordSealToReviewJson
     }
     if (cell.name === '审批') {
-      instanceId.value = column.instanceId
-      taskId.value = column.taskId
-      approvalMode.value = column.approvalMode
-      console.log(approvalMode.value)
+      state.params.instanceId = column.instanceId
+      state.params.taskId = column.taskId
+      state.params.approvalMode = column.approvalMode
       getDetail(column.instanceId)
     }
   }
@@ -1528,24 +813,22 @@
     }
     InstanceApi.detail(params)
       .then(data => {
-        dialogProcess.show = true
-
         console.log(data)
         console.log(JSON.parse(data.formJson))
-        formData.value = JSON.parse(data.formJson)
-        modelName.value = data.modelName
-        modelId.value = data.modelId
-        nodeId.value = data.nodeId
-        definitionId.value = data.definitionId
-        formVersionId.value = formData.value.formVersionId
-        flowVersionId.value = formData.value.flowVersionId
-        formMessageId.value = formData.value.formMessageId
-        flowMessageId.value = formData.value.flowMessageId
+        state.params.formData = JSON.parse(data.formJson)
+        state.params.modelName = data.modelName
+        state.params.modelId = data.modelId
+        state.params.nodeId = data.nodeId
+        state.params.definitionId = data.definitionId
+        formVersionId.value = state.params.formData.formVersionId
         getFormDataJson()
         // attrState.instanceName = data.instanceName
         // loading.value = false
         // initAffix()
         getButtons()
+        dialogProcess.show = true
+        dialogProcess.title = '审批'
+        console.log(dialogProcess.show)
       })
       .catch(() => {
         // loading.value = false
@@ -1556,29 +839,28 @@
    */
   const getButtons = async () => {
     const params = {
-      modelId: modelId.value,
-      definitionId: definitionId.value,
-      nodeId: nodeId.value
+      modelId: state.params.modelId,
+      definitionId: state.params.definitionId,
+      nodeId: state.params.nodeId
     }
     const result = await NodeButtonApi.findList(params)
     if (result) {
       // 按钮
-      buttons.value = result.filter(t => t.checked)
-      console.log('getButtons', buttons.value)
+      state.params.buttons = result.filter(t => t.checked)
+      console.log('getButtons', state.params.buttons)
     }
   }
   /**
    * 获取动态表单信息
    */
   const getFormDataJson = () => {
-    console.log(formVersionId)
     formApi
       .queryColumInfoByFormId({ formVersionId: formVersionId.value })
       .then(res => {
-        formJson.value = res.data
+        state.params.formJson = res.data
         console.log('getFormDataJson', res)
-        const d = handelData(formData.value, formJson.value)
-        state.ParticularsOfSeal.basicInformation.data = d
+        const d = handelData(state.params.formData, state.params.formJson)
+        state.params.detailData = d
         console.log('formJson', d)
       })
   }
@@ -1589,15 +871,21 @@
    */
   const handelData = (formData, formJson) => {
     const formTableData = []
+    const modelNameArr = []
+    formJson.forEach(item => {
+      modelNameArr.push(item.formColumnModel ? item.formColumnModel : '其他')
+    })
+    const newModeNames = Array.from(new Set(modelNameArr))
     formJson.forEach(v => {
       for (const item in formData) {
         if (v.formColumnNo === item) {
           if (v.formColumnNo === 'sealName') {
             if (formData[item].length > 0) {
-              formData[item].forEach((v, k) => {
+              formData[item].forEach((cv, k) => {
                 formTableData.push({
                   label: `印章名称${k + 1}`,
-                  value: v.seal
+                  value: cv.seal,
+                  type: v.formColumnModel ? v.formColumnModel : '其他'
                 })
               })
             }
@@ -1607,30 +895,34 @@
               if (i === 'applyOrganName') {
                 formTableData.push({
                   label: '所属部门',
-                  value: formData[item][i]
+                  value: formData[item][i],
+                  type: v.formColumnModel ? v.formColumnModel : '其他'
                 })
               } else if (i === 'applyUserName') {
                 formTableData.push({
                   label: '申请人员',
-                  value: formData[item][i]
+                  value: formData[item][i],
+                  type: v.formColumnModel ? v.formColumnModel : '其他'
                 })
               }
             }
           } else if (v.formColumnNo === 'contactUnit') {
             const organNameList = []
             if (formData[item].length > 0) {
-              formData[item].forEach((v, k) => {
-                organNameList.push(v.organName)
+              formData[item].forEach((cv, k) => {
+                organNameList.push(cv.organName)
               })
               formTableData.push({
                 label: `往来单位`,
-                value: organNameList.join(',')
+                value: organNameList.join(','),
+                type: v.formColumnModel ? v.formColumnModel : '其他'
               })
             }
           } else if (v.formColumnNo === 'limitTimeSeal') {
             formTableData.push({
               label: `限时用印`,
-              value: formData[item] === 1 ? '是' : '否'
+              value: formData[item] === 1 ? '是' : '否',
+              type: v.formColumnModel ? v.formColumnModel : '其他'
             })
           } else if (v.formColumnNo === 'usesealBesides') {
             formTableData.push({
@@ -1639,47 +931,54 @@
             })
           } else if (v.formColumnNo === 'sealFile') {
             if (formData[item].fileList.length > 0) {
-              formData[item].fileList.forEach((v, k) => {
+              formData[item].fileList.forEach((cv, k) => {
                 formTableData.push({
                   label: `文件名称`,
-                  value: v.name
+                  value: cv.name,
+                  type: v.formColumnModel ? v.formColumnModel : '其他'
                 })
               })
             }
           } else if (v.formColumnNo === 'remoteSeal') {
             formTableData.push({
               label: v.formColumnName,
-              value: formData[item] ? '是' : '否'
+              value: formData[item] ? '是' : '否',
+              type: v.formColumnModel ? v.formColumnModel : '其他'
             })
           } else if (v.formColumnNo === 'videoSeal') {
             formTableData.push({
               label: v.formColumnName,
-              value: formData[item] ? '是' : '否'
+              value: formData[item] ? '是' : '否',
+              type: v.formColumnModel ? v.formColumnModel : '其他'
             })
           } else {
             formTableData.push({
               label: v.formColumnName,
-              value: formData[item]
+              value: formData[item],
+              type: v.formColumnModel ? v.formColumnModel : '其他'
             })
           }
         }
       }
     })
-    return formTableData
-  }
-  const getDesign = () => {
-    const params = {
-      modelId: modelId.value,
-      definitionId: definitionId.value,
-      edit: false
-    }
-    ModelApi.getDesign(params)
-      .then(result => {
-        if (result) {
-          flowDesign.value.handleSetData(result)
+    const allArr = []
+    newModeNames.forEach(item => {
+      const obj = {
+        title: item,
+        data: [],
+        labelStyle: {
+          width: '8rem'
+        }
+      }
+      formTableData.forEach(v => {
+        if (v.type === item) {
+          obj.data.push(v)
         }
       })
-      .catch(() => {})
+      allArr.push(obj)
+    })
+    console.log('allArr', allArr)
+    return allArr
   }
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'instanceTitle') {
@@ -1697,9 +996,6 @@
   // 点击搜索表单
   function clickElement(item, index) {
     // console.log(item, index)
-    if (item.type === 'derivable') {
-      showDepPerDialog.value = true
-    }
   }
   // 获取表格列表
   const getFormPage = () => {
@@ -1775,24 +1071,6 @@
   })
 </script>
 <style lang="scss" scoped>
-  .approvalFlow-approvalFlow {
-    margin: 0%;
-
-    .title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .batch {
-      display: flex;
-      align-items: center;
-
-      .batch-desc {
-        @include mixin-margin-right(12);
-      }
-    }
-  }
   .select-person {
     display: flex;
     align-items: center;
@@ -1803,52 +1081,6 @@
     }
     > div {
       cursor: pointer;
-    }
-  }
-  .approval-footer {
-    border-radius: 4px;
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-    height: 260px;
-    left: 0;
-    box-sizing: border-box;
-    padding: 20px 24px 12px 24px;
-    background: #ffffff;
-    box-shadow: 0px -9px 22px rgb(0 0 0 / 3%);
-    overflow: auto;
-    .footer-tagcon {
-      width: 100%;
-      border: 1px solid var(--el-border-color);
-      border-radius: var(
-        --el-input-border-radius,
-        var(--el-border-radius-base)
-      );
-      box-sizing: border-box;
-      padding: 0 12px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      color: rgba($color: #000000, $alpha: 0.45);
-      .footer-tag {
-        background: rgba(0, 0, 0, 0.04);
-        border-radius: 3px;
-        border-color: rgba(0, 0, 0, 0.04);
-        color: rgba(0, 0, 0, 0.65);
-        margin-right: 12px;
-      }
-    }
-    .footer-approver {
-      font: size 14px;
-      color: rgba($color: #000000, $alpha: 0.45);
-      margin-right: 16px;
-    }
-    .footer-btns {
-      text-align: center;
-      padding-top: 6px;
-    }
-    .el-form-item {
-      margin-bottom: 10px;
     }
   }
   .components-documentsDetails {
