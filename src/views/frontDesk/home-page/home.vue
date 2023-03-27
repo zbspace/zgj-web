@@ -238,7 +238,7 @@
     onMounted
   } from 'vue'
   import componentsLayout from '@/views/components/Layout.vue'
-  import componentsTabs from '@/views/components/tabs.vue'
+  import componentsTabs from '@/views/components/JyTabs.vue'
   import { useRouter } from 'vue-router'
   // const props = defineProps({
   //   // 处理类型

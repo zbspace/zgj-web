@@ -95,7 +95,7 @@
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
-  import componentsTabs from '../../../components/tabs.vue'
+  import componentsTabs from '../../../components/JyTabs.vue'
   import componentsTable from '../../../components/table'
   const props = defineProps({
     // 处理类型

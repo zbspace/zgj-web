@@ -60,7 +60,7 @@
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   import documentsDetailsPortion from '../../../components/documentsDetails/portion.vue'
-  import SealApplicationStep from '@/views/components/Seal-application/step.vue'
+  import SealApplicationStep from '@/views/components/sealApplication/JyStep.vue'
   import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
   const props = defineProps({

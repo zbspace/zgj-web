@@ -1,7 +1,11 @@
 <template>
   <div class="Seal-application-step">
     <div class="ap-box">
-      <div class="ap-box-list" v-for="(item, index) in state.cache.data">
+      <div
+        class="ap-box-list"
+        v-for="(item, index) in state.cache.data"
+        :key="index"
+      >
         <div class="ap-box-list-desc">
           <div
             class="ap-box-list-desc-index"
@@ -51,15 +55,18 @@
     },
     data: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 默认属性
     defaultAttribute: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     }
   })
-  const emit = defineEmits([])
   const state = reactive({
     cache: {
       data: []

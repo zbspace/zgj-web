@@ -48,12 +48,12 @@
               </template>
               <template #content>
                 <div class="PrintingProcess-content">
-                  <componentsTable
+                  <!-- <componentsTable
                     :defaultAttribute="state.componentsTable.defaultAttribute"
                     :data="state.componentsTable.data"
                     :header="state.componentsTable.header"
                   >
-                  </componentsTable>
+                  </componentsTable> -->
                 </div>
               </template>
             </documentsDetailsPortion>
@@ -75,9 +75,9 @@
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
-  import componentsTable from '@/views/components/table.vue'
+  // import componentsTable from '@/views/components/table.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
-  import SealApplicationStep from '@/views/components/Seal-application/step.vue'
+  import SealApplicationStep from '@/views/components/sealApplication/JyStep.vue'
   import FillFormInformation from '@/views/addDynamicFormJson/Fill-form-information.json'
   import FillFormInformationSeal from '@/views/addDynamicFormJson/Fill-form-information-seal.json'
   const props = defineProps({
