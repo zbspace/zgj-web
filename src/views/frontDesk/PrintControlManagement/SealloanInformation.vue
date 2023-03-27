@@ -142,7 +142,7 @@
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsPagination from '../../components/pagination'
-  import componentsTabs from '../../components/tabs'
+  import componentsTabs from '../../components/JyTabs.vue'
   import componentsLayout from '../../components/Layout'
   import componentsBatch from '@/views/components/batch'
   import componentsDocumentsDetails from '../../components/documentsDetails'
