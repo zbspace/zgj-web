@@ -18,10 +18,6 @@
           :class="[labelAlign, customClass]"
           :size="field.options.size"
         >
-          <el-input
-            v-model="fieldModel.applyUserId"
-            style="display: none"
-          ></el-input>
           <el-input v-model="fieldModel.applyUserName" disabled></el-input>
         </el-form-item>
       </el-col>
@@ -92,6 +88,7 @@
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import { getItem } from '@/utils/storage'
 
   export default {
     name: 'ApplicantInfoWidget',
@@ -132,9 +129,12 @@
         queryParams: { roleId: 'r1' },
         tabsShow: ['organ'],
         fieldModel: {
-          applyUserId: JSON.parse(localStorage.getItem('accountInfo')).userId,
-          applyUserName: JSON.parse(localStorage.getItem('accountInfo'))
-            .userName,
+          applyUserId: getItem('accountInfo')
+            ? getItem('accountInfo').userInfo.userId
+            : '',
+          applyUserName: getItem('accountInfo')
+            ? getItem('accountInfo').userInfo.userName
+            : '',
           applyOrganId: '',
           applyOrganName: ''
         },
@@ -218,7 +218,6 @@
 
         if (!this.fieldModel.applyOrganId) {
           this.field.options.requiredHint = '请选择部门'
-          this.fieldModel.applyUserId = ''
           this.fieldModel.applyOrganName = ''
         } else {
           this.field.options.requiredHint = ''
@@ -227,11 +226,11 @@
       },
 
       onClear() {
-        this.fieldModel.applyUserId = null
         this.fieldModel.applyOrganId = ''
         this.fieldModel.applyOrganName = ''
         this.validate()
       },
+
       validate() {
         if (!this.fieldModel.applyOrganName) {
           this.setRequiredTextShow(true)

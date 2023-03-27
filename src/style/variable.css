@@ -68,7 +68,7 @@
   /* #### 填充色 */
   --jy-color-fill--1: rgba(0, 0, 0, 0.02);
   --jy-color-fill--2: rgba(0, 0, 0, 0.04);
-  // 对应 --color-fill--1
+  /* 对应 --color-fill--1 */
   --jy-color-fill--3: #fafafa;
   --jy-color-fill--4: rgba(255, 255, 255, 0.6);
   --jy-color-fill--5: #ffffff;

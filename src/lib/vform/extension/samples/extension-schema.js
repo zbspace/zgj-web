@@ -71,6 +71,7 @@ export const sealNameSchema = {
     customClass: '', // 自定义css类名
     // -------------------
     onChange: '',
+    model: '',
     filedList: [
       {
         seal: '',
@@ -103,6 +104,7 @@ export const contactUnitSchema = {
     labelHidden: true,
     required: false,
     requiredHint: '',
+    model: '',
     dsEnabled: false, // 是否使用数据源数据
     // defaultValue: { unitIds: '', unitNames: '' },
     // -------------------
@@ -135,6 +137,7 @@ export const usesealBesidesSchema = {
     addTitle: '详细',
     onClose: '',
     customClass: '',
+    model: '',
     dsEnabled: false // 是否使用数据源数据
     // defaultValue: {
     //   extSeal: false,
@@ -219,6 +222,7 @@ export const remoteSealSchema = {
     labelTooltip: null,
     switchWidth: 40,
     activeText: '',
+    model: '',
     inactiveText: '',
     activeColor: null,
     inactiveColor: null,
@@ -259,6 +263,7 @@ export const videoSealSchema = {
     switchWidth: 40,
     activeText: '',
     inactiveText: '',
+    model: '',
     activeColor: null,
     inactiveColor: null,
     fieldLinkage: [
@@ -303,6 +308,7 @@ export const applicantInfoSchema = {
     required: true,
     requiredHint: '',
     validation: '',
+    model: '',
     validationHint: '',
     dsEnabled: false, // 是否使用数据源数据
     dsName: '', // 数据源名称
@@ -360,6 +366,7 @@ export const limitTimeSealSchema = {
     labelWidth: 100,
     labelHidden: false,
     disabled: false,
+    model: '',
     hidden: false,
     defaultValue: {
       timeLimit: 2,
@@ -416,6 +423,7 @@ export const limitAddressSealSchema = {
     columnWidth: '200px',
     labelWidth: 100,
     labelHidden: false,
+    model: '',
     disabled: false,
     hidden: false,
     defaultValue: false,
@@ -459,6 +467,7 @@ export const sealFileSchema = {
     hidden: false,
     required: true,
     requiredHint: '',
+    model: '',
     validation: '',
     validationHint: '',
     defaultValue: { fileList: [], fileList1: [] },
@@ -507,6 +516,7 @@ export const fileTypeSchema = {
     filterable: false,
     allowCreate: false,
     remote: false,
+    model: '',
     automaticDropdown: false, // 自动下拉
     multiple: false,
     multipleLimit: 0,
@@ -558,6 +568,7 @@ export const agentManSchema = {
     nameDisabled: true,
     labelWidth: 100,
     readonly: false,
+    model: '',
     disabled: false,
     hidden: false,
     clearable: true,
@@ -573,6 +584,26 @@ export const agentManSchema = {
   }
 }
 
+// 模块/容器
+export const moduleContainerSchema = {
+  type: 'moduleContainer',
+  icon: 'moduleContainer',
+  alias: '', // 组件别名，可以自定义
+  category: 'container',
+  widgetList: [],
+  options: {
+    name: '',
+    label: '模块1',
+    hidden: false,
+    folded: false,
+    showFold: true,
+    cardWidth: '100%',
+    shadow: 'never',
+    customClass: '',
+    model: ''
+  }
+}
+
 // 所有自定义组件list
 export const customComponents = [
   'sealName',
@@ -585,5 +616,6 @@ export const customComponents = [
   'applicantInfo',
   'sealFile',
   'fileTypeId',
-  'agentMan'
+  'agentMan',
+  'moduleContainer'
 ]

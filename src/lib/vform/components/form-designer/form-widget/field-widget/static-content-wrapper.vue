@@ -47,8 +47,8 @@
         v-if="designer.selectedId === field.id"
       >
         <i :title="i18nt('designer.hint.dragHandler')"
-          ><svg-icon icon-class="el-drag-move"
-        /></i>
+          ><el-icon><Rank /></el-icon
+        ></i>
         <i>{{
           i18n2t(
             `designer.widgetLabel.${field.type}`,
@@ -66,13 +66,15 @@
 <script>
   import SvgIcon from '@/lib/vform/components/svg-icon'
   import i18n from '@/lib/vform/utils/i18n'
+  import { Rank } from '@element-plus/icons-vue'
 
   export default {
     name: 'StaticContentWrapper',
     mixins: [i18n],
     inject: ['getPrefabricationFieldList'],
     components: {
-      SvgIcon
+      SvgIcon,
+      Rank
     },
     props: {
       field: Object,

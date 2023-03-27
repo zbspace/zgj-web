@@ -848,7 +848,7 @@
         'check-strictly': true,
         'highlight-current': true,
         'node-key': 'sealTypeId',
-        'current-node-key': 'all'
+        'current-node-key': ''
       },
       defaultProps: {
         label: 'sealTypeName',
@@ -1111,17 +1111,10 @@
       state.componentsTree.data = [
         {
           sealTypeName: '印章类型',
-          sealTypeId: 'all',
+          sealTypeId: '',
           children: res.data
         }
       ]
-      // if (res.data && res.data.length) {
-      //   // state.componentsTree.defaultAttribute['current-node-key'] =
-      //   //   res.data[0].sealTypeId
-      //   queryParams.value = {
-      //     sealTypeIds: res.data[0].sealTypeId
-      //   }
-      // }
       table.value.reloadData()
     })
   }
@@ -1148,10 +1141,7 @@
   }
   const currentChange = e => {
     console.log(e)
-    queryParams.value =
-      e.sealTypeId && e.sealTypeId !== 'all'
-        ? { sealTypeIds: e.sealTypeId }
-        : null
+    queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
     table.value.reloadData()
   }
 
