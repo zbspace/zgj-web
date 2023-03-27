@@ -359,9 +359,7 @@
             placeholder: '+保管人',
             type: 'user',
             multiple: false
-          },
-          options: [],
-          values: []
+          }
         },
         {
           id: 'manOrgan',
@@ -373,9 +371,7 @@
             placeholder: '+保管部门',
             type: 'organ',
             multiple: false
-          },
-          options: [],
-          values: []
+          }
         },
         {
           id: 'flag',
