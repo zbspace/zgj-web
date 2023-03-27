@@ -468,10 +468,10 @@
         navBarApi.getUserInfo().then(userInfo => {
           const obj = {
             userId: userInfo.data && userInfo.data.userId,
-            userName: userInfo.data && userInfo.data.userName,
-            userTitle: userInfo.data && userInfo.data.userTitle,
-            userNo: userInfo.data && userInfo.data.userNo,
-            userMail: userInfo.data && userInfo.data.userMail
+            userName: userInfo.data && userInfo.data.userName
+            // userTitle: userInfo.data && userInfo.data.userTitle,
+            // userNo: userInfo.data && userInfo.data.userNo,
+            // userMail: userInfo.data && userInfo.data.userMail
           }
           accountInfo.setUserInfo(obj)
         })

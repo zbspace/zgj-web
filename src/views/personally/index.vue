@@ -1,6 +1,6 @@
 <template>
   <div class="personall-container">
-    <div class="head">
+    <div class="head" v-if="loading">
       <img
         class="img"
         src="@/assets/svg/jiantou-zuo.svg"
@@ -12,21 +12,23 @@
       <div class="cont">
         <!-- info -->
         <div class="info">
-          <div class="user">春青</div>
+          <div class="user">{{
+            userInfo.userName && userInfo.userName.substr(1)
+          }}</div>
 
           <div class="user-msg">
-            <div class="user-name">徐春青</div>
+            <div class="user-name">{{ userInfo.userName }}</div>
 
             <div class="user-phone">
               <div class="phone-item">
                 <div class="label">手机号:</div>
-                <div class="number">12345678901</div>
+                <div class="number">{{ userInfo.userTel }}</div>
                 <div class="change" @click="changePhoneNumber">更换</div>
               </div>
               <div class="right-line"></div>
               <div class="phone-item">
                 <div class="label">邮箱:</div>
-                <div class="number">test@qq.com</div>
+                <div class="number">{{ userInfo.userMail }}</div>
                 <div class="change">更换</div>
               </div>
             </div>
@@ -99,19 +101,16 @@
 
         <div class="cont-box">
           <!-- depart -->
-          <el-row class="row">
+          <el-row
+            class="row"
+            v-for="(item, index) in userInfo.organInfoList"
+            :key="index"
+          >
             <el-col :span="2" style="min-width: 100px">
-              <div class="label">所属部门 :</div>
+              <div class="label" v-show="index === 0">所属部门 :</div>
             </el-col>
             <el-col :span="16">
-              <div class="column">德国威能 - 威能（无锡）供热设备有限公司</div>
-              <div class="column">
-                德国威能 - 威能（中国）供热制冷环境技术有限公司
-              </div>
-              <div class="column">
-                德国威能 - 威能（中国）供热制冷环境技术有限公司北京分公司
-              </div>
-              <div class="column">德国威能 - 威能（无锡）供热设备有限公司</div>
+              <div class="column">{{ item.organName }}</div>
             </el-col>
           </el-row>
 
@@ -121,7 +120,16 @@
               <div class="label">角色 :</div>
             </el-col>
             <el-col :span="16">
-              <div class="column">系统管理员、审计员、印章管理员</div>
+              <span
+                class="column"
+                v-for="(item, index) in userInfo.roleInfoList"
+                :key="index"
+              >
+                {{ item.roleName }}
+                <span v-if="index !== userInfo.roleInfoList.length - 1">
+                  、
+                </span>
+              </span>
             </el-col>
           </el-row>
 
@@ -131,7 +139,7 @@
               <div class="label">职位 :</div>
             </el-col>
             <el-col :span="16">
-              <div class="column">开发</div>
+              <div class="column">{{ userInfo.userTitle }}</div>
             </el-col>
           </el-row>
 
@@ -141,7 +149,7 @@
               <div class="label">工号 :</div>
             </el-col>
             <el-col :span="16">
-              <div class="column">Zhangsan</div>
+              <div class="column">{{ userInfo.userNo }}</div>
             </el-col>
           </el-row>
 
@@ -160,10 +168,14 @@
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
                 >
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                  <el-icon v-else class="avatar-uploader-icon"
-                    ><Plus
-                  /></el-icon>
+                  <img
+                    v-if="userInfo.userFaceImage"
+                    :src="userInfo.userFaceImage"
+                    class="avatar"
+                  />
+                  <el-icon v-else class="avatar-uploader-icon">
+                    <Plus />
+                  </el-icon>
                 </el-upload>
               </div>
             </el-col>
@@ -196,7 +208,7 @@
             <template #label>
               <div class="from-label">已绑定手机号</div>
             </template>
-            <div>18888888888</div>
+            <div>{{ userInfo.userTel }}</div>
           </el-form-item>
           <el-form-item
             prop="phone"
@@ -259,12 +271,12 @@
 
 <script setup>
   import router from '@/router'
-  import { nextTick, reactive, ref } from 'vue'
+  import { nextTick, reactive, ref, onBeforeMount } from 'vue'
   import { ElMessage } from 'element-plus'
   import { Plus } from '@element-plus/icons-vue'
   import JyDialog from '@/components/common/JyDialog/index2.vue'
   import VerificationBtn from '@/views/login/components/VerificationBtn.vue'
-  const imageUrl = ref('')
+  import infoApi from '@/api/common/navbar'
 
   const loginform = reactive({
     phone: '',
@@ -274,7 +286,7 @@
 
   const handleAvatarSuccess = (response, uploadFile) => {
     console.log(response, uploadFile)
-    imageUrl.value = URL.createObjectURL(uploadFile.raw)
+    userInfo.userFaceImage = URL.createObjectURL(uploadFile.raw)
   }
 
   const beforeAvatarUpload = rawFile => {
@@ -292,6 +304,7 @@
     }
     return true
   }
+
   const goBack = () => {
     router.go(-1)
   }
@@ -326,6 +339,37 @@
     height: '32px',
     fontSize: '14px'
   }
+  const loading = ref(false)
+  const userInfo = reactive({
+    userId: '',
+    userName: '',
+    userTel: '',
+    userMail: '',
+    userTitle: '',
+    userNo: '',
+    userFaceImage: '',
+    organInfoList: [],
+    roleInfoList: []
+  })
+  onBeforeMount(() => {
+    infoApi
+      .getUserInfo()
+      .then(res => {
+        userInfo.userId = res.data.userId
+        userInfo.userName = res.data.userName
+        userInfo.userTel = res.data.userTel
+        userInfo.userMail = res.data.userMail
+        userInfo.userTitle = res.data.userTitle
+        userInfo.userNo = res.data.userNo
+        userInfo.userFaceImage = res.data.userFaceImage
+        userInfo.organInfoList = res.data.organInfoList
+        userInfo.roleInfoList = res.data.roleInfoList
+        loading.value = true
+      })
+      .catch(_ => {
+        loading.value = true
+      })
+  })
 </script>
 
 <style scoped lang="scss">
@@ -449,7 +493,7 @@
           .column {
             font-family: 'PingFang SC';
             color: rgba(0, 0, 0, 0.85);
-            margin-bottom: 8px;
+            // margin-bottom: 8px;
           }
         }
       }
