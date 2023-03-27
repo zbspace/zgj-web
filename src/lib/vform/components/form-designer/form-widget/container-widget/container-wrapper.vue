@@ -52,7 +52,10 @@
         @click.stop="cloneContainer(widget)"
         ><svg-icon icon-class="el-clone"
       /></i>
-      <i :title="i18nt('designer.hint.remove')" @click.stop="removeWidget">
+      <i
+        :title="i18nt('designer.hint.remove')"
+        @click.stop="removeWidget(widget)"
+      >
         <svg-icon icon-class="el-delete" />
       </i>
     </div>

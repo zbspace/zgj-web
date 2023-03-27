@@ -565,6 +565,6 @@ export const customComponents = [
   'applicantInfo',
   'sealFile',
   'fileTypeId',
-  'agentMan',
-  'moduleContainer'
+  'agentMan'
+  // 'moduleContainer'
 ]

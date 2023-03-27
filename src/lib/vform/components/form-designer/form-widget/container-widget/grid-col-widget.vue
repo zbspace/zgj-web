@@ -76,7 +76,10 @@
       >
         <svg-icon icon-class="el-clone" />
       </i>
-      <i :title="i18nt('designer.hint.remove')" @click.stop="removeWidget">
+      <i
+        :title="i18nt('designer.hint.remove')"
+        @click.stop="removeWidget(widget)"
+      >
         <svg-icon icon-class="el-delete" />
       </i>
     </div>
@@ -95,12 +98,12 @@
   import FieldComponents from '@/lib/vform/components/form-designer/form-widget/field-widget/index'
   import SvgIcon from '@/lib/vform/components/svg-icon'
   import refMixinDesign from '@/lib/vform/components/form-designer/refMixinDesign'
-
+  import { getArrFromTree } from '@/utils/tools'
   export default {
     name: 'GridColWidget',
     componentName: 'GridColWidget',
     mixins: [i18n, refMixinDesign],
-    inject: ['refList'],
+    inject: ['refList', 'getPrefabricationFieldList'],
     components: {
       ...FieldComponents,
       SvgIcon
@@ -286,7 +289,44 @@
         this.designer.cloneGridCol(widget, this.parentWidget)
       },
 
-      removeWidget() {
+      queryStr(list, keyWord) {
+        const reg = new RegExp(keyWord) // 创建正则表达式
+        const arr = []
+        for (let i = 0; i < list.length; i++) {
+          if (reg.test(list[i])) {
+            arr.push(list[i])
+          }
+        }
+        return arr
+      },
+
+      getWidgets(widget) {
+        const res = []
+        const fn = (arr, formColumnModel = '') => {
+          arr.forEach(v => {
+            res.push(v.options.name)
+            if (v.widgetList && v.widgetList.length) {
+              fn(v.widgetList, formColumnModel)
+            }
+            if (v.cols && v.cols.length) {
+              fn(v.cols, formColumnModel)
+            }
+          })
+        }
+        if (widget.widgetList && widget.widgetList.length) {
+          fn(widget.widgetList)
+        }
+        return res
+      },
+
+      removeWidget(widget) {
+        const list = this.getPrefabricationFieldList() // ["contactUnit33846"]
+        const arr = this.getWidgets(widget)
+        const tmp = list.find(v => arr.includes(v))
+        if (tmp) {
+          this.$message.error('请勿删除必要字段')
+          return false
+        }
         if (this.parentList) {
           let nextSelected = null
           if (this.parentList.length === 1) {

@@ -20,7 +20,7 @@
       :active-color="field.options.activeColor"
       :inactive-color="field.options.inactiveColor"
       :width="field.options.switchWidth"
-      @change="handleChangeEvent"
+      @change="onHandleChangeEvent($event)"
     >
     </el-switch>
     <template v-if="isReadMode">
@@ -34,6 +34,7 @@
   import emitter from '@/lib/vform/utils/emitter'
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
+  import { messageWarning } from '@/hooks/useMessage'
 
   export default {
     name: 'RemoteSealWidget',
@@ -86,6 +87,13 @@
           const changeFn = new Function(this.field.options.onClose)
           changeFn.call(this)
         }
+      },
+      onHandleChangeEvent(e) {
+        if (this.globalModel.formModel.videoSeal) {
+          messageWarning('视频盖章模式下暂不支持此功能')
+          return (this.fieldModel = false)
+        }
+        this.handleChangeEvent(e)
       }
     }
   }

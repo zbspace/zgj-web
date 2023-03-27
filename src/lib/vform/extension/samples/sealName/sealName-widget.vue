@@ -21,6 +21,11 @@
               customClass,
               field.options.required ? 'required' : ''
             ]"
+            :rules="{
+              required: true,
+              message: '请选择印章',
+              trigger: 'change'
+            }"
           >
             <div style="width: 100%; display: flex; height: 32px">
               <el-input v-model="obj.sealId" v-if="false"></el-input>
@@ -269,9 +274,20 @@
         if (row.length && row[0].sealTypeId) {
           return (this.sealTypes = row)
         }
-        this.filedList[this.thisIndex].seal = row.sealName
-        this.filedList[this.thisIndex].sealId = row.sealId
+        this.filedList.splice(this.thisIndex, 1, {
+          ...this.filedList[this.thisIndex],
+          ...{ seal: row.sealName, sealId: row.sealId }
+        })
         this.xzyzDialogVisible = false
+        if (this.filedList[this.thisIndex].sealId) {
+          this.setRequiredTextShow(
+            'sealRequiredTextShow',
+            this.thisIndex,
+            false
+          )
+        } else {
+          this.setRequiredTextShow('sealRequiredTextShow', this.thisIndex, true)
+        }
       },
 
       addItem() {
@@ -282,11 +298,11 @@
       },
 
       onBlur(e, index) {
-        if (this.filedList[index].sealId) {
-          this.setRequiredTextShow('sealRequiredTextShow', index, false)
-        } else {
-          this.setRequiredTextShow('sealRequiredTextShow', index, true)
-        }
+        // if (this.filedList[index].sealId) {
+        //   this.setRequiredTextShow('sealRequiredTextShow', index, false)
+        // } else {
+        //   this.setRequiredTextShow('sealRequiredTextShow', index, true)
+        // }
       },
       onChanged1(e, index) {
         if (e) {
@@ -306,15 +322,16 @@
       },
 
       onClear(e, index) {
-        this.filedList[index].seal = ''
-        this.filedList[index].sealId = ''
+        this.filedList.splice(index, 1, {
+          ...this.filedList[index],
+          ...{ seal: '', sealId: '' }
+        })
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  @import '@/lib/vform/styles/global.scss'; /* form-item-wrapper已引入，还需要重复引入吗？ */
   .required :deep(.el-form-item__label)::before {
     content: '*';
     color: #f56c6c;

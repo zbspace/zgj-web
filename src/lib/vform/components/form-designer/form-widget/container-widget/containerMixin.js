@@ -1,5 +1,5 @@
 export default {
-  inject: ['getFormConfig'],
+  inject: ['getFormConfig', 'getPrefabricationFieldList'],
   computed: {
     formConfig() {
       return this.getFormConfig()
@@ -65,7 +65,41 @@ export default {
       }
     },
 
-    removeWidget() {
+    getWidgets(widgetList) {
+      const res = []
+      const fn = (arr, formColumnModel = '') => {
+        arr.forEach(v => {
+          res.push(v.options.name)
+          if (v.widgetList && v.widgetList.length) {
+            fn(v.widgetList, formColumnModel)
+          }
+          if (v.cols && v.cols.length) {
+            fn(v.cols, formColumnModel)
+          }
+        })
+      }
+      if (widgetList && widgetList.length) {
+        widgetList.forEach(v => {
+          if (v.category) {
+            fn(v.widgetList || v.cols)
+          } else {
+            res.push(v.options.name)
+          }
+        })
+      }
+      return res
+    },
+
+    removeWidget(widget) {
+      const list = this.getPrefabricationFieldList() // ["contactUnit33846"]
+      const arr = this.getWidgets(
+        widget.cols || widget.widgetList || widget.rows
+      )
+      const tmp = list.find(v => arr.includes(v))
+      if (tmp) {
+        this.$message.error('请勿删除必要字段')
+        return false
+      }
       if (this.parentList) {
         let nextSelected = null
         if (this.parentList.length === 1) {
