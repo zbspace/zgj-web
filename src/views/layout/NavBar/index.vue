@@ -138,6 +138,7 @@
                 <div class="ap-personalCenter-text">
                   <span class="ap-personalCenter-name">
                     {{
+                      accountInfoStore.userInfo &&
                       accountInfoStore.userInfo.userName &&
                       accountInfoStore.userInfo.userName.substr(1)
                     }}
@@ -163,6 +164,7 @@
                 <div class="dropdown-name">
                   <div class="dropdown-name-icon">
                     {{
+                      accountInfoStore.userInfo &&
                       accountInfoStore.userInfo.userName &&
                       accountInfoStore.userInfo.userName.substr(1)
                     }}
@@ -500,10 +502,6 @@
         localStorage.removeItem('tenantId')
         localStorage.removeItem('menusInfo')
         localStorage.removeItem('departLists')
-        const accountInfo = JSON.parse(localStorage.getItem('accountInfo'))
-        accountInfo.token = ''
-        accountInfo.userInfo.userName = ''
-        localStorage.setItem('accountInfo', accountInfo)
         // 跳转到登录页
         ElMessage.success('退出登录！')
         router.replace({
