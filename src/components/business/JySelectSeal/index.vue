@@ -19,7 +19,7 @@
       <div class="jy-select-seal">
         <el-row :gutter="12">
           <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-            <div class="seal-type-list" v-loading="leftLoading">
+            <!-- <div class="seal-type-list" v-loading="leftLoading">
               <div
                 class="seal-type-item"
                 v-for="(item, index) in sealTypeTreeData"
@@ -34,6 +34,30 @@
                 description="暂无数据"
                 v-if="!sealTypeTreeData.length"
               />
+            </div> -->
+            <div class="components-tree">
+              <el-tree
+                :data="sealTypeTreeData"
+                node-key="sealTypeId"
+                check-on-click-node
+                :show-checkbox="false"
+                default-expand-all
+                :expand-on-click-node="false"
+                check-strictly
+                highlight-current
+                current-node-key=""
+                :props="defaultProps"
+                @current-change="sealTypeSelect"
+              >
+                <template #default="{ node, data }">
+                  <span class="custom-tree-node">
+                    <svg class="iconpark-icon" v-if="node.level !== 1">
+                      <use href="#file-line"></use>
+                    </svg>
+                    <span>{{ data.sealTypeName }}</span>
+                  </span>
+                </template>
+              </el-tree>
             </div>
           </el-col>
           <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
@@ -68,6 +92,7 @@
               <el-table-column
                 width="60"
                 label=""
+                align="center"
                 v-if="props.checkType === 'radio'"
               >
                 <template #default="scope">
@@ -138,6 +163,9 @@
   const searchSealTypeInfo = ref(new FeatchSealTypeInfo())
   const searchSealInfo = ref(new FeatchSealInfo())
   const paginationInfo = ref(new PaginationInfo())
+  const defaultProps = ref({
+    label: 'sealTypeName'
+  })
   const sealList = ref([])
   const selectList = ref([])
   const actived = ref('')
@@ -159,7 +187,13 @@
     try {
       leftLoading.value = true
       const res = await typeOfSealService.list({ searchKey: '' })
-      sealTypeTreeData.value = res.data
+      sealTypeTreeData.value = [
+        {
+          sealTypeId: '',
+          sealTypeName: '印章类型',
+          children: res.data
+        }
+      ]
     } catch (error) {}
     leftLoading.value = false
   }
@@ -200,10 +234,11 @@
     }
   }
 
-  const sealTypeSelect = sealTypeId => {
-    actived.value = sealTypeId
-    searchSealInfo.value.sealTypeIds = sealTypeId
-    getLibraryOfSeal(sealTypeId)
+  const sealTypeSelect = sealType => {
+    console.log(sealType.sealTypeId)
+    actived.value = sealType.sealTypeId
+    searchSealInfo.value.sealTypeIds = sealType.sealTypeId
+    getLibraryOfSeal(sealType.sealTypeId)
   }
 
   const reset = () => {
@@ -218,7 +253,8 @@
   }
 
   const selectionChange = selectArr => {
-    if (props.checkType === 'radio') {
+    console.log(selectArr)
+    if (props.checkType === 'radio' && selectArr) {
       radio.value = selectArr.sealId
       selectList.value = selectArr
     }
@@ -277,27 +313,6 @@
 
 <style lang="scss" scoped>
   .jy-select-seal {
-    .seal-type-list {
-      border-right: 1px solid rgba(0, 0, 0, 0.06);
-      min-height: 294px;
-    }
-    .seal-type-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 16px;
-      cursor: pointer;
-      &:hover {
-        color: #d0963e;
-      }
-      &.selected {
-        color: #d0963e;
-      }
-      .iconpark-icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 8px;
-      }
-    }
     .select-block {
       display: flex;
       justify-content: space-between;
@@ -305,6 +320,28 @@
       .btns {
         display: flex;
       }
+    }
+  }
+</style>
+<style lang="scss">
+  .components-tree {
+    margin: 0;
+
+    .el-tree-node__content {
+      min-height: 32px;
+    }
+    .custom-tree-node {
+      display: flex;
+      align-items: center;
+
+      .iconpark-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+    }
+    .is-leaf {
+      display: none;
     }
   }
 </style>
