@@ -24,11 +24,11 @@
           ref="ruleFormRef"
           :model="ruleForm"
           :rules="rules"
-          label-width="120px"
+          label-width="140px"
           class="demo-ruleForm"
         >
           <el-row :gutter="20">
-            <el-col :span="12">
+            <el-col :span="10">
               <el-form-item label="业务规则名称" prop="ruleBusinessName">
                 <el-input
                   v-model="ruleForm.ruleBusinessName"
@@ -37,14 +37,14 @@
                 />
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="10">
               <el-form-item label="业务规则编码" prop="ruleBusinessNo">
                 <el-input v-model="ruleForm.ruleBusinessNo" disabled />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="12">
+            <el-col :span="10">
               <el-form-item label="文件类型" prop="fileTypeIds">
                 <el-select
                   v-model="ruleForm.fileTypeIds"
@@ -61,7 +61,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="10">
               <el-form-item label="用印类型" prop="sealUseTypeId">
                 <el-select
                   v-model="ruleForm.sealUseTypeId"
@@ -80,7 +80,7 @@
               <div class="labelTitle">用印设置</div>
               <div class="grayBg">
                 <el-row :gutter="20">
-                  <el-col :span="12">
+                  <el-col :span="10">
                     <el-form-item label="外借电子围栏" prop="railSwitch">
                       <el-switch
                         v-model="ruleForm.railSwitch"
@@ -89,7 +89,7 @@
                       />
                     </el-form-item>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="10">
                     <el-form-item label="批量用印" prop="batchSwitch">
                       <el-switch
                         v-model="ruleForm.batchSwitch"
@@ -130,17 +130,36 @@
               </div>
               <div class="labelTitle">远程监督用印</div>
               <div class="grayBg">
-                <el-form-item label="远程盖章确认人" prop="remoteUsers">
-                  <el-select
-                    v-model="ruleForm.remoteUsers"
-                    placeholder="请选择"
-                    style="width: 100%"
-                    disabled
-                  >
-                    <el-option label="物理用印" value="1" />
-                    <el-option label="电子签章" value="2" />
-                  </el-select>
-                </el-form-item>
+                <el-row :gutter="20">
+                  <el-col :span="12">
+                    <el-form-item label="远程盖章确认人" prop="remoteUsers">
+                      <el-select
+                        v-model="ruleForm.remoteUsers"
+                        multiple
+                        placeholder="请选择"
+                        style="width: 100%"
+                        disabled
+                      >
+                        <el-option label="物理用印" value="1" />
+                        <el-option label="电子签章" value="2" />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="视频盖章确认人" prop="videoUsers">
+                      <el-select
+                        v-model="ruleForm.videoUsers"
+                        multiple
+                        placeholder="请选择"
+                        style="width: 100%"
+                        disabled
+                      >
+                        <el-option label="物理用印" value="1" />
+                        <el-option label="电子签章" value="2" />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
               </div>
             </el-tab-pane>
             <el-tab-pane label="普通用印">User</el-tab-pane>
@@ -160,7 +179,14 @@
     ruleBusinessNo: '',
     fileTypeIds: [],
     sealUseTypeId: '1',
-    railSwitch: '0'
+    railSwitch: '0',
+    batchSwitch: '0',
+    qrCodeSwitch: '0',
+    wordWaterSwitch: '0',
+    gridWaterSwitch: '0',
+    invisibleWaterMarkSwitch: '0',
+    remoteUsers: [],
+    videoUsers: []
   })
 
   const rules = ref({
@@ -175,6 +201,20 @@
       {
         required: true,
         message: '请选择文件类型',
+        trigger: 'change'
+      }
+    ],
+    remoteUsers: [
+      {
+        required: true,
+        message: '请选择远程盖章确认人',
+        trigger: 'change'
+      }
+    ],
+    videoUsers: [
+      {
+        required: true,
+        message: '请选择视频盖章确认人',
         trigger: 'change'
       }
     ]
