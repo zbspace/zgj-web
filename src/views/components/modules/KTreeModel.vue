@@ -5,7 +5,7 @@
       <div class="k-column">
         <div class="k-tree-left">
           <!-- checkbox -->
-          <div class="check-box">
+          <div style="margin-right: 10px">
             <!-- 未选 -->
             <div class="" v-show="allSelected === 0" @click="checkAll(2)">
               <svg
@@ -105,7 +105,7 @@
       <div class="k-column" v-for="(item, index) in cacheShowList" :key="index">
         <div class="k-tree-left">
           <!-- checkbox -->
-          <div class="check-box">
+          <div>
             <!-- 占位 -->
 
             <div v-if="props.tabActive === 'user'">
@@ -117,6 +117,7 @@
               <div
                 v-show="item.selectedStatus === 0 && item.type === 'user'"
                 @click="checkPart(2, item)"
+                class="check-box"
               >
                 <svg
                   width="16"
@@ -150,6 +151,66 @@
               <div
                 v-show="item.selectedStatus === 2 && item.type === 'user'"
                 @click="checkPart(0, item)"
+                class="check-box"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect opacity="0.01" width="16" height="16" fill="black" />
+                  <rect width="16" height="16" rx="2" fill="#D0963E" />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M11.7703 5.254L7.55825 11.094C7.30425 11.448 6.77825 11.448 6.52425 11.094L4.03025 7.638C3.95425 7.532 4.03025 7.384 4.16025 7.384H5.09825C5.30225 7.384 5.49625 7.482 5.61625 7.65L7.04025 9.626L10.1843 5.266C10.3043 5.1 10.4963 5 10.7023 5H11.6403C11.7703 5 11.8463 5.148 11.7703 5.254Z"
+                    fill="white"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div v-else-if="props.tabActive === 'document'">
+              <!-- 未选 -->
+              <div
+                v-show="item.selectedStatus === 0"
+                @click="checkPart(2, item)"
+                class="check-box"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect opacity="0.01" width="16" height="16" fill="black" />
+                  <g clip-path="url(#clip0_543_108426)">
+                    <rect width="16" height="16" rx="2" fill="white" />
+                    <rect
+                      x="0.5"
+                      y="0.5"
+                      width="15"
+                      height="15"
+                      rx="1.5"
+                      stroke="black"
+                      stroke-opacity="0.15"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_543_108426">
+                      <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+
+              <!-- 全选 -->
+              <div
+                v-show="item.selectedStatus === 2"
+                @click="checkPart(0, item)"
+                class="check-box"
               >
                 <svg
                   width="16"
@@ -174,6 +235,7 @@
               <div
                 v-show="item.selectedStatus === 0 && !item.disabled"
                 @click="checkPart(2, item)"
+                class="check-box"
               >
                 <svg
                   width="16"
@@ -207,6 +269,7 @@
               <div
                 v-show="item.selectedStatus === 2 && !item.disabled"
                 @click="checkPart(0, item)"
+                class="check-box"
               >
                 <svg
                   width="16"
@@ -228,7 +291,7 @@
             </div>
 
             <!-- 禁用状态 -->
-            <div v-show="item.disabled">
+            <div v-show="item.disabled" class="check-box">
               <svg
                 width="16"
                 height="16"
@@ -313,6 +376,23 @@
                 fill="#F7A54B"
               />
             </svg>
+
+            <svg
+              width="12"
+              height="19"
+              viewBox="0 0 10 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              v-show="item.type === 'document'"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M1 0C0.447715 0 0 0.447715 0 1V10C0 10.5523 0.447715 11 1 11H9C9.55228 11 10 10.5523 10 10V3.38462L8.33333 1.69231L6.66667 0H1ZM4.16667 2.53846H1.66667V3.38462H4.16667V2.53846ZM1.66667 5.07692H8.33333V5.92308H1.66667V5.07692ZM8.33333 7.61539H1.66667V8.46154H8.33333V7.61539Z"
+                fill="black"
+                fill-opacity="0.25"
+              />
+            </svg>
           </div>
 
           <!-- 标题 -->
@@ -323,7 +403,7 @@
         <div
           class="k-tree-right user-select"
           @click="openInner(item)"
-          v-if="item.haveChildren"
+          v-if="item.haveChildren || item.fileDirectory === '1'"
         >
           下级
         </div>
@@ -353,7 +433,7 @@
         return []
       }
     },
-    departRoot: {
+    rootNode: {
       type: Object,
       default: () => {
         return {}
@@ -361,7 +441,11 @@
     },
     tabActive: {
       type: String,
-      default: 'organ'
+      default: ''
+    },
+    showAllIcon: {
+      type: Boolean,
+      default: false
     }
   })
   const cacheShowList = computed(() => {
@@ -396,13 +480,17 @@
 
       const disabledNum = data.filter(item => item.disabled)
       if (disabledNum.length > 0) return (allSelected.value = 1)
-      // 部门、角色
+      // 部门、角色 和 文件类型
       const str = data.filter(item => item.selectedStatus === 2)
       if (str.length === data.length) {
         allSelected.value = 2
       } else {
         allSelected.value = 0
       }
+    }
+    // 文件类型时 showAllIcon 为 true
+    if (props.showAllIcon) {
+      showAllIcon.value = true
     }
   }
   // 监听 显示数据列 动态展示 每层级全选状态
@@ -416,7 +504,7 @@
     }
   )
   // 初始化全选状态
-  initAllSelectedStatus(props.value)
+  initAllSelectedStatus(props.lists)
 
   // 监听 全选 切换
   const checkAll = val => {
@@ -436,7 +524,7 @@
 
   // 初始化默认展开下一级
   onMounted(() => {
-    openInner(props.departRoot[0])
+    openInner(props.rootNode[0])
   })
 </script>
 
@@ -466,7 +554,6 @@
         display: flex;
         flex: 1;
         flex-shrink: 0;
-
         .check-box {
           margin-right: 10px;
           // cursor: pointer;

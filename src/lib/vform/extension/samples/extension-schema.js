@@ -148,56 +148,6 @@ export const usesealBesidesSchema = {
   }
 }
 
-// 常规盖章次数
-// export const normalSealNumSchema = {
-//   type: 'normalSealNum',
-//   icon: 'normalSealNum',
-//   formItemFlag: true,
-//   options: {
-//     name: 'normalSealNum',
-//     label: '常规盖章次数',
-//     labelAlign: 'right',
-//     type: 'text',
-//     defaultValue: '',
-//     placeholder: '',
-//     columnWidth: '200px',
-//     size: '',
-//     labelWidth: 100,
-//     labelHidden: false,
-//     readonly: false,
-//     disabled: false,
-//     hidden: false,
-//     clearable: true,
-//     showPassword: false,
-//     required: false,
-//     requiredHint: '',
-//     validation: 'number',
-//     validationHint: '只能输入数字',
-//     //-------------------
-//     customClass: '',  //自定义css类名
-//     labelIconClass: null,
-//     labelIconPosition: 'rear',
-//     labelTooltip: null,
-//     minLength: null,
-//     maxLength: null,
-//     showWordLimit: false,
-//     prefixIcon: '',
-//     suffixIcon: '',
-//     appendButton: false,
-//     appendButtonDisabled: false,
-//     buttonIcon: 'custom-search',
-//     //-------------------
-//     onCreated: '',
-//     onMounted: '',
-//     onInput: '',
-//     onChange: '',
-//     onFocus: '',
-//     onBlur: '',
-//     onValidate: '',
-//     onAppendButtonClick: '',
-//   }
-// }
-
 // 远程盖章
 export const remoteSealSchema = {
   type: 'remoteSeal',
@@ -588,12 +538,11 @@ export const agentManSchema = {
 export const moduleContainerSchema = {
   type: 'moduleContainer',
   icon: 'moduleContainer',
-  alias: '', // 组件别名，可以自定义
   category: 'container',
   widgetList: [],
   options: {
     name: '',
-    label: '模块1',
+    label: '模块',
     hidden: false,
     folded: false,
     showFold: true,

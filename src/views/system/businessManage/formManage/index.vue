@@ -211,15 +211,25 @@
         //   ]
         // },
         {
-          id: 'modifyDatetime',
+          id: 'updateTime',
           label: '更新时间',
           type: 'picker',
-          pickerType: 'date',
+          requestType: 'array',
+          startRequest: 'updateStartTime',
+          endRequest: 'updateEndTime',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'daterange',
             'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
+            'end-placeholder': '结束时间',
+            'value-format': 'YYYY-MM-DD',
+            'disabled-date': time => {
+              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+            },
+            'default-value': [
+              new Date(new Date().setMonth(new Date().getMonth() - 1)),
+              new Date()
+            ]
           },
           style: {}
         },
@@ -685,31 +695,28 @@
   function getListApplyTypeTree() {
     api.listApplyTypeTree().then(res => {
       console.log(res)
-      const { code, data } = res
-      if (code === 200) {
-        const listApplyTypeTree = []
-        optionData.value = data
-        data.forEach(element => {
-          // element.label = element.applyTypeName
-          if (element.applyTypePid === null) {
-            element.children = []
-            element.disabled = false
-            listApplyTypeTree.push(element)
-          } else {
-            const index = listApplyTypeTree.findIndex(
-              i => i.applyTypeId === element.applyTypePid
-            )
-            if (index > -1) {
-              listApplyTypeTree[index].children.push(element)
-            }
+      const { data } = res
+      const listApplyTypeTree = []
+      optionData.value = data
+      data.forEach(element => {
+        // element.label = element.applyTypeName
+        if (element.applyTypePid === null) {
+          element.children = []
+          element.disabled = false
+          listApplyTypeTree.push(element)
+        } else {
+          const index = listApplyTypeTree.findIndex(
+            i => i.applyTypeId === element.applyTypePid
+          )
+          if (index > -1) {
+            listApplyTypeTree[index].children.push(element)
           }
-        })
-        state.componentsTree.data = listApplyTypeTree
-        state.componentsTree.value =
-          listApplyTypeTree[0].children[0].applyTypeId
-        queryParams.value = { applyTypeId: '2' }
-        table.value.reloadData()
-      }
+        }
+      })
+      state.componentsTree.data = listApplyTypeTree
+      state.componentsTree.value = listApplyTypeTree[0].children[0].applyTypeId
+      queryParams.value = { applyTypeId: '2' }
+      table.value.reloadData()
     })
   }
 
@@ -820,28 +827,23 @@
       idList.push(idObj)
     })
     api.batchDelete(idList).then(res => {
-      if (res.code === 200) {
-        if (res.data.length > 0) {
-          state.showToastDialog.header.data = '删除'
-          state.showToastDialog.content.data =
-            '选中的以下表单已关联了流程，不允许删除'
-          state.showToastDialog.show = true
-          state.showToastDialog.header.icon =
-            '/src/assets/svg/common/danger.svg'
-          state.componentsBatch.butDatas = [
-            {
-              name: '知道了',
-              type: 'primary',
-              clickName: closeBatchTabel
-            }
-          ]
-        } else {
-          api.batchDelete(idList).then(res => {
-            table.value.reloadData()
-          })
-        }
+      if (res.data.length > 0) {
+        state.showToastDialog.header.data = '删除'
+        state.showToastDialog.content.data =
+          '选中的以下表单已关联了流程，不允许删除'
+        state.showToastDialog.show = true
+        state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
+        state.componentsBatch.butDatas = [
+          {
+            name: '知道了',
+            type: 'primary',
+            clickName: closeBatchTabel
+          }
+        ]
       } else {
-        console.log(res)
+        api.batchDelete(idList).then(res => {
+          table.value.reloadData()
+        })
       }
     })
   }

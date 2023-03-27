@@ -31,7 +31,12 @@ export default [
     meta: { title: 'Test', authRequired: false },
     component: () => import('../views/test')
   },
-
+  {
+    path: '/demo',
+    name: 'Demo',
+    meta: { title: 'Test', authRequired: false },
+    component: () => import('../views/demo')
+  },
   {
     path: '/components/template',
     name: 'components-template',

@@ -139,11 +139,11 @@
         this.widget.options.folded = !!folded
       },
 
-      widgetAdd(evt) {
+      widgetAdd(evt, widgetList) {
         this.widget.widgetList.forEach(v => {
           v.options.model = this.widget.options.label
         })
-        this.onContainerDragAdd(evt, this.widget.widgetList)
+        this.onContainerDragAdd(evt, widgetList)
       }
     }
   }

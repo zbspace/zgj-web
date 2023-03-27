@@ -19,32 +19,43 @@
         </div>
         <div class="static-text"></div>
       </div>
-      <template v-for="(subWidget, swIdx) in widget.widgetList" :key="swIdx">
-        <div class="form-widget-list">
+      <template v-if="!!widget.widgetList && widget.widgetList.length > 0">
+        <template v-for="(subWidget, swIdx) in widget.widgetList" :key="swIdx">
           <template v-if="'container' === subWidget.category">
             <component
-              :is="subWidget.type + '-widget'"
+              :is="getComponentByContainer(subWidget)"
               :widget="subWidget"
-              :designer="designer"
-              :key="subWidget.id"
+              :key="swIdx"
               :parent-list="widget.widgetList"
               :index-of-parent-list="swIdx"
               :parent-widget="widget"
-            ></component>
+              :sub-form-row-id="subFormRowId"
+              :sub-form-row-index="subFormRowIndex"
+              :sub-form-col-index="subFormColIndex"
+            >
+              <!-- 递归传递插槽！！！ -->
+              <template v-for="slot in Object.keys($slots)" #[slot]="scope">
+                <slot :name="slot" v-bind="scope" />
+              </template>
+            </component>
           </template>
           <template v-else>
             <component
               :is="subWidget.type + '-widget'"
               :field="subWidget"
-              :designer="designer"
-              :key="subWidget.id"
+              :designer="null"
+              :key="swIdx"
               :parent-list="widget.widgetList"
               :index-of-parent-list="swIdx"
               :parent-widget="widget"
-              :design-state="true"
-            ></component>
+            >
+              <!-- 递归传递插槽！！！ -->
+              <template v-for="slot in Object.keys($slots)" #[slot]="scope">
+                <slot :name="slot" v-bind="scope" />
+              </template>
+            </component>
           </template>
-        </div>
+        </template>
       </template>
     </div>
   </container-item-wrapper>
