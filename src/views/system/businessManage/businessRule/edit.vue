@@ -82,19 +82,64 @@
                 <el-row :gutter="20">
                   <el-col :span="12">
                     <el-form-item label="外借电子围栏" prop="railSwitch">
-                      <el-switch v-model="ruleForm.railSwitch" />
+                      <el-switch
+                        v-model="ruleForm.railSwitch"
+                        active-value="1"
+                        inactive-value="0"
+                      />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
                     <el-form-item label="批量用印" prop="batchSwitch">
-                      <el-switch v-model="ruleForm.batchSwitch" />
+                      <el-switch
+                        v-model="ruleForm.batchSwitch"
+                        active-value="1"
+                        inactive-value="0"
+                      />
                     </el-form-item>
                   </el-col>
                 </el-row>
               </div>
               <div class="grayBg">
                 <el-form-item label="防伪打印" prop="railSwitch">
-                  <el-switch v-model="ruleForm.railSwitch" />
+                  <el-checkbox
+                    v-model="ruleForm.qrCodeSwitch"
+                    label="二维码水印"
+                    true-label="1"
+                    false-label="0"
+                  />
+                  <el-checkbox
+                    v-model="ruleForm.wordWaterSwitch"
+                    label="文字水印"
+                    true-label="1"
+                    false-label="0"
+                  />
+                  <el-checkbox
+                    v-model="ruleForm.gridWaterSwitch"
+                    label="网纹水印"
+                    true-label="1"
+                    false-label="0"
+                  />
+                  <el-checkbox
+                    v-model="ruleForm.invisibleWaterMarkSwitch"
+                    label="隐形水印"
+                    true-label="1"
+                    false-label="0"
+                  />
+                </el-form-item>
+              </div>
+              <div class="labelTitle">远程监督用印</div>
+              <div class="grayBg">
+                <el-form-item label="远程盖章确认人" prop="remoteUsers">
+                  <el-select
+                    v-model="ruleForm.remoteUsers"
+                    placeholder="请选择"
+                    style="width: 100%"
+                    disabled
+                  >
+                    <el-option label="物理用印" value="1" />
+                    <el-option label="电子签章" value="2" />
+                  </el-select>
                 </el-form-item>
               </div>
             </el-tab-pane>
@@ -114,7 +159,8 @@
     ruleBusinessName: '',
     ruleBusinessNo: '',
     fileTypeIds: [],
-    sealUseTypeId: '1'
+    sealUseTypeId: '1',
+    railSwitch: '0'
   })
 
   const rules = ref({
