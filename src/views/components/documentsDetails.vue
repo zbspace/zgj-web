@@ -2770,46 +2770,7 @@
           labelStyle: {
             width: '80px'
           },
-          data: [
-            {
-              label: '组织名称',
-              value: '名称'
-            },
-            {
-              label: '组织编码',
-              value: '字段名称'
-            },
-            {
-              label: '组织类型',
-              value: '字段名称'
-            },
-            {
-              label: '组织人数',
-              value: '字段名称'
-            },
-            {
-              label: '组织主管',
-              value: '字段名称'
-            },
-            {
-              label: '上级组织',
-              value: '字段名称'
-            },
-            {
-              label: '更新时间',
-              value: '字段名称',
-              lineStyle: {
-                width: '100%'
-              }
-            },
-            {
-              label: '备注',
-              value: '字段名称',
-              lineStyle: {
-                width: '100%'
-              }
-            }
-          ]
+          data: []
         }
       },
       // 组织人员
@@ -2824,35 +2785,14 @@
             label: '账号'
           }
         ],
-        data: [
-          {
-            1: '周俊毅',
-            2: '181 0834 1643'
-          },
-          {
-            1: '王凡玄',
-            2: '184 5857 8572'
-          },
-          {
-            1: '李豫卓',
-            2: '158 5666 9874'
-          },
-          {
-            1: '孙思达',
-            2: '137 8216 9138'
-          },
-          {
-            1: '李梓发',
-            2: '136 3348 4128'
-          }
-        ],
+        data: [],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
           border: true,
           'header-cell-style': ({ row, column, rowIndex, columnIndex }) => {
             // console.log({ row, column, rowIndex, columnIndex });
             return {
-              background: 'var(--jy-color-fill--1)'
+              background: 'var(--jy-color-fill--3)'
             }
           }
         }
@@ -3446,6 +3386,7 @@
   // 处理 单位与部门详情 Unit-Department-Details
   const disUnitDepartmentDetails = element => {
     if (element['basicInformation-data']) {
+      console.log(element['basicInformation-data'])
       state.cache.UnitDepartmentDetails.basicInformation.data =
         element['basicInformation-data']
     }

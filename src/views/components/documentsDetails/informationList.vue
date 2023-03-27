@@ -7,9 +7,10 @@
           class="ap-cont-list"
           v-for="item in props.data"
           :style="item.lineStyle"
+          :key="item.label"
         >
           <div class="ap-cont-list-label" :style="[labelStyle, item.labelStyle]"
-            >{{ item.label }}：
+            >{{ $t(item.label) }}：
           </div>
           <div class="ap-cont-list-value" :style="item.valStyle">
             <img
@@ -27,7 +28,6 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted } from 'vue'
   const props = defineProps({
     // 标识
     refs: {
@@ -41,26 +41,23 @@
     },
     data: {
       type: Array,
-      default: []
+      default() {
+        return []
+      }
     },
     labelStyle: {
       type: Object,
-      default: {}
+      default() {
+        return {}
+      }
     },
     // 默认属性
     defaultAttribute: {
       type: Object,
-      default: {}
+      default() {
+        return {}
+      }
     }
-  })
-  const emit = defineEmits([])
-  const state = reactive({})
-
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
   })
 </script>
 <style lang="scss" scoped>
