@@ -136,18 +136,11 @@
           ref="vFormRef"
           label-width="100px"
         >
-          <!-- <el-form-item label="审批选项">
-            <el-radio-group>
-              <el-radio :label="'1'" size="large">同意</el-radio>
-              <el-radio :label="'2'" size="large">不同意</el-radio>
-              <el-radio :label="'3'" size="large">转交</el-radio>
-              <el-radio :label="'4'" size="large">加签</el-radio>
-              <el-radio :label="'5'" size="large">征询他人意见</el-radio>
-              <el-radio :label="'6'" size="large">退回</el-radio>
-            </el-radio-group>
-          </el-form-item> -->
-          <el-form-item label="审批选项" prop="approvals">
-            <el-radio-group v-model="state.form.approvals">
+          <el-form-item label="审批选项" prop="suggest">
+            <el-radio-group
+              @change="approvalsChange"
+              v-model="state.form.suggest"
+            >
               <el-radio label="1">同意</el-radio>
               <el-radio label="2">不同意</el-radio>
               <el-radio label="3">转交</el-radio>
@@ -156,27 +149,150 @@
               <el-radio label="6">退回</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="下一步审批人">
+          <el-form-item
+            label="下一步审批人"
+            v-if="state.form.suggest === '5' || state.form.suggest === '3'"
+            prop="nextApprover"
+          >
+            <!-- <span class="footer-approver">李旺</span>
             <span class="footer-approver">李旺</span>
             <span class="footer-approver">李旺</span>
-            <span class="footer-approver">李旺</span>
-            <span class="footer-approver">李旺</span>
+            <span class="footer-approver">李旺</span> -->
+            <div
+              class="select-box-contBox"
+              @click="chooseOrgan('nextApprover')"
+            >
+              <el-input
+                class="ap-box-contBox-input width-100"
+                readonly
+                v-model="state.form.nextApprover"
+                placeholder="请选择下一步审批人"
+              />
+              <div class="ap-box-contBox-icon">
+                <el-icon
+                  style="color: #aaaaaa; margin-right: 5px"
+                  v-if="state.form.nextApprover"
+                  @click.stop="clear('nextApprover')"
+                  ><CircleClose
+                /></el-icon>
+                <img
+                  class="ap-box-contBox-icon-img"
+                  src="@/assets/svg/ketanchude.svg"
+                  alt=""
+                />
+              </div>
+            </div>
           </el-form-item>
-          <el-form-item label="添加抄送" prop="subOrganId">
+          <el-form-item
+            label="审批人"
+            prop="approver"
+            v-if="state.form.suggest === '4'"
+          >
             <div class="select-box-contBox">
-              <el-checkbox
-                v-model="checked"
-                style="margin-right: 12px"
-                size="mini"
-              ></el-checkbox>
-              <div class="footer-tagcon"
+              <div class="footer-tagcon" @click="chooseOrgan('approver')"
                 ><el-tag
                   class="footer-tag"
                   closable
                   type="info"
-                  v-for="item in state.searchSelected"
+                  v-for="item in state.approverSelected"
                   :key="item.id"
-                  @close="delTags(item)"
+                  @close="delTags(item, 'approver')"
+                >
+                  {{ item.name }}
+                </el-tag>
+                <span v-if="state.approverSelected.length <= 10"
+                  >+请添加审批人</span
+                >
+              </div>
+              <div class="ap-box-contBox-icon">
+                <!-- <el-icon
+                  v-if="state.form.approver"
+                  style="margin-right: 5px"
+                  color="#aaaaaa"
+                  @click="clear('approver')"
+                  ><CircleClose
+                /></el-icon> -->
+                <img
+                  class="ap-box-contBox-icon-img"
+                  src="@/assets/svg/ketanchude.svg"
+                  alt=""
+                />
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item
+            v-if="tasks.length > 0"
+            label="被退回人"
+            name="destTaskId"
+            :rules="[{ required: true, message: '请选择人员!' }]"
+          >
+            <el-radio-group
+              v-model:value="formState.destTaskId"
+              class="w-fill"
+              :size="size"
+            >
+              <el-radio v-for="(task, i) in tasks" :key="i" :value="task.value">
+                <span>{{ task.label }}</span>
+              </el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            label="退回后发起审批"
+            prop="approver"
+            v-if="state.form.suggest === '6'"
+          >
+            <el-select
+              style="width: 264px"
+              v-model="formData.adminId"
+              filterable
+              @change="changeAdmin"
+            >
+              <el-option
+                v-for="(data, i) in datas"
+                :key="i"
+                :label="data[labelName]"
+                :value="data[valueName]"
+                >{{ data[labelName] }}</el-option
+              >
+            </el-select>
+          </el-form-item>
+          <!-- <el-form-item
+            label="加签方式"
+            prop="addSignMode"
+            v-if="state.form.suggest === '4'"
+          >
+            <el-radio-group
+              @change="addSignModeChange"
+              v-model="state.form.addSignMode"
+            >
+              <el-radio
+                v-for="(signType, i) in state.signTypes"
+                :key="i"
+                :label="signType.value"
+                :disabled="[2, 3].includes(approvalMode) && signType.value == 4"
+              >
+                <span>{{ signType.name }}</span>
+              </el-radio>
+            </el-radio-group>
+          </el-form-item> -->
+          <el-form-item label="添加抄送" prop="carbon">
+            <div class="select-box-contBox">
+              <el-checkbox
+                v-model="state.form.carbon"
+                style="margin-right: 12px"
+                size="mini"
+              ></el-checkbox>
+              <div
+                v-if="state.form.carbon"
+                @click="chooseOrgan('carbon')"
+                class="footer-tagcon"
+                ><el-tag
+                  class="footer-tag"
+                  closable
+                  type="info"
+                  v-for="item in state.carbonSelected"
+                  :key="item.id"
+                  @close="delTags(item, 'catbon')"
                 >
                   {{ item.name }}
                 </el-tag>
@@ -188,27 +304,23 @@
                 >
                   选中
                 </el-tag> -->
-              </div>
-              <el-input
-                class="ap-box-contBox-input width-100"
-                type="hidden"
-                v-model="state.form.subOrganId"
-                placeholder=""
-              />
-              <div class="ap-box-contBox-icon">
-                <el-icon
-                  v-if="state.form.subOrganName"
-                  style="margin-right: 5px"
-                  color="#aaaaaa"
-                  @click="clear('subOrgan')"
-                  ><CircleClose
-                /></el-icon>
-                <img
-                  @click="chooseOrgan('subOrgan', ['user'])"
-                  class="ap-box-contBox-icon-img"
-                  src="@/assets/svg/ketanchude.svg"
-                  alt=""
-                />
+                <span v-if="state.carbonSelected.length <= 10"
+                  >+请添加抄送人</span
+                >
+                <div class="ap-box-contBox-icon">
+                  <!-- <el-icon
+                    v-if="state.form.carbon"
+                    style="margin-right: 5px"
+                    color="#aaaaaa"
+                    @click.stop="clear('carbon')"
+                    ><CircleClose
+                  /></el-icon> -->
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
           </el-form-item>
@@ -258,13 +370,22 @@
   import documentsDetailsInformationList from '@/views/components/documentsDetails/informationList.vue'
   import dayjs from 'dayjs'
   import { ElMessage } from 'element-plus'
-  import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
-  // import api from '@/api/frontDesk/approvalFlow/approvalFlow'
+  import { CircleClose } from '@element-plus/icons-vue'
+  import formApi from '@/api/system/formManagement/index'
   import { ModelApi } from '@/api/flow/ModelApi'
+  import { TaskApi } from '@/api/flow/TaskApi'
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import { ApproverApi } from '@/api/flow/ApproverApi'
+  import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
+  import { NodeAttrApi } from '@/api/flow/NodeAttrApi'
+  import loadApproverData from '@/components/FlowDesign/data/load-approver-data'
+  import useCommon from '@/components/FlowDesign/hooks/useCommon'
+  import form from '@/mock/form'
 
+  const { toUgroup } = useCommon()
+  // 数据
+  const { backApprovalTypeDatas } = loadApproverData()
   const showDepPerDialog = ref(false)
   const dialogProcess = reactive({
     show: false,
@@ -277,13 +398,35 @@
   const flowDesign = ref()
   // 模型id
   const modelId = ref(null)
+  // 节点Id
+  const nodeId = ref(null)
   // 模型名称
   const modelName = ref('')
   // 最新定义ID
   const definitionId = ref(null)
   // 最新实例ID
   const instanceId = ref(null)
+  // 表单内容
   const formData = ref(null)
+  // 表单json
+  const formJson = ref(null)
+  // 动态表单版本Id
+  const formVersionId = ref('')
+  // 动态表单Id
+  const formMessageId = ref('')
+  // 流程版本Id
+  const flowVersionId = ref('')
+  // 流程Id
+  const flowMessageId = ref('')
+  const taskId = ref('')
+  const approvalMode = ref('')
+  const buttons = ref([])
+  // 退回后发起审批列表
+  const datas = ref([])
+  // 被退回人列表
+  const tasks = ref([])
+
+  const depChoose = ref('')
   // const submitLibraryForm = type => {
   //   if (!type) {
   //     vFormLibraryRef.value.resetForm()
@@ -302,12 +445,20 @@
   //     })
   // }
   // 删除操作人
-  const delTags = item => {
-    console.log('delTags')
-    for (let i = 0; i < state.searchSelected.length; i++) {
-      console.log(state.searchSelected[i])
-      if (item.id === state.searchSelected[i].id) {
-        state.searchSelected.splice(i, 1)
+  const delTags = (item, type) => {
+    if (type === 'approver') {
+      for (let i = 0; i < state.approverSelected.length; i++) {
+        console.log(state.approverSelected[i])
+        if (item.id === state.approverSelected[i].id) {
+          state.approverSelected.splice(i, 1)
+        }
+      }
+    } else if (type === 'carbon') {
+      for (let i = 0; i < state.carbonSelected.length; i++) {
+        console.log(state.carbonSelected[i])
+        if (item.id === state.carbonSelected[i].id) {
+          state.carbonSelected.splice(i, 1)
+        }
       }
     }
   }
@@ -317,19 +468,31 @@
     btnLoading.value = true
     vFormRef.value.validate(valid => {
       if (valid) {
-        console.log(state.form.approvals)
+        console.log(state.form.suggest)
         // ElMessage.success('审批成功')
         // btnLoading.value = false
-        if (state.form.approvals === '1') {
+        if (state.form.suggest === '1') {
           onAgree()
-        } else if (state.form.approvals === '2') {
+        } else if (state.form.suggest === '2') {
           onReject()
+        } else if (state.form.suggest === '3') {
+          onTurn()
+        } else if (state.form.suggest === '4') {
+          onAssignee()
+        } else if (state.form.suggest === '5') {
+          consultSubmit()
+        } else if (state.form.suggest === '6') {
+          onFinish()
         }
       } else {
         ElMessage.error('校验失败')
       }
     })
   }
+  /**
+   * 不同意
+   * @param {*} res
+   */
   const onReject = res => {
     const params = {
       instanceId: instanceId.value,
@@ -343,7 +506,7 @@
     ApproverApi.reject(params)
       .then(result => {
         if (result.code === '00000') {
-          console.info(result)
+          ElMessage.success('提交成功')
           dialogProcess.show = false
           getFormPage()
         }
@@ -353,6 +516,10 @@
         btnLoading.value = false
       })
   }
+  /**
+   * 同意
+   * @param {*} res
+   */
   const onAgree = res => {
     const params = {
       instanceId: instanceId.value,
@@ -367,6 +534,7 @@
       .then(result => {
         if (result.code === '00000') {
           console.info(result)
+          ElMessage.success('提交成功')
           dialogProcess.show = false
           getFormPage()
         }
@@ -376,264 +544,211 @@
         btnLoading.value = false
       })
   }
+  /**
+   * 加签
+   */
+  const onAssignee = () => {
+    const params = {
+      taskId: taskId.value,
+      assigneeList: state.approverSelected.forEach(item => {
+        const ids = []
+        ids.push(item.id)
+        return ids
+      }),
+      addSignMode: state.form.addSignMode,
+      whisper: state.form.remark
+    }
+    ApproverApi.addSign(params)
+      .then(result => {
+        if (result.code === '00000') {
+          console.info(result)
+          dialogProcess.show = false
+          ElMessage.success('提交成功')
+          getFormPage()
+        }
+        btnLoading.value = false
+      })
+      .catch(() => {
+        btnLoading.value = false
+      })
+  }
+  // 转交
+  const onTurn = () => {
+    const params = {
+      taskId: taskId.value,
+      newApprover: state.form.nextApprover,
+      whisper: state.form.remark
+    }
+    ApproverApi.turn(params)
+      .then(() => {
+        dialogProcess.show = false
+      })
+      .catch(() => {})
+  }
+  /**
+   *  征询提交
+   */
+  const consultSubmit = async () => {
+    try {
+      const params = {
+        instanceId: instanceId.value,
+        modelId: modelId.value,
+        definitionId: definitionId.value,
+        taskId: taskId.value,
+        suggest: state.form.suggest,
+        remark: state.form.remark
+      }
+      ApproverApi.consultSubmit(params)
+        .then(result => {
+          if (result) {
+            console.info(result)
+          }
+          btnLoading.value = false
+          close()
+        })
+        .catch(() => {
+          btnLoading.value = false
+        })
+    } catch (e) {
+      console.log('error', e)
+      btnLoading.value = false
+    }
+  }
+  /**
+   * 退回需要获取的信息
+   */
+  const getBackBaseInfo = async () => {
+    try {
+      const params = {
+        taskId: taskId.value,
+        instanceId: instanceId.value
+      }
+      // 获取节点对退回的配置
+      const nodeAttr = await NodeAttrApi.detailByTaskId(params)
+      const allowBackType = nodeAttr.allowBackType
+      const backApprovalType = nodeAttr.backApprovalType
+      if (backApprovalType) {
+        const backApprovalTypes = toUgroup(backApprovalType)
+        backApprovalTypeDatas.forEach(element => {
+          if (backApprovalTypes.includes(element.value)) {
+            datas.value.push(element)
+          }
+        })
+      }
+      if (allowBackType === 2) {
+        // 获取被退回人
+        const list = await TaskApi.preList(params)
+        if (list && list.length > 0) {
+          tasks.value = []
+          list.forEach(element => {
+            tasks.value.push({
+              label: element.approverWrapper,
+              value: element.taskId,
+              popovers: [
+                {
+                  title: element.nodeName,
+                  content: `任务类型:${element.taskTypeWrapper}`
+                },
+                {
+                  content: `接收时间:${element.createTime}`
+                },
+                {
+                  content: `审批时间:${element.updateTime}`
+                }
+              ]
+            })
+          })
+        }
+      }
+    } finally {
+      // loading.value = false
+    }
+  }
+  /**
+   * 退回
+   */
+  const onFinish = () => {
+    const params = {
+      instanceId: instanceId.value,
+      modelId: modelId.value,
+      definitionId: definitionId.value,
+      // 当前任务ID
+      taskId: taskId.value,
+      // 需要退回到的人(任务),其实也是数据值也是任务ID
+      destTaskId: state.form.destTaskId,
+      backType: state.form.backType,
+      whisper: state.form.remark
+    }
+    ApproverApi.returned(params)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(() => {})
+  }
   const state = reactive({
     searchSelected: [],
-    detailInfo: {
-      createTime: '2022-11-27 01:04:49',
-      createUser: '1339550467939639299',
-      updateTime: '2023-02-17 11:51:27',
-      updateUser: '1339550467939639299',
-      modelId: '1596550552731209730',
-      definitionId: '1638009270522269697',
-      categoryId: '1596550398875750401',
-      modelName: '合同审批',
-      modelKey: 'hetong',
-      modelType: null,
-      modelIcon: 'A(1).png',
-      remark: null,
-      modelSort: null,
-      currentVersion: '1.2',
-      statusFlag: 1,
-      versionFlag: '2',
-      tenantId: null,
-      delFlag: 'N',
-      formIdList: ['1589976128312606721'],
-      formDefinitions: [
-        {
-          createTime: '2022-11-08 21:40:24',
-          createUser: '1339550467939639299',
-          updateTime: null,
-          updateUser: null,
-          formDefinitionId: '1589976128312606721',
-          formModelId: '1589976128245497857',
-          formModelCode: 'ContractReview',
-          formModelRef: 'contractReview',
-          flowDefinitionName: '合同评审',
-          preDefinitionId: '0',
-          formJson: null,
-          definitionVersion: '1.0',
-          statusFlag: null,
-          versionFlag: null,
-          delFlag: null,
-          tenantId: null
-        }
-      ],
-      assignees: ['1339550467939639299'],
-      node: {
-        createTime: '2023-03-21 10:46:58',
-        createUser: '1339550467939639299',
-        updateTime: null,
-        updateUser: null,
-        nodeId: '1638009270539046913',
-        modelId: '1596550552731209730',
-        definitionId: '1638009270522269697',
-        nodePid: null,
-        nodeName: '发起人',
-        nodeType: 0,
-        addable: true,
-        deletable: false,
-        error: false,
-        content: '已设置',
-        remark: null,
-        nodeStatus: null,
-        delFlag: 'N',
-        versionFlag: '1',
-        tenantId: null,
-        attr: null,
-        childNode: null,
-        conditionNodes: [],
-        privileges: [],
-        approverGroups: [],
-        conditionGroup: [],
-        buttons: [
+    carbonSelected: [],
+    approverSelected: [],
+    nextApproverSelected: [],
+    // 审批人
+    signTypes: [
+      {
+        name: '前加签',
+        value: 1,
+        popovers: [
           {
-            createTime: '2023-03-21 10:46:57',
-            createUser: '1339550467939639299',
-            updateTime: null,
-            updateUser: null,
-            buttonId: '1638009270539046919',
-            modelId: '1596550552731209730',
-            definitionId: '1638009270522269697',
-            nodeId: '1638009270539046913',
-            buttonType: 1,
-            buttonName: '保存',
-            buttonCode: 'save',
-            checked: true,
-            disabled: false,
-            color: 'default',
-            content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
-            statusFlag: 1,
-            versionFlag: '0',
-            delFlag: 'N',
-            tenantId: null
-          },
-          {
-            createTime: '2023-03-21 10:46:57',
-            createUser: '1339550467939639299',
-            updateTime: null,
-            updateUser: null,
-            buttonId: '1638009270539046920',
-            modelId: '1596550552731209730',
-            definitionId: '1638009270522269697',
-            nodeId: '1638009270539046913',
-            buttonType: 1,
-            buttonName: '提交',
-            buttonCode: 'submit',
-            checked: false,
-            disabled: false,
-            color: 'primary',
-            content:
-              '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
-            statusFlag: 1,
-            versionFlag: '0',
-            delFlag: 'N',
-            tenantId: null
-          },
-          {
-            createTime: '2023-03-21 10:46:57',
-            createUser: '1339550467939639299',
-            updateTime: null,
-            updateUser: null,
-            buttonId: '1638009270539046921',
-            modelId: '1596550552731209730',
-            definitionId: '1638009270522269697',
-            nodeId: '1638009270539046913',
-            buttonType: 1,
-            buttonName: '同意',
-            buttonCode: 'agree',
-            checked: false,
-            disabled: true,
-            color: 'success',
-            content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
-            statusFlag: 1,
-            versionFlag: '0',
-            delFlag: 'N',
-            tenantId: null
-          },
-          {
-            createTime: '2023-03-21 10:46:57',
-            createUser: '1339550467939639299',
-            updateTime: null,
-            updateUser: null,
-            buttonId: '1638009270539046922',
-            modelId: '1596550552731209730',
-            definitionId: '1638009270522269697',
-            nodeId: '1638009270539046913',
-            buttonType: 1,
-            buttonName: '拒绝',
-            buttonCode: 'reject',
-            checked: false,
-            disabled: true,
-            color: 'error',
-            content:
-              '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
-            statusFlag: 1,
-            versionFlag: '0',
-            delFlag: 'N',
-            tenantId: null
-          },
-          {
-            createTime: '2023-03-21 10:46:57',
-            createUser: '1339550467939639299',
-            updateTime: null,
-            updateUser: null,
-            buttonId: '1638009270539046923',
-            modelId: '1596550552731209730',
-            definitionId: '1638009270522269697',
-            nodeId: '1638009270539046913',
-            buttonType: 1,
-            buttonName: '转交',
-            buttonCode: 'turn',
-            checked: false,
-            disabled: true,
-            color: 'cyan',
-            content: '转交给他人办理，依然在当前节点',
-            statusFlag: 1,
-            versionFlag: '0',
-            delFlag: 'N',
-            tenantId: null
-          },
-          {
-            createTime: '2023-03-21 10:46:57',
-            createUser: '1339550467939639299',
-            updateTime: null,
-            updateUser: null,
-            buttonId: '1638009270539046924',
-            modelId: '1596550552731209730',
-            definitionId: '1638009270522269697',
-            nodeId: '1638009270539046913',
-            buttonType: 1,
-            buttonName: '退回',
-            buttonCode: 'back',
-            checked: false,
-            disabled: true,
-            color: 'default',
-            content: '退回给申请人，申请人修改完成后，流程按节点开始走',
-            statusFlag: 1,
-            versionFlag: '0',
-            delFlag: 'N',
-            tenantId: null
-          },
-          {
-            createTime: '2023-03-21 10:46:57',
-            createUser: '1339550467939639299',
-            updateTime: null,
-            updateUser: null,
-            buttonId: '1638009270539046925',
-            modelId: '1596550552731209730',
-            definitionId: '1638009270522269697',
-            nodeId: '1638009270539046913',
-            buttonType: 1,
-            buttonName: '撤回',
-            buttonCode: 'revoke',
-            checked: false,
-            disabled: true,
-            color: 'default',
-            content:
-              '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
-            statusFlag: 1,
-            versionFlag: '0',
-            delFlag: 'N',
-            tenantId: null
-          },
-          {
-            createTime: '2023-03-21 10:46:57',
-            createUser: '1339550467939639299',
-            updateTime: null,
-            updateUser: null,
-            buttonId: '1638009270539046926',
-            modelId: '1596550552731209730',
-            definitionId: '1638009270522269697',
-            nodeId: '1638009270539046913',
-            buttonType: 1,
-            buttonName: '加签',
-            buttonCode: 'addSign',
-            checked: false,
-            disabled: true,
-            color: 'warning',
-            content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
-            statusFlag: 1,
-            versionFlag: '0',
-            delFlag: 'N',
-            tenantId: null
+            title: '什么是前加签？',
+            content: '在我之前审批,且只支持会签'
           }
-        ],
-        notice: null,
-        update: false
+        ]
+      },
+      {
+        name: '后加签',
+        value: 2,
+        popovers: [
+          {
+            title: '什么是后加签？',
+            content: '在我之后审批,且只支持会签'
+          }
+        ]
+      },
+      {
+        name: '加会签',
+        value: 3,
+        popovers: [
+          {
+            title: '什么是加会签？',
+            content: '节点配置为会签时支持添加会签,会签人不存在先后顺序'
+          }
+        ]
+      },
+      {
+        name: '加或签',
+        value: 4,
+        popovers: [
+          {
+            title: '什么是加或签？',
+            content: '节点配置为或签时支持添加或签,或签人不存在先后顺序'
+          }
+        ]
       }
-    },
+    ],
     form: {
-      remark: '',
-      approvals: '1',
-      // sealState: 1,
-      hardwareVersionId: '',
-      firmwareVersionId: '',
-      bylawsUrl: '',
-      sealExplain: '',
-      stampAttachments: ''
+      remark: '同意',
+      carbon: false,
+      suggest: '1',
+      nextApprover: '',
+      nextApproverIds: '',
+      addSignMode: [2, 3].includes(approvalMode.value)
+        ? 3
+        : approvalMode.value === 4
+        ? 4
+        : 3,
+      destTaskId: '',
+      backType: ''
     },
     rules: {
-      approvals: [
+      suggest: [
         {
           required: true,
           message: '请选择审批选项',
@@ -964,8 +1079,22 @@
       }
     }
   })
-  const chooseOrgan = () => {
+  const chooseOrgan = type => {
+    depChoose.value = type
+    if (type === 'carbon') {
+      state.searchSelected = state.carbonSelected
+    } else if (type === 'approver') {
+      state.searchSelected = state.approverSelected
+    } else if (type === 'nextApprover') {
+      state.searchSelected = state.nextApproverSelected
+    }
     showDepPerDialog.value = true
+  }
+  const clear = type => {
+    if (type === 'nextApprover') {
+      state.nextApproverSelected = []
+      state.form.nextApprover = ''
+    }
   }
   // 关闭弹窗
   const close = () => {
@@ -1277,10 +1406,92 @@
     }
     getFormPage()
   }
+  const approvalsChange = item => {
+    console.log(item)
+    if (item === '1') {
+      state.form.remark = '同意'
+      state.rules = {
+        suggest: [
+          {
+            required: true,
+            message: '请选择审批选项',
+            trigger: 'change'
+          }
+        ]
+      }
+    } else if (item === '2') {
+      state.form.remark = '不同意'
+      state.rules = {
+        suggest: [
+          {
+            required: true,
+            message: '请选择审批选项',
+            trigger: 'change'
+          }
+        ]
+      }
+    } else {
+      state.form.remark = '请审批'
+    }
+    if (item === '3' || item === '5') {
+      state.rules = {
+        suggest: [
+          {
+            required: true,
+            message: '请选择审批选项',
+            trigger: 'change'
+          }
+        ],
+        nextApprover: [
+          {
+            required: true,
+            message: '请选择下一步审批人'
+          }
+        ]
+      }
+    }
+    if (item === '4') {
+      state.rules = {
+        suggest: [
+          {
+            required: true,
+            message: '请选择审批选项',
+            trigger: 'change'
+          }
+        ],
+        approver: [
+          {
+            required: true,
+            message: '请选择审批人'
+          }
+        ]
+        // addSignMode: [
+        //   {
+        //     required: true,
+        //     message: '请选择加签方式'
+        //   }
+        // ]
+      }
+    }
+    if (item === '6') {
+      getBackBaseInfo()
+    }
+  }
+  const addSignModeChange = item => {}
   // 选择部门员工
   const submitSelectDepart = data => {
-    console.log(data)
-    state.searchSelected = data
+    if (depChoose.value === 'approver') {
+      state.approverSelected = data
+    } else if (depChoose.value === 'carbon') {
+      state.carbonSelected = data
+    } else if (depChoose.value === 'nextApprover') {
+      state.nextApproverSelected = data
+      const nextApproverNames = []
+      data.forEach(v => {
+        nextApproverNames.push(v.name)
+      })
+      state.form.nextApprover = nextApproverNames.join(',')
+    }
   }
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
@@ -1302,6 +1513,9 @@
     }
     if (cell.name === '审批') {
       instanceId.value = column.instanceId
+      taskId.value = column.taskId
+      approvalMode.value = column.approvalMode
+      console.log(approvalMode.value)
       getDetail(column.instanceId)
     }
   }
@@ -1312,7 +1526,6 @@
     const params = {
       instanceId
     }
-
     InstanceApi.detail(params)
       .then(data => {
         dialogProcess.show = true
@@ -1322,14 +1535,137 @@
         formData.value = JSON.parse(data.formJson)
         modelName.value = data.modelName
         modelId.value = data.modelId
+        nodeId.value = data.nodeId
         definitionId.value = data.definitionId
+        formVersionId.value = formData.value.formVersionId
+        flowVersionId.value = formData.value.flowVersionId
+        formMessageId.value = formData.value.formMessageId
+        flowMessageId.value = formData.value.flowMessageId
+        getFormDataJson()
         // attrState.instanceName = data.instanceName
         // loading.value = false
         // initAffix()
+        getButtons()
       })
       .catch(() => {
         // loading.value = false
       })
+  }
+  /**
+   * 按钮
+   */
+  const getButtons = async () => {
+    const params = {
+      modelId: modelId.value,
+      definitionId: definitionId.value,
+      nodeId: nodeId.value
+    }
+    const result = await NodeButtonApi.findList(params)
+    if (result) {
+      // 按钮
+      buttons.value = result.filter(t => t.checked)
+      console.log('getButtons', buttons.value)
+    }
+  }
+  /**
+   * 获取动态表单信息
+   */
+  const getFormDataJson = () => {
+    console.log(formVersionId)
+    formApi
+      .queryColumInfoByFormId({ formVersionId: formVersionId.value })
+      .then(res => {
+        formJson.value = res.data
+        console.log('getFormDataJson', res)
+        const d = handelData(formData.value, formJson.value)
+        state.ParticularsOfSeal.basicInformation.data = d
+        console.log('formJson', d)
+      })
+  }
+  /**
+   * 处理表单详情数据
+   * @param {*} formData
+   * @param {*} formJson
+   */
+  const handelData = (formData, formJson) => {
+    const formTableData = []
+    formJson.forEach(v => {
+      for (const item in formData) {
+        if (v.formColumnNo === item) {
+          if (v.formColumnNo === 'sealName') {
+            if (formData[item].length > 0) {
+              formData[item].forEach((v, k) => {
+                formTableData.push({
+                  label: `印章名称${k + 1}`,
+                  value: v.seal
+                })
+              })
+            }
+          } else if (v.formColumnNo === 'applicantInfo') {
+            for (const i in formData[item]) {
+              console.log(i)
+              if (i === 'applyOrganName') {
+                formTableData.push({
+                  label: '所属部门',
+                  value: formData[item][i]
+                })
+              } else if (i === 'applyUserName') {
+                formTableData.push({
+                  label: '申请人员',
+                  value: formData[item][i]
+                })
+              }
+            }
+          } else if (v.formColumnNo === 'contactUnit') {
+            const organNameList = []
+            if (formData[item].length > 0) {
+              formData[item].forEach((v, k) => {
+                organNameList.push(v.organName)
+              })
+              formTableData.push({
+                label: `往来单位`,
+                value: organNameList.join(',')
+              })
+            }
+          } else if (v.formColumnNo === 'limitTimeSeal') {
+            formTableData.push({
+              label: `限时用印`,
+              value: formData[item] === 1 ? '是' : '否'
+            })
+          } else if (v.formColumnNo === 'usesealBesides') {
+            formTableData.push({
+              label: `印章外带`,
+              value: formData[item] ? '是' : '否'
+            })
+          } else if (v.formColumnNo === 'sealFile') {
+            if (formData[item].fileList.length > 0) {
+              formData[item].fileList.forEach((v, k) => {
+                formTableData.push({
+                  label: `文件名称`,
+                  value: v.name
+                })
+              })
+            }
+          } else if (v.formColumnNo === 'remoteSeal') {
+            formTableData.push({
+              label: v.formColumnName,
+              value: formData[item] ? '是' : '否'
+            })
+          } else if (v.formColumnNo === 'videoSeal') {
+            formTableData.push({
+              label: v.formColumnName,
+              value: formData[item] ? '是' : '否'
+            })
+          } else {
+            formTableData.push({
+              label: v.formColumnName,
+              value: formData[item]
+            })
+          }
+        }
+      }
+    })
+    return formTableData
   }
   const getDesign = () => {
     const params = {
@@ -1491,6 +1827,9 @@
       box-sizing: border-box;
       padding: 0 12px;
       height: 32px;
+      display: flex;
+      align-items: center;
+      color: rgba($color: #000000, $alpha: 0.45);
       .footer-tag {
         background: rgba(0, 0, 0, 0.04);
         border-radius: 3px;
