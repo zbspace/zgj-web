@@ -6,7 +6,7 @@
 !-->
 <template>
   <div>
-    <componentsLayout Layout="title,searchForm,table,pagination,batch">
+    <!-- <componentsLayout Layout="title,searchForm,table,pagination,batch">
       <template #title>
         <div class="title">
           <div>往来企业</div>
@@ -24,7 +24,7 @@
                 >+ 增加</el-button
               >
             </div>
-            <!-- <div class="title-more-down">
+            <div class="title-more-down">
               <el-dropdown>
                 <el-button>
                   <img
@@ -41,7 +41,7 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            </div> -->
+            </div>
           </div>
         </div>
       </template>
@@ -94,7 +94,58 @@
         >
         </componentsPagination>
       </template>
-    </componentsLayout>
+    </componentsLayout> -->
+    <JyTable
+      url="/tenant/relatedCompany/list"
+      ref="table"
+      :needAutoRequest="true"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      tableClick="userName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
+      <template #title>
+        <div class="title">
+          <div>往来企业</div>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button
+                type="primary"
+                @click="
+                  () => {
+                    ;(showFormDialog = true),
+                      (state.title = '新增'),
+                      (state.column = {})
+                  }
+                "
+                >+ 增加</el-button
+              >
+            </div>
+            <div class="title-more-down">
+              <el-dropdown>
+                <el-button>
+                  <img
+                    class="button-icon"
+                    src="@/assets/svg/gengduo-caozuo.svg"
+                    alt=""
+                    srcset=""
+                  />
+                  <span>更多操作</span>
+                </el-button>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>导入</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </div>
+        </div>
+      </template>
+    </JyTable>
     <!-- 往来详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -134,6 +185,7 @@
 
 <script setup>
   import { ref, reactive, onBeforeMount } from 'vue'
+  import JyTable from '@/views/components/JyTable.vue'
   import componentsTable from '@/views/components/table'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
@@ -144,6 +196,7 @@
   import { ElMessage } from 'element-plus'
   import api from '@/api/system/companyManagement/companyDealing'
   const showFormDialog = ref(false)
+  const table = ref(null)
   const state = reactive({
     title: '新增',
     column: {},
@@ -174,12 +227,15 @@
         },
         {
           id: 'organId',
+          requestParams: 'organId',
           label: '所属部门',
-          type: 'select',
+          type: 'derivable',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '请选择'
+            type: 'organ',
+            placeholder: '+所属部门',
+            joinStr: ','
           }
         }
       ],
@@ -368,6 +424,7 @@
   // 获取表格列表
   const getFormPage = () => {
     const searchData = state.componentsSearchForm.data
+    console.log(searchData)
     const queryParams = {}
     searchData.forEach(item => {
       queryParams[item.id] = item.value
@@ -482,7 +539,8 @@
         if (res.code === 200) {
           ElMessage.success(`${delType}成功！`)
           state.JyElMessageBox.show = false
-          getFormPage()
+          // getFormPage()
+          table.value.reloadData()
         }
       })
   }
