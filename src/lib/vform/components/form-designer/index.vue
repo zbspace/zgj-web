@@ -365,20 +365,25 @@
       },
 
       setWidgetModel(widgetList) {
-        const fn = (arr, model) => {
+        let ordernumber = 0
+        const fn = (arr, formColumnModel = '') => {
           arr.forEach(v => {
-            v.options.model = model
+            v.options.formColumnModel = formColumnModel
+            v.options.ordernumber = ordernumber
+            ordernumber++
             if (v.widgetList && v.widgetList.length) {
-              fn(v.widgetList, model)
+              fn(v.widgetList, formColumnModel)
             }
             if (v.cols && v.cols.length) {
-              fn(v.cols, model)
+              fn(v.cols, formColumnModel)
             }
           })
         }
         widgetList.forEach(v => {
           if (v.type === 'moduleContainer') {
             fn(v.widgetList, v.options.label)
+          } else {
+            fn(v.widgetList)
           }
         })
       },
