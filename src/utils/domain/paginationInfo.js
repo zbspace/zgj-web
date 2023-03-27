@@ -1,5 +1,5 @@
 export class PaginationInfo {
-  current = 1 // 第几页
+  current = 1 // 第几页1
   size = 10 // 每页条数
   pages = 0 // 总页数
   total = 0 // 总数

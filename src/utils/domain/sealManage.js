@@ -1,4 +1,4 @@
-// 印章分页-searchInfo
+// 印章分页-searchInfo1
 export class FeatchSealInfo {
   current = 1
   size = 10
@@ -14,7 +14,7 @@ export class FeatchSealInfo {
   takeOut = '' // 外带印章
 }
 
-// 印章类型-searchInfo
+// 印章类型-searchInfo1
 export class FeatchSealTypeInfo {
   current = 1
   size = 100
