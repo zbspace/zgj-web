@@ -59,7 +59,7 @@
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
-  import SealApplicationStep from '@/views/components/Seal-application/step.vue'
+  import SealApplicationStep from '@/views/components/sealApplication/JyStep.vue'
   const router = useRouter()
   const state = reactive({
     cache: {

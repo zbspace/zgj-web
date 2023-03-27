@@ -68,7 +68,7 @@
   import componentsTree from '../../components/tree'
   import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
+  import componentsTabs from '../../components/JyTabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   const props = defineProps({

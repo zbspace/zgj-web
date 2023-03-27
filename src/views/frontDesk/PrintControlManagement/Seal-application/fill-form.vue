@@ -175,7 +175,7 @@
   import { reactive, onBeforeMount, onMounted, ref, nextTick } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
-  import SealApplicationStep from '@/views/components/Seal-application/step.vue'
+  import SealApplicationStep from '@/views/components/sealApplication/JyStep.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import VFlowDesign from '@/views/components/FlowDesign/index.vue'

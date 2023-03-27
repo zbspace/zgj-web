@@ -74,7 +74,7 @@
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination.vue'
   import componentsLayout from '@/views/components/Layout.vue'
-  import componentsTabs from '@/views/components/tabs.vue'
+  import componentsTabs from '@/views/components/JyTabs.vue'
   import componentsBatch from '@/views/components/batch.vue'
   const state = reactive({
     componentsTabs: {
