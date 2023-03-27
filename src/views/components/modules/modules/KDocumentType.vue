@@ -4,11 +4,12 @@
     <div class="select-search">
       <el-input
         v-model="searchQuery"
-        placeholder="搜索部门/成员"
+        placeholder="搜索文件类型"
         :prefix-icon="Search"
         size="large"
       />
     </div>
+
     <!-- crumbs -->
     <div class="select-crumbs user-select">
       <!-- 自定义面包屑 -->
@@ -49,7 +50,8 @@
         @open="openInner"
         @emitsDemo="emitsDemo"
         :rootNode="rootNode"
-        tabActive="organ"
+        tabActive="document"
+        showAllIcon
       ></KTreeModel>
     </div>
   </div>
@@ -58,10 +60,9 @@
 <script setup>
   /**
    * selectedStatus 0(未选中) 2（全部）
-   * includeChild 向下包含 Boolean
    * apiModule: api对应的模块
    * initQueryParams 初始化参数
-   * selectedDepart 选中项
+   * selected 选中项
    */
   import { reactive, ref, computed } from 'vue'
   import {
@@ -70,14 +71,15 @@
   } from '@/utils/handleTreeData.js'
   import { Search } from '@element-plus/icons-vue'
   import KTreeModel from '../KTreeModel.vue'
-  import Api from '@/api/common/organOrPerson'
+  // import Api from '@/api/common/organOrPerson'
+  import Api from '@/mock/documentType'
 
   const props = defineProps({
     apiModule: {
       type: String,
-      default: ''
+      default: 'post|/api/fileType/treeList'
     },
-    selectedDepart: {
+    selected: {
       type: Array,
       default: () => {
         return []
@@ -90,14 +92,14 @@
       }
     }
   })
-  const emits = defineEmits(['update:selectedDepart'])
+  const emits = defineEmits(['update:selected'])
 
   const selectedData = computed({
     get() {
-      return JSON.parse(JSON.stringify(props.selectedDepart))
+      return JSON.parse(JSON.stringify(props.selected))
     },
     set(val) {
-      emits('update:selectedDepart', val)
+      emits('update:selected', val)
     }
   })
 
@@ -106,11 +108,10 @@
     {
       id: '-1',
       pid: '0',
-      name: '组织架构',
+      name: '文件类型',
       sort: 3,
       haveChildren: true,
-      type: 'organ',
-      idFullPath: '-1'
+      type: 'organ'
     }
   ]
   // 静态数据
@@ -125,13 +126,19 @@
 
   // 面包屑缓存树
   const cacheRootLists = ref([])
-
   // 动态获取部门接口
   const resultOrgan = params => {
+    let api = ''
+    if (params.id !== '-1') {
+      api = `${props.apiModule}/${params.id}`
+    } else {
+      api = `${props.apiModule}`
+    }
+    console.log(params, 'params')
     return new Promise((resolve, reject) => {
-      Api[props.apiModule]
-        .organ(params)
+      Api[api]()
         .then(res => {
+          console.log(res, '返回的数据')
           resolve(res)
         })
         .catch(error => {
@@ -139,7 +146,6 @@
         })
     })
   }
-
   // 搜索条件
   const searchQuery = ref('')
 
@@ -188,12 +194,15 @@
         item.selectedStatus = 2
       })
       const arr = []
-      attr.forEach(item => {
-        arr.push(item.id)
-      })
+      attr
+        .filter(val => val.type === 'document')
+        .forEach(item => {
+          arr.push(item.id)
+        })
+
       selectedData.value = selectedData.value
         .filter(item => !arr.includes(item.id))
-        .concat(attr)
+        .concat(attr.filter(val => val.type === 'document'))
     }
   }
 
@@ -216,44 +225,17 @@
     if (val === 0) {
       treeColumnData.data.forEach(item => {
         if (item.id === attr.id) {
-          item.selectedStatus = 0
+          item.selectedStatus = val
         }
       })
       selectedData.value = selectedData.value.filter(
         item => item.id !== attr.id
       )
-
-      const { includeChild } = selectedData.value.find(
-        item => item.id === attr.id
-      )
-      // 取消状态 - 特殊情况 包含状态 且 root树已加载
-      function cancelIsChildrenStatus(data) {
-        data.forEach(item => {
-          if (item.id === attr.id && includeChild) {
-            function innerChange(lists) {
-              lists.forEach(key => {
-                key.selectedStatus = 0
-                key.disabled = false
-                if (key.children && key.children.length > 0) {
-                  return innerChange(key.children)
-                }
-              })
-            }
-            innerChange(item.children)
-          }
-
-          if (item.children && item.children.length > 0) {
-            return cancelIsChildrenStatus(item.children)
-          }
-        })
-      }
-
-      cancelIsChildrenStatus(cacheRootLists.value)
     } else {
       const cacheSelectedData = JSON.parse(JSON.stringify(selectedData.value))
       treeColumnData.data.forEach(item => {
         if (item.id === attr.id) {
-          item.selectedStatus = 2
+          item.selectedStatus = val
           cacheSelectedData.splice(selectedData.value.length, 0, item)
         }
       })
@@ -268,7 +250,7 @@
 
     if (attr.length === 0) {
       path.push({
-        curmbsName: '组织架构',
+        curmbsName: '文件类型',
         id: '-1'
       })
       return path
@@ -318,20 +300,21 @@
       treeColumnData.data = handleShowListStatus(flag.value, selectedData.value)
       // 处理面包屑 - 递归展示
       const result = handleCurmbs(cacheRootLists.value, attr.id)
+
       curmbs.value = result
       return
     }
-
     // 是
-    resultOrgan({ ...props.initQueryParams, organId: attr.id }).then(result => {
+    resultOrgan({ id: attr.id }).then(result => {
       const res = result.data
       res.forEach(item => {
         item.selectedStatus = 0
-        item.includeChild = !!item.includeChild
-        item.disabled = !!item.disabled
+        item.type = 'document'
+        item.folder = item.fileDirectory === '1'
       })
       // 展示时，需要对比右侧选择状态
       treeColumnData.data = handleShowListStatus(res, selectedData.value)
+
       if (attr.id === '-1') {
         state.lists = res.concat(rootNode)
         cacheRootLists.value = treeDataTranslate(state.lists)
@@ -361,14 +344,6 @@
         selectedData.forEach(val => {
           if (item.id === val.id) {
             item.selectedStatus = 2
-          }
-          // 向下包含反选
-          if (
-            item.idFullPath.split(',').includes(val.id) &&
-            val.includeChild &&
-            item.id !== val.id
-          ) {
-            item.disabled = true
           }
         })
       }
@@ -414,65 +389,35 @@
     data.forEach(item => {
       if (item.id === attr.id) {
         item.selectedStatus = 0
-        item.disabled = false
       }
-      if (item.idFullPath.split(',').includes(attr.id) && attr.includeChild) {
-        item.selectedStatus = 0
-        item.disabled = false
-      }
+
       if (item.children && item.children.length > 0) {
         return handleSelectedStatus(item.children, attr)
       }
     })
   }
-
   // 全部取消状态
   const clearAllStatus = val => {
     val.forEach(item => {
       item.selectedStatus = 0
-      item.disabled = false
       if (item.children && item.children.length > 0) {
         return clearAllStatus(item.children)
       }
     })
   }
+
   // 取消选中项
   const concelSelected = attr => {
     // 删除右侧选择项
-    handleChangeIncluded1(false, attr)
-
-    handleSelectedStatus(cacheRootLists.value, attr)
-
+    selectedData.value = selectedData.value.filter(val => val.id !== attr.id)
     treeColumnData.data.forEach(item => {
       if (item.id === attr.id) {
         item.selectedStatus = 0
-        item.disabled = false
-      }
-      if (item.idFullPath.split(',').includes(attr.id) && attr.includeChild) {
-        item.selectedStatus = 0
-        item.disabled = false
       }
     })
+    handleSelectedStatus(cacheRootLists.value, attr)
   }
-  const handleChangeIncluded1 = (status, attr) => {
-    // 1.是否有children
-    if (!attr.haveChildren) {
-      selectedData.value = selectedData.value.filter(val => val.id !== attr.id)
-      return
-    }
-    const aplication = ref([])
-    // 2.判断已选中是否被包含
-    const str = JSON.parse(JSON.stringify(selectedData.value))
-    str.forEach(item => {
-      if (item.idFullPath.split(',').includes(attr.id)) {
-        aplication.value.push(item.id)
-      }
-    })
 
-    selectedData.value = selectedData.value.filter(
-      item => !aplication.value.includes(item.id)
-    )
-  }
   // 清空选中项
   const clearSelected = () => {
     selectedData.value = []
@@ -481,75 +426,9 @@
     clearAllStatus(cacheRootLists.value)
   }
 
-  const changeChildrenAllStatus = (data, switchStatus) => {
-    if (!Array.isArray(data) || data.length === 0) return
-    data.forEach(item => {
-      item.selectedStatus = switchStatus ? 2 : 0
-      item.disabled = switchStatus
-      if (item.children && item.children.length > 0) {
-        return changeChildrenAllStatus(item.children, switchStatus)
-      }
-    })
-  }
-
-  // 监听 向下包含 切换
-  const changeSwitch = (switchStatus, attr) => {
-    // 处理选中值
-    handleChangeIncluded(switchStatus, attr)
-
-    // 处理树状态
-    function recursionData(data, id) {
-      if (!Array.isArray(data) || data.length === 0) return
-      data.forEach(item => {
-        if (item.id === id) {
-          // 向下包含
-          changeChildrenAllStatus(item.children, switchStatus)
-        }
-        if (item.children && item.children.length > 0) {
-          return recursionData(item.children, id)
-        }
-      })
-    }
-
-    recursionData(cacheRootLists.value, attr.id)
-
-    // 处理展示状态
-    function recursionTreeData(data, id) {
-      if (!Array.isArray(data) || data.length === 0) return
-      data.forEach(item => {
-        if (item.id === id) {
-          treeColumnData.data = item.children
-        }
-        if (item.children && item.children.length > 0) {
-          return recursionTreeData(item.children, id)
-        }
-      })
-    }
-    // 重置 treeColumnData
-    const pid = treeColumnData.data[0].pid
-    recursionTreeData(cacheRootLists.value, pid)
-  }
-
-  const handleChangeIncluded = (status, attr) => {
-    // 1.是否有children
-    if (!attr.haveChildren) return false
-    const aplication = ref([])
-    // 2.判断已选中是否被包含
-    const str = JSON.parse(JSON.stringify(selectedData.value))
-    str.forEach(item => {
-      if (item.idFullPath.split(',').includes(attr.id) && item.id !== attr.id) {
-        aplication.value.push(item.id)
-      }
-    })
-
-    selectedData.value = selectedData.value.filter(
-      item => !aplication.value.includes(item.id)
-    )
-  }
   defineExpose({
     concelSelected,
-    clearSelected,
-    changeSwitch
+    clearSelected
   })
 </script>
 
@@ -567,7 +446,6 @@
       .bread-item {
         display: flex;
         align-items: center;
-        cursor: pointer;
       }
 
       .bread-home {

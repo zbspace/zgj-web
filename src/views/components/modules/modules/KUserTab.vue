@@ -49,7 +49,7 @@
         @update:lists="treeColumnData.data = $event"
         @open="openInner"
         @emitsDemo="emitsDemo"
-        :departRoot="departRoot"
+        :rootNode="rootNode"
         tabActive="user"
       ></KTreeModel>
     </div>
@@ -103,7 +103,7 @@
   })
 
   // 部门选择新增根节点（不展示）
-  const departRoot = [
+  const rootNode = [
     {
       id: '-1',
       pid: '0',
@@ -337,7 +337,7 @@
       // 展示时，需要对比右侧选择状态
       treeColumnData.data = handleShowListStatus(res, selectedData.value)
       if (attr.id === '-1') {
-        state.lists = res.concat(departRoot)
+        state.lists = res.concat(rootNode)
         cacheRootLists.value = treeDataTranslate(state.lists)
         return
       }

@@ -138,7 +138,7 @@
                 <div class="ap-personalCenter-text">
                   <span class="ap-personalCenter-name">
                     {{
-                      accountInfoStore.userInfo &&
+                      accountInfoStore.userInfo.userName &&
                       accountInfoStore.userInfo.userName.substr(1)
                     }}
                   </span>
@@ -163,7 +163,7 @@
                 <div class="dropdown-name">
                   <div class="dropdown-name-icon">
                     {{
-                      accountInfoStore.userInfo &&
+                      accountInfoStore.userInfo.userName &&
                       accountInfoStore.userInfo.userName.substr(1)
                     }}
                   </div>
@@ -574,6 +574,7 @@
       .depart-dropdown {
         margin: auto;
         color: #303133;
+        font-size: 16px;
 
         .el-dropdown-link {
           cursor: pointer;
@@ -688,7 +689,7 @@
         display: flex;
         align-items: center;
         font-size: 14px;
-        width: 88px;
+        width: 55px;
         height: 42px;
         border: none;
         --el-button-hover-bg-color: rgba(0, 0, 0, 0.04);
@@ -697,7 +698,7 @@
           display: flex;
           align-items: center;
           cursor: pointer;
-          margin-right: 20px;
+          margin-right: 8px;
 
           .ap-personalCenter-name {
             @include mixin-width(34);
@@ -872,6 +873,7 @@
 
     .nav-left {
       :deep(.depart-dropdown) {
+        font-size: 16px;
         .el-dropdown-link {
           color: #fff;
         }
