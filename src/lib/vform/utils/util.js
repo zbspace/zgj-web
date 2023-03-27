@@ -371,7 +371,8 @@ export function getAllFieldWidgets(widgetList, staticWidgetsIncluded = false) {
       name: w.options.name,
       field: JSON.stringify(w),
       label: w.options.label,
-      model: w.options.model,
+      formColumnModel: w.options.formColumnModel,
+      ordernumber: w.options.ordernumber,
       dynamicColumn: customComponents.includes(w.type) ? 0 : 1 // 1动态字段 0固定字段
     })
   }
