@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-  import Menus from '@/views/layout/menu/index'
+  import Menus from '@/views/layout/Menu/index'
   import Asides from '@/views/layout/Aside/index.vue'
   import RightBar from './RightBar'
   import NavBar from './NavBar'

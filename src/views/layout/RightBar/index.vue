@@ -141,7 +141,7 @@
   import { useLayoutStore } from '@/store/layout'
   import { useMenusInfoStore } from '@/store/menus'
   import { business } from '../Menu/business'
-  import { system } from '../menu/system'
+  import { system } from '../Menu/system'
 
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()
