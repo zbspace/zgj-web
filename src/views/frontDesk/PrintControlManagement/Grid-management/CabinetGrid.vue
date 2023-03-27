@@ -254,7 +254,7 @@
   import componentsLayout from '../../../components/Layout.vue'
   import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import MouthStatus from '@/views/frontDesk/PrintControlManagement/Grid-management/components/MouthStatus'
+  import MouthStatus from '@/views/frontDesk/PrintControlManagement/Grid-management/components/mouthStatus'
   import { useRouter } from 'vue-router'
 
   const router = useRouter()

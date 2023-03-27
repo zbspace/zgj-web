@@ -198,7 +198,7 @@
 <script setup>
   import { ref, reactive, onBeforeMount, onMounted, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsTabs from '@/views/components/tabs.vue'
+  import componentsTabs from '@/views/components/JyTabs.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'

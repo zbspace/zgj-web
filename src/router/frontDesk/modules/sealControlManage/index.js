@@ -364,7 +364,7 @@ const routes = {
           name: 'InnerPage',
           meta: { title: '二级页面', authRequired: true },
           component: () =>
-            import('@/views/frontDesk/PrintControlManagement/innerPage.vue')
+            import('@/views/frontDesk/PrintControlManagement/InnerPage.vue')
         },
         {
           path: 'innerTablePage',

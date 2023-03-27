@@ -942,7 +942,7 @@
 </template>
 <script setup>
   import { reactive, onBeforeMount, onMounted, watch } from 'vue'
-  import componentsTabs from './tabs.vue'
+  import componentsTabs from './JyTabs.vue'
   import componentsTable from './table'
   import componentsApprovalSteps from './approvalSteps'
   import documentsDetailsPortion from './documentsDetails/portion.vue'

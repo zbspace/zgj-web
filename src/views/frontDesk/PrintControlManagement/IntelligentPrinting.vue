@@ -110,7 +110,7 @@
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/tabs.vue'
+  import componentsTabs from '../../components/JyTabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '../../components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'

@@ -312,7 +312,7 @@
   // import componentsTree from '.@/views/components/tree'
   // import componentsBreadcrumb from '@/views/components/breadcrumb'
   import componentsPagination from '@/views/components/pagination.vue'
-  import componentsTabs from '@/views/components/tabs.vue'
+  import componentsTabs from '@/views/components/JyTabs.vue'
   import componentsLayout from '@/views/components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'

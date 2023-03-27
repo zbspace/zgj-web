@@ -23,7 +23,7 @@ const routes = {
         authRequired: true
       },
       component: () =>
-        import('@/views/system/companyManage/updatelicense/index.vue')
+        import('@/views/system/companyManage/updateLicense/index.vue')
     },
     {
       path: 'companyDealing',
