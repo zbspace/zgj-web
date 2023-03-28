@@ -105,7 +105,7 @@
               >
             </div>
             <!-- 表单 -->
-            <div style="margin-left: 30px; margin-bottom: 24px">
+            <div style="margin-left: 45px; margin-bottom: 24px">
               <div class="labelTitle">用印设置</div>
               <div class="grayBg">
                 <el-form-item label="防伪打印" prop="railSwitch">
@@ -263,6 +263,9 @@
             <el-timeline>
               <template v-if="currentTab === 1">
                 <el-timeline-item hide-timestamp>
+                  <template #dot>
+                    <div class="timeDot"><div></div></div>
+                  </template>
                   <div class="timeLineTitle">盖前</div>
                   <el-divider />
                   <div class="grayBg">
@@ -493,7 +496,11 @@
                     </el-row>
                   </div>
                 </el-timeline-item>
-                <el-timeline-item timestamp="盖中" placement="top">
+                <el-timeline-item hide-timestamp>
+                  <template #dot>
+                    <div class="timeDot"><div></div></div>
+                  </template>
+                  <div class="timeLineTitle">盖中</div>
                   <el-divider />
                   <div class="grayBg">
                     <el-row :gutter="5">
@@ -946,7 +953,11 @@
                     </el-row>
                   </div>
                 </el-timeline-item>
-                <el-timeline-item timestamp="盖后" placement="top">
+                <el-timeline-item hide-timestamp>
+                  <template #dot>
+                    <div class="timeDot"><div></div></div>
+                  </template>
+                  <div class="timeLineTitle">盖后</div>
                   <el-divider />
                   <div class="grayBg">
                     <el-row :gutter="5">
@@ -1022,7 +1033,11 @@
                   </div>
                 </el-timeline-item>
               </template>
-              <el-timeline-item timestamp="归档" placement="top">
+              <el-timeline-item hide-timestamp>
+                <template #dot>
+                  <div class="timeDot"><div></div></div>
+                </template>
+                <div class="timeLineTitle">归档</div>
                 <el-divider />
                 <div class="grayBg">
                   <el-row :gutter="5">
@@ -1520,6 +1535,25 @@
     font-size: 16px;
     color: rgba($color: #000000, $alpha: 0.85);
   }
+
+  .timeDot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #e8f5ff;
+    margin-top: -4px;
+    margin-left: -5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div {
+      width: 14px;
+      height: 14px;
+      background-color: #3e78d0;
+      border-radius: 50%;
+    }
+  }
 </style>
 
 <style lang="scss">
@@ -1537,7 +1571,7 @@
   }
 
   .editBusinessRule .el-timeline {
-    padding-left: 0;
+    padding-left: 14px;
   }
 
   .editBusinessRule {
