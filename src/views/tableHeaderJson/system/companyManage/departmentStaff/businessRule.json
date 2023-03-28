@@ -2,55 +2,59 @@
   {
     "prop": "ruleBusinessName",
     "label": "业务规则名称",
-    "sortable": true,
     "min-width": 150,
-    "fixed": true
+    "fixed": true,
+    "show": true
   },
   {
-    "prop": "ruleBusinessCode",
+    "prop": "ruleBusinessNo",
     "label": "业务规则编码",
-    "sortable": true,
-    "min-width": 150
+    "width": 180,
+    "align": "center",
+    "show": true
   },
   {
     "prop": "fileTypeName",
     "label": "文件类型",
-    "sortable": true,
-    "align": "center",
-    "width": 120
+    "min-width": 120,
+    "show": true
   },
   {
     "prop": "sealUseTypeName",
     "label": "用印类型",
-    "sortable": true,
     "align": "center",
-    "width": 120
+    "width": 120,
+    "show": true
   },
   {
-    "prop": "status",
+    "prop": "flag",
     "label": "状态",
-    "sortable": true,
+    "sortable": "custom",
     "align": "center",
-    "width": 120
+    "width": 120,
+    "show": true
   },
   {
     "prop": "modifyDatetime",
     "label": "更新时间",
-    "sortable": true,
+    "sortable": "custom",
     "align": "center",
-    "width": 170
+    "width": 170,
+    "show": true
   },
   {
     "prop": "createUserName",
     "label": "创建人",
     "align": "center",
-    "min-width": 150
+    "min-width": 150,
+    "show": true
   },
   {
     "prop": "caozuo",
     "label": "操作",
     "width": 180,
     "fixed": "right",
+    "show": true,
     "rankDisplayData": [
       {
         "name": "t-zgj-Edit"
@@ -59,7 +63,7 @@
         "name": "t-zgj-Delete"
       },
       {
-        "name": "t-zgj-Enable"
+        "name": "status"
       },
       {
         "name": "t-zgj-qyWechat.Copy"

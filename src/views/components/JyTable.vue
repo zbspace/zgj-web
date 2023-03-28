@@ -102,7 +102,11 @@
                   </span>
 
                   <!-- 状态 -->
-                  <div v-if="item.prop === 'flag'" class="flag-cell">
+                  <div
+                    v-if="item.prop === 'flag'"
+                    class="flag-cell"
+                    :class="item.align"
+                  >
                     <div
                       class="diot diot-0"
                       v-show="scope.row[props.statusColoum] === props.openValue"
@@ -596,6 +600,10 @@
       .diot-0 {
         background: rgba($color: green, $alpha: 0.65);
       }
+    }
+
+    .center {
+      justify-content: center;
     }
   }
 </style>

@@ -22,22 +22,22 @@ api.rulePage = params => {
  * @param {*} data
  * @returns
  */
-api.ruleAdd = data => {
+api.addOrUpdate = data => {
   return request({
     method: 'POST',
-    url: '/biz/rule/add',
+    url: '/biz/rule/addOrUpdate',
     data
   })
 }
 /**
  * 业务规则详情
- * @param {*} data
+ * @param {*} ruleBusinessId
  * @returns
  */
-api.ruleView = data => {
+api.ruleView = ruleBusinessId => {
   return request({
     method: 'GET',
-    url: `/biz/rule/view/${data}`
+    url: `/biz/rule/view/${ruleBusinessId}`
   })
 }
 /**

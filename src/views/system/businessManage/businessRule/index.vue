@@ -3,13 +3,13 @@
     <JyTable
       url="/biz/rule/page"
       ref="table"
-      :needAutoRequest="false"
+      method="POST"
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
       tableClick="ruleBusinessName"
-      statusColoum="status"
-      openValue="0"
+      statusColoum="flag"
+      openValue="1"
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
@@ -121,10 +121,6 @@
           },
           options: [
             {
-              value: '0',
-              label: '全部'
-            },
-            {
               value: '1',
               label: '物理用印'
             },
@@ -228,16 +224,21 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     console.log(row, column, cell, event)
-    if (column.property === '1') {
+    if (column.property === 'ruleBusinessName') {
       state.componentsDocumentsDetails.show = true
     }
   }
   function customClick(row, column, cell, event) {
     console.log(cell.name)
-    if (cell.name === '修改') {
-      showFormDialog.value = true
+    if (cell.name === 't-zgj-Edit') {
+      router.push({
+        name: 'EditBusinessRule',
+        query: {
+          ruleBusinessId: column.ruleBusinessId
+        }
+      })
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
       state.JyElMessageBox.show = true
