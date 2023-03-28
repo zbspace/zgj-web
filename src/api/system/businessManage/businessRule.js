@@ -88,11 +88,11 @@ api.ruleBatchEnable = data => {
     data
   })
 }
-// 停用员工
-api.userDisable = data => {
+// 停用业务规则
+api.ruleDisable = data => {
   return request({
-    method: 'GET',
-    url: '/user/disable/',
+    method: 'POST',
+    url: '/biz/rule/enable',
     data
   })
 }

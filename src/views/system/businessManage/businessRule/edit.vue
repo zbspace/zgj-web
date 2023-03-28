@@ -9,7 +9,11 @@
             业务管理
           </el-breadcrumb-item>
           <el-breadcrumb-item
-            style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            style="
+              --el-text-color-regular: rgba(0, 0, 0, 0.25);
+              cursor: pointer;
+            "
+            @click="router.go(-1)"
           >
             业务规则管理
           </el-breadcrumb-item>
@@ -175,71 +179,78 @@
                 <div class="labelTitle">远程监督用印</div>
                 <div class="grayBg">
                   <el-form-item label="远程盖章确认人" prop="remoteUsers">
-                    <div class="ap-box-contBox">
-                      <el-select
-                        v-model="ruleForm.remoteUsers"
-                        multiple
-                        placeholder="请选择"
-                        style="width: 100%"
-                        tag-type="waring"
-                        popper-class="hidePoper"
-                        :class="{
-                          hasContent:
-                            ruleForm.remoteUsers && ruleForm.remoteUsers.length
-                        }"
-                        @click="clickDialog('remoteUsers')"
-                      >
-                        <el-option
-                          v-for="one in remoteUsersList"
-                          :key="one.value"
-                          :label="one.label"
-                          :value="one.value"
-                        />
-                      </el-select>
-                      <div
-                        class="ap-box-contBox-icon"
-                        @click="clickDialog('remoteUsers')"
-                      >
-                        <img
-                          class="ap-box-contBox-icon-img"
-                          src="@/assets/svg/ketanchude.svg"
-                          alt=""
-                        />
+                    <div class="contentBoxes">
+                      <div class="ap-box-contBox">
+                        <el-select
+                          v-model="ruleForm.remoteUsers"
+                          multiple
+                          placeholder="请选择"
+                          style="width: 100%"
+                          tag-type="warning"
+                          popper-class="hidePoper"
+                          :class="{
+                            hasContent:
+                              ruleForm.remoteUsers &&
+                              ruleForm.remoteUsers.length
+                          }"
+                          @click="clickDialog('remoteUsers')"
+                        >
+                          <el-option
+                            v-for="one in remoteUsersList"
+                            :key="one.value"
+                            :label="one.label"
+                            :value="one.value"
+                          />
+                        </el-select>
+                        <div
+                          class="ap-box-contBox-icon"
+                          @click="clickDialog('remoteUsers')"
+                        >
+                          <img
+                            class="ap-box-contBox-icon-img"
+                            src="@/assets/svg/ketanchude.svg"
+                            alt=""
+                          />
+                        </div>
                       </div>
+                      <div class="xian">（限10人）</div>
                     </div>
                   </el-form-item>
                   <el-form-item label="视频盖章确认人" prop="videoUsers">
-                    <div class="ap-box-contBox">
-                      <el-select
-                        v-model="ruleForm.videoUsers"
-                        multiple
-                        tag-type="waring"
-                        placeholder="请选择"
-                        style="width: 100%"
-                        popper-class="hidePoper"
-                        :class="{
-                          hasContent:
-                            ruleForm.videoUsers && ruleForm.videoUsers.length
-                        }"
-                        @click="clickDialog('videoUsers')"
-                      >
-                        <el-option
-                          v-for="one in videoUsersList"
-                          :key="one.value"
-                          :label="one.label"
-                          :value="one.value"
-                        />
-                      </el-select>
-                      <div
-                        class="ap-box-contBox-icon"
-                        @click="clickDialog('videoUsers')"
-                      >
-                        <img
-                          class="ap-box-contBox-icon-img"
-                          src="@/assets/svg/ketanchude.svg"
-                          alt=""
-                        />
+                    <div class="contentBoxes">
+                      <div class="ap-box-contBox">
+                        <el-select
+                          v-model="ruleForm.videoUsers"
+                          multiple
+                          tag-type="warning"
+                          placeholder="请选择"
+                          style="width: 100%"
+                          popper-class="hidePoper"
+                          :class="{
+                            hasContent:
+                              ruleForm.videoUsers && ruleForm.videoUsers.length
+                          }"
+                          @click="clickDialog('videoUsers')"
+                        >
+                          <el-option
+                            v-for="one in videoUsersList"
+                            :key="one.value"
+                            :label="one.label"
+                            :value="one.value"
+                          />
+                        </el-select>
+                        <div
+                          class="ap-box-contBox-icon"
+                          @click="clickDialog('videoUsers')"
+                        >
+                          <img
+                            class="ap-box-contBox-icon-img"
+                            src="@/assets/svg/ketanchude.svg"
+                            alt=""
+                          />
+                        </div>
                       </div>
+                      <div class="xian">（限10人）</div>
                     </div>
                   </el-form-item>
                 </div>
@@ -247,7 +258,8 @@
             </div>
             <el-timeline>
               <template v-if="currentTab === 1">
-                <el-timeline-item timestamp="盖前" placement="top">
+                <el-timeline-item hide-timestamp>
+                  <div class="timeLineTitle">盖前</div>
                   <el-divider />
                   <div class="grayBg">
                     <el-row :gutter="5">
@@ -1233,7 +1245,7 @@
     archivePageSwitch = '0'
     archiveOcrSwitch = '0'
   }
-  const ruleBusinessNo =
+  let ruleBusinessNo =
     dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
   const ruleForm = ref(new BusinessRule())
   const ruleFormRef = ref(null)
@@ -1281,7 +1293,6 @@
   const submitBusinessRule = () => {
     ruleFormRef.value.validate(valid => {
       if (valid) {
-        console.log(ruleForm.value)
         ruleApi.addOrUpdate(ruleForm.value).then(() => {
           messageSuccess(
             ruleForm.value.ruleBusinessId ? '编辑成功' : '添加成功'
@@ -1297,6 +1308,7 @@
 
   const resetForm = () => {
     ruleFormRef.value.resetFields()
+    ruleForm.value.ruleBusinessNo = ruleBusinessNo
   }
 
   const getFileTypeList = () => {
@@ -1359,7 +1371,11 @@
 
   // 确认选择确认人
   const submitSelected = value => {
-    ruleForm.value[kDepartOrPerson.value] = value.map(i => i.id)
+    ruleForm.value[kDepartOrPerson.value] = value.map(i => {
+      return {
+        userId: i.id
+      }
+    })
     if (kDepartOrPerson.value === 'remoteUsers') {
       remoteUsersList.value = value.map(i => {
         return {
@@ -1390,9 +1406,9 @@
       .ruleView(router.currentRoute.value.query.ruleBusinessId)
       .then(res => {
         const data = res.data
-        console.log(data)
-        data.fileTypes = data.fileTypes.map(i => i.fileTypeId)
-        console.log(data.fileTypes)
+        data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
+        delete data.fileTypes
+        ruleBusinessNo = data.ruleBusinessNo
         ruleForm.value = data
       })
   }
@@ -1459,6 +1475,11 @@
       border-radius: 2px;
     }
   }
+
+  .timeLineTitle {
+    font-size: 16px;
+    color: rgba($color: #000000, $alpha: 0.85);
+  }
 </style>
 
 <style lang="scss">
@@ -1480,6 +1501,9 @@
   }
 
   .editBusinessRule {
+    .el-divider {
+      margin: 8px 0 16px;
+    }
     .hasContent {
       .el-input__wrapper {
         -webkit-text-fill-color: #000;
@@ -1490,8 +1514,19 @@
       }
     }
 
-    .ap-box-contBox {
+    .contentBoxes {
+      display: flex;
+      justify-content: space-between;
       width: 100%;
+
+      .xian {
+        color: rgba($color: #000000, $alpha: 0.45);
+        font-size: 12px;
+      }
+    }
+
+    .ap-box-contBox {
+      width: calc(100% - 70px);
       position: relative;
       display: flex;
       align-items: center;
