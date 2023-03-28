@@ -146,6 +146,10 @@
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import formApi from '@/api/system/formManagement/index'
+  import { useVformInfoStore } from '@/store/vform'
+
+  const vformInfoStore = useVformInfoStore()
+
   const dialogProcess = reactive({
     show: false,
     title: '处理',
@@ -882,6 +886,19 @@
               value: formData[item] ? '是' : '否',
               type: v.formColumnModel ? v.formColumnModel : '其他'
             })
+          } else if (v.formColumnNo === 'contractAmount') {
+            formTableData.push({
+              label: v.formColumnName,
+              value:
+                formData[item].amount === ''
+                  ? '-'
+                  : `${formData[item].amount} ${
+                      vformInfoStore.moneyType.find(v => {
+                        return v.moneyTypeId === formData[item].unit
+                      }).moneyTypeName
+                    }`,
+              type: v.formColumnModel ? v.formColumnModel : '其他'
+            })
           } else {
             formTableData.push({
               label: v.formColumnName,
@@ -999,6 +1016,7 @@
   })
   onMounted(() => {
     getFormPage()
+    vformInfoStore.getMoneyType()
     // console.log(`the component is now mounted.`)
   })
 </script>
