@@ -2801,7 +2801,7 @@ export const en = {
   't-zgj-cg-menu-zhineng-yinzhang-gui-gekou-guanli': '智能印章柜格口管理',
   't-zgj-cg-menu-wenjian-guanli': '文件管理',
   't-zgj-cg-menu-wenjian-ku': '文件库',
-  't-zgj-cg-menu-wenjian-leixing': '文件类型',
+  't-zgj-cg-menu-wenjian-leixing': 'File type',
   't-zgj-cg-menu-liucheng-shenpi': '流程审批',
   't-zgj-cg-menu-shishi-queren': '实时确认',
   't-zgj-cg-menu-shenpi-liucheng': '审批流程',

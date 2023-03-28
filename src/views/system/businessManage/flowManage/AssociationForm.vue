@@ -84,16 +84,19 @@
               v-for="(item, index) in state.list.data"
               :key="index"
             >
-              <div class="ap-cont-liebiao-list-desc">
+              <div class="list-desc">
                 {{ item.formName }}
               </div>
-              <el-button
-                type="primary"
-                class="btn"
-                @click="clickEditForm(item)"
-              >
-                选择
-              </el-button>
+
+              <div style="margin-top: 4px">
+                <el-button
+                  type="primary"
+                  class="btn"
+                  @click="clickEditForm(item)"
+                >
+                  选择
+                </el-button>
+              </div>
             </div>
             <i></i><i></i>
           </div>
@@ -466,6 +469,8 @@
         margin-right: -15px;
       }
       .list {
+        display: flex;
+        flex-direction: column;
         width: 258px;
         height: 110px;
         margin: 15px 10px 0 0;
@@ -473,6 +478,19 @@
         border: 1px solid var(--jy-color-border-1);
         border-radius: var(--jy-border-radius-4);
         background-color: var(--jy-color-fill--1);
+      }
+      .list-desc {
+        flex: 1;
+        font-size: 14px;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.85);
+        width: 218px;
+        word-break: break-all;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
       }
       /* 和列表一样的宽度和margin值 */
       .container-list > i {
@@ -483,8 +501,8 @@
       .btn {
         width: 60px;
         height: 32px;
-        margin-top: 16px;
         font-size: 14px;
+        margin: auto;
       }
     }
 
