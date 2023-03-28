@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { fileManageService } from '@/api/frontDesk/fileManage'
+import sealApplyService from '@/api/frontDesk/printControl/sealApply'
+
 /**
  * 动态表单信息
  */
@@ -8,10 +10,10 @@ export const useVformInfoStore = defineStore({
   state: () => {
     return {
       forbidRemove: [], // 禁止删除的控件标识
-      fileTypeList: [] // 文件类型list
+      fileTypeList: [], // 文件类型list
+      moneyType: [] // 币种
     }
   },
-  getters: {},
   actions: {
     setForbidRemove(value) {
       this.forbidRemove = value
@@ -25,6 +27,14 @@ export const useVformInfoStore = defineStore({
         })
         this.fileTypeList = res.data || []
       } catch (error) {}
+    },
+    async getMoneyType() {
+      if (this.moneyType.length) {
+        return this.moneyType
+      } else {
+        const res = await sealApplyService.getMoneyType()
+        return (this.moneyType = res.data || [])
+      }
     }
   },
   // 开启数据缓存

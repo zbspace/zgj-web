@@ -2,7 +2,6 @@
   <form-item-wrapper
     :designer="designer"
     :field="field"
-    :rules="rules"
     :design-state="designState"
     :parent-widget="parentWidget"
     :parent-list="parentList"
@@ -10,6 +9,7 @@
     :sub-form-row-index="subFormRowIndex"
     :sub-form-col-index="subFormColIndex"
     :sub-form-row-id="subFormRowId"
+    :class="[labelAlign, customClass, field.options.required ? 'required' : '']"
   >
     <el-select
       ref="fieldEditor"
@@ -28,9 +28,10 @@
       "
       :remote="field.options.remote"
       :remote-method="remoteQuery"
-      @focus="getFileTypeList"
       @blur="handleBlurCustomEvent"
       @change="onChange"
+      @click.stop="onClick"
+      popper-class="select-hidden"
     >
       <el-option
         v-for="item in fileTypeOptions"
@@ -43,6 +44,23 @@
     <template v-if="isReadMode">
       <span class="readonly-mode-field">{{ contentForReadMode }}</span>
     </template>
+
+    <div
+      class="el-form-item__error"
+      v-if="field.options.requiredTextShow && field.options.required"
+    >
+      {{ field.options.requiredHint || '请选择' }}
+    </div>
+    <div class="el-form-item__error" v-if="field.options.requiredHint">{{
+      field.options.requiredHint
+    }}</div>
+
+    <!-- 选择文件类型 -->
+    <KDocumentTypeDialog
+      v-model:show="showDocumentTypeDialog"
+      @update:searchSelected="documentTypeSubmit"
+      :multiple="false"
+    ></KDocumentTypeDialog>
   </form-item-wrapper>
 </template>
 
@@ -51,9 +69,7 @@
   import emitter from '@/lib/vform/utils/emitter'
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
-  import { fileManageService } from '@/api/frontDesk/fileManage'
-  import { messageError } from '@/hooks/useMessage'
-  import { GetFileTypeList } from '@/utils/domain/fileManage'
+  import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
 
   export default {
     name: 'FileTypeIdWidget',
@@ -85,7 +101,8 @@
       }
     },
     components: {
-      FormItemWrapper
+      FormItemWrapper,
+      KDocumentTypeDialog
     },
     data() {
       return {
@@ -93,6 +110,7 @@
         fileTypeName: '',
         fileTypeId: '',
         fileTypeOptions: [],
+        showDocumentTypeDialog: false,
         rules: [
           {
             required: true,
@@ -105,31 +123,41 @@
     created() {
       this.registerToRefList()
       this.initEventHandler()
-      // this.initFieldModel()
+      this.initFieldModel()
     },
     beforeUnmount() {
       this.unregisterFromRefList()
     },
     methods: {
+      setRequiredTextShow(v) {
+        this.field.options.requiredTextShow = v
+      },
       handleCloseCustomEvent() {
         if (this.field.options.onClose) {
           const changeFn = new Function(this.field.options.onClose)
           changeFn.call(this)
         }
       },
-      async getFileTypeList() {
-        try {
-          const res = await fileManageService.getFileTypeListPage(
-            new GetFileTypeList()
-          )
-          this.fileTypeOptions = res.data.records || []
-        } catch (error) {
-          messageError(error)
-        }
-      },
       onChange(value, name) {
         console.log('--->', value)
         this.handleChangeEvent(value, name)
+      },
+      documentTypeSubmit(list) {
+        if (list.length) {
+          this.fieldModel = list[0].fileTypeId
+          this.fileTypeName = list[0].fileTypeName
+          this.fileTypeOptions.splice(0, 1, {
+            fileTypeName: this.fileTypeName,
+            fileTypeId: this.fieldModel
+          })
+          this.setRequiredTextShow(false)
+        } else {
+          this.fieldModel = ''
+          this.fileTypeName = ''
+        }
+      },
+      onClick() {
+        this.showDocumentTypeDialog = true
       }
     }
   }
@@ -138,5 +166,10 @@
 <style lang="scss" scoped>
   .full-width-input {
     width: 100% !important;
+  }
+</style>
+<style>
+  .select-hidden {
+    display: none;
   }
 </style>

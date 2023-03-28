@@ -773,7 +773,9 @@
             widget.type === 'sealFile' ||
             widget.type === 'limitTimeSeal' ||
             widget.type === 'sealName' ||
-            widget.type === 'contactUnit'
+            widget.type === 'contactUnit' ||
+            widget.type === 'fileTypeId' ||
+            widget.type === 'contractAmount'
           ) {
             const data = {}
             const dataId = widget.id
@@ -930,6 +932,14 @@
                     }
                   }
                 })
+              }
+              if (widget.type === 'fileTypeId') {
+                if (!widgetData) {
+                  _self.requiredMsgList.push('文件类型未选')
+                  widgetInstance.setRequiredTextShow(true)
+                } else {
+                  widgetInstance.setRequiredTextShow(false)
+                }
               }
             }
 

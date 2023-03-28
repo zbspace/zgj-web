@@ -132,7 +132,14 @@
                       :title="fld.displayName"
                       @dblclick="addFieldByDbClick(fld)"
                     >
-                      <svg class="iconpark-icon">
+                      <svg
+                        class="iconpark-icon"
+                        style="
+                          width: 20px;
+                          height: 20px;
+                          color: var(--jy-primary-6);
+                        "
+                      >
                         <use :href="`#${fld.icon}`"></use>
                       </svg>
                       {{ getWidgetLabel(fld) }}
@@ -494,8 +501,6 @@
           font-size: 14px;
           color: rgba(0, 0, 0, 0.85);
           .iconpark-icon {
-            width: 20px;
-            height: 20px;
             margin: 0 0.35em;
             color: var(--jy-primary-6);
           }

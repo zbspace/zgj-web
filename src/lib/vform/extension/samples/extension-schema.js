@@ -466,7 +466,6 @@ export const fileTypeSchema = {
     filterable: false,
     allowCreate: false,
     remote: false,
-
     automaticDropdown: false, // 自动下拉
     multiple: false,
     multipleLimit: 0,
@@ -475,19 +474,10 @@ export const fileTypeSchema = {
     dataSetName: '', // 数据集名称
     labelKey: 'label',
     valueKey: 'value',
-    optionItems: [
-      { label: 'select 1', value: 1 },
-      { label: 'select 2', value: 2 },
-      { label: 'select 3', value: 3 }
-    ],
     required: true,
-    requiredHint: '请选择',
+    requiredHint: '',
     validation: '',
     validationHint: '',
-    fieldLinkage: [
-      { value: '1', linkages: [] },
-      { value: '2', linkages: [] }
-    ],
     // -------------------
     customClass: '', // 自定义css类名
     labelIconClass: null,
@@ -553,6 +543,54 @@ export const moduleContainerSchema = {
   }
 }
 
+// 合同金额
+export const contractAmountSchema = {
+  type: 'contractAmount',
+  icon: 'zhage',
+  formItemFlag: true,
+  options: {
+    name: 'contractAmount',
+    label: '合同金额',
+    nameDisabled: true,
+    labelAlign: 'right',
+    columnWidth: '200px',
+    labelWidth: 100,
+    labelHidden: false,
+    disabled: false,
+
+    hidden: false,
+    type: 'datetimerange',
+    endPlaceholder: '',
+    editable: false,
+    clearable: true,
+    required: true,
+    requiredHint: '',
+    validation: '',
+    validationHint: '',
+    labelKey: 'label',
+    valueKey: 'value',
+    // -------------------
+    customClass: '', // 自定义css类名
+    labelIconClass: null,
+    labelIconPosition: 'rear',
+    labelTooltip: null,
+    switchWidth: 40,
+    activeText: '',
+    inactiveText: '',
+    activeColor: null,
+    inactiveColor: null,
+    fieldLinkage: [
+      { value: '1', linkages: [] },
+      { value: '2', linkages: [] }
+    ],
+    // -------------------
+    onCreated: '',
+    onMounted: '',
+    onChange: '',
+    onValidate: ''
+  }
+}
+
 // 所有自定义组件list
 export const customComponents = [
   'sealName',
@@ -565,6 +603,7 @@ export const customComponents = [
   'applicantInfo',
   'sealFile',
   'fileTypeId',
-  'agentMan'
+  'agentMan',
+  'contractAmount'
   // 'moduleContainer'
 ]
