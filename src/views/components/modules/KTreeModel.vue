@@ -447,7 +447,7 @@
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: true
     }
   })
   const cacheShowList = computed(() => {

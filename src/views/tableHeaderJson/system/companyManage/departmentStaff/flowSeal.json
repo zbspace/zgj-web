@@ -39,7 +39,7 @@
     "prop": "caozuo",
     "label": "操作",
     "fixed": "right",
-    "min-width": 200,
+    "min-width": 220,
     "show": true,
     "rankDisplayData": [
       {

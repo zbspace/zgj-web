@@ -93,7 +93,10 @@
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: true
+    },
+    max: {
+      type: Number
     }
   })
   const emits = defineEmits(['update:selectedUser'])
@@ -151,13 +154,37 @@
 
   // 自定义事件
   function emitsDemo(attr, val, type) {
+    if (props.max && selectedData.value.length > props.max && props.multiple) {
+      ElMessage.warning(`只能选择${props.max}个人员`)
+      return
+    }
     if (type && type === 'all') {
+      // 判断限制人数 - all
+      const cacheUser = JSON.parse(JSON.stringify(attr))
+      const userData = cacheUser.filter(item => (item.type = 'user'))
+      if (
+        props.max &&
+        selectedData.value.length + userData.length > props.max &&
+        props.multiple
+      ) {
+        ElMessage.warning(`只能选择${props.max}个人员`)
+        return
+      }
       handleRootChangeByAll(attr, val)
       handleSelectedChangeByAll(attr, val)
       return
     }
     if (selectedData.value.length > 0 && !props.multiple) {
-      ElMessage.warning('只能选择一个信息')
+      ElMessage.warning('只能选择1个人员')
+      return
+    }
+    // 判断限制人数 - part
+    if (
+      props.max &&
+      selectedData.value.length + 1 > props.max &&
+      props.multiple
+    ) {
+      ElMessage.warning(`只能选择${props.max}个人员`)
       return
     }
     handleRootChangeByPart(attr, val)
