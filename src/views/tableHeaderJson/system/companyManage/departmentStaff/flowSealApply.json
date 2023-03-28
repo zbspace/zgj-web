@@ -2,6 +2,7 @@
   {
     "prop": "flowName",
     "label": "流程名称",
+    "fixed": "left",
     "sortable": true,
     "flex": true,
     "min-width": 150,
@@ -46,7 +47,7 @@
     "prop": "caozuo",
     "label": "操作",
     "fixed": "right",
-    "min-width": 200,
+    "min-width": 240,
     "show": true,
     "rankDisplayData": [
       {

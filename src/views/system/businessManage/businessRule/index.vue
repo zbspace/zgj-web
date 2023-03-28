@@ -53,6 +53,48 @@
       @sureAction="moreSureAction"
       :curKey="state.showToastDialog.curKey"
     ></actionMoreDialog>
+    <!-- 复制 -->
+    <!-- 复制表单提示 -->
+    <JyElMessageBox
+      v-model="state.showFormDialog.show"
+      :show="state.showFormDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header> 业务规则复制 </template>
+      <template #content>
+        <el-form
+          ref="formRef"
+          label-position="left"
+          label-width="100px"
+          :model="state.showFormDialog"
+          hide-required-asterisk
+        >
+          <el-form-item
+            prop="ruleBusinessName"
+            :rules="[
+              {
+                required: true,
+                message: '业务规则名称不能为空',
+                trigger: 'change'
+              }
+            ]"
+          >
+            <template #label>
+              <div class="from-label">业务规则名称</div>
+            </template>
+            <el-input
+              v-model="state.showFormDialog.ruleBusinessName"
+              placeholder="请输入"
+              style="width: 210px"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </template>
+      <template #footer>
+        <el-button type="primary" @click="submitCopyTabel"> 提交 </el-button>
+        <el-button @click="closeCopyTabel">取消</el-button>
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 
@@ -253,9 +295,20 @@
       content: {
         data: ''
       }
+    },
+    showFormDialog: {
+      show: false,
+      header: {
+        data: '业务规则复制'
+      },
+      content: {
+        data: ''
+      },
+      ruleBusinessName: ''
     }
   })
   const table = ref(null)
+  const formRef = ref(null)
 
   const addBussinessRule = () => {
     router.push({
@@ -299,6 +352,29 @@
       }该记录吗？`
       state.JyElMessageBox.show = true
     }
+    if (cell.name === 't-zgj-qyWechat.Copy') {
+      state.showFormDialog.show = true
+      state.showFormDialog.id = column.ruleBusinessId
+      state.showFormDialog.ruleBusinessName =
+        column.ruleBusinessName + ' - 副本'
+    }
+  }
+
+  const submitCopyTabel = () => {
+    formRef.value.validate(valid => {
+      if (valid) {
+        ruleApi
+          .ruleCopy({
+            ruleBusinessId: state.showFormDialog.id,
+            ruleBusinessName: state.showFormDialog.ruleBusinessName
+          })
+          .then(() => {
+            messageSuccess('复制成功')
+            state.showFormDialog.show = false
+            table.value.reloadData()
+          })
+      }
+    })
   }
 
   // 单个弹框确认

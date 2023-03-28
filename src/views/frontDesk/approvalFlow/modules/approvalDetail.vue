@@ -9,6 +9,7 @@
   <JyDialog
     @update:show="isVisible = $event"
     :show="isVisible"
+    destroy-on-close
     :title="props.title"
     :oneBtn="false"
     :confirmText="$t('t-zgj-operation.submit')"
@@ -826,25 +827,6 @@
   .el-form-item__content {
     margin-bottom: 18px;
   }
-  .approvalFlow-approvalFlow {
-    margin: 0%;
-
-    .title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .batch {
-      display: flex;
-      align-items: center;
-
-      .batch-desc {
-        @include mixin-margin-right(12);
-      }
-    }
-  }
-
   .approval-footer {
     border-radius: 4px;
     position: absolute;

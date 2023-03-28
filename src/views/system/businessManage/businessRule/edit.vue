@@ -20,10 +20,14 @@
           <el-breadcrumb-item
             style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
           >
-            新增
+            {{
+              router.currentRoute.value.query.ruleBusinessId ? '编辑' : '新增'
+            }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <div class="title">新增</div>
+        <div class="title">{{
+          router.currentRoute.value.query.ruleBusinessId ? '编辑' : '新增'
+        }}</div>
         <el-scrollbar
           height="calc(100vh - 280px)"
           style="overflow-x: hidden; padding-bottom: 20px"
@@ -352,26 +356,26 @@
                                 </el-popover>
                               </template>
                               <el-switch
-                                v-model="ruleForm.frontFaceDate"
+                                v-model="ruleForm.frontFaceDuibiSwith"
                                 active-value="1"
                                 inactive-value="0"
-                                @change="changeFrontFaceSwitch"
+                                @change="changeFrontFaceDuibiSwitch"
                               />
                             </el-form-item>
                           </el-col>
                           <el-col
                             :span="18"
-                            v-if="ruleForm.frontFaceSwitch === '1'"
+                            v-if="ruleForm.frontFaceDuibiSwith === '1'"
                           >
                             <el-row :gutter="5">
                               <el-col :span="12">
                                 <el-form-item
                                   label-width="auto"
                                   label="比对时机"
-                                  prop="runFaceDate"
+                                  prop="frontFaceDate"
                                 >
                                   <el-radio-group
-                                    v-model="ruleForm.runFaceDate"
+                                    v-model="ruleForm.frontFaceDate"
                                   >
                                     <el-radio label="1">首次进入比对</el-radio>
                                     <el-radio label="2"
@@ -384,7 +388,7 @@
                                 <el-form-item
                                   label-width="auto"
                                   label="比对人"
-                                  prop="runFaceUser"
+                                  prop="frontFaceUser"
                                   :rules="[
                                     {
                                       required: true,
@@ -393,7 +397,7 @@
                                   ]"
                                 >
                                   <el-checkbox-group
-                                    v-model="ruleForm.runFaceUser"
+                                    v-model="ruleForm.frontFaceUser"
                                   >
                                     <el-checkbox label="1"
                                       >盖章人和代办人</el-checkbox
@@ -1220,6 +1224,9 @@
     videoUsers = []
     frontFaceSwitch = '0'
     frontFaceSelectVal = ''
+    frontFaceDuibiSwith = '0'
+    frontFaceDate = ''
+    frontFaceUser = []
     frontOcrSwitch = '0'
     frontQrCodeSwitch = '0'
     runPhotoSwitch = '0'
@@ -1290,6 +1297,7 @@
   })
 
   const fileTypeList = ref([])
+
   const submitBusinessRule = () => {
     ruleFormRef.value.validate(valid => {
       if (valid) {
@@ -1327,8 +1335,24 @@
   const changeFrontFaceSwitch = () => {
     if (ruleForm.value.frontFaceSwitch === '1') {
       ruleForm.value.frontFaceSelectVal = '1'
+      ruleForm.value.frontFaceDuibiSwith = '0'
+      ruleForm.value.frontFaceDate = ''
+      ruleForm.value.frontFaceUser = []
     } else {
       ruleForm.value.frontFaceSelectVal = ''
+    }
+  }
+
+  // 盖前人脸对比
+  const changeFrontFaceDuibiSwitch = () => {
+    if (ruleForm.value.frontFaceDuibiSwith === '1') {
+      ruleForm.value.frontFaceDate = '1'
+      ruleForm.value.frontFaceUser = ['1']
+      ruleForm.value.frontFaceSwitch = '0'
+      ruleForm.value.frontFaceSelectVal = ''
+    } else {
+      ruleForm.value.frontFaceDate = ''
+      ruleForm.value.frontFaceUser = []
     }
   }
 
@@ -1364,6 +1388,8 @@
     console.log(type)
     showDeptDialog.value = true
     kDepartOrPerson.value = type
+    searchSelected.value = ruleForm.value[type]
+    console.log(searchSelected.value)
     setTimeout(() => {
       showDepPerDialog.value = true
     }, 200)
@@ -1407,6 +1433,20 @@
       .then(res => {
         const data = res.data
         data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
+        data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
+        remoteUsersList.value = data.remoteSealUserList.map(i => {
+          return {
+            label: i.userName,
+            value: i.userId
+          }
+        })
+        data.videoUsers = data.remoteVideoList.map(i => i.userId)
+        videoUsersList.value = data.remoteVideoList.map(i => {
+          return {
+            label: i.userName,
+            value: i.userId
+          }
+        })
         delete data.fileTypes
         ruleBusinessNo = data.ruleBusinessNo
         ruleForm.value = data
