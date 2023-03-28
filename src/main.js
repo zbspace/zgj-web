@@ -19,7 +19,7 @@ import './style/flow/index.less' // 流程样式
 import * as antIcons from '@ant-design/icons-vue'
 
 import { loadExtension } from '@/lib/vform/extension/extension-loader'
-import Draggable from 'vuedraggable'
+import Draggable from 'vform-vuedraggable'
 import { addDirective } from '@/lib/vform/utils/directive'
 import ContainerWidgets from '@/lib/vform/components/form-designer/form-widget/container-widget/index'
 import ContainerItems from '@/lib/vform/components/form-render/container-item/index'

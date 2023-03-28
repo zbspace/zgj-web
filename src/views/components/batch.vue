@@ -196,7 +196,7 @@
           <div class="popoverBottom">
             <div v-if="state.leftFixList.length">
               <div class="dragTitle">固定在列首</div>
-              <draggable
+              <Draggable
                 v-model="state.leftFixList"
                 group="fixLeft"
                 chosenClass="chosenClass"
@@ -282,11 +282,11 @@
                     </el-tooltip>
                   </div>
                 </template>
-              </draggable>
+              </Draggable>
             </div>
             <div v-if="state.noFixList.length">
               <div class="dragTitle">不固定</div>
-              <draggable
+              <Draggable
                 v-model="state.noFixList"
                 group="notFix"
                 chosenClass="chosenClass"
@@ -372,11 +372,11 @@
                     </el-tooltip>
                   </div>
                 </template>
-              </draggable>
+              </Draggable>
             </div>
             <div v-if="state.rightFixList.length">
               <div class="dragTitle">固定到列尾</div>
-              <draggable
+              <Draggable
                 v-model="state.rightFixList"
                 group="rightFix"
                 chosenClass="chosenClass"
@@ -462,7 +462,7 @@
                     </el-tooltip>
                   </div>
                 </template>
-              </draggable>
+              </Draggable>
             </div>
           </div>
         </el-popover>
@@ -472,7 +472,6 @@
 </template>
 <script setup>
   import { ref, reactive, onBeforeMount, onMounted, watch } from 'vue'
-  import draggable from 'vuedraggable'
 
   const props = defineProps({
     // 标识
