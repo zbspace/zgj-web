@@ -217,7 +217,7 @@
                   v-model="state.form.keepUserId"
                   placeholder="请选择"
                 />
-                <div class="ap-box-contBox-icon">
+                <div class="ap-box-contBox-icon" v-if="!state.form.sealId">
                   <el-icon
                     v-if="state.form.keepUserName"
                     @click="clear('keepUser')"

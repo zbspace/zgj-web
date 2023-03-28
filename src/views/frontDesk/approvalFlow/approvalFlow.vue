@@ -107,8 +107,6 @@
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import formApi from '@/api/system/formManagement/index'
-  import { set } from 'lodash'
-  import CloseOnClickModalEditor from '@/lib/vform/components/form-designer/setting-panel/property-editor/container-vf-dialog/closeOnClickModal-editor.vue'
   const dialogProcess = reactive({
     show: false,
     title: '处理',
@@ -801,6 +799,8 @@
       state.params.instanceId = column.instanceId
       state.params.taskId = column.taskId
       state.params.approvalMode = column.approvalMode
+      state.params.instanceStatus = column.instanceStatus
+      state.params.approvalMode = column.approvalMode
       getDetail(column.instanceId)
     }
   }
@@ -825,7 +825,10 @@
         // attrState.instanceName = data.instanceName
         // loading.value = false
         // initAffix()
-        getButtons()
+        if (state.params.instanceStatus === 1) {
+          getButtons()
+        }
+
         dialogProcess.show = true
         dialogProcess.title = '审批'
         console.log(dialogProcess.show)
@@ -872,11 +875,11 @@
   const handelData = (formData, formJson) => {
     const formTableData = []
     const modelNameArr = []
-    formJson.forEach(item => {
-      modelNameArr.push(item.formColumnModel ? item.formColumnModel : '其他')
-    })
-    const newModeNames = Array.from(new Set(modelNameArr))
+    // formJson.forEach(item => {
+    //   modelNameArr.push(item.formColumnModel ? item.formColumnModel : '其他')
+    // })
     formJson.forEach(v => {
+      modelNameArr.push(v.formColumnModel ? v.formColumnModel : '其他')
       for (const item in formData) {
         if (v.formColumnNo === item) {
           if (v.formColumnNo === 'sealName') {
@@ -962,6 +965,7 @@
       }
     })
     const allArr = []
+    const newModeNames = Array.from(new Set(modelNameArr))
     newModeNames.forEach(item => {
       const obj = {
         title: item,

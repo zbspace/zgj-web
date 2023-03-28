@@ -61,7 +61,7 @@
         :model="state.form"
         :rules="state.rules"
         ref="vFormRef"
-        label-width="100px"
+        label-width="110px"
       >
         <el-form-item label="审批选项" prop="suggest">
           <el-radio-group
@@ -70,15 +70,23 @@
           >
             <el-radio label="1">同意</el-radio>
             <el-radio label="2">不同意</el-radio>
-            <el-radio label="3">转交</el-radio>
-            <el-radio label="4">加签</el-radio>
             <el-radio label="5">征询他人意见</el-radio>
-            <el-radio label="6">退回</el-radio>
+            <!-- <el-radio label="3">转交</el-radio>
+            <el-radio label="4">加签</el-radio>
+            <el-radio label="6">退回</el-radio> -->
+            <el-radio
+              :label="item.buttonCode"
+              v-for="item in props.params.buttons.filter(b =>
+                ['agree', 'reject'].includes(b.buttonCode)
+              )"
+              :key="item.buttonCode"
+              >{{ item.buttonName }}</el-radio
+            >
           </el-radio-group>
         </el-form-item>
         <el-form-item
           label="下一步审批人"
-          v-if="state.form.suggest === '5' || state.form.suggest === '3'"
+          v-if="state.form.suggest === '1'"
           prop="nextApprover"
         >
           <!-- <span class="footer-approver">李旺</span>
@@ -110,7 +118,11 @@
         <el-form-item
           label="审批人"
           prop="approver"
-          v-if="state.form.suggest === '4'"
+          v-if="
+            state.form.suggest === '5' ||
+            state.form.suggest === '4' ||
+            state.form.suggest === '3'
+          "
         >
           <div class="select-box-contBox">
             <div class="footer-tagcon" @click="chooseOrgan('approver')"
@@ -151,7 +163,7 @@
           :rules="[{ required: true, message: '请选择人员!' }]"
         >
           <el-radio-group
-            v-model:value="formState.destTaskId"
+            v-model:value="state.form.destTaskId"
             class="w-fill"
             :size="size"
           >
@@ -167,7 +179,7 @@
         >
           <el-select
             style="width: 264px"
-            v-model="formData.adminId"
+            v-model="sate.form.adminId"
             filterable
             @change="changeAdmin"
           >
@@ -216,7 +228,7 @@
                 type="info"
                 v-for="item in state.carbonSelected"
                 :key="item.id"
-                @close="delTags(item, 'catbon')"
+                @close="delTags(item, 'carbon')"
               >
                 {{ item.name }}
               </el-tag>
@@ -291,9 +303,8 @@
   import { CircleClose } from '@element-plus/icons-vue'
   import { ModelApi } from '@/api/flow/ModelApi'
   import { TaskApi } from '@/api/flow/TaskApi'
-  import { set } from 'lodash'
+  import { RuTaskSignApi } from '@/api/flow/RuTaskSignApi'
   const { toUgroup } = useCommon()
-  console.log('111')
   // 数据
   const { backApprovalTypeDatas } = loadApproverData()
   const showDepPerDialog = ref(false)
@@ -315,6 +326,10 @@
   })
   const vFormRef = ref(null)
   const btnLoading = ref(false)
+  // 加签方式，如果是前加签,或是后加签前一个节点没有审批, 操作按钮不可用
+  const addSignMode = ref(0)
+  // 流程记录
+  const records = ref(null)
   // 子组件
   const flowDesign = ref()
   // 模型id
@@ -325,7 +340,7 @@
   const instanceId = ref(null)
   // 表单内容
   const formData = ref(null)
-
+  // 任务ID
   const taskId = ref('')
   const approvalMode = ref('')
   // 按钮列表
@@ -347,14 +362,16 @@
       carbon: false,
       suggest: '1',
       nextApprover: '',
-      nextApproverIds: '',
-      addSignMode: [2, 3].includes(approvalMode.value)
+      nextApproverIds: [],
+      addSignMode: [2, 3].includes(props.params.approvalMode)
         ? 3
-        : approvalMode.value === 4
+        : props.params.approvalMode === 4
         ? 4
         : 3,
       destTaskId: '',
-      backType: ''
+      backType: '',
+      adminId: '',
+      approver: ''
     },
     rules: {
       suggest: [
@@ -362,6 +379,12 @@
           required: true,
           message: '请选择审批选项',
           trigger: 'blur'
+        }
+      ],
+      nextApprover: [
+        {
+          required: true,
+          message: '请选择下一步审批人'
         }
       ]
     }
@@ -385,6 +408,7 @@
         console.log(state.approverSelected[i])
         if (item.id === state.approverSelected[i].id) {
           state.approverSelected.splice(i, 1)
+          state.form.approver.splice(i, 1)
         }
       }
     } else if (type === 'carbon') {
@@ -416,7 +440,7 @@
         } else if (state.form.suggest === '5') {
           consultSubmit()
         } else if (state.form.suggest === '6') {
-          onFinish()
+          // onFinish()
         }
       } else {
         // ElMessage.error('校验失败')
@@ -467,7 +491,7 @@
       .then(result => {
         if (result.code === '00000') {
           console.info(result)
-          ElMessage.success('提交成功')
+          ElMessage.success('提交成功！')
           emit('on-confirm', result)
         }
         btnLoading.value = false
@@ -480,13 +504,13 @@
    * 加签
    */
   const onAssignee = () => {
+    const ids = []
+    state.approverSelected.forEach(item => {
+      ids.push(item.id)
+    })
     const params = {
-      taskId: taskId.value,
-      assigneeList: state.approverSelected.forEach(item => {
-        const ids = []
-        ids.push(item.id)
-        return ids
-      }),
+      taskId: props.params.taskId,
+      assigneeList: ids,
       addSignMode: state.form.addSignMode,
       whisper: state.form.remark
     }
@@ -494,6 +518,7 @@
       .then(result => {
         if (result.code === '00000') {
           console.info(result)
+          ElMessage.success('加签成功！')
           emit('on-confirm', result)
         }
         btnLoading.value = false
@@ -504,16 +529,27 @@
   }
   // 转交
   const onTurn = () => {
+    const ids = []
+    state.approverSelected.forEach(item => {
+      ids.push(item.id)
+    })
     const params = {
-      taskId: taskId.value,
-      newApprover: state.form.nextApprover,
+      taskId: props.params.taskId,
+      assigneeList: ids,
       whisper: state.form.remark
     }
     ApproverApi.turn(params)
-      .then(() => {
-        isVisible.value = false
+      .then(result => {
+        if (result.code === '00000') {
+          console.info(result)
+          ElMessage.success('转交成功！')
+          emit('on-confirm', result)
+        }
+        btnLoading.value = false
       })
-      .catch(() => {})
+      .catch(() => {
+        btnLoading.value = false
+      })
   }
   /**
    *  征询提交
@@ -521,11 +557,11 @@
   const consultSubmit = async () => {
     try {
       const params = {
-        instanceId: instanceId.value,
-        modelId: modelId.value,
-        definitionId: definitionId.value,
-        taskId: taskId.value,
-        suggest: state.form.suggest,
+        instanceId: props.params.instanceId,
+        modelId: props.params.modelId,
+        definitionId: props.params.definitionId,
+        taskId: props.params.taskId,
+        suggest: 1,
         remark: state.form.remark
       }
       ApproverApi.consultSubmit(params)
@@ -550,8 +586,8 @@
   const getBackBaseInfo = async () => {
     try {
       const params = {
-        taskId: taskId.value,
-        instanceId: instanceId.value
+        taskId: props.params.taskId,
+        instanceId: props.params.instanceId
       }
       // 获取节点对退回的配置
       const nodeAttr = await NodeAttrApi.detailByTaskId(params)
@@ -565,6 +601,7 @@
           }
         })
       }
+      console.log(datas)
       if (allowBackType === 2) {
         // 获取被退回人
         const list = await TaskApi.preList(params)
@@ -599,11 +636,11 @@
    */
   const onFinish = () => {
     const params = {
-      instanceId: instanceId.value,
-      modelId: modelId.value,
-      definitionId: definitionId.value,
+      instanceId: props.params.instanceId,
+      modelId: props.params.modelId,
+      definitionId: props.params.definitionId,
       // 当前任务ID
-      taskId: taskId.value,
+      taskId: props.parmas.taskId,
       // 需要退回到的人(任务),其实也是数据值也是任务ID
       destTaskId: state.form.destTaskId,
       backType: state.form.backType,
@@ -631,6 +668,7 @@
     if (type === 'nextApprover') {
       state.nextApproverSelected = []
       state.form.nextApprover = ''
+      state.from.nextApproverIds = []
     }
   }
   // 关闭弹窗
@@ -641,8 +679,8 @@
   }
   const getDesign = () => {
     const params = {
-      modelId: modelId.value,
-      definitionId: definitionId.value,
+      modelId: props.params.modelId,
+      definitionId: props.params.definitionId,
       edit: false
     }
     ModelApi.getDesign(params)
@@ -654,7 +692,6 @@
       .catch(() => {})
   }
   const approvalsChange = item => {
-    console.log(item)
     if (item === '1') {
       state.form.remark = '同意'
       state.rules = {
@@ -663,6 +700,12 @@
             required: true,
             message: '请选择审批选项',
             trigger: 'change'
+          }
+        ],
+        nextApprover: [
+          {
+            required: true,
+            message: '请选择下一步审批人'
           }
         ]
       }
@@ -680,24 +723,7 @@
     } else {
       state.form.remark = '请审批'
     }
-    if (item === '3' || item === '5') {
-      state.rules = {
-        suggest: [
-          {
-            required: true,
-            message: '请选择审批选项',
-            trigger: 'change'
-          }
-        ],
-        nextApprover: [
-          {
-            required: true,
-            message: '请选择下一步审批人'
-          }
-        ]
-      }
-    }
-    if (item === '4') {
+    if (item === '3' || item === '4' || item === '5') {
       state.rules = {
         suggest: [
           {
@@ -709,17 +735,29 @@
         approver: [
           {
             required: true,
-            message: '请选择审批人'
+            message: '请选择审批人',
+            trigger: 'change'
           }
         ]
-        // addSignMode: [
-        //   {
-        //     required: true,
-        //     message: '请选择加签方式'
-        //   }
-        // ]
       }
     }
+    // if (item === '4') {
+    //   state.rules = {
+    //     suggest: [
+    //       {
+    //         required: true,
+    //         message: '请选择审批选项',
+    //         trigger: 'change'
+    //       }
+    //     ]
+    //     // addSignMode: [
+    //     //   {
+    //     //     required: true,
+    //     //     message: '请选择加签方式'
+    //     //   }
+    //     // ]
+    //   }
+    // }
     if (item === '6') {
       getBackBaseInfo()
     }
@@ -730,6 +768,7 @@
   const submitSelectDepart = data => {
     if (depChoose.value === 'approver') {
       state.approverSelected = data
+      state.form.approver = data
     } else if (depChoose.value === 'carbon') {
       state.carbonSelected = data
     } else if (depChoose.value === 'nextApprover') {
@@ -737,8 +776,44 @@
       const nextApproverNames = []
       data.forEach(v => {
         nextApproverNames.push(v.name)
+        state.form.nextApproverIds.push(v.id)
       })
       state.form.nextApprover = nextApproverNames.join(',')
+    }
+  }
+  /**
+   * 获取流程记录表格数据
+   *
+   * @author fengshuonan
+   * @date 2022/08/27 12:04
+   */
+  const getRuNode = async () => {
+    records.value = await TaskApi.findList({ instanceId: instanceId.value })
+    // 如果加签前一个节点没有审批, 操作按钮不可用
+    /* let currTask = null;
+  for (let index = 0; index < records.value.length; index++) {
+    const element = records.value[index];
+    if (currRecord.value.taskId == element.taskId) {
+      currTask = element;
+    }
+  }
+  records.value.forEach(record => {
+    if (currTask && currTask.beforeAddSignTaskId && currTask.beforeAddSignTaskId == record.taskId && record.taskStatus == 2) {
+      addSignMode.value = 1;
+    }
+  }); */
+  }
+
+  /**
+   * 获取加签方式
+   */
+  const getSign = async () => {
+    // 查询审批中的
+    const params = { taskId: props.params.taskId, taskStatus: 2 }
+    const list = await RuTaskSignApi.findListByTaskId(params)
+    // 如果加签前一个节点没有审批, 操作按钮不可用
+    if (list && list.length > 0) {
+      addSignMode.value = 1
     }
   }
   onMounted(() => {
@@ -748,6 +823,9 @@
   })
 </script>
 <style lang="scss" scoped>
+  .el-form-item__content {
+    margin-bottom: 18px;
+  }
   .approvalFlow-approvalFlow {
     margin: 0%;
 
@@ -808,9 +886,6 @@
     .footer-btns {
       text-align: center;
       padding-top: 6px;
-    }
-    .el-form-item {
-      margin-bottom: 10px;
     }
   }
 
