@@ -268,24 +268,7 @@
             }
           ]
         }
-      ],
-      data: [],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        stripe: true,
-        'header-cell-style': {
-          background: 'var(--jy-color-fill--3)'
-        },
-        'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
-          if (column.property === '1') {
-            return {
-              color: 'var(--jy-info-6)',
-              cursor: 'pointer'
-            }
-          }
-        }
-      }
+      ]
     },
     componentsTree: {
       data: [],
@@ -295,7 +278,8 @@
         'show-checkbox': false,
         'default-expand-all': true,
         'expand-on-click-node': false,
-        'check-strictly': true
+        'check-strictly': true,
+        'highlight-current': true
       },
       defaultProps: {
         label: 'fileTypeName',

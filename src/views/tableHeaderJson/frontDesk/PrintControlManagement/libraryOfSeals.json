@@ -15,7 +15,7 @@
     "show": true
   },
   {
-    "prop": "sealStatus",
+    "prop": "flag",
     "label": "印章状态",
     "sortable": "custom",
     "min-width": 150,

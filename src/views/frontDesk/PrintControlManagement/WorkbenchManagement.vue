@@ -9,7 +9,7 @@
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       statusColoum="flag"
-      openValue="启用"
+      openValue="1"
       tableClick="benchName"
       @cellClick="cellClick"
       @customClick="customClick"

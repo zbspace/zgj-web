@@ -2,21 +2,18 @@
   {
     "prop": "sealTypeNo",
     "label": "印章类型编码",
-    "sortable": true,
     "min-width": 180,
     "show": true
   },
   {
     "prop": "sealTypeName",
     "label": "印章类型名称",
-    "sortable": true,
     "min-width": 150,
     "show": true
   },
   {
     "prop": "readme",
     "label": "描述",
-    "sortable": true,
     "min-width": 150,
     "show": true
   },
@@ -26,7 +23,7 @@
     "align": "center",
     "customDisplayType": "format",
     "unit": "枚",
-    "sortable": true,
+    "sortable": "custom",
     "min-width": 150,
     "show": true
   },
@@ -36,21 +33,20 @@
     "align": "center",
     "customDisplayType": "format",
     "unit": "枚",
-    "sortable": true,
+    "sortable": "custom",
     "min-width": 150,
     "show": true
   },
   {
     "prop": "createUserName",
     "label": "创建人",
-    "sortable": true,
     "min-width": 150,
     "show": true
   },
   {
     "prop": "createDatetime",
     "label": "创建时间",
-    "sortable": true,
+    "sortable": "custom",
     "min-width": 180,
     "show": true
   },
