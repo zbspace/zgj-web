@@ -39,7 +39,7 @@
     "label": "更新时间",
     "sortable": "custom",
     "align": "center",
-    "width": 170,
+    "width": 180,
     "show": true
   },
   {

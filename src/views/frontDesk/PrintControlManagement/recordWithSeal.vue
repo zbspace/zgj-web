@@ -591,7 +591,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
-    if (column.property === '2') {
+    if (column.property === 'useSealFileName') {
       state.componentsDocumentsDetails.show = true
     }
   }
