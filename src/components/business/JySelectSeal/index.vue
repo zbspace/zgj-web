@@ -19,22 +19,6 @@
       <div class="jy-select-seal">
         <el-row :gutter="12">
           <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-            <!-- <div class="seal-type-list" v-loading="leftLoading">
-              <div
-                class="seal-type-item"
-                v-for="(item, index) in sealTypeTreeData"
-                :key="index"
-                :class="[item.sealTypeId === actived && 'selected']"
-                @click="sealTypeSelect(item.sealTypeId)"
-              >
-                <svg class="iconpark-icon"><use href="#file-line"></use></svg>
-                {{ item.sealTypeName }}
-              </div>
-              <el-empty
-                description="暂无数据"
-                v-if="!sealTypeTreeData.length"
-              />
-            </div> -->
             <div class="components-tree">
               <el-tree
                 :data="sealTypeTreeData"
@@ -201,7 +185,7 @@
   const getLibraryOfSeal = async () => {
     try {
       loading.value = true
-      const res = await libraryOfSealsService.page(searchSealInfo.value)
+      const res = await libraryOfSealsService.pageList(searchSealInfo.value)
       sealList.value = res.data.records
       paginationInfo.value.total = res.data && res.data.total
       paginationInfo.value.pages = res.data && res.data.pages

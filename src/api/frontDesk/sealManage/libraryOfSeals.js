@@ -3,11 +3,19 @@ import request from '@/utils/request'
 // 印章类型管理
 
 const api = {}
-// 印章分页列表
+// 印章分页列表 - 管理维护
 api.page = params => {
   return request({
     method: 'GET',
     url: '/sealInfo/page/view',
+    params
+  })
+}
+// 印章分页列表 - 用印选择
+api.pageList = params => {
+  return request({
+    method: 'GET',
+    url: '/sealInfo/page',
     params
   })
 }
