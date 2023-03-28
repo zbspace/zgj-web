@@ -77,7 +77,7 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
     localStorage.getItem('watermark') === '1'
   ) {
     const text =
-      JSON.parse(localStorage.getItem('accountInfo')).userName +
+      JSON.parse(localStorage.getItem('accountInfo')).userInfo.userName +
       ' ' +
       dayjs().format('YYYY-MM-DD HH:mm')
     setWaterMark(text)

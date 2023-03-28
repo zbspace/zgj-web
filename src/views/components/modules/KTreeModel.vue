@@ -1,7 +1,7 @@
 <template>
   <div class="k-custom-tree">
     <!-- 全部 -->
-    <div class="k-select-all user-select" v-if="showAllIcon">
+    <div class="k-select-all user-select" v-if="showAllIcon && props.multiple">
       <div class="k-column">
         <div class="k-tree-left">
           <!-- checkbox -->
@@ -109,10 +109,6 @@
             <!-- 占位 -->
 
             <div v-if="props.tabActive === 'user'">
-              <!-- <div
-                style="width: 16px; height: 16px"
-                v-if="item.type !== 'user'"
-              ></div> -->
               <!-- 未选 -->
               <div
                 v-show="item.selectedStatus === 0 && item.type === 'user'"
@@ -174,7 +170,7 @@
             <div v-else-if="props.tabActive === 'document'">
               <!-- 未选 -->
               <div
-                v-show="item.selectedStatus === 0"
+                v-show="item.selectedStatus === 0 && !item.disabled"
                 @click="checkPart(2, item)"
                 class="check-box"
               >
@@ -208,7 +204,7 @@
 
               <!-- 全选 -->
               <div
-                v-show="item.selectedStatus === 2"
+                v-show="item.selectedStatus === 2 && !item.disabled"
                 @click="checkPart(0, item)"
                 class="check-box"
               >
@@ -396,7 +392,9 @@
           </div>
 
           <!-- 标题 -->
-          <div class="k-label user-select">{{ item.name }}</div>
+          <div class="k-label user-select">
+            {{ item.name || item.fileTypeName }}
+          </div>
         </div>
 
         <!-- 右侧 -->
@@ -444,6 +442,10 @@
       default: ''
     },
     showAllIcon: {
+      type: Boolean,
+      default: false
+    },
+    multiple: {
       type: Boolean,
       default: false
     }

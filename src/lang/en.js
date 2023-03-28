@@ -33,6 +33,7 @@ export const en = {
   't-zgj-login-iphone-num': 'Please enter your mobile phone number',
   't-zgj-login-iphone-num-error': 'Incorrect phone number format',
   't-zgj-login-veritify-code': 'Please enter the verification code.',
+  't-zgj-dialog-clear': 'Clear',
   't-menu': 'Menu',
   't-dashboards': 'Dashboards',
   't-analytics': 'Analytics',

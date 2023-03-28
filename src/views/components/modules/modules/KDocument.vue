@@ -16,7 +16,7 @@
         <!-- 循环 -->
         <div class="bread-item" v-for="(item, i) in curmbs" :key="i">
           <el-tooltip :content="item.curmbsName" placement="bottom">
-            <div class="item-text" @click="changeCrumb(item.id)">
+            <div class="item-text" @click="changeCrumb(item.fileTypeId)">
               {{ item.curmbsName }}
             </div>
           </el-tooltip>
@@ -49,7 +49,7 @@
         @open="openInner"
         @emitsDemo="emitsDemo"
         :rootNode="rootNode"
-        tabActive="organ"
+        tabActive="document"
         :multiple="props.multiple"
       ></KTreeModel>
     </div>
@@ -62,7 +62,7 @@
    * includeChild 向下包含 Boolean
    * apiModule: api对应的模块
    * initQueryParams 初始化参数
-   * selectedDepart 选中项
+   * allSelected 选中项
    */
   import { reactive, ref, computed } from 'vue'
   import {
@@ -71,14 +71,14 @@
   } from '@/utils/handleTreeData.js'
   import { Search } from '@element-plus/icons-vue'
   import KTreeModel from '../KTreeModel.vue'
-  import Api from '@/api/common/organOrPerson'
+  import Api from '@/api/common/documentType'
   import { ElMessage } from 'element-plus'
   const props = defineProps({
     apiModule: {
       type: String,
       default: ''
     },
-    selectedDepart: {
+    allSelected: {
       type: Array,
       default: () => {
         return []
@@ -95,26 +95,25 @@
       default: false
     }
   })
-  const emits = defineEmits(['update:selectedDepart'])
+  const emits = defineEmits(['update:allSelected'])
 
   const selectedData = computed({
     get() {
-      return JSON.parse(JSON.stringify(props.selectedDepart))
+      return JSON.parse(JSON.stringify(props.allSelected))
     },
     set(val) {
-      emits('update:selectedDepart', val)
+      emits('update:allSelected', val)
     }
   })
 
   // 部门选择新增根节点（不展示）
   const rootNode = [
     {
-      id: '-1',
-      pid: '0',
-      name: '组织架构',
-      sort: 3,
+      fileTypeId: '-1',
+      fileTypePid: '0',
+      fileTypeName: '文件类型',
       haveChildren: true,
-      type: 'organ',
+      type: 'document',
       idFullPath: '-1'
     }
   ]
@@ -134,8 +133,7 @@
   // 动态获取部门接口
   const resultOrgan = params => {
     return new Promise((resolve, reject) => {
-      Api[props.apiModule]
-        .organ(params)
+      Api.treeList(params)
         .then(res => {
           resolve(res)
         })
@@ -165,10 +163,10 @@
 
   // 监听处理 全选 - 部分选择
   const handleRootChangeByAll = (attr, val) => {
-    const pid = attr[0].pid
+    const fileTypePid = attr[0].fileTypePid
     function handleAll(data) {
       data.forEach(item => {
-        if (item.id === pid) {
+        if (item.fileTypeId === fileTypePid) {
           item.children.forEach(key => {
             key.selectedStatus = val
           })
@@ -187,10 +185,10 @@
       const array = []
       treeColumnData.data.forEach(item => {
         item.selectedStatus = 0
-        array.push(item.id)
+        array.push(item.fileTypeId)
       })
       selectedData.value = selectedData.value.filter(
-        item => !array.includes(item.id)
+        item => !array.includes(item.fileTypeId)
       )
     } else {
       treeColumnData.data.forEach(item => {
@@ -198,10 +196,10 @@
       })
       const arr = []
       attr.forEach(item => {
-        arr.push(item.id)
+        arr.push(item.fileTypeId)
       })
       selectedData.value = selectedData.value
-        .filter(item => !arr.includes(item.id))
+        .filter(item => !arr.includes(item.fileTypeId))
         .concat(attr)
     }
   }
@@ -209,7 +207,7 @@
   const handleRootChangeByPart = (attr, val) => {
     function handlePart(data) {
       data.forEach(item => {
-        if (item.id === attr.id) {
+        if (item.fileTypeId === attr.fileTypeId) {
           item.selectedStatus = val
         }
         if (item.children && item.children.length > 0) {
@@ -224,21 +222,21 @@
   const handleSelectedChangeByPart = (attr, val) => {
     if (val === 0) {
       treeColumnData.data.forEach(item => {
-        if (item.id === attr.id) {
+        if (item.fileTypeId === attr.fileTypeId) {
           item.selectedStatus = 0
         }
       })
       selectedData.value = selectedData.value.filter(
-        item => item.id !== attr.id
+        item => item.fileTypeId !== attr.fileTypeId
       )
 
       const { includeChild } = selectedData.value.find(
-        item => item.id === attr.id
+        item => item.fileTypeId === attr.fileTypeId
       )
       // 取消状态 - 特殊情况 包含状态 且 root树已加载
       function cancelIsChildrenStatus(data) {
         data.forEach(item => {
-          if (item.id === attr.id && includeChild) {
+          if (item.fileTypeId === attr.fileTypeId && includeChild) {
             function innerChange(lists) {
               lists.forEach(key => {
                 key.selectedStatus = 0
@@ -261,7 +259,7 @@
     } else {
       const cacheSelectedData = JSON.parse(JSON.stringify(selectedData.value))
       treeColumnData.data.forEach(item => {
-        if (item.id === attr.id) {
+        if (item.fileTypeId === attr.fileTypeId) {
           item.selectedStatus = 2
           cacheSelectedData.splice(selectedData.value.length, 0, item)
         }
@@ -277,23 +275,23 @@
 
     if (attr.length === 0) {
       path.push({
-        curmbsName: '组织架构',
-        id: '-1'
+        curmbsName: '文件类型',
+        fileTypeId: '-1'
       })
       return path
     }
 
-    const forFn = function (tree, id) {
+    const forFn = function (tree, fileTypeId) {
       for (let i = 0; i < tree.length; i++) {
         // 存放最后返回的内容,返回text集合
         const data = tree[i]
         path.push({
-          curmbsName: data.name,
-          id: data.id
+          curmbsName: data.fileTypeName,
+          fileTypeId: data.fileTypeId
         })
-        if (data.id === id) return path
+        if (data.fileTypeId === fileTypeId) return path
         if (data.children) {
-          const findChildren = forFn(data.children, id)
+          const findChildren = forFn(data.children, fileTypeId)
           if (findChildren) return findChildren
         }
         path.pop() // 非常牛批的点
@@ -313,7 +311,7 @@
 
     function findAlreadySearch(data) {
       data.forEach(item => {
-        if (item.id === attr.id) {
+        if (item.fileTypeId === attr.fileTypeId) {
           flag.value = item.children
         }
         if (item.children && item.children.length > 0) {
@@ -326,24 +324,35 @@
     if (flag.value && flag.value.length > 0) {
       treeColumnData.data = handleShowListStatus(flag.value, selectedData.value)
       // 处理面包屑 - 递归展示
-      const result = handleCurmbs(cacheRootLists.value, attr.id)
+      const result = handleCurmbs(cacheRootLists.value, attr.fileTypeId)
       curmbs.value = result
+      console.log(treeColumnData.data, '123')
+
       return
     }
 
     // 是
-    resultOrgan({ ...props.initQueryParams, organId: attr.id }).then(result => {
+    resultOrgan({
+      ...props.initQueryParams,
+      parentId: attr.fileTypeId
+    }).then(result => {
       const res = result.data
       res.forEach(item => {
         item.selectedStatus = 0
         item.includeChild = !!item.includeChild
+        item.type = 'document'
         item.disabled = !!item.disabled
       })
       // 展示时，需要对比右侧选择状态
       treeColumnData.data = handleShowListStatus(res, selectedData.value)
-      if (attr.id === '-1') {
+
+      if (attr.fileTypeId === '-1') {
         state.lists = res.concat(rootNode)
-        cacheRootLists.value = treeDataTranslate(state.lists)
+        cacheRootLists.value = treeDataTranslate(
+          state.lists,
+          'fileTypeId',
+          'fileTypePid'
+        )
         return
       }
 
@@ -352,12 +361,14 @@
         unique([
           ...deconstructedArray(cacheRootLists.value),
           ...treeColumnData.data
-        ])
+        ]),
+        'fileTypeId',
+        'fileTypePid'
       )
     })
 
     // 处理面包屑 - 递归展示
-    const result = handleCurmbs(cacheRootLists.value, attr.id)
+    const result = handleCurmbs(cacheRootLists.value, attr.fileTypeId)
     curmbs.value = result
   }
 
@@ -368,14 +379,14 @@
         item.selectedStatus = 0
       } else {
         selectedData.forEach(val => {
-          if (item.id === val.id) {
+          if (item.fileTypeId === val.fileTypeId) {
             item.selectedStatus = 2
           }
           // 向下包含反选
           if (
-            item.idFullPath.split(',').includes(val.id) &&
+            item.idFullPath.split(',').includes(val.fileTypeId) &&
             val.includeChild &&
-            item.id !== val.id
+            item.fileTypeId !== val.fileTypeId
           ) {
             item.disabled = true
           }
@@ -386,14 +397,16 @@
   }
 
   // 数组去重
-  function unique(arr, id = 'id') {
+  function unique(arr, fileTypeId = 'fileTypeId') {
     if (!Array.isArray(arr)) {
       console.log('type error!')
       return
     }
     const newArr = arr.reduce(
       (all, next) =>
-        all.some(item => item[id] === next[id]) ? all : [...all, next],
+        all.some(item => item[fileTypeId] === next[fileTypeId])
+          ? all
+          : [...all, next],
       []
     )
     return newArr
@@ -401,14 +414,14 @@
 
   // 监听切换面包屑
   const changeCrumb = attrId => {
-    function circleOne(data, id) {
+    function circleOne(data, fileTypeId) {
       for (let item = 0; item <= data.length - 1; item++) {
-        if (data[item].id === attrId) {
+        if (data[item].fileTypeId === attrId) {
           treeColumnData.data = data[item].children
           return
         }
         if (data[item].children && data[item].children.length > 0) {
-          return circleOne(data[item].children, id)
+          return circleOne(data[item].children, fileTypeId)
         }
       }
     }
@@ -421,12 +434,15 @@
   // 处理取消后 树型数据 选中状态
   const handleSelectedStatus = (data, attr) => {
     data.forEach(item => {
-      if (item.id === attr.id) {
+      if (item.fileTypeId === attr.fileTypeId) {
         item.selectedStatus = 0
         item.disabled = false
         item.includeChild = false
       }
-      if (item.idFullPath.split(',').includes(attr.id) && attr.includeChild) {
+      if (
+        item.idFullPath.split(',').includes(attr.fileTypeId) &&
+        attr.includeChild
+      ) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -454,11 +470,14 @@
     handleSelectedStatus(cacheRootLists.value, attr)
 
     treeColumnData.data.forEach(item => {
-      if (item.id === attr.id) {
+      if (item.fileTypeId === attr.fileTypeId) {
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (item.idFullPath.split(',').includes(attr.id) && attr.includeChild) {
+      if (
+        item.idFullPath.split(',').includes(attr.fileTypeId) &&
+        attr.includeChild
+      ) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -467,20 +486,22 @@
   const handleChangeIncluded1 = (status, attr) => {
     // 1.是否有children
     if (!attr.haveChildren) {
-      selectedData.value = selectedData.value.filter(val => val.id !== attr.id)
+      selectedData.value = selectedData.value.filter(
+        val => val.fileTypeId !== attr.fileTypeId
+      )
       return
     }
     const aplication = ref([])
     // 2.判断已选中是否被包含
     const str = JSON.parse(JSON.stringify(selectedData.value))
     str.forEach(item => {
-      if (item.idFullPath.split(',').includes(attr.id)) {
-        aplication.value.push(item.id)
+      if (item.idFullPath.split(',').includes(attr.fileTypeId)) {
+        aplication.value.push(item.fileTypeId)
       }
     })
 
     selectedData.value = selectedData.value.filter(
-      item => !aplication.value.includes(item.id)
+      item => !aplication.value.includes(item.fileTypeId)
     )
   }
   // 清空选中项
@@ -508,36 +529,36 @@
     handleChangeIncluded(switchStatus, attr)
 
     // 处理树状态
-    function recursionData(data, id) {
+    function recursionData(data, fileTypeId) {
       if (!Array.isArray(data) || data.length === 0) return
       data.forEach(item => {
-        if (item.id === id) {
+        if (item.fileTypeId === fileTypeId) {
           // 向下包含
           changeChildrenAllStatus(item.children, switchStatus)
         }
         if (item.children && item.children.length > 0) {
-          return recursionData(item.children, id)
+          return recursionData(item.children, fileTypeId)
         }
       })
     }
 
-    recursionData(cacheRootLists.value, attr.id)
+    recursionData(cacheRootLists.value, attr.fileTypeId)
 
     // 处理展示状态
-    function recursionTreeData(data, id) {
+    function recursionTreeData(data, fileTypeId) {
       if (!Array.isArray(data) || data.length === 0) return
       data.forEach(item => {
-        if (item.id === id) {
+        if (item.fileTypeId === fileTypeId) {
           treeColumnData.data = item.children
         }
         if (item.children && item.children.length > 0) {
-          return recursionTreeData(item.children, id)
+          return recursionTreeData(item.children, fileTypeId)
         }
       })
     }
     // 重置 treeColumnData
-    const pid = treeColumnData.data[0].pid
-    recursionTreeData(cacheRootLists.value, pid)
+    const fileTypePid = treeColumnData.data[0].fileTypePid
+    recursionTreeData(cacheRootLists.value, fileTypePid)
   }
 
   const handleChangeIncluded = (status, attr) => {
@@ -547,13 +568,16 @@
     // 2.判断已选中是否被包含
     const str = JSON.parse(JSON.stringify(selectedData.value))
     str.forEach(item => {
-      if (item.idFullPath.split(',').includes(attr.id) && item.id !== attr.id) {
-        aplication.value.push(item.id)
+      if (
+        item.idFullPath.split(',').includes(attr.fileTypeId) &&
+        item.fileTypeId !== attr.fileTypeId
+      ) {
+        aplication.value.push(item.fileTypeId)
       }
     })
 
     selectedData.value = selectedData.value.filter(
-      item => !aplication.value.includes(item.id)
+      item => !aplication.value.includes(item.fileTypeId)
     )
   }
   defineExpose({

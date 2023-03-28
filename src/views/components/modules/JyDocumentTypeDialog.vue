@@ -114,8 +114,10 @@
   const closeDialog = () => {
     emits('update:show', false)
   }
+
   // 导出数据
   const changeResult = ref([])
+
   const confirmDialog = () => {
     changeResult.value = changeResult.value.concat(allSelected.value)
     emits('update:show', false)

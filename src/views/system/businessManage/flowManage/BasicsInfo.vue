@@ -49,7 +49,13 @@
             prop="fileTypeIds"
             v-if="form.applyTypeId === props.sealApplyInitId"
           >
-            <el-select v-model="form.fileTypeIds" placeholder="请选择" multiple>
+            <el-select
+              v-model="form.fileTypeIds"
+              ref="selectRef"
+              placeholder="请选择"
+              multiple
+              @click="getDivision($event)"
+            >
               <el-option
                 :label="item.fileTypeName"
                 :value="item.fileTypeId"
@@ -57,6 +63,13 @@
                 :key="item.fileTypeId"
               />
             </el-select>
+            <div class="box-icon">
+              <img
+                class="box-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
           </el-form-item>
           <el-form-item label="流程适用范围" prop="showDataScope">
             <el-input
@@ -96,13 +109,20 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
+
+    <!-- 文件类型 -->
+    <KDocumentTypeDialog
+      v-if="showDocumentType"
+      v-model:show="showDocumentType"
+      v-model:searchSelected="searchSelectedDocument"
+    ></KDocumentTypeDialog>
   </div>
 </template>
 <script setup>
   import { reactive, ref, watch, computed } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  import { fileManageService } from '@/api/frontDesk/fileManage'
-  import { messageError } from '@/hooks/useMessage'
+  import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
+
   const props = defineProps({
     businessList: {
       type: Array,
@@ -125,6 +145,7 @@
   })
   const emits = defineEmits('update:modelValue', 'update:sealId')
   const showDepPerDialog = ref(false)
+  const showDocumentType = ref(false)
   const searchSelected = ref([])
   const tabsShow = ref(['user', 'organ'])
   const activeTab = ref('user')
@@ -178,7 +199,11 @@
       }
     ]
   })
-
+  const selectRef = ref(null)
+  const getDivision = $event => {
+    selectRef.value.blur()
+    showDocumentType.value = true
+  }
   const getBasicsFormValue = async () => {
     const valid = await ruleFormRef.value.validate().catch(err => err)
     if (typeof valid === 'boolean' && valid) {
@@ -188,14 +213,14 @@
     }
   }
 
-  const setFileTypeList = async () => {
-    try {
-      const res = await fileManageService.getFileTypeList(form.applyTypeId)
-      fileTypeList.value = res.data || []
-    } catch (error) {
-      messageError(error)
-    }
-  }
+  // const setFileTypeList = async () => {
+  //   try {
+  //     const res = await fileManageService.getFileTypeList(form.applyTypeId)
+  //     fileTypeList.value = res.data || []
+  //   } catch (error) {
+  //     messageError(error)
+  //   }
+  // }
 
   form.sealUseTypeId = computed({
     get() {
@@ -229,15 +254,15 @@
     }
   )
 
-  watch(
-    () => form.applyTypeId,
-    val => {
-      if (val === props.sealApplyInitId) {
-        setFileTypeList()
-      }
-      emits('update:modelValue', val)
-    }
-  )
+  // watch(
+  //   () => form.applyTypeId,
+  //   val => {
+  //     if (val === props.sealApplyInitId) {
+  //       setFileTypeList()
+  //     }
+  //     emits('update:modelValue', val)
+  //   }
+  // )
 
   watch(
     () => props.modelValue,
@@ -247,6 +272,26 @@
     {
       deep: true,
       immediate: true
+    }
+  )
+
+  const searchSelectedDocument = ref([])
+
+  watch(
+    () => searchSelectedDocument.value,
+    val => {
+      if (!val) return
+      const arr = []
+      const selectIds = []
+      val.forEach(item => {
+        arr.push({
+          fileTypeId: item.fileTypeId,
+          fileTypeName: item.fileTypeName
+        })
+        selectIds.push(item.fileTypeId)
+      })
+      fileTypeList.value = arr
+      form.fileTypeIds = selectIds
     }
   )
 

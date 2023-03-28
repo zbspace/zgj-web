@@ -31,6 +31,7 @@
             :selectedDepart="selectedDepart"
             @update:selectedDepart="selectedDepart = $event"
             v-show="active === 'organ'"
+            :multiple="props.multiple"
           ></KDepartTab>
 
           <KUserTab
@@ -40,6 +41,7 @@
             :selectedUser="selectedUser"
             @update:selectedUser="selectedUser = $event"
             v-show="active === 'user'"
+            :multiple="props.multiple"
           ></KUserTab>
         </div>
       </div>
@@ -50,13 +52,15 @@
           <div class="clear-n">
             已选：
             <span v-if="selectedDepart.length !== 0">
-              {{ selectedDepart.length }} 个部门，
+              {{ selectedDepart.length }} 个部门
             </span>
             <span v-if="selectedUser.length !== 0">
-              {{ selectedUser.length }}名成员，
+              {{ selectedUser.length }}名成员
             </span>
           </div>
-          <div class="select-close clear-t" @click="clearSelected">清空 </div>
+          <div class="select-close clear-t" @click="clearSelected">
+            {{ $t('t-zgj-dialog-clear') }}
+          </div>
         </div>
 
         <!-- 部门 -->
@@ -88,7 +92,7 @@
           <div style="display: flex; height: 25px">
             <el-switch
               v-model="item.includeChild"
-              v-if="item.haveChildren"
+              v-if="item.haveChildren && props.multiple"
               style="margin-right: 12px"
               @change="changeSwitch($event, item)"
             >
@@ -216,6 +220,7 @@
    * searchSelected: 高级搜索已选状态
    * tabsShow ['organ', 'user', 'role'] 展示按照数字顺序排
    * activeTab 选中tab
+   * multiple 是否多选
    */
   // import i18n from '@/utils/i18n'
   import { ref, watch } from 'vue'
@@ -262,6 +267,10 @@
     activeTab: {
       type: String,
       default: ''
+    },
+    multiple: {
+      type: Boolean,
+      default: true
     }
   })
 
