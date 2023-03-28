@@ -32,9 +32,9 @@
       <div class="selection-right user-select">
         <div class="select-right-column c-p">
           <div class="clear-n">
-            已选：
+            {{ $t('t-zgj-selectPerson.Selected') }}：
             <span v-if="allSelected.length !== 0">
-              {{ allSelected.length }} 个文件类型
+              {{ allSelected.length }} {{ $t('t-zgj-cg-menu-wenjian-leixing') }}
             </span>
           </div>
           <div class="select-close clear-t" @click="clearSelected">

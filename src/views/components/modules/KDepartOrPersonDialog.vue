@@ -51,12 +51,12 @@
       <div class="selection-right user-select">
         <div class="select-right-column c-p">
           <div class="clear-n">
-            已选：
+            {{ $t('t-zgj-selectPerson.Selected') }}：
             <span v-if="selectedDepart.length !== 0">
-              {{ selectedDepart.length }} 个部门
+              {{ selectedDepart.length }} {{ $t('t-zgj-sync.Department') }}
             </span>
             <span v-if="selectedUser.length !== 0">
-              {{ selectedUser.length }}名成员
+              {{ selectedUser.length }} {{ $t('t-zgj-sync.Person') }}
             </span>
           </div>
           <div class="select-close clear-t" @click="clearSelected">
@@ -224,7 +224,7 @@
    * multiple 是否多选
    * max Number - 目前支持user
    */
-  // import i18n from '@/utils/i18n'
+  import i18n from '@/utils/i18n'
   import { ref, watch } from 'vue'
   import VTabs from '@/components/common/JyTabs.vue'
   import KDepartTab from './modules/KDepartTab.vue'
@@ -286,42 +286,33 @@
   watch(
     () => active.value,
     val => {
-      // if (active.value === 'user') {
-      //   title.value = i18n.global.t('t-zgj-list.SelectionPerson')
-      // } else if (active.value === 'organ') {
-      //   title.value = i18n.global.t('t-zgj-list.SelectionDepartment')
-      // } else if (active.value === 'role') {
-      //   title.value = i18n.global.t('t-zgj-person.selectRole')
-      // } else {
-      //   title.value = i18n.global.t('t-zgj-select')
-      // }
-      const str = '请选择'
+      const str = i18n.global.t('t-zgj-list.PleaseChoose')
       let newStr = ''
       props.tabsShow.forEach((item, index) => {
         console.log('123123', item)
         if (index === 0) {
           if (item === 'user') {
-            newStr = '人员'
+            newStr = i18n.global.t('t-zgj-sync.Person')
           }
           if (item === 'organ') {
-            newStr = '部门'
+            newStr = i18n.global.t('t-zgj-sync.Department')
           }
           if (item === 'role') {
-            newStr = '角色'
+            newStr = i18n.global.t('t-zgj-person.Role')
           }
         } else {
           if (item === 'user') {
-            newStr = newStr + '/人员'
+            newStr = newStr + ' / ' + i18n.global.t('t-zgj-sync.Person')
           }
           if (item === 'organ') {
-            newStr = newStr + '/部门'
+            newStr = newStr + ' / ' + i18n.global.t('t-zgj-sync.Department')
           }
           if (item === 'role') {
-            newStr = newStr + '/角色'
+            newStr = newStr + ' / ' + i18n.global.t('t-zgj-person.Role')
           }
         }
       })
-      title.value = str + newStr
+      title.value = str + ' ' + newStr
     },
     {
       deep: true,
