@@ -1205,6 +1205,7 @@
     <kDepartOrPersonVue
       v-if="showDeptDialog"
       :show="showDepPerDialog"
+      :max="10"
       @update:show="closeShow"
       :searchSelected="searchSelected"
       @update:searchSelected="submitSelected"
