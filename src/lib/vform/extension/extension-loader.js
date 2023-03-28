@@ -19,7 +19,8 @@ import {
   limitTimeSealSchema,
   fileTypeSchema,
   agentManSchema,
-  moduleContainerSchema
+  moduleContainerSchema,
+  contractAmountSchema
 } from '@/lib/vform/extension/samples/extension-schema'
 import CardWidget from '@/lib/vform/extension/samples/card/card-widget'
 import CardItem from '@/lib/vform/extension/samples/card/card-item'
@@ -56,6 +57,8 @@ import AgentManWidget from '@/lib/vform/extension/samples/agentMan/agentMan-widg
 // 模块/容器
 import ModuleContainerWidget from '@/lib/vform/extension/samples/moduleContainer/moduleContainer-widget'
 import ModuleContainerItem from '@/lib/vform/extension/samples/moduleContainer/moduleContainer-item'
+// 合同金额
+import ContractAmountWidget from '@/lib/vform/extension/samples/contractAmount/contractAmount-widget'
 
 // import { limitAddressSealSchema } from "@/lib/vform/extension/samples/extension-schema"
 // import limitAddressSealWidget from "@/lib/vform/extension/samples/limitAddressSeal/limitAddressSeal-widget"
@@ -273,6 +276,10 @@ export const loadExtension = function (app) {
   addCustomWidgetSchema(moduleContainerSchema) // 加载组件Json Schema
   app.component(ModuleContainerWidget.name, ModuleContainerWidget) // 注册组件
   app.component(ModuleContainerItem.name, ModuleContainerItem) // 注册组件
+
+  // 合同金额
+  addCustomWidgetSchema(contractAmountSchema) // 加载组件Json Schema
+  app.component(ContractAmountWidget.name, ContractAmountWidget) // 注册组件
 
   // 外带用印
   // addCustomWidgetSchema(limitAddressSealSchema)  //加载组件Json Schema

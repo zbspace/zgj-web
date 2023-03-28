@@ -99,4 +99,12 @@ api.flowList = params => {
     params
   })
 }
+// 币种列表
+api.getMoneyType = () => {
+  return request({
+    method: 'GET',
+    url: 'sealApply/moneyType/list'
+  })
+}
+
 export default api

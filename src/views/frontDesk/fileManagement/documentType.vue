@@ -413,7 +413,7 @@
       state.JyElMessageBox.show = false
       refresh()
     } catch (error) {
-      messageError(error)
+      //
     }
   }
 
