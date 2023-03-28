@@ -38,7 +38,7 @@ export const alertSchema = {
 // 印章名称
 export const sealNameSchema = {
   type: 'sealName',
-  icon: 'sealName',
+  icon: 'yinzhangmingcheng',
   formItemFlag: true,
   options: {
     name: '',
@@ -87,7 +87,7 @@ export const sealNameSchema = {
 // 往来单位
 export const contactUnitSchema = {
   type: 'contactUnit',
-  icon: 'contactUnit',
+  icon: 'wanglaidanwei',
   formItemFlag: true,
   options: {
     name: '',
@@ -118,7 +118,7 @@ export const contactUnitSchema = {
 // 外带用印
 export const usesealBesidesSchema = {
   type: 'usesealBesides',
-  icon: 'usesealBesides',
+  icon: 'yinzhangwaidai',
   formItemFlag: true,
   options: {
     name: '',
@@ -151,7 +151,7 @@ export const usesealBesidesSchema = {
 // 远程盖章
 export const remoteSealSchema = {
   type: 'remoteSeal',
-  icon: 'remoteSeal',
+  icon: 'yuancheng',
   formItemFlag: true,
   options: {
     name: 'remoteSeal',
@@ -191,7 +191,7 @@ export const remoteSealSchema = {
 // 视频盖章
 export const videoSealSchema = {
   type: 'videoSeal',
-  icon: 'videoSeal',
+  icon: 'shipingaizhang',
   formItemFlag: true,
   options: {
     name: 'videoSeal',
@@ -231,7 +231,7 @@ export const videoSealSchema = {
 // 申请人信息
 export const applicantInfoSchema = {
   type: 'applicantInfo',
-  icon: 'applicantInfo',
+  icon: 'shenqingrenxinxi',
   formItemFlag: true,
   options: {
     name: 'applicantInfo',
@@ -305,7 +305,7 @@ export const applicantInfoSchema = {
 // 限时用印
 export const limitTimeSealSchema = {
   type: 'limitTimeSeal',
-  icon: 'limitTimeSeal',
+  icon: 'xianshiyongyin',
   formItemFlag: true,
   options: {
     name: 'limitTimeSeal',
@@ -403,7 +403,7 @@ export const limitAddressSealSchema = {
 // 用印文件
 export const sealFileSchema = {
   type: 'sealFile',
-  icon: 'sealFile',
+  icon: 'wenjian',
   formItemFlag: true,
   options: {
     name: 'sealFile',
@@ -447,7 +447,7 @@ export const sealFileSchema = {
 // 文件类型
 export const fileTypeSchema = {
   type: 'fileTypeId',
-  icon: 'fileTypeId',
+  icon: 'wenjianleixing1',
   formItemFlag: true,
   options: {
     name: '',
@@ -507,7 +507,7 @@ export const fileTypeSchema = {
 // 代办人
 export const agentManSchema = {
   type: 'agentMan',
-  icon: 'agentMan',
+  icon: 'daibanren',
   formItemFlag: true,
   options: {
     name: 'agentMan',
@@ -537,7 +537,7 @@ export const agentManSchema = {
 // 模块/容器
 export const moduleContainerSchema = {
   type: 'moduleContainer',
-  icon: 'moduleContainer',
+  icon: 'zhage',
   category: 'container',
   widgetList: [],
   options: {

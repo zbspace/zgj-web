@@ -132,12 +132,10 @@
                       :title="fld.displayName"
                       @dblclick="addFieldByDbClick(fld)"
                     >
-                      <span>
-                        <svg-icon
-                          :icon-class="fld.icon"
-                          class-name="color-svg-icon"
-                        />{{ getWidgetLabel(fld) }}</span
-                      >
+                      <svg class="iconpark-icon">
+                        <use :href="`#${fld.icon}`"></use>
+                      </svg>
+                      {{ getWidgetLabel(fld) }}
                     </li>
                   </template>
                 </draggable>
@@ -480,7 +478,8 @@
         .container-widget-item,
         .field-widget-item {
           //text-align: center; // 居中显示不太美观
-          display: inline-block;
+          display: inline-flex;
+          align-items: center;
           height: 28px;
           line-height: 28px;
           width: 115px;
@@ -494,6 +493,12 @@
           border-radius: 2px;
           font-size: 14px;
           color: rgba(0, 0, 0, 0.85);
+          .iconpark-icon {
+            width: 20px;
+            height: 20px;
+            margin: 0 0.35em;
+            color: var(--jy-primary-6);
+          }
         }
 
         .field-widget-item.disabled {

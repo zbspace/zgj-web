@@ -115,6 +115,7 @@
   import { useLanguageStore } from '@/store/language'
   import { getItem } from '@/utils/storage.js'
   import { LANGUAGE } from '@/utils/constants'
+  import { systemService } from '@/api/common/system'
 
   const route = useRoute()
   const activeMenu = ref('')
@@ -147,21 +148,17 @@
     menusInfoStore.setMenus(menus)
   }
 
-  const handleSelect = url => {
-    activeMenu.value = url
-  }
+  // const handleSelect = url => {
+  //   activeMenu.value = url
+  // }
 
   // const getLeftMenu = async () => {
-  //   try {
-  //     const menus = await systemService.getLeftMenu({
-  //       systemTypeId: 'st1',
-  //       functionGroupId: 'fg2'
-  //     })
-  //     activeMenu.value = route.path
-  //     menusInfoStore.setMenus(menus.data || [])
-  //   } catch (error) {
-  //     messageError(error)
-  //   }
+  //   const menus = await systemService.getLeftMenu({
+  //     systemTypeId: 'public',
+  //     functionGroupId: 'business'
+  //   })
+  //   activeMenu.value = route.path
+  //   menusInfoStore.setMenus(menus.data || [])
   // }
 
   initData()
@@ -186,6 +183,7 @@
 
 <script>
   import { defineComponent } from 'vue'
+  import { messageError } from '@/hooks/useMessage'
   export default defineComponent({
     name: 'Menus'
   })

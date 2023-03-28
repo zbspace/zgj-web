@@ -3,7 +3,7 @@ export class AddFileTypeInfo {
   fileTypeNo = ''
   fileTypeName = ''
   fileTypeSn = ''
-  fileTypePid = ''
+  fileTypePid = '-1' // 顶级为-1
 }
 
 // 查询文件类型

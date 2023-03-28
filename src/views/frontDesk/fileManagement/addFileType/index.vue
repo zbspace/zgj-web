@@ -38,11 +38,11 @@
             children: 'child',
             label: 'fileTypeName',
             disabled: data =>
-              data.fileTypeId === props.curFromData.fileTypeId ||
-              data.fileTypePid === props.curFromData.fileTypeId
+              (data.fileTypeId === props.curFromData.fileTypeId ||
+                data.fileTypePid === props.curFromData.fileTypeId) &&
+              data.fileTypeId !== '-1'
           }"
           value-key="fileTypeId"
-          :default-checked-keys="['1638091635105542145']"
         />
       </el-form-item>
     </el-form>

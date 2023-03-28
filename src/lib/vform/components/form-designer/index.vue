@@ -365,12 +365,12 @@
       },
 
       setWidgetModel(widgetList) {
-        let ordernumber = 0
+        let orderNumber = 0
         const fn = (arr, formColumnModel = '') => {
           arr.forEach(v => {
             v.options.formColumnModel = formColumnModel
-            v.options.ordernumber = ordernumber
-            ordernumber++
+            v.options.orderNumber = orderNumber
+            orderNumber++
             if (v.widgetList && v.widgetList.length) {
               fn(v.widgetList, formColumnModel)
             }

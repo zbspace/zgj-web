@@ -382,7 +382,7 @@
       state.componentsTree.data = [
         {
           fileTypeName: '文件类型',
-          fileTypeId: '',
+          fileTypeId: '-1',
           child: res.data || []
         }
       ]

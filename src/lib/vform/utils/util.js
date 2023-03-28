@@ -372,7 +372,7 @@ export function getAllFieldWidgets(widgetList, staticWidgetsIncluded = false) {
       field: JSON.stringify(w),
       label: w.options.label,
       formColumnModel: w.options.formColumnModel,
-      ordernumber: w.options.ordernumber,
+      orderNumber: w.options.orderNumber,
       dynamicColumn: customComponents.includes(w.type) ? 0 : 1 // 1动态字段 0固定字段
     })
   }
