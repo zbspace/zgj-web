@@ -69,6 +69,8 @@
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
+          @size-change="sizeChange"
+          @current-change="currentChange"
         >
         </componentsPagination>
       </template>
@@ -360,7 +362,7 @@
         {
           id: 'relatedCompanyId',
           label: '往来单位',
-          type: 'dilog',
+          type: 'dialog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'JyRelatedCompany',
@@ -372,7 +374,7 @@
         {
           id: 'sealIds',
           label: '印章名称',
-          type: 'dilog',
+          type: 'dialog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             type: 'JySelectSeal',
@@ -436,15 +438,15 @@
     },
     componentsPagination: {
       data: {
-        amount: 400,
+        amount: 0,
         index: 1,
-        pageNumber: 80
+        pageNumber: 10
       },
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         layout: 'prev, pager, next, jumper',
-        total: 500,
-        'page-sizes': [10, 100, 200, 300, 400],
+        total: 0,
+        'page-sizes': [10, 50, 400],
         background: true
       }
     },
@@ -704,6 +706,17 @@
     }
     getFormPage()
   }
+  // 分页页数变化
+  const currentChange = data => {
+    state.componentsPagination.data.index = data
+    getFormPage()
+  }
+  // 每页请求数量变化
+  const sizeChange = data => {
+    state.componentsPagination.data.pageNumber = data
+    state.componentsPagination.data.index = 1
+    getFormPage()
+  }
   const addSignModeChange = item => {}
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
@@ -719,6 +732,7 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(column)
+    console.log(cell)
     dialogProcess.title = cell.name
     if (cell.name === '处理') {
       dialogProcess.formJson = RecordSealToReviewJson
@@ -729,7 +743,15 @@
       state.params.approvalMode = column.approvalMode
       state.params.instanceStatus = column.instanceStatus
       state.params.approvalMode = column.approvalMode
-      getDetail(column.instanceId.toString())
+      getDetail(column.instanceId + '')
+    }
+    if (cell.name === '重批') {
+      state.params.instanceId = column.instanceId
+      state.params.taskId = column.taskId
+      state.params.approvalMode = column.approvalMode
+      state.params.instanceStatus = column.instanceStatus
+      state.params.approvalMode = column.approvalMode
+      getDetail('1640613102426816513')
     }
   }
   /**
@@ -920,7 +942,7 @@
   const clickSubmit = (item, index) => {
     if (item.id === 'reset') {
       state.componentsSearchForm.data.forEach(element => {
-        delete state.searchForm.data[element]
+        delete state.componentsSearchForm.data[element]
       })
     }
     getFormPage()
