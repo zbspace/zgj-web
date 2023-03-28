@@ -99,8 +99,7 @@
                 <el-select
                   v-model="item.values"
                   v-bind="item.defaultAttribute"
-                  tag-type="waring"
-                  disabled
+                  :ref="el => setRef(el, item)"
                   style="width: 100%"
                   :class="
                     (item.defaultAttribute.multiple &&
@@ -119,10 +118,7 @@
                     :value="one.value"
                   />
                 </el-select>
-                <div
-                  class="ap-box-contBox-icon"
-                  @click="clickElement(item, index)"
-                >
+                <div class="ap-box-contBox-icon">
                   <img
                     class="ap-box-contBox-icon-img"
                     src="../../assets/svg/ketanchude.svg"
@@ -654,9 +650,10 @@
   function reloadData() {
     emit('reloadData')
   }
-
+  const derivableRef = {}
   // 点击表单
   function clickElement(item, index) {
+    derivableRef[item.id].blur()
     if (item.defaultAttribute.type === 'document') {
       showDocumentTypeDialog.value = true
       kDialogOpenId.value = item.id
@@ -809,6 +806,11 @@
     }
   }
 
+  const setRef = (el, attr) => {
+    if (el) {
+      derivableRef[attr.id] = el
+    }
+  }
   onBeforeMount(() => {
     // 初始化Props数据
     initPropsData()

@@ -229,7 +229,6 @@
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         placeholder: '请选择',
-        filterable: true,
         type: 'document',
         multiple: true,
         joinStr: ','

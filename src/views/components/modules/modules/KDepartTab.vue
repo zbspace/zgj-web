@@ -92,7 +92,7 @@
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: true
     }
   })
   const emits = defineEmits(['update:selectedDepart'])
