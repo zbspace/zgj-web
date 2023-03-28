@@ -1297,6 +1297,7 @@
   })
 
   const fileTypeList = ref([])
+
   const submitBusinessRule = () => {
     ruleFormRef.value.validate(valid => {
       if (valid) {
@@ -1387,6 +1388,8 @@
     console.log(type)
     showDeptDialog.value = true
     kDepartOrPerson.value = type
+    searchSelected.value = ruleForm.value[type]
+    console.log(searchSelected.value)
     setTimeout(() => {
       showDepPerDialog.value = true
     }, 200)
@@ -1430,6 +1433,20 @@
       .then(res => {
         const data = res.data
         data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
+        data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
+        remoteUsersList.value = data.remoteSealUserList.map(i => {
+          return {
+            label: i.userName,
+            value: i.userId
+          }
+        })
+        data.videoUsers = data.remoteVideoList.map(i => i.userId)
+        videoUsersList.value = data.remoteVideoList.map(i => {
+          return {
+            label: i.userName,
+            value: i.userId
+          }
+        })
         delete data.fileTypes
         ruleBusinessNo = data.ruleBusinessNo
         ruleForm.value = data
