@@ -34,7 +34,6 @@
                 :size="field.options.size"
                 :disabled="field.options.disabled"
                 :readonly="field.options.readonly"
-                @blur="onBlur($event, index)"
                 @click="openSelectWin(index)"
                 @clear="onClear($event, index)"
                 :clearable="field.options.clearable"
@@ -241,6 +240,7 @@
         seal: '',
         sealId: '',
         applySealNum: 1,
+        sealIot: '', // 智能印章
         markSeal: false,
         sealRequiredTextShow: false,
         routineSealRequiredTextShow: false
@@ -276,7 +276,7 @@
         }
         this.filedList.splice(this.thisIndex, 1, {
           ...this.filedList[this.thisIndex],
-          ...{ seal: row.sealName, sealId: row.sealId }
+          ...{ seal: row.sealName, sealId: row.sealId, sealIot: row.sealIot }
         })
         this.xzyzDialogVisible = false
         if (this.filedList[this.thisIndex].sealId) {
@@ -297,13 +297,6 @@
         this.filedList.splice(idx, 1)
       },
 
-      onBlur(e, index) {
-        // if (this.filedList[index].sealId) {
-        //   this.setRequiredTextShow('sealRequiredTextShow', index, false)
-        // } else {
-        //   this.setRequiredTextShow('sealRequiredTextShow', index, true)
-        // }
-      },
       onChanged1(e, index) {
         if (e) {
           this.setRequiredTextShow('routineSealRequiredTextShow', index, false)
