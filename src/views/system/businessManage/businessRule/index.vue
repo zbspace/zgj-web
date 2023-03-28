@@ -36,9 +36,65 @@
       >
       </componentsDocumentsDetails>
     </div>
-
-    <!-- 业务规则 -->
-    <Add :showAdd="showFormDialog" @on-cancel="closeAddForm"></Add>
+    <!-- 单个操作弹框 -->
+    <actionOneDialog
+      v-model="state.JyElMessageBox.show"
+      :JyElMessageBox="state.JyElMessageBox"
+      @update:modelValue="state.JyElMessageBox.show"
+      @submitElMessageBox="submitElMessageBox"
+    ></actionOneDialog>
+    <!-- 批量操作弹框提示 -->
+    <actionMoreDialog
+      @update:modelValue="state.showToastDialog.show = false"
+      :show="state.showToastDialog.show"
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="state.showToastDialog"
+      label="formName"
+      @sureAction="moreSureAction"
+      :curKey="state.showToastDialog.curKey"
+    ></actionMoreDialog>
+    <!-- 复制 -->
+    <!-- 复制表单提示 -->
+    <JyElMessageBox
+      v-model="state.showFormDialog.show"
+      :show="state.showFormDialog.show"
+      :defaultAttribute="{}"
+    >
+      <template #header> 业务规则复制 </template>
+      <template #content>
+        <el-form
+          ref="formRef"
+          label-position="left"
+          label-width="100px"
+          :model="state.showFormDialog"
+          hide-required-asterisk
+        >
+          <el-form-item
+            prop="ruleBusinessName"
+            :rules="[
+              {
+                required: true,
+                message: '业务规则名称不能为空',
+                trigger: 'change'
+              }
+            ]"
+          >
+            <template #label>
+              <div class="from-label">业务规则名称</div>
+            </template>
+            <el-input
+              v-model="state.showFormDialog.ruleBusinessName"
+              placeholder="请输入"
+              style="width: 210px"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </template>
+      <template #footer>
+        <el-button type="primary" @click="submitCopyTabel"> 提交 </el-button>
+        <el-button @click="closeCopyTabel">取消</el-button>
+      </template>
+    </JyElMessageBox>
   </div>
 </template>
 
@@ -46,11 +102,13 @@
   import { reactive, ref, onMounted } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
+  import actionOneDialog from '@/views/components/actionOneDialog.vue'
+  import actionMoreDialog from '@/views/components/actionMoreDialog'
   import tabHeaderJson from '@/views/tableHeaderJson/system/companyManage/departmentStaff/businessRule.json'
-  import Add from '@/views/system/businessManage/businessRule/modules/add.vue'
   import { useRouter } from 'vue-router'
+  import ruleApi from '@/api/system/businessManage/businessRule'
+  import { messageSuccess } from '@/hooks/useMessage'
 
-  const showFormDialog = ref(false)
   const router = useRouter()
 
   const state = reactive({
@@ -192,7 +250,13 @@
       },
       data: [
         {
-          name: '批量删除'
+          name: 't-zgj-seal.BatchDelete'
+        },
+        {
+          name: 't-zgj-dept.BatchEnable'
+        },
+        {
+          name: 't-zgj-dept.BatchDeactivation'
         }
       ]
     },
@@ -208,17 +272,48 @@
           name: 'operating-record'
         }
       ]
+    },
+    JyElMessageBox: {
+      type: '',
+      id: '',
+      flag: '',
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
+    },
+    showToastDialog: {
+      curKey: '',
+      type: '',
+      show: false,
+      header: {
+        data: ''
+      },
+      content: {
+        data: ''
+      }
+    },
+    showFormDialog: {
+      show: false,
+      header: {
+        data: '业务规则复制'
+      },
+      content: {
+        data: ''
+      },
+      ruleBusinessName: ''
     }
   })
+  const table = ref(null)
+  const formRef = ref(null)
 
   const addBussinessRule = () => {
     router.push({
       name: 'EditBusinessRule'
     })
-  }
-
-  const closeAddForm = () => {
-    showFormDialog.value = false
   }
 
   // 点击表格单元格
@@ -228,6 +323,8 @@
       state.componentsDocumentsDetails.show = true
     }
   }
+
+  // 表格操作按钮点击
   function customClick(row, column, cell, event) {
     console.log(cell.name)
     if (cell.name === 't-zgj-Edit') {
@@ -239,11 +336,163 @@
       })
     }
     if (cell.name === 't-zgj-Delete') {
+      state.JyElMessageBox.type = cell.name
+      state.JyElMessageBox.id = column.ruleBusinessId
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
       state.JyElMessageBox.show = true
     }
+    if (cell.name === 'status') {
+      state.JyElMessageBox.type = cell.name
+      state.JyElMessageBox.flag = column.flag
+      state.JyElMessageBox.id = column.ruleBusinessId
+      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.content.data = `您确定要${
+        column.flag === '1' ? '停用' : '启用'
+      }该记录吗？`
+      state.JyElMessageBox.show = true
+    }
+    if (cell.name === 't-zgj-qyWechat.Copy') {
+      state.showFormDialog.show = true
+      state.showFormDialog.id = column.ruleBusinessId
+      state.showFormDialog.ruleBusinessName =
+        column.ruleBusinessName + ' - 副本'
+    }
   }
+
+  const submitCopyTabel = () => {
+    formRef.value.validate(valid => {
+      if (valid) {
+        ruleApi
+          .ruleCopy({
+            ruleBusinessId: state.showFormDialog.id,
+            ruleBusinessName: state.showFormDialog.ruleBusinessName
+          })
+          .then(() => {
+            messageSuccess('复制成功')
+            state.showFormDialog.show = false
+            table.value.reloadData()
+          })
+      }
+    })
+  }
+
+  // 单个弹框确认
+  const submitElMessageBox = () => {
+    if (state.JyElMessageBox.type === 't-zgj-Delete') {
+      ruleApi
+        .ruleBatchDelete({
+          ruleBusinessIds: [state.JyElMessageBox.id]
+        })
+        .then(() => {
+          messageSuccess('删除成功')
+          table.value.reloadData()
+        })
+        .finally(() => {
+          state.JyElMessageBox.show = false
+        })
+    } else if (state.JyElMessageBox.type === 'status') {
+      ruleApi
+        .ruleDisable({
+          ruleBusinessId: state.JyElMessageBox.id,
+          flag: state.JyElMessageBox.flag === '1' ? '0' : '1'
+        })
+        .then(() => {
+          messageSuccess(
+            state.JyElMessageBox.flag === '1' ? '停用成功' : '启用成功'
+          )
+          table.value.reloadData()
+        })
+        .finally(() => {
+          state.JyElMessageBox.show = false
+        })
+    }
+  }
+
+  // 批量操作点击
+  const clickBatchButton = (item, selectionData) => {
+    state.componentsBatch.selectionData = selectionData
+    console.log(item)
+    if (item.name === 't-zgj-seal.BatchDelete') {
+      state.showToastDialog.show = true
+      state.showToastDialog.type = item.name
+      state.showToastDialog.curKey = 'ruleBusinessName'
+      state.showToastDialog.header = {
+        data: '批量删除'
+      }
+      state.showToastDialog.content = {
+        data: '是否删除以下业务规则？'
+      }
+    } else if (item.name === 't-zgj-dept.BatchEnable') {
+      state.showToastDialog.show = true
+      state.showToastDialog.type = item.name
+      state.showToastDialog.curKey = 'ruleBusinessName'
+      state.showToastDialog.header = {
+        data: '批量启用'
+      }
+      state.showToastDialog.content = {
+        data: '是否启用以下业务规则？'
+      }
+    } else if (item.name === 't-zgj-dept.BatchDeactivation') {
+      state.showToastDialog.show = true
+      state.showToastDialog.type = item.name
+      state.showToastDialog.curKey = 'ruleBusinessName'
+      state.showToastDialog.header = {
+        data: '批量停用'
+      }
+      state.showToastDialog.content = {
+        data: '是否停用以下业务规则？'
+      }
+    }
+  }
+
+  // 批量弹框确认
+  const moreSureAction = () => {
+    if (state.showToastDialog.type === 't-zgj-seal.BatchDelete') {
+      ruleApi
+        .ruleBatchDelete({
+          ruleBusinessIds: state.componentsBatch.selectionData.map(
+            i => i.ruleBusinessId
+          )
+        })
+        .then(() => {
+          messageSuccess('删除成功')
+          table.value.reloadData()
+        })
+        .finally(() => {
+          state.showToastDialog.show = false
+        })
+    } else if (state.showToastDialog.type === 't-zgj-dept.BatchEnable') {
+      ruleApi
+        .ruleBatchEnable({
+          ruleBusinessIds: state.componentsBatch.selectionData.map(
+            i => i.ruleBusinessId
+          )
+        })
+        .then(() => {
+          messageSuccess('启用成功')
+          table.value.reloadData()
+        })
+        .finally(() => {
+          state.showToastDialog.show = false
+        })
+    } else if (state.showToastDialog.type === 't-zgj-dept.BatchDeactivation') {
+      ruleApi
+        .ruleBatchDisable({
+          ruleBusinessIds: state.componentsBatch.selectionData.map(
+            i => i.ruleBusinessId
+          )
+        })
+        .then(() => {
+          messageSuccess('停用成功')
+          table.value.reloadData()
+        })
+        .finally(() => {
+          state.showToastDialog.show = false
+        })
+    }
+  }
+
   // 点击关闭
   function clickClose() {
     state.componentsDocumentsDetails.show = false
