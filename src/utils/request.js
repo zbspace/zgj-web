@@ -8,6 +8,12 @@ import { ElMessage } from 'element-plus'
 import router from '@/router/index'
 const service = axios.create({
   baseURL: API_BASE_PREFIX,
+  transformResponse: [
+    function (data) {
+      // eslint-disable-next-line no-undef
+      return jsonlint.parse(data)
+    }
+  ],
   timeout: 10000
 })
 
