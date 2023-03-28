@@ -11,7 +11,7 @@
     v-model="isVisible"
     @on-opened="opened"
     @on-closed="closed"
-    width="500"
+    :width="500"
     appendToBody
     class="privacy-set-form"
   >
@@ -97,6 +97,7 @@
   const queryPrivacyByType = async () => {
     try {
       const res = await fileManageService.queryPrivacyByType(props.fileTypeId)
+      formData.value = { ...formData.value, ...res.data }
     } catch (error) {
       messageError(error)
     }
