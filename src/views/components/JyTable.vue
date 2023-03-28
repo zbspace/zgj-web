@@ -17,6 +17,7 @@
       <template #searchForm>
         <div>
           <componentsSearchForm
+            ref="searchForm"
             :data="props.componentsSearchForm.data"
             :butData="props.componentsSearchForm.butData"
             :style="state.componentsSearchForm.style"
@@ -326,6 +327,7 @@
   const loading = ref(false)
   const table = ref(null)
   const orderBy = ref(null)
+  const searchForm = ref(null)
 
   const emit = defineEmits([
     'cellClick',
@@ -334,15 +336,14 @@
     'clickElement'
   ])
 
-  defineExpose({
-    reloadData,
-    getSelectionRows,
-    setTableHeader
-  })
+  const reloadSearchForm = data => {
+    searchForm.value.initFormData(data)
+  }
 
   const clickElement = (item, index) => {
     emit('clickElement', item, index)
   }
+
   const clickBatchButton = (item, index) => {
     if (item.name === 'refresh') {
       reloadData()
@@ -514,12 +515,20 @@
   }
 
   const rowClick = (row, column, event) => {}
+
   onBeforeMount(() => {
     // 初始化布局
     console.log(JSON.parse(JSON.stringify(props.componentsTableHeader)))
     if (props.needAutoRequest) {
       reloadData()
     }
+  })
+
+  defineExpose({
+    reloadData,
+    getSelectionRows,
+    setTableHeader,
+    reloadSearchForm
   })
 </script>
 <style lang="scss" scoped>

@@ -18,6 +18,7 @@
       statusColoum="flag"
       tableClick="flowName"
       openValue="1"
+      :isNo="false"
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="batchOpt"
@@ -147,7 +148,7 @@
   import { ElMessage } from 'element-plus'
   import tableHeaderSealApply from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSealApply.json'
   import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
-  // =========↓
+
   const addFlowModalShow = ref(false)
   const openType = ref(null)
   const tree = ref(null)
@@ -156,12 +157,225 @@
     addFlowModalShow.value = true
     openType.value = 'add'
   }
-  // =========↑
 
   const table = ref(null)
   const queryParams = ref({})
   // 用印申请id
   const sealApplyInitId = ref('')
+
+  const sealApplySearchForm = [
+    {
+      id: 'keyword',
+      label: '关键词',
+      type: 'input',
+      inCommonUse: true,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '表单名称/创建人'
+      }
+    },
+    {
+      id: 'status',
+      label: '状态',
+      type: 'select',
+      optionLabel: 'label',
+      optionValue: 'value',
+      inCommonUse: true,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '请选择'
+      },
+      options: [
+        {
+          value: '1',
+          label: '启用'
+        },
+        {
+          value: '0',
+          label: '停用'
+        }
+      ]
+    },
+    {
+      id: 'updateTime',
+      label: '更新时间',
+      type: 'picker',
+      requestType: 'array',
+      startRequest: 'updateStartTime',
+      endRequest: 'updateEndTime',
+      inCommonUse: false,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'daterange',
+        'start-placeholder': '开始时间',
+        'end-placeholder': '结束时间',
+        'value-format': 'YYYY-MM-DD',
+        'disabled-date': time => {
+          return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+        },
+        'default-value': [
+          new Date(new Date().setMonth(new Date().getMonth() - 1)),
+          new Date()
+        ]
+      },
+      style: {}
+    },
+    {
+      id: 'fileTypeId',
+      requestParams: 'fileTypeId',
+      label: '文件类型',
+      type: 'derivable',
+      inCommonUse: false,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '请选择',
+        filterable: true,
+        type: 'document',
+        multiple: true,
+        joinStr: ','
+      },
+      options: []
+    },
+    {
+      id: 'sealUseTypeId',
+      label: '用印类型',
+      type: 'select',
+      optionLabel: 'label',
+      optionValue: 'value',
+      inCommonUse: false,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '请选择'
+      },
+      options: [
+        {
+          value: '1',
+          label: '物理用印'
+        },
+        {
+          value: '2',
+          label: '电子签章'
+        }
+      ]
+    },
+    {
+      id: 'relationForm',
+      label: '关联表单名称',
+      type: 'select',
+      optionLabel: 'label',
+      optionValue: 'value',
+      inCommonUse: false,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '请选择'
+      },
+      options: [
+        {
+          value: '1',
+          label: '全部'
+        }
+      ]
+    }
+  ]
+
+  const noSealApplySearchForm = [
+    {
+      id: 'keyword',
+      label: '关键词',
+      type: 'input',
+      inCommonUse: true,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '表单名称/创建人'
+      }
+    },
+    {
+      id: 'status',
+      label: '状态',
+      type: 'select',
+      optionLabel: 'label',
+      optionValue: 'value',
+      inCommonUse: true,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '请选择'
+      },
+      options: [
+        {
+          value: '1',
+          label: '启用'
+        },
+        {
+          value: '0',
+          label: '停用'
+        }
+      ]
+    },
+    {
+      id: 'updateTime',
+      label: '更新时间',
+      type: 'picker',
+      requestType: 'array',
+      startRequest: 'updateStartTime',
+      endRequest: 'updateEndTime',
+      inCommonUse: false,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'daterange',
+        'start-placeholder': '开始时间',
+        'end-placeholder': '结束时间',
+        'value-format': 'YYYY-MM-DD',
+        'disabled-date': time => {
+          return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
+        },
+        'default-value': [
+          new Date(new Date().setMonth(new Date().getMonth() - 1)),
+          new Date()
+        ]
+      },
+      style: {}
+    },
+    {
+      id: 'sealUseTypeId',
+      label: '用印类型',
+      type: 'select',
+      optionLabel: 'label',
+      optionValue: 'value',
+      inCommonUse: false,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '请选择'
+      },
+      options: [
+        {
+          value: '1',
+          label: '物理用印'
+        },
+        {
+          value: '2',
+          label: '电子签章'
+        }
+      ]
+    },
+    {
+      id: 'relationForm',
+      label: '关联表单名称',
+      type: 'select',
+      optionLabel: 'label',
+      optionValue: 'value',
+      inCommonUse: false,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '请选择'
+      },
+      options: [
+        {
+          value: '1',
+          label: '全部'
+        }
+      ]
+    }
+  ]
 
   const state = reactive({
     columnData: {},
@@ -198,122 +412,7 @@
         }
       },
 
-      data: [
-        {
-          id: 'keyword',
-          label: '关键词',
-          type: 'input',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '表单名称/创建人'
-          }
-        },
-        {
-          id: 'status',
-          label: '状态',
-          type: 'select',
-          optionLabel: 'label',
-          optionValue: 'value',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: '1',
-              label: '启用'
-            },
-            {
-              value: '0',
-              label: '停用'
-            }
-          ]
-        },
-        {
-          id: 'updateTime',
-          label: '更新时间',
-          type: 'picker',
-          requestType: 'array',
-          startRequest: 'updateStartTime',
-          endRequest: 'updateEndTime',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'daterange',
-            'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间',
-            'value-format': 'YYYY-MM-DD',
-            'disabled-date': time => {
-              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
-            },
-            'default-value': [
-              new Date(new Date().setMonth(new Date().getMonth() - 1)),
-              new Date()
-            ]
-          },
-          style: {}
-        },
-        {
-          id: 'fileTypeId',
-          label: '文件类型',
-          type: 'select',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择',
-            filterable: true
-          },
-          optionValue: 'fileTypeId',
-          optionLabel: 'fileTypeName',
-          options: [],
-          requestObj: {
-            url: '/fileType/queryList',
-            method: 'POST'
-          }
-        },
-        {
-          id: 'sealUseTypeId',
-          label: '用印类型',
-          type: 'select',
-          optionLabel: 'label',
-          optionValue: 'value',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: '1',
-              label: '物理用印'
-            },
-            {
-              value: '2',
-              label: '电子签章'
-            }
-          ]
-        },
-        {
-          id: 'relationForm',
-          label: '关联表单名称',
-          type: 'select',
-          optionLabel: 'label',
-          optionValue: 'value',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '请选择'
-          },
-          options: [
-            {
-              value: '1',
-              label: '全部'
-            }
-          ]
-        }
-      ],
+      data: sealApplySearchForm,
 
       butData: [
         {
@@ -642,7 +741,8 @@
       })
       state.componentsTree.data = listApplyTypeTree
       state.componentsTree.value = listApplyTypeTree[0].children[0].applyTypeId
-      table.value.reloadData()
+      queryParams.value.applyTypeId = sealApplyInitId.value
+      reloadData()
     })
   }
 
@@ -651,19 +751,23 @@
       // tree.value.setCurrentKey(e.applyTypeId === '5' ? '6' : '2')
       return
     }
-    queryParams.value.sealTypeIds = e.sealTypeId ? e.sealTypeId : null
-    table.value.reloadData()
+    queryParams.value.applyTypeId = e.applyTypeId ? e.applyTypeId : null
+    reloadData()
     state.componentsTree.value = e.applyTypeId
 
     // 更新列表头 和 搜索条件
     if (e.applyTypeId === sealApplyInitId.value) {
       // 用印申请
-      table.value.setTableHeader(tableHeaderSealApply)
+      state.componentsSearchForm.data = sealApplySearchForm
       state.componentsTable.header = tableHeaderSealApply
+      table.value.reloadSearchForm(sealApplySearchForm)
+      table.value.setTableHeader(tableHeaderSealApply)
     } else {
       // 非用印申请
-      table.value.setTableHeader(tableHeaderSeal)
+      state.componentsSearchForm.data = noSealApplySearchForm
       state.componentsTable.header = tableHeaderSeal
+      table.value.setTableHeader(tableHeaderSeal)
+      table.value.reloadSearchForm(noSealApplySearchForm)
     }
   }
   const reloadData = () => {

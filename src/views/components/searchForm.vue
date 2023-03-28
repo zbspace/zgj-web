@@ -45,9 +45,9 @@
               v-else-if="item.type == 'dialog'"
             >
               <div class="ap-box-label" :style="props.style.labelStyle">
-                <span class="ap-box-label-necessary" v-if="item.isNecessary"
-                  >*</span
-                >
+                <span class="ap-box-label-necessary" v-if="item.isNecessary">
+                  *
+                </span>
                 {{ item.label }}
               </div>
               <div class="ap-box-contBox width-0">
@@ -90,9 +90,9 @@
               v-else-if="item.type == 'derivable'"
             >
               <div class="ap-box-label" :style="props.style.labelStyle">
-                <span class="ap-box-label-necessary" v-if="item.isNecessary"
-                  >*</span
-                >
+                <span class="ap-box-label-necessary" v-if="item.isNecessary">
+                  *
+                </span>
                 {{ item.label }}
               </div>
               <div class="ap-box-contBox width-0">
@@ -103,7 +103,9 @@
                   disabled
                   style="width: 100%"
                   :class="
-                    (item.defaultAttribute.multiple && item.values.length) ||
+                    (item.defaultAttribute.multiple &&
+                      item.values &&
+                      item.values.length) ||
                     (!item.defaultAttribute.multiple && item.values)
                       ? 'hasContent'
                       : ''
@@ -419,15 +421,7 @@
         </div>
       </el-scrollbar>
     </div>
-    <!-- 用户、部门弹框 -->
-    <kDepartOrPersonVue
-      v-if="showDeptDialog"
-      :show="showDepPerDialog"
-      @update:show="closeShow"
-      :searchSelected="searchSelected"
-      @update:searchSelected="submit"
-      :tabsShow="tabsShow"
-    />
+
     <!-- 往来单位弹框选择 -->
     <JyRelatedCompany
       v-model="wldwDialogVisible"
@@ -435,6 +429,7 @@
       :checkType="checkType"
       :haveSelectList="fieldModel"
     />
+
     <!-- 印章选择弹框 -->
     <JySelectSeal
       v-model="yzDialogVisible"
@@ -442,11 +437,18 @@
       :checkType="checkType"
       @on-submit="getSelection"
     />
+
+    <!-- 选择文件类型 -->
+    <KDocumentTypeDialog
+      v-model:show="showDocumentTypeDialog"
+      :searchSelected="documentTypeSelected"
+      @update:searchSelected="documentTypeSubmit"
+    ></KDocumentTypeDialog>
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted, computed, watch, ref } from 'vue'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import { reactive, onBeforeMount, computed, ref } from 'vue'
+  import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
   import request from '@/utils/request'
   const props = defineProps({
     // 标识
@@ -506,19 +508,18 @@
       }
     }
   })
-  // console.log(props.defaultAttribute['scrollbar-max-height']);
-  const showDeptDialog = ref(false)
-  const showDepPerDialog = ref(false)
-  const searchSelected = ref([])
-  const kDepartOrPerson = ref(null)
-  const tabsShow = ref([])
+  const showDocumentTypeDialog = ref(false)
+  const documentTypeSelected = ref([])
+  const kDialogOpenId = ref(null)
   const wldwDialogVisible = ref(false)
   const yzDialogVisible = ref(false)
   const selectedData = ref(null)
   const fieldModel = ref(null)
   const dialogCurrent = ref(null)
   const checkType = ref(null)
+
   const emit = defineEmits(['clickSubmit', 'reloadData'])
+
   const state = reactive({
     props: {
       // 默认属性
@@ -541,10 +542,10 @@
       showUnfold: false
     }
   })
+
   // 计算 占满一行
   const computedFill = computed(() => {
     return (item, index) => {
-      // console.log(item, index);
       const fixed = [
         'custom',
         'checkbox',
@@ -554,7 +555,6 @@
         'checkButton'
       ]
       const alterable = []
-      // console.log(alterable.indexOf(item.type) > -1, index < state.cache.formData.length - 1);
       if (
         fixed.indexOf(item.type) > -1 &&
         index < state.cache.formData.length - 1
@@ -589,6 +589,7 @@
       }
     }
   })
+
   // 初始化Props数据
   function initPropsData() {
     if (props.defaultAttribute) {
@@ -596,30 +597,29 @@
         state.props.defaultAttribute[key] = props.defaultAttribute[key]
       }
     }
-    // console.log(props.defaultAttribute, state.props.defaultAttribute);
 
     // 初始化表单单数据
     initFormData()
   }
+
+  const serachData = computed({
+    get() {
+      return props.data
+    }
+  })
+
   // 初始化表单单数据
-  function initFormData() {
+  function initFormData(searchQuery) {
+    const queryData = searchQuery || serachData.value
     let showUnfold = false
     if (props.defaultAttribute.isUnfold) {
       state.cache.isUnfold = props.defaultAttribute.isUnfold
     }
-    // props.data.map(item => {
-    //   if (item.inCommonUse) {
-    //     // console.log();
-    //   } else {
-    //     showUnfold = true
-    //   }
-    //   return item
-    // })
-    props.data.forEach(item => {
+
+    queryData.forEach(item => {
       if (!item.inCommonUse) {
         showUnfold = true
       }
-      console.log(item.requestObj)
       if (item.requestObj) {
         request(item.requestObj).then(res => {
           console.log(res)
@@ -628,52 +628,54 @@
       }
     })
     state.cache.showUnfold = showUnfold
+
     // 设置表单显示数据
-    setFormData()
+    setFormData(queryData)
   }
+
   // 设置表单显示数据
-  function setFormData() {
+  function setFormData(searchQuery) {
+    const queryData = searchQuery || serachData.value
     let formData = []
     if (state.cache.isUnfold === 0) {
-      props.data.map(item => {
+      queryData.map(item => {
         if (item.inCommonUse) {
           formData.push(item)
         }
         return item
       })
     } else if (state.cache.isUnfold === 1) {
-      formData = props.data
+      formData = queryData
     }
     state.cache.formData = formData
   }
+
   // 获取当前表单的值
   function reloadData() {
     emit('reloadData')
   }
+
   // 点击表单
   function clickElement(item, index) {
-    showDeptDialog.value = true
-    kDepartOrPerson.value = item.id
-    if (item.defaultAttribute.type === 'user') {
-      tabsShow.value = ['user']
-      searchSelected.value = []
-    } else {
-      tabsShow.value = ['organ']
-      searchSelected.value = []
+    if (item.defaultAttribute.type === 'document') {
+      showDocumentTypeDialog.value = true
+      kDialogOpenId.value = item.id
     }
-    setTimeout(() => {
-      showDepPerDialog.value = true
-    }, 200)
+    // showDepPerDialog.value = true
+    // kDialogOpenId.value = item.id
+    // if (item.defaultAttribute.type === 'user') {
+    //   tabsShow.value = ['user']
+    //   searchSelected.value = []
+    // } else {
+    //   tabsShow.value = ['organ']
+    //   searchSelected.value = []
+    // }
   }
-  const closeShow = () => {
-    showDepPerDialog.value = false
-    setTimeout(() => {
-      showDeptDialog.value = false
-    }, 200)
-  }
-  const submit = value => {
+
+  // 文件类型提交
+  const documentTypeSubmit = value => {
     const index = state.cache.formData.findIndex(
-      i => i.id === kDepartOrPerson.value
+      i => i.id === kDialogOpenId.value
     )
     if (index > -1) {
       if (state.cache.formData[index].defaultAttribute.multiple) {
@@ -689,8 +691,10 @@
       })
     }
   }
+
   // 点击按钮
   function clickSubmit(item, index) {
+    console.log(item, 'clickSubmit')
     emit('clickSubmit', item, index)
   }
 
@@ -805,19 +809,13 @@
     }
   }
 
-  watch(props, (newValue, oldValue) => {
-    // console.log(newValue, oldValue);
-    // 初始化Props数据
-    // initPropsData()
-  })
   onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
     // 初始化Props数据
     initPropsData()
   })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-    // console.log(props.data)
+
+  defineExpose({
+    initFormData
   })
 </script>
 <style lang="scss">
