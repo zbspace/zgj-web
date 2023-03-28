@@ -42,6 +42,7 @@
       <template #batch>
         <div class="batch">
           <componentsBatch
+            :tableHeader="state.componentsTable.header"
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
           >
@@ -72,6 +73,41 @@
         </componentsPagination>
       </template>
     </componentsLayout>
+    <!-- <JyTable
+      url="/queryTask/todo"
+      ref="table"
+      :needAutoRequest="false"
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      :queryParams="queryParams"
+      tableClick="sealName"
+      @cellClick="cellClick"
+      @customClick="customClick"
+      @clickBatchButton="clickBatchButton"
+    >
+      <template #title>
+        <div class="title">
+          <div>流程审批</div>
+          <div class="title-more">
+            <div class="title-more-add">
+              <el-button type="primary">导出台账</el-button>
+            </div>
+            <div class="title-more-down"> </div>
+          </div>
+        </div>
+      </template>
+      <template #tabs>
+        <div>
+          <componentsTabs
+            :activeName="state.componentsTabs.activeName"
+            :data="state.componentsTabs.data"
+            @tab-change="tabChange"
+          >
+          </componentsTabs>
+        </div>
+      </template>
+    </JyTable> -->
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -92,6 +128,7 @@
 </template>
 <script setup>
   import { ref, reactive, onBeforeMount, onMounted } from 'vue'
+  import JyTable from '@/views/components/JyTable.vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsPagination from '../../components/pagination.vue'
@@ -102,6 +139,8 @@
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import ApprovalDetail from '@/views/frontDesk/approvalFlow/modules/approvalDetail.vue'
   // import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
+  import toDoHeaderJson from '@/views/tableHeaderJson/frontDesk/approvalFlow/approvalFlowTodo.json'
+  import DoneHeaderJson from '@/views/tableHeaderJson/frontDesk/approvalFlow/approvalFlowDone.json'
   import dayjs from 'dayjs'
   import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
@@ -278,8 +317,11 @@
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'organ',
             placeholder: '+选择部门'
-          }
+          },
+          options: [],
+          values: []
         },
         {
           id: 'applyTypeId',
@@ -318,20 +360,27 @@
         {
           id: 'relatedCompanyId',
           label: '往来单位',
-          type: 'derivable',
+          type: 'dilog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'JyRelatedCompany',
             placeholder: '+往来单位'
-          }
+          },
+          options: [],
+          values: []
         },
         {
           id: 'sealIds',
           label: '印章名称',
-          type: 'derivable',
+          type: 'dilog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'JySelectSeal',
+            multiple: false,
             placeholder: '+选择印章'
-          }
+          },
+          options: [],
+          values: []
         }
       ],
       butData: [
@@ -366,49 +415,7 @@
       ]
     },
     componentsTable: {
-      header: [
-        {
-          prop: 'instanceTitle',
-          label: '流程名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '流程类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'positionName',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'orgName',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'createTime',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '审批'
-            }
-          ]
-        }
-      ],
+      header: toDoHeaderJson,
       data: [],
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
@@ -475,106 +482,10 @@
     // console.log(activeName);
     state.componentsTabs.activeName = activeName
     if (activeName === '1') {
-      state.componentsTable.header = [
-        {
-          prop: 'instanceTitle',
-          label: '流程名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '流程类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'positionName',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'orgName',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'createTime',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '审批'
-            }
-          ]
-        }
-      ]
+      state.componentsTable.header = toDoHeaderJson
       state.componentsTable.data = []
     } else if (activeName === '2') {
-      state.componentsTable.header = [
-        {
-          prop: 'instanceTitle',
-          label: '流程名称',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '2',
-          label: '流程类型',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'positionName',
-          label: '申请人',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'orgName',
-          label: '申请部门',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'createTime',
-          label: '申请时间',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '6',
-          label: '审批时间',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: '7',
-          label: '审批状态',
-          sortable: true,
-          'min-width': 150
-        },
-        {
-          prop: 'caozuo',
-          label: '操作',
-          fixed: 'right',
-          'min-width': 150,
-          rankDisplayData: [
-            {
-              name: '重批'
-            }
-          ]
-        }
-      ]
+      state.componentsTable.header = DoneHeaderJson
       state.componentsTable.data = []
     }
 
@@ -651,20 +562,27 @@
         {
           id: 'relatedCompanyId',
           label: '往来单位',
-          type: 'derivable',
+          type: 'dilog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'JyRelatedCompany',
             placeholder: '+往来单位'
-          }
+          },
+          options: [],
+          values: []
         },
         {
           id: 'sealIds',
           label: '印章名称',
-          type: 'derivable',
+          type: 'dilog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'JySelectSeal',
+            multiple: false,
             placeholder: '+选择印章'
-          }
+          },
+          options: [],
+          values: []
         }
       ]
     } else if (activeName === '2') {
@@ -699,11 +617,11 @@
           type: 'select',
           options: [
             {
-              label: '状态1',
+              label: '未审批',
               value: '1'
             },
             {
-              label: '状态2',
+              label: '已审批',
               value: '2'
             }
           ],
@@ -717,8 +635,11 @@
           type: 'derivable',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'organ',
             placeholder: '+选择部门'
-          }
+          },
+          options: [],
+          values: []
         },
         {
           id: 'applyTypeId',
@@ -757,20 +678,27 @@
         {
           id: 'relatedCompanyId',
           label: '往来单位',
-          type: 'derivable',
+          type: 'dilog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'JyRelatedCompany',
             placeholder: '+往来单位'
-          }
+          },
+          options: [],
+          values: []
         },
         {
           id: 'sealIds',
           label: '印章名称',
-          type: 'derivable',
+          type: 'dilog',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
+            type: 'JySelectSeal',
+            multiple: false,
             placeholder: '+选择印章'
-          }
+          },
+          options: [],
+          values: []
         }
       ]
     }
@@ -801,7 +729,7 @@
       state.params.approvalMode = column.approvalMode
       state.params.instanceStatus = column.instanceStatus
       state.params.approvalMode = column.approvalMode
-      getDetail(column.instanceId)
+      getDetail(column.instanceId.toString())
     }
   }
   /**
@@ -1075,6 +1003,24 @@
   })
 </script>
 <style lang="scss" scoped>
+  .approvalFlow-approvalFlow {
+    margin: 0%;
+
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .batch {
+      display: flex;
+      align-items: center;
+
+      .batch-desc {
+        @include mixin-margin-right(12);
+      }
+    }
+  }
   .select-person {
     display: flex;
     align-items: center;

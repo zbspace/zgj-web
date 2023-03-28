@@ -3,7 +3,7 @@
     "prop": "ruleBusinessName",
     "label": "业务规则名称",
     "min-width": 150,
-    "fixed": true,
+    "fixed": "left",
     "show": true
   },
   {
