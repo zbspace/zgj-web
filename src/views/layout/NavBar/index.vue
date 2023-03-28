@@ -657,6 +657,10 @@
           padding: 0.3rem 0.8rem;
           box-sizing: border-box;
           cursor: pointer;
+          div {
+            display: flex;
+            align-items: center;
+          }
           .ap-sys-but-icon {
             width: 1.5rem;
             height: 1.5rem;

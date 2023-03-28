@@ -3,7 +3,6 @@
     <div
       :key="widget.id"
       class="card-container"
-      @click.stop="selectWidget(widget)"
       :shadow="widget.options.shadow"
       :style="{ width: widget.options.cardWidth + '!important' || '' }"
       :class="[!!widget.options.folded ? 'folded' : '', customClass]"

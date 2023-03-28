@@ -32,8 +32,9 @@ const setWatermark = str => {
 
 window.onresize = () => {
   if (document.getElementById(id) !== null) {
-    setWatermark(waterStr)}
+    setWatermark(waterStr)
   }
+}
 // 添加水印
 export const setWaterMark = str => {
   waterStr = str

@@ -51,6 +51,7 @@
         @emitsDemo="emitsDemo"
         :rootNode="rootNode"
         tabActive="user"
+        :multiple="props.multiple"
       ></KTreeModel>
     </div>
   </div>
@@ -72,7 +73,7 @@
   import { Search } from '@element-plus/icons-vue'
   import KTreeModel from '../KTreeModel.vue'
   import Api from '@/api/common/organOrPerson'
-
+  import { ElMessage } from 'element-plus'
   const props = defineProps({
     apiModule: {
       type: String,
@@ -89,6 +90,10 @@
       default: () => {
         return {}
       }
+    },
+    multiple: {
+      type: Boolean,
+      default: false
     }
   })
   const emits = defineEmits(['update:selectedUser'])
@@ -149,6 +154,10 @@
     if (type && type === 'all') {
       handleRootChangeByAll(attr, val)
       handleSelectedChangeByAll(attr, val)
+      return
+    }
+    if (selectedData.value.length > 0 && !props.multiple) {
+      ElMessage.warning('只能选择一个信息')
       return
     }
     handleRootChangeByPart(attr, val)

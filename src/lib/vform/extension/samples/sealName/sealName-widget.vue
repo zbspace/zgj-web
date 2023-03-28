@@ -21,6 +21,11 @@
               customClass,
               field.options.required ? 'required' : ''
             ]"
+            :rules="{
+              required: true,
+              message: '请选择印章',
+              trigger: 'change'
+            }"
           >
             <div style="width: 100%; display: flex; height: 32px">
               <el-input v-model="obj.sealId" v-if="false"></el-input>
@@ -29,7 +34,6 @@
                 :size="field.options.size"
                 :disabled="field.options.disabled"
                 :readonly="field.options.readonly"
-                @blur="onBlur($event, index)"
                 @click="openSelectWin(index)"
                 @clear="onClear($event, index)"
                 :clearable="field.options.clearable"
@@ -236,6 +240,7 @@
         seal: '',
         sealId: '',
         applySealNum: 1,
+        sealIot: '', // 智能印章
         markSeal: false,
         sealRequiredTextShow: false,
         routineSealRequiredTextShow: false
@@ -269,9 +274,20 @@
         if (row.length && row[0].sealTypeId) {
           return (this.sealTypes = row)
         }
-        this.filedList[this.thisIndex].seal = row.sealName
-        this.filedList[this.thisIndex].sealId = row.sealId
+        this.filedList.splice(this.thisIndex, 1, {
+          ...this.filedList[this.thisIndex],
+          ...{ seal: row.sealName, sealId: row.sealId, sealIot: row.sealIot }
+        })
         this.xzyzDialogVisible = false
+        if (this.filedList[this.thisIndex].sealId) {
+          this.setRequiredTextShow(
+            'sealRequiredTextShow',
+            this.thisIndex,
+            false
+          )
+        } else {
+          this.setRequiredTextShow('sealRequiredTextShow', this.thisIndex, true)
+        }
       },
 
       addItem() {
@@ -281,13 +297,6 @@
         this.filedList.splice(idx, 1)
       },
 
-      onBlur(e, index) {
-        if (this.filedList[index].sealId) {
-          this.setRequiredTextShow('sealRequiredTextShow', index, false)
-        } else {
-          this.setRequiredTextShow('sealRequiredTextShow', index, true)
-        }
-      },
       onChanged1(e, index) {
         if (e) {
           this.setRequiredTextShow('routineSealRequiredTextShow', index, false)
@@ -306,15 +315,16 @@
       },
 
       onClear(e, index) {
-        this.filedList[index].seal = ''
-        this.filedList[index].sealId = ''
+        this.filedList.splice(index, 1, {
+          ...this.filedList[index],
+          ...{ seal: '', sealId: '' }
+        })
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  @import '@/lib/vform/styles/global.scss'; /* form-item-wrapper已引入，还需要重复引入吗？ */
   .required :deep(.el-form-item__label)::before {
     content: '*';
     color: #f56c6c;

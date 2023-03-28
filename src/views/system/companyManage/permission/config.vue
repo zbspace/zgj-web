@@ -157,6 +157,7 @@
       :tabsShow="tabsShow"
       @update:searchSelected="callBack"
       :searchSelected="searchSelected"
+      editDeploy
     >
     </KDepartOrPersonDialog>
   </div>
