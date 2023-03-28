@@ -54,7 +54,7 @@
               ref="selectRef"
               placeholder="请选择"
               multiple
-              @click="getDivision($event)"
+              @click="getDivision"
             >
               <el-option
                 :label="item.fileTypeName"
@@ -63,7 +63,7 @@
                 :key="item.fileTypeId"
               />
             </el-select>
-            <div class="box-icon">
+            <div class="box-icon" v-show="false">
               <img
                 class="box-icon-img"
                 src="@/assets/svg/ketanchude.svg"
@@ -72,7 +72,7 @@
             </div>
           </el-form-item>
           <el-form-item label="流程适用范围" prop="showDataScope">
-            <el-input
+            <!-- <el-input
               v-model="form.showDataScope"
               readonly
               @click="showDepPerDialog = true"
@@ -84,7 +84,21 @@
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
               />
-            </div>
+            </div> -->
+            <el-select
+              v-model="form.showDataScope"
+              ref="selectFileRef"
+              placeholder="请选择"
+              multiple
+              @click="getFileType"
+            >
+              <el-option
+                :label="item.name"
+                :value="item.id"
+                v-for="item in rangeList"
+                :key="item.id"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="流程说明">
             <el-input
@@ -150,6 +164,7 @@
   const tabsShow = ref(['user', 'organ'])
   const activeTab = ref('user')
   const fileTypeList = ref([])
+  const rangeList = ref([])
   const ruleFormRef = ref(null)
 
   const form = reactive({
@@ -157,7 +172,7 @@
     applyTypeId: '',
     sealUseTypeId: '1',
     fileTypeIds: [],
-    showDataScope: '',
+    showDataScope: [],
     dataScope: [],
     readme: ''
   })
@@ -195,15 +210,21 @@
       {
         required: true,
         message: '请选择流程适用范围',
-        trigger: 'change'
+        trigger: ['change', 'blur']
       }
     ]
   })
   const selectRef = ref(null)
-  const getDivision = $event => {
+  const getDivision = () => {
     selectRef.value.blur()
     showDocumentType.value = true
   }
+  const selectFileRef = ref(null)
+  const getFileType = () => {
+    selectFileRef.value.blur()
+    showDepPerDialog.value = true
+  }
+
   const getBasicsFormValue = async () => {
     const valid = await ruleFormRef.value.validate().catch(err => err)
     if (typeof valid === 'boolean' && valid) {
@@ -234,7 +255,6 @@
   watch(
     () => searchSelected.value,
     val => {
-      console.log(val, 12)
       const arr = []
       if (val.length > 0 && val) {
         val.forEach(item => {
@@ -246,9 +266,10 @@
             scipeType: item.type === 'user' ? '1' : '2'
           })
         })
-        form.showDataScope = arr.join(',')
+        form.showDataScope = arr
+        rangeList.value = val
       } else {
-        form.showDataScope = ''
+        form.showDataScope = []
         form.dataScope = []
       }
     }

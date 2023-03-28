@@ -42,6 +42,7 @@
             @update:selectedUser="selectedUser = $event"
             v-show="active === 'user'"
             :multiple="props.multiple"
+            :max="props.max"
           ></KUserTab>
         </div>
       </div>
@@ -221,6 +222,7 @@
    * tabsShow ['organ', 'user', 'role'] 展示按照数字顺序排
    * activeTab 选中tab
    * multiple 是否多选
+   * max Number - 目前支持user
    */
   // import i18n from '@/utils/i18n'
   import { ref, watch } from 'vue'
@@ -271,6 +273,9 @@
     multiple: {
       type: Boolean,
       default: true
+    },
+    max: {
+      type: Number
     }
   })
 

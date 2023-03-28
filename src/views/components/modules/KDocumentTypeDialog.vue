@@ -228,8 +228,17 @@
 
     // 非编辑 - 导出（相应模式）
     changeResult.value = changeResult.value.concat(allSelected.value)
-
-    emits('update:searchSelected', changeResult.value)
+    const handleResult = []
+    if (changeResult.value.length > 0) {
+      changeResult.value.forEach(item => {
+        handleResult.push({
+          ...item,
+          id: item.fileTypeId,
+          name: item.fileTypeName
+        })
+      })
+    }
+    emits('update:searchSelected', handleResult)
     emits('update:show', false)
     changeResult.value = []
   }
