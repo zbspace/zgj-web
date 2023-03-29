@@ -15,7 +15,7 @@
       ref="fieldEditor"
       v-model="fieldModel"
       v-show="!isReadMode"
-      class="full-width-input"
+      class="full-width-input select-prefix"
       :disabled="field.options.disabled"
       :clearable="field.options.clearable"
       :filterable="field.options.filterable"
@@ -29,10 +29,14 @@
       :remote="field.options.remote"
       :remote-method="remoteQuery"
       @blur="handleBlurCustomEvent"
-      @change="onChange"
       @click.stop="onClick"
       popper-class="select-hidden"
     >
+      <template #prefix>
+        <svg class="iconpark-icon">
+          <use href="#selecticon"></use>
+        </svg>
+      </template>
       <el-option
         v-for="item in fileTypeOptions"
         :key="item.fileTypeId"
@@ -120,6 +124,22 @@
         ]
       }
     },
+    computed: {
+      customClass() {
+        return this.field.options.customClass
+      },
+      labelAlign() {
+        if (this.field.options.labelAlign) {
+          return this.field.options.labelAlign
+        }
+
+        if (this.designer) {
+          return this.designer.formConfig.labelAlign || 'label-left-align'
+        } else {
+          return this.formConfig.labelAlign || 'label-left-align'
+        }
+      }
+    },
     created() {
       this.registerToRefList()
       this.initEventHandler()
@@ -131,16 +151,6 @@
     methods: {
       setRequiredTextShow(v) {
         this.field.options.requiredTextShow = v
-      },
-      handleCloseCustomEvent() {
-        if (this.field.options.onClose) {
-          const changeFn = new Function(this.field.options.onClose)
-          changeFn.call(this)
-        }
-      },
-      onChange(value, name) {
-        console.log('--->', value)
-        this.handleChangeEvent(value, name)
       },
       documentTypeSubmit(list) {
         if (list.length) {
@@ -166,6 +176,27 @@
 <style lang="scss" scoped>
   .full-width-input {
     width: 100% !important;
+  }
+  // select 自定义右侧icon
+  :deep(.select-prefix) {
+    .el-input__suffix {
+      display: none;
+    }
+    .el-input__prefix {
+      position: absolute;
+      right: 16px;
+      width: 12px;
+      height: 16px;
+      .el-input__prefix-inner {
+        background: rgb(255, 255, 255);
+        .iconpark-icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          color: #000;
+        }
+      }
+    }
   }
 </style>
 <style>

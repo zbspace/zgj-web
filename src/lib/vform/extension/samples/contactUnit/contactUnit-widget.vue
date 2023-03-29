@@ -39,7 +39,13 @@
             tag-type="warning"
             popper-class="select-hidden"
             ref="contactUnitRef"
+            class="select-prefix"
           >
+            <template #prefix>
+              <svg class="iconpark-icon">
+                <use href="#selecticon"></use>
+              </svg>
+            </template>
             <el-option
               v-for="item in fieldModel"
               :key="item.relatedCompanyId"
@@ -254,6 +260,27 @@
   :deep(.label-right-align) .el-form-item__label {
     text-align: right;
     justify-content: flex-end !important;
+  }
+  // select 自定义右侧icon
+  :deep(.select-prefix) {
+    .el-input__suffix {
+      display: none;
+    }
+    .el-input__prefix {
+      position: absolute;
+      right: 16px;
+      width: 12px;
+      height: 16px;
+      .el-input__prefix-inner {
+        background: rgb(255, 255, 255);
+        .iconpark-icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          color: #000;
+        }
+      }
+    }
   }
 </style>
 <style>
