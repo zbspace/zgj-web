@@ -139,10 +139,7 @@
                     :index="scope.$index"
                     v-if="item.customDisplayType == 'custom'"
                   >
-                    <slot
-                      :name="'custom_' + item.prop"
-                      :value="scope.row[item.prop]"
-                    >
+                    <slot :name="'custom_' + item.prop" :value="scope.row">
                     </slot>
                   </div>
 

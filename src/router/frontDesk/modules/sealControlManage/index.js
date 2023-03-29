@@ -28,17 +28,7 @@ const routes = {
           meta: { title: '用印申请', authRequired: true },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/Selection-form.vue'
-            )
-        },
-        // todo
-        {
-          path: 'selectionForm/confirmApprovalProcess',
-          name: 'ConfirmApprovalProcess',
-          meta: { title: '', authRequired: true },
-          component: () =>
-            import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process.vue'
+              '@/views/frontDesk/PrintControlManagement/SealApplication/SelectionForm.vue'
             )
         },
         {
@@ -47,7 +37,7 @@ const routes = {
           meta: { title: '用印申请', authRequired: true },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/fill-form.vue'
+              '@/views/frontDesk/PrintControlManagement/SealApplication/FillForm.vue'
             )
         },
         // todo
@@ -57,7 +47,7 @@ const routes = {
           meta: { title: '???', authRequired: true },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/accomplish.vue'
+              '@/views/frontDesk/PrintControlManagement/Seal-application/Accomplish.vue'
             )
         },
         {
