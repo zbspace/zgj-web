@@ -66,7 +66,7 @@
         "label": "设置可用范围"
       },
       {
-        "name": "t-zgj-seal.deactivated",
+        "name": "status",
         "label": "停用"
       },
       {

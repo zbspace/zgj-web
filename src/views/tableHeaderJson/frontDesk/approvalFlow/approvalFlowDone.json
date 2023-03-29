@@ -30,13 +30,13 @@
     "min-width": 150
   },
   {
-    "prop": "6",
+    "prop": "completionTime",
     "label": "审批时间",
     "sortable": true,
     "min-width": 150
   },
   {
-    "prop": "7",
+    "prop": "approvalModeName",
     "label": "审批状态",
     "sortable": true,
     "min-width": 150

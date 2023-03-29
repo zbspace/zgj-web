@@ -151,7 +151,6 @@
   import { useVformInfoStore } from '@/store/vform'
 
   const vformInfoStore = useVformInfoStore()
-
   const dialogProcess = reactive({
     show: false,
     title: '处理',
@@ -185,6 +184,12 @@
   const showDialog = ref(false)
   const state = reactive({
     searchSelected: [],
+    approvalModes: {
+      1: '审批中',
+      2: '会签中',
+      3: '会签中',
+      4: '或签中'
+    },
     params: {
       formData: {},
       formJson: {},
@@ -747,7 +752,7 @@
       state.params.approvalMode = column.approvalMode
       state.params.instanceStatus = column.instanceStatus
       state.params.approvalMode = column.approvalMode
-      getDetail(column.instanceId + '')
+      getDetail(column.instanceId)
     }
     if (cell.name === '重批') {
       state.params.instanceId = column.instanceId
@@ -755,7 +760,7 @@
       state.params.approvalMode = column.approvalMode
       state.params.instanceStatus = column.instanceStatus
       state.params.approvalMode = column.approvalMode
-      getDetail('1640613102426816513')
+      getDetail(column.instanceId)
     }
   }
   /**
@@ -840,8 +845,20 @@
             if (formData[item].length > 0) {
               formData[item].forEach((cv, k) => {
                 formTableData.push({
-                  label: `印章名称${k + 1}`,
+                  label: `印章名称`,
                   value: cv.seal,
+                  type: v.formColumnModel ? v.formColumnModel : '其他'
+                })
+                if (cv.applySealNum > 0) {
+                  formTableData.push({
+                    label: `印章次数`,
+                    value: cv.applySealNum,
+                    type: v.formColumnModel ? v.formColumnModel : '其他'
+                  })
+                }
+                formTableData.push({
+                  label: `骑缝盖章`,
+                  value: cv.markSeal ? '是' : '否',
                   type: v.formColumnModel ? v.formColumnModel : '其他'
                 })
               })
@@ -925,7 +942,8 @@
             formTableData.push({
               label: v.formColumnName,
               value: formData[item],
-              type: v.formColumnModel ? v.formColumnModel : '其他'
+              type: v.formColumnModel ? v.formColumnModel : '其他',
+              orderNumber: item.orderNumber
             })
           }
         }
@@ -1027,6 +1045,12 @@
         state.componentsPagination.defaultAttribute.total = res.total
         state.componentsTable.loading = false
         state.componentsTable.loading = false
+        state.componentsTable.data.forEach(item => {
+          item.completionTime = dayjs(item.completionTime).format(
+            'YYYY-MM-DD HH:mm:ss'
+          )
+          item.approvalModeName = state.approvalModes[item.approvalMode]
+        })
       },
       () => {
         state.componentsTable.loading = false

@@ -424,9 +424,9 @@
   // 提交审批
   const sumitForm = () => {
     console.log('提交')
-    btnLoading.value = true
     vFormRef.value.validate(valid => {
       if (valid) {
+        btnLoading.value = true
         console.log(state.form.suggest)
         // ElMessage.success('审批成功')
         // btnLoading.value = false

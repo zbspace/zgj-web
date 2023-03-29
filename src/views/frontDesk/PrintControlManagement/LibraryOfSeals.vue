@@ -11,6 +11,8 @@
       :componentsBatch="state.componentsBatch"
       :queryParams="queryParams"
       tableClick="sealName"
+      statusColoum="sealStateId"
+      openValue="0"
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
@@ -408,7 +410,7 @@
             v-for="item in state.componentsBatch.selectionData"
             :key="item"
             class="scrollbar-demo-item"
-            >{{ item.name }}</p
+            >{{ item.sealName }}</p
           >
         </el-scrollbar>
       </template>
@@ -942,6 +944,7 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     console.log(column)
+    console.log(cell)
     state.sealIds = column.sealId
     if (cell.name === 't-zgj-Edit') {
       state.title = '修改'
@@ -960,19 +963,26 @@
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '删除'
     }
-    if (cell.name === 't-zgj-seal.deactivated') {
-      state.JyElMessageBox.header.data = '停用'
-      state.JyElMessageBox.content.data = '请问确定停用该印章吗？'
-      state.JyElMessageBox.show = true
-      state.JyElMessageBox.type = '停用'
+    // if (cell.name === 't-zgj-seal.deactivated') {
+    //   state.JyElMessageBox.header.data = '停用'
+    //   state.JyElMessageBox.content.data = '请问确定停用该印章吗？'
+    //   state.JyElMessageBox.show = true
+    //   state.JyElMessageBox.type = '停用'
+    // }
+    if (cell.name === 'status') {
+      if (column.flag === '1') {
+        state.JyElMessageBox.header.data = '停用'
+        state.JyElMessageBox.content.data = '请问确定停用该印章吗？'
+        state.JyElMessageBox.show = true
+        state.JyElMessageBox.type = '停用'
+      } else {
+        state.JyElMessageBox.header.data = '启用'
+        state.JyElMessageBox.content.data = '请问确定启用该印章吗？'
+        state.JyElMessageBox.show = true
+        state.JyElMessageBox.type = '启用'
+      }
     }
-    if (cell.name === '启用') {
-      state.JyElMessageBox.header.data = '启用'
-      state.JyElMessageBox.content.data = '请问确定启用该印章吗？'
-      state.JyElMessageBox.show = true
-      state.JyElMessageBox.type = '启用'
-    }
-    if (cell.name === '销毁') {
+    if (cell.name === 't-zgj-status.Destroy') {
       state.JyElMessageBox.header.data = '销毁'
       state.JyElMessageBox.content.data = '请问确定销毁该印章吗？'
       state.JyElMessageBox.show = true
@@ -990,6 +1000,7 @@
   }
   const clickBatchButton = (item, datas) => {
     console.log(item)
+    state.sealIds = ''
     state.componentsBatch.selectionData = datas
     console.log(state.componentsBatch.selectionData)
     const idList = []
@@ -1116,18 +1127,19 @@
   }
   // 提交弹窗
   const submitElMessageBox = type => {
+    console.log('state.sealIds', state.sealIds)
     state.JyElMessageBox.show = false
     if (type === '删除') {
       apiOpt(type, api.sealInfoDelete({ ids: state.sealIds }))
     }
     if (type === '停用') {
-      apiOpt(type, api.sealInfoDisable({ ids: state.sealIds }))
+      apiOpt(type, api.sealInfoDisable(state.sealIds))
     }
     if (type === '启用') {
-      apiOpt(type, api.sealInfoEnable({ ids: state.sealIds }))
+      apiOpt(type, api.sealInfoEnable(state.sealIds))
     }
     if (type === '销毁') {
-      apiOpt(type, api.sealInfoDestroy({ ids: state.sealIds }))
+      apiOpt(type, api.sealInfoDestroy(state.sealIds))
     }
   }
   const apiOpt = (typeName, apiName) => {

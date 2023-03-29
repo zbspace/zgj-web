@@ -47,16 +47,14 @@ api.sealInfoDelete = params => {
 api.sealInfoDisable = params => {
   return request({
     method: 'GET',
-    url: '/sealInfo/disable',
-    params
+    url: `/sealInfo/disable/${params}`
   })
 }
 // 印章启用
 api.sealInfoEnable = params => {
   return request({
     method: 'GET',
-    url: '/sealInfo/enable',
-    params
+    url: `/sealInfo/enable/${params}`
   })
 }
 // 印章解绑
@@ -71,8 +69,7 @@ api.sealInfoUnbind = params => {
 api.sealInfoDestroy = params => {
   return request({
     method: 'GET',
-    url: '/sealInfo/destroy',
-    params
+    url: `/sealInfo/destroy/${params}`
   })
 }
 // 印章变更
