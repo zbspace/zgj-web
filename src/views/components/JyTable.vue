@@ -369,6 +369,7 @@
   }
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
+    console.log(selection, 'selection')
     state.componentsBatch.selectionData = selection
     if (state.componentsBatch.selectionData.length > 0) {
       state.componentsBatch.defaultAttribute.disabled = false

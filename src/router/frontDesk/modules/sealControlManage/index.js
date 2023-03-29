@@ -31,7 +31,6 @@ const routes = {
               '@/views/frontDesk/PrintControlManagement/Seal-application/Selection-form.vue'
             )
         },
-        // todo
         {
           path: 'selectionForm/confirmApprovalProcess',
           name: 'ConfirmApprovalProcess',
@@ -50,7 +49,6 @@ const routes = {
               '@/views/frontDesk/PrintControlManagement/Seal-application/fill-form.vue'
             )
         },
-        // todo
         {
           path: 'sealApplication/accomplish',
           name: 'Accomplish',
