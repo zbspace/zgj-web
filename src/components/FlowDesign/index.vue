@@ -2,15 +2,17 @@
   <div class="flow-designer" :style="wrapStyle">
     <div id="flow-designer-wrap" class="flow-designer-wrap">
       <div class="flow-designer-container" v-drag="drag" :style="zoomStyle">
-        <div class="flow-designer-box">
-          <FlowStartNode :node="nodeData" />
-          <FlowNode
-            :node="nodeData"
-            :readable="readable"
-            @nodeUpdate="nodeUpdate"
-          />
-          <FlowEndNode :node="nodeData" :readable="readable" />
-        </div>
+        <el-scrollbar height="100%">
+          <div class="flow-designer-box">
+            <FlowStartNode :node="nodeData" />
+            <FlowNode
+              :node="nodeData"
+              :readable="readable"
+              @nodeUpdate="nodeUpdate"
+            />
+            <FlowEndNode :node="nodeData" :readable="readable" />
+          </div>
+        </el-scrollbar>
       </div>
       <!-- <FlowZoom v-if="!readable" v-model="zoomValue" :top="top" /> -->
       <!-- <FlowStatus v-if="readable" :navable="navable" :top="top" /> -->
@@ -82,10 +84,8 @@
   // 样式
   const wrapStyle = reactive({
     // 存在自定义nav时候需要减去nav高度
-    height: props.navable
-      ? 'calc(100vh - ' + Number(props.top) + 'px)'
-      : '80vh',
-    overflow: 'hidden'
+    height: props.navable ? 'calc(100vh - ' + Number(props.top) + 'px)' : '80vh'
+    // overflow: 'hidden'
     // 'overflow-y': props.scrollY ? 'auto' : 'hidden',
     // 'overflow-x': props.scroll ? 'auto' : 'hidden'
   })
@@ -106,8 +106,8 @@
     return {
       zoom: zoomValue.value < 100 ? zoom : 0,
       transform: zoomValue.value >= 100 ? `scale(${zoom},${zoom})` : 0,
-      transformOrigin: '0 0',
-      paddingBottom: '30px'
+      transformOrigin: '0 0'
+      // paddingBottom: '30px'
       // paddingTop: '30px',
       // left: `${left}px`,
       // top: `${top}px`

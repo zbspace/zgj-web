@@ -25,117 +25,121 @@
         </div>
       </template>
       <template #custom>
-        <div class="custom">
-          <div class="custom-buzhou">
-            <SealApplicationStep
-              :data="state.cache.flowList"
-            ></SealApplicationStep>
-          </div>
-          <JyVform
-            v-show="step === 'one'"
-            v-if="fillFormInformationJson"
-            mode="render"
-            :formJson="fillFormInformationJson"
-            :formData="state.cache.formData"
-            :optionData="state.cache.optionData"
-            ref="refFillFormInformation"
-          >
-          </JyVform>
-          <div v-if="step === 'two'">
-            <documentsDetailsPortion>
-              <template #title>
-                <div class="topTitles">
-                  <div>审批流程</div>
-                  <el-select
-                    v-model="flowMessageId"
-                    placeholder="请选择流程"
-                    @change="changeFlow"
-                  >
-                    <el-option
-                      v-for="item in flowLists"
-                      :key="item.flowMessageId"
-                      :label="item.flowName"
-                      :value="item.flowMessageId"
-                    />
-                  </el-select>
-                </div>
-              </template>
-              <template #content>
-                <div style="height: calc(100vh - 400px)" v-if="initObj">
-                  <VFlowDesign
-                    ref="refVFlowDesign"
-                    :defaultAttribute="{
-                      readable: true,
-                      mapable: false,
-                      scroll: false,
-                      top: '100'
-                    }"
-                    :initObj="initObj"
-                  ></VFlowDesign>
-                </div>
-              </template>
-            </documentsDetailsPortion>
-            <div class="PrintingProcess">
+        <el-scrollbar height="calc(100vh - 250px)">
+          <div class="custom">
+            <div class="custom-buzhou">
+              <SealApplicationStep
+                :data="state.cache.flowList"
+              ></SealApplicationStep>
+            </div>
+            <JyVform
+              v-show="step === 'one'"
+              v-if="fillFormInformationJson"
+              mode="render"
+              :formJson="fillFormInformationJson"
+              :formData="state.cache.formData"
+              :optionData="state.cache.optionData"
+              ref="refFillFormInformation"
+            >
+            </JyVform>
+            <div v-if="step === 'two'">
               <documentsDetailsPortion>
                 <template #title>
-                  <div>用印流程</div>
+                  <div class="topTitles">
+                    <div>审批流程</div>
+                    <el-select
+                      v-model="flowMessageId"
+                      placeholder="请选择流程"
+                      @change="changeFlow"
+                    >
+                      <el-option
+                        v-for="item in flowLists"
+                        :key="item.flowMessageId"
+                        :label="item.flowName"
+                        :value="item.flowMessageId"
+                      />
+                    </el-select>
+                  </div>
                 </template>
                 <template #content>
-                  <div class="PrintingProcess-content">
-                    <div
-                      class="PrintingProcess-content-list"
-                      v-for="(item, index) in state.cache.PrintingProcess.list"
-                      :key="index"
-                    >
-                      <div class="PrintingProcess-content-list-cont">
-                        <div class="PrintingProcess-content-list-cont-title">
-                          <img
-                            class="PrintingProcess-content-list-cont-title-img"
-                            src="@/assets/svg/yongyin-shenqing-rili-lan.svg"
-                            alt=""
-                          />
-                          <span
-                            class="PrintingProcess-content-list-cont-title-span"
-                            >{{ item.title }}</span
-                          >
-                        </div>
-                        <div
-                          class="PrintingProcess-content-list-cont-list"
-                          v-for="(node, num) in item.list"
-                          :key="num"
-                        >
-                          <div
-                            class="PrintingProcess-content-list-cont-list-name"
-                            >{{ node.name }}
-                          </div>
-                          <div
-                            class="PrintingProcess-content-list-cont-list-icon"
-                          >
-                            <img
-                              class="PrintingProcess-content-list-cont-list-icon-img"
-                              src="@/assets/svg/yongyin-shenqing-wenhao-hui.svg"
-                              alt=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="PrintingProcess-content-list-iocn">
-                        <img
-                          class="PrintingProcess-content-list-iocn-img"
-                          src="@/assets/svg/yongyin-shenqing-xiayibu.svg"
-                          alt=""
-                          v-if="
-                            index < state.cache.PrintingProcess.list.length - 1
-                          "
-                        />
-                      </div>
-                    </div>
+                  <div style="height: calc(100vh - 500px)" v-if="initObj">
+                    <VFlowDesign
+                      ref="refVFlowDesign"
+                      :defaultAttribute="{
+                        readable: true,
+                        mapable: false,
+                        scroll: false,
+                        top: '100'
+                      }"
+                      :initObj="initObj"
+                    ></VFlowDesign>
                   </div>
                 </template>
               </documentsDetailsPortion>
+              <div class="PrintingProcess">
+                <documentsDetailsPortion>
+                  <template #title>
+                    <div>用印流程</div>
+                  </template>
+                  <template #content>
+                    <div class="PrintingProcess-content">
+                      <div
+                        class="PrintingProcess-content-list"
+                        v-for="(item, index) in state.cache.PrintingProcess
+                          .list"
+                        :key="index"
+                      >
+                        <div class="PrintingProcess-content-list-cont">
+                          <div class="PrintingProcess-content-list-cont-title">
+                            <img
+                              class="PrintingProcess-content-list-cont-title-img"
+                              src="@/assets/svg/yongyin-shenqing-rili-lan.svg"
+                              alt=""
+                            />
+                            <span
+                              class="PrintingProcess-content-list-cont-title-span"
+                              >{{ item.title }}</span
+                            >
+                          </div>
+                          <div
+                            class="PrintingProcess-content-list-cont-list"
+                            v-for="(node, num) in item.list"
+                            :key="num"
+                          >
+                            <div
+                              class="PrintingProcess-content-list-cont-list-name"
+                              >{{ node.name }}
+                            </div>
+                            <div
+                              class="PrintingProcess-content-list-cont-list-icon"
+                            >
+                              <img
+                                class="PrintingProcess-content-list-cont-list-icon-img"
+                                src="@/assets/svg/yongyin-shenqing-wenhao-hui.svg"
+                                alt=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="PrintingProcess-content-list-iocn">
+                          <img
+                            class="PrintingProcess-content-list-iocn-img"
+                            src="@/assets/svg/yongyin-shenqing-xiayibu.svg"
+                            alt=""
+                            v-if="
+                              index <
+                              state.cache.PrintingProcess.list.length - 1
+                            "
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                </documentsDetailsPortion>
+              </div>
             </div>
           </div>
-        </div>
+        </el-scrollbar>
       </template>
       <template #fixed>
         <div class="fixed" v-if="step === 'one'">
@@ -526,15 +530,13 @@
       // padding-right: 1.25rem;
       box-sizing: border-box;
       text-align: center;
-      padding: 36px;
-      padding-bottom: 4rem;
+      padding: 0 16px 0;
       max-height: calc(100vh - 210px);
-      overflow-y: auto;
       .custom-buzhou {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 1rem 0 0;
+        padding: 0;
         box-sizing: border-box;
 
         .custom-buzhou-list {
@@ -617,8 +619,14 @@
     align-items: center;
   }
 </style>
-<style>
+<style lang="scss">
   .upload-demo {
     text-align: left;
+  }
+
+  .custom {
+    .ap-cont-box-title-label {
+      width: 100% !important;
+    }
   }
 </style>
