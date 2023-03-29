@@ -90,6 +90,7 @@
       </div>
     </el-form-item>
   </static-content-wrapper>
+  <!-- <JyUseSealFiles v-model:upload="visible" /> -->
 </template>
 <script>
   import StaticContentWrapper from '@/lib/vform/components/form-designer/form-widget/field-widget/static-content-wrapper'
@@ -98,8 +99,9 @@
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
   import { genFileId } from 'element-plus'
   import { ArrowDown } from '@element-plus/icons-vue'
-  import SealApplyService from '@/api/frontDesk/printControl/sealApply'
+  // import SealApplyService from '@/api/frontDesk/printControl/sealApply'
   import { messageError } from '@/hooks/useMessage'
+  import JyUseSealFiles from '@/components/business/JyUseSealFiles'
 
   export default {
     name: 'SealFileWidget',
@@ -132,10 +134,12 @@
     },
     components: {
       StaticContentWrapper,
-      ArrowDown
+      ArrowDown,
+      JyUseSealFiles
     },
     data() {
       return {
+        visible: false,
         fieldModel: {
           fileList: [],
           fileList1: []
@@ -213,18 +217,38 @@
           const formData = new FormData()
           formData.append('file', rawFile)
           try {
-            const res = await SealApplyService.uploadFile(formData)
             if (type === 1) {
-              this.fieldModel.fileList.push({
-                name: rawFile.name,
-                url: res.data.filePath
-              })
+              setTimeout(() => {
+                this.fieldModel.fileList.push({
+                  name: rawFile.name,
+                  // url: res.data.filePath
+                  url: 'https://static.runoob.com/images/demo/demo2.jpg'
+                })
+              }, 1)
             } else {
-              this.fieldModel.fileList1.push({
-                name: rawFile.name,
-                url: res.data.filePath
-              })
+              setTimeout(() => {
+                this.fieldModel.fileList1.push({
+                  name: rawFile.name,
+                  // url: res.data.filePath
+                  url: 'https://static.runoob.com/images/demo/demo2.jpg'
+                })
+              }, 1)
             }
+
+            // const res = await SealApplyService.uploadFile(formData)
+            // if (type === 1) {
+            //   this.fieldModel.fileList.push({
+            //     name: rawFile.name,
+            //     // url: res.data.filePath
+            //     url: 'https://static.runoob.com/images/demo/demo2.jpg'
+            //   })
+            // } else {
+            //   this.fieldModel.fileList1.push({
+            //     name: rawFile.name,
+            //     // url: res.data.filePath
+            //     url: 'https://static.runoob.com/images/demo/demo2.jpg'
+            //   })
+            // }
           } catch (error) {
             messageError(error)
           }

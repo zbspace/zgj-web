@@ -101,6 +101,8 @@
                   v-model="item.values"
                   v-bind="item.defaultAttribute"
                   :ref="el => setRef(el, item)"
+                  collapse-tags
+                  collapse-tags-tooltip
                   style="width: 100%"
                   :class="
                     (item.defaultAttribute.multiple &&

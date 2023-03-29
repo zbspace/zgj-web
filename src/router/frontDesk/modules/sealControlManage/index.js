@@ -40,7 +40,6 @@ const routes = {
               '@/views/frontDesk/PrintControlManagement/SealApplication/FillForm.vue'
             )
         },
-        // todo
         {
           path: 'sealApplication/accomplish',
           name: 'Accomplish',

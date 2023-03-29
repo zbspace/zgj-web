@@ -138,6 +138,7 @@
   import { reactive, computed, defineAsyncComponent, ref, watch } from 'vue'
   import apiFlow from '@/api/system/flowManagement'
   import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  import { ElMessage } from 'element-plus'
   const flowStore = useFlowStore()
   const linkSealUseTypeId = ref('1')
   // 异步组件
@@ -222,6 +223,7 @@
   })
   const clickClose = () => {
     show.value = false
+    emits('reloadData')
   }
   const refVFlowDesign = ref(null)
   const refAssociationForm = ref(null)
@@ -231,14 +233,41 @@
   const modelIds = ref(null)
   const changeTabs = async attr => {
     if (attr.index === '3') {
+      // 优先判断 - 基础信息填写完成
+      errorInfo.value = []
+      const basicsResult = await refBasicsInfo.value.getBasicsFormValue()
+      if (Array.isArray(basicsResult)) {
+        for (const k in basicsResult[0]) {
+          errorInfo.value.push({
+            type: '基础信息',
+            message: basicsResult[0][k][0].message
+          })
+        }
+        ElMessage.error('请填写基础信息')
+      }
+      const associationResult = refAssociationForm.value.getAssociationValue()
+      console.log(associationResult, '表单', Array.isArray(associationResult))
+      if (Array.isArray(associationResult)) {
+        for (const k in associationResult[0]) {
+          errorInfo.value.push({
+            type: '关联表单',
+            message: associationResult[0][k][0].message
+          })
+        }
+        ElMessage.error('请选择关联表单')
+      }
+
+      if (errorInfo.value.length > 0) return
+
       modelIds.value = await refAssociationForm.value
-        .saveAddModel()
+        .saveAddModel(refBasicsInfo.value.form.flowName)
         .catch(err => {
           state.jyBoxHeader = '提示？'
           state.jyBoxCont = err
           state.jyBoxShow = true
         })
 
+      // ② 是否 模型建立
       if (!modelIds.value) {
         // 新增 - 初次 流程设计模型
         if (props.openType === 'add') {
