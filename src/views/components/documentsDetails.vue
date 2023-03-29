@@ -2313,7 +2313,7 @@
           title: '基本信息',
           show: true,
           labelStyle: {
-            width: '7rem'
+            width: '120px'
           },
           data: [
             {
@@ -2381,42 +2381,8 @@
       },
       // 流程版本
       ProcessVersion: {
-        header: [
-          {
-            prop: '1',
-            label: '版本号',
-            sortable: true,
-            'min-width': 150
-          },
-          {
-            prop: '2',
-            label: '版本时间',
-            sortable: true,
-            'min-width': 150
-          }
-        ],
-        data: [
-          {
-            1: 'V20221110-01',
-            2: '2022-12-04 11:55:12'
-          },
-          {
-            1: 'V20221110-01',
-            2: '2022-11-11 05:09:12'
-          },
-          {
-            1: 'V20221110-01',
-            2: '2022-11-17 22:29:12'
-          },
-          {
-            1: 'V20221110-01',
-            2: '2022-11-27 12:33:12'
-          },
-          {
-            1: 'V20221110-01',
-            2: '2022-12-04 06:47:12'
-          }
-        ],
+        header: [],
+        data: [],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
           border: true,
@@ -3279,17 +3245,18 @@
   }
   // 处理 流程详情 Process-Details
   const disProcessDetails = element => {
-    if (element['basicInformation-data']) {
-      state.cache.ProcessDetails.basicInformation.data =
-        element['basicInformation-data']
+    const processDetail = state.cache.ProcessDetails
+    if (element.basicInformation && element.basicInformation.show === true) {
+      processDetail.basicInformation.show = true
+    }
+    if (element.basicInformation && element.basicInformation.data) {
+      processDetail.basicInformation.data = element.basicInformation.data
     }
   }
   // 处理 流程版本 Process-Version
   const disProcessVersion = element => {
-    if (element.data) {
-      state.cache.ProcessVersion.header = element.header
-      state.cache.ProcessVersion.data = element.data
-    }
+    state.cache.ProcessVersion.header = element.ProcessVersion.header
+    state.cache.ProcessVersion.data = element.ProcessVersion.data
   }
   // 处理 表单详情 Form-Details
   const disFormDetails = element => {
@@ -3353,7 +3320,7 @@
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化数据
-    initData()
+    // initData()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

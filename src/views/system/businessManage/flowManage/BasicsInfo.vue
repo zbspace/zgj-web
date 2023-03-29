@@ -254,7 +254,7 @@
           form.dataScope.push({
             scopeId: item.id,
             scopeName: item.name,
-            scipeType: item.type === 'user' ? '1' : '2'
+            scopeType: item.type === 'user' ? '1' : '2'
           })
         })
         form.showDataScope = arr

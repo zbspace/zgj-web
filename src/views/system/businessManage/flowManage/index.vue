@@ -148,7 +148,8 @@
   import { ElMessage } from 'element-plus'
   import tableHeaderSealApply from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSealApply.json'
   import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
-
+  import flowApi from '@/api/system/flowManagement/index'
+  import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
   const addFlowModalShow = ref(false)
   const openType = ref(null)
   const tree = ref(null)
@@ -333,28 +334,6 @@
         ]
       },
       style: {}
-    },
-    {
-      id: 'sealUseTypeId',
-      label: '用印类型',
-      type: 'select',
-      optionLabel: 'label',
-      optionValue: 'value',
-      inCommonUse: false,
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        placeholder: '请选择'
-      },
-      options: [
-        {
-          value: '1',
-          label: '物理用印'
-        },
-        {
-          value: '2',
-          label: '电子签章'
-        }
-      ]
     },
     {
       id: 'relationForm',
@@ -547,11 +526,119 @@
 
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
+    console.log(row.flowMessageId, 'flowMessageId', column)
     if (column.property === 'flowName') {
-      state.componentsDocumentsDetails.show = true
+      flowApi
+        .flowDetail({
+          flowMessageId: row.flowMessageId
+        })
+        .then(res => {
+          const data = res.data
+          const detail = [
+            {
+              label: '流程名称',
+              value: data.flowName
+            },
+            {
+              label: '流程编码',
+              value: data.flowNo
+            },
+            {
+              label: '业务类型',
+              value: data.applyTypeName
+            },
+            {
+              label: '流程状态',
+              value: '启用停用-无字段',
+              iconPath: yuanLvSvg,
+              valStyle: {
+                color: 'var(--jy-success-6)'
+              }
+            },
+            {
+              label: '流程适用范围',
+              value: handleScope(data)
+            },
+            {
+              label: '创建人',
+              value: data.createUserName
+            },
+            {
+              label: '创建时间',
+              value: data.createDatetime
+            },
+            {
+              label: '更新时间',
+              value: data.modifyDatetime
+            },
+            // {
+            //   label: '流程类型',
+            //   value: '无字段'
+            // },
+            {
+              label: '流程说明',
+              value: data.readme || '-'
+            },
+            {
+              label: '关联表单',
+              value: handleFile(data)
+            }
+            // {
+            //   label: '超时提醒',
+            //   value: '无字段'
+            // },
+            // {
+            //   label: '审批人自动去重',
+            //   value: '无字段'
+            // }
+          ]
+          state.componentsDocumentsDetails.visible[0].basicInformation = {
+            show: true,
+            data: detail
+          }
+          state.componentsDocumentsDetails.show = true
+        })
+
+      flowApi
+        .queryHisVersion({
+          flowMessageId: row.flowMessageId
+        })
+        .then(res => {
+          const data = res.data
+          const header = [
+            {
+              prop: 'flowVerison',
+              label: '版本号',
+              sortable: true,
+              'min-width': 150
+            },
+            {
+              prop: 'modifyDatetime',
+              label: '版本时间',
+              sortable: true,
+              'min-width': 150
+            }
+          ]
+          state.componentsDocumentsDetails.visible[1].ProcessVersion = {
+            data,
+            header
+          }
+        })
     }
   }
 
+  const handleScope = data => {
+    if (!data.dataScope || data.dataScope.length <= 0) return '-'
+    const arr = []
+    data.dataScope.map(item => arr.push(item.scopeName))
+    return arr.join(',')
+  }
+  const handleFile = data => {
+    if (!data.fileType || data.fileType.length <= 0) return '-'
+    const arr = []
+    data.fileType.map(item => arr.push(item.fileTypeName))
+    return arr.join(',')
+  }
   const customClick = (row, column, cell, event) => {
     state.columnData = column
     state.flowMessageId = column.flowMessageId
