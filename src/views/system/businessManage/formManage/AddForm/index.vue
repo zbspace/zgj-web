@@ -109,7 +109,7 @@
 <script setup>
   import { ref, reactive, computed, onMounted, nextTick } from 'vue'
   import { ElMessage } from 'element-plus'
-  import layout from '@/views/system/businessManage/formManage/AddForm/layout'
+  import layout from '@/views/system/businessManage/formManage/AddForm/Layout'
   import formManageService from '@/api/system/formManagement'
   import flowManageService from '@/api/system/flowManagement'
   import { AddFormInfo } from '@/utils/domain/formManage'
