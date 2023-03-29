@@ -304,7 +304,7 @@
     }
   )
 
-  const saveAddModel = () => {
+  const saveAddModel = flowName => {
     return new Promise((resolve, reject) => {
       if (!form.formMessageId) {
         // eslint-disable-next-line prefer-promise-reject-errors
@@ -315,7 +315,8 @@
       const random = Math.random()
       ModelApi.add({
         modelKey: random,
-        formIdList: [form.formMessageId]
+        formIdList: [form.formMessageId],
+        modelName: flowName
       }).then(() => {
         ModelApi.getModelKey({
           modelKey: random
