@@ -22,19 +22,19 @@ api.page = params => {
 }
 
 // 流程详情
-api.view = params => {
+api.flowDetail = params => {
   return request({
     method: 'GET',
-    url: '/form/view',
+    url: '/flow/query',
     params
   })
 }
 
 // 流程详情_操作记录
-api.viewOperation = params => {
+api.queryHisVersion = params => {
   return request({
     method: 'GET',
-    url: '/form/viewOperation',
+    url: '/flow/queryHisVersion',
     params
   })
 }

@@ -54,6 +54,8 @@
               ref="selectRef"
               placeholder="请选择"
               multiple
+              collapse-tags
+              collapse-tags-tooltip
               @click="getDivision"
             >
               <el-option
@@ -72,24 +74,13 @@
             </div>
           </el-form-item>
           <el-form-item label="流程适用范围" prop="showDataScope">
-            <!-- <el-input
-              v-model="form.showDataScope"
-              readonly
-              @click="showDepPerDialog = true"
-              placeholder="请输入"
-            />
-            <div class="box-icon">
-              <img
-                class="box-icon-img"
-                src="@/assets/svg/ketanchude.svg"
-                alt=""
-              />
-            </div> -->
             <el-select
               v-model="form.showDataScope"
               ref="selectFileRef"
               placeholder="请选择"
               multiple
+              collapse-tags
+              collapse-tags-tooltip
               @click="getFileType"
             >
               <el-option
@@ -263,7 +254,7 @@
           form.dataScope.push({
             scopeId: item.id,
             scopeName: item.name,
-            scipeType: item.type === 'user' ? '1' : '2'
+            scopeType: item.type === 'user' ? '1' : '2'
           })
         })
         form.showDataScope = arr
@@ -275,15 +266,15 @@
     }
   )
 
-  // watch(
-  //   () => form.applyTypeId,
-  //   val => {
-  //     if (val === props.sealApplyInitId) {
-  //       setFileTypeList()
-  //     }
-  //     emits('update:modelValue', val)
-  //   }
-  // )
+  watch(
+    () => form.applyTypeId,
+    val => {
+      // if (val === props.sealApplyInitId) {
+      //   setFileTypeList()
+      // }
+      emits('update:modelValue', val)
+    }
+  )
 
   watch(
     () => props.modelValue,
@@ -317,7 +308,8 @@
   )
 
   defineExpose({
-    getBasicsFormValue
+    getBasicsFormValue,
+    form
   })
 </script>
 <style lang="scss" scoped>

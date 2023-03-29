@@ -85,23 +85,28 @@
     // 签署方信息
     signatoryData: {
       type: Object,
-      default: {
-        header: [],
-        data: []
+      default: () => {
+        return {
+          header: [],
+          data: []
+        }
       }
     },
     // 签署文件
     signatoryFileData: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 已签署文件
     alreadySignatoryFileData: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     }
   })
-  const emit = defineEmits([])
   const state = reactive({
     cache: {
       //
@@ -239,11 +244,13 @@
 
           .ap-box-cont-caozuo-yulan {
             color: var(--jy-warning-6);
+            cursor: pointer;
           }
 
           .ap-box-cont-caozuo-xiazai {
             margin-left: 0.5rem;
             color: var(--jy-info-6);
+            cursor: pointer;
           }
 
           .ap-box-cont-caozuo-dayin {

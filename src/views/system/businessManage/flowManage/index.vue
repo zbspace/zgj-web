@@ -112,12 +112,12 @@
       <template #content>
         <div class="content-div">{{ state.showToastDialog.content.data }}</div>
         <el-scrollbar class="scrollbar" max-height="200px">
-          <p
+          <div
             v-for="item in state.batchColumnData"
             :key="item"
             class="scrollbar-demo-item"
-            >{{ item }}</p
-          >
+            >{{ item }}
+          </div>
         </el-scrollbar>
       </template>
       <template #footer>
@@ -126,8 +126,8 @@
           :key="item.name"
           :type="item.type"
           @click="item.clickName"
-          >{{ item.name }}</el-button
-        >
+          >{{ item.name }}
+        </el-button>
       </template>
     </JyElMessageBox>
   </div>
@@ -148,7 +148,8 @@
   import { ElMessage } from 'element-plus'
   import tableHeaderSealApply from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSealApply.json'
   import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
-
+  import flowApi from '@/api/system/flowManagement/index'
+  import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
   const addFlowModalShow = ref(false)
   const openType = ref(null)
   const tree = ref(null)
@@ -335,28 +336,6 @@
       style: {}
     },
     {
-      id: 'sealUseTypeId',
-      label: '用印类型',
-      type: 'select',
-      optionLabel: 'label',
-      optionValue: 'value',
-      inCommonUse: false,
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        placeholder: '请选择'
-      },
-      options: [
-        {
-          value: '1',
-          label: '物理用印'
-        },
-        {
-          value: '2',
-          label: '电子签章'
-        }
-      ]
-    },
-    {
       id: 'relationForm',
       label: '关联表单名称',
       type: 'select',
@@ -377,6 +356,7 @@
   ]
 
   const state = reactive({
+    flowMessageId: '',
     columnData: {},
     batchColumnData: [],
     MessageBox: {
@@ -546,15 +526,122 @@
 
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
+    console.log(row.flowMessageId, 'flowMessageId', column)
     if (column.property === 'flowName') {
-      state.componentsDocumentsDetails.show = true
+      flowApi
+        .flowDetail({
+          flowMessageId: row.flowMessageId
+        })
+        .then(res => {
+          const data = res.data
+          const detail = [
+            {
+              label: '流程名称',
+              value: data.flowName
+            },
+            {
+              label: '流程编码',
+              value: data.flowNo
+            },
+            {
+              label: '业务类型',
+              value: data.applyTypeName
+            },
+            {
+              label: '流程状态',
+              value: '启用停用-无字段',
+              iconPath: yuanLvSvg,
+              valStyle: {
+                color: 'var(--jy-success-6)'
+              }
+            },
+            {
+              label: '流程适用范围',
+              value: handleScope(data)
+            },
+            {
+              label: '创建人',
+              value: data.createUserName
+            },
+            {
+              label: '创建时间',
+              value: data.createDatetime
+            },
+            {
+              label: '更新时间',
+              value: data.modifyDatetime
+            },
+            // {
+            //   label: '流程类型',
+            //   value: '无字段'
+            // },
+            {
+              label: '流程说明',
+              value: data.readme || '-'
+            },
+            {
+              label: '关联表单',
+              value: handleFile(data)
+            }
+            // {
+            //   label: '超时提醒',
+            //   value: '无字段'
+            // },
+            // {
+            //   label: '审批人自动去重',
+            //   value: '无字段'
+            // }
+          ]
+          state.componentsDocumentsDetails.visible[0].basicInformation = {
+            show: true,
+            data: detail
+          }
+          state.componentsDocumentsDetails.show = true
+        })
+
+      flowApi
+        .queryHisVersion({
+          flowMessageId: row.flowMessageId
+        })
+        .then(res => {
+          const data = res.data
+          const header = [
+            {
+              prop: 'flowVerison',
+              label: '版本号',
+              sortable: true,
+              'min-width': 150
+            },
+            {
+              prop: 'modifyDatetime',
+              label: '版本时间',
+              sortable: true,
+              'min-width': 150
+            }
+          ]
+          state.componentsDocumentsDetails.visible[1].ProcessVersion = {
+            data,
+            header
+          }
+        })
     }
   }
 
+  const handleScope = data => {
+    if (!data.dataScope || data.dataScope.length <= 0) return '-'
+    const arr = []
+    data.dataScope.map(item => arr.push(item.scopeName))
+    return arr.join(',')
+  }
+  const handleFile = data => {
+    if (!data.fileType || data.fileType.length <= 0) return '-'
+    const arr = []
+    data.fileType.map(item => arr.push(item.fileTypeName))
+    return arr.join(',')
+  }
   const customClick = (row, column, cell, event) => {
-    console.log(cell)
-    state.sealIds = column.id
     state.columnData = column
+    state.flowMessageId = column.flowMessageId
     if (cell.name === '修改') {
       state.title = '修改'
       // showLibraryDialog.value = true
@@ -563,19 +650,19 @@
       state.title = '复制'
       // showLibraryDialog.value = true
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
       state.MessageBox.header.data = '确认要删除流程吗？'
       state.MessageBox.show = true
       state.MessageBox.content.data = ''
       state.MessageBox.type = '删除'
     }
-    if (cell.name === 'status') {
+    if (cell.name === 'status' && column.flag === '1') {
       state.MessageBox.header.data = '停用'
       state.MessageBox.content.data = '请问确定停用该流程吗？'
       state.MessageBox.show = true
       state.MessageBox.type = '停用'
     }
-    if (cell.name === 'status') {
+    if (cell.name === 'status' && column.flag === '0') {
       state.MessageBox.header.data = '启用'
       state.MessageBox.content.data = '请问确定启用该流程吗？'
       state.MessageBox.show = true
@@ -595,7 +682,6 @@
     }
     if (type === '删除') {
       console.log(state.columnData)
-      console.log(state.columnData)
       if (state.columnData.flag === '1') {
         state.MessageBox.header.data = '提示'
         state.MessageBox.content.data = '请将流程停用后再进行删除'
@@ -603,18 +689,24 @@
         state.MessageBox.type = '取消删除'
         return
       }
-      apiOpt(type, apiFlow.flowDelete(type, { ids: state.sealId }))
+      apiOpt(type, apiFlow.flowDelete({ flowMessageId: state.flowMessageId }))
     }
     if (type === '停用') {
       apiOpt(
         type,
-        apiFlow.flowEnable(type, { processId: state.sealId, processStatus: 0 })
+        apiFlow.flowEnable({
+          flowMessageId: state.flowMessageId,
+          flag: '0'
+        })
       )
     }
     if (type === '启用') {
       apiOpt(
         type,
-        apiFlow.flowEnable(type, { processId: state.sealId, processStatus: 1 })
+        apiFlow.flowEnable({
+          flowMessageId: state.flowMessageId,
+          falg: '1'
+        })
       )
     }
   }
@@ -626,13 +718,15 @@
       } else {
         ElMessage.success(`${typeName}失败，请重试`)
       }
+      state.MessageBox.show = false
+      reloadData()
     })
   }
 
   // 批量删除
-  function batchOpt(item) {
+  function batchOpt(item, selection) {
     state.batchColumnData = []
-    state.componentsBatch.selectionData.forEach(v => {
+    selection.forEach(v => {
       state.batchColumnData.push(v.flowName)
     })
     state.showToastDialog.header.data = item.name
@@ -644,7 +738,9 @@
       {
         name: '确定',
         type: 'primary',
-        clickName: sureBatchOpt
+        clickName: () => {
+          return sureBatchOpt(selection)
+        }
       },
       {
         name: '取消',
@@ -655,8 +751,9 @@
   }
 
   // 确定批量操作
-  const sureBatchOpt = () => {
-    const list = state.componentsBatch.selectionData
+  const sureBatchOpt = selection => {
+    // const list = state.componentsBatch.selectionData
+    const list = selection
     const idList = []
     switch (state.showToastDialog.type) {
       case '批量删除':
@@ -670,10 +767,6 @@
         if (state.batchColumnData.length > 0) {
           state.showToastDialog.header.data = state.showToastDialog.type
           state.showToastDialog.content.data = `请将以下流程停用后再进行删除`
-          state.showToastDialog.show = false
-          setTimeout(() => {
-            state.showToastDialog.show = true
-          }, 300)
           // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
           state.componentsBatch.butDatas = [
             {
@@ -683,20 +776,29 @@
             }
           ]
         } else {
-          batchOptApi('批量删除', apiFlow.batchDelete(idList))
+          batchOptApi(
+            '批量删除',
+            apiFlow.batchDelete({ flowMessageIds: idList })
+          )
         }
         break
       case '批量停用':
         list.forEach(v => {
           idList.push({ processId: v.flowMessageId })
         })
-        batchOptApi('批量停用', apiFlow.batachDisable(idList))
+        batchOptApi(
+          '批量停用',
+          apiFlow.batachEnable({ flowMessageIds: idList, flag: '0' })
+        )
         break
       case '批量启用':
         list.forEach(v => {
           idList.push({ processId: v.flowMessageId })
         })
-        batchOptApi('批量启用', apiFlow.batachEnable(idList))
+        batchOptApi(
+          '批量启用',
+          apiFlow.batachEnable({ flowMessageIds: idList, flag: '1' })
+        )
         break
     }
   }
@@ -708,6 +810,8 @@
       } else {
         ElMessage.error(`${type}失败，请重试！`)
       }
+      state.showToastDialog.show = false
+      reloadData()
     })
   }
 
@@ -755,7 +859,15 @@
     state.componentsTree.value = e.applyTypeId
 
     // 更新列表头 和 搜索条件
-    if (e.applyTypeId === sealApplyInitId.value) {
+    reloadSearchAndTablerHeader(e.applyTypeId)
+  }
+  const reloadData = () => {
+    reloadSearchAndTablerHeader(state.componentsTree.value)
+    table.value.reloadData()
+  }
+
+  const reloadSearchAndTablerHeader = id => {
+    if (id === sealApplyInitId.value) {
       // 用印申请
       state.componentsSearchForm.data = sealApplySearchForm
       state.componentsTable.header = tableHeaderSealApply
@@ -768,9 +880,6 @@
       table.value.setTableHeader(tableHeaderSeal)
       table.value.reloadSearchForm(noSealApplySearchForm)
     }
-  }
-  const reloadData = () => {
-    table.value.reloadData()
   }
   onBeforeMount(() => {
     // 发送api请求 查询表单树解构

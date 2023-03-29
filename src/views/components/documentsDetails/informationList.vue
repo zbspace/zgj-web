@@ -80,7 +80,7 @@
           box-sizing: border-box;
 
           .ap-cont-list-label {
-            width: 5rem;
+            width: 90px;
             display: flex;
             justify-content: flex-end;
             color: var(--jy-color-text-3);

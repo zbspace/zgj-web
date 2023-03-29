@@ -41,7 +41,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted } from 'vue'
+  import { reactive, onBeforeMount, onMounted, watch } from 'vue'
   const props = defineProps({
     // 标识
     refs: {
@@ -72,6 +72,13 @@
       data: []
     }
   })
+
+  watch(
+    () => props.data,
+    () => {
+      initData()
+    }
+  )
 
   // 初始化步骤
   function initData() {

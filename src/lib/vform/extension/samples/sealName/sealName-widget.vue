@@ -298,7 +298,15 @@
       },
 
       addItem() {
-        this.filedList.push({ seal: '', sealId: '', applySealNum: 1 })
+        this.filedList.push({
+          seal: '',
+          sealId: '',
+          applySealNum: 1,
+          sealIot: '', // 智能印章
+          markSeal: false,
+          sealRequiredTextShow: false,
+          routineSealRequiredTextShow: false
+        })
       },
       deleteItem(idx) {
         this.filedList.splice(idx, 1)

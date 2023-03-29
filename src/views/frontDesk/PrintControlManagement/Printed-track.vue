@@ -5,18 +5,6 @@
       <template #title>
         <div class="title">
           <div>用印轨迹</div>
-          <!-- <div>
-                        <el-button>
-                            <img class="button-icon" src="../../../assets/svg/gengduo-caozuo.svg" alt="" srcset="">
-                            <span>更多操作</span>
-                        </el-button>
-                    </div> -->
-        </div>
-      </template>
-      <template #tabs>
-        <div>
-          <componentsTabs activeName="1" :data="state.componentsTabs.data">
-          </componentsTabs>
         </div>
       </template>
       <template #searchForm>
@@ -36,6 +24,7 @@
             <div
               class="seal-item"
               v-for="(item, index) in state.componentsSealList.data"
+              :key="index"
             >
               <div
                 class="seal-item-wrap"
@@ -63,42 +52,16 @@
 </template>
 <script setup>
   import { reactive, onBeforeMount, onMounted } from 'vue'
-  import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  import componentsTree from '../../components/tree'
-  import componentsBreadcrumb from '../../components/breadcrumb'
-  import componentsPagination from '../../components/pagination.vue'
-  import componentsTabs from '../../components/JyTabs.vue'
   import componentsLayout from '../../components/Layout.vue'
-  import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
-  const emit = defineEmits([])
   const state = reactive({
-    componentsTabs: {
-      data: [
-        {
-          label: '待归档',
-          name: '1'
-        },
-        {
-          label: '已归档',
-          name: '2'
-        }
-      ]
-    },
     componentsSearchForm: {
       style: {
         lineStyle: {
           width: 'calc(100% / 3)'
         },
         labelStyle: {
-          width: '100px'
+          width: '70px'
         }
       },
       data: [

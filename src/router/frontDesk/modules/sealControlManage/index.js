@@ -28,17 +28,7 @@ const routes = {
           meta: { title: '用印申请', authRequired: true },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/Selection-form.vue'
-            )
-        },
-        // todo
-        {
-          path: 'selectionForm/confirmApprovalProcess',
-          name: 'ConfirmApprovalProcess',
-          meta: { title: '', authRequired: true },
-          component: () =>
-            import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/Confirm-approval-process.vue'
+              '@/views/frontDesk/PrintControlManagement/SealApplication/SelectionForm.vue'
             )
         },
         {
@@ -47,17 +37,16 @@ const routes = {
           meta: { title: '用印申请', authRequired: true },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/fill-form.vue'
+              '@/views/frontDesk/PrintControlManagement/SealApplication/FillForm.vue'
             )
         },
-        // todo
         {
           path: 'sealApplication/accomplish',
           name: 'Accomplish',
-          meta: { title: '???', authRequired: true },
+          meta: { title: '用印申请成功', authRequired: true },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/accomplish.vue'
+              '@/views/frontDesk/PrintControlManagement/SealApplication/Accomplish.vue'
             )
         },
         {
@@ -119,6 +108,18 @@ const routes = {
           component: () =>
             import(
               '@/views/frontDesk/PrintControlManagement/recordWithSeal.vue'
+            )
+        },
+        {
+          path: 'recordWithInvalid',
+          name: 'RecordWithInvalid',
+          meta: {
+            title: '已作废用印单据',
+            authRequired: true
+          },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/recordWithInvalid.vue'
             )
         },
         {

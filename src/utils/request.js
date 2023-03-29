@@ -46,14 +46,19 @@ const processErrorResponse = function (response) {
     })
     return Promise.reject(response || response.data)
   }
-  // 提示错误信息
-  ElMessage({
-    message: response
-      ? response.data.msg || response.data.message || '服务器打盹了，请稍后再试'
-      : '服务器打盹了，请稍后再试',
-    grouping: true,
-    type: 'error'
-  })
+  if (!response.config.hideError) {
+    // 提示错误信息
+    ElMessage({
+      message: response
+        ? response.data.msg ||
+          response.data.message ||
+          '服务器打盹了，请稍后再试'
+        : '服务器打盹了，请稍后再试',
+      grouping: true,
+      type: 'error'
+    })
+  }
+
   return Promise.reject(response.data)
 }
 

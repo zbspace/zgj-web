@@ -1,4 +1,4 @@
-import Request from '@/utils/request-util';
+import Request from '@/utils/request-util'
 
 /**
  * 流程实例api
@@ -14,7 +14,7 @@ export class InstanceApi {
    * @date 2022/08/27 11:56
    */
   static findPage(params) {
-    return Request.getAndLoadData('/ruInstance/page', params);
+    return Request.getAndLoadData('/ruInstance/page', params)
   }
 
   /**
@@ -24,7 +24,7 @@ export class InstanceApi {
    * @date 2022/08/27 11:56
    */
   static add(params) {
-    return Request.post('/ruInstance/add', params);
+    return Request.post('/ruInstance/add', params)
   }
 
   /**
@@ -34,7 +34,7 @@ export class InstanceApi {
    * @date 2022/08/27 11:56
    */
   static edit(params) {
-    return Request.post('/ruInstance/edit', params);
+    return Request.post('/ruInstance/edit', params)
   }
 
   /**
@@ -44,7 +44,7 @@ export class InstanceApi {
    * @date 2022/08/27 11:56
    */
   static delete(params) {
-    return Request.post('/ruInstance/delete', params);
+    return Request.post('/ruInstance/delete', params)
   }
 
   /**
@@ -54,6 +54,6 @@ export class InstanceApi {
    * @date 2022/08/27 11:56
    */
   static detail(params) {
-    return Request.getAndLoadData('/ruInstance/detail', params);
+    return Request.getAndLoadData('/ruInstance/detail', params)
   }
 }

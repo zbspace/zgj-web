@@ -36,7 +36,7 @@
 
         .ap-cont-box-title-label {
           display: inline-block;
-          width: 100%;
+          width: 80%;
           text-align: left;
           font-size: var(--jy-font-size-title-1);
           font-weight: var(--jy-font-weight-600);
@@ -45,6 +45,7 @@
         .ap-cont-box-title-sub {
           display: flex;
           align-items: center;
+          cursor: pointer;
 
           .ap-cont-box-title-sub-icon {
             margin-right: 0.5rem;

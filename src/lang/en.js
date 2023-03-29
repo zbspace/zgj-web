@@ -417,6 +417,8 @@ export const en = {
   't-zgj-Edit': 'Edit',
   't-zgj-Save': 'Save',
   't-zgj-Delete': 'Delete',
+  't-zgj-Revocation': 'Revocation',
+  't-zgj-Void': 'Void',
   't-zgj-list.outRegistration': 'Taking out Regist',
   't-zgj-list.restitution': 'Return Registration ',
   't-zgj-list.send': 'For Approval',

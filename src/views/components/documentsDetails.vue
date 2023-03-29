@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="ap-cont-tabsCont">
-            <el-scrollbar style="height: 100%; overflow: auto">
+            <el-scrollbar height="100%" always>
               <div class="scrollbar-div">
                 <!-- 用印详情 -->
                 <div
@@ -508,7 +508,7 @@
                         >
                           <img
                             class="sealDetails-basic-information-list-value-icon"
-                            :src="item.iconPath"
+                            :src="require(item.iconPath)"
                             :style="item.iconStyle"
                             alt=""
                             v-if="item.iconPath"
@@ -1021,65 +1021,7 @@
         basicInformation: {
           title: '基本信息',
           show: true,
-          data: [
-            {
-              label: '文件名称',
-              value: '上海建筑材料清单合同明细'
-            },
-            {
-              label: '单据编码',
-              value: '229987657667888'
-            },
-            {
-              label: '文件类型',
-              value: '合同清单'
-            },
-            {
-              label: '文件份数',
-              value: '1份'
-            },
-            {
-              label: '金额',
-              value: '11088.00'
-            },
-            {
-              label: '申请事由',
-              value: '20次'
-            },
-            {
-              label: '印章名称',
-              value: '销售合同'
-            },
-            {
-              label: '常规盖章',
-              value: '20次'
-            },
-            {
-              label: '盖章码',
-              value: '554778'
-            },
-            {
-              label: '申请人员',
-              value: '20次'
-            },
-            {
-              label: '申请时间',
-              value: '2022-2-12 12:44:58'
-            },
-            {
-              label: '所属部门',
-              value: '技术部'
-            },
-            {
-              label: '单据状态',
-              value: '智能用印中',
-              iconPath: yuanLvSvg,
-              iconStyle: {},
-              valStyle: {
-                color: 'var(--jy-success-6)'
-              }
-            }
-          ]
+          data: []
         },
         accessory: {
           title: '附件',
@@ -2371,7 +2313,7 @@
           title: '基本信息',
           show: true,
           labelStyle: {
-            width: '7rem'
+            width: '120px'
           },
           data: [
             {
@@ -2439,42 +2381,8 @@
       },
       // 流程版本
       ProcessVersion: {
-        header: [
-          {
-            prop: '1',
-            label: '版本号',
-            sortable: true,
-            'min-width': 150
-          },
-          {
-            prop: '2',
-            label: '版本时间',
-            sortable: true,
-            'min-width': 150
-          }
-        ],
-        data: [
-          {
-            1: 'V20221110-01',
-            2: '2022-12-04 11:55:12'
-          },
-          {
-            1: 'V20221110-01',
-            2: '2022-11-11 05:09:12'
-          },
-          {
-            1: 'V20221110-01',
-            2: '2022-11-17 22:29:12'
-          },
-          {
-            1: 'V20221110-01',
-            2: '2022-11-27 12:33:12'
-          },
-          {
-            1: 'V20221110-01',
-            2: '2022-12-04 06:47:12'
-          }
-        ],
+        header: [],
+        data: [],
         // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
         defaultAttribute: {
           border: true,
@@ -2833,7 +2741,7 @@
     },
     drawer: {
       show: false,
-      size: '50%',
+      size: '800px',
       FullScreenStatus: 0
     },
     componentsTabs: {
@@ -3142,7 +3050,8 @@
   // 处理 用印详情 Details-of-Printing
   const disDetailsaOfPrinting = element => {
     const DetailsaOfPrinting = state.cache.DetailsaOfPrinting
-    // console.log('--->', DetailsaOfPrinting)
+    console.log('DetailsaOfPrinting--->', DetailsaOfPrinting)
+    console.log('element--->', element)
 
     // 基本信息
     if (element.basicInformation && element.basicInformation.show === true) {
@@ -3336,17 +3245,18 @@
   }
   // 处理 流程详情 Process-Details
   const disProcessDetails = element => {
-    if (element['basicInformation-data']) {
-      state.cache.ProcessDetails.basicInformation.data =
-        element['basicInformation-data']
+    const processDetail = state.cache.ProcessDetails
+    if (element.basicInformation && element.basicInformation.show === true) {
+      processDetail.basicInformation.show = true
+    }
+    if (element.basicInformation && element.basicInformation.data) {
+      processDetail.basicInformation.data = element.basicInformation.data
     }
   }
   // 处理 流程版本 Process-Version
   const disProcessVersion = element => {
-    if (element.data) {
-      state.cache.ProcessVersion.header = element.header
-      state.cache.ProcessVersion.data = element.data
-    }
+    state.cache.ProcessVersion.header = element.ProcessVersion.header
+    state.cache.ProcessVersion.data = element.ProcessVersion.data
   }
   // 处理 表单详情 Form-Details
   const disFormDetails = element => {
@@ -3410,7 +3320,7 @@
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     // 初始化数据
-    initData()
+    // initData()
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)
@@ -3477,7 +3387,7 @@
     }
 
     .ap-cont-tabsCont {
-      width: calc(100% + 18px);
+      width: 100%;
       height: calc(100% - 80px);
 
       .arco-scrollbar {
@@ -3485,7 +3395,7 @@
       }
 
       .scrollbar-div {
-        padding-right: 18px;
+        // padding-right: 18px;
         box-sizing: border-box;
       }
 

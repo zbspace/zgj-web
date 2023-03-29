@@ -36,6 +36,7 @@
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
                   clearable
+                  @keyup.enter="reloadData"
                 />
               </div>
             </div>
@@ -100,6 +101,8 @@
                   v-model="item.values"
                   v-bind="item.defaultAttribute"
                   :ref="el => setRef(el, item)"
+                  collapse-tags
+                  collapse-tags-tooltip
                   style="width: 100%"
                   :class="
                     (item.defaultAttribute.multiple &&
@@ -417,7 +420,15 @@
         </div>
       </el-scrollbar>
     </div>
-
+    <!-- 用户、部门弹框 -->
+    <kDepartOrPersonVue
+      v-if="showDepPerDialog"
+      :show="showDepPerDialog"
+      @update:show="closeShow"
+      :searchSelected="searchSelected"
+      @update:searchSelected="submit"
+      :tabsShow="tabsShow"
+    />
     <!-- 往来单位弹框选择 -->
     <JyRelatedCompany
       v-model="wldwDialogVisible"
@@ -443,8 +454,10 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, computed, ref } from 'vue'
+  import { reactive, onBeforeMount, computed, ref, watch } from 'vue'
   import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
+  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+
   import request from '@/utils/request'
   const props = defineProps({
     // 标识
@@ -504,8 +517,12 @@
       }
     }
   })
+  const showDepPerDialog = ref(false)
   const showDocumentTypeDialog = ref(false)
+  const tabsShow = ref([])
   const documentTypeSelected = ref([])
+  const searchSelected = ref([])
+  const kDepartOrPerson = ref(null)
   const kDialogOpenId = ref(null)
   const wldwDialogVisible = ref(false)
   const yzDialogVisible = ref(false)
@@ -604,6 +621,13 @@
     }
   })
 
+  watch(
+    () => props.data,
+    () => {
+      initPropsData()
+    }
+  )
+
   // 初始化表单单数据
   function initFormData(searchQuery) {
     const queryData = searchQuery || serachData.value
@@ -658,15 +682,16 @@
       showDocumentTypeDialog.value = true
       kDialogOpenId.value = item.id
     }
-    // showDepPerDialog.value = true
-    // kDialogOpenId.value = item.id
-    // if (item.defaultAttribute.type === 'user') {
-    //   tabsShow.value = ['user']
-    //   searchSelected.value = []
-    // } else {
-    //   tabsShow.value = ['organ']
-    //   searchSelected.value = []
-    // }
+    showDepPerDialog.value = true
+    kDialogOpenId.value = item.id
+    kDepartOrPerson.value = item.id
+    if (item.defaultAttribute.type === 'user') {
+      tabsShow.value = ['user']
+      searchSelected.value = []
+    } else {
+      tabsShow.value = ['organ']
+      searchSelected.value = []
+    }
   }
 
   // 文件类型提交
@@ -809,6 +834,29 @@
   const setRef = (el, attr) => {
     if (el) {
       derivableRef[attr.id] = el
+    }
+  }
+
+  const closeShow = () => {
+    showDepPerDialog.value = false
+  }
+
+  const submit = value => {
+    const index = state.cache.formData.findIndex(
+      i => i.id === kDepartOrPerson.value
+    )
+    if (index > -1) {
+      if (state.cache.formData[index].defaultAttribute.multiple) {
+        state.cache.formData[index].values = value.map(i => i.id)
+      } else {
+        state.cache.formData[index].values = value[0].id
+      }
+      state.cache.formData[index].options = value.map(i => {
+        return {
+          label: i.name,
+          value: i.id
+        }
+      })
     }
   }
   onBeforeMount(() => {

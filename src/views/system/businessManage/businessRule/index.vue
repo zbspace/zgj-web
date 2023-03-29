@@ -125,7 +125,7 @@
           }
         },
         {
-          id: 'status',
+          id: 'flag',
           label: '状态',
           type: 'select',
           inCommonUse: true,
