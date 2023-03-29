@@ -47,7 +47,7 @@ const routes = {
           meta: { title: '用印申请成功', authRequired: true },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/Seal-SealApplication/Accomplish.vue'
+              '@/views/frontDesk/PrintControlManagement/SealApplication/Accomplish.vue'
             )
         },
         {
