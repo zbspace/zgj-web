@@ -3,30 +3,6 @@ import request from '@/utils/request'
 // 智能用印
 
 const api = {}
-// 智能用印列表（待智能用印）
-api.pageNoUse = data => {
-  return request({
-    method: 'GET',
-    url: '/sealApply/intellect/pageNoUse',
-    params: data
-  })
-}
-// 智能用印列表（智能用印中）
-api.pageUsing = data => {
-  return request({
-    method: 'GET',
-    url: '/sealApply/intellect/pageUsing',
-    params: data
-  })
-}
-// 智能用印列表（已完成用印）
-api.pageUseDone = data => {
-  return request({
-    method: 'GET',
-    url: '/sealApply/intellect/pageUseDone',
-    params: data
-  })
-}
 // 转常规智能用印
 api.turnNomalUse = data => {
   return request({
@@ -73,6 +49,14 @@ api.flowList = data => {
     method: 'GET',
     url: '/sealApply/intellect/flowList',
     params: data
+  })
+}
+// 用印详情基本信息
+api.sealBaseInfo = params => {
+  return request({
+    method: 'GET',
+    url: '/sealApply/query/basic',
+    params
   })
 }
 export default api

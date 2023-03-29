@@ -1,6 +1,6 @@
 <template>
   <div class="verification-details">
-    <div class="verification-wrap" v-for="(it, id) in data">
+    <div class="verification-wrap" v-for="(it, id) in data" :key="id">
       <div class="verification-title" v-if="it.length > 0">
         <div
           class="verification-title-item verification-title-item-success"
@@ -27,7 +27,9 @@
             :class="{ 'show-icon': state.historyShow }"
           ></div
         ></div>
-        <button v-if="id === 'errorResult'">人工核验</button>
+        <el-button type="primary" v-if="id === 'errorResult'"
+          >人工核验</el-button
+        >
       </div>
       <div
         class="verification-list"
@@ -35,7 +37,11 @@
           'verification-list-hide': id === 'historyResult' && !state.historyShow
         }"
       >
-        <div class="verification-list-item" v-for="(item, index) in it">
+        <div
+          class="verification-list-item"
+          v-for="(item, index) in it"
+          :key="index"
+        >
           <div class="file-name-result">
             <div class="name"
               ><span v-if="id != 'historyResult'" :class="id + '-span'"></span
@@ -58,26 +64,26 @@
 </template>
 <script setup>
   import { reactive, onBeforeMount, onMounted } from 'vue'
-  const props = defineProps({
-    // 归档列表
-    data: {
-      type: Object,
-      default: {
-        successResult: [
-          // 核验通过
-        ],
-        errorResult: [
-          // 核验异常
-        ],
-        normalResult: [
-          // 未核验
-        ],
-        historyResult: [
-          // 历史文件核验列表
-        ]
-      }
-    }
-  })
+  // const props = defineProps({
+  //   // 归档列表
+  //   data: {
+  //     type: Object,
+  //     default: {
+  //       successResult: [
+  //         // 核验通过
+  //       ],
+  //       errorResult: [
+  //         // 核验异常
+  //       ],
+  //       normalResult: [
+  //         // 未核验
+  //       ],
+  //       historyResult: [
+  //         // 历史文件核验列表
+  //       ]
+  //     }
+  //   }
+  // })
   const state = reactive({
     historyShow: true
   })
@@ -104,15 +110,15 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      > button {
-        width: 80px;
-        height: 28px;
-        background: #d0963e;
-        border-radius: 2px;
-        font-size: 12px;
-        color: #fff;
-        border: none;
-      }
+      // > button {
+      //   width: 80px;
+      //   height: 28px;
+      //   background: #d0963e;
+      //   border-radius: 2px;
+      //   font-size: 12px;
+      //   color: #fff;
+      //   border: none;
+      // }
       .verification-title-item {
         display: flex;
         align-items: center;

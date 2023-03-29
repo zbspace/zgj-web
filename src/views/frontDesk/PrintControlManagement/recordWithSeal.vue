@@ -58,94 +58,6 @@
         </div>
       </template>
     </JyTable>
-    <!-- <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
-      <template #title>
-        <div class="title">
-          <div>用印记录</div>
-          <div class="title-more">
-            <div class="title-more-add"> </div>
-            <div
-              class="title-more-down"
-              v-if="state.componentsTitle.more.data.length > 0"
-            >
-              <el-dropdown>
-                <el-button>
-                  <img
-                    class="button-icon"
-                    src="../../../assets/svg/gengduo-caozuo.svg"
-                    alt=""
-                    srcset=""
-                  />
-                  <span>更多操作</span>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item
-                      v-for="(item, index) in state.componentsTitle.more.data"
-                      :key="index"
-                    >
-                      {{ item.name }}
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #tabs>
-        <div>
-          <componentsTabs
-            activeName="1"
-            :data="state.componentsTabs.data"
-            @tab-change="tabChange"
-          >
-          </componentsTabs>
-        </div>
-      </template>
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickElement="clickElement"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            isSelection
-            @cellClick="cellClick"
-            @custom-click="customClick"
-            @selection-change="selectionChange"
-          >
-          </componentsTable>
-        </div>
-      </template>
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout> -->
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -200,7 +112,6 @@
   import JyTable from '@/views/components/JyTable.vue'
   import componentsTabs from '@/views/components/JyTabs.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
   import { useRouter } from 'vue-router'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import dialogProcessJson from '@/views/addDynamicFormJson/ProcessStopJson.json'
@@ -213,6 +124,7 @@
   import listResultDone from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listResultDone.json'
   import listUseDone from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listUseDone.json'
   import listUsing from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listUsing.json'
+  import sealApplyIntellect from '@/api/frontDesk/printControl/sealApplyIntellect'
 
   const router = useRouter()
   const showDepPerDialog = ref(false)
@@ -240,16 +152,10 @@
       vFormLibraryRef.value.resetForm()
       return
     }
-    vFormLibraryRef.value
-      .getFormData()
-      .then(formData => {
-        alert(JSON.stringify(formData))
-        // fromState.showDialog = false
-      })
-      .catch(error => {
-        // Form Validation failed
-        ElMessage.error(error)
-      })
+    vFormLibraryRef.value.getFormData().then(formData => {
+      alert(JSON.stringify(formData))
+      // fromState.showDialog = false
+    })
   }
   const state = reactive({
     componentsTitle: {
@@ -337,48 +243,7 @@
           id: 'fileTypeId',
           label: '文件类型',
           type: 'select',
-          options: [
-            {
-              label: '归档强制',
-              value: '1'
-            },
-            {
-              label: '审批测试',
-              value: '2'
-            },
-            {
-              label: '测试审批',
-              value: '3'
-            },
-            {
-              label: '中安全+移动侦测',
-              value: '4'
-            },
-            {
-              label: '中安全+骑缝',
-              value: '4'
-            },
-            {
-              label: '白板',
-              value: '4'
-            },
-            {
-              label: '中安全+远程+视频+盖后+限次',
-              value: '4'
-            },
-            {
-              label: '中安全-多组合',
-              value: '4'
-            },
-            {
-              label: '中安全--',
-              value: '4'
-            },
-            {
-              label: '中安全-盖后',
-              value: '4'
-            }
-          ]
+          options: []
         },
         {
           id: 'sealId',
@@ -590,9 +455,117 @@
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    // console.log(row, column, cell, event);
+    // console.log(row, column)
     if (column.property === 'useSealFileName') {
-      state.componentsDocumentsDetails.show = true
+      sealApplyIntellect
+        .sealBaseInfo({
+          useSealApplyId: row.useSealApplyId
+        })
+        .then(res => {
+          const data = res.data
+          const detail = [
+            {
+              label: '文件名称',
+              value: data.useSealFileName
+            },
+            {
+              label: '单据编码',
+              value: data.useSealApplyNo
+            },
+            {
+              label: '文件类型',
+              value: data.fileTypeName
+            },
+            {
+              label: '文件份数',
+              value: (data.useSealFileNum || 0) + '份'
+            },
+            {
+              label: '金额',
+              value: data.totalMoney || '-'
+            },
+            {
+              label: '申请事由',
+              value: data.useSealInfo
+            },
+            // {
+            //   label: '印章名称',
+            //   value: '销售合同'
+            // },
+            // {
+            //   label: '常规盖章',
+            //   value: '20次'
+            // },
+            {
+              label: '盖章码',
+              value: data.sealCode || '-'
+            },
+            {
+              label: '申请人员',
+              value: data.applyUserName
+            },
+            {
+              label: '申请时间',
+              value: data.applyDatetime
+            },
+            {
+              label: '所属部门',
+              value: data.applyOrganName
+            },
+            {
+              label: '单据状态',
+              value:
+                data.useSealStateId === 'APPROVAL'
+                  ? '用印审批中'
+                  : data.useSealStateId === 'USING'
+                  ? '智能用印中'
+                  : '',
+              iconPath: '@/assets/svg/yuan-lv.svg',
+              iconStyle: {},
+              valStyle: {
+                color: 'var(--jy-success-6)'
+              }
+            }
+          ]
+          if (data.listSeal.length) {
+            if (data.listSeal.length === 1) {
+              detail.splice(
+                detail.length - 5,
+                0,
+                {
+                  label: '印章名称',
+                  value: data.listSeal[0].useSealApplySealInfoDto.sealName
+                },
+                {
+                  label: '常规盖章',
+                  value:
+                    data.listSeal[0].useSealApplySealNumDto.applySealNum + '次'
+                }
+              )
+            } else {
+              data.listSeal.forEach((item, index) => {
+                detail.splice(
+                  detail.length - 5,
+                  0,
+                  {
+                    label: `印章${index + 1}名称`,
+                    value: item.useSealApplySealInfoDto.sealName
+                  },
+                  {
+                    label: '常规盖章',
+                    value: item.useSealApplySealNumDto.applySealNum + '次'
+                  }
+                )
+              })
+            }
+          }
+          state.componentsDocumentsDetails.visible[0].basicInformation = {
+            show: true,
+            data: detail
+          }
+          state.componentsDocumentsDetails.show = true
+          console.log(res)
+        })
     }
   }
   // 点击表格按钮
