@@ -44,10 +44,10 @@ const routes = {
         {
           path: 'sealApplication/accomplish',
           name: 'Accomplish',
-          meta: { title: '???', authRequired: true },
+          meta: { title: '用印申请成功', authRequired: true },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/Seal-application/Accomplish.vue'
+              '@/views/frontDesk/PrintControlManagement/Seal-SealApplication/Accomplish.vue'
             )
         },
         {
