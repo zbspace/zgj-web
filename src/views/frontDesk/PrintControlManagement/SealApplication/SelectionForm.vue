@@ -10,6 +10,16 @@
       </template>
       <template #custom>
         <div class="custom">
+          <el-input
+            v-model="keyword"
+            placeholder="请输入表单名称"
+            clearable
+            class="formInput"
+            @clear="applyList"
+            @keyup.enter="applyList"
+            :prefix-icon="Search"
+          >
+          </el-input>
           <!-- <div class="ap-cont-info">
             <div class="ap-cont-info-icon">
               <img
@@ -73,18 +83,6 @@
               <div class="ap-cont-liuc-buzou-text"> 完成用印申请 </div>
             </div>
           </div>
-          <el-input
-            v-model="keyword"
-            placeholder="请输入表单名称"
-            clearable
-            style="margin-bottom: 1rem"
-            @clear="applyList()"
-            @keyup.enter="applyList()"
-          >
-            <template #append>
-              <el-button :icon="Search" @click.stop="applyList()" />
-            </template>
-          </el-input>
           <div class="ap-cont-liebiao">
             <div
               class="ap-cont-liebiao-list"
@@ -203,7 +201,7 @@
     sealApply
       .list({ keyword: keyword.value })
       .then(res => {
-        applyLists.value = res.data
+        applyLists.value = res.data || []
       })
       .finally(() => {
         loading.value = false
@@ -236,6 +234,14 @@
       // padding-right: 1.25rem;
       box-sizing: border-box;
       text-align: center;
+      position: relative;
+
+      .formInput {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 30%;
+      }
 
       .ap-cont-info {
         display: flex;
