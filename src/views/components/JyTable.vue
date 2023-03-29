@@ -125,6 +125,15 @@
                     }}
                   </div>
 
+                  <!-- 格式化 -->
+                  <div
+                    v-if="item.type === 'format'"
+                    class="flag-cell"
+                    :class="item.align"
+                  >
+                    {{ formatData(item, scope.row) }}
+                  </div>
+
                   <div
                     class="custom"
                     :index="scope.$index"
@@ -216,7 +225,14 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, onBeforeMount, defineExpose, nextTick } from 'vue'
+  import {
+    ref,
+    reactive,
+    onBeforeMount,
+    defineExpose,
+    nextTick,
+    watch
+  } from 'vue'
   import componentsLayout from '@/views/components/Layout'
   import componentsSearchForm from '@/views/components/searchForm'
   import componentsPagination from '@/views/components/pagination'
@@ -271,6 +287,12 @@
     breadcrumb: {
       type: Boolean,
       default: false
+    },
+    computedData: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   })
 
@@ -339,6 +361,17 @@
     'clickBatchButton',
     'clickElement'
   ])
+
+  watch(
+    () => props.componentsTableHeader,
+    () => {
+      state.componentsTable.headers = props.componentsTableHeader
+    }
+  )
+
+  const formatData = (item, row) => {
+    return item.statusList.find(i => i.key === row[item.prop])?.label
+  }
 
   const reloadSearchForm = data => {
     searchForm.value.initFormData(data)
@@ -511,6 +544,48 @@
         state.componentsPagination.data.amount = result.data.total
         state.componentsPagination.defaultAttribute.total = result.data.total
         loading.value = false
+        if (props.computedData.length) {
+          props.computedData.forEach(i => {
+            state.componentsTable.data.forEach(one => {
+              request({
+                ...i.request,
+                ...{
+                  params: {
+                    [i.computedData]: one[i.computedData]
+                  },
+                  hideError: true
+                }
+              }).then(
+                data => {
+                  switch (data.data.data.instanceStatus) {
+                    case 1:
+                      one[i.prop] = '审批中'
+                      break
+                    case 2:
+                      one[i.prop] = '已完成'
+                      break
+                    case 3:
+                      one[i.prop] = '拒绝'
+                      break
+                    case 4:
+                      one[i.prop] = '挂起'
+                      break
+                    case 5:
+                      one[i.prop] = '作废'
+                      break
+                    default:
+                      one[i.prop] = '未知'
+                      break
+                  }
+                  // one[i.prop] = data.data.data.instanceStatus
+                },
+                () => {
+                  one[i.prop] = '未知'
+                }
+              )
+            })
+          })
+        }
       },
       () => {
         loading.value = false

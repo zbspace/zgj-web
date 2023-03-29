@@ -53,10 +53,10 @@
     "min-width": 150,
     "rankDisplayData": [
       {
-        "name": "撤销"
+        "name": "t-zgj-Revocation"
       },
       {
-        "name": "作废"
+        "name": "t-zgj-Void"
       }
     ]
   }

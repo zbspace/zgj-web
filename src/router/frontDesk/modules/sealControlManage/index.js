@@ -122,6 +122,18 @@ const routes = {
             )
         },
         {
+          path: 'recordWithInvalid',
+          name: 'RecordWithInvalid',
+          meta: {
+            title: '已作废用印单据',
+            authRequired: true
+          },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/recordWithInvalid.vue'
+            )
+        },
+        {
           path: 'recordWithSeal/innerPageApplication',
           name: 'InnerPageApplication',
           meta: { title: '用印申请', authRequired: true },

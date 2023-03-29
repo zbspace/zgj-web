@@ -36,6 +36,7 @@
                   v-bind="item.defaultAttribute"
                   v-model="item.value"
                   clearable
+                  @keyup.enter="reloadData"
                 />
               </div>
             </div>
@@ -443,7 +444,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, computed, ref } from 'vue'
+  import { reactive, onBeforeMount, computed, ref, watch } from 'vue'
   import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
   import request from '@/utils/request'
   const props = defineProps({
@@ -603,6 +604,13 @@
       return props.data
     }
   })
+
+  watch(
+    () => props.data,
+    () => {
+      initPropsData()
+    }
+  )
 
   // 初始化表单单数据
   function initFormData(searchQuery) {

@@ -59,4 +59,28 @@ api.sealBaseInfo = params => {
     params
   })
 }
+// 用印申请撤销
+api.cancel = data => {
+  return request({
+    method: 'POST',
+    url: '/sealApply/cancel',
+    data
+  })
+}
+// 用印申请作废
+api.invalid = data => {
+  return request({
+    method: 'POST',
+    url: '/sealApply/invalid',
+    data
+  })
+}
+// 解除用印限制
+api.relieveUseLimit = data => {
+  return request({
+    method: 'POST',
+    url: '/sealApply/relieveUseLimit',
+    data
+  })
+}
 export default api

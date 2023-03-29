@@ -1,4 +1,4 @@
-import Request from '@/utils/request-util';
+import Request from '@/utils/request-util'
 
 /**
  * 流程审批api
@@ -14,7 +14,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static start(params) {
-    return Request.post('/approver/start', params);
+    return Request.post('/approver/start', params)
   }
 
   /**
@@ -24,7 +24,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static startByBack(params) {
-    return Request.post('/approver/startByBack', params);
+    return Request.post('/approver/startByBack', params)
   }
 
   /**
@@ -34,7 +34,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static agree(params) {
-    return Request.post('/approver/agree', params);
+    return Request.post('/approver/agree', params)
   }
 
   /**
@@ -44,7 +44,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static reject(params) {
-    return Request.post('/approver/reject', params);
+    return Request.post('/approver/reject', params)
   }
 
   /**
@@ -54,7 +54,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static turn(params) {
-    return Request.post('/approver/turn', params);
+    return Request.post('/approver/turn', params)
   }
 
   /**
@@ -64,7 +64,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static addSign(params) {
-    return Request.post('/approver/addSign', params);
+    return Request.post('/approver/addSign', params)
   }
 
   /**
@@ -74,7 +74,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static consult(params) {
-    return Request.post('/approver/consult', params);
+    return Request.post('/approver/consult', params)
   }
 
   /**
@@ -84,7 +84,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static consultSubmit(params) {
-    return Request.post('/approver/consultSubmit', params);
+    return Request.post('/approver/consultSubmit', params)
   }
 
   /**
@@ -94,7 +94,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static withdraw(params) {
-    return Request.post('/approver/withdraw', params);
+    return Request.post('/approver/withdraw', params)
   }
 
   /**
@@ -104,7 +104,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static returned(params) {
-    return Request.post('/approver/returned', params);
+    return Request.post('/approver/returned', params)
   }
 
   /**
@@ -114,7 +114,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static suspend(params) {
-    return Request.post('/approver/suspend', params);
+    return Request.post('/approver/suspend', params)
   }
 
   /**
@@ -124,7 +124,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static suspends(params) {
-    return Request.post('/approver/suspends', params);
+    return Request.post('/approver/suspends', params)
   }
 
   /**
@@ -134,7 +134,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static active(params) {
-    return Request.post('/approver/active', params);
+    return Request.post('/approver/active', params)
   }
 
   /**
@@ -144,7 +144,7 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static actives(params) {
-    return Request.post('/approver/actives', params);
+    return Request.post('/approver/actives', params)
   }
 
   /**
@@ -154,13 +154,13 @@ export class ApproverApi {
    * @date 2022/08/13 13:21
    */
   static close(params) {
-    return Request.post('/approver/close', params);
+    return Request.post('/approver/close', params)
   }
 
   /**
    * 获取模型信息,传入
    */
   static getModel(modelKey) {
-    return Request.get('/workflow/model/getByKey', { modelKey: modelKey });
+    return Request.get('/workflow/model/getByKey', { modelKey })
   }
 }

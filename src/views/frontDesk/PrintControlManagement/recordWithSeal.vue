@@ -8,6 +8,9 @@
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
+      :computedData="
+        currentActiveName === 'listApproving' ? state.computedData : []
+      "
       tableClick="useSealFileName"
       @cellClick="cellClick"
       @customClick="customClick"
@@ -93,18 +96,13 @@
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
-    <JyElMessageBox
+    <!-- 单个操作 -->
+    <actionOneDialog
       v-model="state.JyElMessageBox.show"
-      :show="state.JyElMessageBox.show"
-      :defaultAttribute="{}"
-    >
-      <template #header>
-        {{ state.JyElMessageBox.header.data }}
-      </template>
-      <template #content>
-        {{ state.JyElMessageBox.content.data }}
-      </template>
-    </JyElMessageBox>
+      :JyElMessageBox="state.JyElMessageBox"
+      @update:modelValue="state.JyElMessageBox.show"
+      @submitElMessageBox="submitElMessageBox"
+    ></actionOneDialog>
   </div>
 </template>
 <script setup>
@@ -125,6 +123,8 @@
   import listUseDone from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listUseDone.json'
   import listUsing from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/recordWithSeal/listUsing.json'
   import sealApplyIntellect from '@/api/frontDesk/printControl/sealApplyIntellect'
+  import actionOneDialog from '@/views/components/actionOneDialog.vue'
+  import { ApproverApi } from '@/api/flow/ApproverApi'
 
   const router = useRouter()
   const showDepPerDialog = ref(false)
@@ -162,7 +162,7 @@
       more: {
         data: [
           {
-            name: ''
+            name: '查看已作废的单据'
           }
         ]
       }
@@ -444,6 +444,9 @@
       ]
     },
     JyElMessageBox: {
+      type: '',
+      row: '',
+      flag: '',
       show: false,
       header: {
         data: ''
@@ -451,11 +454,20 @@
       content: {
         data: ''
       }
-    }
+    },
+    computedData: [
+      {
+        computedData: 'instanceId',
+        prop: 'approvalStatus',
+        request: {
+          url: '/ruInstance/detail',
+          method: 'GET'
+        }
+      }
+    ]
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    // console.log(row, column)
     if (column.property === 'useSealFileName') {
       sealApplyIntellect
         .sealBaseInfo({
@@ -488,14 +500,6 @@
               label: '申请事由',
               value: data.useSealInfo
             },
-            // {
-            //   label: '印章名称',
-            //   value: '销售合同'
-            // },
-            // {
-            //   label: '常规盖章',
-            //   value: '20次'
-            // },
             {
               label: '盖章码',
               value: data.sealCode || '-'
@@ -564,19 +568,20 @@
             data: detail
           }
           state.componentsDocumentsDetails.show = true
-          console.log(res)
         })
     }
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    if (cell.name === '撤销') {
+    state.JyElMessageBox.type = cell.name
+    state.JyElMessageBox.row = row
+    if (cell.name === 't-zgj-Revocation') {
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data =
         '撤销后本次申请送审将被取消，请问确定要撤销吗？'
       state.JyElMessageBox.show = true
     }
-    if (cell.name === '作废') {
+    if (cell.name === 't-zgj-Void') {
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data =
         '作废后当前记录将从当前表格中消失，请问确定要作废吗？'
@@ -616,6 +621,49 @@
       })
     }
   }
+
+  const submitElMessageBox = () => {
+    if (state.JyElMessageBox.type === 't-zgj-Revocation') {
+      ApproverApi.withdraw({
+        taskId: state.JyElMessageBox.row.taskId
+      })
+        .then(() => {
+          sealApplyIntellect
+            .cancel({
+              sealUseApplyIds: state.JyElMessageBox.row.useSealApplyId
+            })
+            .then(() => {
+              jyTable.value.reloadData()
+            })
+            .finally(() => {
+              state.JyElMessageBox.show = false
+            })
+        })
+        .finally(() => {
+          state.JyElMessageBox.show = false
+        })
+    } else if (state.JyElMessageBox.type === 't-zgj-Void') {
+      ApproverApi.withdraw({
+        taskId: state.JyElMessageBox.row.taskId
+      })
+        .then(() => {
+          sealApplyIntellect
+            .invalid({
+              sealUseApplyIds: state.JyElMessageBox.row.useSealApplyId
+            })
+            .then(() => {
+              jyTable.value.reloadData()
+            })
+            .finally(() => {
+              state.JyElMessageBox.show = false
+            })
+        })
+        .finally(() => {
+          state.JyElMessageBox.show = false
+        })
+    }
+  }
+
   // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
@@ -625,6 +673,7 @@
   function tabChange(activeName) {
     console.log(activeName)
     state.componentsTable.header = tableHeaders.value[activeName]
+    console.log(state.componentsTable.header)
     currentActiveName.value = activeName
     nextTick(() => {
       jyTable.value.reloadData()
