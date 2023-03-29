@@ -293,8 +293,10 @@
   function clickNextStep() {
     refFillFormInformation.value.getFormData().then(formData => {
       state.cache.formData = formData
-      state.cache.flowList[0].active = false
-      state.cache.flowList[1].active = true
+      const flowList = state.cache.flowList
+      flowList[0].active = false
+      flowList[1].active = true
+      state.cache.flowList = JSON.parse(JSON.stringify(flowList))
       step.value = 'two'
       sealApply
         .flowList({
@@ -333,8 +335,10 @@
 
   // 上一步
   function clickPrevious() {
-    state.cache.flowList[0].active = true
-    state.cache.flowList[1].active = false
+    const flowList = state.cache.flowList
+    flowList[0].active = true
+    flowList[1].active = false
+    state.cache.flowList = JSON.parse(JSON.stringify(flowList))
     step.value = 'one'
   }
 
