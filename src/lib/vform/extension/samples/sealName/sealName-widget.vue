@@ -28,26 +28,33 @@
             }"
           >
             <div style="width: 100%; display: flex; height: 32px">
-              <el-input v-model="obj.sealId" v-if="false"></el-input>
-              <el-input
-                v-model="obj.seal"
+              <el-select
+                ref="fieldEditor"
                 :size="field.options.size"
+                v-model="obj.seal"
+                class="full-width-input select-prefix"
                 :disabled="field.options.disabled"
-                :readonly="field.options.readonly"
-                @click="openSelectWin(index)"
-                @clear="onClear($event, index)"
-                :clearable="field.options.clearable"
+                :placeholder="
+                  field.options.placeholder ||
+                  i18nt('render.hint.selectPlaceholder')
+                "
+                @click.stop="openSelectWin(index)"
+                popper-class="select-hidden"
+                style="width: 100%"
               >
-                <template #append>
-                  <el-button
-                    icon="el-icon-search"
-                    :size="field.options.size"
-                    :disabled="field.options.disabled"
-                    @click="openSelectWin(index)"
-                  >
-                  </el-button>
+                <template #prefix>
+                  <svg class="iconpark-icon">
+                    <use href="#selecticon"></use>
+                  </svg>
                 </template>
-              </el-input>
+                <el-option
+                  v-for="item in filedList[index]"
+                  :key="item.sealId"
+                  :label="item.seal"
+                  :value="item.sealId"
+                >
+                </el-option>
+              </el-select>
               &emsp;&emsp;
               <template v-if="index == 0">
                 <el-button
@@ -363,5 +370,32 @@
   :deep(.label-right-align) .el-form-item__label {
     text-align: right;
     justify-content: flex-end !important;
+  }
+
+  // select 自定义右侧icon
+  :deep(.select-prefix) {
+    .el-input__suffix {
+      display: none;
+    }
+    .el-input__prefix {
+      position: absolute;
+      right: 16px;
+      width: 12px;
+      height: 16px;
+      .el-input__prefix-inner {
+        background: rgb(255, 255, 255);
+        .iconpark-icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          color: #000;
+        }
+      }
+    }
+  }
+</style>
+<style>
+  .select-hidden {
+    display: none;
   }
 </style>

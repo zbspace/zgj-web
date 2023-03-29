@@ -29,10 +29,34 @@
       :remote="field.options.remote"
       :remote-method="remoteQuery"
       @blur="handleBlurCustomEvent"
-      @change="onChange"
       @click.stop="onClick"
       popper-class="select-hidden"
     >
+      <template #prefix>
+        <div
+          style="
+            position: absolute;
+            right: 12px;
+            width: 12px;
+            bottom: 12px;
+            height: 16px;
+            background: rgb(255, 255, 255);
+            z-index: 3;
+          "
+        >
+          <svg
+            class="iconpark-icon"
+            style="
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              color: #000;
+            "
+          >
+            <use href="#selecticon"></use>
+          </svg>
+        </div>
+      </template>
       <el-option
         v-for="item in fileTypeOptions"
         :key="item.fileTypeId"
@@ -131,16 +155,6 @@
     methods: {
       setRequiredTextShow(v) {
         this.field.options.requiredTextShow = v
-      },
-      handleCloseCustomEvent() {
-        if (this.field.options.onClose) {
-          const changeFn = new Function(this.field.options.onClose)
-          changeFn.call(this)
-        }
-      },
-      onChange(value, name) {
-        console.log('--->', value)
-        this.handleChangeEvent(value, name)
       },
       documentTypeSubmit(list) {
         if (list.length) {
