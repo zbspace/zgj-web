@@ -545,42 +545,46 @@
         if (props.computedData.length) {
           props.computedData.forEach(i => {
             state.componentsTable.data.forEach(one => {
-              request({
-                ...i.request,
-                ...{
-                  params: {
-                    [i.computedData]: one[i.computedData]
-                  },
-                  hideError: true
-                }
-              }).then(
-                data => {
-                  switch (data.data.data.instanceStatus) {
-                    case 1:
-                      one[i.prop] = '审批中'
-                      break
-                    case 2:
-                      one[i.prop] = '已完成'
-                      break
-                    case 3:
-                      one[i.prop] = '拒绝'
-                      break
-                    case 4:
-                      one[i.prop] = '挂起'
-                      break
-                    case 5:
-                      one[i.prop] = '作废'
-                      break
-                    default:
-                      one[i.prop] = '未知'
-                      break
+              if (one[i.computedData]) {
+                request({
+                  ...i.request,
+                  ...{
+                    params: {
+                      [i.computedData]: one[i.computedData]
+                    },
+                    hideError: true
                   }
-                  // one[i.prop] = data.data.data.instanceStatus
-                },
-                () => {
-                  one[i.prop] = '未知'
-                }
-              )
+                }).then(
+                  data => {
+                    switch (data.data.data.instanceStatus) {
+                      case 1:
+                        one[i.prop] = '审批中'
+                        break
+                      case 2:
+                        one[i.prop] = '已完成'
+                        break
+                      case 3:
+                        one[i.prop] = '拒绝'
+                        break
+                      case 4:
+                        one[i.prop] = '挂起'
+                        break
+                      case 5:
+                        one[i.prop] = '作废'
+                        break
+                      default:
+                        one[i.prop] = '未知'
+                        break
+                    }
+                    // one[i.prop] = data.data.data.instanceStatus
+                  },
+                  () => {
+                    one[i.prop] = '未知'
+                  }
+                )
+              } else {
+                one[i.prop] = '未知'
+              }
             })
           })
         }
