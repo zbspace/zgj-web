@@ -7,47 +7,41 @@
           <div>用印轨迹</div>
         </div>
       </template>
+      <template #searchForm>
+        <div>
+          <componentsSearchForm
+            :data="state.componentsSearchForm.data"
+            :butData="state.componentsSearchForm.butData"
+            :style="state.componentsSearchForm.style"
+            :defaultAttribute="state.componentsSearchForm.defaultAttribute"
+          >
+          </componentsSearchForm>
+        </div>
+      </template>
       <template #custom>
         <div class="content">
-          <div>
-            <el-input
-              v-model="keyword"
-              placeholder="请输入印章名称"
-              clearable
-              @keyup.enter="searchData"
-              @clear="searchData"
-              style="margin-bottom: 15px"
+          <div class="seal-list">
+            <div
+              class="seal-item"
+              v-for="(item, index) in state.componentsSealList.data"
+              :key="index"
             >
-              <template #append>
-                <el-button :icon="Search" @click.stop="searchData" />
-              </template>
-            </el-input>
-            <el-scrollbar height="100%">
-              <div class="seal-list">
-                <div
-                  class="seal-item"
-                  v-for="(item, index) in state.componentsSealList.data"
-                  :key="index"
-                >
-                  <div
-                    class="seal-item-wrap"
-                    :class="{
-                      'seal-item-wrap-select':
-                        state.componentsSealList.curIndex === index
-                    }"
-                    @click="clickSeal(item, index)"
-                  >
-                    <span></span>
-                    <div>
-                      <h3>印章名称{{ index + 1 }}</h3>
-                      <p>马丽丽</p>
-                    </div>
-                  </div>
+              <div
+                class="seal-item-wrap"
+                :class="{
+                  'seal-item-wrap-select':
+                    state.componentsSealList.curIndex === index
+                }"
+                @click="clickSeal(item, index)"
+              >
+                <span></span>
+                <div>
+                  <h3>{{ item[1] }}</h3>
+                  <p>{{ item[2] }}</p>
                 </div>
               </div>
-            </el-scrollbar>
+            </div>
           </div>
-
           <div class="seal-map">
             <img src="../../../assets/svg/yongyin-guiji-ditu.svg" alt="" />
           </div>
@@ -57,24 +51,116 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
-  import { Search } from '@element-plus/icons-vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
+  import componentsSearchForm from '../../components/searchForm'
   import componentsLayout from '../../components/Layout.vue'
-
   const state = reactive({
+    componentsSearchForm: {
+      style: {
+        lineStyle: {
+          width: 'calc(100% / 3)'
+        },
+        labelStyle: {
+          width: '70px'
+        }
+      },
+      data: [
+        {
+          id: 'name',
+          label: '关键词',
+          type: 'input',
+          inCommonUse: true,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            placeholder: '请输入'
+          }
+        }
+        // {
+        //     id: 'picker',
+        //     label: "选择时间",
+        //     type: "picker",
+        //     inCommonUse: true,
+        //     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        //     defaultAttribute: {
+        //         type: "daterange",
+        //         "start-placeholder": "开始时间",
+        //         "end-placeholder": "结束时间"
+        //     },
+        //     style: {
+
+        //     }
+        // },
+      ],
+      butData: [
+        {
+          id: 'more',
+          name: '展开',
+          type: 'unfold',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'primary'
+          },
+          style: {}
+        },
+        {
+          id: 'inquire',
+          name: '查询',
+          type: 'click',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'primary'
+          },
+          style: {}
+        },
+        {
+          id: 'reset',
+          name: '重置',
+          type: 'click',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {},
+          style: {}
+        }
+      ],
+      // 默认属性
+      defaultAttribute: {
+        isUnfold: false,
+        'scrollbar-max-height': 'auto',
+        'border-bottom': false
+      }
+    },
     componentsSealList: {
       curIndex: 0,
-      data: 20
+      data: [
+        {
+          1: '印章名称1',
+          2: '马丽丽'
+        },
+        {
+          1: '印章名称2',
+          2: '马丽丽'
+        },
+        {
+          1: '印章名称3',
+          2: '马丽丽'
+        },
+        {
+          1: '印章名称4',
+          2: '马丽丽'
+        },
+        {
+          1: '印章名称4',
+          2: '马丽丽'
+        },
+        {
+          1: '印章名称4',
+          2: '马丽丽'
+        }
+      ]
     }
   })
-  const keyword = ref('')
   // 点击印章列表
   function clickSeal(item, index) {
     state.componentsSealList.curIndex = index
-  }
-  // 获取印章列表
-  const searchData = () => {
-    console.log(1)
   }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -96,10 +182,8 @@
     .content {
       display: flex;
       justify-content: space-between;
-      margin-top: 5px;
+      // padding-right: 20px;
       box-sizing: border-box;
-      height: calc(100vh - 170px);
-      overflow: hidden;
 
       .seal-list {
         width: 260px;
@@ -159,7 +243,7 @@
 
       .seal-map {
         width: calc(100% - 276px);
-        height: 100%;
+        height: 626px;
         border: 1px solid #e9ebec;
         border-radius: 4px;
         display: flex;
