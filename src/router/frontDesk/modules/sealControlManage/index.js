@@ -158,7 +158,16 @@ const routes = {
           },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/LibraryOfSeals.vue'
+              '@/views/frontDesk/PrintControlManagement/LibraryOfSeals/LibraryOfSeals.vue'
+            )
+        },
+        {
+          path: 'libraryOfSeals',
+          name: 'DelLibraryOfSeals',
+          meta: { title: '已删除印章', authRequired: true },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/LibraryOfSeals/DelLibraryOfSeals.vue'
             )
         },
         {

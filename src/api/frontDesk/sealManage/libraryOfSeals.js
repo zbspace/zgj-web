@@ -88,6 +88,13 @@ api.sealDetailInfo = params => {
     params
   })
 }
+// 印章还原
+api.sealRollback = params => {
+  return request({
+    method: 'GET',
+    url: `/sealInfo/deleted/rollback/${params}`
+  })
+}
 // 印章基本信息
 api.sealInfo = sealId => {
   console.log(sealId)

@@ -5,6 +5,7 @@
       <div class="ap-cont-details">
         <div
           class="ap-cont-list"
+          :class="{ 'ap-cont-list-add': item.label === '骑缝盖章' }"
           v-for="item in props.data"
           :style="item.lineStyle"
           :key="item.label"
@@ -89,6 +90,9 @@
             padding: 0rem 0 0rem 0.5rem;
             box-sizing: border-box;
           }
+        }
+        .ap-cont-list-add {
+          width: 100%;
         }
       }
     }

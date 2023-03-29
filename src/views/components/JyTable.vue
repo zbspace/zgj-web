@@ -130,10 +130,7 @@
                     :index="scope.$index"
                     v-if="item.customDisplayType == 'custom'"
                   >
-                    <slot
-                      :name="'custom_' + item.prop"
-                      :value="scope.row[item.prop]"
-                    >
+                    <slot :name="'custom_' + item.prop" :value="scope.row">
                     </slot>
                   </div>
 
@@ -563,6 +560,9 @@
     }
 
     :deep {
+      .el-dropdown-item-add {
+        color: var(--jy-secondary-5) !important;
+      }
       .el-table thead {
         color: var(--jy-color-text-1);
         font-size: var(--jy-font-size-body-2);

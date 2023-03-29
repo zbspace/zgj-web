@@ -1,4 +1,9 @@
-<!-- 印章库 -->
+<!--
+* @Descripttion 印章库
+* @FileName LibraryOfSeals.vue
+* @Author Guanpf
+* @LastEditTime 2023-03-29 17:08:12
+!-->
 <template>
   <div class="PrintControlManagement-LibraryOfSeals">
     <JyTable
@@ -16,6 +21,7 @@
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
+      @clickElement="clickElement"
     >
       <template #title>
         <div class="title">
@@ -537,8 +543,8 @@
 <script setup>
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { Paperclip, CircleClose } from '@element-plus/icons-vue'
-  import componentsTree from '../../components/tree'
-  import componentsDocumentsDetails from '../../components/documentsDetails.vue'
+  import componentsTree from '@/views/components/tree.vue'
+  import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import JyTable from '@/views/components/JyTable.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
@@ -547,6 +553,8 @@
   import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
   import dayjs from 'dayjs'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
   const vFormLibraryRef = ref(null)
@@ -836,7 +844,6 @@
             multiple: true,
             joinStr: ','
           },
-          option: [],
           values: []
         },
         {
@@ -845,15 +852,15 @@
           type: 'checkButton',
           data: [
             {
-              id: '1',
+              id: '0',
               name: '正常'
             },
             {
-              id: '2',
+              id: '1',
               name: '停用'
             },
             {
-              id: '3',
+              id: '2',
               name: '已销毁'
             }
           ]
@@ -1142,6 +1149,9 @@
       }
     })
   }
+  const clickElement = (item, index) => {
+    console.log(item)
+  }
   const clickBatchButton = (item, datas) => {
     console.log(item)
     state.sealIds = ''
@@ -1337,7 +1347,11 @@
     queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
     table.value.reloadData()
   }
-  const showDeleted = () => {}
+  const showDeleted = () => {
+    router.push({
+      name: 'DelLibraryOfSeals'
+    })
+  }
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
     typeList()

@@ -71,7 +71,7 @@
           >
             <el-radio label="1">同意</el-radio>
             <el-radio label="2">不同意</el-radio>
-            <el-radio label="5">征询他人意见</el-radio>
+            <!-- <el-radio label="5">征询他人意见</el-radio> -->
             <!-- <el-radio label="3">转交</el-radio>
             <el-radio label="4">加签</el-radio>
             <el-radio label="6">退回</el-radio> -->
@@ -85,15 +85,15 @@
             >
           </el-radio-group>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           label="下一步审批人"
           v-if="state.form.suggest === '1'"
           prop="nextApprover"
         >
-          <!-- <span class="footer-approver">李旺</span>
-            <span class="footer-approver">李旺</span>
-            <span class="footer-approver">李旺</span>
-            <span class="footer-approver">李旺</span> -->
+          <span class="footer-approver">李旺</span>
+          <span class="footer-approver">李旺</span>
+          <span class="footer-approver">李旺</span>
+          <span class="footer-approver">李旺</span>
           <div class="select-box-contBox" @click="chooseOrgan('nextApprover')">
             <el-input
               class="ap-box-contBox-input width-100"
@@ -115,7 +115,7 @@
               />
             </div>
           </div>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           label="审批人"
           prop="approver"
@@ -678,6 +678,11 @@
     emit('on-cancel', value)
     isVisible.value = false
   }
+  const getAllDetailInfo = () => {
+    getDesign()
+    getRuNode()
+    // getSign()
+  }
   const getDesign = () => {
     const params = {
       modelId: props.params.modelId,
@@ -686,8 +691,9 @@
     }
     ModelApi.getDesign(params)
       .then(result => {
+        console.log('getDesignresult', result)
         if (result) {
-          flowDesign.value.handleSetData(result)
+          // flowDesign.value.handleSetData(result)
         }
       })
       .catch(() => {})
@@ -763,8 +769,6 @@
       getBackBaseInfo()
     }
   }
-  console.log(111)
-  console.log('props.params', props.params)
   // 选择部门员工
   const submitSelectDepart = data => {
     if (depChoose.value === 'approver') {
@@ -784,12 +788,15 @@
   }
   /**
    * 获取流程记录表格数据
-   *
-   * @author fengshuonan
-   * @date 2022/08/27 12:04
    */
   const getRuNode = async () => {
-    records.value = await TaskApi.findList({ instanceId: instanceId.value })
+    // records.value = await TaskApi.findList({
+    //   instanceId: props.params.instanceId
+    // })
+    const result = await TaskApi.findList({
+      instanceId: props.params.instanceId
+    })
+    console.log('recordsResult', result)
     // 如果加签前一个节点没有审批, 操作按钮不可用
     /* let currTask = null;
   for (let index = 0; index < records.value.length; index++) {
@@ -812,15 +819,16 @@
     // 查询审批中的
     const params = { taskId: props.params.taskId, taskStatus: 2 }
     const list = await RuTaskSignApi.findListByTaskId(params)
+    console.log('list', list)
     // 如果加签前一个节点没有审批, 操作按钮不可用
     if (list && list.length > 0) {
       addSignMode.value = 1
     }
   }
-  onMounted(() => {
-    nextTick(() => {
-      state.ParticularsOfSeal = props.params.detailData
-    })
+  onMounted(() => {})
+
+  defineExpose({
+    getAllDetailInfo
   })
 </script>
 <style lang="scss" scoped>

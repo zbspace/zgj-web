@@ -120,6 +120,7 @@
       </componentsDocumentsDetails>
     </div>
     <ApprovalDetail
+      ref="drawer"
       :show="dialogProcess.show"
       :params="state.params"
       :title="dialogProcess.title"
@@ -173,6 +174,7 @@
   //       console.log(error)
   //     })
   // }
+  const drawer = ref(null)
   // 动态表单版本Id
   const formVersionId = ref('')
   // 动态表单Id
@@ -780,6 +782,7 @@
         state.params.nodeId = data.nodeId
         state.params.definitionId = data.definitionId
         formVersionId.value = state.params.formData.formVersionId
+        drawer.value.getAllDetailInfo()
         getFormDataJson()
         // attrState.instanceName = data.instanceName
         // loading.value = false
@@ -845,13 +848,13 @@
             if (formData[item].length > 0) {
               formData[item].forEach((cv, k) => {
                 formTableData.push({
-                  label: `印章名称`,
+                  label: `印章${k > 0 ? k + 1 : ''}名称`,
                   value: cv.seal,
                   type: v.formColumnModel ? v.formColumnModel : '其他'
                 })
                 if (cv.applySealNum > 0) {
                   formTableData.push({
-                    label: `印章次数`,
+                    label: `盖章次数`,
                     value: cv.applySealNum,
                     type: v.formColumnModel ? v.formColumnModel : '其他'
                   })
