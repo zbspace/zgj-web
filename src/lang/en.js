@@ -419,6 +419,8 @@ export const en = {
   't-zgj-Delete': 'Delete',
   't-zgj-Revocation': 'Revocation',
   't-zgj-Void': 'Void',
+  't-zgj-ProcessTermination': 'Process termination',
+  't-zgj-RemoveTheSealRestrictions': 'Remove the seal restrictions',
   't-zgj-list.outRegistration': 'Taking out Regist',
   't-zgj-list.restitution': 'Return Registration ',
   't-zgj-list.send': 'For Approval',

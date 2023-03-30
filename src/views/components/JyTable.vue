@@ -149,7 +149,21 @@
                       item.rankDisplayData && item.rankDisplayData.length > 0
                     "
                   >
-                    <div
+                    <el-button
+                      v-for="(data, num) in item.rankDisplayData.slice(0, 4)"
+                      :key="num"
+                      type="primary"
+                      @click="customClick(scope.$index, scope.row, data)"
+                      link
+                      >{{
+                        data.name === 'status'
+                          ? scope.row[props.statusColoum] !== props.openValue
+                            ? $t('t-zgj-Enable')
+                            : $t('t-zgj-seal.deactivated')
+                          : $t(data.name)
+                      }}</el-button
+                    >
+                    <!-- <div
                       class="rankDisplayData-node"
                       v-for="(data, num) in item.rankDisplayData.slice(0, 4)"
                       :key="num"
@@ -164,7 +178,7 @@
                             : $t(data.name)
                         }}
                       </span>
-                    </div>
+                    </div> -->
                     <div
                       class="rankDisplayData-more"
                       v-if="item.rankDisplayData.length > 4"
@@ -618,7 +632,7 @@
     width: 100%;
 
     .rankDisplayData {
-      display: flex;
+      // display: flex;
       // justify-content: space-around;
       // text-align: center;
       color: var(--jy-info-6);
