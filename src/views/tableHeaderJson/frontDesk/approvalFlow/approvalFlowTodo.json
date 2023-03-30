@@ -33,7 +33,7 @@
     "prop": "caozuo",
     "label": "操作",
     "fixed": "right",
-    "min-width": 150,
+    "min-width": 70,
     "rankDisplayData": [
       {
         "name": "t-zgj-Approval",

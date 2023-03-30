@@ -95,6 +95,7 @@
     :show="showDepPerDialog"
     @update:show="showDepPerDialog = $event"
     :tabsShow="['organ']"
+    :multiple="false"
     @update:searchSelected="submitSelectDepart"
     :searchSelected="state.searchSelected"
   >
@@ -174,6 +175,7 @@
     data => {
       if (data) {
         if (props.title === 't-zgj-Edit') {
+          console.log('data', data)
           state.searchSelected = [
             {
               id: data.organId,

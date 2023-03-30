@@ -324,7 +324,7 @@
             <el-form-item label="保管人" prop="keepUserId">
               <div class="select-box-contBox">
                 <el-input
-                  :disabled="state.form.sealId"
+                  :disabled="state.form.sealId !== ''"
                   class="ap-box-contBox-input width-100"
                   readonly
                   v-model="state.form.keepUserName"
@@ -590,16 +590,19 @@
         if (state.form.sealId) {
           api.edit(state.form).then(res => {
             console.log(res)
+            showLibraryDialog.value = false
+            table.value.reloadData()
             ElMessage.success('修改印章成功！')
           })
         } else {
           api.add(state.form).then(res => {
+            showLibraryDialog.value = false
+            table.value.reloadData()
+
             console.log(res)
             ElMessage.success('新增印章成功！')
           })
         }
-        showLibraryDialog.value = false
-        table.value.reloadData()
       } else {
         // ElMessage.error('校验失败')
       }

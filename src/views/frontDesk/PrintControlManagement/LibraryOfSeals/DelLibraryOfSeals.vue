@@ -53,6 +53,7 @@
         <div class="title">
           <div class="title-desc">
             <img
+              style="cursor: pointer"
               class="title-desc-img"
               src="../../../../assets/svg/jiantou-zuo.svg"
               alt=""
@@ -450,6 +451,9 @@
     console.log(column)
     console.log(cell)
     state.sealIds = column.sealId
+    if (column.sealStateId === '2') {
+      return
+    }
     if (cell.name === 't-zgj-sealInfoDelete.restore') {
       state.JyElMessageBox.header.data = 't-zgj-sealInfoDelete.restore'
       state.JyElMessageBox.content.data = '请问确定还原该印章吗？'

@@ -898,11 +898,11 @@
             const organNameList = []
             if (formData[item].length > 0) {
               formData[item].forEach((cv, k) => {
-                organNameList.push(cv.organName)
+                organNameList.push(cv.relatedCompanyName)
               })
               formTableData.push({
                 label: `往来单位`,
-                value: organNameList.join(','),
+                value: organNameList.length > 0 ? organNameList.join(',') : '-',
                 type: v.formColumnModel ? v.formColumnModel : '其他'
               })
             }
@@ -918,12 +918,29 @@
               value: formData[item] ? '是' : '否'
             })
           } else if (v.formColumnNo === 'sealFile') {
-            if (formData[item].fileList.length > 0) {
-              formData[item].fileList.forEach((cv, k) => {
+            if (formData[item].fileIds?.length > 0) {
+              formData[item].fileIds.forEach((cv, k) => {
                 formTableData.push({
-                  label: `文件名称`,
+                  label:
+                    formData[item].fileIds > 1
+                      ? `用印文件${k + 1}`
+                      : '用印文件',
                   value: cv.name,
-                  type: v.formColumnModel ? v.formColumnModel : '其他'
+                  type: v.formColumnModel ? v.formColumnModel : '其他',
+                  fileUrl: cv.fileUrl
+                })
+              })
+            }
+            if (formData[item].fileAddIds?.length > 0) {
+              formData[item].fileAddIds.forEach((cv, k) => {
+                formTableData.push({
+                  label:
+                    formData[item].fileAddIds.length > 1
+                      ? `附加文件${k + 1}`
+                      : '附加文件',
+                  value: cv.name,
+                  type: v.formColumnModel ? v.formColumnModel : '其他',
+                  fileUrl: cv.fileUrl
                 })
               })
             }
