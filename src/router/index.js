@@ -71,21 +71,22 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
   } catch (error) {
     return
   }
+  next()
+})
+
+router.afterEach(routeTo => {
   removeWatermark()
   if (
     routeTo.path.indexOf('/login/') === -1 &&
     localStorage.getItem('watermark') === '1'
   ) {
     const text =
+      JSON.parse(localStorage.getItem('accountInfo')).userInfo &&
       JSON.parse(localStorage.getItem('accountInfo')).userInfo.userName +
-      ' ' +
-      dayjs().format('YYYY-MM-DD HH:mm')
+        ' ' +
+        dayjs().format('YYYY-MM-DD HH:mm')
     setWaterMark(text)
   }
-  next()
-})
-
-router.afterEach(() => {
   NProgress.done()
 })
 export default router

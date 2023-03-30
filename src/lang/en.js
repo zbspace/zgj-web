@@ -303,6 +303,8 @@ export const en = {
     '6 times of incorrect PWD entry, please try again half an hour later',
   't-zgj-login.unitDelte': 'The enterprise no longer exists',
   't-zgj-query': 'Query',
+  't-zgj-unfold': 'Unfold',
+  't-zgj-fold': 'Fold',
   't-zgj-advancedQuery': 'Advanced Query',
   't-zgj-refesh': 'Refresh',
   't-zgj-login.scan': 'Scan QR Code with Zhangguanjia',

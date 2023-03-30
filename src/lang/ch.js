@@ -283,6 +283,8 @@ export const ch = {
   't-zgj-login.accountLock': '累计输错6次密码，请半个小时后再试',
   't-zgj-login.unitDelte': '企业已不存在',
   't-zgj-query': '查询',
+  't-zgj-unfold': '展开',
+  't-zgj-fold': '收起',
   't-zgj-advancedQuery': '高级查询',
   't-zgj-refesh': '刷新',
   't-zgj-login.scan': '请使用章管家扫描二维码登录',
