@@ -264,7 +264,12 @@
         return this.getTemplateList()
       },
       haveWidgets() {
-        return getArrFromTree(this.designer.widgetList, 'widgetList', 'type')
+        const arrs = this.getWidgets(
+          this.designer.widgetList,
+          'widgetList',
+          'type'
+        )
+        return arrs
       }
     },
     created() {
@@ -282,6 +287,30 @@
       })
     },
     methods: {
+      getWidgets(widgetList) {
+        const res = []
+        const fn = (arr, formColumnModel = '') => {
+          arr.forEach(v => {
+            res.push(v.options.name)
+            if (v.widgetList && v.widgetList.length) {
+              fn(v.widgetList, formColumnModel)
+            }
+            if (v.cols && v.cols.length) {
+              fn(v.cols, formColumnModel)
+            }
+          })
+        }
+        if (widgetList && widgetList.length) {
+          widgetList.forEach(v => {
+            if (v.category) {
+              fn(v.widgetList || v.cols)
+            } else {
+              res.push(v.options.name)
+            }
+          })
+        }
+        return res
+      },
       getWidgetLabel(widget) {
         if (widget.alias) {
           // 优先显示组件别名
@@ -391,6 +420,7 @@
       },
 
       addFieldByDbClick(widget) {
+        return false
         this.designer.addFieldByDbClick(widget)
       },
 
