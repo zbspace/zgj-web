@@ -12,6 +12,7 @@
     @close="clickClose"
     title="详情"
     class="detail-drawer"
+    size="800px"
     destroy-on-close
   >
     <el-tabs v-model="activeName" @tab-click="handleClick">
