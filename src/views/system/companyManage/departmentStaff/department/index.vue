@@ -177,6 +177,7 @@
       :searchSelected="searchSelected"
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
+      :multiple="false"
     />
     <!-- 批量操作 -->
     <actionMoreDialog

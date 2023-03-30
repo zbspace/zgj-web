@@ -84,9 +84,11 @@
         <slot name="header" v-else></slot>
       </div>
     </template>
-    <div class="content-custom" :style="{ height: props.height + 'px' }">
+    <div class="content-custom" :style="{ height: height }">
       <!-- 默认插槽 -->
-      <slot></slot>
+      <el-scrollbar>
+        <div style="width: calc(100% - 10px)"><slot></slot></div>
+      </el-scrollbar>
     </div>
     <template #footer>
       <div class="footer-custom" v-if="footer">
@@ -193,10 +195,17 @@
     }
   })
 
+  const height = ref(props.height + 'px')
+
   const handelScreen = ref(false)
 
   const handleFullScreen = () => {
     handelScreen.value = !handelScreen.value
+    if (handelScreen.value) {
+      height.value = 'calc(100vh - 112px)'
+    } else {
+      height.value = props.height + 'px'
+    }
   }
 
   const handleShow = (val, modal, type) => {
@@ -234,6 +243,12 @@
       padding: 0;
     }
   }
+
+  .content-custom {
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+  }
 </style>
 <style lang="scss" scoped>
   .header-custom {
@@ -257,10 +272,10 @@
   }
 
   .content-custom {
-    flex: 1;
-    flex-shrink: 0;
+    // flex: 1;
+    // flex-shrink: 0;
     padding: 12px 24px;
-    overflow-y: auto;
+    // overflow-y: auto;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     // border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }

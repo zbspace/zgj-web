@@ -25,17 +25,10 @@
     "show": true
   },
   {
-    "prop": "useSealStateId",
+    "prop": "useSealStateName",
     "label": "用印状态",
-    "type": "format",
     "align": "center",
     "width": 150,
-    "statusList": [
-      {
-        "key": "USING",
-        "label": "智能用印中"
-      }
-    ],
     "show": true
   },
   {

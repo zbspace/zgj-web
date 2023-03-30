@@ -20,21 +20,21 @@
         field.options.required ? 'required' : ''
       ]"
     >
-      <div
-        class="upload-file"
-        :class="[fieldModel.fileList.length && 'upload-file-big']"
-      >
+      <div class="upload-file" :class="[fileList1.length && 'upload-file-big']">
         <el-upload
+          :file-list="fileList1"
           ref="upload"
           class="upload-demo"
           list-type="text"
-          v-model:file-list="fieldModel.fileList"
-          :before-upload="
-            async file => {
-              await uploadFile(file, 1)
-              return false
+          multiple
+          :on-success="onSuccess"
+          :on-preview="onPreview"
+          :http-request="
+            options => {
+              handleRequest(options, 1)
             }
           "
+          :on-change="onChange"
         >
           <el-button type="primary">
             <el-icon color="#fff"> <ArrowDown /> </el-icon> 本机上传
@@ -45,6 +45,12 @@
             </div>
           </template>
         </el-upload>
+      </div>
+      <div
+        class="el-form-item__error"
+        v-if="field.options.requiredTextShow && field.options.required"
+      >
+        {{ field.options.requiredHint || '请上传用印文件' }}
       </div>
       <div class="el-form-item__error" v-if="field.options.requiredHint">{{
         field.options.requiredHint
@@ -59,19 +65,22 @@
     >
       <div
         class="upload-file"
-        :class="[fieldModel.fileList.length && 'upload-file-big']"
+        :class="[fieldModel.fileAddIds.length && 'upload-file-big']"
       >
         <el-upload
+          :file-list="fileList2"
           ref="upload"
           class="upload-demo"
           list-type="text"
-          v-model:file-list="fieldModel.fileList1"
-          :before-upload="
-            async file => {
-              await uploadFile(file, 2)
-              return false
+          multiple
+          :on-success="onSuccess2"
+          :on-preview="onPreview"
+          :http-request="
+            options => {
+              handleRequest(options, 2)
             }
           "
+          :on-change="onChange"
         >
           <div>
             <el-button type="primary">
@@ -90,7 +99,7 @@
       </div>
     </el-form-item>
   </static-content-wrapper>
-  <!-- <JyUseSealFiles v-model:upload="visible" /> -->
+  <JyUseSealFiles v-model="visible" :fileUrls="imgUrls" @confirm="confirm" />
 </template>
 <script>
   import StaticContentWrapper from '@/lib/vform/components/form-designer/form-widget/field-widget/static-content-wrapper'
@@ -99,9 +108,10 @@
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
   import { genFileId } from 'element-plus'
   import { ArrowDown } from '@element-plus/icons-vue'
-  // import SealApplyService from '@/api/frontDesk/printControl/sealApply'
-  import { messageError } from '@/hooks/useMessage'
+  import SealApplyService from '@/api/frontDesk/printControl/sealApply'
+  import { messageError, messageWarning } from '@/hooks/useMessage'
   import JyUseSealFiles from '@/components/business/JyUseSealFiles'
+  // import { ResUploadFile } from '@/utils/domain/sealManage'
 
   export default {
     name: 'SealFileWidget',
@@ -140,11 +150,16 @@
     data() {
       return {
         visible: false,
+        fileList1: [],
+        fileList2: [],
+        toUploadFiles: 0,
         fieldModel: {
-          fileList: [],
-          fileList1: []
+          fileIds: [],
+          fileAddIds: []
         },
-        rules: []
+        imgUrls: [],
+        rules: [],
+        curImgIndex: 0
       }
     },
     computed: {
@@ -178,6 +193,9 @@
       this.handleOnMounted()
     },
     methods: {
+      setRequiredTextShow(v) {
+        this.field.options.requiredTextShow = v
+      },
       getValue() {
         return this.fieldModel
       },
@@ -200,58 +218,72 @@
         file.uid = genFileId()
         this.$refs.upload.handleStart(file)
       },
-      onSuccess() {},
-      onError() {},
-      onProgress() {},
-      async uploadFile(rawFile, type) {
-        const str = rawFile.name.split('.').pop()
+      confirm(file) {
+        this.fieldModel.fileIds.push(file)
+      },
+      onSuccess(response, uploadFile, uploadFiles) {
+        this.fileList1 = this.fieldModel.fileIds
+        this.setRequiredTextShow(false)
+        this.field.options.requiredHint = ''
+      },
+      onSuccess2(response, uploadFile, uploadFiles) {
+        this.fileList2 = this.fieldModel.fileAddIds
+      },
+      onPreview(response) {
+        window.open(response.fileUrl, '_blank')
+      },
+      onChange(uploadFile, uploadFiles) {
+        this.toUploadFiles = uploadFiles.length
+      },
+      async handleRequest(options, type) {
+        const str = options.file.name.split('.').pop()
+        if (['png', 'jpg', 'jpeg'].includes(str)) {
+          messageWarning('暂不支持图片格式')
+          return options.onError()
+        }
         if (
           !['doc', 'docx', 'pdf', 'xls', 'xlsx', 'application/pdf'].includes(
             str
           )
         ) {
           messageError('请上传指定格式文件')
-        } else if (rawFile.size / 1024 / 1024 > 199) {
-          messageError('Avatar picture size can not exceed MB!')
-        } else {
-          const formData = new FormData()
-          formData.append('file', rawFile)
-          try {
+          return options.onError()
+        } else if (options.file.size / 1024 / 1024 > 199) {
+          messageError('单个文件大小不能超过199M!')
+          return options.onError()
+        }
+        const formData = new FormData()
+        formData.append('uploadFile', options.file)
+        try {
+          const res = await SealApplyService.uploadFile(formData)
+          if (['png', 'jpg', 'jpeg'].includes(str)) {
+            this.imgUrls.push({
+              ...res.data,
+              ...{
+                id: this.curImgIndex++
+              }
+            })
+            this.visible = true
+          } else {
             if (type === 1) {
-              setTimeout(() => {
-                this.fieldModel.fileList.push({
-                  name: rawFile.name,
-                  // url: res.data.filePath
-                  url: 'https://static.runoob.com/images/demo/demo2.jpg'
-                })
-              }, 1)
+              this.fieldModel.fileIds.push({
+                ...res.data,
+                ...{
+                  name: options.file.name
+                }
+              })
             } else {
-              setTimeout(() => {
-                this.fieldModel.fileList1.push({
-                  name: rawFile.name,
-                  // url: res.data.filePath
-                  url: 'https://static.runoob.com/images/demo/demo2.jpg'
-                })
-              }, 1)
+              this.fieldModel.fileAddIds.push({
+                ...res.data,
+                ...{
+                  name: options.file.name
+                }
+              })
             }
-
-            // const res = await SealApplyService.uploadFile(formData)
-            // if (type === 1) {
-            //   this.fieldModel.fileList.push({
-            //     name: rawFile.name,
-            //     // url: res.data.filePath
-            //     url: 'https://static.runoob.com/images/demo/demo2.jpg'
-            //   })
-            // } else {
-            //   this.fieldModel.fileList1.push({
-            //     name: rawFile.name,
-            //     // url: res.data.filePath
-            //     url: 'https://static.runoob.com/images/demo/demo2.jpg'
-            //   })
-            // }
-          } catch (error) {
-            messageError(error)
           }
+          options.onSuccess()
+        } catch (error) {
+          //
         }
       }
     }

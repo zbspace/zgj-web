@@ -417,10 +417,10 @@ export const sealFileSchema = {
     hidden: false,
     required: true,
     requiredHint: '',
-
+    requiredTextShow: false,
     validation: '',
     validationHint: '',
-    defaultValue: { fileList: [], fileList1: [] },
+    // defaultValue: { fileList: [], fileList1: [] },
     dsEnabled: false, // 是否使用数据源数据
     // -------------------
     customClass: '', // 自定义css类名

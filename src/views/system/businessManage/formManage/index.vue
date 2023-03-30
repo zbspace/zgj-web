@@ -132,6 +132,21 @@
       label="formName"
       @sureAction="deleteMore"
     ></actionMoreDialog>
+
+    <!-- 修改提示关联流程 -->
+    <actionMoreDialog
+      @update:modelValue="state.showRelatedfFlow.show = false"
+      :show="state.showRelatedfFlow.show"
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="showToastDialogContent"
+      label="flowName"
+    ></actionMoreDialog>
+    <!-- 详情 -->
+    <Detail
+      v-model="detailVisible"
+      :operationId="operationId"
+      :formMessageId="formMessageId"
+    />
   </div>
 </template>
 
@@ -142,12 +157,18 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import api from '@/api/system/formManagement'
+  import Detail from './Detail'
+  import sealApplyService from '@/api/frontDesk/printControl/sealApply'
+
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const optionData = ref([])
   const table = ref(null)
   const queryParams = ref(null)
   const showToastDialogContent = ref(null)
   const tree = ref(null)
+  const detailVisible = ref(false)
+  const operationId = ref('')
+  const formMessageId = ref('')
   const state = reactive({
     componentsAddForm: {
       dialogVisible: false,
@@ -457,6 +478,16 @@
       content: {
         data: ''
       }
+    },
+    showRelatedfFlow: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
     }
   })
 
@@ -733,9 +764,7 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     if (cell.name === 't-zgj-Edit') {
-      state.componentsAddForm.dialogVisible = true
-      state.componentsAddForm.addTitle = '修改'
-      state.componentsAddForm.data = column
+      getFlowList(column.formMessageId, column)
     }
     if (cell.name === 't-zgj-Delete') {
       state.JyElMessageBox.header.data = '删除'
@@ -812,7 +841,11 @@
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'formName') {
-      state.componentsDocumentsDetails.show = true
+      // state.componentsDocumentsDetails.show = true
+      // queryOperation(row.applyTypeId)
+      operationId.value = row.operationId
+      formMessageId.value = row.formMessageId
+      detailVisible.value = true
     }
   }
 
@@ -877,6 +910,28 @@
   // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
+  }
+
+  async function getFlowList(formMessageId, column) {
+    const res = await sealApplyService.flowList({
+      formMessageId
+    })
+    if (!res.data) {
+      state.componentsAddForm.dialogVisible = true
+      state.componentsAddForm.addTitle = '修改'
+      state.componentsAddForm.data = column
+    } else {
+      state.showRelatedfFlow.show = true
+      state.componentsBatch.selectionData = res.data
+      showToastDialogContent.value = {
+        header: {
+          data: '提示'
+        },
+        content: {
+          data: '当前表单被已启用的以下流程所使用，仅当以下流程停用才允许修改'
+        }
+      }
+    }
   }
 
   onBeforeMount(() => {

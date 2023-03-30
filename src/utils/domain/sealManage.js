@@ -22,3 +22,12 @@ export class FeatchSealTypeInfo {
   searchKey = ''
   createDate = ''
 }
+
+// 文件上传返回值
+export class ResUploadFile {
+  fileId = ''
+  fileSizeByte = ''
+  fileObjectNameThumb = null
+  fileOriginName = '说明.docx'
+  fileUrl = ''
+}

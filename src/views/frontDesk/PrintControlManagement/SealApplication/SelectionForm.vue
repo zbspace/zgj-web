@@ -15,7 +15,7 @@
             placeholder="请输入表单名称"
             clearable
             class="formInput"
-            @clear="applyList"
+            @input="change"
             @keyup.enter="applyList"
             :prefix-icon="Search"
           >
@@ -169,6 +169,7 @@
   import componentsLayout from '@/views/components/Layout.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import { Search } from '@element-plus/icons-vue'
+  import { debounce } from '@/utils/tools'
 
   const router = useRouter()
   const showFormDialog = ref(false)
@@ -195,11 +196,15 @@
     showFormDialog.value = false
   }
 
+  const change = debounce(() => {
+    applyList()
+  }, 500)
+
   const applyList = () => {
     loading.value = true
     applyLists.value = []
     sealApply
-      .list({ keyword: keyword.value })
+      .list({ keyword: keyword.value.trim() })
       .then(res => {
         applyLists.value = res.data || []
       })

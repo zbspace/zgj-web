@@ -802,7 +802,7 @@
                   const str = '印章名称' + (index + 1) + '信息未完善'
                   let count = 0
                   Object.keys(data).forEach(propName => {
-                    if (propName == 'sealId') {
+                    if (propName === 'sealId') {
                       if (!data[propName]) {
                         count++
                         widgetInstance.setRequiredTextShow(
@@ -818,7 +818,7 @@
                         )
                       }
                     }
-                    if (propName == 'applySealNum') {
+                    if (propName === 'applySealNum') {
                       if (!data[propName]) {
                         count++
                         widgetInstance.setRequiredTextShow(
@@ -909,7 +909,7 @@
               if (widget.type === 'sealFile') {
                 // 用印文件
                 Object.keys(widgetData).forEach(propName => {
-                  if (propName === 'fileList') {
+                  if (propName === 'fileIds') {
                     if (!widgetData[propName].length) {
                       _self.requiredMsgList.push('请上传用印文件')
                       widgetInstance.field.options.requiredHint =
