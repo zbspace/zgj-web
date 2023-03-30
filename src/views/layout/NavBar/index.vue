@@ -268,7 +268,7 @@
   <JyDialog title="修改密码" v-model="showFormDialog" :width="540">
     <el-form label-position="left" ref="loginformRef" :model="loginform">
       <el-form-item
-        prop="username"
+        prop="oldPassword"
         :rules="[
           {
             required: true,
@@ -282,13 +282,14 @@
           <div class="from-label">原密码</div>
         </template>
         <el-input
-          v-model="loginform.username"
+          v-model="loginform.oldPassword"
+          show-password
           placeholder="请输入"
           style="width: 264px"
         ></el-input>
       </el-form-item>
       <el-form-item
-        prop="username"
+        prop="newPassword"
         :rules="[
           {
             required: true,
@@ -302,15 +303,16 @@
           <div class="from-label">新密码</div>
         </template>
         <el-input
-          v-model="loginform.username"
+          v-model="loginform.newPassword"
+          show-password
           placeholder="请输入"
           style="width: 264px"
         ></el-input>
       </el-form-item>
       <el-form-item
         class="clearfix"
-        label="验证码"
-        prop="password"
+        label="确认新密码"
+        prop="againPassword"
         :rules="[
           {
             required: true,
@@ -323,7 +325,7 @@
           <div class="from-label">确认新密码</div>
         </template>
         <el-input
-          v-model="loginform.password"
+          v-model="loginform.againPassword"
           show-password
           placeholder="请输入"
           style="width: 264px"
@@ -534,8 +536,9 @@
   }
 
   const loginform = ref({
-    username: '',
-    password: ''
+    oldPassword: '',
+    newPassword: '',
+    againPassword: ''
   })
   const loginformRef = ref(null)
 
