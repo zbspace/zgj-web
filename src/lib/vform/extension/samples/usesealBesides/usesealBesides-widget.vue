@@ -51,9 +51,9 @@
             :disabled="field.options.disabled"
             type="datetimerange"
             range-separator="-"
-            format="YYYY-MM-DD HH:mm"
+            format="YYYY-MM-DD HH:mm:ss"
             @change="onTimeChange"
-            value-format="YYYY-MM-DD HH:mm"
+            value-format="YYYY-MM-DD HH:mm:ss"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
           />

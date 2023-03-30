@@ -26,12 +26,12 @@
           更新时间：<span>{{ detail.modifyDatetime || '-' }}</span>
         </p>
         <p>
-          表单说明：<span>{{ detail.remark || '-' }}</span>
+          表单说明：<span>{{ detail.readme || '-' }}</span>
         </p>
       </div>
       <div>
         <p>
-          表单编码：<span>{{ detail.formName || '-' }}</span>
+          表单编码：<span>{{ detail.formNo || '-' }}</span>
         </p>
         <p>
           关联文件类型：<span>{{ detail.formName || '-' }}</span>

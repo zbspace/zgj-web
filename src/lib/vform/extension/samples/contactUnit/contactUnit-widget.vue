@@ -36,7 +36,6 @@
             style="width: 100%"
             @focus="openSelectWin"
             @remove-tag="removeTag"
-            tag-type="warning"
             popper-class="select-hidden"
             ref="contactUnitRef"
             class="select-prefix"

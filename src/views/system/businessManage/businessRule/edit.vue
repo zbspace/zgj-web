@@ -4,13 +4,13 @@
       <div style="width: 100%; padding: 24px 16px 0 16px">
         <el-breadcrumb separator="/">
           <el-breadcrumb-item
-            style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
           >
             业务管理
           </el-breadcrumb-item>
           <el-breadcrumb-item
             style="
-              --el-text-color-regular: rgba(0, 0, 0, 0.25);
+              --el-text-color-regular: rgba(0, 0, 0, 0.65);
               cursor: pointer;
             "
             @click="router.go(-1)"
@@ -18,7 +18,7 @@
             业务规则管理
           </el-breadcrumb-item>
           <el-breadcrumb-item
-            style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
           >
             {{
               router.currentRoute.value.query.ruleBusinessId ? '编辑' : '新增'
@@ -59,10 +59,9 @@
             <el-row :gutter="5">
               <el-col :span="10">
                 <el-form-item label="文件类型" prop="fileTypeIds">
-                  <el-select
+                  <!-- <el-select
                     v-model="ruleForm.fileTypeIds"
                     multiple
-                    tag-type="warning"
                     placeholder="请选择"
                     style="width: 100%"
                   >
@@ -72,7 +71,35 @@
                       :label="item.fileTypeName"
                       :value="item.fileTypeId"
                     />
-                  </el-select>
+                  </el-select> -->
+                  <div class="ap-box-contBox" style="width: 100%">
+                    <el-select
+                      v-model="ruleForm.fileTypeIds"
+                      multiple
+                      placeholder="请选择"
+                      style="width: 100%"
+                      popper-class="hidePoper"
+                      :class="{
+                        hasContent:
+                          ruleForm.fileTypeIds && ruleForm.fileTypeIds.length
+                      }"
+                      @click="clickFileType"
+                    >
+                      <el-option
+                        v-for="one in fileTypeList"
+                        :key="one.fileTypeId"
+                        :label="one.fileTypeName"
+                        :value="one.fileTypeId"
+                      />
+                    </el-select>
+                    <div class="ap-box-contBox-icon" @click="clickFileType">
+                      <img
+                        class="ap-box-contBox-icon-img"
+                        src="@/assets/svg/ketanchude.svg"
+                        alt=""
+                      />
+                    </div>
+                  </div>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
@@ -190,7 +217,6 @@
                           multiple
                           placeholder="请选择"
                           style="width: 100%"
-                          tag-type="warning"
                           popper-class="hidePoper"
                           :class="{
                             hasContent:
@@ -226,7 +252,6 @@
                         <el-select
                           v-model="ruleForm.videoUsers"
                           multiple
-                          tag-type="warning"
                           placeholder="请选择"
                           style="width: 100%"
                           popper-class="hidePoper"
@@ -1211,6 +1236,13 @@
       @update:searchSelected="submitSelected"
       :tabsShow="tabsShow"
     />
+
+    <!-- 选择文件类型 -->
+    <KDocumentTypeDialog
+      v-model:show="showDocumentTypeDialog"
+      :searchSelected="documentTypeSelected"
+      @update:searchSelected="documentTypeSubmit"
+    ></KDocumentTypeDialog>
   </div>
 </template>
 
@@ -1219,6 +1251,7 @@
   import componentsLayout from '@/views/components/Layout'
   import { fileManageService } from '@/api/frontDesk/fileManage/index'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
   import dayjs from 'dayjs'
   import { useRouter } from 'vue-router'
   import ruleApi from '@/api/system/businessManage/businessRule'
@@ -1313,11 +1346,15 @@
   })
 
   const fileTypeList = ref([])
+  const showDocumentTypeDialog = ref(false)
+  const documentTypeSelected = ref([])
 
   const submitBusinessRule = () => {
     ruleFormRef.value.validate(valid => {
       if (valid) {
-        ruleApi.addOrUpdate(ruleForm.value).then(() => {
+        const ruleFormParams = JSON.parse(JSON.stringify(ruleForm.value))
+        ruleFormParams.runFaceUser = ruleFormParams.runFaceUser.join(',')
+        ruleApi.addOrUpdate(ruleFormParams).then(() => {
           messageSuccess(
             ruleForm.value.ruleBusinessId ? '编辑成功' : '添加成功'
           )
@@ -1345,6 +1382,33 @@
   const changeTab = type => {
     if (currentTab.value === type) return
     currentTab.value = type
+  }
+
+  // 选择文件类型
+  const clickFileType = () => {
+    showDocumentTypeDialog.value = true
+  }
+
+  // 文件类型提交
+  const documentTypeSubmit = value => {
+    console.log(value)
+    ruleForm.value.fileTypeIds = value.map(i => i.fileTypeId)
+    // const index = state.cache.formData.findIndex(
+    //   i => i.id === kDialogOpenId.value
+    // )
+    // if (index > -1) {
+    //   if (state.cache.formData[index].defaultAttribute.multiple) {
+    //     state.cache.formData[index].values = value.map(i => i.id)
+    //   } else {
+    //     state.cache.formData[index].values = value[0].id
+    //   }
+    //   state.cache.formData[index].options = value.map(i => {
+    //     return {
+    //       label: i.name,
+    //       value: i.id
+    //     }
+    //   })
+    // }
   }
 
   // 盖前采集人脸
@@ -1449,6 +1513,7 @@
       .then(res => {
         const data = res.data
         data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
+        data.runFaceUser = data.runFaceUser.split(',')
         data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
         remoteUsersList.value = data.remoteSealUserList.map(i => {
           return {
