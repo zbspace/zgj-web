@@ -368,16 +368,17 @@
           prop: '8',
           label: '操作',
           fixed: 'right',
-          width: 150,
+          width: 200,
+          align: 'center',
           rankDisplayData: [
             {
-              name: '修改'
+              name: 't-zgj-Edit'
             },
             {
-              name: '删除'
+              name: 't-zgj-Delete'
             },
             {
-              name: '复制'
+              name: 't-zgj-qyWechat.Copy'
             }
           ]
         }
@@ -509,16 +510,17 @@
           prop: '8',
           label: '操作',
           fixed: 'right',
-          width: 150,
+          width: 200,
+          align: 'center',
           rankDisplayData: [
             {
-              name: '修改'
+              name: 't-zgj-Edit'
             },
             {
-              name: '删除'
+              name: 't-zgj-Delete'
             },
             {
-              name: '复制'
+              name: 't-zgj-qyWechat.Copy'
             }
           ]
         }
@@ -613,16 +615,17 @@
           prop: '8',
           label: '操作',
           fixed: 'right',
-          width: 150,
+          width: 200,
+          align: 'center',
           rankDisplayData: [
             {
-              name: '修改'
+              name: 't-zgj-Edit'
             },
             {
-              name: '删除'
+              name: 't-zgj-Delete'
             },
             {
-              name: '复制'
+              name: 't-zgj-qyWechat.Copy'
             }
           ]
         }
@@ -741,18 +744,18 @@
 
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    if (cell.name === '修改') {
+    if (cell.name === 't-zgj-Edit') {
       state.componentsAddForm.dialogVisible = true
       state.componentsAddForm.addTitle = '修改'
       state.componentsAddForm.data = column
     }
-    if (cell.name === '删除') {
+    if (cell.name === 't-zgj-Delete') {
       state.JyElMessageBox.header.data = '删除'
       state.JyElMessageBox.content.data = '请问确定要删除该表单吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.data.tableId = column.formMessageId
     }
-    if (cell.name === '复制') {
+    if (cell.name === 't-zgj-qyWechat.Copy') {
       state.showFormDialog.header.data = '表单复制'
       state.showFormDialog.show = true
       state.componentsAddForm.data = JSON.parse(JSON.stringify(column))

@@ -457,14 +457,14 @@
       }
     },
     computedData: [
-      {
-        computedData: 'instanceId',
-        prop: 'approvalStatus',
-        request: {
-          url: '/ruInstance/detail',
-          method: 'GET'
-        }
-      }
+      // {
+      //   computedData: 'instanceId',
+      //   prop: 'approvalStatus',
+      //   request: {
+      //     url: '/ruInstance/detail',
+      //     method: 'GET'
+      //   }
+      // }
     ]
   })
   // 点击表格单元格

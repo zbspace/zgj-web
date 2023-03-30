@@ -60,8 +60,12 @@
           v-if="state.props['showFooter']"
         >
           <slot name="footer">
-            <el-button type="primary" @click="clickSure">确定</el-button>
-            <el-button @click="clickClose">取消</el-button>
+            <el-button type="primary" @click="clickSure">{{
+              $t('t-zgj-select.confirm')
+            }}</el-button>
+            <el-button @click="clickClose">{{
+              $t('t-zgj-operation.cancel')
+            }}</el-button>
           </slot>
         </div>
       </div>

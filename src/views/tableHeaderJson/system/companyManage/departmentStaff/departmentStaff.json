@@ -40,7 +40,7 @@
     "prop": "caozuo",
     "label": "操作",
     "fixed": "right",
-    "width": 220,
+    "min-width": 350,
     "rankDisplayData": [
       {
         "name": "t-zgj-Edit"

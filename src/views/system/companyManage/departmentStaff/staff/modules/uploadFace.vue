@@ -7,7 +7,7 @@
 <template>
   <div class="jy-message-box">
     <el-dialog
-      title="设置人脸"
+      title="{{ $t(t-zgj-F_SEAL_CONSOLE_FACE_SETTING) }}"
       v-model="isVisible"
       :before-close="handleClose"
       :show-close="false"
@@ -23,7 +23,7 @@
         <div>
           <slot name="header">
             <div class="header-div">
-              <span>设置人脸</span>
+              <span>{{ $t('t-zgj-F_SEAL_CONSOLE_FACE_SETTING') }}</span>
             </div>
           </slot>
         </div>
@@ -68,8 +68,12 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="cancel">取 消</el-button>
-          <el-button type="primary" @click="comifrm">提 交</el-button>
+          <el-button @click="cancel">{{
+            $t('t-zgj-operation.cancel')
+          }}</el-button>
+          <el-button type="primary" @click="comifrm">{{
+            $t('t-zgj-operation.submit')
+          }}</el-button>
         </span>
       </template>
     </el-dialog>

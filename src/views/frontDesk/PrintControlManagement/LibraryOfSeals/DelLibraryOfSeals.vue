@@ -321,118 +321,6 @@
           defaultAttribute: {
             placeholder: '印章名称/保管部门/保管人/印章编码'
           }
-        },
-        {
-          id: 'createDate',
-          label: '创建时间',
-          type: 'picker',
-          pickerType: 'date',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'daterange',
-            'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间',
-            'value-format': 'YYYY-MM-DD',
-            'disabled-date': time => {
-              return time.getTime() > Date.now() // 如果有后面的-8.64e7就是不可以选择今天的
-            },
-            'default-value': [
-              new Date(new Date().setMonth(new Date().getMonth() - 1)),
-              new Date()
-            ]
-          },
-          style: {}
-        },
-        {
-          id: 'keepUser',
-          requestParams: 'keepUserIds',
-          label: '保管人',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'user',
-            placeholder: '+保管人',
-            multiple: true,
-            joinStr: ','
-          },
-          values: []
-        },
-        {
-          id: 'keepOrgan',
-          requestParams: 'keepOrganIds',
-          label: '保管部门',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'organ',
-            placeholder: '+保管部门',
-            multiple: true,
-            joinStr: ','
-          },
-          values: []
-        },
-        {
-          id: 'sealStatus',
-          label: '印章状态',
-          type: 'checkButton',
-          data: [
-            {
-              id: '1',
-              name: '正常'
-            },
-            {
-              id: '2',
-              name: '停用'
-            },
-            {
-              id: '3',
-              name: '已销毁'
-            }
-          ]
-        },
-        {
-          id: 'sealCategory',
-          label: '印章种类',
-          type: 'checkButton',
-          data: [
-            {
-              id: '0',
-              name: '普通印章'
-            },
-            {
-              id: '1',
-              name: '智能印章'
-            }
-          ]
-        },
-        {
-          id: 'takeOut',
-          label: '',
-          type: 'checkbox',
-          checkbox: [
-            {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '印章外带'
-              },
-              style: {}
-            }
-          ]
-        },
-        {
-          id: 'onlyMyself',
-          label: '',
-          type: 'checkbox',
-          checkbox: [
-            {
-              // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-              defaultAttribute: {
-                label: '我保管的印章'
-              },
-              style: {}
-            }
-          ]
         }
       ],
       butData: [
@@ -697,6 +585,9 @@
           height: 100%;
           display: flex;
           align-items: center;
+        }
+        .title-desc-img {
+          cursor: pointer;
         }
       }
     }

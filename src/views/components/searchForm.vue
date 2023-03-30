@@ -380,9 +380,19 @@
                 v-if="item.type == 'click'"
                 @click="clickSubmit(item, index)"
               >
-                <el-button v-bind="item.defaultAttribute">{{
-                  item.name
-                }}</el-button>
+                <el-button v-bind="item.defaultAttribute">
+                  {{
+                    item.name === '重置'
+                      ? $t('t-zgj-reset')
+                      : item.name === '查询'
+                      ? $t('t-zgj-query')
+                      : item.name === 't-zgj-reset'
+                      ? $t('t-zgj-reset')
+                      : item.name === 't-zgj-query'
+                      ? $t('t-zgj-query')
+                      : '-'
+                  }}
+                </el-button>
               </div>
               <div
                 class="ap-box-cont unfold"
@@ -390,7 +400,7 @@
                 @click="clickCutUnfoldstatus"
               >
                 <div class="unfold-" v-if="state.cache.isUnfold == 0">
-                  展开
+                  {{ $t('t-zgj-unfold') }}
                   <img
                     class="unfold-icon"
                     src="../../assets/svg/xiangxia-lan.svg"
@@ -399,7 +409,7 @@
                   />
                 </div>
                 <div v-else-if="state.cache.isUnfold == 1">
-                  收起
+                  {{ $t('t-zgj-fold') }}
                   <img
                     class="unfold-icon"
                     src="../../assets/svg/xiangshang-lan.svg"
@@ -681,6 +691,7 @@
     if (item.defaultAttribute.type === 'document') {
       showDocumentTypeDialog.value = true
       kDialogOpenId.value = item.id
+      return
     }
     showDepPerDialog.value = true
     kDialogOpenId.value = item.id

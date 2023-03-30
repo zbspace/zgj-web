@@ -25,10 +25,12 @@
     >
       <template #title>
         <div class="title">
-          <div>印章库</div>
+          <div>{{ $t('t-zgj-F_SEAL_INFO') }}</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="add">+ 增加</el-button>
+              <el-button type="primary" @click="add"
+                >+ {{ $t('t-zgj-add') }}</el-button
+              >
             </div>
             <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
@@ -39,13 +41,13 @@
                     alt=""
                     srcset=""
                   />
-                  <span>更多操作</span>
+                  <span>{{ $t('t-zgj-table.more.Operation') }}</span>
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item @click="showDeleted"
-                      >查看已删除印章</el-dropdown-item
-                    >
+                    <el-dropdown-item @click="showDeleted">{{
+                      $t('t-zgj-F_SEAL_INFO_RECYCLE')
+                    }}</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -489,7 +491,7 @@
       <template #header>
         <div class="header-div">
           <img :src="state.JyElMessageBox.header.icon" alt="" />
-          <span>{{ state.JyElMessageBox.header.data }}</span>
+          <span>{{ $t(state.JyElMessageBox.header.data) }}</span>
         </div>
       </template>
       <template #content>
@@ -500,9 +502,11 @@
           type="primary"
           @click="submitElMessageBox(state.JyElMessageBox.type)"
         >
-          提交
+          {{ $t('t-zgj-operation.submit') }}
         </el-button>
-        <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
+        <el-button @click="state.JyElMessageBox.show = false">{{
+          $t('t-zgj-operation.cancel')
+        }}</el-button>
       </template>
     </JyElMessageBox>
     <!-- 批量操作弹框提示 -->
@@ -922,7 +926,8 @@
         },
         {
           id: 'inquire',
-          name: '查询',
+          name: 't-zgj-query',
+          label: '查询',
           type: 'click',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -932,7 +937,8 @@
         },
         {
           id: 'reset',
-          name: '重置',
+          name: 't-zgj-reset',
+          label: '重置',
           type: 'click',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {},
@@ -1098,7 +1104,7 @@
     }
     state.sealIds = column.sealId
     if (cell.name === 't-zgj-Edit') {
-      state.title = '修改'
+      state.title = 't-zgj-Edit'
       getSealsInfo()
     }
     if (
@@ -1109,7 +1115,7 @@
       state.tabsShow = ['user']
     }
     if (cell.name === 't-zgj-Delete') {
-      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.header.data = 't-zgj-Delete'
       state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '删除'
@@ -1122,19 +1128,19 @@
     // }
     if (cell.name === 'status') {
       if (column.sealStateId === '0') {
-        state.JyElMessageBox.header.data = '停用'
+        state.JyElMessageBox.header.data = 't-zgj-seal.deactivated'
         state.JyElMessageBox.content.data = '请问确定停用该印章吗？'
         state.JyElMessageBox.show = true
         state.JyElMessageBox.type = '停用'
       } else if (column.sealStateId === '1') {
-        state.JyElMessageBox.header.data = '启用'
+        state.JyElMessageBox.header.data = 't-zgj-Enable'
         state.JyElMessageBox.content.data = '请问确定启用该印章吗？'
         state.JyElMessageBox.show = true
         state.JyElMessageBox.type = '启用'
       }
     }
     if (cell.name === 't-zgj-status.Destroy') {
-      state.JyElMessageBox.header.data = '销毁'
+      state.JyElMessageBox.header.data = 't-zgj-status.Destroy'
       state.JyElMessageBox.content.data = '请问确定销毁该印章吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '销毁'

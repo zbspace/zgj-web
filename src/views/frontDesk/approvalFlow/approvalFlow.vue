@@ -9,10 +9,12 @@
     <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
       <template #title>
         <div class="title">
-          <div> 审批流程 </div>
+          <div> {{ $t('t-zgj-workflow.ApprovalProcess') }} </div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary">导出台账</el-button>
+              <el-button type="primary">{{
+                $t('t-zgj-F_SEAL_INFO_EXPORT_STANDING_BOOK')
+              }}</el-button>
             </div>
           </div>
         </div>
@@ -154,7 +156,7 @@
   const vformInfoStore = useVformInfoStore()
   const dialogProcess = reactive({
     show: false,
-    title: '处理',
+    title: 't-zgj-Approval',
     formJson: RecordSealToReviewJson
   })
   // const submitLibraryForm = type => {
@@ -409,7 +411,8 @@
         },
         {
           id: 'inquire',
-          name: '查询',
+          name: 't-zgj-query',
+          label: '查询',
           type: 'click',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -419,7 +422,8 @@
         },
         {
           id: 'reset',
-          name: '重置',
+          name: 't-zgj-reset',
+          label: '重置',
           type: 'click',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {},
@@ -745,30 +749,27 @@
     console.log(column)
     console.log(cell)
     dialogProcess.title = cell.name
-    if (cell.name === '处理') {
-      dialogProcess.formJson = RecordSealToReviewJson
-    }
-    if (cell.name === '审批') {
+    if (cell.name === 't-zgj-Approval') {
       state.params.instanceId = column.instanceId
       state.params.taskId = column.taskId
       state.params.approvalMode = column.approvalMode
       state.params.instanceStatus = column.instanceStatus
       state.params.approvalMode = column.approvalMode
-      getDetail(column.instanceId)
+      getDetail(column.instanceId, 't-zgj-Approval')
     }
-    if (cell.name === '重批') {
+    if (cell.name === 't-zgj-F_WORKFLOW_RE_APPROVAL') {
       state.params.instanceId = column.instanceId
       state.params.taskId = column.taskId
       state.params.approvalMode = column.approvalMode
       state.params.instanceStatus = column.instanceStatus
       state.params.approvalMode = column.approvalMode
-      getDetail(column.instanceId)
+      getDetail(column.instanceId, 't-zgj-F_WORKFLOW_RE_APPROVAL')
     }
   }
   /**
    * 获取当前流程模型详情
    */
-  const getDetail = instanceId => {
+  const getDetail = (instanceId, title) => {
     const params = {
       instanceId
     }
@@ -792,7 +793,7 @@
         }
 
         dialogProcess.show = true
-        dialogProcess.title = '审批'
+        dialogProcess.title = title
         console.log(dialogProcess.show)
       })
       .catch(() => {
@@ -1029,6 +1030,12 @@
         state.componentsPagination.data.amount = res.total
         state.componentsPagination.defaultAttribute.total = res.total
         state.componentsTable.loading = false
+        state.componentsTable.data.forEach(item => {
+          item.createTime = item.createTime
+            ? dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')
+            : item.createTime
+          item.approvalModeName = state.approvalModes[item.approvalMode]
+        })
       },
       () => {
         state.componentsTable.loading = false
@@ -1049,9 +1056,12 @@
         state.componentsTable.loading = false
         state.componentsTable.loading = false
         state.componentsTable.data.forEach(item => {
-          item.completionTime = dayjs(item.completionTime).format(
-            'YYYY-MM-DD HH:mm:ss'
-          )
+          item.completionTime = item.completionTime
+            ? dayjs(item.completionTime).format('YYYY-MM-DD HH:mm:ss')
+            : item.completionTime
+          item.createTime = item.createTime
+            ? dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')
+            : item.createTime
           item.approvalModeName = state.approvalModes[item.approvalMode]
         })
       },

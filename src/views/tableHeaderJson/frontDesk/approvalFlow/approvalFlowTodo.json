@@ -36,7 +36,8 @@
     "min-width": 150,
     "rankDisplayData": [
       {
-        "name": "审批"
+        "name": "t-zgj-Approval",
+        "label": "审批"
       }
     ]
   }

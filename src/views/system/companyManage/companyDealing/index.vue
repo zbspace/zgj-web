@@ -20,7 +20,7 @@
     >
       <template #title>
         <div class="title">
-          <div>往来企业</div>
+          <div>{{ $t('t-zgj-F_CUSTOMER_MANAGE') }}</div>
           <div class="title-more">
             <div class="title-more-add">
               <el-button
@@ -28,11 +28,11 @@
                 @click="
                   () => {
                     ;(showFormDialog = true),
-                      (state.title = '新增'),
+                      (state.title = 't-zgj-add'),
                       (state.column = {})
                   }
                 "
-                >+ 增加</el-button
+                >+ {{ $t('t-zgj-add') }}</el-button
               >
             </div>
             <div class="title-more-down">
@@ -44,11 +44,13 @@
                     alt=""
                     srcset=""
                   />
-                  <span>更多操作</span>
+                  <span>{{ $t('t-zgj-table.more.Operation') }}</span>
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>导入</el-dropdown-item>
+                    <el-dropdown-item>{{
+                      $t('t-zgj-importCustomer.title')
+                    }}</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -84,7 +86,7 @@
       <template #header>
         <div class="header-div">
           <img :src="state.JyElMessageBox.header.icon" alt="" />
-          <span>{{ state.JyElMessageBox.header.data }}</span>
+          <span>{{ $t(state.JyElMessageBox.header.data) }}</span>
         </div>
       </template>
       <template #content>
@@ -158,7 +160,7 @@
         },
         {
           id: 'inquire',
-          name: '查询',
+          name: 't-zgj-query',
           type: 'click',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -168,7 +170,7 @@
         },
         {
           id: 'reset',
-          name: '重置',
+          name: 't-zgj-reset',
           type: 'click',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {},
@@ -288,7 +290,7 @@
       },
       data: [
         {
-          name: '批量删除'
+          name: 't-zgj-seal.BatchDelete'
         }
       ]
     },
@@ -369,7 +371,7 @@
     state.relatedCompanyIds = []
     state.relatedCompanyIds.push(column.relatedCompanyId)
     if (cell.name === 't-zgj-Edit') {
-      state.title = '修改'
+      state.title = 't-zgj-Edit'
       api.detailRelatedCompany(column.relatedCompanyId).then(res => {
         if (res.code === 200) {
           console.log(res)
@@ -379,7 +381,7 @@
       })
     }
     if (cell.name === 't-zgj-Delete') {
-      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.header.data = 't-zgj-Delete'
       state.JyElMessageBox.content.data = '请问确定要删除吗？'
       state.JyElMessageBox.show = true
     }
@@ -402,9 +404,10 @@
       })
   }
   // 批量操作
-  const clickBatchButton = (item, index) => {
+  const clickBatchButton = (item, selection) => {
     state.relatedCompanyIds = []
-    const list = state.componentsBatch.selectionData
+    console.log(state.componentsBatch.selectionData)
+    const list = (state.componentsBatch.selectionData = selection)
     console.log('list', list)
     console.log(list[0])
     let nameList = ''
@@ -416,8 +419,8 @@
     })
     state.relatedCompanyIds = nameIdArr
     nameList = nameArr.join('、')
-    if (item.name === '批量删除') {
-      state.JyElMessageBox.header.data = '批量删除'
+    if (item.name === 't-zgj-seal.BatchDelete') {
+      state.JyElMessageBox.header.data = 't-zgj-seal.BatchDelete'
       state.JyElMessageBox.content.data = `已选中往来企业：${nameList}，请问确定要批量删除吗？`
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '批量删除'
