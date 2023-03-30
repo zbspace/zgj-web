@@ -416,6 +416,7 @@
       },
 
       addContainerByDbClick(container) {
+        return false
         this.designer.addContainerByDbClick(container)
       },
 
