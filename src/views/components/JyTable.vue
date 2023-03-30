@@ -628,6 +628,10 @@
     .el-button--info.is-link {
       --el-button-text-color: var(--jy-info-6);
     }
+
+    .el-button.is-link:hover {
+      color: var(--jy-info-5);
+    }
   }
 </style>
 <style lang="scss" scoped>
