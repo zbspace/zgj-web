@@ -4,13 +4,13 @@
       <div style="width: 100%; padding: 24px 16px 0 16px">
         <el-breadcrumb separator="/">
           <el-breadcrumb-item
-            style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
           >
             业务管理
           </el-breadcrumb-item>
           <el-breadcrumb-item
             style="
-              --el-text-color-regular: rgba(0, 0, 0, 0.25);
+              --el-text-color-regular: rgba(0, 0, 0, 0.65);
               cursor: pointer;
             "
             @click="router.go(-1)"
@@ -18,7 +18,7 @@
             业务规则管理
           </el-breadcrumb-item>
           <el-breadcrumb-item
-            style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
           >
             {{
               router.currentRoute.value.query.ruleBusinessId ? '编辑' : '新增'
@@ -62,7 +62,6 @@
                   <el-select
                     v-model="ruleForm.fileTypeIds"
                     multiple
-                    tag-type="warning"
                     placeholder="请选择"
                     style="width: 100%"
                   >
@@ -190,7 +189,6 @@
                           multiple
                           placeholder="请选择"
                           style="width: 100%"
-                          tag-type="warning"
                           popper-class="hidePoper"
                           :class="{
                             hasContent:
@@ -226,7 +224,6 @@
                         <el-select
                           v-model="ruleForm.videoUsers"
                           multiple
-                          tag-type="warning"
                           placeholder="请选择"
                           style="width: 100%"
                           popper-class="hidePoper"
