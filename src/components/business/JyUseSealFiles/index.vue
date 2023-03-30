@@ -1,13 +1,13 @@
 <!--
 * @Descripttion index.vue
-* @FileName index.vue
+* @fileOriginName index.vue
 * @Author zb
 * @module 用印文件
 * @LastEditTime 2023-03-29 10:08:47
 !-->
 <template>
   <JyDialog
-    v-model="visible"
+    v-model="isVisible"
     title="用印文件"
     centerBtn
     @opened="onOpened"
@@ -22,9 +22,9 @@
       label-width="100px"
       class="demo-ruleForm"
     >
-      <el-form-item label="文件名称" prop="fileName">
+      <el-form-item label="文件名称" prop="fileOriginName">
         <el-input
-          v-model="formData.fileName"
+          v-model="formData.fileOriginName"
           placeholder="自动生成文件名称、用随机数字替代"
           style="width: 420px"
         />
@@ -43,7 +43,7 @@
         >
           <template #item="{ element: item, index }">
             <div class="file">
-              <img :src="item.url" alt="" />
+              <img :src="item.fileUrl" alt="" />
               <p>
                 <svg class="iconpark-icon" @click="showPreview(index)">
                   <use href="#eye"></use>
@@ -72,31 +72,32 @@
 
 <script setup>
   import { ref, nextTick, computed } from 'vue'
-  const formData = ref({ fileName: '' })
-  const visible = ref(true)
+  const formData = ref({ fileOriginName: '' })
   const fileList = ref([])
   const initialIndex = ref(0)
   const ruleFormRef = ref(null)
 
   const urls = computed(() => {
-    return fileList.value.map(v => v.url)
+    return fileList.value.map(v => v.fileUrl)
   })
 
   const props = defineProps({
     fileUrls: {
       type: Array,
       default: () => [
-        { url: 'https://static.runoob.com/images/demo/demo1.jpg', id: 1 },
-        { url: 'https://static.runoob.com/images/demo/demo2.jpg', id: 2 },
-        { url: 'https://static.runoob.com/images/demo/demo3.jpg', id: 3 }
+        { fileUrl: 'https://static.runoob.com/images/demo/demo1.jpg', id: 1 }
       ]
+    },
+    visible: {
+      type: Boolean,
+      default: false
     }
   })
 
-  const emit = defineEmits(['confirm'])
+  const emit = defineEmits(['confirm', 'update:modelValue'])
 
   const rules = {
-    fileName: [
+    fileOriginName: [
       {
         required: true,
         message: '请输入',
@@ -104,6 +105,15 @@
       }
     ]
   }
+
+  const isVisible = computed({
+    get() {
+      return props.modelValue
+    },
+    set(value) {
+      emit('update:modelValue', value)
+    }
+  })
 
   const remove = index => {
     fileList.value.splice(index, 1)
@@ -119,8 +129,8 @@
   const confirm = async () => {
     try {
       await ruleFormRef.value.validate()
-      emit('confirm', { name: formData.value.name, urls })
-      visible.value = false
+      emit('confirm', fileList.value)
+      isVisible.value = false
     } catch (error) {}
   }
 
@@ -129,7 +139,7 @@
   }
 
   const close = () => {
-    visible.value = false
+    isVisible.value = false
   }
 </script>
 

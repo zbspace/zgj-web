@@ -132,6 +132,13 @@
       label="formName"
       @sureAction="deleteMore"
     ></actionMoreDialog>
+
+    <!-- 详情 -->
+    <Detail
+      v-model="detailVisible"
+      :operationId="operationId"
+      :formMessageId="formMessageId"
+    />
   </div>
 </template>
 
@@ -142,12 +149,17 @@
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import api from '@/api/system/formManagement'
+  import Detail from './Detail'
+
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const optionData = ref([])
   const table = ref(null)
   const queryParams = ref(null)
   const showToastDialogContent = ref(null)
   const tree = ref(null)
+  const detailVisible = ref(false)
+  const operationId = ref('')
+  const formMessageId = ref('')
   const state = reactive({
     componentsAddForm: {
       dialogVisible: false,
@@ -809,7 +821,11 @@
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'formName') {
-      state.componentsDocumentsDetails.show = true
+      // state.componentsDocumentsDetails.show = true
+      // queryOperation(row.applyTypeId)
+      operationId.value = row.operationId
+      formMessageId.value = row.formMessageId
+      detailVisible.value = true
     }
   }
 

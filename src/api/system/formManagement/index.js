@@ -181,4 +181,31 @@ api.queryColumInfoByFormId = params => {
     params
   })
 }
+
+// 表单详情_操作记录
+api.queryOperation = params => {
+  return request({
+    method: 'GET',
+    url: '/form/queryOperation',
+    params
+  })
+}
+
+// 表单详情_历史版本
+api.queryHisVersion = params => {
+  return request({
+    method: 'GET',
+    url: '/form/queryHisVersion',
+    params
+  })
+}
+
+// 表单详情 formMessageId
+api.getFormDetail = params => {
+  return request({
+    method: 'GET',
+    url: '/form/query',
+    params
+  })
+}
 export default api
