@@ -7,6 +7,7 @@
       ref="tableRefs"
       :data="props.data"
       style="width: 100%"
+      max-height="600"
       @select="select"
       @select-all="selectAll"
       @selection-change="selectionChange"

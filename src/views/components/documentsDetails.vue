@@ -949,7 +949,7 @@
   import documentsDetailsInformationList from './documentsDetails/informationList.vue'
   import documentsDetailsAccessory from './documentsDetails/accessory.vue'
   import documentsDetailsIntelligentPrinting from './documentsDetails/IntelligentPrinting.vue'
-  import documentsDetailsStaffDetails from './documentsDetails/Staff-Details.vue'
+  import documentsDetailsStaffDetails from './documentsDetails/staffDetails.vue'
   import documentsDetailSdigitalSeal from './documentsDetails/digital-seal.vue'
   import componentsArchive from './documentsDetails/Archive.vue'
   import componentsFileverification from './documentsDetails/Fileverification.vue'
