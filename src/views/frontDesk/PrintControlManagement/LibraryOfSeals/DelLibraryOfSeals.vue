@@ -245,7 +245,6 @@
   // 印章库 新增弹框
   const depChoose = ref(null)
   const table = ref(null)
-  const queryParams = ref({})
   const showDepPerDialog = ref(false)
   const submitSelectDepart = data => {
     if (data) {
@@ -475,32 +474,6 @@
         ElMessage.success(`${typeName}失败，请重试`)
       }
     })
-  }
-
-  const chooseOrgan = (type, tabs) => {
-    depChoose.value = type
-    state.tabsShow = []
-    state.searchSelected = []
-    if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
-      state.searchSelected.push({
-        id: state.form[type + 'Id'],
-        name: state.form[type + 'Name'],
-        type: tabs[0]
-      })
-    }
-    console.log(tabs)
-    state.tabsShow = tabs
-    showDepPerDialog.value = true
-  }
-
-  const clear = type => {
-    state.form[type + 'Id'] = ''
-    state.form[type + 'Name'] = ''
-  }
-  const currentChange = e => {
-    console.log(e)
-    queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
-    table.value.reloadData()
   }
   onBeforeMount(() => {})
   onMounted(() => {

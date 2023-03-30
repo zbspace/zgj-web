@@ -47,6 +47,7 @@
             :tableHeader="state.componentsTable.header"
             :data="state.componentsBatch.data"
             :defaultAttribute="state.componentsBatch.defaultAttribute"
+            @clickBatchButton="clickBatchButton"
           >
           </componentsBatch>
         </div>
@@ -59,6 +60,7 @@
             :header="state.componentsTable.header"
             :paginationData="state.componentsPagination.data"
             isSelection
+            height="800"
             :loading="state.componentsTable.loading"
             @selection-change="selectionChange"
             @custom-click="customClick"
@@ -721,6 +723,15 @@
     }
     getFormPage()
   }
+  const clickBatchButton = item => {
+    console.log(item)
+    if (item.name === 'refresh') {
+      state.componentsPagination.data.index = 1
+      state.componentsTable.data = []
+      state.componentsPagination.data.amount = 0
+      getFormPage()
+    }
+  }
   // 分页页数变化
   const currentChange = data => {
     state.componentsPagination.data.index = data
@@ -732,7 +743,6 @@
     state.componentsPagination.data.index = 1
     getFormPage()
   }
-  const addSignModeChange = item => {}
   // 当选择项发生变化时会触发该事件
   function selectionChange(selection) {
     console.log(selection)
@@ -1009,8 +1019,8 @@
       }
       queryParams[item.id] = item.value
     })
-    queryParams.pageNo = state.componentsPagination.index || 1
-    queryParams.pageSize = state.componentsPagination.pageNumber || 10
+    queryParams.pageNo = state.componentsPagination.data.index || 1
+    queryParams.pageSize = state.componentsPagination.data.pageNumber || 10
     state.componentsTable.loading = true
     if (state.componentsTabs.activeName === '1') {
       queryTodoTask(queryParams)

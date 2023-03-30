@@ -13,7 +13,7 @@
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
-      tableClick="userName"
+      tableClick="relatedCompanyName"
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
@@ -450,6 +450,9 @@
         height: 100%;
         display: flex;
         align-items: center;
+        img {
+          margin-right: 5px;
+        }
       }
     }
   }

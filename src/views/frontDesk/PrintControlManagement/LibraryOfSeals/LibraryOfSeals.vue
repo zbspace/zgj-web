@@ -241,7 +241,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('subOrgan', ['organ'])"
+                    @click="chooseOrgan('subOrgan', ['organ'], true)"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -324,6 +324,7 @@
             <el-form-item label="保管人" prop="keepUserId">
               <div class="select-box-contBox">
                 <el-input
+                  :disabled="state.form.sealId"
                   class="ap-box-contBox-input width-100"
                   readonly
                   v-model="state.form.keepUserName"
@@ -342,7 +343,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('keepUser', ['user'])"
+                    @click="chooseOrgan('keepUser', ['user'], false)"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -375,7 +376,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('keepOrgan', ['organ'])"
+                    @click="chooseOrgan('keepOrgan', ['organ'], false)"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                   />
@@ -478,6 +479,7 @@
       @update:show="showDepPerDialog = $event"
       v-if="showDepPerDialog"
       :tabsShow="state.tabsShow"
+      :multiple="state.multiple"
       @update:searchSelected="submitSelectDepart"
       :searchSelected="state.searchSelected"
     >
@@ -518,7 +520,7 @@
       <template #header>
         <div class="header-div">
           <img :src="state.showToastDialog.header.icon" alt="" />
-          <span>{{ state.showToastDialog.header.data }}</span>
+          <span>{{ $t(state.showToastDialog.header.data) }}</span>
         </div>
       </template>
       <template #content>
@@ -538,7 +540,7 @@
           :key="item.name"
           :type="item.type"
           @click="item.clickName"
-          >{{ item.name }}</el-button
+          >{{ $t(item.name) }}</el-button
         >
       </template>
     </JyElMessageBox>
@@ -643,6 +645,7 @@
     sealIds: '',
     msg: '',
     tabsShow: [],
+    multiple: true,
     searchSelected: [],
     title: '新增',
     typeList: [],
@@ -1169,37 +1172,37 @@
     })
     state.sealIds = idList.join(',')
     if (item.name === 't-zgj-view.SealUnbind') {
-      state.showToastDialog.header.data = '印章解绑'
+      state.showToastDialog.header.data = 't-zgj-view.SealUnbind'
       state.showToastDialog.content.data = '已选中以下印章，请问确定要解绑吗？'
       state.showToastDialog.show = true
       // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
       state.butDatas = [
         {
-          name: '确定',
+          name: 't-zgj-select.confirm',
           type: 'primary',
           clickName: sureBatchUnbind
         },
         {
-          name: '取消',
+          name: 't-zgj-operation.cancel',
           type: '',
           clickName: closeBatchTabel
         }
       ]
     }
     if (item.name === 't-zgj-seal.BatchDelete') {
-      state.showToastDialog.header.data = '批量删除'
+      state.showToastDialog.header.data = 't-zgj-seal.BatchDelete'
       state.showToastDialog.content.data =
         '已选中以下印章，请问确定要批量删除吗？'
       state.showToastDialog.show = true
       // state.showToastDialog.header.icon = '/src/assets/svg/common/danger.svg'
       state.butDatas = [
         {
-          name: '确定',
+          name: 't-zgj-select.confirm',
           type: 'primary',
           clickName: sureBatchDel
         },
         {
-          name: '取消',
+          name: 't-zgj-operation.cancel',
           type: '',
           clickName: closeBatchTabel
         }
@@ -1258,7 +1261,7 @@
     api.relationContractType(idList).then(res => {
       if (res.code === 200) {
         if (res.data.length > 0) {
-          state.showToastDialog.header.data = '删除'
+          state.showToastDialog.header.data = 't-zgj-Delete'
           state.showToastDialog.content.data =
             '选中的以下表单已关联了流程，不允许删除'
           state.showToastDialog.show = true
@@ -1328,7 +1331,8 @@
     })
   }
 
-  const chooseOrgan = (type, tabs) => {
+  const chooseOrgan = (type, tabs, multiple) => {
+    state.multiple = multiple
     depChoose.value = type
     state.tabsShow = []
     state.searchSelected = []
@@ -1442,6 +1446,9 @@
           height: 100%;
           display: flex;
           align-items: center;
+          img {
+            margin-right: 5px;
+          }
         }
       }
     }

@@ -34,9 +34,18 @@
     <div class="ap-detail">
       <div class="ap-detail-label">所属部门：</div>
       <div class="ap-detail-cont">
+        <div>
+          {{ state.props.data.hostOrganName }}
+        </div>
+      </div>
+    </div>
+    <div class="ap-detail">
+      <div class="ap-detail-label">兼职部门：</div>
+      <div class="ap-detail-cont">
         <div
           class="ap-detail-cont-val"
           v-for="item in state.props.data.departmentList"
+          :key="item"
         >
           {{ item.name }}
         </div>
@@ -236,7 +245,7 @@
         color: var(--jy-color-text-3);
         display: flex;
         justify-content: flex-end;
-        width: 6rem;
+        width: 8rem;
         margin-right: 0.5rem;
       }
 

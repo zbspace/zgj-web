@@ -248,6 +248,40 @@
             </div>
           </div>
         </el-form-item>
+        <!-- <el-form-item label="角色" prop="roleNames">
+          <el-select
+            class="ap-box-contBox-input width-100"
+            v-model="state.componentsAddForm.formData.roles"
+            ref="selectRolesRef"
+            placeholder="请选择"
+            multiple
+            collapse-tags
+            collapse-tags-tooltip
+            :max-collapse-tags="4"
+            @click="chooseOrgan('roles', true)"
+          >
+            <el-option
+              :label="item.roleName"
+              :value="item.roleId"
+              v-for="item in state.componentsAddForm.formData.roles"
+              :key="item.roleId"
+            />
+          </el-select> -->
+        <!-- <div class="ap-box-contBox-icon">
+            <el-icon
+              style="color: #aaaaaa; margin-right: 5px"
+              v-if="state.componentsAddForm.formData.roleNames"
+              @click="clear('roles')"
+              ><CircleClose
+            /></el-icon>
+            <img
+              @click="chooseOrgan('roles', true)"
+              class="ap-box-contBox-icon-img"
+              src="@/assets/svg/ketanchude.svg"
+              alt=""
+            />
+          </div> -->
+        <!-- </el-form-item> -->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="企业微信ID" prop="qweiNo">
@@ -379,7 +413,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive, onMounted, watch, nextTick } from 'vue'
+  import { ref, reactive, onMounted, nextTick } from 'vue'
   import { CircleClose, Plus } from '@element-plus/icons-vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
@@ -752,6 +786,7 @@
       state.componentsAddForm.formData.leaderUserName = ''
     }
   }
+  const selectRolesRef = ref(null)
   // 选择部门弹窗
   const chooseOrgan = (type, multiple) => {
     depChoose.value = type
@@ -759,36 +794,24 @@
     state.tabsShow = []
     if (depChoose.value === 'hostOrgan') {
       state.tabsShow = ['organ']
-      state.tabSelects.searchSelected = JSON.parse(
-        JSON.stringify(state.tabSelects.hostOrganSelected)
-      )
+      state.tabSelects.searchSelected = state.tabSelects.hostOrganSelected
     }
     if (depChoose.value === 'partTimeOrgan') {
       state.tabsShow = ['organ']
       state.tabSelects.searchSelected =
         state.tabSelects.partTimehostOrganSelected
-      console.log(state.tabSelects.searchSelected)
     }
     if (depChoose.value === 'roles') {
+      // selectRolesRef.value.blur()
       state.tabsShow = ['organ']
-      state.tabSelects.searchSelected = JSON.parse(
-        JSON.stringify(state.tabSelects.rolesSelected)
-      )
+      state.tabSelects.searchSelected = state.tabSelects.rolesSelected
     }
     if (depChoose.value === 'leaderUser') {
       state.tabsShow = ['user']
-      state.tabSelects.searchSelected = JSON.parse(
-        JSON.stringify(state.tabSelects.leaderUserSelected)
-      )
+      state.tabSelects.searchSelected = state.tabSelects.leaderUserSelected
     }
     showDepPerDialog.value = true
   }
-  watch(
-    () => state.tabSelects.partTimehostOrganSelected,
-    data => {
-      console.log(data)
-    }
-  )
   // 获取部门
   const submitSelectDepart = item => {
     console.log(item)
@@ -830,10 +853,10 @@
           roleNames.push(el.name)
         })
       }
-      console.log(roleNames)
+      console.log(roles)
       state.tabSelects.rolesSelected = item
       state.componentsAddForm.formData.roles = roles
-      state.componentsAddForm.formData.roleNames = roleNames.join('、')
+      // state.componentsAddForm.formData.roleNames = roleNames
     }
     if (depChoose.value === 'leaderUser') {
       state.tabSelects.leaderUserSelected = item
@@ -899,7 +922,48 @@
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
+    console.log(row)
+    console.log('column', column)
     if (column.property === 'userName') {
+      api.userGet(row.userId).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          const partTimeOrgans = []
+          const roles = []
+          res.data.partTimeOrgans.forEach(item => {
+            partTimeOrgans.push({
+              name: item.organName
+            })
+          })
+          res.data.roles.forEach(item => {
+            roles.push(item.roleName)
+          })
+          const baseData = {
+            name: res.data.userName ? res.data.userName : '-',
+            cellPhone: res.data.userTel ? res.data.userTel : '-',
+            account: res.data.accountNo ? res.data.accountNo : '-',
+            hostOrganName: res.data.hostOrganName
+              ? res.data.hostOrganName
+              : '-',
+            departmentList: partTimeOrgans || '-',
+            role: roles ? roles.join('、') : '-',
+            jobTitle: res.data.userTitle ? res.data.userTitle : '-',
+            mailbox: res.data.userMail ? res.data.userMail : '-',
+            EnterpriseWechatID: res.data.qweiNo ? res.data.qweiNo : '-',
+            NailID: res.data.dingdingNo ? res.data.dingdingNo : '-',
+            remark: res.data.readme ? res.data.readme : '-',
+            FacePicturePath: res.data.userFaceUri ? res.data.userFaceUri : ''
+          }
+          state.componentsDocumentsDetails.visible.forEach((item, index) => {
+            if (item.name === 'Staff-Details') {
+              state.componentsDocumentsDetails.visible[index][
+                'basicInformation-data'
+              ] = baseData
+            }
+          })
+        }
+      })
+
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -913,31 +977,48 @@
       showStaffDialog.value = true
       api.userGet(column.userId).then(res => {
         console.log(res)
+        state.tabSelects.leaderUserSelected = [
+          {
+            id: res.data.leaderUserId,
+            name: res.data.leaderUserName,
+            type: 'user'
+          }
+        ]
+        state.tabSelects.hostOrganSelected = [
+          {
+            id: res.data.hostOrganId,
+            name: res.data.hostOrganName,
+            type: 'organ'
+          }
+        ]
         for (const item in res.data) {
           state.componentsAddForm.formData[item] = res.data[item]
           if (item === 'partTimeOrgans' && res.data[item].length > 0) {
             const organs = []
             res.data[item].forEach(item => {
               organs.push(item.organName)
-            })
-            state.tabSelects.partTimehostOrganSelected.push({
-              id: item.organId,
-              name: item.organName,
-              type: 'organ'
+              state.tabSelects.partTimehostOrganSelected.push({
+                id: item.organId,
+                name: item.organName,
+                haveChildren: item.haveChildren,
+                type: 'organ'
+              })
             })
             state.componentsAddForm.formData.partTimeOrganNames =
               organs.join('、')
           }
           if (item === 'roles' && res.data[item].length > 0) {
             const rolesNames = []
-            res.data[item].forEach(item => {
-              rolesNames.push(item.roleName)
+            res.data[item].forEach(v => {
+              rolesNames.push(v.roleName)
+              state.tabSelects.rolesSelected.push({
+                id: v.roleId,
+                name: v.roleName,
+                type: 'role'
+              })
             })
-            state.tabSelects.rolesSelected.push({
-              id: item.roleId,
-              name: item.roleName
-            })
-            state.componentsAddForm.formData.roles = rolesNames.join('、')
+            state.componentsAddForm.formData.roles = res.data[item]
+            state.componentsAddForm.formData.roleNames = rolesNames.join('、')
           }
         }
         console.log(
@@ -1037,16 +1118,6 @@
       })
     }
   }
-  // 员工操作
-  const singleOpt = (typeName, apiName) => {
-    apiName.then(res => {
-      console.log(res)
-      if (res.data.code === 200) {
-        ElMessage.success(`${typeName}成功！`)
-        state.JyElMessageBox.show = true
-      }
-    })
-  }
   // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
@@ -1054,10 +1125,6 @@
 
   // 提交新增表单
   const submitStaffForm = data => {
-    console.log(data)
-    // if (!data) {
-    //   return false
-    // }
     formStaffRef.value.validate(valid => {
       if (valid) {
         confirmLoading.value = true
@@ -1145,6 +1212,9 @@
       display: flex;
       .title-more-down {
         margin-left: 5px;
+        img {
+          margin-right: 5px;
+        }
       }
     }
   }
