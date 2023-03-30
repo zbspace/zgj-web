@@ -348,7 +348,6 @@
   // const allSelected = ref([])
   const selectedDepart = ref(props.searchSelected || [])
   const selectedUser = ref([])
-
   const firstShow = ref(false)
   const apiInterface = (params, apiKey) => {
     return new Promise((resolve, reject) => {

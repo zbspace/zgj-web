@@ -201,6 +201,14 @@
     sealApplyInitId: {
       type: String,
       default: ''
+    },
+    openType: {
+      type: String,
+      default: 'add'
+    },
+    formMessageId: {
+      type: String,
+      default: ''
     }
   })
 
@@ -217,6 +225,14 @@
       resetFlag.value = true
     })
   }
+
+  watch(
+    () => props.formMessageId,
+    val => {
+      if (!val) return
+      clickEditForm({ formMessageId: val })
+    }
+  )
 
   // 点击重新选择
   const clickReselect = () => {
@@ -296,6 +312,7 @@
   watch(
     () => form.sealUseTypeId,
     val => {
+      if (!val) return
       getFromList()
     },
     {

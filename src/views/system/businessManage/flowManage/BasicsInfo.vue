@@ -86,10 +86,10 @@
               @click="getFileType"
             >
               <el-option
-                :label="item.name"
-                :value="item.id"
+                :label="item.name || item.scopeName"
+                :value="item.id || item.scopeId"
                 v-for="item in rangeList"
-                :key="item.id"
+                :key="item.id || item.scopeId"
               />
             </el-select>
           </el-form-item>
@@ -110,7 +110,7 @@
       :show="showDepPerDialog"
       @update:show="showDepPerDialog = $event"
       :searchSelected="searchSelected"
-      @update:searchSelected="searchSelected = $event"
+      @update:searchSelected="handleDepSelected"
       :tabsShow="tabsShow"
       :activeTab="activeTab"
       v-if="showDepPerDialog"
@@ -121,7 +121,8 @@
     <KDocumentTypeDialog
       v-if="showDocumentType"
       v-model:show="showDocumentType"
-      v-model:searchSelected="searchSelectedDocument"
+      :searchSelected="searchSelectedDocument"
+      @update:searchSelected="handleFileSelected"
     ></KDocumentTypeDialog>
   </div>
 </template>
@@ -148,6 +149,24 @@
     sealApplyInitId: {
       type: String,
       default: ''
+    },
+    openType: {
+      type: String,
+      default: 'add'
+    },
+    editBasicsForm: {
+      type: Object,
+      default: () => {
+        return {
+          flowName: '',
+          applyTypeId: '',
+          sealUseTypeId: '1',
+          fileTypeIds: [],
+          showDataScope: [],
+          dataScope: [],
+          readme: ''
+        }
+      }
     }
   })
   const emits = defineEmits('update:modelValue', 'update:sealId')
@@ -207,11 +226,45 @@
       }
     ]
   })
+
+  watch(
+    () => props.editBasicsForm,
+    val => {
+      if (val && val.flowName) {
+        if (props.openType === 'edit') {
+          form.flowName = val.flowName
+          form.applyTypeId = val.applyTypeId
+          form.sealUseTypeId = val.sealUseTypeId
+          form.readme = val.readme
+          handleScopeArr(val.dataScope)
+          handleFileArr(val.fileType)
+
+          searchSelected.value = val.dataScope.map(item => {
+            return {
+              id: item.scopeId,
+              name: item.scopeName,
+              type: item.scopeType === 2 ? 'organ' : 'user'
+            }
+          })
+
+          searchSelectedDocument.value = val.fileType.map(item => {
+            return {
+              fileTypeId: item.fileTypeId,
+              fileTypeName: item.fileTypeName,
+              type: 'document'
+            }
+          })
+        }
+      }
+    }
+  )
+
   const selectRef = ref(null)
   const getDivision = () => {
     selectRef.value.blur()
     showDocumentType.value = true
   }
+
   const selectFileRef = ref(null)
   const getFileType = () => {
     selectFileRef.value.blur()
@@ -227,15 +280,6 @@
     }
   }
 
-  // const setFileTypeList = async () => {
-  //   try {
-  //     const res = await fileManageService.getFileTypeList(form.applyTypeId)
-  //     fileTypeList.value = res.data || []
-  //   } catch (error) {
-  //     messageError(error)
-  //   }
-  // }
-
   form.sealUseTypeId = computed({
     get() {
       return props.sealId
@@ -245,35 +289,36 @@
     }
   })
 
-  watch(
-    () => searchSelected.value,
-    val => {
-      const arr = []
-      if (val.length > 0 && val) {
-        val.forEach(item => {
-          arr.push(item.name)
-          // 初始化 form.dataScope
-          form.dataScope.push({
-            scopeId: item.id,
-            scopeName: item.name,
-            scopeType: item.type === 'user' ? '1' : '2'
-          })
+  const handleDepSelected = val => {
+    searchSelected.value = val
+    handleScopeArr(val)
+  }
+
+  const handleScopeArr = val => {
+    const arr = []
+    if (val.length > 0 && val) {
+      form.dataScope = []
+      rangeList.value = val
+      val.forEach(item => {
+        arr.push(item.id || item.scopeId)
+        // 初始化 form.dataScope
+        form.dataScope.push({
+          scopeId: item.id || item.scopeId,
+          scopeName: item.name || item.scopeName,
+          scopeType: item.type === 'user' ? '1' : '2'
         })
-        form.showDataScope = arr
-        rangeList.value = val
-      } else {
-        form.showDataScope = []
-        form.dataScope = []
-      }
+      })
+      form.showDataScope = arr
+      console.log(form.dataScope, 'form.dataScopeform.dataScope')
+    } else {
+      form.showDataScope = []
+      form.dataScope = []
     }
-  )
+  }
 
   watch(
     () => form.applyTypeId,
     val => {
-      // if (val === props.sealApplyInitId) {
-      //   setFileTypeList()
-      // }
       emits('update:modelValue', val)
     }
   )
@@ -291,23 +336,24 @@
 
   const searchSelectedDocument = ref([])
 
-  watch(
-    () => searchSelectedDocument.value,
-    val => {
-      if (!val) return
-      const arr = []
-      const selectIds = []
-      val.forEach(item => {
-        arr.push({
-          fileTypeId: item.fileTypeId,
-          fileTypeName: item.fileTypeName
-        })
-        selectIds.push(item.fileTypeId)
+  const handleFileSelected = val => {
+    searchSelectedDocument.value = val
+    handleFileArr(val)
+  }
+
+  const handleFileArr = val => {
+    const arr = []
+    const selectIds = []
+    val.forEach(item => {
+      arr.push({
+        fileTypeId: item.fileTypeId,
+        fileTypeName: item.fileTypeName
       })
-      fileTypeList.value = arr
-      form.fileTypeIds = selectIds
-    }
-  )
+      selectIds.push(item.fileTypeId)
+    })
+    fileTypeList.value = arr
+    form.fileTypeIds = selectIds
+  }
 
   defineExpose({
     getBasicsFormValue,

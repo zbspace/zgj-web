@@ -175,7 +175,6 @@
         dispose.defaultAttribute[key] = props.defaultAttribute[key]
       }
     }
-    console.log('--->', props, dispose)
   }
 
   // 点击关闭弹框
