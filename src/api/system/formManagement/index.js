@@ -84,11 +84,11 @@ api.enable = data => {
 }
 
 // 复制表单
-api.copy = data => {
+api.copy = params => {
   return request({
-    method: 'POST',
+    method: 'GET',
     url: '/form/copy',
-    data
+    params
   })
 }
 

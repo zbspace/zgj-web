@@ -140,6 +140,17 @@
       :selectionData="state.componentsBatch.selectionData"
       :showToastDialogContent="showToastDialogContent"
       label="flowName"
+      @sureAction="state.showRelatedfFlow.show = false"
+    ></actionMoreDialog>
+
+    <!-- 删除提示关联流程 -->
+    <actionMoreDialog
+      @update:modelValue="state.showDeleteForm.show = false"
+      :show="state.showDeleteForm.show"
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="showToastDialogContent"
+      label="flowName"
+      @sureAction="state.showDeleteForm.show = false"
     ></actionMoreDialog>
     <!-- 详情 -->
     <Detail
@@ -159,6 +170,7 @@
   import api from '@/api/system/formManagement'
   import Detail from './Detail'
   import sealApplyService from '@/api/frontDesk/printControl/sealApply'
+  import { messageSuccess, messageError } from '@/hooks/useMessage'
 
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const optionData = ref([])
@@ -169,6 +181,7 @@
   const detailVisible = ref(false)
   const operationId = ref('')
   const formMessageId = ref('')
+  const copyInfo = ref({ formMessageId: '', formName: '' })
   const state = reactive({
     componentsAddForm: {
       dialogVisible: false,
@@ -488,6 +501,16 @@
       content: {
         data: ''
       }
+    },
+    showDeleteForm: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
     }
   })
 
@@ -762,22 +785,18 @@
   }
 
   // 点击表格按钮
-  function customClick(row, column, cell, event) {
+  async function customClick(row, column, cell, event) {
     if (cell.name === 't-zgj-Edit') {
-      getFlowList(column.formMessageId, column)
+      getFlowList(column.formMessageId, column, 'edit')
     }
     if (cell.name === 't-zgj-Delete') {
-      state.JyElMessageBox.header.data = '删除'
-      state.JyElMessageBox.content.data = '请问确定要删除该表单吗？'
-      state.JyElMessageBox.show = true
-      state.JyElMessageBox.data.tableId = column.formMessageId
+      getFlowList(column.formMessageId, column, 'delete')
     }
     if (cell.name === 't-zgj-qyWechat.Copy') {
+      copyInfo.value = { ...copyInfo.value, ...column }
       state.showFormDialog.header.data = '表单复制'
       state.showFormDialog.show = true
-      state.componentsAddForm.data = JSON.parse(JSON.stringify(column))
-      state.componentsAddForm.data.formMessageId = ''
-      state.componentsAddForm.data.formName = `${column.formName}-副本`
+      state.componentsAddForm.data.formName = `${copyInfo.value.formName}-副本`
     }
   }
 
@@ -893,33 +912,39 @@
   }
   const formRef = ref(null)
   // 提交表单名称
-  function submitCopyTabel() {
-    console.log('复制表单')
-    formRef.value.validate(valid => {
-      console.log(valid)
-      if (valid) {
-        state.showFormDialog.show = false
-        state.componentsAddForm.dialogVisible = true
-        state.componentsAddForm.addTitle = '复制'
-      } else {
-        // ElMessage.warning('表单名称不能为空')
-        return false
-      }
-    })
+  async function submitCopyTabel() {
+    try {
+      await formRef.value.validate()
+      copyInfo.value.formName = state.componentsAddForm.data.formName
+      await copyForm()
+      state.showFormDialog.show = false
+      state.componentsAddForm.dialogVisible = true
+      state.componentsAddForm.addTitle = '修改'
+    } catch (error) {
+      messageError(error)
+    }
   }
+
   // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
 
-  async function getFlowList(formMessageId, column) {
+  async function getFlowList(formMessageId, column, type) {
     const res = await sealApplyService.flowList({
       formMessageId
     })
     if (!res.data) {
-      state.componentsAddForm.dialogVisible = true
-      state.componentsAddForm.addTitle = '修改'
-      state.componentsAddForm.data = column
+      if (type === 'edit') {
+        state.componentsAddForm.dialogVisible = true
+        state.componentsAddForm.addTitle = '修改'
+        state.componentsAddForm.data = column
+      } else {
+        state.JyElMessageBox.header.data = '删除'
+        state.JyElMessageBox.content.data = '请问确定要删除该表单吗？'
+        state.JyElMessageBox.show = true
+        state.JyElMessageBox.data.tableId = column.formMessageId
+      }
     } else {
       state.showRelatedfFlow.show = true
       state.componentsBatch.selectionData = res.data
@@ -928,10 +953,22 @@
           data: '提示'
         },
         content: {
-          data: '当前表单被已启用的以下流程所使用，仅当以下流程停用才允许修改'
+          data:
+            '当前表单被已启用的以下流程所使用，仅当以下流程停用才允许' +
+            (type === 'edit' ? '修改' : '删除')
         }
       }
     }
+  }
+
+  async function copyForm() {
+    const res = await api.copy({
+      formMessageId: copyInfo.value.formMessageId,
+      formName: copyInfo.value.formName
+    })
+    messageSuccess('表单复制成功')
+    await table.value.reloadData()
+    state.componentsAddForm.data.formMessageId = res.data
   }
 
   onBeforeMount(() => {

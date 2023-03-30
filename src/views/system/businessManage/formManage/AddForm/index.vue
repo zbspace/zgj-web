@@ -95,7 +95,8 @@
           <!-- 表单设计 -->
           <JyVform
             ref="vformRef"
-            v-if="state.processTabs.checkedNode.index === '2'"
+            v-if="formKey > 0"
+            v-show="state.processTabs.checkedNode.index === '2'"
             style="margin-top: 0; width: 100%"
             :prefabricationFieldList="prefabricationFieldList"
             @on-loaded="loaded"
@@ -121,6 +122,7 @@
   const mustProps = ref([])
   const formInfo = ref({})
   const saveLoading = ref(false)
+  const formKey = ref(0)
 
   const props = defineProps({
     addTitle: {
@@ -237,6 +239,7 @@
   const clickCutTabs = async (data, item) => {
     try {
       if (item.index === '2') {
+        formKey.value++
         await formRef.value.validate()
       }
       data.forEach(element => {
@@ -263,6 +266,11 @@
     })
     getFormColumnMust()
   }
+
+  // const getFormJson = async (formMessageId)=> {
+  //   const res = await FlowApi.getFormJsonById({ formMessageId })
+  //   vformRef.value.setFormJson(res.data)
+  // }
 
   // 处理选项
   const disCutTabs = () => {
