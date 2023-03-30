@@ -957,7 +957,7 @@
 
   import riliXingzhuangSvg from '@/assets/svg/rili-xingzhuang.svg'
   import liuchengChaosongSvg from '@/assets/svg/liucheng-chaosong.svg'
-  import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
+  import yuanLvSvg from '@/assets/svg/common/yuan-lv.svg'
   import renlianIconSvg from '@/assets/svg/renlian-icon.svg'
   import liuchengDengdaiSvg from '@/assets/svg/liucheng-dengdai.svg'
   import liuchengFaqishenqingSvg from '@/assets/svg/liucheng-faqishenqing.svg'

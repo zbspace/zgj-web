@@ -18,7 +18,12 @@
                 </svg>
               </i>
               <span class="process-back-text">
-                {{ $t('t-zgj-sync.add') }}
+                <span v-show="props.openType === 'add'">
+                  {{ $t('t-zgj-sync.add') }}
+                </span>
+                <span v-show="props.openType === 'edit'">
+                  {{ $t('t-editors') }}
+                </span>
               </span>
             </div>
             <div class="process-tabs">
@@ -81,26 +86,32 @@
           </div>
           <div class="content">
             <BasicsInfo
-              v-show="state.checkedIndex == '1'"
               ref="refBasicsInfo"
-              :businessList="props.businessList"
-              :sealApplyInitId="props.sealApplyInitId"
               v-model="linkId"
               v-model:sealId="linkSealUseTypeId"
-            ></BasicsInfo>
-            <AssociationForm
+              v-show="state.checkedIndex == '1'"
               :businessList="props.businessList"
               :sealApplyInitId="props.sealApplyInitId"
-              v-show="state.checkedIndex == '2'"
+              :openType="openType"
+              :editBasicsForm="editBasicsForm"
+            ></BasicsInfo>
+            <AssociationForm
               ref="refAssociationForm"
               v-model="linkId"
               v-model:sealId="linkSealUseTypeId"
+              v-show="state.checkedIndex == '2'"
+              :businessList="props.businessList"
+              :sealApplyInitId="props.sealApplyInitId"
+              :openType="openType"
+              :formMessageId="formMessageId"
             ></AssociationForm>
             <VFlowDesign
-              v-show="state.checkedIndex == '3'"
-              v-if="modelIds"
               ref="refVFlowDesign"
+              v-show="state.checkedIndex == '3'"
+              v-if="modelIds.modelId"
+              v-loading="loadingModel"
               :initObj="modelIds"
+              :openType="openType"
             ></VFlowDesign>
             <AdvancedSetup
               v-show="state.checkedIndex == '4'"
@@ -137,8 +148,9 @@
   import AntModalBox from '@/views/components/modules/AntModalBox.vue'
   import { reactive, computed, defineAsyncComponent, ref, watch } from 'vue'
   import apiFlow from '@/api/system/flowManagement'
-  import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  import editModelApi from '@/api/frontDesk/printControl/sealApply'
   import { ElMessage } from 'element-plus'
+  import { useFlowStore } from '@/components/FlowDesign/store/flow'
   const flowStore = useFlowStore()
   const linkSealUseTypeId = ref('1')
   // 异步组件
@@ -167,6 +179,16 @@
     sealApplyInitId: {
       type: String,
       default: ''
+    },
+    editModleIds: {
+      type: Object,
+      default: () => {
+        return {
+          definitionId: '',
+          modelId: '',
+          flowMessageId: ''
+        }
+      }
     }
   })
 
@@ -230,9 +252,80 @@
   const refBasicsInfo = ref(null)
   const refAdvancedSetup = ref(null)
   const errorInfo = ref([])
-  const modelIds = ref(null)
+  const modelIds = ref({
+    modelId: '',
+    definitionId: ''
+  })
+  const editInitModel = ref(true)
+  const loadingModel = ref(false)
+  const editBasicsForm = ref({
+    applyTypeId: '',
+    fileType: [],
+    dataScope: [],
+    flowName: '',
+    readme: '',
+    sealUseTypeId: ''
+  })
+
+  const formMessageId = ref('')
+
+  // 编辑回显
+  const editInit = () => {
+    // 更新 modelId
+    modelIds.value.definitionId = props.editModleIds.definitionId
+    modelIds.value.modelId = props.editModleIds.modelId
+    flowStore.setModelId(modelIds.value.modelId, modelIds.value.definitionId)
+
+    apiFlow
+      .flowDetail({
+        flowMessageId: props.editModleIds.flowMessageId
+      })
+      .then(res => {
+        editBasicsForm.value = {
+          applyTypeId: res.data.applyTypeId,
+          fileType: res.data.fileType,
+          dataScope: res.data.dataScope,
+          flowName: res.data.flowName,
+          readme: res.data.readme,
+          sealUseTypeId: res.data.sealUseTypeId
+        }
+
+        // 关联表单信息
+        formMessageId.value = res.data.formMessageId
+      })
+  }
+  // 编辑 - 初始化form
+  if (props.openType === 'edit') {
+    editInit()
+  }
   const changeTabs = async attr => {
     if (attr.index === '3') {
+      // 1 编辑
+      if (props.openType === 'edit') {
+        loadingModel.value = true
+        handleTabFn(attr)
+        if (!editInitModel.value) {
+          loadingModel.value = false
+          return
+        }
+        console.log(
+          props.editModleIds,
+          'props.editModleIdsprops.editModleIdsprops.editModleIds'
+        )
+        editModelApi
+          .flowDetail({
+            ...props.editModleIds,
+            edit: true
+          })
+          .then(res => {
+            loadingModel.value = false
+            editInitModel.value = false
+            refVFlowDesign.value.handleSetData(res.data.data)
+          })
+
+        return
+      }
+      // 2 新增
       // 优先判断 - 基础信息填写完成
       errorInfo.value = []
       const basicsResult = await refBasicsInfo.value.getBasicsFormValue()
@@ -243,10 +336,9 @@
             message: basicsResult[0][k][0].message
           })
         }
-        ElMessage.error('请填写基础信息')
+        ElMessage.warning('请填写基础信息')
       }
       const associationResult = refAssociationForm.value.getAssociationValue()
-      console.log(associationResult, '表单', Array.isArray(associationResult))
       if (Array.isArray(associationResult)) {
         for (const k in associationResult[0]) {
           errorInfo.value.push({
@@ -254,7 +346,7 @@
             message: associationResult[0][k][0].message
           })
         }
-        ElMessage.error('请选择关联表单')
+        ElMessage.warning('请选择关联表单')
       }
 
       if (errorInfo.value.length > 0) return
@@ -270,16 +362,15 @@
       // ② 是否 模型建立
       if (!modelIds.value) {
         // 新增 - 初次 流程设计模型
-        if (props.openType === 'add') {
-          state.jyBoxHeader = '提示？'
-          state.jyBoxCont = '请填写完整信息'
-          state.jyBoxShow = true
-          return
-        }
-        return
+        state.jyBoxHeader = '提示？'
+        state.jyBoxCont = '请填写完整信息'
+        state.jyBoxShow = true
       }
     }
+    handleTabFn(attr)
+  }
 
+  const handleTabFn = attr => {
     state.tabsData.forEach(item => {
       item.checked = false
       if (item.index === attr.index) {
@@ -288,7 +379,6 @@
       }
     })
   }
-
   const jyBoxCancel = () => {
     state.jyBoxShow = false
   }
@@ -319,7 +409,9 @@
     }
     let designResult = []
     if (refVFlowDesign.value) {
-      designResult = await refVFlowDesign.value.designSave()
+      designResult = await refVFlowDesign.value.designSave(
+        props.openType === 'add' ? 'designModel' : 'updateModel'
+      )
       if (Array.isArray(designResult)) {
         for (const k in designResult[0]) {
           errorInfo.value.push({
@@ -343,18 +435,32 @@
       ...associationResult,
       ...designResult
     }
-    // 保存流程设计
-    apiFlow.add(params).then(() => {
-      clickClose()
-      emits('reloadData')
-    })
+    if (props.openType === 'add') {
+      // 保存流程设计
+      apiFlow.add(params).then(() => {
+        clickClose()
+        emits('reloadData')
+      })
+    } else if (props.openType === 'edit') {
+      apiFlow
+        .flowEdit({
+          ...params,
+          flowMessageId: props.editModleIds.flowMessageId,
+          modelId: props.editModleIds.modelId,
+          definitionId: props.editModleIds.definitionId
+        })
+        .then(() => {
+          clickClose()
+          emits('reloadData')
+        })
+    }
   }
 
   watch(
     () => modelIds.value,
     val => {
       if (val) {
-        if (!val) return
+        if (!val || !val.modelId) return
         flowStore.setModelId(val.modelId, val.definitionId)
       }
     }

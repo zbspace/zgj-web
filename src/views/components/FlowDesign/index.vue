@@ -7,7 +7,12 @@
       @upgrade="designUpgrade"
       style="background: #ffffff !important"
     /> -->
-    <FlowDesign ref="flowDesign" top="100" v-bind="props.defaultAttribute" />
+    <FlowDesign
+      ref="flowDesign"
+      top="100"
+      v-bind="props.defaultAttribute"
+      v-loading="loading"
+    />
   </div>
 </template>
 
@@ -16,6 +21,8 @@
   import FlowDesign from '@/components/FlowDesign/index.vue'
   // import FlowHeader from '@/components/FlowDesign/manage/FlowHeader.vue'
   import { ModelApi } from '@/api/flow/ModelApi'
+  import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  const flowStore = useFlowStore()
   // 子组件
   const flowDesign = ref(null)
   const props = defineProps({
@@ -39,10 +46,6 @@
     }
   })
 
-  // 触发保存
-  const handleSave = () => {
-    return flowDesign.value.handleSave()
-  }
   // 设置默认数据
   const handleSetData = json => {
     return flowDesign.value.handleSetData(json)
@@ -50,45 +53,20 @@
 
   onMounted(() => {
     // 加载完成后回调
-    // onMountedCallBack()
+    flowStore.initFreeFlow()
     flowDesign.value.handleSetData({})
   })
   // Loading
   const loading = ref(false)
   // 最近定义ID
   const definitionId = ref(props.initObj.definitionId || null)
-  // isUpdate
-  const isUpdate = ref(false)
   // 模型id
   const modelId = ref(props.initObj.modelId || null)
-  /**
-   * 流程设计升级版本
-   */
-  const designUpgrade = () => {
-    loading.value = true
-    const node = flowDesign.value.handleSave()
-
-    if (node && modelId.value) {
-      const params = {
-        modelId: modelId.value,
-        definitionId: definitionId.value,
-        node
-      }
-      if (isUpdate.value) {
-        // 修改
-        ModelApi.updateDesignUpgrade(params).then(() => {
-          loading.value = false
-        })
-      }
-    } else {
-      loading.value = false
-    }
-  }
 
   /**
    * 流程设计保存
    */
-  const designSave = async () => {
+  const designSave = async type => {
     loading.value = true
     const node = flowDesign.value.handleSave()
     if (!node || !modelId.value)
@@ -121,9 +99,11 @@
         definitionId: definitionId.value,
         node
       }
-      if (isUpdate.value) {
+      if (type !== 'designModel') {
         // 修改
-        loading.value = false
+        ModelApi.updateDesignUpgrade(params).then(() => {
+          loading.value = false
+        })
       } else {
         // 新增
         const result = await ModelApi.saveDesign(params)
@@ -135,7 +115,6 @@
   }
 
   defineExpose({
-    handleSave,
     handleSetData,
     designSave
   })
