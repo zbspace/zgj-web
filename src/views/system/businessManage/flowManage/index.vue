@@ -642,12 +642,11 @@
   const customClick = (row, column, cell, event) => {
     state.columnData = column
     state.flowMessageId = column.flowMessageId
-    if (cell.name === '修改') {
-      state.title = '修改'
+    state.title = cell.name
+    if (cell.name === 't-zgj-Edit') {
       // showLibraryDialog.value = true
     }
-    if (cell.name === '复制') {
-      state.title = '复制'
+    if (cell.name === 't-zgj-qyWechat.Copy') {
       // showLibraryDialog.value = true
     }
     if (cell.name === 't-zgj-Delete') {
