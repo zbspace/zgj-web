@@ -8,7 +8,7 @@ export class FeatchSealInfo {
   sealTypeIds = ''
   keepUserIds = ''
   keepOrganIds = ''
-  sealStatus = ''
+  sealStatus = 0
   sealCategory = ''
   onlyMyself = '' // 本人保管印章
   takeOut = '' // 外带印章

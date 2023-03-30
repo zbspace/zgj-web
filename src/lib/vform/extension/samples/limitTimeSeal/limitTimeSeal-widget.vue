@@ -67,6 +67,11 @@
               i18nt('render.hint.endDatePlaceholder')
             "
             @change="onChange"
+            :disabled-date="
+              time => {
+                return time.getTime() <= Date.now()
+              }
+            "
           >
           </el-date-picker>
           <template v-if="isReadMode">

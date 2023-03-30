@@ -13,8 +13,8 @@
     :highlightCurrentRow="true"
   >
     <el-table-column type="index" label="序号" width="60"> </el-table-column>
-    <el-table-column label="版本号" prop="sealName"> </el-table-column>
-    <el-table-column label="历史版本" prop="keepUserName"> </el-table-column>
+    <el-table-column label="版本号" prop="modifyDatetime"> </el-table-column>
+    <el-table-column label="版本时间" prop="formVerison"> </el-table-column>
   </JyTable>
 </template>
 

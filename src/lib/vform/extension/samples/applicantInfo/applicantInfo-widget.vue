@@ -70,6 +70,7 @@
 
     <!-- 申请部门 -->
     <kDepartOrPersonVue
+      :multiple="false"
       :show="xzyzDialogVisible"
       @update:show="xzyzDialogVisible = $event"
       :searchSelected="[]"
