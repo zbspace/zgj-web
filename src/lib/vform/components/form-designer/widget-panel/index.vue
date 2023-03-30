@@ -391,6 +391,7 @@
       },
 
       addFieldByDbClick(widget) {
+        return false
         this.designer.addFieldByDbClick(widget)
       },
 
