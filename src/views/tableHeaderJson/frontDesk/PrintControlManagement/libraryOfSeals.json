@@ -47,7 +47,7 @@
     "prop": "caozuo",
     "label": "操作",
     "fixed": "right",
-    "width": 300,
+    "min-width": 300,
     "show": true,
     "customDisplayType": "custom"
   }

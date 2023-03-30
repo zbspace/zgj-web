@@ -149,7 +149,21 @@
                       item.rankDisplayData && item.rankDisplayData.length > 0
                     "
                   >
-                    <div
+                    <el-button
+                      v-for="(data, num) in item.rankDisplayData.slice(0, 4)"
+                      :key="num"
+                      type="info"
+                      @click="customClick(scope.$index, scope.row, data)"
+                      link
+                      >{{
+                        data.name === 'status'
+                          ? scope.row[props.statusColoum] !== props.openValue
+                            ? $t('t-zgj-Enable')
+                            : $t('t-zgj-seal.deactivated')
+                          : $t(data.name)
+                      }}</el-button
+                    >
+                    <!-- <div
                       class="rankDisplayData-node"
                       v-for="(data, num) in item.rankDisplayData.slice(0, 4)"
                       :key="num"
@@ -164,11 +178,8 @@
                             : $t(data.name)
                         }}
                       </span>
-                    </div>
-                    <div
-                      class="rankDisplayData-more"
-                      v-if="item.rankDisplayData.length > 4"
-                    >
+                    </div> -->
+                    <el-button link v-if="item.rankDisplayData.length > 4">
                       <el-dropdown>
                         <span class="el-dropdown-link">
                           <img
@@ -200,7 +211,7 @@
                           </el-dropdown-menu>
                         </template>
                       </el-dropdown>
-                    </div>
+                    </el-button>
                   </div>
                 </template>
               </el-table-column>
@@ -612,28 +623,42 @@
     reloadSearchForm
   })
 </script>
+<style lang="scss">
+  .rankDisplayData {
+    .el-button--info.is-link {
+      --el-button-text-color: var(--jy-info-6);
+    }
+
+    .el-button.is-link:hover {
+      color: var(--jy-info-5);
+    }
+  }
+</style>
 <style lang="scss" scoped>
   .components-table {
     margin: 0%;
     width: 100%;
 
-    .rankDisplayData {
-      display: flex;
-      // justify-content: space-around;
-      // text-align: center;
-      color: var(--jy-info-6);
+    // .rankDisplayData {
+    //   // display: flex;
+    //   // justify-content: space-around;
+    //   // text-align: center;
+    //   color: var(--jy-info-6);
 
-      .rankDisplayData-node {
-        cursor: pointer;
-        margin-right: 0.5rem;
-      }
+    //   .--el-button-text-color {
+    //     color: var(--jy-info-6);
+    //   }
 
-      .rankDisplayData-more {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
+    //   .rankDisplayData-node {
+    //     cursor: pointer;
+    //     margin-right: 0.5rem;
+    //   }
+
+    //   .rankDisplayData-more {
+    //     display: inline-block;
+    //     height: 20px;
+    //   }
+    // }
 
     th {
       font-weight: var(--jy-font-weight-400);
