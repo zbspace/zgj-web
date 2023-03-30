@@ -29,7 +29,7 @@
     "dayjs": "^1.11.7",
     "echarts": "^5.3.0",
     "element-china-area-data": "^5.0.2",
-    "element-plus": "^2.2.26",
+    "element-plus": "^2.3.1",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "js-md5": "^0.7.3",

@@ -56,7 +56,7 @@
               multiple
               collapse-tags
               collapse-tags-tooltip
-              :max-collapse-tags="3"
+              :max-collapse-tags="4"
               @click="getDivision"
             >
               <el-option
@@ -82,7 +82,7 @@
               multiple
               collapse-tags
               collapse-tags-tooltip
-              :max-collapse-tags="3"
+              :max-collapse-tags="4"
               @click="getFileType"
             >
               <el-option

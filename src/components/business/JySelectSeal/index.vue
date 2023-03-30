@@ -56,10 +56,10 @@
                 </el-input>
               </div>
               <div class="btns">
-                <el-button @click="getLibraryOfSeal" type="primary"
-                  >查询</el-button
-                >
-                <el-button @click="reset">重置</el-button>
+                <el-button @click="getLibraryOfSeal" type="primary">
+                  {{ $t('t-zgj-query') }}
+                </el-button>
+                <el-button @click="reset">{{ $t('t-zgj-reset') }}</el-button>
               </div>
             </div>
 
