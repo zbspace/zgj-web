@@ -681,6 +681,7 @@
     if (item.defaultAttribute.type === 'document') {
       showDocumentTypeDialog.value = true
       kDialogOpenId.value = item.id
+      return
     }
     showDepPerDialog.value = true
     kDialogOpenId.value = item.id

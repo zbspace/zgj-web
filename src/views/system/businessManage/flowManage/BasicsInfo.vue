@@ -56,6 +56,7 @@
               multiple
               collapse-tags
               collapse-tags-tooltip
+              :max-collapse-tags="3"
               @click="getDivision"
             >
               <el-option
@@ -81,6 +82,7 @@
               multiple
               collapse-tags
               collapse-tags-tooltip
+              :max-collapse-tags="3"
               @click="getFileType"
             >
               <el-option
@@ -320,7 +322,7 @@
     margin-top: 1rem;
     background-color: var(--jy-color-fill--5);
     .info-box {
-      width: 50%;
+      width: 680px;
       margin: 0% auto;
       text-align: center;
       .info-title {
