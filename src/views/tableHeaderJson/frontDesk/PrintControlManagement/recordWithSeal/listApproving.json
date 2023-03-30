@@ -25,8 +25,7 @@
     "show": true
   },
   {
-    "prop": "approvalStatus",
-    "requestData": "instanceId",
+    "prop": "useSealStateName",
     "label": "审批状态",
     "align": "center",
     "width": 150,
