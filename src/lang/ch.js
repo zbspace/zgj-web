@@ -287,7 +287,6 @@ export const ch = {
   't-zgj-fold': '收起',
   't-zgj-advancedQuery': '高级查询',
   't-zgj-refesh': '刷新',
-  't-zgj-unfold': '展开',
   't-zgj-login.scan': '请使用章管家扫描二维码登录',
   't-zgj-login.scanError': '您的二维码已失效，<br />请点击下方刷新按钮',
   't-zgj-more': '加载更多',

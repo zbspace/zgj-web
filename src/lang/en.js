@@ -2709,9 +2709,9 @@ export const en = {
   't-zgj-logRecord.Android': 'Android',
   't-zgj-logRecord.IOS': 'IOS',
   't-zgj-logRecord.Workbench': 'Workbench',
-  't-zgj-logRecord.WorkbenchH5': 'Workbench（H5）',
+  't-zgj-logRecord.WorkbenchH5': 'Workbench(H5)',
   't-zgj-tips.downloadTip':
-    'Are you sure you want to download the selected record？',
+    'Are you sure you want to download the selected record?',
   't-zgj-logRecord.downloadTips':
     'You have selected {0} log files, click "Confirm" to start downloading attachments. Please wait patiently.',
   't-zgj-list.sealApply.yetai.value01': 'Real estate',
