@@ -1350,6 +1350,7 @@
 <style lang="scss" scoped>
   .rankDisplayData {
     display: flex;
+    flex-wrap: wrap;
     // justify-content: space-around;
     // text-align: center;
     color: var(--jy-info-6);

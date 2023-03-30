@@ -62,6 +62,7 @@
     "fixed": "right",
     "min-width": 220,
     "show": true,
+    "align": "center",
     "rankDisplayData": [
       {
         "name": "t-zgj-ProcessTermination"

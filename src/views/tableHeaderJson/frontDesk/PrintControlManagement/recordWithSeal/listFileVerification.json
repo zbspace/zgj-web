@@ -61,6 +61,7 @@
     "fixed": "right",
     "min-width": 150,
     "show": true,
+    "align": "center",
     "rankDisplayData": [
       {
         "name": "t-zgj-Revocation"
