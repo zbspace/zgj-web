@@ -8,7 +8,7 @@
   <JyDialog
     @update:show="showDealingForm = $event"
     :show="showDealingForm"
-    :title="props.title"
+    :title="$t(props.title)"
     :centerBtn="true"
     :confirmText="$t('t-zgj-operation.submit')"
     :concelText="$t('t-zgj-operation.cancel')"
@@ -115,7 +115,7 @@
     },
     title: {
       type: String,
-      default: '新增'
+      default: 't-zgj-add'
     },
     column: {
       type: Object,
@@ -173,7 +173,7 @@
     () => props.column,
     data => {
       if (data) {
-        if (props.title === '修改') {
+        if (props.title === 't-zgj-Edit') {
           state.searchSelected = [
             {
               id: data.organId,
@@ -216,7 +216,7 @@
         console.log(props.title)
         if (
           state.componentsAddForm.formData.relatedCompanyId &&
-          props.title === '修改'
+          props.title === 't-zgj-Edit'
         ) {
           api
             .updateRelatedCompany(state.componentsAddForm.formData)

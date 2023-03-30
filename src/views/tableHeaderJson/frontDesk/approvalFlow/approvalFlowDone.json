@@ -48,7 +48,8 @@
     "min-width": 150,
     "rankDisplayData": [
       {
-        "name": "重批"
+        "name": "t-zgj-F_WORKFLOW_RE_APPROVAL",
+        "label": "重批"
       }
     ]
   }

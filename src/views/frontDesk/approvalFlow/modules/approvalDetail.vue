@@ -10,7 +10,7 @@
     @update:show="isVisible = $event"
     :show="isVisible"
     destroy-on-close
-    :title="props.title"
+    :title="$t(props.title)"
     :oneBtn="false"
     :confirmText="$t('t-zgj-operation.submit')"
     :concelText="$t('t-zgj-operation.cancel')"
@@ -272,10 +272,10 @@
         </el-form-item>
       </el-form>
       <div class="footer-btns">
-        <el-button type="primary" :loading="btnLoading" @click="sumitForm"
-          >提交</el-button
-        >
-        <el-button @click="close">取消</el-button>
+        <el-button type="primary" :loading="btnLoading" @click="sumitForm">{{
+          $t('t-zgj-operation.submit')
+        }}</el-button>
+        <el-button @click="close">{{ $t('t-zgj-operation.cancel') }}</el-button>
       </div>
     </div>
   </JyDialog>

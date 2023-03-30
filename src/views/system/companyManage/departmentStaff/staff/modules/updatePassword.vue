@@ -20,7 +20,7 @@
         <div>
           <slot name="header">
             <div class="header-div">
-              <span>{{ props.title }}</span>
+              <span>{{ $t(props.title) }}</span>
             </div>
           </slot>
         </div>
@@ -64,8 +64,12 @@
         >提示：当员工存在手机号时会以短信的形式向员工发送随机密码，否则重置后请告知员工，以确保其正常登录</div
       >
       <template #footer>
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="comifrm">提 交</el-button>
+        <el-button @click="cancel">{{
+          $t('t-zgj-operation.cancel')
+        }}</el-button>
+        <el-button type="primary" @click="comifrm">{{
+          $t('t-zgj-operation.submit')
+        }}</el-button>
       </template>
     </el-dialog>
   </div>

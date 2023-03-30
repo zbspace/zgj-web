@@ -381,7 +381,7 @@
                 @click="clickSubmit(item, index)"
               >
                 <el-button v-bind="item.defaultAttribute">{{
-                  item.name
+                  $t(item.name)
                 }}</el-button>
               </div>
               <div

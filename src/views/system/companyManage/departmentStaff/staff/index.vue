@@ -40,12 +40,16 @@
                     alt=""
                     srcset=""
                   />
-                  <span>更多操作</span>
+                  <span>{{ $t('t-zgj-table.more.Operation') }}</span>
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>导入员工</el-dropdown-item>
-                    <el-dropdown-item>导入人脸</el-dropdown-item>
+                    <el-dropdown-item>{{
+                      $t('t-zgj-F_SYSTEM_PERSON_MANAGE_IMPORT')
+                    }}</el-dropdown-item>
+                    <el-dropdown-item>{{
+                      $t('t-zgj-F_SYSTEM_FACEINFO_MANAGE_IMPORT')
+                    }}</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -70,7 +74,7 @@
     <!-- 新增员工 -->
     <JyDialog
       :show="showStaffDialog"
-      :title="state.title"
+      :title="$t(state.title)"
       :centerBtn="true"
       :confirmLoading="confirmLoading"
       :confirmText="$t('t-zgj-operation.submit')"
@@ -126,7 +130,7 @@
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('hostOrgan')"
+                @click="chooseOrgan('hostOrgan', false)"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -157,7 +161,7 @@
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('partTimeOrgan')"
+                @click="chooseOrgan('partTimeOrgan', true)"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -206,7 +210,7 @@
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('leaderUser')"
+                @click="chooseOrgan('leaderUser', false)"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -236,7 +240,7 @@
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('roles')"
+                @click="chooseOrgan('roles', true)"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -311,6 +315,7 @@
     <kDepartOrPersonVue
       v-if="showDepPerDialog"
       :show="showDepPerDialog"
+      :multiple="state.multiple"
       @update:show="showDepPerDialog = $event"
       :tabsShow="state.tabsShow"
       @update:searchSelected="submitSelectDepart"
@@ -335,7 +340,7 @@
       <template #header>
         <div class="header-div">
           <img :src="state.JyElMessageBox.header.icon" alt="" />
-          <span>{{ state.JyElMessageBox.header.data }}</span>
+          <span>{{ $t(state.JyElMessageBox.header.data) }}</span>
         </div>
       </template>
       <template #content>
@@ -346,9 +351,11 @@
           type="primary"
           @click="submitElMessageBox(state.JyElMessageBox.type)"
         >
-          提交
+          {{ $t('t-zgj-operation.submit') }}
         </el-button>
-        <el-button @click="state.JyElMessageBox.show = false">取消</el-button>
+        <el-button @click="state.JyElMessageBox.show = false">{{
+          $t('t-zgj-operation.cancel')
+        }}</el-button>
       </template>
     </JyElMessageBox>
     <UpdatePassword
@@ -393,7 +400,7 @@
   const depChoose = ref(null)
   // 显示修改密码他创
   const showPass = ref(false)
-  const passTitle = ref('修改密码')
+  const passTitle = ref('t-zgj-index.updatePwd')
   // 显示重置人脸弹窗
   const showUpload = ref(false)
   // 侧边栏树选中id
@@ -404,8 +411,9 @@
   const confirmLoading = ref(false)
 
   const state = reactive({
-    title: '新增',
+    title: 't-zgj-add',
     tabsShow: ['organ'],
+    multiple: true,
     tabSelects: {
       // 部门弹窗选中信息
       searchSelected: [],
@@ -571,7 +579,8 @@
         },
         {
           id: 'inquire',
-          name: '查询',
+          name: 't-zgj-query',
+          label: '查询',
           type: 'click',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
@@ -581,7 +590,8 @@
         },
         {
           id: 'reset',
-          name: '重置',
+          name: 't-zgj-reset',
+          label: '重置',
           type: 'click',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {},
@@ -707,7 +717,7 @@
 
   // 新增员工
   const addStaff = () => {
-    state.title = '新增'
+    state.title = 't-zgj-add'
     if (formStaffRef.value) {
       nextTick(() => {
         formStaffRef.value.resetFields()
@@ -743,8 +753,9 @@
     }
   }
   // 选择部门弹窗
-  const chooseOrgan = type => {
+  const chooseOrgan = (type, multiple) => {
     depChoose.value = type
+    state.multiple = multiple
     state.tabsShow = []
     if (depChoose.value === 'hostOrgan') {
       state.tabsShow = ['organ']
@@ -864,25 +875,25 @@
     state.componentsBatch.userIds = nameIdArr
     nameList = nameArr.join('、')
     if (item.name === 't-zgj-dept.BatchDeactivation') {
-      state.JyElMessageBox.header.data = '批量停用'
+      state.JyElMessageBox.header.data = 't-zgj-dept.BatchDeactivation'
       state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量停用吗？`
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '批量停用'
     }
     if (item.name === 't-zgj-dept.BatchEnable') {
-      state.JyElMessageBox.header.data = '批量启用'
+      state.JyElMessageBox.header.data = 't-zgj-dept.BatchEnable'
       state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量启用吗？`
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '批量启用'
     }
     if (item.name === 't-zgj-seal.BatchDelete') {
-      state.JyElMessageBox.header.data = '批量删除'
+      state.JyElMessageBox.header.data = 't-zgj-seal.BatchDelete'
       state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量删除吗？`
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '批量删除'
     }
     if (item.name === 't-zgj-findpwd.batchResetPassword') {
-      passTitle.value = '批量重置密码'
+      passTitle.value = 't-zgj-findpwd.batchResetPassword'
       showPass.value = true
     }
   }
@@ -936,25 +947,25 @@
       })
     }
     if (cell.name === 'status' && column.flag === '启用') {
-      state.JyElMessageBox.header.data = '停用'
+      state.JyElMessageBox.header.data = 't-zgj-seal.deactivated'
       state.JyElMessageBox.content.data = '确认要停用该员工吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '停用'
     }
     if (cell.name === 'status' && column.flag === '停用') {
-      state.JyElMessageBox.header.data = '启用'
+      state.JyElMessageBox.header.data = 't-zgj-Enable'
       state.JyElMessageBox.content.data = '确认要启用该员工吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '启用'
     }
     if (cell.name === 't-zgj-Delete') {
-      state.JyElMessageBox.header.data = '删除'
+      state.JyElMessageBox.header.data = 't-zgj-Delete'
       state.JyElMessageBox.content.data = '确认要删除该员工吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '删除'
     }
     if (cell.name === 't-zgj-index.updatePwd') {
-      passTitle.value = '重置密码'
+      passTitle.value = 't-zgj-findpwd.resetPassword'
       showPass.value = true
     }
     if (cell.name === 't-zgj-F_SEAL_CONSOLE_FACE_SETTING') {
