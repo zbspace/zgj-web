@@ -76,6 +76,7 @@
       :show="dialogProcess.show"
       :title="dialogProcess.title"
       :oneBtn="false"
+      centerBtn
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       @close="submitLibraryForm"
