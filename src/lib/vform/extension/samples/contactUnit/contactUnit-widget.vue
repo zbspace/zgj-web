@@ -271,7 +271,6 @@
       width: 12px;
       height: 16px;
       .el-input__prefix-inner {
-        background: rgb(255, 255, 255);
         .iconpark-icon {
           display: inline-block;
           width: 16px;

@@ -31,7 +31,7 @@
               <el-select
                 ref="fieldEditor"
                 :size="field.options.size"
-                v-model="obj.seal"
+                v-model="obj.sealId"
                 class="full-width-input select-prefix"
                 :disabled="field.options.disabled"
                 :placeholder="
@@ -48,7 +48,7 @@
                   </svg>
                 </template>
                 <el-option
-                  v-for="item in filedList[index]"
+                  v-for="item in filedOptions || []"
                   :key="item.sealId"
                   :label="item.seal"
                   :value="item.sealId"
@@ -181,6 +181,7 @@
         searchPara: '',
         searchKey: '', // 外传参数印章类型ID
         filedList: [],
+        filedOptions: [],
         oldFieldValue: null, // field组件change之前的值
         fieldModel: null,
         rules: [],
@@ -284,6 +285,11 @@
         this.filedList.splice(this.thisIndex, 1, {
           ...this.filedList[this.thisIndex],
           ...{ seal: row.sealName, sealId: row.sealId, sealIot: row.sealIot }
+        })
+        this.filedOptions.push({
+          seal: row.sealName,
+          sealId: row.sealId,
+          sealIot: row.sealIot
         })
         this.xzyzDialogVisible = false
         if (this.filedList[this.thisIndex].sealId) {
@@ -391,7 +397,6 @@
       width: 12px;
       height: 16px;
       .el-input__prefix-inner {
-        background: rgb(255, 255, 255);
         .iconpark-icon {
           display: inline-block;
           width: 16px;

@@ -28,6 +28,7 @@
           list-type="text"
           multiple
           :on-success="onSuccess"
+          :disabled="field.options.disabled"
           :on-preview="onPreview"
           :http-request="
             options => {
@@ -36,7 +37,7 @@
           "
           :on-change="onChange"
         >
-          <el-button type="primary">
+          <el-button type="primary" :disabled="field.options.disabled">
             <el-icon color="#fff"> <ArrowDown /> </el-icon> 本机上传
           </el-button>
           <template #tip>
@@ -75,6 +76,7 @@
           multiple
           :on-success="onSuccess2"
           :on-preview="onPreview"
+          :disabled="field.options.disabled"
           :http-request="
             options => {
               handleRequest(options, 2)
@@ -83,7 +85,7 @@
           :on-change="onChange"
         >
           <div>
-            <el-button type="primary">
+            <el-button type="primary" :disabled="field.options.disabled">
               <el-icon color="#fff"> <ArrowDown /> </el-icon> 本机上传
             </el-button>
             <span class="button-tip"

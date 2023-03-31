@@ -3,7 +3,7 @@
     ref="drawerRef"
     :title="options.title"
     v-model="drawerVisible"
-    custom-class="dynamic-drawer"
+    class="dynamic-drawer"
     append-to-body
     destroy-on-close
     :size="options.size"
