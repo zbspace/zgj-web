@@ -273,7 +273,6 @@
           JSON.parse(localStorage.getItem('accountInfo')).userInfo.userName +
           ' ' +
           dayjs().format('YYYY-MM-DD HH:mm')
-        console.log(text, 'show====')
         setWaterMark(text)
       } else {
         removeWatermark()

@@ -173,12 +173,14 @@
         />
         <div class="protocol-text">
           <span>{{ $t('t-agree-protocol') }}</span>
-          <span class="item" @click.stop="previewAgreement"
+          <!-- <span class="item" @click.stop="previewAgreement"
             >《 {{ $t('t-service-protocol') }} 》</span
           >
           <span class="item" @click.stop="previewPolicy"
             >《{{ $t('t-privacy-policy') }}》</span
-          >
+          > -->
+          <span class="item">《 {{ $t('t-service-protocol') }} 》</span>
+          <span class="item">《{{ $t('t-privacy-policy') }}》</span>
         </div>
       </div>
 
@@ -293,8 +295,8 @@
   ])
   const state = reactive({
     activeCodeLogin: false, // 验证码登录
-    protocal: true, // 协议
-    rememberPas: true, // 记住密码
+    protocal: false, // 协议
+    rememberPas: false, // 记住密码
     placeholderPhone: null,
     placeholderCode: null,
     placeholderCodeAndAccount: null,

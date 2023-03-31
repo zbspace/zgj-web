@@ -66,7 +66,11 @@
     >
       <div
         class="upload-file"
-        :class="[fieldModel.fileAddIds.length && 'upload-file-big']"
+        :class="[
+          fieldModel.fileAddIds &&
+            fieldModel.fileAddIds.length &&
+            'upload-file-big'
+        ]"
       >
         <el-upload
           :file-list="fileList2"
