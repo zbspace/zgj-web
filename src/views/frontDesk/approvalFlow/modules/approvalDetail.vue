@@ -14,7 +14,7 @@
     :oneBtn="false"
     :confirmText="$t('t-zgj-operation.submit')"
     :concelText="$t('t-zgj-operation.cancel')"
-    :height="700"
+    :height="650"
     :width="900"
     :footer="false"
     @close="closeDialog"
