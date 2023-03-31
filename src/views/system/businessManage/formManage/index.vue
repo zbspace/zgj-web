@@ -373,6 +373,11 @@
           'min-width': 150
         },
         {
+          prop: 'relationFlow',
+          label: '是否关联流程',
+          'min-width': 150
+        },
+        {
           prop: 'createUserName',
           label: '创建人',
           sortable: true,
