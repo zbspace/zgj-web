@@ -879,6 +879,7 @@
     .nav-left {
       :deep(.depart-dropdown) {
         font-size: 16px;
+        color: #fff;
         .el-dropdown-link {
           color: #fff;
         }

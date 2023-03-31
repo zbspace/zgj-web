@@ -10,56 +10,52 @@
     :sub-form-col-index="subFormColIndex"
     :sub-form-row-id="subFormRowId"
   >
-    <el-row :gutter="12">
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-        <el-form-item
-          label="往来单位"
-          :rules="rules"
-          :label-width="field.options.labelWidth + 'px'"
-          :class="[
-            labelAlign,
-            customClass,
-            field.options.required ? 'required' : ''
-          ]"
-        >
-          <el-select
-            v-model="fieldModels"
-            :size="field.options.size"
-            :disabled="field.options.disabled"
-            :readonly="field.options.readonly"
-            :clearable="field.options.clearable"
-            multiple
-            collapse-tags
-            collapse-tags-tooltip
-            :max-collapse-tags="5"
-            placeholder="请选择"
-            style="width: 100%"
-            @focus="openSelectWin"
-            @remove-tag="removeTag"
-            popper-class="select-hidden"
-            ref="contactUnitRef"
-            class="select-prefix"
-          >
-            <template #prefix>
-              <svg class="iconpark-icon">
-                <use href="#selecticon"></use>
-              </svg>
-            </template>
-            <el-option
-              v-for="item in fieldModel"
-              :key="item.relatedCompanyId"
-              :label="item.relatedCompanyName"
-              :value="item.relatedCompanyId"
-            />
-          </el-select>
-          <div
-            class="el-form-item__error"
-            v-if="field.options.requiredTextShow && field.options.required"
-            >{{ field.options.requiredHint || '字段值不可为空' }}</div
-          >
-        </el-form-item>
-      </el-col>
-    </el-row>
+    <el-form-item
+      label="往来单位"
+      :rules="rules"
+      :label-width="field.options.labelWidth + 'px'"
+      :class="[
+        labelAlign,
+        customClass,
+        field.options.required ? 'required' : ''
+      ]"
+    >
+      <el-select
+        v-model="fieldModels"
+        :size="field.options.size"
+        :disabled="field.options.disabled"
+        :readonly="field.options.readonly"
+        :clearable="field.options.clearable"
+        multiple
+        collapse-tags
+        collapse-tags-tooltip
+        :max-collapse-tags="5"
+        placeholder="请选择"
+        style="width: 100%"
+        @focus="openSelectWin"
+        @remove-tag="removeTag"
+        popper-class="select-hidden"
+        ref="contactUnitRef"
+        class="select-prefix"
+      >
+        <template #prefix>
+          <svg class="iconpark-icon">
+            <use href="#selecticon"></use>
+          </svg>
+        </template>
+        <el-option
+          v-for="item in fieldModel"
+          :key="item.relatedCompanyId"
+          :label="item.relatedCompanyName"
+          :value="item.relatedCompanyId"
+        />
+      </el-select>
+      <div
+        class="el-form-item__error"
+        v-if="field.options.requiredTextShow && field.options.required"
+        >{{ field.options.requiredHint || '字段值不可为空' }}</div
+      >
+    </el-form-item>
     <!-- 往来单位 -->
     <template>
       <JyRelatedCompany
