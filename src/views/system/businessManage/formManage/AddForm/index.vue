@@ -103,6 +103,9 @@
           />
         </template>
       </layout>
+      <JyMessageBox v-model="tipVisible" :mode="1" @on-confirm="emit('close')">
+        离开当前页面不会被保存，确定离开么？
+      </JyMessageBox>
     </el-dialog>
   </div>
 </template>
@@ -122,6 +125,7 @@
   const mustProps = ref([])
   const formInfo = ref({})
   const saveLoading = ref(false)
+  const tipVisible = ref(false)
   const formKey = ref(0)
 
   const props = defineProps({
@@ -289,7 +293,11 @@
 
   // 点击关闭弹框
   const clickClose = () => {
-    emit('close')
+    if (formKey.value > 0) {
+      tipVisible.value = true
+    } else {
+      emit('close')
+    }
   }
 
   // 点击保存

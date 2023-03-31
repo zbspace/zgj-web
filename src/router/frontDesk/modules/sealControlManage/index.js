@@ -107,7 +107,7 @@ const routes = {
           },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/recordWithSeal.vue'
+              '@/views/frontDesk/PrintControlManagement/recordWithSeal/recordWithSeal.vue'
             )
         },
         {

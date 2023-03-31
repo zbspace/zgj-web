@@ -3,7 +3,8 @@ export const business = [
     name: '首页',
     label: 't-zgj-cg-menu-shouye',
     to: '/frontDesk/home',
-    icon: '#shouye-73o018d8'
+    icon: '#shouye-73o018d8',
+    must: true
   },
   {
     name: '印控管理',
@@ -276,30 +277,36 @@ export const businessAside = [
     name: '首页',
     icon: '#liuchengguanli',
     route: '/frontDesk/home',
-    to: '/frontDesk/home'
+    to: '/frontDesk/home',
+    label: 't-zgj-cg-menu-shouye',
+    must: true
   },
   {
     name: '印控管理',
     icon: '#liuchengguanli',
     route: '/frontDesk/printControlManage',
-    to: '/frontDesk/printControlManage/useSealManage/selectionForm'
+    to: '/frontDesk/printControlManage/useSealManage/selectionForm',
+    label: 't-zgj-cg-menu-yinkong-guanli'
   },
   {
     name: '文件管理',
     icon: '#liuchengguanli',
     route: '/frontDesk/fileManagement',
-    to: '/frontDesk/fileManagement/documentLibrary'
+    to: '/frontDesk/fileManagement/documentLibrary',
+    label: 't-zgj-cg-menu-wenjian-guanli'
   },
   {
     name: '风控预警',
     icon: '#liuchengguanli',
     route: '/frontDesk/riskControlWarning',
-    to: '/frontDesk/riskControlWarning/riskAlertSetting'
+    to: '/frontDesk/riskControlWarning/riskAlertSetting',
+    label: 't-zgj-cg-menu-fengkong-yujing'
   },
   {
     name: '流程审批',
     icon: '#liuchengguanli',
     route: '/frontDesk/processApprove',
-    to: '/frontDesk/processApprove/realTimeConfirmation'
+    to: '/frontDesk/processApprove/realTimeConfirmation',
+    label: 't-zgj-cg-menu-liucheng-shenpi'
   }
 ]

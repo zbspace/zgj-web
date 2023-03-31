@@ -125,7 +125,7 @@
     }
     :deep(.el-header) {
       #page-topbar {
-        margin-left: 72px;
+        // margin-left: 72px;
       }
     }
   }

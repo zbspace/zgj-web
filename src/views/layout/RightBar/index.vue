@@ -140,8 +140,6 @@
   import { messageWarning } from '@/hooks/useMessage'
   import { useLayoutStore } from '@/store/layout'
   import { useMenusInfoStore } from '@/store/menus'
-  import { business } from '../Menu/business'
-  import { system } from '../Menu/system'
 
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()
@@ -153,9 +151,10 @@
   const sidebarTypeChange = value => {
     layoutStore.sidebarType = value
     if (layoutStore.sidebarType === '1') {
-      const menus =
-        menusInfoStore.currentType === 'business' ? business : system
-      menusInfoStore.setMenus(menus)
+      menusInfoStore.menus =
+        menusInfoStore.currentType === 'business'
+          ? menusInfoStore.businessMenus
+          : menusInfoStore.systemMenus
     }
   }
 

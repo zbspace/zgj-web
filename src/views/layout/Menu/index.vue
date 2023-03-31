@@ -109,13 +109,10 @@
   import { ref, watch, reactive, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { useLayoutStore } from '@/store/layout'
-  import { business } from './business'
-  import { system } from './system'
   import { useMenusInfoStore } from '@/store/menus'
   import { useLanguageStore } from '@/store/language'
   import { getItem } from '@/utils/storage.js'
   import { LANGUAGE } from '@/utils/constants'
-  import { systemService } from '@/api/common/system'
 
   const route = useRoute()
   const activeMenu = ref('')
@@ -144,21 +141,15 @@
   const getLeftMenu = () => {
     activeMenu.value = route.path
     if (layoutStore.sidebarType === '2') return // 直接在Aside组件中设置
-    const menus = menusInfoStore.currentType === 'business' ? business : system
-    menusInfoStore.setMenus(menus)
+    const menus =
+      menusInfoStore.currentType === 'business'
+        ? menusInfoStore.businessMenus
+        : menusInfoStore.systemMenus
+    menusInfoStore.menus = menus
   }
 
   // const handleSelect = url => {
   //   activeMenu.value = url
-  // }
-
-  // const getLeftMenu = async () => {
-  //   const menus = await systemService.getLeftMenu({
-  //     systemTypeId: 'public',
-  //     functionGroupId: 'business'
-  //   })
-  //   activeMenu.value = route.path
-  //   menusInfoStore.setMenus(menus.data || [])
   // }
 
   initData()

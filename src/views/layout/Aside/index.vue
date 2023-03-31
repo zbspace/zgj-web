@@ -27,8 +27,6 @@
   import { useMenusInfoStore } from '@/store/menus'
   import { useLayoutStore } from '@/store/layout'
   import { debounce } from '@/utils/tools.js'
-  import { business, businessAside } from '../Menu/business'
-  import { system, systemAside } from '../Menu/system'
 
   const menusInfoStore = useMenusInfoStore()
   const layoutStore = useLayoutStore()
@@ -51,7 +49,9 @@
     layoutStore.changeCollapse(false)
     // 设置model集合
     menusInfoStore.setAsides(
-      menusInfoStore.currentType === 'business' ? businessAside : systemAside
+      menusInfoStore.currentType === 'business'
+        ? menusInfoStore.businessAside
+        : menusInfoStore.systemAside
     )
     menusInfoStore.setTempMenus()
   }
@@ -89,7 +89,10 @@
    * @param {*} model
    */
   function setTempMenus(model) {
-    let menus = menusInfoStore.currentType === 'business' ? business : system
+    let menus =
+      menusInfoStore.currentType === 'business'
+        ? menusInfoStore.businessMenus
+        : menusInfoStore.systemMenus
     menus = menus.filter(v => {
       return v.to && v.to.indexOf(model) > -1 && v.to !== model
     })
@@ -97,15 +100,17 @@
   }
 
   /**
-   * 根据当前model，设置对应的额menus集合
+   * 根据当前model，设置对应的menus集合
    * @param {\} model
    */
   function setMenus(model) {
-    let menus = menusInfoStore.currentType === 'business' ? business : system
-    menus = menus.filter(v => {
+    const menus =
+      menusInfoStore.currentType === 'business'
+        ? menusInfoStore.businessMenus
+        : menusInfoStore.systemMenus
+    menusInfoStore.menus = menus.filter(v => {
       return v.to && v.to.indexOf(model) > -1 && v.to !== model
     })
-    menusInfoStore.setMenus(menus)
   }
 </script>
 

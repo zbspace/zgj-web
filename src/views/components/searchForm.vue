@@ -104,6 +104,7 @@
                   collapse-tags
                   collapse-tags-tooltip
                   style="width: 100%"
+                  popper-class="popperHidden"
                   :class="
                     (item.defaultAttribute.multiple &&
                       item.values &&
@@ -634,6 +635,7 @@
   watch(
     () => props.data,
     () => {
+      state.cache.isUnfold = 0
       initPropsData()
     }
   )
@@ -881,6 +883,9 @@
 </script>
 <style lang="scss">
   .components-searchForm {
+    .popperHidden {
+      display: none;
+    }
     .el-input.is-disabled .el-input__wrapper {
       background-color: transparent;
     }

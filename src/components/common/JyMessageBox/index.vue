@@ -4,28 +4,23 @@
       v-model="isVisible"
       :closed="cancel"
       destroy-on-close
-      :show-close="mode === 2 || showClose"
+      :show-close="props.mode === 2 || showClose"
       align-center
       :close-on-click-modal="false"
-      :class="`message-box-${mode}`"
+      :class="`message-box-${props.mode}`"
     >
       <template #header>
-        <!-- mode1 -->
-        <div v-if="mode === 1">
-          <slot name="header">
+        <slot name="header">
+          <div v-if="props.mode === 1">
             <div class="header-div">
               <img src="@/assets/svg/common/warning.svg" alt="" />
-              <span>提示？</span>
+              <span>提示</span>
             </div>
-          </slot>
-        </div>
-
-        <!-- mode2 -->
-        <div v-if="mode === 2">
-          <slot name="header">
+          </div>
+          <div v-if="props.mode === 2">
             <span>标题</span>
-          </slot>
-        </div>
+          </div>
+        </slot>
       </template>
 
       <div>
@@ -34,12 +29,12 @@
 
       <template #footer>
         <slot name="footer">
-          <el-button type="primary" @click="confirm"
-            >{{ $t(props.comfirmBtnText) }}}</el-button
-          >
-          <el-button @click="cancel" v-if="!props.oneBtn"
-            >{{ $t('t-zgj-operation.cancel') }}}</el-button
-          >
+          <el-button type="primary" @click="confirm">{{
+            $t(props.comfirmBtnText)
+          }}</el-button>
+          <el-button @click="cancel" v-if="!props.oneBtn">{{
+            $t('t-zgj-operation.cancel')
+          }}</el-button>
         </slot>
       </template>
     </el-dialog>
@@ -143,6 +138,7 @@
       }
       .el-dialog__footer {
         padding: 24px;
+        border: none;
       }
     }
     :deep(.message-box-2) {
@@ -155,6 +151,7 @@
       }
       .el-dialog__footer {
         padding: 10px 24px;
+        border-top: 1px solid #e9ebec;
       }
     }
   }
