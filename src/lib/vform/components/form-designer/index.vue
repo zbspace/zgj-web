@@ -382,7 +382,7 @@
         widgetList.forEach(v => {
           if (v.type === 'moduleContainer') {
             fn(v.widgetList, v.options.label)
-          } else {
+          } else if (v.widgetList) {
             fn(v.widgetList)
           }
         })
