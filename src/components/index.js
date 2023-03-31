@@ -38,6 +38,10 @@ export function requireComp(app) {
     )
   )
   app.component(
+    'JyActionErrorDialog',
+    defineAsyncComponent(() => import('./common/JyActionErrorDialog/index'))
+  )
+  app.component(
     'JyDialog',
     defineAsyncComponent(() => import('./common/JyDialog/index.vue'))
   )

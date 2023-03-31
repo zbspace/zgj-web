@@ -364,6 +364,7 @@ export const ch = {
   't-zgj-tips.notAllowedReset2': '没有开通重置权限,不能申请重置',
   't-zgj-tips.notAllowedGeneralSeal': '普通印章申请单,没有开通重置权限',
   't-zgj-confirm': '确认',
+  't-zgj-know': '知道了',
   't-zgj-close': '关闭',
   't-zgj-tips': '提示',
   't-zgj-succ': '操作成功',

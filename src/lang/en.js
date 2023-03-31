@@ -406,6 +406,7 @@ export const en = {
   't-zgj-tips.notAllowedReset2': 'Not Allowed Reset',
   't-zgj-tips.notAllowedGeneralSeal': 'Not Allowed Reset',
   't-zgj-confirm': 'Confirm',
+  't-zgj-know': 'Know',
   't-zgj-close': 'Close',
   't-zgj-tips': 'Tips',
   't-zgj-succ': 'Success',

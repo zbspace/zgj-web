@@ -95,6 +95,11 @@
         <el-button @click="closeCopyTabel">取消</el-button>
       </template>
     </JyElMessageBox>
+    <JyActionErrorDialog
+      :show="state.showToastDialogContent.show"
+      :showToastDialogContent="state.showToastDialogContent"
+      @update:modelValue="state.showToastDialogContent.show = false"
+    ></JyActionErrorDialog>
   </div>
 </template>
 
@@ -305,6 +310,26 @@
         data: ''
       },
       ruleBusinessName: ''
+    },
+    showToastDialogContent: {
+      show: false,
+      header: '',
+      content: '',
+      selectionTableData: {
+        headers: [
+          {
+            prop: 'fileTypeName',
+            label: '文件类型',
+            align: 'center'
+          },
+          {
+            prop: 'ruleBusinessName',
+            label: '关联业务规则(已启用)',
+            align: 'center'
+          }
+        ],
+        data: []
+      }
     }
   })
   const table = ref(null)
@@ -318,7 +343,6 @@
 
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
     if (column.property === 'ruleBusinessName') {
       state.componentsDocumentsDetails.show = true
     }
@@ -326,7 +350,6 @@
 
   // 表格操作按钮点击
   function customClick(row, column, cell, event) {
-    console.log(cell.name)
     if (cell.name === 't-zgj-Edit') {
       router.push({
         name: 'EditBusinessRule',
@@ -384,10 +407,17 @@
         .ruleBatchDelete({
           ruleBusinessIds: [state.JyElMessageBox.id]
         })
-        .then(() => {
-          messageSuccess('删除成功')
-          table.value.reloadData()
-        })
+        .then(
+          () => {
+            messageSuccess('删除成功')
+            table.value.reloadData()
+          },
+          err => {
+            if (err.data) {
+              state.showToastDialogContent.show = true
+            }
+          }
+        )
         .finally(() => {
           state.JyElMessageBox.show = false
         })
@@ -397,12 +427,24 @@
           ruleBusinessId: state.JyElMessageBox.id,
           flag: state.JyElMessageBox.flag === '1' ? '0' : '1'
         })
-        .then(() => {
-          messageSuccess(
-            state.JyElMessageBox.flag === '1' ? '停用成功' : '启用成功'
-          )
-          table.value.reloadData()
-        })
+        .then(
+          () => {
+            messageSuccess(
+              state.JyElMessageBox.flag === '1' ? '停用成功' : '启用成功'
+            )
+            table.value.reloadData()
+          },
+          err => {
+            if (err.data) {
+              state.showToastDialogContent.show = true
+              state.showToastDialogContent.header =
+                state.JyElMessageBox.flag === '1' ? '停用失败' : '启用失败'
+              state.showToastDialogContent.content =
+                '当前业务规则中关联的一下文件类型已用于其他已启用的业务规则，请确保一个文件类型仅关联一个已启用的业务规则'
+              state.showToastDialogContent.selectionTableData.data = err.data
+            }
+          }
+        )
         .finally(() => {
           state.JyElMessageBox.show = false
         })
@@ -412,7 +454,6 @@
   // 批量操作点击
   const clickBatchButton = (item, selectionData) => {
     state.componentsBatch.selectionData = selectionData
-    console.log(item)
     if (item.name === 't-zgj-seal.BatchDelete') {
       state.showToastDialog.show = true
       state.showToastDialog.type = item.name
@@ -469,10 +510,17 @@
             i => i.ruleBusinessId
           )
         })
-        .then(() => {
-          messageSuccess('启用成功')
-          table.value.reloadData()
-        })
+        .then(
+          () => {
+            messageSuccess('启用成功')
+            table.value.reloadData()
+          },
+          err => {
+            if (err.data) {
+              state.showToastDialogContent.show = true
+            }
+          }
+        )
         .finally(() => {
           state.showToastDialog.show = false
         })
@@ -483,10 +531,18 @@
             i => i.ruleBusinessId
           )
         })
-        .then(() => {
-          messageSuccess('停用成功')
-          table.value.reloadData()
-        })
+        .then(
+          () => {
+            messageSuccess('停用成功')
+            table.value.reloadData()
+          },
+          err => {
+            console.log(err)
+            if (err.data) {
+              state.showToastDialogContent.show = true
+            }
+          }
+        )
         .finally(() => {
           state.showToastDialog.show = false
         })

@@ -46,7 +46,7 @@ const processErrorResponse = function (response) {
     })
     return Promise.reject(response || response.data)
   }
-  if (!response.config.hideError) {
+  if (!response.config.hideError && !response.data.data) {
     // 提示错误信息
     ElMessage({
       message: response
