@@ -143,6 +143,14 @@
         />
       </JyElMessageBox>
     </div>
+    <!-- 修改提示关联流程 -->
+    <JyActionErrorDialog
+      @update:modelValue="state.showRelatedfFlow.show = false"
+      :show="state.showRelatedfFlow.show"
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="showToastDialogContent"
+      label="flowName"
+    ></JyActionErrorDialog>
   </div>
 </template>
 <script setup>
@@ -150,6 +158,7 @@
   import AddFrom from '@/views/system/businessManage/formManage/AddForm/index.vue'
   import FlowApi from '@/api/system/flowManagement'
   import { ModelApi } from '@/api/flow/ModelApi'
+  import sealApplyService from '@/api/frontDesk/printControl/sealApply'
   const refFillFormInformation = ref(null)
   const formJson = ref('')
   const vformObj = ref(null)
@@ -172,9 +181,40 @@
       }
     },
     SealformData: {},
-    SealoptionData: {}
+    SealoptionData: {},
+    showRelatedfFlow: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
+    },
+    componentsBatch: {
+      selectionData: [],
+      defaultAttribute: {
+        disabled: true
+      },
+      data: [
+        {
+          name: '批量删除'
+        }
+      ],
+      butDatas: [
+        {
+          name: '知道了',
+          type: '',
+          clickName: closeBatchTabel
+        }
+      ]
+    }
   })
-
+  // 关闭表单复制弹窗
+  function closeBatchTabel() {
+    // state.showToastDialog.show = false
+  }
   const form = reactive({
     ProcessName: '',
     ProcessType: false,
@@ -214,8 +254,11 @@
 
   const emits = defineEmits('update:modelValue', 'update:sealId')
 
+  const editFormMessageId = ref('')
   // 选中
   const clickEditForm = attr => {
+    console.log(attr.formMessageId, '===')
+    editFormMessageId.value = attr.formMessageId
     resetFlag.value = false
     FlowApi.getFormJsonById({ formMessageId: attr.formMessageId }).then(res => {
       form.formMessageId = res.data.formMessageId
@@ -241,7 +284,25 @@
 
   // 点击编辑
   const clickEdit = () => {
-    state.JyElMessageBox.show = true
+    getFlowList(editFormMessageId.value, null, 'edit')
+  }
+  const showToastDialogContent = ref(null)
+  async function getFlowList(formMessageId, column, type) {
+    const res = await sealApplyService.flowList({
+      formMessageId
+    })
+    if (res.data) {
+      state.showRelatedfFlow.show = true
+      showToastDialogContent.value = {
+        header: '提示',
+        content:
+          '当前表单被已启用的以下流程所使用，仅当以下流程停用才允许' +
+          (type === 'edit' ? '编辑' : '删除'),
+        selectionData: res.data
+      }
+    } else {
+      state.JyElMessageBox.show = true
+    }
   }
 
   // 获取信息值
