@@ -909,13 +909,33 @@
           } else if (v.formColumnNo === 'limitTimeSeal') {
             formTableData.push({
               label: `限时用印`,
-              value: formData[item] === 1 ? '是' : '否',
+              value: formData[item].timeLimit === 1 ? '是' : '否',
               type: v.formColumnModel ? v.formColumnModel : '其他'
             })
+            if (formData[item].timeLimit === 1) {
+              if (formData[item].sealTime.length > 0) {
+                formTableData.push({
+                  label: `用印时间`,
+                  value: `${formData[item].sealTime[0]}~${formData[item].sealTime[1]}`,
+                  type: v.formColumnModel ? v.formColumnModel : '其他'
+                })
+              }
+            }
           } else if (v.formColumnNo === 'usesealBesides') {
             formTableData.push({
               label: `印章外带`,
-              value: formData[item] ? '是' : '否'
+              value: formData[item].extSeal ? '是' : '否',
+              type: v.formColumnModel ? v.formColumnModel : '其他'
+            })
+            formTableData.push({
+              label: `外带地址`,
+              value: formData[item].detailAddress,
+              type: v.formColumnModel ? v.formColumnModel : '其他'
+            })
+            formTableData.push({
+              label: `外带时间`,
+              value: `${formData[item].besidesTime[0]}~${formData[item].besidesTime[1]}`,
+              type: v.formColumnModel ? v.formColumnModel : '其他'
             })
           } else if (v.formColumnNo === 'sealFile') {
             if (formData[item].fileIds?.length > 0) {

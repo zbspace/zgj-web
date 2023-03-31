@@ -395,27 +395,6 @@
               <span class="waixian">外显是指在其他业务系统上显示的标识</span>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="12">
-            <el-form-item label="印章状态" prop="sealState">
-              <el-radio-group v-model="state.form.sealState" class="ml-4">
-                <el-radio :label="1" size="large">正常</el-radio>
-                <el-radio :label="2" size="large">停用</el-radio>
-                <el-radio :label="3" size="large">已销毁</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col> -->
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="硬件版本号" prop="hardwareVersionId">
-              <el-input v-model="state.form.hardwareVersionId" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="固件版本号" prop="firmwareVersionId">
-              <el-input v-model="state.form.firmwareVersionId" clearable />
-            </el-form-item>
-          </el-col>
         </el-row>
         <el-form-item label="制度链接" prop="bylawsUrl">
           <el-input
@@ -425,12 +404,6 @@
           />
         </el-form-item>
         <el-form-item label="备注" prop="sealExplain">
-          <!-- <el-input
-            v-model="state.form.sealExplain"
-            :rows="4"
-            type="textarea"
-            placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
-          /> -->
           <JyRichEdit :value="state.form.sealExplain" @updateValue="getMsg" />
         </el-form-item>
         <el-form-item
@@ -452,25 +425,6 @@
             </div>
           </el-upload>
         </el-form-item>
-        <!-- <el-form-item
-          label="印章可见范围"
-          prop="stampAttachments"
-          style="margin-top: 10px"
-        >
-          <el-upload
-            v-model:file-list="fileList"
-            class="upload-demo"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-            :on-change="handleChange"
-          >
-            <div class="btnContainer">
-              <el-button type="primary" text size="small">
-                <el-icon :size="14"> <Paperclip /> </el-icon>
-                <span style="margin-left: 5px">添加印模</span>
-              </el-button>
-            </div>
-          </el-upload>
-        </el-form-item> -->
       </el-form>
     </JyDialog>
     <!-- 人员选择  -->
@@ -614,33 +568,10 @@
       state.form[depChoose.value + 'Id'] = data[0].id
       state.form[depChoose.value + 'Name'] = data[0].name
     }
-
-    // if (depChoose.value === 'subOrgan') {
-    //   state.form.subOrganName = data[0].name
-    //   state.form.subOrganId = data[0].id
-    // }
-    // if (depChoose.value === 'manageUser') {
-    //   state.form.manageUserName = data[0].name
-    //   state.form.manageUserId = data[0].id
-    // }
-    // if (depChoose.value === 'manageOrgan') {
-    //   state.form.manageOrganName = data[0].name
-    //   state.form.manageOrganId = data[0].id
-    // }
-    // if (depChoose.value === 'keepUser') {
-    //   state.form.keepUserName = data[0].name
-    //   state.form.keepUserId = data[0].id
-    // }
-    // if (depChoose.value === 'keepOrgan') {
-    //   state.form.keepOrganName = data[0].name
-    //   state.form.keepOrganId = data[0].id
-    // }
-    console.log(data)
   }
   const getMsg = val => {
     state.form.sealExplain = val
   }
-  // const emit = defineEmits([])
   const state = reactive({
     downIcon: '/src/assets/svg/sangedian.svg',
     downIconGray: '/src/assets/svg/sangedian-gray.svg',
@@ -660,18 +591,11 @@
       sealTypeId: '',
       subOrganId: '',
       subOrganName: '',
-      // manageUserId: '',
-      // manageUserName: '',
-      // manageOrganId: '',
-      // manageOrganName: '',
       keepUserId: '',
       keepUserName: '',
       keepOrganId: '',
       keepOrganName: '',
       extShow: '1',
-      // sealState: 1,
-      hardwareVersionId: '',
-      firmwareVersionId: '',
       bylawsUrl: '',
       sealExplain: '',
       stampAttachments: ''

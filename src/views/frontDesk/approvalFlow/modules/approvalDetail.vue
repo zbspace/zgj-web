@@ -46,18 +46,6 @@
       </div>
     </div>
     <div class="approval-footer">
-      <!-- <v-form-render
-          :form-json="dialogProcess.formJson"
-          :form-data="dialogProcess.formJson"
-          :option-data="dialogProcess.optionData"
-          ref="vFormLibraryRef"
-          :key="dialogProcess.title"
-        >
-        </v-form-render> -->
-      <!-- <div class="select-person">
-          <span>添加抄送</span>
-          <div @click="showDepPerDialog = true">+请选择抄送人</div>
-        </div> -->
       <el-form
         :model="state.form"
         :rules="state.rules"
@@ -125,35 +113,33 @@
             state.form.suggest === '3'
           "
         >
-          <div class="select-box-contBox">
-            <div class="footer-tagcon" @click="chooseOrgan('approver')"
-              ><el-tag
-                class="footer-tag"
-                closable
-                type="info"
-                v-for="item in state.approverSelected"
-                :key="item.id"
-                @close="delTags(item, 'approver')"
+          <div class="contentBoxes">
+            <div class="ap-box-contBox">
+              <el-select
+                v-model="state.approverSelected"
+                multiple
+                placeholder="+请选择审批人"
+                style="width: 100%"
+                popper-class="hidePoper"
+                :class="{
+                  hasContent: state.approverSelected.length
+                }"
+                @click="chooseOrgan('approver')"
               >
-                {{ item.name }}
-              </el-tag>
-              <span v-if="state.approverSelected.length <= 10"
-                >+请添加审批人</span
-              >
-            </div>
-            <div class="ap-box-contBox-icon">
-              <!-- <el-icon
-                  v-if="state.form.approver"
-                  style="margin-right: 5px"
-                  color="#aaaaaa"
-                  @click="clear('approver')"
-                  ><CircleClose
-                /></el-icon> -->
-              <img
-                class="ap-box-contBox-icon-img"
-                src="@/assets/svg/ketanchude.svg"
-                alt=""
-              />
+                <el-option
+                  v-for="one in state.approverSelected"
+                  :key="one.value"
+                  :label="one.label"
+                  :value="one.value"
+                />
+              </el-select>
+              <div class="ap-box-contBox-icon" @click="chooseOrgan('approver')">
+                <img
+                  class="ap-box-contBox-icon-img"
+                  src="@/assets/svg/ketanchude.svg"
+                  alt=""
+                />
+              </div>
             </div>
           </div>
         </el-form-item>
@@ -219,44 +205,33 @@
               style="margin-right: 12px"
               size="mini"
             ></el-checkbox>
-            <div
-              v-if="state.form.carbon"
-              @click="chooseOrgan('carbon')"
-              class="footer-tagcon"
-              ><el-tag
-                class="footer-tag"
-                closable
-                type="info"
-                v-for="item in state.carbonSelected"
-                :key="item.id"
-                @close="delTags(item, 'carbon')"
-              >
-                {{ item.name }}
-              </el-tag>
-              <!-- <el-tag
-                  class="footer-tag"
-                  closable
-                  @close="delTags"
-                  type="info"
+            <div class="contentBoxes" v-if="state.form.carbon">
+              <div class="ap-box-contBox">
+                <el-select
+                  v-model="state.carbonSelected"
+                  multiple
+                  placeholder="+请选择抄送人"
+                  style="width: 100%"
+                  popper-class="hidePoper"
+                  :class="{
+                    hasContent: state.carbonSelected.length
+                  }"
+                  @click="chooseOrgan('carbon')"
                 >
-                  选中
-                </el-tag> -->
-              <span v-if="state.carbonSelected.length <= 10"
-                >+请添加抄送人</span
-              >
-              <div class="ap-box-contBox-icon">
-                <!-- <el-icon
-                    v-if="state.form.carbon"
-                    style="margin-right: 5px"
-                    color="#aaaaaa"
-                    @click.stop="clear('carbon')"
-                    ><CircleClose
-                  /></el-icon> -->
-                <img
-                  class="ap-box-contBox-icon-img"
-                  src="@/assets/svg/ketanchude.svg"
-                  alt=""
-                />
+                  <el-option
+                    v-for="one in state.carbonSelected"
+                    :key="one.value"
+                    :label="one.label"
+                    :value="one.value"
+                  />
+                </el-select>
+                <div class="ap-box-contBox-icon" @click="chooseOrgan('carbon')">
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -402,25 +377,25 @@
     }
   })
 
-  // 删除操作人
-  const delTags = (item, type) => {
-    if (type === 'approver') {
-      for (let i = 0; i < state.approverSelected.length; i++) {
-        console.log(state.approverSelected[i])
-        if (item.id === state.approverSelected[i].id) {
-          state.approverSelected.splice(i, 1)
-          state.form.approver.splice(i, 1)
-        }
-      }
-    } else if (type === 'carbon') {
-      for (let i = 0; i < state.carbonSelected.length; i++) {
-        console.log(state.carbonSelected[i])
-        if (item.id === state.carbonSelected[i].id) {
-          state.carbonSelected.splice(i, 1)
-        }
-      }
-    }
-  }
+  // // 删除操作人
+  // const delTags = (item, type) => {
+  //   if (type === 'approver') {
+  //     for (let i = 0; i < state.approverSelected.length; i++) {
+  //       console.log(state.approverSelected[i])
+  //       if (item.id === state.approverSelected[i].id) {
+  //         state.approverSelected.splice(i, 1)
+  //         state.form.approver.splice(i, 1)
+  //       }
+  //     }
+  //   } else if (type === 'carbon') {
+  //     for (let i = 0; i < state.carbonSelected.length; i++) {
+  //       console.log(state.carbonSelected[i])
+  //       if (item.id === state.carbonSelected[i].id) {
+  //         state.carbonSelected.splice(i, 1)
+  //       }
+  //     }
+  //   }
+  // }
   // 提交审批
   const sumitForm = () => {
     console.log('提交')
@@ -507,7 +482,7 @@
   const onAssignee = () => {
     const ids = []
     state.approverSelected.forEach(item => {
-      ids.push(item.id)
+      ids.push(item.value)
     })
     const params = {
       taskId: props.params.taskId,
@@ -532,7 +507,7 @@
   const onTurn = () => {
     const ids = []
     state.approverSelected.forEach(item => {
-      ids.push(item.id)
+      ids.push(item.value)
     })
     const params = {
       taskId: props.params.taskId,
@@ -657,11 +632,29 @@
   const chooseOrgan = type => {
     depChoose.value = type
     if (type === 'carbon') {
-      state.searchSelected = state.carbonSelected
+      state.searchSelected = state.carbonSelected.map(i => {
+        return {
+          id: i.value,
+          name: i.label,
+          type: 'user'
+        }
+      })
     } else if (type === 'approver') {
-      state.searchSelected = state.approverSelected
+      state.searchSelected = state.approverSelected.map(i => {
+        return {
+          id: i.value,
+          name: i.label,
+          type: 'user'
+        }
+      })
     } else if (type === 'nextApprover') {
-      state.searchSelected = state.nextApproverSelected
+      state.searchSelected = state.nextApproverSelected.map(i => {
+        return {
+          id: i.value,
+          name: i.label,
+          type: 'user'
+        }
+      })
     }
     showDepPerDialog.value = true
   }
@@ -772,12 +765,27 @@
   // 选择部门员工
   const submitSelectDepart = data => {
     if (depChoose.value === 'approver') {
-      state.approverSelected = data
+      state.approverSelected = data.map(i => {
+        return {
+          label: i.name,
+          value: i.id
+        }
+      })
       state.form.approver = data
     } else if (depChoose.value === 'carbon') {
-      state.carbonSelected = data
+      state.carbonSelected = data.map(i => {
+        return {
+          label: i.name,
+          value: i.id
+        }
+      })
     } else if (depChoose.value === 'nextApprover') {
-      state.nextApproverSelected = data
+      state.nextApproverSelected = data.map(i => {
+        return {
+          label: i.name,
+          value: i.id
+        }
+      })
       const nextApproverNames = []
       data.forEach(v => {
         nextApproverNames.push(v.name)
@@ -832,14 +840,6 @@
   })
 </script>
 <style lang="scss" scoped>
-  .el-form-item__content {
-    margin-bottom: 18px;
-  }
-  :deep {
-    .content-custom {
-      padding: 0;
-    }
-  }
   .approval-footer {
     border-radius: 4px;
     position: absolute;
@@ -852,27 +852,6 @@
     background: #ffffff;
     box-shadow: 0px -9px 22px rgb(0 0 0 / 3%);
     overflow: auto;
-    .footer-tagcon {
-      width: 100%;
-      border: 1px solid var(--el-border-color);
-      border-radius: var(
-        --el-input-border-radius,
-        var(--el-border-radius-base)
-      );
-      box-sizing: border-box;
-      padding: 0 12px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      color: rgba($color: #000000, $alpha: 0.45);
-      .footer-tag {
-        background: rgba(0, 0, 0, 0.04);
-        border-radius: 3px;
-        border-color: rgba(0, 0, 0, 0.04);
-        color: rgba(0, 0, 0, 0.65);
-        margin-right: 12px;
-      }
-    }
     .footer-approver {
       font: size 14px;
       color: rgba($color: #000000, $alpha: 0.45);
@@ -883,346 +862,75 @@
       padding-top: 6px;
     }
   }
-
-  .components-documentsDetails {
-    margin: 0%;
-
-    .ap-cont {
-      height: 100%;
+</style>
+<style lang="scss">
+  .hidePoper {
+    display: none;
+  }
+  .approval-footer {
+    .el-divider {
+      margin: 8px 0 16px;
     }
-
-    .ap-title {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .title-name-span {
-        font-size: var(--jy-font-size-title-2);
+    .hasContent {
+      .el-input__wrapper {
+        -webkit-text-fill-color: #000;
       }
 
-      .title-cion-img {
-        width: 1rem;
-        margin-right: 1rem;
+      .el-input__inner {
+        -webkit-text-fill-color: #000;
+      }
+    }
+
+    .contentBoxes {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      .xian {
+        color: rgba($color: #000000, $alpha: 0.45);
+        font-size: 12px;
+      }
+    }
+
+    .ap-box-contBox {
+      width: calc(100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .el-input__suffix {
+        display: none;
+      }
+
+      .el-select .el-input.is-disabled .el-input__wrapper {
         cursor: pointer;
       }
 
-      .quanping {
-        width: 1.2rem;
-      }
-    }
-
-    .ap-Tabs {
-      display: flex;
-
-      .ap-Tabs-cont {
-        flex-grow: 1;
+      .el-select .el-input.is-disabled .el-input__inner {
+        cursor: pointer;
       }
 
-      .ap-Tabs-sub {
-        width: 5rem;
-        margin-bottom: 14px;
-        box-sizing: border-box;
+      .el-input.is-disabled .el-input__wrapper {
+        background-color: #ffffff;
+      }
+
+      .ap-box-contBox-icon {
+        position: absolute;
+        right: 0.8rem;
+        cursor: pointer;
+        height: 14px;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        border-bottom: 1px solid var(--jy-color-border-2);
 
-        .ap-Tabs-sub-icon {
-          margin-right: 0.5rem;
-        }
-
-        .ap-Tabs-sub-text {
-          cursor: pointer;
-          color: var(-color-text-2);
-        }
-      }
-    }
-
-    .ap-cont-tabsCont {
-      width: calc(100% + 18px);
-      height: calc(100% - 80px);
-
-      .arco-scrollbar {
-        height: 100%;
-      }
-
-      .scrollbar-div {
-        padding-right: 18px;
-        box-sizing: border-box;
-      }
-
-      .ap-cont-box-title {
-        border-bottom: 1px solid var(--jy-color-border-2);
-        padding: 0rem 0 0rem 0.8rem;
-        box-sizing: border-box;
-        background: url(../../assets/svg/shuxian-after.svg) no-repeat left
-          center;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 2.3rem;
-
-        .ap-cont-box-title-label {
-          font-size: var(--jy-font-size-title-1);
-          font-weight: var(--jy-font-weight-400);
-        }
-
-        .ap-cont-box-title-xiazai {
-          display: flex;
-          align-items: center;
-
-          .ap-cont-box-title-xiazai-icon {
-            margin-right: 0.5rem;
-          }
-
-          .ap-cont-box-title-xiazai-text {
-            color: var(--jy-color-text-2);
-          }
-        }
-
-        .ap-cont-box-title-but {
-          .ap-cont-box-title-but-box {
-            display: flex;
-            align-items: center;
-          }
-
-          .ap-cont-box-title-but-icon {
-            width: 0.8rem;
-            margin-right: 0.2rem;
-          }
+        .ap-box-contBox-icon-img {
+          height: 100%;
         }
       }
 
-      .ap-cont-box-details {
-        padding: 0.5rem 0;
-        box-sizing: border-box;
-      }
-
-      .Details-of-Printing {
-        .sealDetails-basic-information {
-          .sealDetails-basic-information-details {
-            display: flex;
-            flex-flow: wrap;
-            padding: 0.5rem 0;
-            box-sizing: border-box;
-
-            .sealDetails-basic-information-list {
-              display: flex;
-              align-items: center;
-              width: 50%;
-              padding: 0.5rem 0;
-              box-sizing: border-box;
-
-              .sealDetails-basic-information-list-label {
-                width: 4.5rem;
-                display: flex;
-                justify-content: flex-end;
-                color: var(--jy-color-text-3);
-              }
-
-              .sealDetails-basic-information-list-value {
-                padding: 0rem 0 0rem 0.5rem;
-                box-sizing: border-box;
-              }
-            }
-          }
-        }
-      }
-
-      .Particulars-of-Seal {
-        .sealDetails-basic-information {
-          .sealDetails-basic-information-details {
-            display: flex;
-            flex-flow: wrap;
-            padding: 0.5rem 0;
-            box-sizing: border-box;
-
-            .sealDetails-basic-information-list {
-              display: flex;
-              align-items: center;
-              width: 50%;
-              padding: 0.5rem 0;
-              box-sizing: border-box;
-
-              .sealDetails-basic-information-list-label {
-                width: 7rem;
-                display: flex;
-                justify-content: flex-end;
-                color: var(--jy-color-text-3);
-              }
-
-              .sealDetails-basic-information-list-value {
-                padding: 0rem 0 0rem 0.5rem;
-                box-sizing: border-box;
-              }
-            }
-          }
-        }
-      }
-
-      .Details-of-Document {
-        .sealDetails-basic-information {
-          .sealDetails-basic-information-details {
-            display: flex;
-            flex-flow: wrap;
-            padding: 0.5rem 0;
-            box-sizing: border-box;
-
-            .sealDetails-basic-information-list {
-              display: flex;
-              align-items: center;
-              width: 50%;
-              padding: 0.5rem 0;
-              box-sizing: border-box;
-
-              .sealDetails-basic-information-list-label {
-                width: 7rem;
-                display: flex;
-                justify-content: flex-end;
-                color: var(--jy-color-text-3);
-              }
-
-              .sealDetails-basic-information-list-value {
-                padding: 0rem 0 0rem 0.5rem;
-                box-sizing: border-box;
-              }
-            }
-          }
-        }
-      }
-
-      .Record-of-requisition {
-        .ap-cont-ma {
-          height: 3rem;
-          display: flex;
-          align-items: center;
-
-          .ap-cont-ma-text {
-            color: var(--jy-color-text-3);
-          }
-
-          .ap-cont-ma-value {
-            color: var(--jy-primary-6);
-            font-size: var(--jy-font-size-title-2);
-          }
-        }
-
-        .SealInformation {
-          .SealInformation-details-list {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 2.5rem;
-
-            .SealInformation-details-list-cont {
-              display: flex;
-              align-items: center;
-
-              .SealInformation-details-list-cont-icon {
-                display: flex;
-                align-items: center;
-                margin-right: 0.5rem;
-              }
-
-              .SealInformation-details-list-cont-val {
-                display: flex;
-                align-items: center;
-
-                .iconPathValue {
-                  margin-right: 0.5rem;
-                }
-              }
-            }
-          }
-
-          .SealInformation-details-image {
-            .SealInformation-details-image-title {
-              display: flex;
-              align-items: center;
-              height: 2.5rem;
-
-              .SealInformation-details-image-title-icon {
-                display: flex;
-                align-items: center;
-                margin-right: 0.5rem;
-              }
-            }
-
-            .SealInformation-details-image-cont {
-              display: flex;
-              flex-flow: wrap;
-
-              .SealInformation-details-image-cont-list {
-                width: 50%;
-                display: flex;
-                min-width: 25rem;
-                padding: 0.5rem 0;
-                box-sizing: border-box;
-
-                .SealInformation-details-image-cont-list-img {
-                  position: relative;
-                  width: auto;
-
-                  .SealInformation-details-image-cont-list-img-icon {
-                    position: absolute;
-                    right: 0%;
-                    top: 0%;
-                    width: 40%;
-                  }
-
-                  .SealInformation-details-image-cont-list-img-time {
-                    position: absolute;
-                    bottom: 0%;
-                    text-align: center;
-                    width: 100%;
-                    background-color: var(--jy-color-fill-65);
-                    color: var(--jy-in-common-use-1);
-                    height: 2rem;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  }
-                }
-
-                .SealInformation-details-image-cont-list-cont {
-                  flex-grow: 1;
-                  padding: 0 0.5rem;
-                  box-sizing: border-box;
-                  display: flex;
-                  align-content: space-between;
-                  flex-flow: wrap;
-
-                  .SealInformation-details-image-cont-list-cont-list {
-                    width: 100%;
-                    display: flex;
-
-                    .SealInformation-details-image-cont-list-cont-list-label {
-                      width: 4.5rem;
-                      display: flex;
-                      justify-content: flex-end;
-                      color: var(--jy-color-text-3);
-                    }
-
-                    .SealInformation-details-image-cont-list-cont-list-subValue {
-                      display: flex;
-                      align-items: center;
-                      padding-left: 0.5rem;
-                      box-sizing: border-box;
-
-                      .SealInformation-details-image-cont-list-cont-list-subValue-icon {
-                        margin-right: 0.2rem;
-                      }
-
-                      .SealInformation-details-image-cont-list-cont-list-subValue-text {
-                        color: var(--jy-danger-6);
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
+      :deep {
+        .el-input__inner {
+          padding-right: 1.5rem;
+          box-sizing: border-box;
         }
       }
     }
