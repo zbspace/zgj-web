@@ -90,10 +90,6 @@
         </div>
       </template>
       <template #custom_caozuo="scope">
-        <!-- {{ scope.value.sealName }}
-        <span v-for="(item, i) in state.rankDisplayData" :key="i">{{
-          $t(item.name)
-        }}</span> -->
         <div
           class="rankDisplayData"
           :class="{ 'rankDisplayData-add': scope.value.sealStateId === '2' }"
@@ -178,6 +174,7 @@
       :height="600"
       destroy-on-close
       @confirm="submitLibraryForm"
+      @close="closeForm"
     >
       <el-form
         :model="state.form"
@@ -241,7 +238,7 @@
                     ><CircleClose
                   /></el-icon>
                   <img
-                    @click="chooseOrgan('subOrgan', ['organ'], true)"
+                    @click="chooseOrgan('subOrgan', ['organ'], false)"
                     class="ap-box-contBox-icon-img"
                     src="@/assets/svg/ketanchude.svg"
                     alt=""
@@ -251,74 +248,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="管理人" prop="manageUserId">
-              <div class="select-box-contBox">
-                <el-input
-                  class="ap-box-contBox-input width-100"
-                  readonly
-                  v-model="state.form.manageUserName"
-                  placeholder="请选择"
-                />
-                <el-input
-                  class="ap-box-contBox-input width-100"
-                  type="hidden"
-                  v-model="state.form.manageUserId"
-                  placeholder="请选择"
-                />
-                <div class="ap-box-contBox-icon">
-                  <el-icon
-                    v-if="state.form.manageUserName"
-                    style="margin-right: 5px"
-                    color="#aaaaaa"
-                    @click="clear('manageUser')"
-                    ><CircleClose
-                  /></el-icon>
-                  <img
-                    @click="chooseOrgan('manageUser', ['user'])"
-                    class="ap-box-contBox-icon-img"
-                    src="@/assets/svg/ketanchude.svg"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="管理部门" prop="manageOrganId">
-              <div class="select-box-contBox">
-                <el-input
-                  class="ap-box-contBox-input width-100"
-                  readonly
-                  v-model="state.form.manageOrganName"
-                  placeholder="请选择"
-                />
-                <el-input
-                  class="ap-box-contBox-input width-100"
-                  type="hidden"
-                  v-model="state.form.manageOrganId"
-                  placeholder="请选择"
-                />
-                <div class="ap-box-contBox-icon">
-                  <el-icon
-                    v-if="state.form.manageOrganName"
-                    style="margin-right: 5px"
-                    color="#aaaaaa"
-                    @click="clear('manageOrgan')"
-                    ><CircleClose
-                  /></el-icon>
-                  <img
-                    @click="chooseOrgan('manageOrgan', ['organ'])"
-                    class="ap-box-contBox-icon-img"
-                    src="@/assets/svg/ketanchude.svg"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row> -->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="保管人" prop="keepUserId">
@@ -510,8 +439,8 @@
   import { ElMessage } from 'element-plus'
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
   import api from '@/api/frontDesk/sealManage/libraryOfSeals'
+  import staffApi from '@/api/system/companyManagement/departmentStaff'
   import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
-  import { generatingNumber } from '@/utils/tools'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
   import { useRouter } from 'vue-router'
   const router = useRouter()
@@ -531,10 +460,16 @@
     for (const i in state.form) {
       state.form[i] = ''
     }
-    state.form.sealNo = generatingNumber()
-    showLibraryDialog.value = true
+    getSealsBizNo()
   }
-
+  const getSealsBizNo = () => {
+    api.sealInfoBizNo().then(res => {
+      if (res.code === 200) {
+        state.form.sealNo = res.data
+        showLibraryDialog.value = true
+      }
+    })
+  }
   // 保存新增/修改数据
   const submitLibraryForm = type => {
     console.log(state.form)
@@ -561,12 +496,10 @@
       }
     })
   }
-  const showDepPerDialog = ref(false)
-  const submitSelectDepart = data => {
-    if (data) {
-      state.form[depChoose.value + 'Id'] = data[0].id
-      state.form[depChoose.value + 'Name'] = data[0].name
-    }
+  const closeForm = () => {
+    state.searchSelected = []
+    state.searchSelectedKeepOrgan = []
+    state.searchSelectedKeepUser = []
   }
   const getMsg = val => {
     state.form.sealExplain = val
@@ -580,6 +513,8 @@
     tabsShow: [],
     multiple: true,
     searchSelected: [],
+    searchSelectedKeepUser: [],
+    searchSelectedKeepOrgan: [],
     title: '新增',
     typeList: [],
     form: {
@@ -1256,25 +1191,103 @@
       table.value.reloadData()
     })
   }
-
+  const showDepPerDialog = ref(false)
+  const submitSelectDepart = data => {
+    if (data) {
+      state.form[depChoose.value + 'Id'] = data[0].id
+      if (depChoose.value === 'keepUser') {
+        const organNames = []
+        state.searchSelectedKeepUser = data
+        staffApi.userGet(data[0].id).then(res => {
+          console.log('keepUser', res)
+          if (res.code === 200) {
+            state.searchSelectedKeepOrgan.push({
+              id: res.data.hostOrganId,
+              name: res.data.hostOrganName,
+              type: 'organ'
+            })
+            organNames.push(res.data.hostOrganName)
+            // if (res.data.partTimeOrgans && res.data.partTimeOrgans.length > 0) {
+            //   res.data.partTimeOrgans.forEach(item => {
+            //     organNames.push(item.organName)
+            //   })
+            // }
+            state.form.keepOrganId = res.data.hostOrganId
+            state.form.keepOrganName = organNames.join(',')
+          }
+        })
+      } else if (depChoose.value === 'keepOrgan') {
+        state.searchSelectedKeepOrgan = data
+      }
+      state.form[depChoose.value + 'Name'] = data[0].name
+    }
+  }
   const chooseOrgan = (type, tabs, multiple) => {
     state.multiple = multiple
     depChoose.value = type
     state.tabsShow = []
     state.searchSelected = []
-    if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
-      state.searchSelected.push({
-        id: state.form[type + 'Id'],
-        name: state.form[type + 'Name'],
-        type: tabs[0]
-      })
+    state.searchSelectedKeepUser = []
+    state.searchSelectedKeepOrgan = []
+    if (type === 'keepUser') {
+      if (
+        state.searchSelectedKeepUser &&
+        state.searchSelectedKeepUser.length > 0
+      ) {
+        state.searchSelected = state.searchSelectedKeepUser
+      } else {
+        if (
+          state.form[type + 'Id'] !== '' &&
+          state.form[type + 'Name'] !== ''
+        ) {
+          state.searchSelectedKeepUser.push({
+            id: state.form[type + 'Id'],
+            name: state.form[type + 'Name'],
+            type: tabs[0]
+          })
+        }
+        state.searchSelected = state.searchSelectedKeepUser
+      }
+    } else if (type === 'keepOrgan') {
+      if (
+        state.searchSelectedKeepOrgan &&
+        state.searchSelectedKeepOrgan.length > 0
+      ) {
+        state.searchSelected = state.searchSelectedKeepOrgan
+      } else {
+        if (
+          state.form[type + 'Id'] !== '' &&
+          state.form[type + 'Name'] !== ''
+        ) {
+          state.searchSelectedKeepOrgan.push({
+            id: state.form[type + 'Id'],
+            name: state.form[type + 'Name'],
+            type: tabs[0]
+          })
+        }
+        state.searchSelected = state.searchSelectedKeepOrgan
+      }
+    } else {
+      if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
+        state.searchSelected.push({
+          id: state.form[type + 'Id'],
+          name: state.form[type + 'Name'],
+          type: tabs[0]
+        })
+      }
     }
+
     console.log(tabs)
     state.tabsShow = tabs
     showDepPerDialog.value = true
   }
 
   const clear = type => {
+    if (type === 'keepUser') {
+      state.searchSelectedKeepUser = []
+    } else if (type === 'keepOrgan') {
+      state.searchSelectedKeepOrgan = []
+    }
     state.form[type + 'Id'] = ''
     state.form[type + 'Name'] = ''
   }

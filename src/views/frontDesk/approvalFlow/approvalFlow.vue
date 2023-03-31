@@ -985,7 +985,9 @@
                   : `${formData[item].amount} ${
                       vformInfoStore.moneyType.find(v => {
                         return v.moneyTypeId === formData[item].unit
-                      }).moneyTypeName
+                          ? formData[item].unit
+                          : ''
+                      })?.moneyTypeName
                     }`,
               type: v.formColumnModel ? v.formColumnModel : '其他'
             })

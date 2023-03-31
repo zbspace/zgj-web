@@ -119,4 +119,11 @@ api.sealInfoKeepList = params => {
     params
   })
 }
+// 印章编码
+api.sealInfoBizNo = () => {
+  return request({
+    method: 'GET',
+    url: '/sealInfo/bizNo'
+  })
+}
 export default api

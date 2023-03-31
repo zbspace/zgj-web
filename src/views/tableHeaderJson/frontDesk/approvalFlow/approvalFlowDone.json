@@ -3,7 +3,7 @@
     "prop": "instanceTitle",
     "label": "流程名称",
     "sortable": true,
-    "min-width": 150
+    "min-width": 180
   },
   {
     "prop": "2",
@@ -27,13 +27,13 @@
     "prop": "createTime",
     "label": "申请时间",
     "sortable": true,
-    "min-width": 150
+    "min-width": 180
   },
   {
     "prop": "completionTime",
     "label": "审批时间",
     "sortable": true,
-    "min-width": 150
+    "min-width": 180
   },
   {
     "prop": "approvalModeName",
@@ -45,7 +45,7 @@
     "prop": "caozuo",
     "label": "操作",
     "fixed": "right",
-    "min-width": 70,
+    "min-width": 80,
     "rankDisplayData": [
       {
         "name": "t-zgj-F_WORKFLOW_RE_APPROVAL",
