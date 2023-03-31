@@ -966,7 +966,7 @@
   import liuchengTongyiSvg from '@/assets/svg/liucheng-tongyi.svg'
   import liuchengJujueSvg from '@/assets/svg/liucheng-jujue.svg'
   import liuchengWanchengSvg from '@/assets/svg/liucheng-wancheng.svg'
-  import yuanHuiSvg from '@/assets/svg/yuan-hui.svg'
+  import yuanHuiSvg from '@/assets/svg/common/yuan-hui.svg'
   import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
   import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
   import renlianTupian from '@/assets/svg/renlian-tupian.svg'
