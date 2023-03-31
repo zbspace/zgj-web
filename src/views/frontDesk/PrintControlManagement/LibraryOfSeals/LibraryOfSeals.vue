@@ -577,7 +577,7 @@
     for (const i in state.form) {
       state.form[i] = ''
     }
-    state.form.sealNo = generatingNumber
+    state.form.sealNo = generatingNumber()
     showLibraryDialog.value = true
   }
 

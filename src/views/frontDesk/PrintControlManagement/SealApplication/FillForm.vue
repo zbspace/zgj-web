@@ -434,7 +434,7 @@
         nextTick(() => {
           refFillFormInformation.value.setFieldValue(
             'applyNo',
-            generatingNumber
+            generatingNumber()
           )
         })
       })

@@ -251,7 +251,7 @@
       vFormLibraryRef.value.resetFields()
       if (title === 't-zgj-add') {
         sealTypeId.value = null
-        formData.value.sealTypeNo = generatingNumber
+        formData.value.sealTypeNo = generatingNumber()
       } else {
         if (column) {
           const columns = JSON.parse(JSON.stringify(column))

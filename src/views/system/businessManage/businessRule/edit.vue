@@ -1301,7 +1301,7 @@
     archivePageSwitch = '0'
     archiveOcrSwitch = '0'
   }
-  let ruleBusinessNo = generatingNumber
+  let ruleBusinessNo = generatingNumber()
   const ruleForm = ref(new BusinessRule())
   const ruleFormRef = ref(null)
   const currentTab = ref(1)

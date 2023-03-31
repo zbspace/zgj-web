@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 import dayjs from 'dayjs'
 /**
  * 防抖

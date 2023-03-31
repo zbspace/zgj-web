@@ -466,7 +466,7 @@
     nextTick(() => {
       vFormLibraryRef.value.resetFields()
       form.benchId = ''
-      form.benchNo = generatingNumber
+      form.benchNo = generatingNumber()
       form.manOrganName = ''
       form.manUserName = ''
     })
