@@ -72,30 +72,14 @@
       </template>
     </JyElMessageBox>
     <!-- 批量操作弹框提示 -->
-    <JyElMessageBox
-      v-model="state.showToastDialog.show"
+    <actionMoreDialog
+      @update:modelValue="state.showToastDialog.show = false"
       :show="state.showToastDialog.show"
-      :defaultAttribute="{}"
-      @confirmClick="confirmClick"
-    >
-      <template #header>
-        <div class="header-div">
-          <img :src="state.showToastDialog.header.icon" alt="" />
-          <span>{{ state.showToastDialog.header.data }}</span>
-        </div>
-      </template>
-      <template #content>
-        <div class="content-div">{{ state.showToastDialog.content.data }}</div>
-        <el-scrollbar class="scrollbar" max-height="200px">
-          <p
-            v-for="item in state.componentsBatch.selectionData"
-            :key="item"
-            class="scrollbar-demo-item"
-            >{{ item.sealTypeName }}</p
-          >
-        </el-scrollbar>
-      </template>
-    </JyElMessageBox>
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="state.showToastDialog"
+      label="sealTypeName"
+      @sureAction="confirmClick"
+    ></actionMoreDialog>
     <!-- 操作错误提示 -->
     <JyActionErrorDialog
       :show="state.showToastDialogContent.show"
@@ -110,6 +94,7 @@
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
   import dayjs from 'dayjs'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/typeOfSeal.json'
+  import actionMoreDialog from '@/views/components/actionMoreDialog'
 
   // 印章类型 新增弹框
   const formData = ref({
