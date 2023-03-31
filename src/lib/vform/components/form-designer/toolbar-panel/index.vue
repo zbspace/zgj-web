@@ -56,7 +56,7 @@
       :size="280"
       append-to-body
       :destroy-on-close="true"
-      custom-class="node-tree-drawer"
+      class="node-tree-drawer"
     >
       <el-tree
         ref="nodeTree"

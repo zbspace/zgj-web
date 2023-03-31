@@ -55,15 +55,17 @@
         <div
           class="dialog-footer"
           :class="{
-            'center-footer': state.props.defaultAttribute.center ? true : false
+            'center-footer': state.props.defaultAttribute.footerCenter
+              ? true
+              : false
           }"
           v-if="state.props['showFooter']"
         >
           <slot name="footer">
             <el-button type="primary" @click="clickSure">{{
-              $t('t-zgj-select.confirm')
+              $t(props.confirmBtnText)
             }}</el-button>
-            <el-button @click="clickClose">{{
+            <el-button @click="clickClose" v-if="!props.oneBtn">{{
               $t('t-zgj-operation.cancel')
             }}</el-button>
           </slot>
@@ -97,6 +99,14 @@
     type: {
       type: String,
       default: '0'
+    },
+    oneBtn: {
+      type: Boolean,
+      default: false
+    },
+    confirmBtnText: {
+      type: String,
+      default: 't-zgj-select.confirm'
     },
     // v-model
     modelValue: {

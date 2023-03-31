@@ -3,42 +3,74 @@
   <JyElMessageBox
     :modelValue="props.show"
     :mode="1"
+    oneBtn
+    confirmBtnText="t-zgj-know"
     :showClose="false"
-    :defaultAttribute="{}"
+    :defaultAttribute="{
+      footerCenter: true
+    }"
     @update:modelValue="closeCallBack"
-    @confirmClick="confirmClick"
+    @confirmClick="closeCallBack"
   >
     <template #header>
       <div class="header-div">
-        <img src="@/assets/svg/common/warning.svg" />
-        <span>{{ props.showToastDialogContent.header.data }}</span>
+        <img src="@/assets/svg/common/danger.svg" />
+        <span>{{ props.showToastDialogContent.header }}</span>
       </div>
     </template>
     <template #content>
-      <div class="content-div">{{
-        props.showToastDialogContent.content.data
+      <div class="content-div" style="text-align: left">{{
+        props.showToastDialogContent.content
       }}</div>
-      <el-scrollbar class="scrollbar" max-height="200px">
-        <div
-          v-for="item in props.selectionData"
-          :key="item"
-          class="scrollbar-demo-item"
-          >{{ item[props.curKey || props.label] }}</div
+      <div v-if="props.showToastDialogContent.selectionData?.length">
+        <el-scrollbar class="scrollbar" max-height="200px">
+          <div
+            v-for="item in props.showToastDialogContent.selectionData"
+            :key="item"
+            class="scrollbar-demo-item"
+            >{{
+              props.curKey || props.label
+                ? item[props.curKey || props.label]
+                : item
+            }}</div
+          >
+        </el-scrollbar>
+      </div>
+      <div v-if="props.showToastDialogContent.selectionTableData">
+        <el-table
+          :data="props.showToastDialogContent.selectionTableData.data"
+          max-height="calc(100vh - 200px)"
+          stripe
+          style="width: 100%"
         >
-      </el-scrollbar>
+          <template
+            v-for="(item, index) in props.showToastDialogContent
+              .selectionTableData.headers"
+            :key="index"
+          >
+            <el-table-column v-bind="item"> </el-table-column>
+          </template>
+        </el-table>
+      </div>
     </template>
   </JyElMessageBox>
 </template>
 <script setup>
-  import { onBeforeMount, onMounted } from 'vue'
+  /**
+   * show 弹框是否开启
+   * showToastDialogContent
+   *   headers 标题内容
+   *   content 详情内容
+   *   selectionData  正常list数据
+   *   selectionTableData  表格list数据
+   *      headers  表格头部菜单
+   *      data     表格数据
+   */
   const props = defineProps({
     // 标识
     show: {
       type: Boolean,
       default: false
-    },
-    selectionData: {
-      type: Array
     },
     label: {
       type: String
@@ -47,27 +79,14 @@
       type: Object
     },
     curKey: {
-      type: String,
-      default: ''
+      type: String
     }
   })
-  const emit = defineEmits(['sureAction', 'update:modelValue'])
-
-  const confirmClick = () => {
-    emit('sureAction')
-  }
+  const emit = defineEmits(['update:modelValue'])
 
   const closeCallBack = () => {
     emit('update:modelValue')
   }
-
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-    // console.log(props.data);
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
 </script>
 <style lang="scss" scoped>
   .components-approvalSteps {

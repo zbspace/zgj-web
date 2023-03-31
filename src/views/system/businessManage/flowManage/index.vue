@@ -67,6 +67,7 @@
       v-model="addFlowModalShow"
       :openType="openType"
       :sealApplyInitId="sealApplyInitId"
+      :editModleIds="editModleIds"
       :treeSelectedId="state.componentsTree.value"
       @update:treeSelectedId="state.componentsTree.value = $event"
       :businessList="state.componentsTree.data"
@@ -136,7 +137,6 @@
 <script setup>
   /**
    * openType edit、add
-   * treeValue 树型选择值 - 携带；编辑时不生效
    */
   import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTree from '@/views/components/tree'
@@ -149,11 +149,16 @@
   import tableHeaderSealApply from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSealApply.json'
   import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
   import flowApi from '@/api/system/flowManagement/index'
-  import yuanLvSvg from '@/assets/svg/yuan-lv.svg'
+  import yuanLvSvg from '@/assets/svg/common/yuan-lv.svg'
+  import yuanHuiSvg from '@/assets/svg/common/yuan-hui.svg'
   const addFlowModalShow = ref(false)
   const openType = ref(null)
   const tree = ref(null)
-
+  const editModleIds = ref({
+    flowMessageId: '',
+    modelId: '',
+    definitionId: ''
+  })
   const openAddFlow = () => {
     addFlowModalShow.value = true
     openType.value = 'add'
@@ -526,7 +531,7 @@
 
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
-    console.log(row.flowMessageId, 'flowMessageId', column)
+    console.log(row.flowMessageId, 'flowMessageId', column, cell)
     if (column.property === 'flowName') {
       flowApi
         .flowDetail({
@@ -549,11 +554,9 @@
             },
             {
               label: '流程状态',
-              value: '启用停用-无字段',
-              iconPath: yuanLvSvg,
-              valStyle: {
-                color: 'var(--jy-success-6)'
-              }
+              value: data.flagName,
+              iconPath: handleIcon(data),
+              valStyle: handleColor(data)
             },
             {
               label: '流程适用范围',
@@ -626,6 +629,17 @@
         })
     }
   }
+  const handleIcon = data => {
+    return data.flag && data.flag === '1' ? yuanLvSvg : yuanHuiSvg
+  }
+
+  const handleColor = data => {
+    return data.flag && data.flag === '1'
+      ? {
+          color: 'var(--jy-success-6)'
+        }
+      : {}
+  }
 
   const handleScope = data => {
     if (!data.dataScope || data.dataScope.length <= 0) return '-'
@@ -643,16 +657,26 @@
     state.columnData = column
     state.flowMessageId = column.flowMessageId
     state.title = cell.name
+    // if (cell.name === 't-zgj-qyWechat.Copy') {
+    // }
+    // showLibraryDialog.value = true
     if (cell.name === 't-zgj-Edit') {
-      // showLibraryDialog.value = true
+      if (column.flag === '1') {
+        ElMessage.warning('请将流程停用后再进行修改')
+      } else {
+        addFlowModalShow.value = true
+        openType.value = 'edit'
+        editModleIds.value.flowMessageId = column.flowMessageId
+        editModleIds.value.definitionId = column.definitionId
+        editModleIds.value.modelId = column.modelId
+      }
     }
-    if (cell.name === 't-zgj-qyWechat.Copy') {
-      // showLibraryDialog.value = true
-    }
+    // if (cell.name === '复制') {
+    // }
     if (cell.name === 't-zgj-Delete') {
-      state.MessageBox.header.data = '确认要删除流程吗？'
+      state.MessageBox.header.data = '提示'
+      state.MessageBox.content.data = '确认要删除流程吗？'
       state.MessageBox.show = true
-      state.MessageBox.content.data = ''
       state.MessageBox.type = '删除'
     }
     if (cell.name === 'status' && column.flag === '1') {
@@ -676,16 +700,13 @@
 
   // 提交弹窗
   const submitElMessageBox = type => {
-    if (type === '取消删除') {
+    if (type === '取消') {
       state.MessageBox.show = false
     }
     if (type === '删除') {
-      console.log(state.columnData)
       if (state.columnData.flag === '1') {
-        state.MessageBox.header.data = '提示'
-        state.MessageBox.content.data = '请将流程停用后再进行删除'
-        state.MessageBox.show = true
-        state.MessageBox.type = '取消删除'
+        state.MessageBox.show = false
+        ElMessage.warning('请将流程停用后再进行删除')
         return
       }
       apiOpt(type, apiFlow.flowDelete({ flowMessageId: state.flowMessageId }))
@@ -704,9 +725,12 @@
         type,
         apiFlow.flowEnable({
           flowMessageId: state.flowMessageId,
-          falg: '1'
+          flag: '1'
         })
       )
+    }
+    if (type === '编辑') {
+      state.MessageBox.show = true
     }
   }
 

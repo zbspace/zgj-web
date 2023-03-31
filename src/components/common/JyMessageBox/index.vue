@@ -34,8 +34,12 @@
 
       <template #footer>
         <slot name="footer">
-          <el-button type="primary" @click="confirm">确定</el-button>
-          <el-button @click="cancel">取消</el-button>
+          <el-button type="primary" @click="confirm"
+            >{{ $t(props.comfirmBtnText) }}}</el-button
+          >
+          <el-button @click="cancel" v-if="!props.oneBtn"
+            >{{ $t('t-zgj-operation.cancel') }}}</el-button
+          >
         </slot>
       </template>
     </el-dialog>
@@ -61,6 +65,14 @@
     mode: {
       type: Number,
       default: 2
+    },
+    oneBtn: {
+      type: Boolean,
+      default: false
+    },
+    comfirmBtnText: {
+      type: String,
+      default: 't-zgj-select.confirm'
     }
   })
   const emit = defineEmits(['update:modelValue', 'on-confirm', 'on-cancel'])

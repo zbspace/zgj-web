@@ -243,7 +243,7 @@
   import { ElMessage } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import workbenchManagement from '@/api/frontDesk/printControl/workbenchManagement'
-  import dayjs from 'dayjs'
+  import { generatingNumber } from '@/utils/tools'
   import tableHearder from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/workbenchManagement.json'
   const showFormDialog = ref(false)
   const showDepPerDialog = ref(false)
@@ -466,8 +466,7 @@
     nextTick(() => {
       vFormLibraryRef.value.resetFields()
       form.benchId = ''
-      form.benchNo =
-        dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+      form.benchNo = generatingNumber()
       form.manOrganName = ''
       form.manUserName = ''
     })

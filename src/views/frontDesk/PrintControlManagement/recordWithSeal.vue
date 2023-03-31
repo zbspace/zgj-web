@@ -525,7 +525,7 @@
                   : data.useSealStateId === 'USING'
                   ? '智能用印中'
                   : '',
-              iconPath: '@/assets/svg/yuan-lv.svg',
+              iconPath: '@/assets/svg/common/yuan-lv.svg',
               iconStyle: {},
               valStyle: {
                 color: 'var(--jy-success-6)'

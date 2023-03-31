@@ -265,6 +265,7 @@ export const useFlowStore = defineStore('flow', {
      * @returns
      */
     getModel() {
+      console.log(this.modelId, this.definitionId, '====')
       return Request.getAndLoadData('/model/detail', {
         modelId: this.modelId,
         definitionId: this.definitionId,

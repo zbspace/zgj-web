@@ -36,7 +36,7 @@
                 ></el-input>
                 <i
                   class="iconfont icon-drag drag-option"
-                  style="margin: 0 5px"
+                  style="margin: 0 5px; display: flex; align-items: center"
                 ></i>
                 <el-button
                   size="small"

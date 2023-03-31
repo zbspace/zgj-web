@@ -82,7 +82,7 @@
     :append-to-body="true"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
-    custom-class="ds-setting-drawer header-small-mb"
+    class="ds-setting-drawer header-small-mb"
   >
     <template #default>
       <el-form

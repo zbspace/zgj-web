@@ -134,14 +134,13 @@
     ></actionMoreDialog>
 
     <!-- 修改提示关联流程 -->
-    <actionMoreDialog
+    <JyActionErrorDialog
       @update:modelValue="state.showRelatedfFlow.show = false"
       :show="state.showRelatedfFlow.show"
       :selectionData="state.componentsBatch.selectionData"
       :showToastDialogContent="showToastDialogContent"
       label="flowName"
-      @sureAction="state.showRelatedfFlow.show = false"
-    ></actionMoreDialog>
+    ></JyActionErrorDialog>
 
     <!-- 删除提示关联流程 -->
     <actionMoreDialog
@@ -947,16 +946,13 @@
       }
     } else {
       state.showRelatedfFlow.show = true
-      state.componentsBatch.selectionData = res.data
+      // state.componentsBatch.selectionData = res.data
       showToastDialogContent.value = {
-        header: {
-          data: '提示'
-        },
-        content: {
-          data:
-            '当前表单被已启用的以下流程所使用，仅当以下流程停用才允许' +
-            (type === 'edit' ? '修改' : '删除')
-        }
+        header: '提示',
+        content:
+          '当前表单被已启用的以下流程所使用，仅当以下流程停用才允许' +
+          (type === 'edit' ? '修改' : '删除'),
+        selectionData: res.data
       }
     }
   }

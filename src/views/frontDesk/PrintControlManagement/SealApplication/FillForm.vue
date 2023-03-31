@@ -184,7 +184,7 @@
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import VFlowDesign from '@/views/components/FlowDesign/index.vue'
   import { ElMessage } from 'element-plus'
-  import dayjs from 'dayjs'
+  import { generatingNumber } from '@/utils/tools'
 
   const router = useRouter()
   const refVFlowDesign = ref(null)
@@ -434,7 +434,7 @@
         nextTick(() => {
           refFillFormInformation.value.setFieldValue(
             'applyNo',
-            dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+            generatingNumber()
           )
         })
       })

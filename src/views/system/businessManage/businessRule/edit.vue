@@ -1252,7 +1252,7 @@
   import { fileManageService } from '@/api/frontDesk/fileManage/index'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
-  import dayjs from 'dayjs'
+  import { generatingNumber } from '@/utils/tools'
   import { useRouter } from 'vue-router'
   import ruleApi from '@/api/system/businessManage/businessRule'
   import { messageSuccess, messageWarning } from '@/hooks/useMessage'
@@ -1301,8 +1301,7 @@
     archivePageSwitch = '0'
     archiveOcrSwitch = '0'
   }
-  let ruleBusinessNo =
-    dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+  let ruleBusinessNo = generatingNumber()
   const ruleForm = ref(new BusinessRule())
   const ruleFormRef = ref(null)
   const currentTab = ref(1)
