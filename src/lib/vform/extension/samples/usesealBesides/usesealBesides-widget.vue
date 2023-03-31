@@ -56,6 +56,11 @@
             value-format="YYYY-MM-DD HH:mm:ss"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
+            :disabled-date="
+              time => {
+                return time.getTime() <= Date.now() - 8.64e7
+              }
+            "
           />
           <div
             class="el-form-item__error"

@@ -69,7 +69,7 @@
             @change="onChange"
             :disabled-date="
               time => {
-                return time.getTime() <= Date.now()
+                return time.getTime() <= Date.now() - 8.64e7
               }
             "
           >
