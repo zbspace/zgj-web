@@ -53,7 +53,7 @@
 
   onMounted(() => {
     // 加载完成后回调
-    flowStore.initFreeFlow()
+    flowStore.initFreeFlow(props.initObj.modelId, props.initObj.definitionId)
     flowDesign.value.handleSetData({})
   })
   // Loading
