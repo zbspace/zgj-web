@@ -265,8 +265,11 @@
   import loginApi from '@/api/login'
   import navBarApi from '@/api/common/navbar.js'
   import Verify from '../components/verifition/Verify'
+  import { useMenusInfoStore } from '@/store/menus'
+
   const { proxy } = getCurrentInstance()
   const accountInfo = useAccountInfoStore()
+  const menusInfoStore = useMenusInfoStore()
   const route = useRoute()
   const router = useRouter()
   const showDialog = ref(false)
@@ -414,13 +417,13 @@
     state.showUpdateDialog = false
     state.ImmediateRegisterDialog = false
   }
-  const goHome = () => {
-    let redirect = route.query.redirect
+  const getRedirect = () => {
+    return route.query.redirect
       ? decodeURIComponent(route.query.redirect)
       : '/frontDesk/home'
-    if (typeof redirect !== 'string') {
-      redirect = '/frontDesk/home'
-    }
+  }
+  const goHome = () => {
+    const redirect = getRedirect()
     router.replace(redirect)
   }
 
@@ -477,7 +480,7 @@
         })
 
         // 获取登录列表
-        loginApi.tenantInfoList().then(departListResult => {
+        loginApi.tenantInfoList().then(async departListResult => {
           setItem('departLists', JSON.stringify(departListResult.data))
           const index = departListResult.data.findIndex(
             i => Number(i.tenantId) === Number(loginResult.data.lastTenantId)
@@ -487,8 +490,12 @@
               // 初始化 且 一个企业
               loginApi
                 .chooseOrgan(departListResult.data[0].tenantId)
-                .then(() => {
+                .then(async () => {
                   setItem('tenantId', Number(departListResult.data[0].tenantId))
+                  const redirect = getRedirect()
+                  menusInfoStore.currentType =
+                    redirect.indexOf('/system') > -1 ? 'system' : 'business'
+                  await menusInfoStore.setMenus()
                   goHome()
                 })
               emits('getWater', true)
@@ -505,6 +512,10 @@
               emits('getWater', false)
             }
             // 已经选择企业
+            const redirect = getRedirect()
+            menusInfoStore.currentType =
+              redirect.indexOf('/system') > -1 ? 'system' : 'business'
+            await menusInfoStore.setMenus()
             goHome()
             setItem('tenantId', Number(loginResult.data.lastTenantId))
           }

@@ -3,7 +3,8 @@ export const system = [
     name: '概览',
     label: 't-zgj-cg-menu-gailan',
     to: '/system/home',
-    icon: '#shouye-73o018d8'
+    icon: '#shouye-73o018d8',
+    must: true
   },
 
   {
@@ -180,36 +181,42 @@ export const systemAside = [
     name: '首页',
     icon: '#liuchengguanli',
     route: '/system/home',
-    to: '/system/home'
+    to: '/system/home',
+    must: true
   },
   {
     name: '业务管理',
     icon: '#liuchengguanli',
     route: '/system/businessManage',
-    to: '/system/businessManage/flowManage'
+    to: '/system/businessManage/flowManage',
+    label: 't-zgj-cg-menu-yewu-guanli'
   },
   {
     name: '日志管理',
     icon: '#liuchengguanli',
     route: '/system/logMamage',
-    to: '/system/logMamage/systemOperation'
+    to: '/system/logMamage/systemOperation',
+    label: 't-zgj-cg-menu-rizhi-guanli'
   },
   {
     name: '消息中心',
     icon: '#liuchengguanli',
     route: '/system/messageCenter',
-    to: '/system/messageCenter/event'
+    to: '/system/messageCenter/event',
+    label: 't-zgj-cg-menu-xiaoxi-zhongxin'
   },
   {
     name: '基础设置',
     icon: '#liuchengguanli',
     route: '/system/baseSetting',
-    to: '/system/baseSetting/terminalVersion'
+    to: '/system/baseSetting/terminalVersion',
+    label: 't-zgj-cg-menu-jichu-shezhi'
   },
   {
     name: '企业管理',
     icon: '#liuchengguanli',
     route: '/system/companyManage',
-    to: '/system/companyManage/companyInfo'
+    to: '/system/companyManage/companyInfo',
+    label: 't-zgj-cg-menu-qiye-guanli'
   }
 ]
