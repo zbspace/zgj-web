@@ -92,7 +92,7 @@
   import { ref, reactive, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
   import apis from '@/api/frontDesk/sealManage/typeOfSeal'
-  import dayjs from 'dayjs'
+  import { generatingNumber } from '@/utils/tools'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/typeOfSeal.json'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
 
@@ -251,8 +251,7 @@
       vFormLibraryRef.value.resetFields()
       if (title === 't-zgj-add') {
         sealTypeId.value = null
-        formData.value.sealTypeNo =
-          dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+        formData.value.sealTypeNo = generatingNumber
       } else {
         if (column) {
           const columns = JSON.parse(JSON.stringify(column))

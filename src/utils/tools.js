@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 /**
  * 防抖
  * 当初发时间时，设定时间内未再次触发时间，事件执行一次，如果设定时间内又触发一次，重新开始延时设定时间
@@ -224,4 +225,11 @@ export function getArrFromTree(arr, child, key) {
   }
   fn(arr)
   return tempArr
+}
+
+/**
+ * 生成单据编号
+ */
+export function generatingNumber() {
+  return dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
 }

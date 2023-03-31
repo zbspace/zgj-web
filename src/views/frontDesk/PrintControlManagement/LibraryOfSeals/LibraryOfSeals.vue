@@ -557,7 +557,7 @@
   import typeApis from '@/api/frontDesk/sealManage/typeOfSeal'
   import api from '@/api/frontDesk/sealManage/libraryOfSeals'
   import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
-  import dayjs from 'dayjs'
+  import { generatingNumber } from '@/utils/tools'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
   import { useRouter } from 'vue-router'
   const router = useRouter()
@@ -577,8 +577,7 @@
     for (const i in state.form) {
       state.form[i] = ''
     }
-    state.form.sealNo =
-      dayjs().format('YYYYMMDD') + Math.random().toString().slice(2, 11)
+    state.form.sealNo = generatingNumber
     showLibraryDialog.value = true
   }
 
