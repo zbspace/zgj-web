@@ -494,7 +494,7 @@
             params[item.startRequest ? item.startRequest : 'beginTime'] =
               item.value[0] + ' 00:00:00'
             params[item.endRequest ? item.endRequest : 'endTime'] =
-              item.value[0] + ' 23:59:59'
+              item.value[1] + ' 23:59:59'
           } else {
             params[item.id] =
               item.value[0] + ' 00:00:00,' + item.value[1] + ' 23:59:59'
