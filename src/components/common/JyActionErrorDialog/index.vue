@@ -7,7 +7,7 @@
     confirmBtnText="t-zgj-know"
     :showClose="false"
     :defaultAttribute="{
-      center: true
+      footerCenter: true
     }"
     @update:modelValue="closeCallBack"
     @confirmClick="closeCallBack"
@@ -24,11 +24,15 @@
       }}</div>
       <div v-if="props.showToastDialogContent.selectionData?.length">
         <el-scrollbar class="scrollbar" max-height="200px">
-          <p
+          <div
             v-for="item in props.showToastDialogContent.selectionData"
             :key="item"
             class="scrollbar-demo-item"
-            >{{ item[props.curKey || props.label] }}</p
+            >{{
+              props.curKey || props.label
+                ? item[props.curKey || props.label]
+                : item
+            }}</div
           >
         </el-scrollbar>
       </div>
@@ -75,8 +79,7 @@
       type: Object
     },
     curKey: {
-      type: String,
-      default: ''
+      type: String
     }
   })
   const emit = defineEmits(['update:modelValue'])

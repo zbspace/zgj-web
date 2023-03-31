@@ -55,7 +55,9 @@
         <div
           class="dialog-footer"
           :class="{
-            'center-footer': state.props.defaultAttribute.center ? true : false
+            'center-footer': state.props.defaultAttribute.footerCenter
+              ? true
+              : false
           }"
           v-if="state.props['showFooter']"
         >

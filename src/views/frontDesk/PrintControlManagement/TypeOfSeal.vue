@@ -96,6 +96,12 @@
         </el-scrollbar>
       </template>
     </JyElMessageBox>
+    <!-- 操作错误提示 -->
+    <JyActionErrorDialog
+      :show="state.showToastDialogContent.show"
+      :showToastDialogContent="state.showToastDialogContent"
+      @update:modelValue="state.showToastDialogContent.show = false"
+    ></JyActionErrorDialog>
   </div>
 </template>
 <script setup>
@@ -212,15 +218,7 @@
       ]
     },
     componentsTable: {
-      header: tableHeader,
-      data: [],
-      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-      defaultAttribute: {
-        stripe: true,
-        'header-cell-style': {
-          background: 'var(--jy-color-fill--3)'
-        }
-      }
+      header: tableHeader
     },
 
     componentsBatch: {
@@ -252,6 +250,13 @@
       content: {
         data: ''
       }
+    },
+
+    showToastDialogContent: {
+      show: false,
+      header: '',
+      content: '',
+      selectionData: []
     }
   })
   function clickEditor(title, column) {
@@ -297,12 +302,21 @@
           sealTypeId.value ||
           state.componentsBatch.selectionData.map(i => i.sealTypeId).join(',')
       })
-      .then(res => {
-        state.JyElMessageBox.show = false
-        state.showToastDialog.show = false
-        reloadData()
-      })
-      .catch(() => {
+      .then(
+        res => {
+          state.JyElMessageBox.show = false
+          state.showToastDialog.show = false
+          reloadData()
+        },
+        err => {
+          console.log(err)
+          state.showToastDialogContent.show = true
+          state.showToastDialogContent.header = '删除失败'
+          state.showToastDialogContent.content = err.msg
+          state.showToastDialogContent.selectionData = err.data
+        }
+      )
+      .finally(() => {
         sealTypeId.value = null
         state.showToastDialog.show = false
         state.JyElMessageBox.show = false

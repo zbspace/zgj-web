@@ -19,11 +19,11 @@
         props.showToastDialogContent.content.data
       }}</div>
       <el-scrollbar class="scrollbar" max-height="200px">
-        <p
+        <div
           v-for="item in props.selectionData"
           :key="item"
           class="scrollbar-demo-item"
-          >{{ item[props.curKey || props.label] }}</p
+          >{{ item[props.curKey || props.label] }}</div
         >
       </el-scrollbar>
     </template>
