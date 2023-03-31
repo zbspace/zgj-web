@@ -531,7 +531,6 @@
 
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
-    console.log(row.flowMessageId, 'flowMessageId', column, cell)
     if (column.property === 'flowName') {
       flowApi
         .flowDetail({

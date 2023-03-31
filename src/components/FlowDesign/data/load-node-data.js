@@ -26,9 +26,166 @@ export function getStartNode() {
     // 表单权限
     privileges: [],
     // 子节点
-    childNode: null,
+    childNode: {
+      nodeId: getId(),
+      nodeName: '审批人',
+      nodeType: 1,
+      // 流程节点状态(用于只读模式, 0:未进行 1:进行中  2:已完成)
+      nodeStatus: -1,
+      // 流程基础配置属性
+      attr: {
+        // 审批类型
+        approvalMethod: 1,
+        // 审批方式
+        approvalMode: 1,
+        // 审批人与发起人为同一人时
+        starterAssignee: 1,
+        // 相同审批人为同一人时
+        adjacent: 2,
+        // 审批人为空时
+        emptyFlag: 5,
+        // 允许退回人类型
+        allowBackType: 1,
+        // 退回审批形式
+        backApprovalType: undefined
+      },
+      // 流程基础通知属性
+      notice: {
+        // 通知类型
+        noticeType: 1,
+        // 通知主题
+        noticeTitle: '',
+        // 通知内容
+        noticeContext: ''
+      },
+      buttons: [
+        {
+          checked: false,
+          disabled: true,
+          buttonName: '保存',
+          content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
+          buttonCode: 'save',
+          color: 'default'
+        },
+        {
+          buttonName: '提交',
+          checked: false,
+          disabled: true,
+          content: '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
+          buttonCode: 'submit',
+          color: 'primary'
+        },
+        {
+          buttonName: '同意',
+          checked: true,
+          disabled: false,
+          content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
+          buttonCode: 'agree',
+          color: 'success'
+        },
+        {
+          buttonName: '拒绝',
+          checked: true,
+          disabled: false,
+          content:
+            '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
+          buttonCode: 'reject',
+          color: 'error'
+        },
+        {
+          buttonName: '转交',
+          checked: true,
+          disabled: false,
+          content: '转交给他人办理，依然在当前节点',
+          buttonCode: 'turn',
+          color: 'cyan'
+        },
+        {
+          buttonName: '退回',
+          checked: false,
+          disabled: false,
+          content: '退回给申请人，申请人修改完成后，流程按节点开始走',
+          buttonCode: 'back',
+          color: 'default'
+        },
+        {
+          buttonName: '撤回',
+          checked: false,
+          disabled: false,
+          content:
+            '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+          buttonCode: 'revoke',
+          color: 'default'
+        },
+        {
+          buttonName: '加签',
+          checked: false,
+          disabled: false,
+          content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
+          buttonCode: 'addSign',
+          color: 'warning'
+        },
+        {
+          buttonName: '征询',
+          checked: false,
+          disabled: false,
+          content: '征询他人意见',
+          buttonCode: 'consult',
+          color: 'warning'
+        }
+      ],
+      // 审批设置
+      approverGroups: [
+        {
+          nodeId: getId(),
+          // 审批人模式
+          approverType: 1,
+          // 层级模式
+          levelMode: 1,
+          // 控件ID(人员控件、部门控件)
+          controlIds: null,
+          // 控件名称(人员控件、部门控件)
+          controlNames: null,
+          // 人员类型
+          assigneeType: 1,
+          // 选择方式
+          selectMode: 1,
+          // 选择范围
+          selectRange: 1,
+          // 审批人ID
+          approverIds: [],
+          // 审批人名称
+          approverNames: []
+        }
+      ],
+      //
+      // 限时设置
+      timeLimit: {
+        enable: false
+      },
+      // 拖拽样式
+      dragClass: false,
+      // 拖拽工具
+      dragTool: false,
+      // 表单权限
+      privileges: [],
+      // 高级配置
+      configure: {},
+      // 子节点
+      childNode: null,
+      // 显示添加按钮
+      addable: true,
+      // 可删除提示
+      deletable: false,
+      // 是否修改
+      update: false,
+      // 是否有错误
+      error: false,
+      // 显示内容
+      content: null
+    },
     // 显示添加按钮
-    addable: true,
+    addable: false,
     // 可删除提示
     deletable: false,
     // 是否修改

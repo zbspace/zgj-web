@@ -151,6 +151,7 @@
   import editModelApi from '@/api/frontDesk/printControl/sealApply'
   import { ElMessage } from 'element-plus'
   import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  import { ModelApi } from '@/api/flow/ModelApi'
   const flowStore = useFlowStore()
   const linkSealUseTypeId = ref('1')
   // 异步组件
@@ -308,10 +309,7 @@
           loadingModel.value = false
           return
         }
-        console.log(
-          props.editModleIds,
-          'props.editModleIdsprops.editModleIdsprops.editModleIds'
-        )
+
         editModelApi
           .flowDetail({
             ...props.editModleIds,
@@ -442,17 +440,19 @@
         emits('reloadData')
       })
     } else if (props.openType === 'edit') {
-      apiFlow
-        .flowEdit({
-          ...params,
-          flowMessageId: props.editModleIds.flowMessageId,
-          modelId: props.editModleIds.modelId,
-          definitionId: props.editModleIds.definitionId
-        })
-        .then(() => {
-          clickClose()
-          emits('reloadData')
-        })
+      ModelApi.detail({ modelId: props.editModleIds.modelId }).then(res => {
+        apiFlow
+          .flowEdit({
+            ...params,
+            flowMessageId: props.editModleIds.flowMessageId,
+            modelId: props.editModleIds.modelId,
+            definitionId: res.definitionId
+          })
+          .then(() => {
+            clickClose()
+            emits('reloadData')
+          })
+      })
     }
   }
 

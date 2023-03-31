@@ -69,11 +69,11 @@
         <a-tab-pane forceRender key="4" tab="高级设置">
           <FlowApproverSenior :node="props.node" />
         </a-tab-pane>
-        <a-tab-pane forceRender key="5" tab="通知设置">
+        <!-- <a-tab-pane forceRender key="5" tab="通知设置">
           <FlowDrawerContent name="通知类型">
             <FlowNoticeSelect v-model="props.node.notice.noticeType" />
           </FlowDrawerContent>
-          <!--<FlowDrawerContent v-if="noticeTypeComputed(props.node.notice.noticeType).includes(2)" name="外部邮箱账号">
+          <FlowDrawerContent v-if="noticeTypeComputed(props.node.notice.noticeType).includes(2)" name="外部邮箱账号">
             <AddButton title="添加邮箱" />
           </FlowDrawerContent>
           <FlowDrawerContent v-if="noticeTypeComputed(props.node.notice.noticeType).includes(4)" name="外部手机号">
@@ -82,7 +82,7 @@
             <FlowDrawerContent name="选择已审核模板">
             <AddButton title="创建新模板" />
             <a-select :size="size" placeholder="请选择模板" class="w-fill" />
-          </FlowDrawerContent> -->
+          </FlowDrawerContent>
           <FlowDrawerContent name="主题">
             <a-input
               v-model:value="props.node.notice.noticeTitle"
@@ -102,7 +102,7 @@
         </a-tab-pane>
         <a-tab-pane forceRender key="6" tab="限时设置">
           <FlowApproverTimeLimit />
-        </a-tab-pane>
+        </a-tab-pane> -->
       </a-tabs>
       <!-- 自动审批 -->
     </div>

@@ -4,7 +4,7 @@
       <div class="back-top-item-curtain">
         <svg class="iconpark-icon"><use href="#toTop"></use></svg>
       </div>
-      <div class="back-top-item-mask"></div>
+      <!-- <div class="back-top-item-mask"></div> -->
       <div class="back-top-item-content">TT</div>
     </div>
 
@@ -12,7 +12,7 @@
       <div class="back-top-item-curtain">
         <svg class="iconpark-icon"><use href="#kf"></use></svg>
       </div>
-      <div class="back-top-item-mask"></div>
+      <!-- <div class="back-top-item-mask"></div> -->
       <div class="back-top-item-content">KF</div>
     </div>
 
@@ -20,7 +20,7 @@
       <div class="back-top-item-curtain back-top-item-curtain-bg">
         <svg class="iconpark-icon"><use href="#setting"></use></svg>
       </div>
-      <div class="back-top-item-mask"></div>
+      <!-- <div class="back-top-item-mask"></div> -->
       <div class="back-top-item-content">RB</div>
     </div>
   </div>
@@ -72,21 +72,21 @@
         border-radius: 50%;
         text-align: center;
       }
-      .back-top-item-mask {
-        visibility: hidden;
-        height: 8px;
-        width: 8px;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin-left: -4px;
-        margin-top: -4px;
-        background-color: #ff5a2c;
-        transform-origin: center center;
-        transition: all 0.2s linear;
-        border-radius: 50%;
-        z-index: 0;
-      }
+      // .back-top-item-mask {
+      //   visibility: hidden;
+      //   height: 8px;
+      //   width: 8px;
+      //   position: absolute;
+      //   left: 50%;
+      //   top: 50%;
+      //   margin-left: -4px;
+      //   margin-top: -4px;
+      //   background-color: #ff5a2c;
+      //   transform-origin: center center;
+      //   transition: all 0.2s linear;
+      //   border-radius: 50%;
+      //   z-index: 0;
+      // }
       .back-top-item-content {
         opacity: 0;
         height: inherit;
@@ -109,15 +109,15 @@
           0px 9px 28px 8px rgba(208, 150, 62, 0.05);
         border-radius: 4px;
       }
-      &:hover {
-        .back-top-item-content {
-          opacity: 1;
-        }
-        .back-top-item-mask {
-          visibility: visible;
-          transform: scale(5);
-        }
-      }
+      // &:hover {
+      //   .back-top-item-content {
+      //     opacity: 1;
+      //   }
+      //   .back-top-item-mask {
+      //     visibility: visible;
+      //     transform: scale(5);
+      //   }
+      // }
     }
   }
 </style>
