@@ -111,7 +111,6 @@
   import SealApplyService from '@/api/frontDesk/printControl/sealApply'
   import { messageError, messageWarning } from '@/hooks/useMessage'
   import JyUseSealFiles from '@/components/business/JyUseSealFiles'
-  // import { ResUploadFile } from '@/utils/domain/sealManage'
 
   export default {
     name: 'SealFileWidget',
