@@ -840,6 +840,15 @@
   })
 </script>
 <style lang="scss" scoped>
+  .el-form-item__content {
+    margin-bottom: 12px;
+  }
+  :deep {
+    .content-custom {
+      padding: 0;
+    }
+  }
+
   .approval-footer {
     border-radius: 4px;
     position: absolute;

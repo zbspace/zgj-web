@@ -161,23 +161,6 @@
     title: 't-zgj-Approval',
     formJson: RecordSealToReviewJson
   })
-  // const submitLibraryForm = type => {
-  //   if (!type) {
-  //     vFormLibraryRef.value.resetForm()
-  //     return
-  //   }
-  //   vFormLibraryRef.value
-  //     .getFormData()
-  //     .then(formData => {
-  //       alert(JSON.stringify(formData))
-  //       // fromState.showDialog = false
-  //     })
-  //     .catch(error => {
-  //       // Form Validation failed
-  //       // ElMessage.error(error)
-  //       console.log(error)
-  //     })
-  // }
   const drawer = ref(null)
   // 动态表单版本Id
   const formVersionId = ref('')
@@ -927,16 +910,18 @@
               value: formData[item].extSeal ? '是' : '否',
               type: v.formColumnModel ? v.formColumnModel : '其他'
             })
-            formTableData.push({
-              label: `外带地址`,
-              value: formData[item].detailAddress,
-              type: v.formColumnModel ? v.formColumnModel : '其他'
-            })
-            formTableData.push({
-              label: `外带时间`,
-              value: `${formData[item].besidesTime[0]}~${formData[item].besidesTime[1]}`,
-              type: v.formColumnModel ? v.formColumnModel : '其他'
-            })
+            if (formData[item].extSeal) {
+              formTableData.push({
+                label: `外带地址`,
+                value: formData[item].detailAddress,
+                type: v.formColumnModel ? v.formColumnModel : '其他'
+              })
+              formTableData.push({
+                label: `外带时间`,
+                value: `${formData[item].besidesTime[0]}~${formData[item].besidesTime[1]}`,
+                type: v.formColumnModel ? v.formColumnModel : '其他'
+              })
+            }
           } else if (v.formColumnNo === 'sealFile') {
             if (formData[item].fileIds?.length > 0) {
               formData[item].fileIds.forEach((cv, k) => {
@@ -1147,18 +1132,22 @@
       }
     }
   }
+
   .select-person {
     display: flex;
     align-items: center;
+
     > span {
       font-size: 14px;
       font-weight: bold;
       margin-right: 20px;
     }
+
     > div {
       cursor: pointer;
     }
   }
+
   .components-documentsDetails {
     margin: 0%;
 
