@@ -140,8 +140,10 @@
             <div class="item-label"></div>
             <div class="empty">
               <div class="box">
-                <div class="inner"></div>
-                <div class="empty-msg">空状态</div>
+                <div>
+                  <img src="@/assets/svg/common/data_null.svg" />
+                </div>
+                <!-- <div class="empty-msg">空状态</div> -->
               </div>
             </div>
           </div>
@@ -399,7 +401,7 @@
           display: flex;
           flex-direction: column;
           width: 80%;
-          height: 414px;
+          height: 520px;
           border: 2px dashed rgba(0, 0, 0, 0.15);
           border-radius: 4px;
 
@@ -412,7 +414,7 @@
             .inner {
               width: 154px;
               height: 132px;
-              background: #d9d9d9;
+              // background: #d9d9d9;
             }
 
             .empty-msg {

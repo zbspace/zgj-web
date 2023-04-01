@@ -9,6 +9,8 @@ export const useAccountInfoStore = defineStore({
     return {
       accountNo: '',
       accountPass: '',
+      rememberPas: false,
+      rememberPasTime: '',
       token: '',
       userInfo: {},
       oneDepartTitle: ''
@@ -22,6 +24,14 @@ export const useAccountInfoStore = defineStore({
     setAccountAndPassword(accountInfo) {
       this.accountNo = accountInfo ? accountInfo.accountNo : ''
       this.accountPass = accountInfo ? accountInfo.accountPass : ''
+      this.rememberPas = true
+      this.rememberPasTime = new Date()
+    },
+    removeLoginStatus() {
+      this.accountNo = ''
+      this.accountPass = ''
+      this.rememberPas = false
+      this.rememberPasTime = ''
     },
     setUserInfo(obj) {
       this.userInfo = obj

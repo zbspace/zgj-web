@@ -127,7 +127,7 @@
 
       <div class="depart-cont">
         <div v-for="(item, i) in departLists" :key="i">
-          <div class="column" @click="goHome(item.tenantId)">
+          <div class="column" @click="selectOrgan(item.tenantId)">
             <svg
               width="16"
               height="14"
@@ -191,7 +191,11 @@
   import { setWaterMark, removeWatermark } from '@/utils/water'
   import dayjs from 'dayjs'
   import { useAccountInfoStore } from '@/store/accountInfo'
+  import navBarApi from '@/api/common/navbar.js'
+  import { useMenusInfoStore } from '@/store/menus'
+
   const accountInfo = useAccountInfoStore()
+  const menusInfoStore = useMenusInfoStore()
   const router = useRouter()
   const route = useRoute()
 
@@ -248,16 +252,16 @@
     state.scanCodeError = false
   }
 
-  const goHome = tenantId => {
-    loginApi.chooseOrgan(tenantId).then(res => {
+  const selectOrgan = tenantId => {
+    loginApi.chooseOrgan(tenantId).then(async res => {
       localStorage.setItem('tenantId', Number(tenantId))
-      let redirect = route.query.redirect
-        ? decodeURIComponent(route.query.redirect)
-        : '/frontDesk/home'
-      if (typeof redirect !== 'string') {
-        redirect = '/frontDesk/home'
-      }
-      router.replace(redirect)
+
+      const redirect = getRedirect()
+      menusInfoStore.currentType =
+        redirect.indexOf('/system') > -1 ? 'system' : 'business'
+      await menusInfoStore.setMenus()
+
+      getUserLoginInfo()
     })
   }
 
@@ -283,6 +287,28 @@
     })
   }
 
+  const getRedirect = () => {
+    return route.query.redirect
+      ? decodeURIComponent(route.query.redirect)
+      : '/frontDesk/home'
+  }
+  const goHome = () => {
+    const redirect = getRedirect()
+    router.replace(redirect)
+  }
+
+  const getUserLoginInfo = () => {
+    // 获取用户信息 - 缓存
+    navBarApi.getUserInfo().then(userInfo => {
+      const obj = {
+        userId: userInfo.data && userInfo.data.userId,
+        userName: userInfo.data && userInfo.data.userName
+      }
+      accountInfo.setUserInfo(obj)
+      getWater(false)
+      goHome()
+    })
+  }
   onMounted(() => {})
 
   onBeforeUnmount(() => {

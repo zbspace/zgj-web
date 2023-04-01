@@ -218,36 +218,42 @@
           prop: 'fileTypeName',
           label: '文件类型名称',
           sortable: true,
+          show: true,
           'min-width': 150
         },
         {
           prop: 'fileTypeSn',
           label: '文件类型说明',
           sortable: true,
+          show: true,
           'min-width': 150
         },
         {
           prop: 'fileSum',
           label: '文件数',
           sortable: true,
+          show: true,
           'min-width': 150
         },
         {
           prop: 'createUser',
           label: '创建人',
           sortable: true,
+          show: true,
           'min-width': 150
         },
         {
           prop: 'createDatetime',
           label: '创建时间',
+          show: true,
           sortable: true,
-          'min-width': 160
+          'min-width': 180
         },
         {
           prop: 'caozuo',
           label: '操作',
           fixed: 'right',
+          show: true,
           'min-width': 250,
           rankDisplayData: [
             {

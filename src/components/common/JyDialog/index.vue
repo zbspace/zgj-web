@@ -87,7 +87,9 @@
     <div class="content-custom" :style="{ height: height }">
       <!-- 默认插槽 -->
       <el-scrollbar>
-        <div style="width: calc(100% - 10px)"><slot></slot></div>
+        <div style="width: calc(100% - 10px); padding-right: 24px">
+          <slot> </slot>
+        </div>
       </el-scrollbar>
     </div>
     <template #footer>
@@ -247,6 +249,7 @@
   .content-custom {
     .el-scrollbar__wrap {
       overflow-x: hidden;
+      overflow-y: auto;
     }
   }
 </style>
@@ -274,7 +277,7 @@
   .content-custom {
     // flex: 1;
     // flex-shrink: 0;
-    padding: 12px 24px;
+    padding: 12px 0px 12px 24px;
     // overflow-y: auto;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     // border-bottom: 1px solid rgba(0, 0, 0, 0.06);

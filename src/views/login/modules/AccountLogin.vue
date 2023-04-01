@@ -400,6 +400,7 @@
     const accountInfo = getItem('accountInfo')
     accountLoginForm.accountNo = accountInfo && accountInfo.accountNo
     accountLoginForm.accountPass = accountInfo && accountInfo.accountPass
+    state.rememberPas = accountInfo && accountInfo.rememberPas
   })
 
   // 监听 tabs 切换
@@ -466,20 +467,8 @@
             accountPass: accountLoginForm.accountPass
           })
         } else {
-          accountInfo.setAccountAndPassword(null)
+          accountInfo.removeLoginStatus()
         }
-
-        // 获取用户信息 - 缓存
-        navBarApi.getUserInfo().then(userInfo => {
-          const obj = {
-            userId: userInfo.data && userInfo.data.userId,
-            userName: userInfo.data && userInfo.data.userName
-            // userTitle: userInfo.data && userInfo.data.userTitle,
-            // userNo: userInfo.data && userInfo.data.userNo,
-            // userMail: userInfo.data && userInfo.data.userMail
-          }
-          accountInfo.setUserInfo(obj)
-        })
 
         // 获取登录列表
         loginApi.tenantInfoList().then(async departListResult => {
@@ -498,28 +487,26 @@
                   menusInfoStore.currentType =
                     redirect.indexOf('/system') > -1 ? 'system' : 'business'
                   await menusInfoStore.setMenus()
-                  goHome()
+                  getUserLoginInfo(true)
                 })
-              emits('getWater', true)
             } else {
               // 进入列表选择页面
               emits('update:modelValue', true)
               emits('update:departLists', departListResult.data)
-              emits('getWater', false)
             }
           } else {
-            if (departListResult.data && departListResult.data.length === 1) {
-              emits('getWater', true)
-            } else {
-              emits('getWater', false)
-            }
             // 已经选择企业
             const redirect = getRedirect()
             menusInfoStore.currentType =
               redirect.indexOf('/system') > -1 ? 'system' : 'business'
             await menusInfoStore.setMenus()
-            goHome()
+            // getUserLoginInfo()
             setItem('tenantId', Number(loginResult.data.lastTenantId))
+            if (departListResult.data && departListResult.data.length === 1) {
+              getUserLoginInfo(true)
+            } else {
+              getUserLoginInfo(false)
+            }
           }
         })
       },
@@ -527,6 +514,19 @@
         loginLoading.value = false
       }
     )
+  }
+
+  const getUserLoginInfo = bool => {
+    // 获取用户信息 - 缓存
+    navBarApi.getUserInfo().then(userInfo => {
+      const obj = {
+        userId: userInfo.data && userInfo.data.userId,
+        userName: userInfo.data && userInfo.data.userName
+      }
+      accountInfo.setUserInfo(obj)
+      emits('getWater', bool)
+      goHome()
+    })
   }
 
   const login = () => {

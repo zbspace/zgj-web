@@ -37,7 +37,7 @@
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       :width="800"
-      :height="600"
+      :height="260"
       @confirm="submitLibraryForm"
       :key="fromStateTitle"
     >

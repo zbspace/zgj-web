@@ -56,7 +56,7 @@
   import { useLayoutStore } from '@/store/layout'
   import { useMenusInfoStore } from '@/store/menus'
   import { ref } from 'vue'
-
+  console.log(1231231)
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()
 

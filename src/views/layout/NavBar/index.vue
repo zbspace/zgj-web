@@ -27,7 +27,7 @@
         <el-button
           class="depart-dropdown"
           text
-          v-show="state.departLists.length > 2"
+          v-show="state.departLists.length > 1"
         >
           <el-dropdown
             trigger="hover"
@@ -368,7 +368,7 @@
   import { useLanguageStore } from '@/store/language'
   import { useLayoutStore } from '@/store/layout'
   import JyDialog from '@/components/common/JyDialog/index2.vue'
-
+  import { useRoute } from 'vue-router'
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'
   import { ElMessage } from 'element-plus'
@@ -376,7 +376,7 @@
   const menusInfoStore = useMenusInfoStore()
   const languageStore = useLanguageStore()
   const layoutStore = useLayoutStore()
-
+  const route = useRoute()
   const state = reactive({
     application: {
       CurrentSystemType: 'business' // business / system
@@ -416,7 +416,6 @@
   }
 
   const chooseDepart = e => {
-    console.log(e)
     state.chooseTenant = e
     state.JyElMessageBox.header.data = '确认切换企业？'
     state.JyElMessageBox.content.data =
@@ -424,10 +423,22 @@
     state.JyElMessageBox.show = true
   }
 
+  const getRedirect = () => {
+    return route.query.redirect
+      ? decodeURIComponent(route.query.redirect)
+      : '/frontDesk/home'
+  }
+
   const confirmClick = () => {
     loginApi.chooseOrgan(state.chooseTenant.tenantId).then(
-      () => {
+      async () => {
         localStorage.setItem('tenantId', Number(state.chooseTenant.tenantId))
+
+        const redirect = getRedirect()
+        menusInfoStore.currentType =
+          redirect.indexOf('/system') > -1 ? 'system' : 'business'
+        await menusInfoStore.setMenus()
+
         state.JyElMessageBox.show = false
         window.location.reload()
       },

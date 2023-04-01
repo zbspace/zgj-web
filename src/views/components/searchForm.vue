@@ -855,6 +855,9 @@
   }
 
   const submit = value => {
+    if (!value || value.length === 0) {
+      return
+    }
     const index = state.cache.formData.findIndex(
       i => i.id === kDepartOrPerson.value
     )

@@ -44,7 +44,6 @@
         tenant.value = res.data.tenant
         tenantBaseInfo.value = res.data.tenantBaseInfo
         tenantAdminInfo.value = res.data.tenantAdminInfo
-        console.log(tenantAdminInfo.value)
         tenantShowInfo.value = res.data.tenantShowInfo
         res.data.passwordPolicy.passwordRules = []
         if (res.data.passwordPolicy.passUppercase === '1') {

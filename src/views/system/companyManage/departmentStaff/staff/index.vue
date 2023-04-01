@@ -123,12 +123,12 @@
               v-model="state.componentsAddForm.formData.hostOrganId"
             ></el-input> -->
             <div class="ap-box-contBox-icon">
-              <el-icon
+              <!-- <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.hostOrganName"
                 @click="clear('hostOrgan')"
                 ><CircleClose
-              /></el-icon>
+              /></el-icon> -->
               <img
                 @click="chooseOrgan('hostOrgan', false)"
                 class="ap-box-contBox-icon-img"
@@ -154,12 +154,12 @@
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
-              <el-icon
+              <!-- <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.partTimeOrganNames"
                 @click="clear('partTimeOrgan')"
                 ><CircleClose
-              /></el-icon>
+              /></el-icon> -->
               <img
                 @click="chooseOrgan('partTimeOrgan', true)"
                 class="ap-box-contBox-icon-img"
@@ -203,12 +203,12 @@
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
-              <el-icon
+              <!-- <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.leaderUserId"
                 @click="clear('leaderUser')"
                 ><CircleClose
-              /></el-icon>
+              /></el-icon> -->
               <img
                 @click="chooseOrgan('leaderUser', false)"
                 class="ap-box-contBox-icon-img"
@@ -233,12 +233,12 @@
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
-              <el-icon
+              <!-- <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.roleNames"
                 @click="clear('roles')"
                 ><CircleClose
-              /></el-icon>
+              /></el-icon> -->
               <img
                 @click="chooseOrgan('roles', true)"
                 class="ap-box-contBox-icon-img"

@@ -187,12 +187,14 @@
           sortable: true,
           'min-width': 150,
           fixed: true,
-          'show-overflow-tooltip': true
+          'show-overflow-tooltip': true,
+          show: true
         },
         {
           prop: 'relatedCompanyNo',
           label: '企业编码',
           sortable: true,
+          show: true,
           'min-width': 150
         },
 
@@ -200,24 +202,28 @@
           prop: 'organName',
           label: '所属部门',
           sortable: true,
+          show: true,
           'min-width': 150
         },
         {
           prop: 'contactName',
           label: '联系人',
           sortable: true,
+          show: true,
           'min-width': 150
         },
         {
           prop: 'contactInformation',
           label: '联系方式',
           sortable: true,
+          show: true,
           'min-width': 150
         },
         {
           prop: 'readme',
           label: '备注',
           sortable: true,
+          show: true,
           'min-width': 150,
           'show-overflow-tooltip': true
         },
@@ -226,6 +232,7 @@
           label: '操作',
           fixed: 'right',
           width: '120px',
+          show: true,
           rankDisplayData: [
             {
               name: 't-zgj-Edit'
