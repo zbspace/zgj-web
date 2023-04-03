@@ -86,6 +86,7 @@
     @refresh="refresh"
     :curFromData="curFromData"
     @on-closed="closed"
+    :fileTypePid="searchForm.fileTypeIds[0]"
   />
 
   <!-- 特殊类型隐私配置 -->
