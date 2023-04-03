@@ -283,7 +283,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="保管部门" prop="keepOrganId">
-              <div class="select-box-contBox">
+              <!-- <div class="select-box-contBox">
                 <el-input
                   class="ap-box-contBox-input width-100"
                   readonly
@@ -310,7 +310,22 @@
                     src="@/assets/svg/ketanchude.svg"
                   />
                 </div>
-              </div>
+              </div> -->
+              <el-select
+                v-model="state.form.keepOrganId"
+                placeholder="请选择保管部门"
+                style="width: 100%"
+                :disabled="
+                  state.searchSelectedKeepOrgan.length > 1 ? false : true
+                "
+              >
+                <el-option
+                  v-for="item in state.searchSelectedKeepOrgan"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -528,7 +543,6 @@
       keepUserId: '',
       keepUserName: '',
       keepOrganId: '',
-      keepOrganName: '',
       extShow: '1',
       bylawsUrl: '',
       sealExplain: '',
@@ -1011,10 +1025,11 @@
     }
   }
   const getSealsInfo = () => {
+    state.searchSelectedKeepOrgan = []
     api.sealInfo(state.sealIds).then(res => {
-      console.log('infro', res)
       if (res.code === 200) {
         state.form = res.data
+        getStaffDetail(res.data.keepUserId)
         showLibraryDialog.value = true
       }
     })
@@ -1196,31 +1211,41 @@
     if (data) {
       state.form[depChoose.value + 'Id'] = data[0].id
       if (depChoose.value === 'keepUser') {
-        const organNames = []
+        getStaffDetail(data[0].id)
         state.searchSelectedKeepUser = data
-        staffApi.userGet(data[0].id).then(res => {
-          console.log('keepUser', res)
-          if (res.code === 200) {
-            state.searchSelectedKeepOrgan.push({
-              id: res.data.hostOrganId,
-              name: res.data.hostOrganName,
-              type: 'organ'
-            })
-            organNames.push(res.data.hostOrganName)
-            // if (res.data.partTimeOrgans && res.data.partTimeOrgans.length > 0) {
-            //   res.data.partTimeOrgans.forEach(item => {
-            //     organNames.push(item.organName)
-            //   })
-            // }
-            state.form.keepOrganId = res.data.hostOrganId
-            state.form.keepOrganName = organNames.join(',')
-          }
-        })
       } else if (depChoose.value === 'keepOrgan') {
         state.searchSelectedKeepOrgan = data
       }
       state.form[depChoose.value + 'Name'] = data[0].name
     }
+  }
+  // 获取员工详情
+  const getStaffDetail = id => {
+    state.searchSelectedKeepOrgan = []
+    staffApi.userGet(id).then(res => {
+      if (res.code === 200) {
+        state.searchSelectedKeepOrgan.push({
+          value: res.data.hostOrganId,
+          label: res.data.hostOrganName
+        })
+        if (res.data.partTimeOrgans && res.data.partTimeOrgans.length > 0) {
+          res.data.partTimeOrgans.forEach(item => {
+            state.searchSelectedKeepOrgan.push({
+              value: item.organId,
+              label: item.organName
+            })
+          })
+        }
+        state.form.keepOrganId = state.form.keepOrganId
+          ? state.form.keepOrganId
+          : res.data.hostOrganId
+        const map = new Map()
+        for (const item of state.searchSelectedKeepOrgan) {
+          map.set(item.value, item)
+        }
+        state.searchSelectedKeepOrgan = [...map.values()]
+      }
+    })
   }
   const chooseOrgan = (type, tabs, multiple) => {
     state.multiple = multiple
@@ -1228,7 +1253,6 @@
     state.tabsShow = []
     state.searchSelected = []
     state.searchSelectedKeepUser = []
-    state.searchSelectedKeepOrgan = []
     if (type === 'keepUser') {
       if (
         state.searchSelectedKeepUser &&
@@ -1248,25 +1272,6 @@
         }
         state.searchSelected = state.searchSelectedKeepUser
       }
-    } else if (type === 'keepOrgan') {
-      if (
-        state.searchSelectedKeepOrgan &&
-        state.searchSelectedKeepOrgan.length > 0
-      ) {
-        state.searchSelected = state.searchSelectedKeepOrgan
-      } else {
-        if (
-          state.form[type + 'Id'] !== '' &&
-          state.form[type + 'Name'] !== ''
-        ) {
-          state.searchSelectedKeepOrgan.push({
-            id: state.form[type + 'Id'],
-            name: state.form[type + 'Name'],
-            type: tabs[0]
-          })
-        }
-        state.searchSelected = state.searchSelectedKeepOrgan
-      }
     } else {
       if (state.form[type + 'Id'] !== '' && state.form[type + 'Name'] !== '') {
         state.searchSelected.push({
@@ -1285,8 +1290,6 @@
   const clear = type => {
     if (type === 'keepUser') {
       state.searchSelectedKeepUser = []
-    } else if (type === 'keepOrgan') {
-      state.searchSelectedKeepOrgan = []
     }
     state.form[type + 'Id'] = ''
     state.form[type + 'Name'] = ''

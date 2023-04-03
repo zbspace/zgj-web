@@ -1202,7 +1202,11 @@
     // console.log(`the component is now mounted.`)
   })
 </script>
-
+<style lang="scss">
+  .rankDisplayData {
+    text-align: center;
+  }
+</style>
 <style lang="scss" scoped>
   .title {
     display: flex;
