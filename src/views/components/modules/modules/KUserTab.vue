@@ -413,6 +413,7 @@
           }
           // 向下包含反选
           if (
+            item.idFullPath &&
             item.idFullPath.split(',').includes(val.id) &&
             val.includeChild &&
             item.id !== val.id
@@ -465,7 +466,11 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (item.idFullPath.split(',').includes(attr.id) && attr.includeChild) {
+      if (
+        item.idFullPath &&
+        item.idFullPath.split(',').includes(attr.id) &&
+        attr.includeChild
+      ) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -497,7 +502,11 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (item.idFullPath.split(',').includes(attr.id) && attr.includeChild) {
+      if (
+        item.idFullPath &&
+        item.idFullPath.split(',').includes(attr.id) &&
+        attr.includeChild
+      ) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -513,7 +522,7 @@
     // 2.判断已选中是否被包含
     const str = JSON.parse(JSON.stringify(selectedData.value))
     str.forEach(item => {
-      if (item.idFullPath.split(',').includes(attr.id)) {
+      if (item.idFullPath && item.idFullPath.split(',').includes(attr.id)) {
         aplication.value.push(item.id)
       }
     })
@@ -586,7 +595,11 @@
     // 2.判断已选中是否被包含
     const str = JSON.parse(JSON.stringify(selectedData.value))
     str.forEach(item => {
-      if (item.idFullPath.split(',').includes(attr.id) && item.id !== attr.id) {
+      if (
+        item.idFullPath &&
+        item.idFullPath.split(',').includes(attr.id) &&
+        item.id !== attr.id
+      ) {
         aplication.value.push(item.id)
       }
     })

@@ -272,7 +272,8 @@
 
   const settingForm = reactive({
     userBaseAuth: '1',
-    leaderLowerAuth: true
+    leaderLowerAuth: true,
+    roleConfigId: ''
   })
 
   const deletId = ref(null)
@@ -297,7 +298,10 @@
       deletId.value = column.roleId
     }
     if (cell.name === 't-zgj-sync.AuthSetting') {
-      router.push({ name: 'ConfigPermission' })
+      router.push({
+        path: '/system/companyManage/departmentStaff/config',
+        query: { roleId: column.roleId }
+      })
     }
     if (cell.name === 't-zgj-sync.PersonManage') {
       router.push({
@@ -329,7 +333,12 @@
   }
 
   const settingShow = () => {
-    showSettingDialog.value = true
+    roleApis.getSetting().then(val => {
+      settingForm.userBaseAuth = val.data.userBaseAuth
+      settingForm.leaderLowerAuth = val.data.leaderLowerAuth === '1'
+      settingForm.roleConfigId = val.data.roleConfigId
+      showSettingDialog.value = true
+    })
   }
 
   const submitLibraryForm = () => {
@@ -354,9 +363,10 @@
     vFormSettingRef.value.validate(valid => {
       if (valid) {
         roleApis
-          .addSetting({
+          .editSetting({
             userBaseAuth: settingForm.userBaseAuth,
-            leaderLowerAuth: settingForm.leaderLowerAuth ? '1' : '0'
+            leaderLowerAuth: settingForm.leaderLowerAuth ? '1' : '0',
+            roleConfigId: settingForm.roleConfigId
           })
           .then(res => {
             ElMessage.success('操作成功')

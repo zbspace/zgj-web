@@ -125,7 +125,7 @@
     },
     apiModule: {
       type: String,
-      default: 'systemOrganOrPerson'
+      default: ''
     },
     queryParams: {
       type: Object,
