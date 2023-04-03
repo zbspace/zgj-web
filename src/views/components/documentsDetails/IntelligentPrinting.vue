@@ -6,7 +6,7 @@
         <div class="ap-seal-box-icon">
           <img
             class="ap-seal-box-icon-img"
-            src="../../../assets/svg/yongyin-mingcheng.svg"
+            src="@/assets/svg/yongyin-mingcheng.svg"
             alt=""
           />
         </div>
@@ -19,74 +19,93 @@
         <div class="ap-seal-box-icon">
           <img
             class="ap-seal-box-icon-img"
-            src="../../../assets/svg/yongyin-renyuan.svg"
+            src="@/assets/svg/yongyin-renyuan.svg"
             alt=""
           />
         </div>
         <div class="ap-seal-box-desc">
           <span class="ap-seal-box-desc-name">用印人员：</span>
-          <span class="ap-seal-box-desc-desc">{{ item.personName }}</span>
+          <span class="ap-seal-box-desc-desc">{{ item.createName }}</span>
         </div>
       </div>
       <div class="ap-seal-box">
         <div class="ap-seal-box-icon">
           <img
             class="ap-seal-box-icon-img"
-            src="../../../assets/svg/yongyin-shijian.svg"
+            src="@/assets/svg/yongyin-shijian.svg"
             alt=""
           />
         </div>
         <div class="ap-seal-box-desc">
           <span class="ap-seal-box-desc-name">用印时间：</span>
-          <span class="ap-seal-box-desc-desc">{{ item.time }}</span>
+          <span class="ap-seal-box-desc-desc">{{ item.createTime }}</span>
         </div>
       </div>
       <div class="ap-seal-box">
         <div class="ap-seal-box-icon">
           <img
             class="ap-seal-box-icon-img"
-            src="../../../assets/svg/yongyin-didian.svg"
+            src="@/assets/svg/yongyin-didian.svg"
             alt=""
           />
         </div>
         <div class="ap-seal-box-desc">
           <span class="ap-seal-box-desc-name">用印地点：</span>
-          <span class="ap-seal-box-desc-desc">{{ item.adress }}</span>
+          <span class="ap-seal-box-desc-desc">{{ item.address }}</span>
         </div>
       </div>
       <div class="ap-seal-box">
         <div class="ap-seal-box-icon">
           <img
             class="ap-seal-box-icon-img"
-            src="../../../assets/svg/gaizhang-yingxiang.svg"
+            src="@/assets/svg/gaizhang-yingxiang.svg"
             alt=""
           />
         </div>
         <div class="ap-seal-box-desc">
           <span class="ap-seal-box-desc-name"
-            >盖章影像（{{ item.imageNum }}）</span
+            >盖章影像（{{ item.allImgCount }}）</span
           >
           <span class="ap-seal-box-desc-desc"></span>
         </div>
       </div>
       <div class="ap-seal-image imageData">
-        <div class="imageData-list" v-for="(node, num) in item.imageData">
-          <img class="imageData-list-imgPath" :src="node.imgPath" alt="" />
-          <img class="imageData-list-iconPath" :src="node.iconPath" alt="" />
+        <div
+          class="imageData-list"
+          v-for="(node, num) in item.showImgs"
+          :key="num"
+        >
+          <el-image
+            style="width: 100%; height: 100%"
+            loading="lazy"
+            lazy
+            :src="node.fileObjectNameThumb"
+            fit="cover"
+            :preview-src-list="item.imgs.map(i => i.fileUrl)"
+          />
+          <el-image
+            class="imageData-list-iconPath"
+            :src="gaizhangIcon"
+            v-if="node.filePhotoType === '1'"
+          ></el-image>
           <div class="imageData-list-desc">
-            <span class="imageData-list-desc-name">{{ node.personName }}</span>
-            <span class="imageData-list-desc-time">{{ node.time }}</span>
+            <span class="imageData-list-desc-name">{{
+              node.createUserName + ' '
+            }}</span>
+            <span class="imageData-list-desc-time">{{
+              dayjs(node.createDatetime).format('mm:ss')
+            }}</span>
           </div>
         </div>
       </div>
-      <div class="ap-seal-more" v-if="state.cache.more">
+      <div class="ap-seal-more" v-if="item.showMore">
         <div class="ap-seal-more-line"></div>
-        <div class="ap-seal-more-desc" @click="viewMore">
-          查看更多
+        <div class="ap-seal-more-desc" @click="viewMore(index)">
+          {{ item.openMore ? '收起' : '展开' }}
           <img
             class="ap-seal-more-desc-img"
-            src="../../../assets/svg/chakan-gengduo-xia.svg"
-            alt=""
+            src="@/assets/svg/chakan-gengduo-xia.svg"
+            :class="item.openMore ? 'rotate' : ''"
           />
         </div>
         <div class="ap-seal-more-line"></div>
@@ -96,6 +115,8 @@
 </template>
 <script setup>
   import { reactive, onBeforeMount, onMounted, watch } from 'vue'
+  import dayjs from 'dayjs'
+  import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
   const props = defineProps({
     // 标识
     refs: {
@@ -109,34 +130,44 @@
     },
     data: {
       type: Array,
-      default: []
-    },
-    // 查看更多
-    more: {
-      type: Boolean,
-      default: false
+      default: () => {
+        return []
+      }
     }
   })
-  const emit = defineEmits(['view-more'])
   const state = reactive({
     cache: {
-      data: [],
-      more: false
+      data: []
     }
   })
   // 初始化数据
   function initData() {
     state.cache.data = props.data
-    state.cache.more = props.more
-    console.log(state.cache.more)
+    state.cache.data.forEach(i => {
+      if (i.imgs?.length > 6) {
+        i.showMore = true
+        i.openMore = false
+        i.showImgs = i.imgs.slice(0, 6)
+      } else {
+        i.showMore = false
+        i.showImgs = i.imgs
+      }
+    })
   }
-  function viewMore() {
-    emit('view-more')
+  function viewMore(index) {
+    if (!state.cache.data[index].openMore) {
+      state.cache.data[index].showImgs = state.cache.data[index].imgs
+    } else {
+      state.cache.data[index].showImgs = state.cache.data[index].imgs.slice(
+        0,
+        6
+      )
+    }
+    state.cache.data[index].openMore = !state.cache.data[index].openMore
   }
   watch(
-    () => [props.data, props.more],
-    (newValue, oldValue) => {
-      // console.log(newValue, oldValue);
+    () => props.data,
+    () => {
       // 初始化数据
       initData()
     }
@@ -199,6 +230,10 @@
           .ap-seal-more-desc-img {
             margin-left: 0.5rem;
           }
+
+          .rotate {
+            transform: rotate(180deg);
+          }
         }
       }
     }
@@ -235,10 +270,11 @@
           left: 0%;
           text-align: center;
           width: 100%;
-          padding: 0.2rem 0;
+          padding: 2px 0;
           box-sizing: border-box;
           background-color: var(--jy-color-fill-65);
           color: var(--jy-in-common-use-1);
+          font-size: 12px;
         }
       }
     }

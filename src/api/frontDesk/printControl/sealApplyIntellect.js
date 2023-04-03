@@ -51,11 +51,27 @@ api.flowList = data => {
     params: data
   })
 }
-// 用印详情基本信息
+// 用印详情(基本信息)
 api.sealBaseInfo = params => {
   return request({
     method: 'GET',
     url: '/sealApply/query/basic',
+    params
+  })
+}
+// 用印详情(智能用印)
+api.intellect = params => {
+  return request({
+    method: 'GET',
+    url: '/sealApply/query/intellect',
+    params
+  })
+}
+// 用印详情(附件)
+api.attachment = params => {
+  return request({
+    method: 'GET',
+    url: '/sealApply/query/attachment',
     params
   })
 }
