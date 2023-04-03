@@ -77,6 +77,10 @@
     curFromData: {
       type: Object,
       default: () => {}
+    },
+    fileTypePid: {
+      type: String,
+      default: '-1'
     }
   })
 
@@ -122,12 +126,19 @@
     }
   }
 
-  const opened = () => {
-    console.log('--->', props.curFromData)
-    if (props.curFromData.fileTypeId) {
-      formData.value = { ...formData.value, ...props.curFromData }
-    } else {
-      getGenerateBizNo()
+  const opened = async () => {
+    try {
+      if (props.curFromData.fileTypeId) {
+        const res = await await fileManageService.getFileTypeInfo(
+          props.curFromData.fileTypeId
+        )
+        formData.value = { ...formData.value, ...res.data }
+      } else {
+        formData.value.fileTypePid = props.fileTypePid
+        getGenerateBizNo()
+      }
+    } catch (error) {
+      messageError(error)
     }
   }
 

@@ -1,34 +1,20 @@
 [
   {
-    "prop": "useSealFileName",
-    "label": "文件名称",
-    "min-width": 150,
-    "fixed": "left",
-    "show": true
-  },
-  {
     "prop": "useSealApplyNo",
     "label": "单据编号",
     "width": 180,
     "show": true
   },
   {
+    "prop": "useSealFileName",
+    "label": "单据名称",
+    "min-width": 150,
+    "show": true
+  },
+  {
     "prop": "fileTypeName",
-    "label": "文件类型",
+    "label": "用印文件类型",
     "min-width": 150,
-    "show": true
-  },
-  {
-    "prop": "sealName",
-    "label": "印章名称",
-    "min-width": 150,
-    "show": true
-  },
-  {
-    "prop": "useSealStateName",
-    "label": "用印状态",
-    "align": "center",
-    "width": 150,
     "show": true
   },
   {
@@ -50,21 +36,37 @@
     "show": true
   },
   {
+    "prop": "download",
+    "label": "文件下载",
+    "fixed": "right",
+    "align": "center",
+    "min-width": 200,
+    "show": true,
+    "rankDisplayData": [
+      {
+        "name": "用印前"
+      },
+      {
+        "name": "用印中"
+      },
+      {
+        "name": "用印后"
+      }
+    ]
+  },
+  {
     "prop": "caozuo",
     "label": "操作",
     "fixed": "right",
-    "min-width": 250,
-    "show": true,
+    "min-width": 150,
     "align": "center",
+    "show": true,
     "rankDisplayData": [
       {
-        "name": "t-zgj-ProcessTermination"
+        "name": "补传"
       },
       {
-        "name": "t-zgj-RemoveTheSealRestrictions"
-      },
-      {
-        "name": "t-zgj-Void"
+        "name": "申请重置"
       }
     ]
   }

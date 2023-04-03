@@ -12,8 +12,10 @@
         :key="index"
       >
         <div class="ap-box-cont-desc">
-          <span class="ap-box-cont-desc-name">{{ item.name }}</span>
-          <span class="ap-box-cont-desc-size">（{{ item.size }}）</span>
+          <span class="ap-box-cont-desc-name">{{ item.fileOriginName }}</span>
+          <span class="ap-box-cont-desc-size"
+            >（{{ item.fileSizeByte }}KB）</span
+          >
         </div>
         <div class="ap-box-cont-caozuo">
           <span class="ap-box-cont-caozuo-yulan">预览</span>
@@ -40,8 +42,10 @@
         :key="index"
       >
         <div class="ap-box-cont-desc">
-          <span class="ap-box-cont-desc-name">{{ item.name }}</span>
-          <span class="ap-box-cont-desc-size">（{{ item.size }}）</span>
+          <span class="ap-box-cont-desc-name">{{ item.fileOriginName }}</span>
+          <span class="ap-box-cont-desc-size"
+            >（{{ item.fileSizeByte }}KB）</span
+          >
         </div>
         <div class="ap-box-cont-caozuo">
           <span class="ap-box-cont-caozuo-yulan">预览</span>
@@ -60,7 +64,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted } from 'vue'
+  import { onBeforeMount, onMounted } from 'vue'
   const props = defineProps({
     // 标识
     refs: {
@@ -75,16 +79,18 @@
     // 用印文件
     printedData: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     },
     // 补充文件
     additionalData: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     }
   })
-  const emit = defineEmits([])
-  const state = reactive({})
 
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
@@ -128,16 +134,19 @@
 
           .ap-box-cont-caozuo-yulan {
             color: var(--jy-warning-6);
+            cursor: pointer;
           }
 
           .ap-box-cont-caozuo-xiazai {
             margin-left: 0.5rem;
             color: var(--jy-info-6);
+            cursor: pointer;
           }
 
           .ap-box-cont-caozuo-dayin {
             margin-left: 0.5rem;
             color: var(--jy-info-6);
+            cursor: pointer;
 
             .ap-box-cont-caozuo-dayin-image {
               margin-right: 0.3rem;

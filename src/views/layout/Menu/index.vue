@@ -185,7 +185,6 @@
 <style lang="scss" scoped>
   .menus.light {
     padding-top: 20px;
-    // padding-right: 10px;
     padding-bottom: 15px;
     background-color: #fff;
     width: 216px;
@@ -227,7 +226,7 @@
       border-right: none;
       .el-menu-item.is-active {
         background: rgba(208, 150, 62, 0.12);
-        border-left: 4px solid #d0963e;
+        border-left: 4px solid var(--jy-primary-6);
         span,
         .iconpark-icon {
           color: var(--jy-primary-6);
@@ -268,7 +267,7 @@
           transform: rotate(0deg);
         }
         &:hover {
-          border-left: 4px solid #d0963e;
+          border-left: 4px solid var(--jy-primary-6);
           background: rgba(208, 150, 62, 0.12);
           transition: none;
           span,
@@ -291,7 +290,7 @@
             margin-right: 10px;
           }
           &:hover {
-            border-left: 4px solid #d0963e;
+            border-left: 4px solid var(--jy-primary-6);
             background: rgba(208, 150, 62, 0.12);
             transition: none;
             span,
@@ -420,6 +419,7 @@
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.06);
     width: 216px;
     transition: all 0.3s;
+    min-height: calc(100vh - 64px);
     .menu-iconpark {
       @include mixin-width(26);
       margin-right: 10px;
@@ -465,7 +465,7 @@
       box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.06);
       .el-menu-item.is-active {
         background: rgba(208, 150, 62, 0.12);
-        border-left: 4px solid #d0963e;
+        border-left: 4px solid var(--jy-primary-6);
         span,
         .iconpark-icon {
           color: var(--jy-primary-6);
@@ -506,7 +506,7 @@
           transform: rotate(0deg);
         }
         &:hover {
-          border-left: 4px solid #d0963e;
+          border-left: 4px solid var(--jy-primary-6);
           background: rgba(208, 150, 62, 0.12);
           transition: none;
           span,
@@ -530,7 +530,7 @@
             margin-right: 10px;
           }
           &:hover {
-            border-left: 4px solid #d0963e;
+            border-left: 4px solid var(--jy-primary-6);
             background: rgba(208, 150, 62, 0.12);
             transition: none;
             span,

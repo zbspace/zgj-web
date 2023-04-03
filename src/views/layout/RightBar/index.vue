@@ -159,6 +159,7 @@
   }
 
   const colorChange = value => {
+    layoutStore.customColor = value
     document
       .getElementsByTagName('body')[0]
       .style.setProperty('--jy-primary-6', value)

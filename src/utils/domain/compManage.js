@@ -1,6 +1,6 @@
 // 往来单位-searchInfo
 export class FeatchRelatedCompanyListInfo {
-  tenantId = '123456789' // 企业ID
+  tenantId = '' // 企业ID
   relatedCompanyName = '' // 企业编码/企业名称/联系人/联系方式
   organId = '' // 组织机构ID
   current = 1
@@ -9,10 +9,11 @@ export class FeatchRelatedCompanyListInfo {
 
 // 往来单位-add
 export class CompanyAddInfo {
-  tenantId = '123456789'
+  tenantId = ''
   relatedCompanyName = ''
-  organId = '123456'
+  organId = ''
   contactName = ''
   contactInformation = ''
-  remark = ''
+  readme = ''
+  relatedCompanyNo = ''
 }

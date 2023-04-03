@@ -9,9 +9,9 @@
       <!-- 面包屑 -->
       <div class="inner-crumbs">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item>{{ resetData.title }}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ props.resetData.title }}</el-breadcrumb-item>
           <el-breadcrumb-item>{{
-            resetData.isTransfer ? '申请转办' : '申请重置'
+            props.resetData.isTransfer ? '申请转办' : '申请重置'
           }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -73,13 +73,15 @@
   import { ElMessage } from 'element-plus'
   import componentsLayout from '@/views/components/Layout.vue'
   const router = useRouter()
-  // const props = defineProps({
-  //   // 展示权限
-  //   resetData: {
-  //     type: Object,
-  //     default: {}
-  //   }
-  // })
+  const props = defineProps({
+    // 展示权限
+    resetData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  })
   const state = reactive({
     selectPerson: false
   })

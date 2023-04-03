@@ -153,8 +153,10 @@
                       v-for="(data, num) in item.rankDisplayData.slice(0, 4)"
                       :key="num"
                       type="info"
+                      plain
                       @click="customClick(scope.$index, scope.row, data)"
                       link
+                      text
                       >{{
                         data.name === 'status'
                           ? scope.row[props.statusColoum] !== props.openValue
@@ -631,6 +633,10 @@
 
     .el-button.is-link:hover {
       color: var(--jy-info-5);
+    }
+
+    .el-button:active {
+      color: var(--jy-info-6) !important;
     }
   }
 </style>

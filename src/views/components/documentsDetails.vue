@@ -83,7 +83,10 @@
                       </template>
                     </documentsDetailsPortion>
                   </div>
-                  <div class="ap-cont-box sealDetails-accessory">
+                  <div
+                    class="ap-cont-box sealDetails-accessory"
+                    v-if="state.cache.DetailsaOfPrinting.accessory.show"
+                  >
                     <documentsDetailsPortion>
                       <template #title>
                         <div class="ap-cont-box-title-label">附件</div>
@@ -119,6 +122,9 @@
                   </div>
                   <div
                     class="ap-cont-box sealDetails-Document-verification-before-closing"
+                    v-if="
+                      state.cache.DetailsaOfPrinting.fileocrInformation.show
+                    "
                   >
                     <documentsDetailsPortion>
                       <template #title>
@@ -148,7 +154,12 @@
                       </template>
                     </documentsDetailsPortion>
                   </div>
-                  <div class="ap-cont-box sealDetails-Intelligent-printing">
+                  <div
+                    class="ap-cont-box sealDetails-Intelligent-printing"
+                    v-if="
+                      state.cache.DetailsaOfPrinting.IntelligentPrinting.show
+                    "
+                  >
                     <documentsDetailsPortion>
                       <template #title>
                         <div class="ap-cont-box-title-label">智能用印</div>
@@ -168,10 +179,6 @@
                       <template #content>
                         <div class="sealDetails-accessory-list">
                           <documentsDetailsIntelligentPrinting
-                            :more="
-                              state.cache.DetailsaOfPrinting.IntelligentPrinting
-                                .more
-                            "
                             :data="
                               state.cache.DetailsaOfPrinting.IntelligentPrinting
                                 .data
@@ -357,7 +364,10 @@
                       </template>
                     </documentsDetailsPortion>
                   </div>
-                  <div class="ap-cont-box accessory">
+                  <div
+                    class="ap-cont-box accessory"
+                    v-if="state.cache.DetailsaOfPrinting.accessory.show"
+                  >
                     <documentsDetailsPortion>
                       <template #title>
                         <div class="ap-cont-box-title-label">附件</div>
@@ -968,7 +978,6 @@
   import liuchengWanchengSvg from '@/assets/svg/liucheng-wancheng.svg'
   import yuanHuiSvg from '@/assets/svg/common/yuan-hui.svg'
   import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
-  import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
   import renlianTupian from '@/assets/svg/renlian-tupian.svg'
   import jinggao from '@/assets/svg/jinggao.svg'
 
@@ -1025,81 +1034,16 @@
         },
         accessory: {
           title: '附件',
-          show: true,
+          show: false,
           // 用印文件
-          printedData: [
-            {
-              name: '文件名称文件名称文件名称文件名称文件名称文件名称.pdf',
-              size: '1.4M'
-            },
-            {
-              name: '文件名称文件名称文件名称文件名称文件名称文件名称.pdf',
-              size: '1.4M'
-            }
-          ],
+          printedData: [],
           // 补充文件
-          additionalData: [
-            {
-              name: '文件名称文件名称文件名称文件名称文件名称文件名称.pdf',
-              size: '1.4M'
-            },
-            {
-              name: '文件名称文件名称文件名称文件名称文件名称文件名称.pdf',
-              size: '1.4M'
-            }
-          ]
+          additionalData: []
         },
         IntelligentPrinting: {
           title: '基本信息',
-          show: true,
-          more: true,
-          data: [
-            {
-              sealName: '详情内容详情内容详情内容详情内容',
-              personName: '详情内容详情内容详情内容详情内容',
-              time: '2022-11-30  16:00:00',
-              adress: '详情内容详情内容详情内容详情内容',
-              imageNum: 8,
-              imageData: [
-                {
-                  personName: '马丽丽',
-                  time: '14:09',
-                  imgPath: UploadBackgroundSvg,
-                  iconPath: gaizhangIcon
-                },
-                {
-                  personName: '马丽丽',
-                  time: '14:09',
-                  imgPath: UploadBackgroundSvg,
-                  iconPath: gaizhangIcon
-                },
-                {
-                  personName: '马丽丽',
-                  time: '14:09',
-                  imgPath: UploadBackgroundSvg,
-                  iconPath: gaizhangIcon
-                },
-                {
-                  personName: '马丽丽',
-                  time: '14:09',
-                  imgPath: UploadBackgroundSvg,
-                  iconPath: gaizhangIcon
-                },
-                {
-                  personName: '马丽丽',
-                  time: '14:09',
-                  imgPath: UploadBackgroundSvg,
-                  iconPath: gaizhangIcon
-                },
-                {
-                  personName: '马丽丽',
-                  time: '14:09',
-                  imgPath: UploadBackgroundSvg,
-                  iconPath: gaizhangIcon
-                }
-              ]
-            }
-          ]
+          show: false,
+          data: []
         },
         archiveInformation: {
           title: '文件归档',
@@ -2954,6 +2898,17 @@
     //         },
     //     ]
 
+    setInitData()
+  }
+
+  // watch(
+  //   () => props.visible,
+  //   () => {
+  //     setInitData()
+  //   }
+  // )
+
+  const setInitData = () => {
     props.visible.forEach(element => {
       if (element.name === 'Details-of-Printing') {
         // 处理 用印详情 Details-of-Printing
@@ -3027,6 +2982,7 @@
       }
     })
   }
+
   // 点击全屏
   const ClickOnFullScreen = () => {
     state.drawer.size = '100%'

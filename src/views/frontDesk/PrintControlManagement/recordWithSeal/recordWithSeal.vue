@@ -301,6 +301,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     if (column.property === 'useSealFileName') {
+      state.componentsDocumentsDetails.show = true
       sealApplyIntellect
         .sealBaseInfo({
           useSealApplyId: row.useSealApplyId
@@ -399,7 +400,46 @@
             show: true,
             data: detail
           }
-          state.componentsDocumentsDetails.show = true
+        })
+      sealApplyIntellect
+        .intellect({
+          useSealApplyId: row.useSealApplyId
+          // useSealApplyId: '1641248927057453058'
+        })
+        .then(res => {
+          console.log(res.data)
+          if (res.data?.length) {
+            state.componentsDocumentsDetails.visible[0].IntelligentPrinting = {
+              show: true,
+              data: res.data
+            }
+          } else {
+            state.componentsDocumentsDetails.visible[0].IntelligentPrinting = {
+              show: false,
+              data: []
+            }
+          }
+        })
+      sealApplyIntellect
+        .attachment({
+          useSealApplyId: row.useSealApplyId
+          // useSealApplyId: '222'
+        })
+        .then(res => {
+          console.log(res.data)
+          if (res.data.fileInfos?.length || res.data.fileInfoAdds?.length) {
+            state.componentsDocumentsDetails.visible[0].accessory = {
+              show: true,
+              printedData: res.data.fileInfos,
+              additionalData: res.data.fileInfoAdds
+            }
+          } else {
+            state.componentsDocumentsDetails.visible[0].accessory = {
+              show: false,
+              printedData: [],
+              additionalData: []
+            }
+          }
         })
     }
   }
