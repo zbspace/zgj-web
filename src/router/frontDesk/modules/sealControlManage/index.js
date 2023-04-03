@@ -78,7 +78,9 @@ const routes = {
             authRequired: true
           },
           component: () =>
-            import('@/views/frontDesk/PrintControlManagement/Archive.vue')
+            import(
+              '@/views/frontDesk/PrintControlManagement/Archive/Archive.vue'
+            )
         },
         {
           path: 'archive/ArchiveReset',

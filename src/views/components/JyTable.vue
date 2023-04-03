@@ -632,6 +632,10 @@
     .el-button.is-link:hover {
       color: var(--jy-info-5);
     }
+
+    .el-button.is-link:not(.is-disabled):active {
+      color: var(--jy-info-6);
+    }
   }
 </style>
 <style lang="scss" scoped>
