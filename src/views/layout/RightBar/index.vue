@@ -45,7 +45,7 @@
           <span class="custom-label">自定义</span>
           <el-color-picker
             v-model="layoutStore.customColor"
-            @change="colorChange(layoutStore.customColor)"
+            @change="colorChange"
           />
           <span>{{ layoutStore.customColor }}</span>
         </div>
@@ -140,6 +140,7 @@
   import { messageWarning } from '@/hooks/useMessage'
   import { useLayoutStore } from '@/store/layout'
   import { useMenusInfoStore } from '@/store/menus'
+  import { TinyColor } from '@ctrl/tinycolor'
 
   const layoutStore = useLayoutStore()
   const menusInfoStore = useMenusInfoStore()
@@ -159,10 +160,30 @@
   }
 
   const colorChange = value => {
+    const color = new TinyColor(value)
     layoutStore.customColor = value
-    document
-      .getElementsByTagName('body')[0]
-      .style.setProperty('--jy-primary-6', value)
+    const hoverBgColor = color.tint(30).toString()
+    const hoverBgColor1 = color.tint(90).toString()
+    const node = document.getElementsByTagName('body')[0]
+    node.style.setProperty('--jy-primary-6', value)
+    node.style.setProperty('--jy-primary-5', hoverBgColor)
+    node.style.setProperty('--jy-primary-1', hoverBgColor)
+    node.style.setProperty('--jy-primary-9', hoverBgColor1)
+    // node.style.setProperty('--jy-color-text-1', value)
+    // node.style.setProperty(
+    //   '--jy-color-text-1',
+    //   color.isDark() ? '#fff' : '#000'
+    // )
+    // styles = ns.cssVarBlock({
+    //   'bg-color': buttonColor,
+    //   'text-color': textColor,
+    //   'border-color': buttonColor,
+    //   'hover-bg-color': hoverBgColor,
+    //   'hover-text-color': textColor,
+    //   'hover-border-color': hoverBgColor,
+    //   'active-bg-color': activeBgColor,
+    //   'active-border-color': activeBgColor
+    // })
   }
 </script>
 

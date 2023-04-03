@@ -10,10 +10,18 @@
 
 <script setup>
   import { useLayoutStore } from '@/store/layout'
+  import { TinyColor } from '@ctrl/tinycolor'
   const layoutStore = useLayoutStore()
-  document
-    .getElementsByTagName('body')[0]
-    .style.setProperty('--jy-primary-6', layoutStore.customColor)
+  const value = layoutStore.customColor
+  const color = new TinyColor(value)
+  layoutStore.customColor = value
+  const hoverBgColor = color.tint(30).toString()
+  const hoverBgColor1 = color.tint(90).toString()
+  const node = document.getElementsByTagName('body')[0]
+  node.style.setProperty('--jy-primary-6', value)
+  node.style.setProperty('--jy-primary-5', hoverBgColor)
+  node.style.setProperty('--jy-primary-1', hoverBgColor)
+  node.style.setProperty('--jy-primary-9', hoverBgColor1)
 </script>
 
 <script>

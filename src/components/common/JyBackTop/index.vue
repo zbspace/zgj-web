@@ -103,7 +103,7 @@
         z-index: 99;
       }
       .back-top-item-curtain-bg {
-        background: #d0963e;
+        background: var(--jy-primary-6);
         box-shadow: 0px 3px 6px -4px rgba(208, 150, 62, 0.7),
           0px 6px 16px rgba(208, 150, 62, 0.08),
           0px 9px 28px 8px rgba(208, 150, 62, 0.05);

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { TinyColor } from '@ctrl/tinycolor'
 export const useLayoutStore = defineStore({
   id: 'layout',
   state: () => {
@@ -32,9 +33,18 @@ export const useLayoutStore = defineStore({
       this.sidebarType = '1'
       this.menuColor = 'light'
       this.customColor = '#D0963E'
-      document
-        .getElementsByTagName('body')[0]
-        .style.setProperty('--jy-primary-6', this.customColor)
+      // document
+      //   .getElementsByTagName('body')[0]
+      //   .style.setProperty('--jy-primary-6', this.customColor)
+      const value = '#D0963E'
+      const color = new TinyColor(value)
+      const hoverBgColor = color.tint(30).toString()
+      const hoverBgColor1 = color.tint(90).toString()
+      const node = document.getElementsByTagName('body')[0]
+      node.style.setProperty('--jy-primary-6', value)
+      node.style.setProperty('--jy-primary-5', hoverBgColor)
+      node.style.setProperty('--jy-primary-1', hoverBgColor)
+      node.style.setProperty('--jy-primary-9', hoverBgColor1)
     },
     changeLayoutType(layoutType) {
       this.layoutType = layoutType
