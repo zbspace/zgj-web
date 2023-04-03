@@ -114,6 +114,7 @@
         <div
           class="ap-box-right-fill quanping"
           @click="clickBatchButton({ name: 'fullscreen' })"
+          style="display: none"
         >
           <svg
             width="12"

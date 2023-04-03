@@ -358,19 +358,22 @@
           label: '表单名称',
           sortable: true,
           'min-width': 150,
-          fixed: true
+          fixed: 'left',
+          show: true
         },
         {
           prop: 'applyTypeName',
           label: '业务类型',
           sortable: true,
-          'min-width': 150
+          'min-width': 150,
+          show: true
         },
         {
           prop: 'sealUseTypeName',
           label: '用印类型',
           sortable: true,
-          'min-width': 150
+          'min-width': 150,
+          show: true
         },
         {
           prop: 'relationFlow',
@@ -380,19 +383,22 @@
           statusList: [
             { label: '是', key: '1' },
             { label: '否', key: '0' }
-          ]
+          ],
+          show: true
         },
         {
           prop: 'createUserName',
           label: '创建人',
           sortable: true,
-          'min-width': 150
+          'min-width': 150,
+          show: true
         },
         {
           prop: 'modifyDatetime',
           label: '更新时间',
           width: 190,
-          sortable: true
+          sortable: true,
+          show: true
         },
 
         {
@@ -411,7 +417,8 @@
             {
               name: 't-zgj-qyWechat.Copy'
             }
-          ]
+          ],
+          show: true
         }
       ]
     },
