@@ -60,9 +60,9 @@
             <el-radio label="1">同意</el-radio>
             <el-radio label="2">不同意</el-radio>
             <!-- <el-radio label="5">征询他人意见</el-radio> -->
-            <!-- <el-radio label="3">转交</el-radio>
-            <el-radio label="4">加签</el-radio>
-            <el-radio label="6">退回</el-radio> -->
+            <el-radio label="3">转交</el-radio>
+            <!-- <el-radio label="4">加签</el-radio> -->
+            <!-- <el-radio label="6">退回</el-radio> -->
             <el-radio
               :label="item.buttonCode"
               v-for="item in props.params.buttons.filter(b =>
