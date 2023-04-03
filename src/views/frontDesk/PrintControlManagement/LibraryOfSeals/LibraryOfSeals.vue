@@ -183,7 +183,10 @@
         label-width="100px"
       >
         <el-form-item label="印章全称" prop="sealName">
-          <el-input v-model="state.form.sealName" />
+          <el-input
+            v-model="state.form.sealName"
+            placeholder="请输入印章全称"
+          />
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -211,7 +214,10 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="印章简称" prop="sealAlias">
-              <el-input v-model="state.form.sealAlias" />
+              <el-input
+                v-model="state.form.sealAlias"
+                placeholder="请输入印章简称"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -221,7 +227,7 @@
                   class="ap-box-contBox-input width-100"
                   readonly
                   v-model="state.form.subOrganName"
-                  placeholder="请选择"
+                  placeholder="请选择所属单位"
                 />
                 <el-input
                   class="ap-box-contBox-input width-100"
@@ -257,7 +263,7 @@
                   class="ap-box-contBox-input width-100"
                   readonly
                   v-model="state.form.keepUserName"
-                  placeholder="请选择"
+                  placeholder="请选择保管人"
                 />
                 <el-input
                   class="ap-box-contBox-input width-100"
