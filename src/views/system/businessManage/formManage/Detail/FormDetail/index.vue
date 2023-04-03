@@ -23,7 +23,7 @@
           创建人：<span>{{ detail.formName || '-' }}</span>
         </p>
         <p>
-          更新时间：<span>{{ detail.modifyDatetime || '-' }}</span>
+          更新时间：<span>{{ detail.modifyDatetimeStr || '-' }}</span>
         </p>
         <p>
           表单说明：<span>{{ detail.readme || '-' }}</span>
@@ -40,7 +40,7 @@
           用印类型：<span>{{ detail.sealUseTypeName || '-' }}</span>
         </p>
         <p>
-          创建时间：<span>{{ detail.createDatetime || '-' }}</span>
+          创建时间：<span>{{ detail.createDatetimeStr || '-' }}</span>
         </p>
       </div>
     </div>
