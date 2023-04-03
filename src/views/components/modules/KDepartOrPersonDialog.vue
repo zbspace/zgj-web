@@ -27,7 +27,7 @@
           <KDepartTab
             ref="kdepart"
             :initQueryParams="props.queryParams"
-            :apiModule="apiModule"
+            apiModule="publicTypeApi"
             :selectedDepart="selectedDepart"
             @update:selectedDepart="selectedDepart = $event"
             v-show="active === 'organ'"
@@ -37,13 +37,24 @@
           <KUserTab
             ref="kuser"
             :initQueryParams="props.queryParams"
-            :apiModule="apiModule"
+            apiModule="publicTypeApi"
             :selectedUser="selectedUser"
             @update:selectedUser="selectedUser = $event"
             v-show="active === 'user'"
             :multiple="props.multiple"
             :max="props.max"
           ></KUserTab>
+
+          <KRoleTab
+            ref="krole"
+            :initQueryParams="props.queryParams"
+            apiModule="publicTypeApi"
+            :selectedRole="selectedRole"
+            @update:selectedRole="selectedRole = $event"
+            v-show="active === 'role'"
+            :multiple="props.multiple"
+            :max="props.max"
+          ></KRoleTab>
         </div>
       </div>
 
@@ -55,8 +66,13 @@
             <span v-if="selectedDepart.length !== 0">
               {{ selectedDepart.length }} {{ $t('t-zgj-sync.Department') }}
             </span>
+            &nbsp;
             <span v-if="selectedUser.length !== 0">
               {{ selectedUser.length }} {{ $t('t-zgj-sync.Person') }}
+            </span>
+            &nbsp;
+            <span v-if="selectedRole.length !== 0">
+              {{ selectedRole.length }} {{ $t('t-zgj-person.Role') }}
             </span>
           </div>
           <div class="select-close clear-t" @click="clearSelected">
@@ -167,9 +183,8 @@
         <!-- 角色 -->
         <div
           class="select-right-column p"
-          v-for="(item, index) in selectedDepart"
+          v-for="(item, index) in selectedRole"
           :key="index"
-          v-show="false"
         >
           <div class="select-right-label">
             <div style="margin-right: 10px">
@@ -229,6 +244,7 @@
   import VTabs from '@/components/common/JyTabs.vue'
   import KDepartTab from './modules/KDepartTab.vue'
   import KUserTab from './modules/KUserTab.vue'
+  import KRoleTab from './modules/KRoleTab.vue'
   import Api from '@/api/common/organOrPerson'
   import { ElMessage } from 'element-plus'
   const emits = defineEmits(['update:show', 'update:searchSelected'])
@@ -240,14 +256,12 @@
     },
     apiModule: {
       type: String,
-      default: 'systemOrganOrPerson'
+      default: ''
     },
     queryParams: {
       type: Object,
       default: () => {
-        return {
-          roleId: 'r1'
-        }
+        return {}
       }
     },
     editDeploy: {
@@ -263,7 +277,7 @@
     tabsShow: {
       type: Array,
       default: () => {
-        return ['organ', 'user']
+        return ['organ', 'user', 'role']
       }
     },
     activeTab: {
@@ -289,7 +303,6 @@
       const str = i18n.global.t('t-zgj-list.PleaseChoose')
       let newStr = ''
       props.tabsShow.forEach((item, index) => {
-        console.log('123123', item)
         if (index === 0) {
           if (item === 'user') {
             newStr = i18n.global.t('t-zgj-sync.Person')
@@ -346,8 +359,9 @@
 
   // 选中数据
   // const allSelected = ref([])
-  const selectedDepart = ref(props.searchSelected || [])
+  const selectedDepart = ref([])
   const selectedUser = ref([])
+  const selectedRole = ref([])
   const firstShow = ref(false)
   const apiInterface = (params, apiKey) => {
     return new Promise((resolve, reject) => {
@@ -364,9 +378,11 @@
   // 获取选中数据 - 修改时
   if (props.editDeploy) {
     const paramsKey = Api[props.apiModule].key
+
     apiInterface(props.queryParams[paramsKey], 'selected').then(res => {
-      selectedDepart.value = res.data.organs
-      selectedUser.value = res.data.users
+      selectedDepart.value = res.data.organs ? res.data.organs : []
+      selectedUser.value = res.data.users ? res.data.users : []
+      selectedRole.value = res.data.roles ? res.data.roles : []
       firstShow.value = true
     })
   } else {
@@ -381,20 +397,26 @@
     selectedUser.value = props.searchSelected.filter(
       item => item.type === 'user'
     )
+    selectedRole.value = props.searchSelected.filter(
+      item => item.type === 'role'
+    )
   }
 
   const kdepart = ref(null)
   const kuser = ref(null)
+  const krole = ref(null)
   // 清空选中项
   const clearSelected = () => {
     kdepart.value.clearSelected()
     kuser.value.clearSelected()
+    krole.value.clearSelected()
   }
 
   // 取消选中项
   const concelSelected = attr => {
     kdepart.value.concelSelected(attr)
     kuser.value.concelSelected(attr)
+    krole.value.concelSelected(attr)
   }
 
   // 监听 向下包含 切换
@@ -412,7 +434,8 @@
     const saveParams = {
       ...props.queryParams,
       organs: selectedDepart.value,
-      users: selectedUser.value
+      users: selectedUser.value,
+      roles: selectedRole.value
     }
     // 编辑
     if (props.editDeploy) {
@@ -431,8 +454,12 @@
     props.tabsShow.forEach(item => {
       item === 'organ' &&
         (changeResult.value = changeResult.value.concat(selectedDepart.value))
+
       item === 'user' &&
         (changeResult.value = changeResult.value.concat(selectedUser.value))
+
+      item === 'role' &&
+        (changeResult.value = changeResult.value.concat(selectedRole.value))
     })
     emits('update:searchSelected', changeResult.value)
     emits('update:show', false)

@@ -10,23 +10,33 @@ let api = {}
 //     data
 //   })
 // }
+
 api = {
-  // 系统后台 - 部门与员工（权限管理）
-  systemOrganOrPerson: {
+  publicTypeApi: {
     organ: data => {
       return request({
         method: 'POST',
-        url: '/role/getRoleSubOrganInfoList',
-        data
+        url: '/common/getRoleOrganUserSelectInfoList',
+        data: data ? Object.assign(data, { type: 'organ' }) : { type: 'organ' }
       })
     },
     user: data => {
       return request({
         method: 'POST',
-        url: '/role/getRoleSubOrganAndUserInfoList',
-        data
+        url: '/common/getRoleOrganUserSelectInfoList',
+        data: data ? Object.assign(data, { type: 'user' }) : { type: 'user' }
       })
     },
+    role: data => {
+      return request({
+        method: 'POST',
+        url: '/common/getRoleOrganUserSelectInfoList',
+        data: data ? Object.assign(data, { type: 'role' }) : { type: 'role' }
+      })
+    }
+  },
+  // 系统后台 - 部门与员工（权限管理）
+  systemOrganOrPerson: {
     selected: id => {
       return request({
         method: 'GET',

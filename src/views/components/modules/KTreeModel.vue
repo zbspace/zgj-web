@@ -226,6 +226,65 @@
                 </svg>
               </div>
             </div>
+            <div v-else-if="props.tabActive === 'role'">
+              <!-- 未选 -->
+              <div
+                v-show="item.selectedStatus === 0 && item.type === 'role'"
+                @click="checkPart(2, item)"
+                class="check-box"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect opacity="0.01" width="16" height="16" fill="black" />
+                  <g clip-path="url(#clip0_543_108426)">
+                    <rect width="16" height="16" rx="2" fill="white" />
+                    <rect
+                      x="0.5"
+                      y="0.5"
+                      width="15"
+                      height="15"
+                      rx="1.5"
+                      stroke="black"
+                      stroke-opacity="0.15"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_543_108426">
+                      <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+
+              <!-- 全选 -->
+              <div
+                v-show="item.selectedStatus === 2 && item.type === 'role'"
+                @click="checkPart(0, item)"
+                class="check-box"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect opacity="0.01" width="16" height="16" fill="black" />
+                  <rect width="16" height="16" rx="2" fill="#D0963E" />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M11.7703 5.254L7.55825 11.094C7.30425 11.448 6.77825 11.448 6.52425 11.094L4.03025 7.638C3.95425 7.532 4.03025 7.384 4.16025 7.384H5.09825C5.30225 7.384 5.49625 7.482 5.61625 7.65L7.04025 9.626L10.1843 5.266C10.3043 5.1 10.4963 5 10.7023 5H11.6403C11.7703 5 11.8463 5.148 11.7703 5.254Z"
+                    fill="white"
+                  />
+                </svg>
+              </div>
+            </div>
             <div v-else>
               <!-- 未选 -->
               <div

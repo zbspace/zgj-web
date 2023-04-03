@@ -9,6 +9,7 @@
         size="large"
       />
     </div>
+
     <!-- crumbs -->
     <div class="select-crumbs user-select">
       <!-- 自定义面包屑 -->
@@ -49,7 +50,7 @@
         @open="openInner"
         @emitsDemo="emitsDemo"
         :rootNode="rootNode"
-        tabActive="organ"
+        tabActive="role"
         :multiple="props.multiple"
       ></KTreeModel>
     </div>
@@ -62,7 +63,7 @@
    * includeChild 向下包含 Boolean
    * apiModule: api对应的模块
    * initQueryParams 初始化参数
-   * selectedDepart 选中项
+   * selectedRole 选中项
    */
   import { reactive, ref, computed } from 'vue'
   import {
@@ -78,7 +79,7 @@
       type: String,
       default: ''
     },
-    selectedDepart: {
+    selectedRole: {
       type: Array,
       default: () => {
         return []
@@ -93,16 +94,19 @@
     multiple: {
       type: Boolean,
       default: true
+    },
+    max: {
+      type: Number
     }
   })
-  const emits = defineEmits(['update:selectedDepart'])
+  const emits = defineEmits(['update:selectedRole'])
 
   const selectedData = computed({
     get() {
-      return JSON.parse(JSON.stringify(props.selectedDepart))
+      return JSON.parse(JSON.stringify(props.selectedRole))
     },
     set(val) {
-      emits('update:selectedDepart', val)
+      emits('update:selectedRole', val)
     }
   })
 
@@ -115,7 +119,7 @@
       sort: 3,
       haveChildren: true,
       type: 'organ',
-      idFullPathSet: '-1'
+      idFullPath: '-1'
     }
   ]
   // 静态数据
@@ -135,7 +139,7 @@
   const resultOrgan = params => {
     return new Promise((resolve, reject) => {
       Api[props.apiModule]
-        .organ(params)
+        .role(params)
         .then(res => {
           resolve(res)
         })
@@ -150,7 +154,22 @@
 
   // 自定义事件
   function emitsDemo(attr, val, type) {
+    if (props.max && selectedData.value.length > props.max && props.multiple) {
+      ElMessage.warning(`只能选择${props.max}个角色`)
+      return
+    }
     if (type && type === 'all') {
+      // 判断限制人数 - all
+      const cacheUser = JSON.parse(JSON.stringify(attr))
+      const userData = cacheUser.filter(item => (item.type = 'role'))
+      if (
+        props.max &&
+        selectedData.value.length + userData.length > props.max &&
+        props.multiple
+      ) {
+        ElMessage.warning(`只能选择${props.max}个角色`)
+        return
+      }
       handleRootChangeByAll(attr, val)
       handleSelectedChangeByAll(attr, val)
       return
@@ -160,8 +179,22 @@
       !props.multiple &&
       selectedData.value[0].id !== attr.id
     ) {
-      ElMessage.warning('只能选择1个部门')
+      ElMessage.warning('只能选择1个角色')
       return
+    }
+    // 判断限制人数 - part
+    if (
+      selectedData.value.length > 0 &&
+      props.max &&
+      selectedData.value.length + 1 > props.max &&
+      props.multiple
+    ) {
+      // 排除已经选中后 取消
+      const i = selectedData.value.findIndex(item => item.id === attr.id)
+      if (i === -1 || i === '-1') {
+        ElMessage.warning(`只能选择${props.max}个角色`)
+        return
+      }
     }
     handleRootChangeByPart(attr, val)
     handleSelectedChangeByPart(attr, val)
@@ -201,12 +234,15 @@
         item.selectedStatus = 2
       })
       const arr = []
-      attr.forEach(item => {
-        arr.push(item.id)
-      })
+      attr
+        .filter(val => val.type === 'role')
+        .forEach(item => {
+          arr.push(item.id)
+        })
+
       selectedData.value = selectedData.value
         .filter(item => !arr.includes(item.id))
-        .concat(attr)
+        .concat(attr.filter(val => val.type === 'role'))
     }
   }
 
@@ -281,7 +317,7 @@
 
     if (attr.length === 0) {
       path.push({
-        curmbsName: '组织架构',
+        curmbsName: '角色',
         id: '-1'
       })
       return path
@@ -377,7 +413,8 @@
           }
           // 向下包含反选
           if (
-            item.idFullPathSet.includes(val.id) &&
+            item.idFullPath &&
+            item.idFullPath.split(',').includes(val.id) &&
             val.includeChild &&
             item.id !== val.id
           ) {
@@ -428,9 +465,12 @@
       if (item.id === attr.id) {
         item.selectedStatus = 0
         item.disabled = false
-        item.includeChild = false
       }
-      if (item.idFullPathSet.includes(attr.id) && attr.includeChild) {
+      if (
+        item.idFullPath &&
+        item.idFullPath.split(',').includes(attr.id) &&
+        attr.includeChild
+      ) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -462,7 +502,11 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (item.idFullPathSet.includes(attr.id) && attr.includeChild) {
+      if (
+        item.idFullPath &&
+        item.idFullPath.split(',').includes(attr.id) &&
+        attr.includeChild
+      ) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -478,7 +522,7 @@
     // 2.判断已选中是否被包含
     const str = JSON.parse(JSON.stringify(selectedData.value))
     str.forEach(item => {
-      if (item.idFullPathSet.includes(attr.id)) {
+      if (item.idFullPath && item.idFullPath.split(',').includes(attr.id)) {
         aplication.value.push(item.id)
       }
     })
@@ -495,75 +539,9 @@
     clearAllStatus(cacheRootLists.value)
   }
 
-  const changeChildrenAllStatus = (data, switchStatus) => {
-    if (!Array.isArray(data) || data.length === 0) return
-    data.forEach(item => {
-      item.selectedStatus = switchStatus ? 2 : 0
-      item.disabled = switchStatus
-      if (item.children && item.children.length > 0) {
-        return changeChildrenAllStatus(item.children, switchStatus)
-      }
-    })
-  }
-
-  // 监听 向下包含 切换
-  const changeSwitch = (switchStatus, attr) => {
-    // 处理选中值
-    handleChangeIncluded(switchStatus, attr)
-
-    // 处理树状态
-    function recursionData(data, id) {
-      if (!Array.isArray(data) || data.length === 0) return
-      data.forEach(item => {
-        if (item.id === id) {
-          // 向下包含
-          changeChildrenAllStatus(item.children, switchStatus)
-        }
-        if (item.children && item.children.length > 0) {
-          return recursionData(item.children, id)
-        }
-      })
-    }
-
-    recursionData(cacheRootLists.value, attr.id)
-
-    // 处理展示状态
-    function recursionTreeData(data, id) {
-      if (!Array.isArray(data) || data.length === 0) return
-      data.forEach(item => {
-        if (item.id === id) {
-          treeColumnData.data = item.children
-        }
-        if (item.children && item.children.length > 0) {
-          return recursionTreeData(item.children, id)
-        }
-      })
-    }
-    // 重置 treeColumnData
-    const pid = treeColumnData.data[0].pid
-    recursionTreeData(cacheRootLists.value, pid)
-  }
-
-  const handleChangeIncluded = (status, attr) => {
-    // 1.是否有children
-    if (!attr.haveChildren) return false
-    const aplication = ref([])
-    // 2.判断已选中是否被包含
-    const str = JSON.parse(JSON.stringify(selectedData.value))
-    str.forEach(item => {
-      if (item.idFullPathSet.includes(attr.id) && item.id !== attr.id) {
-        aplication.value.push(item.id)
-      }
-    })
-
-    selectedData.value = selectedData.value.filter(
-      item => !aplication.value.includes(item.id)
-    )
-  }
   defineExpose({
     concelSelected,
-    clearSelected,
-    changeSwitch
+    clearSelected
   })
 </script>
 
@@ -581,7 +559,6 @@
       .bread-item {
         display: flex;
         align-items: center;
-        cursor: pointer;
       }
 
       .bread-home {

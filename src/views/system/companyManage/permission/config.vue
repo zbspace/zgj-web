@@ -127,8 +127,8 @@
           <div class="item">
             <div class="item-label">默认数据权限</div>
             <div>
-              向上继承
-              <span class="i"> （可以查看下级部门员工创建数据） </span></div
+              {{ indx.label }}
+              <span class="i"> （{{ indx.msg }}） </span></div
             >
           </div>
 
@@ -160,6 +160,8 @@
       @update:searchSelected="callBack"
       :searchSelected="searchSelected"
       editDeploy
+      apiModule="systemOrganOrPerson"
+      :queryParams="queryParams"
     >
     </KDepartOrPersonDialog>
   </div>
@@ -169,9 +171,12 @@
   import componentsLayout from '../../../components/Layout.vue'
   import VTabs from '@/components/common/JyTabs.vue'
   import KDepartOrPersonDialog from '@/views/components/modules/KDepartOrPersonDialog.vue'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
+  import roleApis from '@/api/system/companyManagement/authorityManagement'
   import { test } from './test'
   const router = useRouter()
+  const route = useRoute()
+
   // 消息 tabs
   const active = ref('first')
 
@@ -186,7 +191,25 @@
     }
   ])
 
+  const queryParams = ref({
+    roleId: ''
+  })
+
+  queryParams.value = {
+    roleId: route.query.roleId
+  }
+
+  const labelInfo = ref([
+    { label: '向上继承', msg: '可以查看下级部门员工创建数据' },
+    { label: '仅自己', msg: '仅可以查看创建人自己的数据' }
+  ])
+  const indx = ref(null)
   const permissionData = ref([])
+
+  roleApis.getSetting().then(val => {
+    const i = val.data.userBaseAuth === '1' ? 0 : 1
+    indx.value = labelInfo.value[i]
+  })
 
   const handlePermission = data => {
     let count = 0

@@ -76,7 +76,7 @@ api.editSetting = data => {
 api.getSetting = params => {
   return request({
     method: 'GET',
-    url: `/role/config/${params}`
+    url: `/role/config/get`
   })
 }
 
