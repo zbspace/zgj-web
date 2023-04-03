@@ -283,7 +283,7 @@
         //   ]
         // },
         {
-          id: 'modifyDatetime',
+          id: 'relationFlow',
           label: '是否关联流程',
           type: 'select',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -296,7 +296,7 @@
               relationFlowLabel: '是'
             },
             {
-              relationFlow: '2',
+              relationFlow: '0',
               relationFlowLabel: '否'
             }
           ],
@@ -628,7 +628,7 @@
               relationFlowLabel: '是'
             },
             {
-              relationFlow: '2',
+              relationFlow: '0',
               relationFlowLabel: '否'
             }
           ],
