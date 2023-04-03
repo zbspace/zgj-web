@@ -254,7 +254,7 @@
           label: '操作',
           fixed: 'right',
           show: true,
-          'min-width': 250,
+          width: 350,
           rankDisplayData: [
             {
               name: '修改',
