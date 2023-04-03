@@ -1,7 +1,7 @@
 // api 全局配置
 import request from '@/utils/request'
 
-// 文件管理
+// 文件类型管理
 export const fileManageService = {
   /**
    * 文件类型集合（树形）
@@ -150,6 +150,18 @@ export const fileManageService = {
     return request({
       method: 'GET',
       url: `/fileTypePrivacyConfig/queryByType/${fileTypeId}`
+    })
+  },
+
+  /**
+   * 文件类型详情
+   * @param {*} bizType
+   * @returns
+   */
+  getFileTypeInfo: fileTypeId => {
+    return request({
+      method: 'GET',
+      url: `/fileType/info/${fileTypeId}`
     })
   }
 }

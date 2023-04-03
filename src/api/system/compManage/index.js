@@ -40,5 +40,13 @@ export const compManageService = {
       url: '/tenant/relatedCompany/update',
       data
     })
+  },
+
+  // 获取往来单位编码
+  getRelatedCompanyNo: () => {
+    return request({
+      method: 'GET',
+      url: `/tenant/relatedCompany/getRelatedCompanyNo`
+    })
   }
 }

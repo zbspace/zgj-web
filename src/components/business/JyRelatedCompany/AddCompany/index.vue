@@ -7,7 +7,7 @@
 !-->
 <template>
   <div class="add-company">
-    <JyDialog
+    <JyDialog2
       v-model="isVisible"
       :width="900"
       title="单位新增"
@@ -25,8 +25,8 @@
       >
         <el-row :gutter="20">
           <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-            <el-form-item label="单位编码" prop="tenantId">
-              <el-input v-model="formData.tenantId" disabled />
+            <el-form-item label="单位编码" prop="relatedCompanyNo">
+              <el-input v-model="formData.relatedCompanyNo" disabled />
             </el-form-item>
           </el-col>
           <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
@@ -54,7 +54,7 @@
 
         <el-form-item label="备注">
           <el-input
-            v-model="formData.remark"
+            v-model="formData.readme"
             maxlength="100"
             placeholder="请输入"
             show-word-limit
@@ -68,7 +68,7 @@
         <el-button type="primary" @click="submit">提交</el-button>
         <el-button @click="cancel">取消</el-button>
       </template>
-    </JyDialog>
+    </JyDialog2>
   </div>
 </template>
 
@@ -77,7 +77,7 @@
   import { compManageService } from '@/api/system/compManage'
   import { CompanyAddInfo } from '@/utils/domain/compManage'
   import { ElMessage } from 'element-plus'
-  import JyDialog from '@/components/common/JyDialog/index2.vue'
+  import JyDialog2 from '@/components/common/JyDialog/index2.vue'
 
   const formData = ref(new CompanyAddInfo())
   const formRef = ref(null)
@@ -142,9 +142,13 @@
     emit('update:modelValue', false)
   }
 
-  const opened = () => {
+  const opened = async () => {
     if (props.editInfo) {
       formData.value = { ...formData.value, ...props.editInfo }
+    }
+    if (!formData.value.relatedCompanyNo) {
+      const res = await compManageService.getRelatedCompanyNo()
+      formData.value.relatedCompanyNo = res.data
     }
   }
 

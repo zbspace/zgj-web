@@ -394,7 +394,7 @@
           show: true
         },
         {
-          prop: 'modifyDatetime',
+          prop: 'modifyDatetimeStr',
           label: '更新时间',
           width: 190,
           sortable: true,
