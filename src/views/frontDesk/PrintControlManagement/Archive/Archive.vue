@@ -330,7 +330,40 @@
     },
     componentsSearchForm: {
       data: searchFormJs.value.shallArchiveSearchForm,
-      hasUnfold: true
+      butData: [
+        {
+          id: 'more',
+          name: '展开',
+          type: 'unfold',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'primary'
+          },
+          style: {}
+        },
+        {
+          id: 'inquire',
+          name: 't-zgj-query',
+          label: '查询',
+          type: 'click',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'primary'
+          },
+          style: {}
+        },
+        {
+          id: 'reset',
+          name: 't-zgj-reset',
+          label: '重置',
+          type: 'click',
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            plain: true
+          },
+          style: {}
+        }
+      ]
     },
     componentsTable: {
       header: tableJson.value.shallArchive
