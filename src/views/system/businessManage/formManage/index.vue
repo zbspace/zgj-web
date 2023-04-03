@@ -375,7 +375,12 @@
         {
           prop: 'relationFlow',
           label: '是否关联流程',
-          'min-width': 150
+          'min-width': 150,
+          type: 'format',
+          statusList: [
+            { label: '是', key: '1' },
+            { label: '否', key: '0' }
+          ]
         },
         {
           prop: 'createUserName',
