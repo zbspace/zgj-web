@@ -56,4 +56,11 @@ api.detailRelatedCompany = relatedCompanyId => {
     url: `/tenant/relatedCompany/detail/${relatedCompanyId}`
   })
 }
+// 获取往来企业公司编码
+api.detailGetRelatedCompanyNo = relatedCompanyId => {
+  return request({
+    method: 'GET',
+    url: `/tenant/relatedCompany/getRelatedCompanyNo`
+  })
+}
 export default api

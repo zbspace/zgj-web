@@ -81,7 +81,7 @@
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
-      @confirmClick="confirmClick"
+      @confirmClick="confirmClick($t(state.JyElMessageBox.header.data))"
     >
       <template #header>
         <div class="header-div">
@@ -143,8 +143,10 @@
           defaultAttribute: {
             type: 'organ',
             placeholder: '+所属部门',
-            joinStr: ','
-          }
+            joinStr: ',',
+            multiple: true
+          },
+          values: []
         }
       ],
       butData: [
@@ -395,7 +397,7 @@
   }
   const confirmClick = data => {
     console.log(data)
-    delRows(state.JyElMessageBox.header.data)
+    delRows(data)
   }
   const delRows = delType => {
     console.log(state.relatedCompanyIds)

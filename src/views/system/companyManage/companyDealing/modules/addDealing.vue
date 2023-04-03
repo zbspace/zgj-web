@@ -47,17 +47,18 @@
             readonly
             v-model="state.componentsAddForm.formData.organName"
             placeholder="请选择"
+            @click="chooseOrgan('organId')"
           />
           <el-input
             type="hidden"
             v-model="state.componentsAddForm.formData.organId"
           ></el-input>
           <div class="ap-box-contBox-icon">
-            <el-icon
+            <!-- <el-icon
               v-if="state.componentsAddForm.formData.organId"
               @click="clear('organId')"
               ><CircleClose
-            /></el-icon>
+            /></el-icon> -->
             <img
               @click="chooseOrgan('organId')"
               class="ap-box-contBox-icon-img"
@@ -163,7 +164,9 @@
         contactInformation: [
           {
             required: true,
-            message: '请输入联系方式',
+            message: '请输入正确的手机号',
+            pattern:
+              /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/,
             trigger: 'change'
           }
         ]
@@ -195,10 +198,18 @@
               state.componentsAddForm.formData[i] = ''
             }
           }
+          detailGetRelatedCompanyNo()
         }
       }
     }
   )
+  const detailGetRelatedCompanyNo = () => {
+    api.detailGetRelatedCompanyNo().then(res => {
+      if (res.code === 200) {
+        state.componentsAddForm.formData.relatedCompanyNo = res.data
+      }
+    })
+  }
   const showDealingForm = computed({
     get() {
       return props.showAdd

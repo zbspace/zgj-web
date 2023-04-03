@@ -138,7 +138,7 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="兼职部门" prop="partTimeOrganNames">
+        <!-- <el-form-item label="兼职部门" prop="partTimeOrganNames">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
@@ -154,14 +154,43 @@
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
-              <!-- <el-icon
+              <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.partTimeOrganNames"
                 @click="clear('partTimeOrgan')"
                 ><CircleClose
-              /></el-icon> -->
+              /></el-icon>
               <img
                 @click="chooseOrgan('partTimeOrgan', true)"
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item> -->
+        <el-form-item label="兼职部门" prop="partTimeOrganIds">
+          <div class="ap-box-contBox">
+            <el-select
+              v-model="state.componentsAddForm.formData.partTimeOrganIds"
+              multiple
+              placeholder="请选择兼职部门"
+              style="width: 100%"
+              popper-class="hidePoper"
+              @click="chooseOrgan('partTimeOrgan', true)"
+            >
+              <el-option
+                v-for="one in state.tabSelects.partTimeOrgansSelected"
+                :key="one.value"
+                :label="one.label"
+                :value="one.value"
+              />
+            </el-select>
+            <div
+              class="ap-box-contBox-icon"
+              @click="chooseOrgan('partTimeOrgan', true)"
+            >
+              <img
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -458,7 +487,7 @@
       // 主管选中信息
       leaderUserSelected: [],
       // 兼职部门选中信息
-      partTimehostOrganSelected: []
+      partTimeOrgansSelected: []
     },
     JyElMessageBox: {
       show: false,
@@ -479,7 +508,7 @@
         userTel: '',
         hostOrganId: '',
         hostOrganName: '',
-        partTimeOrganNames: '',
+        partTimeOrganIds: [],
         partTimeOrgans: [],
         userTitle: '',
         userMail: '',
@@ -752,6 +781,9 @@
   // 新增员工
   const addStaff = () => {
     state.title = 't-zgj-add'
+    state.tabSelects.partTimeOrgansSelected = []
+    state.componentsAddForm.formData.partTimeOrganIds = []
+    state.componentsAddForm.formData.partTimeOrgans = []
     if (formStaffRef.value) {
       nextTick(() => {
         formStaffRef.value.resetFields()
@@ -771,9 +803,8 @@
       state.componentsAddForm.formData.hostOrganId = ''
     }
     if (type === 'partTimeOrgan') {
-      state.tabSelects.partTimehostOrganSelected = []
-      state.componentsAddForm.formData.partTimeOrgans = []
-      state.componentsAddForm.formData.partTimeOrganNames = ''
+      state.componentsAddForm.formData.partTimeOrganIds = []
+      state.tabSelects.partTimeOrgansSelected = []
     }
     if (type === 'roles') {
       state.tabSelects.rolesSelected = []
@@ -792,6 +823,7 @@
     depChoose.value = type
     state.multiple = multiple
     state.tabsShow = []
+    state.tabSelects.searchSelected = []
     if (depChoose.value === 'hostOrgan') {
       state.tabsShow = ['organ']
       state.tabSelects.searchSelected = state.tabSelects.hostOrganSelected
@@ -799,7 +831,20 @@
     if (depChoose.value === 'partTimeOrgan') {
       state.tabsShow = ['organ']
       state.tabSelects.searchSelected =
-        state.tabSelects.partTimehostOrganSelected
+        state.tabSelects.partTimeOrgansSelected.length > 0
+          ? state.tabSelects.partTimeOrgansSelected.map(i => {
+              return {
+                id: i.value,
+                name: i.label,
+                haveChildren: i.haveChildren,
+                type: 'organ'
+              }
+            })
+          : []
+      console.log(
+        'state.tabSelects.searchSelected',
+        state.tabSelects.searchSelected
+      )
     }
     if (depChoose.value === 'roles') {
       // selectRolesRef.value.blur()
@@ -821,23 +866,21 @@
       state.componentsAddForm.formData.hostOrganId = item[0].id
     }
     if (depChoose.value === 'partTimeOrgan') {
-      const organNames = []
-      const organs = []
+      state.tabSelects.partTimeOrgansSelected = []
+      state.componentsAddForm.formData.partTimeOrgans = []
       if (item.length > 0) {
-        item.forEach(el => {
-          const organ = {
-            organId: el.id,
-            organName: el.name,
-            haveChildren: el.haveChildren
+        state.tabSelects.partTimeOrgansSelected = item.map(i => {
+          return {
+            label: i.name,
+            value: i.id,
+            type: 'organ',
+            haveChildren: i.haveChildren
           }
-          organs.push(organ)
-          organNames.push(el.name)
         })
-
-        state.tabSelects.partTimehostOrganSelected = item
-        state.componentsAddForm.formData.partTimeOrgans = organs
-        state.componentsAddForm.formData.partTimeOrganNames =
-          organNames.join('、')
+        state.componentsAddForm.formData.partTimeOrganIds = item.map(i => {
+          return i.id
+        })
+        console.log(state.componentsAddForm.formData.partTimeOrganIds)
       }
     }
     if (depChoose.value === 'roles') {
@@ -974,7 +1017,9 @@
     state.componentsBatch.userIds = nameIdArr
     if (cell.name === 't-zgj-Edit') {
       state.title = 't-zgj-Edit'
-      showStaffDialog.value = true
+      state.componentsAddForm.formData.partTimeOrgans = []
+      state.componentsAddForm.formData.partTimeOrganIds = []
+      state.tabSelects.partTimeOrgansSelected = []
       api.userGet(column.userId).then(res => {
         console.log(res)
         state.tabSelects.leaderUserSelected = [
@@ -994,18 +1039,17 @@
         for (const item in res.data) {
           state.componentsAddForm.formData[item] = res.data[item]
           if (item === 'partTimeOrgans' && res.data[item].length > 0) {
-            const organs = []
-            res.data[item].forEach(item => {
-              organs.push(item.organName)
-              state.tabSelects.partTimehostOrganSelected.push({
-                id: item.organId,
-                name: item.organName,
-                haveChildren: item.haveChildren,
+            state.tabSelects.partTimeOrgansSelected = res.data[item].map(i => {
+              return {
+                value: i.organId,
+                label: i.organName,
+                haveChildren: i.haveChildren,
                 type: 'organ'
-              })
+              }
             })
-            state.componentsAddForm.formData.partTimeOrganNames =
-              organs.join('、')
+            state.componentsAddForm.formData.partTimeOrganIds = res.data[
+              item
+            ].map(i => i.organId)
           }
           if (item === 'roles' && res.data[item].length > 0) {
             const rolesNames = []
@@ -1026,6 +1070,7 @@
           state.componentsAddForm.formData
         )
       })
+      showStaffDialog.value = true
     }
     if (cell.name === 'status' && column.flag === '启用') {
       state.JyElMessageBox.header.data = 't-zgj-seal.deactivated'
@@ -1128,7 +1173,17 @@
     formStaffRef.value.validate(valid => {
       if (valid) {
         confirmLoading.value = true
-        console.log(state.componentsAddForm.formData)
+        state.componentsAddForm.formData.partTimeOrganIds.forEach(el => {
+          state.tabSelects.partTimeOrgansSelected.forEach(item => {
+            if (el === item.value) {
+              state.componentsAddForm.formData.partTimeOrgans.push({
+                organId: item.value,
+                organName: item.label,
+                haveChildren: item.haveChildren
+              })
+            }
+          })
+        })
         if (state.componentsAddForm.formData.userId) {
           submitEditStaff(state.componentsAddForm.formData)
         } else {
@@ -1155,9 +1210,7 @@
           // 角色选中信息
           rolesSelected: [],
           // 主管选中信息
-          leaderUserSelected: [],
-          // 兼职部门选中信息
-          partTimehostOrganSelected: []
+          leaderUserSelected: []
         }
       } else {
         confirmLoading.value = false
@@ -1182,7 +1235,7 @@
           // 主管选中信息
           leaderUserSelected: [],
           // 兼职部门选中信息
-          partTimehostOrganSelected: []
+          partTimeOrgansSelected: []
         }
       }
       confirmLoading.value = false
@@ -1205,6 +1258,75 @@
 <style lang="scss">
   .rankDisplayData {
     text-align: center;
+  }
+  .hidePoper {
+    display: none;
+  }
+  .el-divider {
+    margin: 8px 0 16px;
+  }
+  .hasContent {
+    .el-input__wrapper {
+      -webkit-text-fill-color: #000;
+    }
+
+    .el-input__inner {
+      -webkit-text-fill-color: #000;
+    }
+  }
+
+  .contentBoxes {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .xian {
+      color: rgba($color: #000000, $alpha: 0.45);
+      font-size: 12px;
+    }
+  }
+
+  .ap-box-contBox {
+    width: calc(100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .el-input__suffix {
+      display: none;
+    }
+
+    .el-select .el-input.is-disabled .el-input__wrapper {
+      cursor: pointer;
+    }
+
+    .el-select .el-input.is-disabled .el-input__inner {
+      cursor: pointer;
+    }
+
+    .el-input.is-disabled .el-input__wrapper {
+      background-color: #ffffff;
+    }
+
+    .ap-box-contBox-icon {
+      position: absolute;
+      right: 0.8rem;
+      cursor: pointer;
+      height: 14px;
+      display: flex;
+      align-items: center;
+
+      .ap-box-contBox-icon-img {
+        height: 100%;
+      }
+    }
+
+    :deep {
+      .el-input__inner {
+        padding-right: 1.5rem;
+        box-sizing: border-box;
+      }
+    }
   }
 </style>
 <style lang="scss" scoped>
