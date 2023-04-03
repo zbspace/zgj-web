@@ -149,7 +149,12 @@
         </div>
         <div class="fixed" v-if="step === 'two'">
           <div class="ap-fixed">
-            <el-button type="primary" @click="clickSubmit">提交</el-button>
+            <el-button
+              type="primary"
+              :loading="submitLoading"
+              @click="clickSubmit"
+              >提交</el-button
+            >
             <el-button @click="clickPrevious">上一步</el-button>
             <el-button class="ap-fixed-save">
               <span class="ap-fixed-save-text"> 保存模板 </span>
@@ -193,6 +198,7 @@
   const sealUseTypeId = ref(null)
   const formVersionId = ref(router.currentRoute.value.query.formVersionId)
   const flowVersionId = ref(null)
+  const submitLoading = ref(false)
   // const emit = defineEmits([])
   const state = reactive({
     cache: {
@@ -396,8 +402,9 @@
         flowMessageId: flowMessageId.value
       }
     }
+    submitLoading.value = true
     sealApply.submit(params).then(res => {
-      console.log(res)
+      // console.log(res)
       sealApply
         .add({
           formMessageId: router.currentRoute.value.params.id,
@@ -418,6 +425,9 @@
               applyNo: state.cache.formData.applyNo
             }
           })
+        })
+        .finally(() => {
+          submitLoading.value = false
         })
     })
   }

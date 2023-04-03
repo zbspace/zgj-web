@@ -174,18 +174,27 @@
       handleSelectedChangeByAll(attr, val)
       return
     }
-    if (selectedData.value.length > 0 && !props.multiple) {
+    if (
+      selectedData.value.length > 0 &&
+      !props.multiple &&
+      selectedData.value[0].id !== attr.id
+    ) {
       ElMessage.warning('只能选择1个人员')
       return
     }
     // 判断限制人数 - part
     if (
+      selectedData.value.length > 0 &&
       props.max &&
       selectedData.value.length + 1 > props.max &&
       props.multiple
     ) {
-      ElMessage.warning(`只能选择${props.max}个人员`)
-      return
+      // 排除已经选中后 取消
+      const i = selectedData.value.findIndex(item => item.id === attr.id)
+      if (i === -1 || i === '-1') {
+        ElMessage.warning(`只能选择${props.max}个人员`)
+        return
+      }
     }
     handleRootChangeByPart(attr, val)
     handleSelectedChangeByPart(attr, val)

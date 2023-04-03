@@ -21,6 +21,7 @@
           <el-radio-group
             v-model="fieldModel.timeLimit"
             @change="handleChangeEvent($event, 'timeLimit')"
+            :disabled="field.options.disabled"
           >
             <el-radio
               v-for="(item, index) in field.options.optionItems"

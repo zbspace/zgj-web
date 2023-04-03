@@ -302,13 +302,13 @@
           }
         } else {
           if (item === 'user') {
-            newStr = newStr + ' / ' + i18n.global.t('t-zgj-sync.Person')
+            newStr = newStr + '/' + i18n.global.t('t-zgj-sync.Person')
           }
           if (item === 'organ') {
-            newStr = newStr + ' / ' + i18n.global.t('t-zgj-sync.Department')
+            newStr = newStr + '/' + i18n.global.t('t-zgj-sync.Department')
           }
           if (item === 'role') {
-            newStr = newStr + ' / ' + i18n.global.t('t-zgj-person.Role')
+            newStr = newStr + '/' + i18n.global.t('t-zgj-person.Role')
           }
         }
       })

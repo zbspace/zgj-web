@@ -283,7 +283,7 @@
         //   ]
         // },
         {
-          id: 'modifyDatetime',
+          id: 'relationFlow',
           label: '是否关联流程',
           type: 'select',
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
@@ -296,7 +296,7 @@
               relationFlowLabel: '是'
             },
             {
-              relationFlow: '2',
+              relationFlow: '0',
               relationFlowLabel: '否'
             }
           ],
@@ -358,36 +358,47 @@
           label: '表单名称',
           sortable: true,
           'min-width': 150,
-          fixed: true
+          fixed: 'left',
+          show: true
         },
         {
           prop: 'applyTypeName',
           label: '业务类型',
           sortable: true,
-          'min-width': 150
+          'min-width': 150,
+          show: true
         },
         {
           prop: 'sealUseTypeName',
           label: '用印类型',
           sortable: true,
-          'min-width': 150
+          'min-width': 150,
+          show: true
         },
         {
           prop: 'relationFlow',
           label: '是否关联流程',
-          'min-width': 150
+          'min-width': 150,
+          type: 'format',
+          statusList: [
+            { label: '是', key: '1' },
+            { label: '否', key: '0' }
+          ],
+          show: true
         },
         {
           prop: 'createUserName',
           label: '创建人',
           sortable: true,
-          'min-width': 150
+          'min-width': 150,
+          show: true
         },
         {
           prop: 'modifyDatetime',
           label: '更新时间',
           width: 190,
-          sortable: true
+          sortable: true,
+          show: true
         },
 
         {
@@ -406,7 +417,8 @@
             {
               name: 't-zgj-qyWechat.Copy'
             }
-          ]
+          ],
+          show: true
         }
       ]
     },
@@ -616,7 +628,7 @@
               relationFlowLabel: '是'
             },
             {
-              relationFlow: '2',
+              relationFlow: '0',
               relationFlowLabel: '否'
             }
           ],
