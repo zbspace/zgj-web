@@ -178,6 +178,9 @@
               placeholder="请选择兼职部门"
               style="width: 100%"
               popper-class="hidePoper"
+              collapse-tags
+              collapse-tags-tooltip
+              :max-collapse-tags="5"
               @click="chooseOrgan('partTimeOrgan', true)"
             >
               <el-option
@@ -722,7 +725,6 @@
     }
   })
   function loadFn(node, resolve) {
-    console.log(node.level)
     if (node.level === 0) {
       firstNode.value = node
       department
@@ -795,30 +797,6 @@
       formStaffRef.value.resetFields()
     })
   }
-  // 清除部门信息
-  const clear = type => {
-    console.log('type', type)
-    if (type === 'hostOrgan') {
-      state.tabSelects.hostOrganSelected = []
-      state.componentsAddForm.formData.hostOrganName = ''
-      state.componentsAddForm.formData.hostOrganId = ''
-    }
-    if (type === 'partTimeOrgan') {
-      state.componentsAddForm.formData.partTimeOrganIds = []
-      state.tabSelects.partTimeOrgansSelected = []
-    }
-    if (type === 'roles') {
-      state.tabSelects.rolesSelected = []
-      state.componentsAddForm.formData.roleIds = []
-      state.componentsAddForm.formData.roles = []
-    }
-    if (type === 'leaderUser') {
-      state.tabSelects.leaderUserSelected = []
-      state.componentsAddForm.formData.leaderUserId = ''
-      state.componentsAddForm.formData.leaderUserName = ''
-    }
-  }
-  const selectRolesRef = ref(null)
   // 选择部门弹窗
   const chooseOrgan = (type, multiple) => {
     depChoose.value = type
@@ -866,7 +844,6 @@
   }
   // 获取部门
   const submitSelectDepart = item => {
-    console.log(item)
     if (depChoose.value === 'hostOrgan') {
       state.tabSelects.hostOrganSelected = item
       state.componentsAddForm.formData.hostOrganName = item[0].name
@@ -887,7 +864,6 @@
         state.componentsAddForm.formData.partTimeOrganIds = item.map(i => {
           return i.id
         })
-        console.log(state.componentsAddForm.formData.partTimeOrganIds)
       }
     }
     if (depChoose.value === 'roles') {
@@ -934,8 +910,6 @@
   // 批量操作
   const clickBatchButton = (item, selection) => {
     const list = (state.componentsBatch.selectionData = selection)
-    console.log('list', list)
-    console.log(list[0])
     let nameList = ''
     const nameArr = []
     const nameIdArr = []
@@ -970,11 +944,8 @@
   }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row)
-    console.log('column', column)
     if (column.property === 'userName') {
       api.userGet(row.userId).then(res => {
-        console.log(res)
         if (res.code === 200) {
           const partTimeOrgans = []
           const roles = []
@@ -1017,7 +988,6 @@
   }
   const customClick = (row, column, cell, event) => {
     const nameIdArr = []
-    console.log(column)
     nameIdArr.push(column.userId)
     state.componentsBatch.userIds = nameIdArr
     if (cell.name === 't-zgj-Edit') {
@@ -1029,7 +999,6 @@
       state.tabSelects.rolesSelected = []
       state.tabSelects.partTimeOrgansSelected = []
       api.userGet(column.userId).then(res => {
-        console.log(res)
         state.tabSelects.leaderUserSelected = [
           {
             id: res.data.leaderUserId,
@@ -1109,10 +1078,8 @@
   }
   // 提交弹窗
   const submitElMessageBox = type => {
-    console.log(state.componentsBatch.userIds)
     if (type === '停用') {
       api.userDisable(state.componentsBatch.userIds[0]).then(res => {
-        console.log(res)
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
           state.JyElMessageBox.show = false
@@ -1122,7 +1089,6 @@
     }
     if (type === '启用') {
       api.userEnable(state.componentsBatch.userIds[0]).then(res => {
-        console.log(res)
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
           state.JyElMessageBox.show = false
@@ -1131,9 +1097,7 @@
       })
     }
     if (type === '删除') {
-      console.log(state.componentsBatch.userIds[0])
       api.userDelete(state.componentsBatch.userIds[0]).then(res => {
-        console.log(res)
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
           state.JyElMessageBox.show = false
