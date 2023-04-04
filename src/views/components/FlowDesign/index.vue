@@ -7,12 +7,7 @@
       @upgrade="designUpgrade"
       style="background: #ffffff !important"
     /> -->
-    <FlowDesign
-      ref="flowDesign"
-      top="100"
-      v-bind="props.defaultAttribute"
-      v-loading="loading"
-    />
+    <FlowDesign ref="flowDesign" top="100" v-bind="props.defaultAttribute" />
   </div>
 </template>
 
@@ -26,11 +21,6 @@
   // 子组件
   const flowDesign = ref(null)
   const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    },
     // 默认属性
     defaultAttribute: {
       type: Object,
@@ -52,7 +42,6 @@
   }
 
   onMounted(() => {
-    // 加载完成后回调
     flowStore.initFreeFlow(props.initObj.modelId, props.initObj.definitionId)
     flowDesign.value.handleSetData({})
   })
@@ -100,6 +89,7 @@
         node
       }
       if (type !== 'designModel') {
+        console.log('修改时的id', params.modelId, params.definitionId)
         // 修改
         ModelApi.updateDesignUpgrade(params).then(() => {
           loading.value = false

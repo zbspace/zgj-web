@@ -148,9 +148,9 @@
     menusInfoStore.menus = menus
   }
 
-  // const handleSelect = url => {
-  //   activeMenu.value = url
-  // }
+  const handleSelect = url => {
+    // activeMenu.value = url
+  }
 
   initData()
 

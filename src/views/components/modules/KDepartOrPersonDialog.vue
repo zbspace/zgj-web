@@ -439,7 +439,7 @@
       const userid = selectedUser.value.map(item => item.id)
       const organsid = selectedDepart.value.map(item => {
         return {
-          includeChild: item.includeChild ? '1' : '0',
+          includeChild: item.includeChild,
           id: item.id
         }
       })
