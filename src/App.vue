@@ -24,6 +24,8 @@
   node.style.setProperty('--jy-primary-1', hoverBgColor)
   node.style.setProperty('--jy-primary-9', hoverBgColor1)
   node.style.setProperty('--jy-primary-4', activeBgColor)
+  node.style.setProperty('--jy-primary-11', color.isDark() ? '#fff' : '#000')
+  node.style.setProperty('--jy-primary-3', value)
 </script>
 
 <script>
