@@ -153,8 +153,12 @@
       handleSelectedChangeByAll(attr, val)
       return
     }
-    if (selectedData.value.length > 0 && !props.multiple) {
-      ElMessage.warning('只能选择一个信息')
+    if (
+      selectedData.value.length > 0 &&
+      !props.multiple &&
+      selectedData.value[0].fileTypeId !== attr.fileTypeId
+    ) {
+      ElMessage.warning('只能选择一个文件类型')
       return
     }
     handleRootChangeByPart(attr, val)
@@ -326,7 +330,6 @@
       // 处理面包屑 - 递归展示
       const result = handleCurmbs(cacheRootLists.value, attr.fileTypeId)
       curmbs.value = result
-      console.log(treeColumnData.data, '123')
 
       return
     }

@@ -441,6 +441,7 @@
       })
     } else if (props.openType === 'edit') {
       ModelApi.detail({ modelId: props.editModleIds.modelId }).then(res => {
+        // flowStore.setModelId(props.editModleIds.modelId, res.definitionId)
         apiFlow
           .flowEdit({
             ...params,
