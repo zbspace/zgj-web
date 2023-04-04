@@ -1024,6 +1024,9 @@
       state.title = 't-zgj-Edit'
       state.componentsAddForm.formData.partTimeOrgans = []
       state.componentsAddForm.formData.partTimeOrganIds = []
+      state.componentsAddForm.formData.roleIds = []
+      state.componentsAddForm.formData.roles = []
+      state.tabSelects.rolesSelected = []
       state.tabSelects.partTimeOrgansSelected = []
       api.userGet(column.userId).then(res => {
         console.log(res)
@@ -1052,11 +1055,17 @@
                 type: 'organ'
               }
             })
+            state.tabSelects.partTimeOrgansSelected = arrNodup(
+              state.tabSelects.partTimeOrgansSelected
+            )
             state.componentsAddForm.formData.partTimeOrganIds = res.data[
               item
             ].map(i => i.organId)
           }
           if (item === 'roles' && res.data[item].length > 0) {
+            state.tabSelects.rolesSelected = arrNodup(
+              state.tabSelects.rolesSelected
+            )
             state.tabSelects.rolesSelected = res.data[item].map(i => {
               return {
                 value: i.roleId,
@@ -1069,10 +1078,6 @@
             )
           }
         }
-        console.log(
-          'state.componentsAddForm.formData',
-          state.componentsAddForm.formData
-        )
       })
       showStaffDialog.value = true
     }
@@ -1178,6 +1183,12 @@
       if (valid) {
         confirmLoading.value = true
         state.componentsAddForm.formData.partTimeOrgans = []
+        state.tabSelects.partTimeOrgansSelected = arrNodup(
+          state.tabSelects.partTimeOrgansSelected
+        )
+        state.tabSelects.rolesSelected = arrNodup(
+          state.tabSelects.rolesSelected
+        )
         state.componentsAddForm.formData.partTimeOrganIds.forEach(el => {
           state.tabSelects.partTimeOrgansSelected.forEach(item => {
             if (el === item.value) {
@@ -1210,6 +1221,15 @@
         // confirmLoading.value = false
       }
     })
+  }
+  // 数组去重
+  const arrNodup = arr => {
+    const map = new Map()
+    for (const item of arr) {
+      map.set(item.value, item)
+    }
+    arr = [...map.values()]
+    return arr
   }
   const submitAddStaff = data => {
     api.userAdd(state.componentsAddForm.formData).then(res => {

@@ -228,6 +228,7 @@
                   readonly
                   v-model="state.form.subOrganName"
                   placeholder="请选择所属单位"
+                  @click="chooseOrgan('subOrgan', ['organ'], false)"
                 />
                 <el-input
                   class="ap-box-contBox-input width-100"
@@ -236,13 +237,13 @@
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon">
-                  <el-icon
+                  <!-- <el-icon
                     v-if="state.form.subOrganName"
                     style="margin-right: 5px"
                     color="#aaaaaa"
                     @click="clear('subOrgan')"
                     ><CircleClose
-                  /></el-icon>
+                  /></el-icon> -->
                   <img
                     @click="chooseOrgan('subOrgan', ['organ'], false)"
                     class="ap-box-contBox-icon-img"
@@ -264,6 +265,7 @@
                   readonly
                   v-model="state.form.keepUserName"
                   placeholder="请选择保管人"
+                  @click="chooseOrgan('keepUser', ['user'], false)"
                 />
                 <el-input
                   class="ap-box-contBox-input width-100"
@@ -272,11 +274,11 @@
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon" v-if="!state.form.sealId">
-                  <el-icon
+                  <!-- <el-icon
                     v-if="state.form.keepUserName"
                     @click="clear('keepUser')"
                     ><CircleClose
-                  /></el-icon>
+                  /></el-icon> -->
                   <img
                     @click="chooseOrgan('keepUser', ['user'], false)"
                     class="ap-box-contBox-icon-img"
@@ -289,34 +291,6 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="保管部门" prop="keepOrganId">
-              <!-- <div class="select-box-contBox">
-                <el-input
-                  class="ap-box-contBox-input width-100"
-                  readonly
-                  v-model="state.form.keepOrganName"
-                  placeholder="请选择"
-                />
-                <el-input
-                  class="ap-box-contBox-input width-100"
-                  type="hidden"
-                  v-model="state.form.keepOrganId"
-                  placeholder="请选择"
-                />
-                <div class="ap-box-contBox-icon">
-                  <el-icon
-                    v-if="state.form.keepOrganName"
-                    style="margin-right: 5px"
-                    color="#aaaaaa"
-                    @click="clear('keepOrgan')"
-                    ><CircleClose
-                  /></el-icon>
-                  <img
-                    @click="chooseOrgan('keepOrgan', ['organ'], false)"
-                    class="ap-box-contBox-icon-img"
-                    src="@/assets/svg/ketanchude.svg"
-                  />
-                </div>
-              </div> -->
               <el-select
                 v-model="state.form.keepOrganId"
                 placeholder="请选择保管部门"
