@@ -14,6 +14,7 @@
   const layoutStore = useLayoutStore()
   const value = layoutStore.customColor
   const color = new TinyColor(value)
+  const activeBgColor = color.mix(color, 20).toString()
   layoutStore.customColor = value
   const hoverBgColor = color.tint(30).toString()
   const hoverBgColor1 = color.tint(90).toString()
@@ -22,6 +23,7 @@
   node.style.setProperty('--jy-primary-5', hoverBgColor)
   node.style.setProperty('--jy-primary-1', hoverBgColor)
   node.style.setProperty('--jy-primary-9', hoverBgColor1)
+  node.style.setProperty('--jy-primary-4', activeBgColor)
 </script>
 
 <script>

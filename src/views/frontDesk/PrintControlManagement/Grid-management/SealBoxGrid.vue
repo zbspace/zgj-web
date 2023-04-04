@@ -375,7 +375,7 @@
           width: 118px;
           height: 36px;
           color: #ffffff;
-          background: #d0963e;
+          background: var(--jy-primary-6);
           border-radius: 4px;
           text-align: center;
           line-height: 36px;

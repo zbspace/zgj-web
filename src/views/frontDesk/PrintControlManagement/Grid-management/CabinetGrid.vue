@@ -677,7 +677,7 @@
           width: 118px;
           height: 36px;
           color: #ffffff;
-          background: #d0963e;
+          background: var(--jy-primary-6);
           border-radius: 4px;
           text-align: center;
           line-height: 36px;
@@ -771,7 +771,7 @@
 
       .selected {
         background: #ffffff;
-        color: #d0963e;
+        color: var(--jy-primary-6);
       }
     }
   }
@@ -1003,8 +1003,8 @@
             font-size: 14px;
             font-family: PingFang SC;
             font-weight: normal;
-            color: #d0963e;
-            border: 1px solid #d0963e;
+            color: var(--jy-primary-6);
+            border: 1px solid var(--jy-primary-6);
             // background-image: url('../../assets/image/bindseal-bg.png');
             background-size: 100% auto;
             background-repeat: no-repeat;
@@ -1016,7 +1016,7 @@
           }
 
           > .openLock {
-            background: #d0963e;
+            background: var(--jy-primary-6);
             color: #ffffff;
             font-size: 14px;
             margin-bottom: 16px;

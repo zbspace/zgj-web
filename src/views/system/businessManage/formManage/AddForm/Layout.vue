@@ -209,14 +209,14 @@
             }
           }
           .checked-tabs {
-            border-bottom: 2px solid #d0963e;
+            border-bottom: 2px solid var(--jy-primary-6);
             .tabs-icon {
-              background-color: #d0963e;
-              border: 1px solid #d0963e;
+              background-color: var(--jy-primary-6);
+              border: 1px solid var(--jy-primary-6);
               color: #ffffff;
             }
             .tabs-text {
-              color: #d0963e;
+              color: var(--jy-primary-6);
             }
           }
         }

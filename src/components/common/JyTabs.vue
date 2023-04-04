@@ -66,8 +66,8 @@
     }
 
     .actived {
-      color: #d0963e;
-      border-bottom: 2px solid #d0963e;
+      color: var(--jy-primary-6);
+      border-bottom: 2px solid var(--jy-primary-6);
     }
   }
   .tabs-border {

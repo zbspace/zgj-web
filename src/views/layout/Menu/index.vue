@@ -225,7 +225,8 @@
       // 侧边栏折叠动画速度
       border-right: none;
       .el-menu-item.is-active {
-        background: rgba(208, 150, 62, 0.12);
+        // background: rgba(208, 150, 62, 0.12);
+        background-color: var(--jy-primary-9);
         border-left: 4px solid var(--jy-primary-6);
         span,
         .iconpark-icon {
@@ -268,7 +269,8 @@
         }
         &:hover {
           border-left: 4px solid var(--jy-primary-6);
-          background: rgba(208, 150, 62, 0.12);
+          // background: rgba(208, 150, 62, 0.12);
+          background-color: var(--jy-primary-9);
           transition: none;
           span,
           .iconpark-icon {
@@ -291,7 +293,8 @@
           }
           &:hover {
             border-left: 4px solid var(--jy-primary-6);
-            background: rgba(208, 150, 62, 0.12);
+            // background: rgba(208, 150, 62, 0.12);
+            background-color: var(--jy-primary-9);
             transition: none;
             span,
             .iconpark-icon {

@@ -477,7 +477,7 @@
       border-radius: 2px;
       & .active,
       &:hover {
-        background: #d0963e;
+        background: var(--jy-primary-6);
         color: #fff;
       }
     }

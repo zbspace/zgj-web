@@ -159,16 +159,22 @@
     }
   }
 
+  const darken = (color, amount = 20) => {
+    return color.mix('#141414', amount).toString()
+  }
+
   const colorChange = value => {
     const color = new TinyColor(value)
     layoutStore.customColor = value
     const hoverBgColor = color.tint(30).toString()
     const hoverBgColor1 = color.tint(90).toString()
+    const activeBgColor = darken(color, 20)
     const node = document.getElementsByTagName('body')[0]
     node.style.setProperty('--jy-primary-6', value)
     node.style.setProperty('--jy-primary-5', hoverBgColor)
     node.style.setProperty('--jy-primary-1', hoverBgColor)
     node.style.setProperty('--jy-primary-9', hoverBgColor1)
+    node.style.setProperty('--jy-primary-4', activeBgColor)
     // node.style.setProperty('--jy-color-text-1', value)
     // node.style.setProperty(
     //   '--jy-color-text-1',
@@ -190,7 +196,7 @@
 <style lang="scss">
   .right-bar {
     .el-drawer__header {
-      background-color: #d0963e;
+      background-color: var(--jy-primary-6);
       height: 50px;
       display: flex;
       align-items: center;

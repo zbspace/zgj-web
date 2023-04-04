@@ -97,7 +97,7 @@
       }
       .sum {
         font-size: 28px;
-        color: #d0963e;
+        color: var(--jy-primary-6);
       }
 
       .unit {
@@ -150,7 +150,7 @@
           font-weight: 400;
           font-size: 14px;
           line-height: 22px;
-          color: #d0963e;
+          color: var(--jy-primary-6);
           margin-right: 5px;
         }
       }

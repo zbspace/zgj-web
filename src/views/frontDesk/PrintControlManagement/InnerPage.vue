@@ -100,7 +100,7 @@
           left: -12px;
           width: 2px;
           height: 20px;
-          background: #d0963e;
+          background: var(--jy-primary-6);
         }
       }
     }
@@ -117,7 +117,7 @@
 
     .confirm {
       color: #ffffff;
-      background: #d0963e;
+      background: var(--jy-primary-6);
     }
 
     .confirm:hover {

@@ -51,7 +51,7 @@
 
       .shadow-c {
         box-shadow: 0 0 0 8px rgba($color: #e2b062, $alpha: 0.3);
-        background: #d0963e;
+        background: var(--jy-primary-6);
       }
       .no-shadow {
         background: #c0c4cc;
@@ -75,7 +75,7 @@
         }
 
         .l-s-color {
-          color: #d0963e;
+          color: var(--jy-primary-6);
         }
 
         .l-n-s-color {
@@ -91,7 +91,7 @@
       }
 
       .line-select {
-        background: #d0963e;
+        background: var(--jy-primary-6);
       }
 
       .line-n-select {

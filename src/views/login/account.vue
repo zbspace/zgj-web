@@ -362,7 +362,7 @@
           }
 
           .selected-toop {
-            color: #d0963e;
+            color: var(--jy-primary-6);
             .icon {
               background: url(../../assets/images/login/phone_icon_hover.png)
                 no-repeat center center;
@@ -475,12 +475,12 @@
           }
 
           .open-toop {
-            color: #d0963e;
-            border: 1px solid #d0963e;
+            color: var(--jy-primary-6);
+            border: 1px solid var(--jy-primary-6);
 
             &::after {
               top: 60%;
-              border-top: 6px solid rgba($color: #d0963e, $alpha: 0.8);
+              border-top: 6px solid rgba($color: var(--jy-primary-6), $alpha: 0.8);
               border-bottom: 6px solid transparent;
             }
           }
@@ -530,7 +530,7 @@
               text-align: center;
               &:hover {
                 border-radius: 4px;
-                color: #d0963e;
+                color: var(--jy-primary-6);
               }
             }
           }
@@ -577,7 +577,7 @@
           min-width: 127px;
           // padding: 0 4px;
           height: 50px;
-          background: #d0963e;
+          background: var(--jy-primary-6);
           box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.12);
           border-radius: 2px;
 
@@ -591,7 +591,7 @@
             height: 0;
             border-radius: 2px;
             border-right: 10px solid transparent;
-            border-left: 10px solid #d0963e;
+            border-left: 10px solid var(--jy-primary-6);
             border-top: 10px solid transparent;
             border-bottom: 10px solid transparent;
           }
@@ -754,7 +754,7 @@
             svg {
               position: relative;
               left: -80px;
-              filter: drop-shadow(#d0963e 80px 0);
+              filter: drop-shadow(var(--jy-primary-6) 80px 0);
             }
           }
         }

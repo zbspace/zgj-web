@@ -369,7 +369,7 @@
           border-radius: 2px;
           text-align: center;
           line-height: 44px;
-          background: #d0963e;
+          background: var(--jy-primary-6);
           margin-left: 10px;
         }
       }
@@ -426,7 +426,7 @@
         border-radius: 2px;
         text-align: center;
         line-height: 44px;
-        background: #d0963e;
+        background: var(--jy-primary-6);
       }
     }
   }

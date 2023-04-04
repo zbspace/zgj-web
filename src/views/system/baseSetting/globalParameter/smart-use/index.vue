@@ -276,7 +276,7 @@ const onSubmit = () => {
         left: -10px;
         width: 3px;
         height: 20px;
-        background: #D0963E;
+        background: var(--jy-primary-6);
       }
     }
 

@@ -248,7 +248,7 @@
   }
   .ant-btn:hover,
   .ant-btn:focus {
-    color: #d0963e;
-    border-color: #d0963e;
+    color: var(--jy-primary-6);
+    border-color: var(--jy-primary-6);
   }
 </style>

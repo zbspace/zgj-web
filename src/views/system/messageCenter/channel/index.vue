@@ -182,14 +182,14 @@
         }
 
         .l-column:hover {
-          background: #d0963e;
+          background: var(--jy-primary-6);
           border-radius: 2px;
           cursor: pointer;
           color: #ffffff;
         }
 
         .l-actived {
-          background: #d0963e;
+          background: var(--jy-primary-6);
           border-radius: 2px;
           color: #ffffff;
         }

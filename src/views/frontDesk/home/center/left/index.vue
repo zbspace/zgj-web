@@ -62,9 +62,9 @@
 
         span {
           padding: 0 5px;
-          border: 1px solid #d0963e;
+          border: 1px solid var(--jy-primary-6);
           border-radius: 4px;
-          color: #d0963e;
+          color: var(--jy-primary-6);
           display: flex;
           align-items: center;
           cursor: pointer;

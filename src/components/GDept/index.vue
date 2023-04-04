@@ -241,6 +241,6 @@
     }
   }
   .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
-    border-color: #d0963e !important;
+    border-color: var(--jy-primary-6) !important;
   }
 </style>
