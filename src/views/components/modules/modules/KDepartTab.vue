@@ -69,7 +69,7 @@
 <script setup>
   /**
    * selectedStatus 0(未选中) 2（全部）
-   * includeChild 向下包含 Boolean
+   * includeChild 向下包含 String 0 \1
    * apiModule: api对应的模块
    * initQueryParams 初始化参数
    * selectedDepart 选中项
@@ -344,7 +344,7 @@
       // 取消状态 - 特殊情况 包含状态 且 root树已加载
       function cancelIsChildrenStatus(data) {
         data.forEach(item => {
-          if (item.id === attr.id && includeChild) {
+          if (item.id === attr.id && includeChild === '1') {
             function innerChange(lists) {
               lists.forEach(key => {
                 key.selectedStatus = 0
@@ -454,7 +454,8 @@
       const res = result.data
       res.forEach(item => {
         item.selectedStatus = 0
-        item.includeChild = !!item.includeChild
+        item.includeChild =
+          typeof item.includeChild !== 'string' ? '0' : item.includeChild
         item.disabled = !!item.disabled
       })
       // 展示时，需要对比右侧选择状态
@@ -492,7 +493,7 @@
           // 向下包含反选
           if (
             item.idFullPathSet.includes(val.id) &&
-            val.includeChild &&
+            val.includeChild === '1' &&
             item.id !== val.id
           ) {
             item.disabled = true
@@ -542,9 +543,9 @@
       if (item.id === attr.id) {
         item.selectedStatus = 0
         item.disabled = false
-        item.includeChild = false
+        item.includeChild = '0'
       }
-      if (item.idFullPathSet.includes(attr.id) && attr.includeChild) {
+      if (item.idFullPathSet.includes(attr.id) && attr.includeChild === '1') {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -564,6 +565,7 @@
       }
     })
   }
+
   // 取消选中项
   const concelSelected = attr => {
     // 删除右侧选择项
@@ -576,7 +578,7 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (item.idFullPathSet.includes(attr.id) && attr.includeChild) {
+      if (item.idFullPathSet.includes(attr.id) && attr.includeChild === '1') {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -586,12 +588,13 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (item.idFullPathSet.includes(attr.id) && attr.includeChild) {
+      if (item.idFullPathSet.includes(attr.id) && attr.includeChild === '1') {
         item.selectedStatus = 0
         item.disabled = false
       }
     })
   }
+
   const handleChangeIncluded1 = (status, attr) => {
     // 1.是否有children
     if (!attr.haveChildren) {
@@ -611,6 +614,7 @@
       item => !aplication.value.includes(item.id)
     )
   }
+
   // 清空选中项
   const clearSelected = () => {
     selectedData.value = []
@@ -622,8 +626,8 @@
   const changeChildrenAllStatus = (data, switchStatus) => {
     if (!Array.isArray(data) || data.length === 0) return
     data.forEach(item => {
-      item.selectedStatus = switchStatus ? 2 : 0
-      item.disabled = switchStatus
+      item.selectedStatus = switchStatus === '1' ? 2 : 0
+      item.disabled = switchStatus === '1'
       if (item.children && item.children.length > 0) {
         return changeChildrenAllStatus(item.children, switchStatus)
       }

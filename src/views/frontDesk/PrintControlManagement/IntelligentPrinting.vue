@@ -79,7 +79,6 @@
       :queryParams="queryParams"
       :tabsShow="tabsShow"
       :activeTab="activeTab"
-      :apiModule="apiModule"
       v-if="showDepPerDialog"
     >
     </kDepartOrPersonVue>
@@ -536,7 +535,6 @@
   const queryParams = ref({ roleId: 'r1' })
   const tabsShow = ref(['organ', 'user'])
   const activeTab = ref('user')
-  const apiModule = ref('systemOrganOrPerson')
   // 测试权限弹框 ↑
   const goInnerPage = (path, params) => {
     const routeObj = { path }

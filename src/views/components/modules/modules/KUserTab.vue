@@ -564,69 +564,9 @@
     clearAllStatus(cacheRootLists.value)
   }
 
-  const changeChildrenAllStatus = (data, switchStatus) => {
-    if (!Array.isArray(data) || data.length === 0) return
-    data.forEach(item => {
-      item.selectedStatus = switchStatus ? 2 : 0
-      item.disabled = switchStatus
-      if (item.children && item.children.length > 0) {
-        return changeChildrenAllStatus(item.children, switchStatus)
-      }
-    })
-  }
-
-  // 监听 向下包含 切换
-  const changeSwitch = (switchStatus, attr) => {
-    // 处理选中值
-    handleChangeIncluded(switchStatus, attr)
-
-    // 处理树状态
-    function recursionData(data, id) {
-      if (!Array.isArray(data) || data.length === 0) return
-      data.forEach(item => {
-        if (item.id === id) {
-          // 向下包含
-          changeChildrenAllStatus(item.children, switchStatus)
-        }
-        if (item.children && item.children.length > 0) {
-          return recursionData(item.children, id)
-        }
-      })
-    }
-
-    recursionData(cacheRootLists.value, attr.id)
-
-    // 处理展示状态
-    function recursionTreeData(data, id) {
-      if (!Array.isArray(data) || data.length === 0) return
-      data.forEach(item => {
-        if (item.id === id) {
-          treeColumnData.data = item.children
-        }
-        if (item.children && item.children.length > 0) {
-          return recursionTreeData(item.children, id)
-        }
-      })
-    }
-    // 重置 treeColumnData
-    const pid = treeColumnData.data[0].pid
-    recursionTreeData(cacheRootLists.value, pid)
-  }
-
-  const handleChangeIncluded = (status, attr) => {
-    // 1.是否有children
-    if (!attr.haveChildren) return false
-    const aplication = ref([])
-
-    selectedData.value = selectedData.value.filter(
-      item => !aplication.value.includes(item.id)
-    )
-  }
-
   defineExpose({
     concelSelected,
     clearSelected,
-    changeSwitch,
     searchSelected
   })
 </script>

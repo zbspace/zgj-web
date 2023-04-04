@@ -49,49 +49,60 @@
             prop="fileTypeIds"
             v-if="form.applyTypeId === props.sealApplyInitId"
           >
-            <el-select
-              v-model="form.fileTypeIds"
-              ref="selectRef"
-              placeholder="请选择"
-              multiple
-              collapse-tags
-              collapse-tags-tooltip
-              :max-collapse-tags="4"
-              @click="getDivision"
-            >
-              <el-option
-                :label="item.fileTypeName"
-                :value="item.fileTypeId"
-                v-for="item in fileTypeList"
-                :key="item.fileTypeId"
-              />
-            </el-select>
-            <div class="box-icon" v-show="false">
-              <img
-                class="box-icon-img"
-                src="@/assets/svg/ketanchude.svg"
-                alt=""
-              />
+            <div class="contbox">
+              <el-select
+                v-model="form.fileTypeIds"
+                ref="selectRef"
+                placeholder="请选择"
+                multiple
+                collapse-tags
+                collapse-tags-tooltip
+                :max-collapse-tags="4"
+                @click="getDivision"
+              >
+                <el-option
+                  :label="item.fileTypeName"
+                  :value="item.fileTypeId"
+                  v-for="item in fileTypeList"
+                  :key="item.fileTypeId"
+                />
+              </el-select>
+              <div class="box-icon">
+                <img
+                  class="box-icon-img"
+                  src="@/assets/svg/ketanchude.svg"
+                  alt=""
+                />
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="流程适用范围" prop="showDataScope">
-            <el-select
-              v-model="form.showDataScope"
-              ref="selectFileRef"
-              placeholder="请选择"
-              multiple
-              collapse-tags
-              collapse-tags-tooltip
-              :max-collapse-tags="4"
-              @click="getFileType"
-            >
-              <el-option
-                :label="item.name || item.scopeName"
-                :value="item.id || item.scopeId"
-                v-for="item in rangeList"
-                :key="item.id || item.scopeId"
-              />
-            </el-select>
+            <div class="contbox">
+              <el-select
+                v-model="form.showDataScope"
+                ref="selectFileRef"
+                placeholder="请选择"
+                multiple
+                collapse-tags
+                collapse-tags-tooltip
+                :max-collapse-tags="4"
+                @click="getFileType"
+              >
+                <el-option
+                  :label="item.name || item.scopeName"
+                  :value="item.id || item.scopeId"
+                  v-for="item in rangeList"
+                  :key="item.id || item.scopeId"
+                />
+              </el-select>
+              <div class="box-icon">
+                <img
+                  class="box-icon-img"
+                  src="@/assets/svg/ketanchude.svg"
+                  alt=""
+                />
+              </div>
+            </div>
           </el-form-item>
           <el-form-item label="流程说明">
             <el-input
@@ -403,5 +414,17 @@
   }
   .el-form-item {
     margin-bottom: 24px !important;
+  }
+</style>
+
+<style lang="scss">
+  .contbox {
+    width: calc(100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    .el-input__suffix {
+      display: none;
+    }
   }
 </style>
