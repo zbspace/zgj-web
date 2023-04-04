@@ -33,6 +33,13 @@ api = {
         url: '/common/getRoleOrganUserSelectInfoList',
         data: data ? Object.assign(data, { type: 'role' }) : { type: 'role' }
       })
+    },
+    search: data => {
+      return request({
+        method: 'POST',
+        url: '/common/queryRoleOrganUserSelectInfoList',
+        data
+      })
     }
   },
   // 系统后台 - 部门与员工（权限管理）

@@ -32,6 +32,7 @@
             @update:selectedDepart="selectedDepart = $event"
             v-show="active === 'organ'"
             :multiple="props.multiple"
+            :max="props.max"
           ></KDepartTab>
 
           <KUserTab
