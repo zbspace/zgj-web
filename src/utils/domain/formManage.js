@@ -21,5 +21,6 @@ export class AddFormInfo {
   sealUseTypeId = '1' // 用印类型：物理用印、电子签章
   readme = '' // 表单json
   formInfo = ''
+  imgBase64 = ''
   formColumnInfos = [] // 表单键值对
 }

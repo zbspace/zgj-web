@@ -1,5 +1,5 @@
 <template>
-  <div class="form-widget-container">
+  <div class="form-widget-container" id="form-widget-container">
     <el-form
       class="full-height-width widget-form"
       :label-position="labelPosition"

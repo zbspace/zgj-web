@@ -95,7 +95,7 @@
           <!-- 表单设计 -->
           <JyVform
             ref="vformRef"
-            v-if="formKey > 0"
+            v-if="formKey > 0 || props.columnData.formMessageId"
             v-show="state.processTabs.checkedNode.index === '2'"
             style="margin-top: 0; width: 100%"
             :prefabricationFieldList="prefabricationFieldList"
@@ -107,21 +107,27 @@
         离开当前页面不会被保存，确定离开么？
       </JyMessageBox>
     </el-dialog>
+    <JyVform
+      mode="render"
+      ref="preViewForm"
+      style="width: 1000px; position: absolute; bottom: 0"
+    />
   </div>
 </template>
 
 <script setup>
   import { ref, reactive, computed, onMounted, nextTick } from 'vue'
-  import { ElMessage } from 'element-plus'
   import layout from '@/views/system/businessManage/formManage/AddForm/Layout'
   import formManageService from '@/api/system/formManagement'
   import flowManageService from '@/api/system/flowManagement'
   import { AddFormInfo } from '@/utils/domain/formManage'
   import { messageError, messageSuccess } from '@/hooks/useMessage'
+  import domtoimage from 'dom-to-image'
 
   const vformRef = ref(null)
   const formData = ref(new AddFormInfo())
   const formRef = ref(null)
+  const preViewForm = ref(null)
   const mustProps = ref([])
   const formInfo = ref({})
   const saveLoading = ref(false)
@@ -195,29 +201,6 @@
     }
   })
 
-  // const optionData = computed(() => {
-  //   const arr = []
-  //   props.optionData.forEach(v => {
-  //     if (!v.applyTypePid) {
-  //       arr.push({
-  //         applyTypeName: v.applyTypeName,
-  //         applyTypeId: v.applyTypeId,
-  //         options: []
-  //       })
-  //     }
-  //   })
-  //   props.optionData
-  //     .filter(v => v.applyTypePid)
-  //     .forEach(v => {
-  //       arr.forEach(x => {
-  //         if (v.applyTypePid === x.applyTypeId) {
-  //           x.options.push(v)
-  //         }
-  //       })
-  //     })
-  //   return arr
-  // })
-
   const prefabricationFieldList = ref([])
 
   const rules = {
@@ -261,6 +244,7 @@
 
   const loaded = async () => {
     if (props.columnData && props.columnData.formMessageId) {
+      await getFormJson(props.columnData.formMessageId)
       await vformRef.value.setFormJson(formInfo.value.formInfo)
     } else {
       await vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
@@ -270,11 +254,6 @@
     })
     getFormColumnMust()
   }
-
-  // const getFormJson = async (formMessageId)=> {
-  //   const res = await FlowApi.getFormJsonById({ formMessageId })
-  //   vformRef.value.setFormJson(res.data)
-  // }
 
   // 处理选项
   const disCutTabs = () => {
@@ -314,26 +293,33 @@
       return messageError('请勿删除必要字段，请重新加载模板进行编辑')
     }
     formData.value.formColumnInfos = vformRef.value.getFieldWidgets()
-    saveLoading.value = true
-    try {
-      if (props.columnData && props.columnData.formMessageId) {
-        await formManageService.formEdit({
-          ...formData.value,
-          formMessageId: props.columnData.formMessageId
-        })
-        messageSuccess('表单修改成功')
-        emit('reloadData', props.columnData)
-      } else {
-        await formManageService.formAdd(formData.value)
-        messageSuccess('表单添加成功')
-        emit('reloadData')
+    preViewForm.value.setFormJson(formData.value.formInfo)
+
+    nextTick(async () => {
+      saveLoading.value = true
+      const canvasId = document.getElementById('form-render-wrapper')
+      const res = await domtoimage.toPng(canvasId)
+      formData.value.imgBase64 = res
+      try {
+        if (props.columnData && props.columnData.formMessageId) {
+          await formManageService.formEdit({
+            ...formData.value,
+            formMessageId: props.columnData.formMessageId
+          })
+          messageSuccess('表单修改成功')
+          emit('reloadData', props.columnData)
+        } else {
+          await formManageService.formAdd(formData.value)
+          messageSuccess('表单添加成功')
+          emit('reloadData')
+        }
+        vformRef.value.setFormJson('')
+        isVisible.value = false
+      } catch (error) {
+        console.log('--->', error)
       }
-      vformRef.value.setFormJson('')
-      isVisible.value = false
-    } catch (error) {
-      messageError(error)
-    }
-    saveLoading.value = false
+      saveLoading.value = false
+    })
   }
 
   // 查询表单必有字段
@@ -345,7 +331,7 @@
       mustProps.value = res.data || []
       prefabricationFieldList.value = res.data || []
     } catch (error) {
-      ElMessage.error(error)
+      console.log('--->', error)
     }
   }
 
@@ -362,9 +348,9 @@
     if (props.columnData && props.columnData.formName) {
       formData.value = { ...formData.value, ...props.columnData }
     }
-    if (props.columnData && props.columnData.formMessageId) {
-      getFormJson(props.columnData.formMessageId)
-    }
+    // if (props.columnData && props.columnData.formMessageId) {
+    //   getFormJson(props.columnData.formMessageId)
+    // }
     if (props.applyTypeId) formData.value.applyTypeId = props.applyTypeId
     if (props.sealUseTypeId) formData.value.sealUseTypeId = props.sealUseTypeId
   }

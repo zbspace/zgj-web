@@ -19,6 +19,7 @@
     :model="formDataModel"
     ref="renderForm"
     @submit.prevent
+    id="form-render-wrapper"
   >
     <template v-for="(widget, index) in widgetList">
       <template v-if="'container' === widget.category">
