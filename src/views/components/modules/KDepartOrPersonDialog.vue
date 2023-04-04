@@ -110,6 +110,8 @@
           <div style="display: flex; height: 25px">
             <el-switch
               v-model="item.includeChild"
+              active-value="1"
+              inactive-value="0"
               v-if="item.haveChildren && props.multiple"
               style="margin-right: 12px"
               @change="changeSwitch($event, item)"
@@ -432,14 +434,20 @@
   // 导出数据
   const changeResult = ref([])
   const confirmDialog = () => {
-    const saveParams = {
-      ...props.queryParams,
-      organs: selectedDepart.value,
-      users: selectedUser.value,
-      roles: selectedRole.value
-    }
     // 编辑
     if (props.editDeploy) {
+      const userid = selectedUser.value.map(item => item.id)
+      const organsid = selectedDepart.value.map(item => {
+        return {
+          includeChild: item.includeChild ? '1' : '0',
+          id: item.id
+        }
+      })
+      const saveParams = {
+        ...props.queryParams,
+        organs: organsid,
+        userIds: userid
+      }
       apiInterface(saveParams, 'save')
         .then(res => {
           ElMessage.success(res.msg || '操作成功')

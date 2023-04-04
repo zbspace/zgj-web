@@ -65,7 +65,6 @@
       :searchSelected="[]"
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
-      apiModule="systemOrganOrPerson"
       :queryParams="queryParams"
       v-if="xzyzDialogVisible"
     />

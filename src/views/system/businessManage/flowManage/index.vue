@@ -265,7 +265,7 @@
     },
     {
       id: 'relationForm',
-      label: '关联表单名称',
+      label: '关联表单',
       type: 'select',
       optionLabel: 'label',
       optionValue: 'value',
@@ -342,7 +342,7 @@
     },
     {
       id: 'relationForm',
-      label: '关联表单名称',
+      label: '关联表单',
       type: 'select',
       optionLabel: 'label',
       optionValue: 'value',

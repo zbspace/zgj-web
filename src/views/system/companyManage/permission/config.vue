@@ -196,7 +196,7 @@
   })
 
   queryParams.value = {
-    roleId: route.query.roleId
+    id: route.query.roleId
   }
 
   const labelInfo = ref([
