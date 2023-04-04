@@ -113,7 +113,7 @@
       // > button {
       //   width: 80px;
       //   height: 28px;
-      //   background: #d0963e;
+      //   background: var(--jy-primary-6);
       //   border-radius: 2px;
       //   font-size: 12px;
       //   color: #fff;

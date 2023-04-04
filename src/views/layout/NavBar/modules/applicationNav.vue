@@ -147,14 +147,14 @@
       .image {
         position: relative;
         left: -80px;
-        filter: drop-shadow(#d0963e 80px 0);
+        filter: drop-shadow(var(--jy-primary-6) 80px 0);
       }
     }
     // &:hover {
     //   img {
     //     position: relative;
     //     left: -80px;
-    //     filter: drop-shadow(#d0963e 80px 0);
+    //     filter: drop-shadow(var(--jy-primary-6) 80px 0);
     //   }
     // }
   }
@@ -185,7 +185,7 @@
 
       .dropdown-list-cont:hover {
         background-color: var(--jy-color-fill--2);
-        color: #d0963e;
+        color: var(--jy-primary-6);
       }
     }
   }

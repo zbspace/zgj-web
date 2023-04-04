@@ -447,7 +447,7 @@
 
           .selected {
             background: #ffffff;
-            color: #d0963e;
+            color: var(--jy-primary-6);
           }
         }
       }

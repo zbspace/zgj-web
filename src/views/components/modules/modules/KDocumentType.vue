@@ -458,7 +458,7 @@
         }
 
         .item:hover {
-          color: #d0963e;
+          color: var(--jy-primary-6);
           background: rgba(208, 150, 62, 0.1);
         }
       }
@@ -475,7 +475,7 @@
       }
 
       .item-text:hover {
-        color: #d0963e;
+        color: var(--jy-primary-6);
         background: rgba(208, 150, 62, 0.1);
       }
     }

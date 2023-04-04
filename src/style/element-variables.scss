@@ -4,8 +4,8 @@
 
 body,
 #app {
-  --el-color-white: #ffffff;
-  --el-color-black: #000000;
+  --el-color-white: var(--jy-primary-11);
+  --el-color-black: var(--jy-primary-11);
   --el-color-primary: var(--jy-primary-6);
   --el-color-primary-light-3: var(--jy-primary-5);
   --el-color-primary-light-5: var(--jy-primary-4);

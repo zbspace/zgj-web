@@ -629,7 +629,7 @@
       padding: 0 70px;
       .active {
         position: relative;
-        color: #d0963e;
+        color: var(--jy-primary-6);
         &::after {
           content: '';
           position: absolute;
@@ -637,7 +637,7 @@
           left: 0;
           width: 180px;
           height: 4px;
-          background: #d0963e;
+          background: var(--jy-primary-6);
           border-radius: 2px;
         }
       }

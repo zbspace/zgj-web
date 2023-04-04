@@ -215,7 +215,7 @@
                       :class="showChanglanPop ? 'svg-hover' : ''"
                       :style="{
                         color: showChanglanPop
-                          ? '#D0963E'
+                          ? 'var(--jy-primary-6)'
                           : 'rgba(0, 0, 0, 0.65)'
                       }"
                     >
@@ -790,12 +790,12 @@
             overflow: hidden;
 
             &:hover {
-              color: #d0963e !important;
+              color: var(--jy-primary-6) !important;
 
               img {
                 position: relative;
                 left: -80px;
-                filter: drop-shadow(#d0963e 80px 0);
+                filter: drop-shadow(var(--jy-primary-6) 80px 0);
               }
             }
 
@@ -812,7 +812,7 @@
             img {
               position: relative;
               left: -80px;
-              filter: drop-shadow(#d0963e 80px 0);
+              filter: drop-shadow(var(--jy-primary-6) 80px 0);
             }
           }
 
@@ -841,7 +841,7 @@
 
         .popover-cont-list:hover {
           background: rgba(192, 196, 204, 0.19829);
-          color: #d0963e;
+          color: var(--jy-primary-6);
         }
 
         .popover-selected::after {

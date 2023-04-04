@@ -486,7 +486,7 @@
       span {
         width: 3px;
         height: 20px;
-        background-color: #d0963e;
+        background-color: var(--jy-primary-6);
         display: inline-block;
         margin-right: 7px;
       }

@@ -484,7 +484,7 @@
             .sliderContainer_active .slider {
               // height: 39px;
               top: -5px;
-              // border: 1px solid #D0963E;
+              // border: 1px solid var(--jy-primary-6);
             }
 
             .sliderContainer_active .sliderMask {
@@ -538,10 +538,10 @@
               left: 0;
               top: 0;
               height: 40px;
-              // border: 0 solid #D0963E;
+              // border: 0 solid var(--jy-primary-6);
               border-top-left-radius: 20px;
               border-bottom-left-radius: 20px;
-              background: rgba(#d0963e, 0.3);
+              background: rgba(var(--jy-primary-6), 0.3);
               .iconpark-icon {
                 .btn1 {
                   display: inline-block;
@@ -579,7 +579,7 @@
             }
 
             // .slider:hover {
-            //   background: #d0963e;
+            //   background: var(--jy-primary-6);
             // }
 
             .sliderIcon {
@@ -605,7 +605,7 @@
               font-size: 14px;
               color: #45494c;
               z-index: 2;
-              background: rgba(#d0963e, 0.1);
+              background: rgba(var(--jy-primary-6), 0.1);
             }
 
             .loadingIcon {

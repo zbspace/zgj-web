@@ -285,7 +285,7 @@
           left: -10px;
           height: 16px;
           width: 2px;
-          background: #d0963e;
+          background: var(--jy-primary-6);
         }
 
         .view-more {

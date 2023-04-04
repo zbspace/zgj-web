@@ -416,7 +416,7 @@
           .user {
             width: 76px;
             height: 76px;
-            background: #d0963e;
+            background: var(--jy-primary-6);
             border-radius: 50%;
             font-weight: 400;
             font-size: 22px;

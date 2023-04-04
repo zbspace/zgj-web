@@ -412,24 +412,24 @@
 
     .el-tabs__item.is-active {
       .custom-tabs-label {
-        color: #d0963e;
+        color: var(--jy-primary-6);
       }
 
       .order {
         color: #fff;
-        background: #d0963e;
+        background: var(--jy-primary-6);
         border: none;
       }
     }
 
     .el-tabs__item:hover {
       .custom-tabs-label {
-        color: #d0963e;
+        color: var(--jy-primary-6);
       }
 
       .order {
         color: #fff;
-        background: #d0963e;
+        background: var(--jy-primary-6);
         border: none;
       }
     }
@@ -465,7 +465,7 @@
     }
 
     .save-btn {
-      background: #d0963e;
+      background: var(--jy-primary-6);
       border-radius: 2px;
       color: #ffffff;
     }

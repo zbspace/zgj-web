@@ -137,7 +137,7 @@
   .model-static-label {
     margin-bottom: 20px;
     div:nth-child(1) {
-      border-left: 3px solid #d0963e;
+      border-left: 3px solid var(--jy-primary-6);
       line-height: 20px;
       padding-left: 8px;
       font-family: 'PingFang SC';

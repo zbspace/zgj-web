@@ -234,7 +234,7 @@
 
             > div {
               > h3 {
-                color: #d0963e;
+                color: var(--jy-primary-6);
               }
             }
           }

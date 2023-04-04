@@ -151,7 +151,7 @@
       }
     }
     .item.isActive {
-      background: #d0963e;
+      background: var(--jy-primary-6);
     }
   }
 </style>

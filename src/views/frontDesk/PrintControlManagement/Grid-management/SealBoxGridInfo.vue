@@ -330,23 +330,23 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #d0963e;
+        color: var(--jy-primary-6);
 
         .btn-list {
           > button {
             border: none;
             padding: 5px 16px;
             background: #ffffff;
-            border: 1px solid #d0963e;
+            border: 1px solid var(--jy-primary-6);
             border-radius: 2px;
             margin-left: 16px;
-            color: #d0963e;
+            color: var(--jy-primary-6);
             font-size: 14px;
           }
 
           > .pan {
             color: #fff;
-            background: #d0963e;
+            background: var(--jy-primary-6);
           }
         }
       }
@@ -398,7 +398,7 @@
           position: absolute;
           bottom: 16px;
           right: 16px;
-          background: #d0963e;
+          background: var(--jy-primary-6);
           border-radius: 2px;
           border: none;
           padding: 5px 16px;

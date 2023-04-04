@@ -84,7 +84,7 @@
   :deep(.static-content-item) {
     margin-bottom: 24px;
     div:nth-child(1) {
-      border-left: 3px solid #D0963E;
+      border-left: 3px solid var(--jy-primary-6);
       line-height: 20px;
       padding-left: 8px;
       font-family: 'PingFang SC';
