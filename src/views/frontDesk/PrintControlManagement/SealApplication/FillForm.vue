@@ -403,33 +403,40 @@
       }
     }
     submitLoading.value = true
-    sealApply.submit(params).then(res => {
-      // console.log(res)
-      sealApply
-        .add({
-          formMessageId: router.currentRoute.value.params.id,
-          formVersionId: formVersionId.value,
-          flowVersionId: flowVersionId.value,
-          applyTypeId: applyTypeId.value,
-          sealUseTypeId: sealUseTypeId.value,
-          flowMessageId: flowMessageId.value,
-          gunsSysId: res.data.data.instanceId,
-          customApplyField:
-            JSON.stringify(customApplyField) === '{}' ? null : customApplyField,
-          ...fixedParams
-        })
-        .then(() => {
-          router.replace({
-            name: 'Accomplish',
-            query: {
-              applyNo: state.cache.formData.applyNo
-            }
+    sealApply
+      .submit(params)
+      .then(res => {
+        // console.log(res)
+        sealApply
+          .add({
+            formMessageId: router.currentRoute.value.params.id,
+            formVersionId: formVersionId.value,
+            flowVersionId: flowVersionId.value,
+            applyTypeId: applyTypeId.value,
+            sealUseTypeId: sealUseTypeId.value,
+            flowMessageId: flowMessageId.value,
+            gunsSysId: res.data.data.instanceId,
+            customApplyField:
+              JSON.stringify(customApplyField) === '{}'
+                ? null
+                : customApplyField,
+            ...fixedParams
           })
-        })
-        .finally(() => {
-          submitLoading.value = false
-        })
-    })
+          .then(() => {
+            router.replace({
+              name: 'Accomplish',
+              query: {
+                applyNo: state.cache.formData.applyNo
+              }
+            })
+          })
+          .finally(() => {
+            submitLoading.value = false
+          })
+      })
+      .finally(() => {
+        submitLoading.value = false
+      })
   }
 
   const infoDetail = () => {
