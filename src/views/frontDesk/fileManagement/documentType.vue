@@ -111,11 +111,7 @@
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { fileManageService } from '@/api/frontDesk/fileManage'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
-  import {
-    messageError,
-    messageSuccess,
-    messageWarning
-  } from '@/hooks/useMessage'
+  import { messageSuccess, messageWarning } from '@/hooks/useMessage'
   import AddFileType from './addFileType'
   import PrivacySet from './privacySet'
   import { GetFileTypeList, ViewRangSetInfo } from '@/utils/domain/fileManage'
@@ -362,7 +358,7 @@
       paginationInfo.value.total = res.data && res.data.total
       paginationInfo.value.pages = res.data && res.data.pages
     } catch (error) {
-      messageError(error)
+      console.log('--->', error)
     }
     loading.value = false
   }
@@ -379,7 +375,7 @@
       ]
       table.value.reloadData()
     } catch (error) {
-      messageError(error)
+      console.log('--->', error)
     }
   }
 
@@ -404,7 +400,7 @@
       state.JyElMessageBox.show = false
       refresh()
     } catch (error) {
-      //
+      console.log('--->', error)
     }
   }
 
@@ -418,7 +414,7 @@
       ]
       showDepPerDialog.value = true
     } catch (error) {
-      messageError(error)
+      console.log('--->', error)
     }
   }
 
@@ -435,11 +431,11 @@
       }
     })
     try {
-      await fileManageService.viewRangSet(viewRangSetInfo.value)
+      const res = await fileManageService.viewRangSet(viewRangSetInfo.value)
       showDepPerDialog.value = false
       messageSuccess('可见范围设置成功')
     } catch (error) {
-      messageError(error)
+      console.log('--->', error)
     }
   }
 

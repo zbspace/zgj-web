@@ -46,7 +46,9 @@ export const useLayoutStore = defineStore({
       node.style.setProperty('--jy-primary-4', activeBgColor)
       node.style.setProperty(
         '--jy-primary-11',
-        color.isDark() ? '#fff' : '#000'
+        color.isDark() || value === '#efb041' || value === '#D0963E'
+          ? '#fff'
+          : '#000'
       )
       node.style.setProperty('--jy-primary-3', value)
     },
