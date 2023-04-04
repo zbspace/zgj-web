@@ -16,7 +16,7 @@
   {
     "prop": "fileTypeName",
     "label": "文件类型",
-    "min-width": 120,
+    "min-width": 180,
     "show": true
   },
   {

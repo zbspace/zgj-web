@@ -116,7 +116,8 @@
               class="ap-box-contBox-input width-100"
               readonly
               v-model="state.componentsAddForm.formData.hostOrganName"
-              placeholder="请选择"
+              placeholder="请选择所属部门"
+              @click="chooseOrgan('hostOrgan', false)"
             />
             <!-- <el-input
               type="hidden"
@@ -222,7 +223,8 @@
               class="ap-box-contBox-input width-100"
               readonly
               v-model="state.componentsAddForm.formData.leaderUserName"
-              placeholder="请选择"
+              placeholder="请选择主管"
+              @click="chooseOrgan('leaderUser', false)"
             />
             <el-input
               class="ap-box-contBox-input width-100"
@@ -247,13 +249,14 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="角色" prop="roleNames">
+        <!-- <el-form-item label="角色" prop="roleIds">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="state.componentsAddForm.formData.roleNames"
+              v-model="state.componentsAddForm.formData.roleIds"
               placeholder="请选择"
+              @click="chooseOrgan('roles', true)"
             />
             <el-input
               class="ap-box-contBox-input width-100"
@@ -262,12 +265,12 @@
               placeholder="请选择"
             />
             <div class="ap-box-contBox-icon">
-              <!-- <el-icon
+              <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
                 v-if="state.componentsAddForm.formData.roleNames"
                 @click="clear('roles')"
                 ><CircleClose
-              /></el-icon> -->
+              /></el-icon>
               <img
                 @click="chooseOrgan('roles', true)"
                 class="ap-box-contBox-icon-img"
@@ -276,41 +279,36 @@
               />
             </div>
           </div>
-        </el-form-item>
-        <!-- <el-form-item label="角色" prop="roleNames">
-          <el-select
-            class="ap-box-contBox-input width-100"
-            v-model="state.componentsAddForm.formData.roles"
-            ref="selectRolesRef"
-            placeholder="请选择"
-            multiple
-            collapse-tags
-            collapse-tags-tooltip
-            :max-collapse-tags="4"
-            @click="chooseOrgan('roles', true)"
-          >
-            <el-option
-              :label="item.roleName"
-              :value="item.roleId"
-              v-for="item in state.componentsAddForm.formData.roles"
-              :key="item.roleId"
-            />
-          </el-select> -->
-        <!-- <div class="ap-box-contBox-icon">
-            <el-icon
-              style="color: #aaaaaa; margin-right: 5px"
-              v-if="state.componentsAddForm.formData.roleNames"
-              @click="clear('roles')"
-              ><CircleClose
-            /></el-icon>
-            <img
+        </el-form-item> -->
+        <el-form-item label="角色" prop="roleIds">
+          <div class="ap-box-contBox">
+            <el-select
+              v-model="state.componentsAddForm.formData.roleIds"
+              multiple
+              placeholder="请选择角色"
+              style="width: 100%"
+              popper-class="hidePoper"
               @click="chooseOrgan('roles', true)"
-              class="ap-box-contBox-icon-img"
-              src="@/assets/svg/ketanchude.svg"
-              alt=""
-            />
-          </div> -->
-        <!-- </el-form-item> -->
+            >
+              <el-option
+                v-for="one in state.tabSelects.rolesSelected"
+                :key="one.value"
+                :label="one.label"
+                :value="one.value"
+              />
+            </el-select>
+            <div
+              class="ap-box-contBox-icon"
+              @click="chooseOrgan('roles', true)"
+            >
+              <img
+                class="ap-box-contBox-icon-img"
+                src="@/assets/svg/ketanchude.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="企业微信ID" prop="qweiNo">
@@ -512,7 +510,7 @@
         partTimeOrgans: [],
         userTitle: '',
         userMail: '',
-        roleNames: '',
+        roleIds: [],
         roles: [],
         qweiNo: '',
         dingdingNo: '',
@@ -553,7 +551,7 @@
             trigger: 'change'
           }
         ],
-        roleNames: [
+        roleIds: [
           {
             required: true,
             message: '请选择角色',
@@ -781,18 +779,21 @@
   // 新增员工
   const addStaff = () => {
     state.title = 't-zgj-add'
+    showStaffDialog.value = true
     state.tabSelects.partTimeOrgansSelected = []
     state.componentsAddForm.formData.partTimeOrganIds = []
     state.componentsAddForm.formData.partTimeOrgans = []
-    if (formStaffRef.value) {
-      nextTick(() => {
-        formStaffRef.value.resetFields()
-      })
-    }
+    state.tabSelects.rolesSelected = []
+    state.componentsAddForm.formData.roleIds = []
+    state.componentsAddForm.formData.roles = []
     for (const item in state.componentsAddForm.formData) {
-      state.componentsAddForm.formData[item] = ''
+      if (!Array.isArray(item)) {
+        state.componentsAddForm.formData[item] = ''
+      }
     }
-    showStaffDialog.value = true
+    nextTick(() => {
+      formStaffRef.value.resetFields()
+    })
   }
   // 清除部门信息
   const clear = type => {
@@ -808,7 +809,7 @@
     }
     if (type === 'roles') {
       state.tabSelects.rolesSelected = []
-      state.componentsAddForm.formData.roleNames = ''
+      state.componentsAddForm.formData.roleIds = []
       state.componentsAddForm.formData.roles = []
     }
     if (type === 'leaderUser') {
@@ -841,15 +842,21 @@
               }
             })
           : []
-      console.log(
-        'state.tabSelects.searchSelected',
-        state.tabSelects.searchSelected
-      )
     }
     if (depChoose.value === 'roles') {
       // selectRolesRef.value.blur()
-      state.tabsShow = ['organ']
+      state.tabsShow = ['role']
       state.tabSelects.searchSelected = state.tabSelects.rolesSelected
+      state.tabSelects.searchSelected =
+        state.tabSelects.rolesSelected.length > 0
+          ? state.tabSelects.rolesSelected.map(i => {
+              return {
+                id: i.value,
+                name: i.label,
+                type: 'role'
+              }
+            })
+          : []
     }
     if (depChoose.value === 'leaderUser') {
       state.tabsShow = ['user']
@@ -884,22 +891,20 @@
       }
     }
     if (depChoose.value === 'roles') {
-      const roles = []
-      const roleNames = []
+      state.tabSelects.rolesSelected = []
+      state.componentsAddForm.formData.roles = []
       if (item.length > 0) {
-        item.forEach(el => {
-          const role = {
-            roleId: 'r1',
-            roleName: el.name
+        state.tabSelects.rolesSelected = item.map(i => {
+          return {
+            label: i.name,
+            value: i.id,
+            type: 'role'
           }
-          roles.push(role)
-          roleNames.push(el.name)
+        })
+        state.componentsAddForm.formData.roleIds = item.map(i => {
+          return i.id
         })
       }
-      console.log(roles)
-      state.tabSelects.rolesSelected = item
-      state.componentsAddForm.formData.roles = roles
-      // state.componentsAddForm.formData.roleNames = roleNames
     }
     if (depChoose.value === 'leaderUser') {
       state.tabSelects.leaderUserSelected = item
@@ -1052,17 +1057,16 @@
             ].map(i => i.organId)
           }
           if (item === 'roles' && res.data[item].length > 0) {
-            const rolesNames = []
-            res.data[item].forEach(v => {
-              rolesNames.push(v.roleName)
-              state.tabSelects.rolesSelected.push({
-                id: v.roleId,
-                name: v.roleName,
+            state.tabSelects.rolesSelected = res.data[item].map(i => {
+              return {
+                value: i.roleId,
+                label: i.roleName,
                 type: 'role'
-              })
+              }
             })
-            state.componentsAddForm.formData.roles = res.data[item]
-            state.componentsAddForm.formData.roleNames = rolesNames.join('、')
+            state.componentsAddForm.formData.roleIds = res.data[item].map(
+              i => i.roleId
+            )
           }
         }
         console.log(
@@ -1173,6 +1177,7 @@
     formStaffRef.value.validate(valid => {
       if (valid) {
         confirmLoading.value = true
+        state.componentsAddForm.formData.partTimeOrgans = []
         state.componentsAddForm.formData.partTimeOrganIds.forEach(el => {
           state.tabSelects.partTimeOrgansSelected.forEach(item => {
             if (el === item.value) {
@@ -1180,6 +1185,17 @@
                 organId: item.value,
                 organName: item.label,
                 haveChildren: item.haveChildren
+              })
+            }
+          })
+        })
+        state.componentsAddForm.formData.roles = []
+        state.componentsAddForm.formData.roleIds.forEach(el => {
+          state.tabSelects.rolesSelected.forEach(item => {
+            if (el === item.value) {
+              state.componentsAddForm.formData.roles.push({
+                roleId: item.value,
+                roleName: item.label
               })
             }
           })
