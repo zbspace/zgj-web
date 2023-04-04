@@ -193,9 +193,7 @@
       },
       // 打开弹窗选择数据
       openSelectWin() {
-        nextTick(() => {
-          this.$refs.contactUnitRef.blur()
-        })
+        this.$refs.contactUnitRef.blur()
         this.xzyzDialogVisible = true
       },
       selectData(row, column, event) {

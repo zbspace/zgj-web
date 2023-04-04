@@ -18,3 +18,10 @@ export const TOKEN_STORE_NAME = 'zgj-token'
 
 // 登录接口-是否需要rsa加密
 export const IS_NEED_RSA = true
+
+/**
+ * 正则规则
+ */
+export const PATTERN_REG = {
+  mobile: /^[1][3,4,5,6,7,8,9][0-9]{9}$/
+}
