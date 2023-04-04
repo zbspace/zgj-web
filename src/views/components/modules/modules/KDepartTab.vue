@@ -10,7 +10,7 @@
       />
     </div>
     <!-- crumbs -->
-    <div class="select-crumbs user-select">
+    <div class="select-crumbs user-select" v-show="!searchType">
       <!-- 自定义面包屑 -->
       <div class="custom-bread" v-show="true">
         <!-- 循环 -->
@@ -51,7 +51,17 @@
         :rootNode="rootNode"
         tabActive="organ"
         :multiple="props.multiple"
+        v-show="!searchType"
       ></KTreeModel>
+
+      <KSearchTree
+        :lists="treeColumnSearchData.data"
+        @update:lists="treeColumnSearchData.data = $event"
+        @open="openInner"
+        @searchSelected="searchSelected"
+        tabActive="organ"
+        v-if="searchType"
+      ></KSearchTree>
     </div>
   </div>
 </template>
@@ -64,13 +74,14 @@
    * initQueryParams 初始化参数
    * selectedDepart 选中项
    */
-  import { reactive, ref, computed } from 'vue'
+  import { reactive, ref, computed, watch } from 'vue'
   import {
     treeDataTranslate,
     deconstructedArray
   } from '@/utils/handleTreeData.js'
   import { Search } from '@element-plus/icons-vue'
   import KTreeModel from '../KTreeModel.vue'
+  import KSearchTree from '../KSearchTree.vue'
   import Api from '@/api/common/organOrPerson'
   import { ElMessage } from 'element-plus'
   const props = defineProps({
@@ -93,6 +104,9 @@
     multiple: {
       type: Boolean,
       default: true
+    },
+    max: {
+      type: Number
     }
   })
   const emits = defineEmits(['update:selectedDepart'])
@@ -147,14 +161,76 @@
 
   // 搜索条件
   const searchQuery = ref('')
+  const searchType = ref(false)
+  const treeColumnSearchData = reactive({
+    data: []
+  })
+
+  watch(
+    () => searchQuery.value,
+    val => {
+      if (!val) {
+        searchType.value = false
+      } else {
+        // 获取列表
+        Api[props.apiModule]
+          .search({
+            type: 'organ',
+            keyWord: searchQuery.value
+          })
+          .then(res => {
+            treeColumnSearchData.data = res.data
+            searchType.value = true
+            // 已经选中状态
+            if (
+              selectedData.value.length !== 0 &&
+              treeColumnSearchData.data !== 0
+            ) {
+              treeColumnSearchData.data.forEach(val => {
+                selectedData.value.forEach(item => {
+                  if (val.id === item.id) {
+                    val.selectedStatus = item.selectedStatus
+                  }
+                })
+              })
+            }
+          })
+      }
+    }
+  )
 
   // 自定义事件
-  function emitsDemo(attr, val, type) {
-    if (type && type === 'all') {
-      handleRootChangeByAll(attr, val)
-      handleSelectedChangeByAll(attr, val)
+  const emitsDemo = (attr, val, type) => {
+    if (props.max && selectedData.value.length > props.max && props.multiple) {
+      ElMessage.warning(`只能选择${props.max}个角色`)
       return
     }
+
+    if (type && type === 'all') {
+      // 判断限制人数 - all
+      const cacheUser = JSON.parse(JSON.stringify(attr))
+      const userData = cacheUser.filter(item => (item.type = 'role'))
+
+      if (
+        props.max &&
+        selectedData.value.length + userData.length > props.max &&
+        props.multiple
+      ) {
+        ElMessage.warning(`只能选择${props.max}个角色`)
+        return
+      }
+
+      handleRootChangeByAll(attr, val)
+      handleSelectedChangeByAll(attr, val)
+      treeColumnSearchData.data.forEach(item => {
+        if (item.id === attr.id) {
+          item.selectedStatus = val
+        }
+      })
+
+      return
+    }
+
     if (
       selectedData.value.length > 0 &&
       !props.multiple &&
@@ -163,8 +239,34 @@
       ElMessage.warning('只能选择1个部门')
       return
     }
+
+    // 判断限制人数 - part
+    if (
+      selectedData.value.length > 0 &&
+      props.max &&
+      selectedData.value.length + 1 > props.max &&
+      props.multiple
+    ) {
+      // 排除已经选中后 取消
+      const i = selectedData.value.findIndex(item => item.id === attr.id)
+      if (i === -1 || i === '-1') {
+        ElMessage.warning(`只能选择${props.max}个部门`)
+        return
+      }
+    }
+
     handleRootChangeByPart(attr, val)
     handleSelectedChangeByPart(attr, val)
+    treeColumnSearchData.data.forEach(item => {
+      if (item.id === attr.id) {
+        item.selectedStatus = val
+      }
+    })
+  }
+
+  // 搜索选择
+  const searchSelected = (attr, val) => {
+    emitsDemo(attr, val)
   }
 
   // 监听处理 全选 - 部分选择
@@ -264,10 +366,22 @@
       cancelIsChildrenStatus(cacheRootLists.value)
     } else {
       const cacheSelectedData = JSON.parse(JSON.stringify(selectedData.value))
+
+      if (searchType.value) {
+        treeColumnSearchData.data.forEach(item => {
+          if (item.id === attr.id) {
+            item.selectedStatus = 2
+            cacheSelectedData.splice(selectedData.value.length, 0, item)
+          }
+        })
+      }
+
       treeColumnData.data.forEach(item => {
         if (item.id === attr.id) {
           item.selectedStatus = 2
-          cacheSelectedData.splice(selectedData.value.length, 0, item)
+          if (!searchType.value) {
+            cacheSelectedData.splice(selectedData.value.length, 0, item)
+          }
         }
       })
       selectedData.value = cacheSelectedData
@@ -467,6 +581,16 @@
         item.disabled = false
       }
     })
+    treeColumnSearchData.data.forEach(item => {
+      if (item.id === attr.id) {
+        item.selectedStatus = 0
+        item.disabled = false
+      }
+      if (item.idFullPathSet.includes(attr.id) && attr.includeChild) {
+        item.selectedStatus = 0
+        item.disabled = false
+      }
+    })
   }
   const handleChangeIncluded1 = (status, attr) => {
     // 1.是否有children
@@ -563,7 +687,8 @@
   defineExpose({
     concelSelected,
     clearSelected,
-    changeSwitch
+    changeSwitch,
+    searchSelected
   })
 </script>
 

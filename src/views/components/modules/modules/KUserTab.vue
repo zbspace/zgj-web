@@ -4,14 +4,14 @@
     <div class="select-search">
       <el-input
         v-model="searchQuery"
-        placeholder="搜索部门/成员"
+        placeholder="搜索人员"
         :prefix-icon="Search"
         size="large"
       />
     </div>
 
     <!-- crumbs -->
-    <div class="select-crumbs user-select">
+    <div class="select-crumbs user-select" v-show="!searchType">
       <!-- 自定义面包屑 -->
       <div class="custom-bread" v-show="true">
         <!-- 循环 -->
@@ -52,7 +52,17 @@
         :rootNode="rootNode"
         tabActive="user"
         :multiple="props.multiple"
+        v-show="!searchType"
       ></KTreeModel>
+
+      <KSearchTree
+        :lists="treeColumnSearchData.data"
+        @update:lists="treeColumnSearchData.data = $event"
+        @open="openInner"
+        @searchSelected="searchSelected"
+        tabActive="user"
+        v-if="searchType"
+      ></KSearchTree>
     </div>
   </div>
 </template>
@@ -60,18 +70,18 @@
 <script setup>
   /**
    * selectedStatus 0(未选中) 2（全部）
-   * includeChild 向下包含 Boolean
    * apiModule: api对应的模块
    * initQueryParams 初始化参数
    * selectedUser 选中项
    */
-  import { reactive, ref, computed } from 'vue'
+  import { reactive, ref, computed, watch } from 'vue'
   import {
     treeDataTranslate,
     deconstructedArray
   } from '@/utils/handleTreeData.js'
   import { Search } from '@element-plus/icons-vue'
   import KTreeModel from '../KTreeModel.vue'
+  import KSearchTree from '../KSearchTree.vue'
   import Api from '@/api/common/organOrPerson'
   import { ElMessage } from 'element-plus'
   const props = defineProps({
@@ -115,11 +125,10 @@
     {
       id: '-1',
       pid: '0',
-      name: '组织架构',
+      name: '人员列表',
       sort: 3,
       haveChildren: true,
-      type: 'organ',
-      idFullPath: '-1'
+      type: 'user'
     }
   ]
   // 静态数据
@@ -151,9 +160,46 @@
 
   // 搜索条件
   const searchQuery = ref('')
+  const searchType = ref(false)
+  const treeColumnSearchData = reactive({
+    data: []
+  })
+
+  watch(
+    () => searchQuery.value,
+    val => {
+      if (!val) {
+        searchType.value = false
+      } else {
+        // 获取列表
+        Api[props.apiModule]
+          .search({
+            type: 'user',
+            keyWord: searchQuery.value
+          })
+          .then(res => {
+            treeColumnSearchData.data = res.data
+            searchType.value = true
+            // 已经选中状态
+            if (
+              selectedData.value.length !== 0 &&
+              treeColumnSearchData.data !== 0
+            ) {
+              treeColumnSearchData.data.forEach(val => {
+                selectedData.value.forEach(item => {
+                  if (val.id === item.id) {
+                    val.selectedStatus = item.selectedStatus
+                  }
+                })
+              })
+            }
+          })
+      }
+    }
+  )
 
   // 自定义事件
-  function emitsDemo(attr, val, type) {
+  const emitsDemo = (attr, val, type) => {
     if (props.max && selectedData.value.length > props.max && props.multiple) {
       ElMessage.warning(`只能选择${props.max}个人员`)
       return
@@ -172,8 +218,14 @@
       }
       handleRootChangeByAll(attr, val)
       handleSelectedChangeByAll(attr, val)
+      treeColumnSearchData.data.forEach(item => {
+        if (item.id === attr.id) {
+          item.selectedStatus = val
+        }
+      })
       return
     }
+
     if (
       selectedData.value.length > 0 &&
       !props.multiple &&
@@ -182,6 +234,7 @@
       ElMessage.warning('只能选择1个人员')
       return
     }
+
     // 判断限制人数 - part
     if (
       selectedData.value.length > 0 &&
@@ -198,6 +251,16 @@
     }
     handleRootChangeByPart(attr, val)
     handleSelectedChangeByPart(attr, val)
+    treeColumnSearchData.data.forEach(item => {
+      if (item.id === attr.id) {
+        item.selectedStatus = val
+      }
+    })
+  }
+
+  // 搜索选择
+  const searchSelected = (attr, val) => {
+    emitsDemo(attr, val)
   }
 
   // 监听处理 全选 - 部分选择
@@ -271,39 +334,24 @@
       selectedData.value = selectedData.value.filter(
         item => item.id !== attr.id
       )
+    } else {
+      const cacheSelectedData = JSON.parse(JSON.stringify(selectedData.value))
 
-      const { includeChild } = selectedData.value.find(
-        item => item.id === attr.id
-      )
-      // 取消状态 - 特殊情况 包含状态 且 root树已加载
-      function cancelIsChildrenStatus(data) {
-        data.forEach(item => {
-          if (item.id === attr.id && includeChild) {
-            function innerChange(lists) {
-              lists.forEach(key => {
-                key.selectedStatus = 0
-                key.disabled = false
-                if (key.children && key.children.length > 0) {
-                  return innerChange(key.children)
-                }
-              })
-            }
-            innerChange(item.children)
-          }
-
-          if (item.children && item.children.length > 0) {
-            return cancelIsChildrenStatus(item.children)
+      if (searchType.value) {
+        treeColumnSearchData.data.forEach(item => {
+          if (item.id === attr.id) {
+            item.selectedStatus = 2
+            cacheSelectedData.splice(selectedData.value.length, 0, item)
           }
         })
       }
 
-      cancelIsChildrenStatus(cacheRootLists.value)
-    } else {
-      const cacheSelectedData = JSON.parse(JSON.stringify(selectedData.value))
       treeColumnData.data.forEach(item => {
         if (item.id === attr.id) {
           item.selectedStatus = 2
-          cacheSelectedData.splice(selectedData.value.length, 0, item)
+          if (!searchType.value) {
+            cacheSelectedData.splice(selectedData.value.length, 0, item)
+          }
         }
       })
       selectedData.value = cacheSelectedData
@@ -317,7 +365,7 @@
 
     if (attr.length === 0) {
       path.push({
-        curmbsName: '组织架构',
+        curmbsName: '人员列表',
         id: '-1'
       })
       return path
@@ -376,7 +424,6 @@
       const res = result.data
       res.forEach(item => {
         item.selectedStatus = 0
-        item.includeChild = !!item.includeChild
         item.disabled = !!item.disabled
       })
       // 展示时，需要对比右侧选择状态
@@ -410,15 +457,6 @@
         selectedData.forEach(val => {
           if (item.id === val.id) {
             item.selectedStatus = 2
-          }
-          // 向下包含反选
-          if (
-            item.idFullPath &&
-            item.idFullPath.split(',').includes(val.id) &&
-            val.includeChild &&
-            item.id !== val.id
-          ) {
-            item.disabled = true
           }
         })
       }
@@ -466,14 +504,7 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (
-        item.idFullPath &&
-        item.idFullPath.split(',').includes(attr.id) &&
-        attr.includeChild
-      ) {
-        item.selectedStatus = 0
-        item.disabled = false
-      }
+
       if (item.children && item.children.length > 0) {
         return handleSelectedStatus(item.children, attr)
       }
@@ -490,6 +521,7 @@
       }
     })
   }
+
   // 取消选中项
   const concelSelected = attr => {
     // 删除右侧选择项
@@ -502,16 +534,15 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (
-        item.idFullPath &&
-        item.idFullPath.split(',').includes(attr.id) &&
-        attr.includeChild
-      ) {
+    })
+    treeColumnSearchData.data.forEach(item => {
+      if (item.id === attr.id) {
         item.selectedStatus = 0
         item.disabled = false
       }
     })
   }
+
   const handleChangeIncluded1 = (status, attr) => {
     // 1.是否有children
     if (!attr.haveChildren) {
@@ -519,18 +550,12 @@
       return
     }
     const aplication = ref([])
-    // 2.判断已选中是否被包含
-    const str = JSON.parse(JSON.stringify(selectedData.value))
-    str.forEach(item => {
-      if (item.idFullPath && item.idFullPath.split(',').includes(attr.id)) {
-        aplication.value.push(item.id)
-      }
-    })
 
     selectedData.value = selectedData.value.filter(
       item => !aplication.value.includes(item.id)
     )
   }
+
   // 清空选中项
   const clearSelected = () => {
     selectedData.value = []
@@ -592,26 +617,17 @@
     // 1.是否有children
     if (!attr.haveChildren) return false
     const aplication = ref([])
-    // 2.判断已选中是否被包含
-    const str = JSON.parse(JSON.stringify(selectedData.value))
-    str.forEach(item => {
-      if (
-        item.idFullPath &&
-        item.idFullPath.split(',').includes(attr.id) &&
-        item.id !== attr.id
-      ) {
-        aplication.value.push(item.id)
-      }
-    })
 
     selectedData.value = selectedData.value.filter(
       item => !aplication.value.includes(item.id)
     )
   }
+
   defineExpose({
     concelSelected,
     clearSelected,
-    changeSwitch
+    changeSwitch,
+    searchSelected
   })
 </script>
 
