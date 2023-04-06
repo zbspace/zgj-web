@@ -11,6 +11,8 @@
       :width="340"
       trigger="hover"
       :show-arrow="false"
+      :show-after="200"
+      :hide-after="120"
       @before-enter="showPop"
       @after-leave="hidePop"
     >

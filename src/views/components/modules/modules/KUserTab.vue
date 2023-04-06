@@ -17,7 +17,11 @@
       <div class="custom-bread" v-show="true">
         <!-- 循环 -->
         <div class="bread-item" v-for="(item, i) in curmbs" :key="i">
-          <el-tooltip :content="item.curmbsName" placement="bottom">
+          <el-tooltip
+            :content="item.curmbsName"
+            placement="bottom"
+            :show-after="200"
+          >
             <div class="item-text" @click="changeCrumb(item.id)">
               {{ item.curmbsName }}
             </div>
