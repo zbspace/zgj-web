@@ -52,7 +52,7 @@
         "name": "t-zgj-Delete"
       },
       {
-        "name": "t-zgj-index.updatePwd"
+        "name": "t-zgj-findpwd.resetPassword"
       },
       {
         "name": "t-zgj-F_SEAL_CONSOLE_FACE_SETTING"

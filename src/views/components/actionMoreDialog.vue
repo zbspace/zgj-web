@@ -5,18 +5,20 @@
     :mode="1"
     :showClose="false"
     :defaultAttribute="{}"
+    :oneBtn="props.oneBtn"
+    :comfirmBtnText="props.confirmText"
     @update:modelValue="closeCallBack"
     @confirmClick="confirmClick"
   >
     <template #header>
       <div class="header-div">
         <img src="@/assets/svg/common/warning.svg" />
-        <span>{{ props.showToastDialogContent.header.data }}</span>
+        <span>{{ $t(props.showToastDialogContent.header.data) }}</span>
       </div>
     </template>
     <template #content>
       <div class="content-div">{{
-        props.showToastDialogContent.content.data
+        $t(props.showToastDialogContent.content.data)
       }}</div>
       <el-scrollbar class="scrollbar" max-height="200px">
         <div
@@ -26,6 +28,11 @@
           >{{ item[props.curKey || props.label] }}</div
         >
       </el-scrollbar>
+    </template>
+    <template #footer v-if="props.oneBtn">
+      <el-button type="primary" @click="cancel">{{
+        $t('t-zgj-know')
+      }}</el-button>
     </template>
   </JyElMessageBox>
 </template>
@@ -49,9 +56,18 @@
     curKey: {
       type: String,
       default: ''
+    },
+    oneBtn: {
+      type: Boolean,
+      default: false
+    },
+    confirmText: {
+      type: String,
+      default: ''
     }
   })
-  const emit = defineEmits(['sureAction', 'update:modelValue'])
+  console.log(props)
+  const emit = defineEmits(['sureAction', 'update:modelValue', 'cancel'])
 
   const confirmClick = () => {
     emit('sureAction')
@@ -59,6 +75,9 @@
 
   const closeCallBack = () => {
     emit('update:modelValue')
+  }
+  const cancel = () => {
+    emit('cancel')
   }
 
   onBeforeMount(() => {

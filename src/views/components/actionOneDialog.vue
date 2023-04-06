@@ -9,15 +9,25 @@
     <template #header>
       <div class="header-div">
         <img src="@/assets/svg/common/warning.svg" alt="" />
-        <span>{{ props.JyElMessageBox.header.data }}</span>
+        <span>{{ $t(props.JyElMessageBox.header.data) }}</span>
       </div>
     </template>
     <template #content>
-      <div class="content-div">{{ props.JyElMessageBox.content.data }}</div>
+      <div class="content-div">{{ $t(props.JyElMessageBox.content.data) }}</div>
     </template>
     <template #footer>
-      <el-button type="primary" @click="submitElMessageBox"> 提交 </el-button>
-      <el-button @click="closeCallBack">取消</el-button>
+      <el-button
+        v-if="!props.oneBtn"
+        type="primary"
+        @click="submitElMessageBox"
+      >
+        {{ $t('t-zgj-select.confirm') }}
+      </el-button>
+      <el-button
+        :type="!props.oneBtn ? '' : 'primary'"
+        @click="closeCallBack"
+        >{{ $t(props.confirmText) }}</el-button
+      >
     </template>
   </JyElMessageBox>
 </template>
@@ -27,6 +37,14 @@
     // 标识
     JyElMessageBox: {
       type: Object
+    },
+    oneBtn: {
+      type: Boolean,
+      default: false
+    },
+    confirmText: {
+      type: String,
+      default: 't-zgj-operation.cancel'
     }
   })
   const emit = defineEmits(['submitElMessageBox', 'update:modelValue'])

@@ -285,11 +285,11 @@
         {
           label: '往来企业详情',
           name: 'Current-Business-Details'
-        },
-        {
-          label: '流程记录',
-          name: 'operating-record'
         }
+        // {
+        //   label: '流程记录',
+        //   name: 'operating-record'
+        // }
       ]
     },
     componentsBatch: {

@@ -119,10 +119,6 @@
               placeholder="请选择所属部门"
               @click="chooseOrgan('hostOrgan', false)"
             />
-            <!-- <el-input
-              type="hidden"
-              v-model="state.componentsAddForm.formData.hostOrganId"
-            ></el-input> -->
             <div class="ap-box-contBox-icon">
               <!-- <el-icon
                 style="color: #aaaaaa; margin-right: 5px"
@@ -139,37 +135,6 @@
             </div>
           </div>
         </el-form-item>
-        <!-- <el-form-item label="兼职部门" prop="partTimeOrganNames">
-          <div class="select-box-contBox">
-            <el-input
-              class="ap-box-contBox-input width-100"
-              readonly
-              v-model="state.componentsAddForm.formData.partTimeOrganNames"
-              placeholder="请选择"
-            />
-            <el-input
-              class="ap-box-contBox-input width-100"
-              readonly
-              type="hidden"
-              v-model="state.componentsAddForm.formData.partTimeOrgans"
-              placeholder="请选择"
-            />
-            <div class="ap-box-contBox-icon">
-              <el-icon
-                style="color: #aaaaaa; margin-right: 5px"
-                v-if="state.componentsAddForm.formData.partTimeOrganNames"
-                @click="clear('partTimeOrgan')"
-                ><CircleClose
-              /></el-icon>
-              <img
-                @click="chooseOrgan('partTimeOrgan', true)"
-                class="ap-box-contBox-icon-img"
-                src="@/assets/svg/ketanchude.svg"
-                alt=""
-              />
-            </div>
-          </div>
-        </el-form-item> -->
         <el-form-item label="兼职部门" prop="partTimeOrganIds">
           <div class="ap-box-contBox">
             <el-select
@@ -252,37 +217,6 @@
             </div>
           </div>
         </el-form-item>
-        <!-- <el-form-item label="角色" prop="roleIds">
-          <div class="select-box-contBox">
-            <el-input
-              class="ap-box-contBox-input width-100"
-              readonly
-              v-model="state.componentsAddForm.formData.roleIds"
-              placeholder="请选择"
-              @click="chooseOrgan('roles', true)"
-            />
-            <el-input
-              class="ap-box-contBox-input width-100"
-              type="hidden"
-              v-model="state.componentsAddForm.formData.roles"
-              placeholder="请选择"
-            />
-            <div class="ap-box-contBox-icon">
-              <el-icon
-                style="color: #aaaaaa; margin-right: 5px"
-                v-if="state.componentsAddForm.formData.roleNames"
-                @click="clear('roles')"
-                ><CircleClose
-              /></el-icon>
-              <img
-                @click="chooseOrgan('roles', true)"
-                class="ap-box-contBox-icon-img"
-                src="@/assets/svg/ketanchude.svg"
-                alt=""
-              />
-            </div>
-          </div>
-        </el-form-item> -->
         <el-form-item label="角色" prop="roleIds">
           <div class="ap-box-contBox">
             <el-select
@@ -396,32 +330,53 @@
       </componentsDocumentsDetails>
     </div>
     <!-- 弹窗提示 -->
-    <JyElMessageBox
+    <!-- <JyElMessageBox
+        v-model="state.JyElMessageBox.show"
+        :show="state.JyElMessageBox.show"
+        :defaultAttribute="{}"
+      >
+        <template #header>
+          <div class="header-div">
+            <img :src="state.JyElMessageBox.header.icon" alt="" />
+            <span>{{ $t(state.JyElMessageBox.header.data) }}</span>
+          </div>
+        </template>
+        <template #content>
+          <div class="content-div">{{ state.JyElMessageBox.content.data }}</div>
+        </template>
+        <template #footer>
+          <el-button
+            type="primary"
+            @click="submitElMessageBox(state.JyElMessageBox.type)"
+          >
+            {{ $t('t-zgj-operation.submit') }}
+          </el-button>
+          <el-button @click="state.JyElMessageBox.show = false">{{
+            $t('t-zgj-operation.cancel')
+          }}</el-button>
+        </template>
+      </JyElMessageBox> -->
+    <!-- 批量操作弹框提示 -->
+    <actionMoreDialog
+      @update:modelValue="state.showToastDialog.show = false"
+      :show="state.showToastDialog.show"
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="state.showToastDialog"
+      label="userName"
+      :oneBtn="state.showToastDialog.oneBtn"
+      :confirmText="state.showToastDialog.confirmText"
+      @cancel="closeMoreDialog"
+      @sureAction="submitElMessageBox(state.showToastDialog.type)"
+    ></actionMoreDialog>
+    <!-- 单个操作 -->
+    <actionOneDialog
       v-model="state.JyElMessageBox.show"
-      :show="state.JyElMessageBox.show"
-      :defaultAttribute="{}"
-    >
-      <template #header>
-        <div class="header-div">
-          <img :src="state.JyElMessageBox.header.icon" alt="" />
-          <span>{{ $t(state.JyElMessageBox.header.data) }}</span>
-        </div>
-      </template>
-      <template #content>
-        <div class="content-div">{{ state.JyElMessageBox.content.data }}</div>
-      </template>
-      <template #footer>
-        <el-button
-          type="primary"
-          @click="submitElMessageBox(state.JyElMessageBox.type)"
-        >
-          {{ $t('t-zgj-operation.submit') }}
-        </el-button>
-        <el-button @click="state.JyElMessageBox.show = false">{{
-          $t('t-zgj-operation.cancel')
-        }}</el-button>
-      </template>
-    </JyElMessageBox>
+      :JyElMessageBox="state.JyElMessageBox"
+      :confirmText="state.JyElMessageBox.confirmText"
+      :oneBtn="state.JyElMessageBox.oneBtn"
+      @update:modelValue="state.JyElMessageBox.show"
+      @submitElMessageBox="submitElMessageBox(state.JyElMessageBox.type)"
+    ></actionOneDialog>
     <UpdatePassword
       v-model="showPass"
       :show="showPass"
@@ -444,7 +399,6 @@
 
 <script setup>
   import { ref, reactive, onMounted, nextTick } from 'vue'
-  import { CircleClose, Plus } from '@element-plus/icons-vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
@@ -454,6 +408,8 @@
   import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/departmentStaff.json'
   import api from '@/api/system/companyManagement/departmentStaff'
   import department from '@/api/system/companyManagement/department'
+  import actionMoreDialog from '@/views/components/actionMoreDialog'
+  import actionOneDialog from '@/views/components/actionOneDialog'
 
   // 显示新增员工弹窗
   const showStaffDialog = ref(false)
@@ -475,6 +431,19 @@
   const confirmLoading = ref(false)
 
   const state = reactive({
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      },
+      type: '批量删除',
+      oneBtn: false,
+      confirmText: 't-zgj-know'
+    },
     title: 't-zgj-add',
     tabsShow: ['organ'],
     multiple: true,
@@ -499,7 +468,10 @@
       content: {
         data: ''
       },
-      type: '删除'
+      type: '删除',
+      oneBtn: false,
+      confirmText: '',
+      column: {}
     },
     componentsAddForm: {
       formData: {
@@ -910,32 +882,31 @@
   // 批量操作
   const clickBatchButton = (item, selection) => {
     const list = (state.componentsBatch.selectionData = selection)
-    let nameList = ''
-    const nameArr = []
     const nameIdArr = []
     list.forEach(el => {
-      nameArr.push(`[${el.userName}]`)
       nameIdArr.push(el.userId)
     })
     state.componentsBatch.userIds = nameIdArr
-    nameList = nameArr.join('、')
     if (item.name === 't-zgj-dept.BatchDeactivation') {
-      state.JyElMessageBox.header.data = 't-zgj-dept.BatchDeactivation'
-      state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量停用吗？`
-      state.JyElMessageBox.show = true
-      state.JyElMessageBox.type = '批量停用'
+      state.showToastDialog.header.data = 't-zgj-dept.BatchDeactivation'
+      state.showToastDialog.content.data =
+        '已选中以下用户，请问确定要批量停用吗？'
+      state.showToastDialog.show = true
+      state.showToastDialog.type = '批量停用'
     }
     if (item.name === 't-zgj-dept.BatchEnable') {
-      state.JyElMessageBox.header.data = 't-zgj-dept.BatchEnable'
-      state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量启用吗？`
-      state.JyElMessageBox.show = true
-      state.JyElMessageBox.type = '批量启用'
+      state.showToastDialog.header.data = 't-zgj-dept.BatchEnable'
+      state.showToastDialog.content.data =
+        '已选中以下用户，请问确定要批量启用吗？'
+      state.showToastDialog.show = true
+      state.showToastDialog.type = '批量启用'
     }
     if (item.name === 't-zgj-seal.BatchDelete') {
-      state.JyElMessageBox.header.data = 't-zgj-seal.BatchDelete'
-      state.JyElMessageBox.content.data = `已选中员工：${nameList}，请问确定要批量删除吗？`
-      state.JyElMessageBox.show = true
-      state.JyElMessageBox.type = '批量删除'
+      state.showToastDialog.header.data = 't-zgj-seal.BatchDelete'
+      state.showToastDialog.content.data =
+        '已选中以下用户，请问确定要批量删除吗？'
+      state.showToastDialog.show = true
+      state.showToastDialog.type = '批量删除'
     }
     if (item.name === 't-zgj-findpwd.batchResetPassword') {
       passTitle.value = 't-zgj-findpwd.batchResetPassword'
@@ -987,6 +958,8 @@
     }
   }
   const customClick = (row, column, cell, event) => {
+    state.JyElMessageBox.oneBtn = false
+    state.JyElMessageBox.confirmText = 't-zgj-select.confirm'
     const nameIdArr = []
     nameIdArr.push(column.userId)
     state.componentsBatch.userIds = nameIdArr
@@ -1063,12 +1036,13 @@
       state.JyElMessageBox.type = '启用'
     }
     if (cell.name === 't-zgj-Delete') {
+      state.JyElMessageBox.column = column
       state.JyElMessageBox.header.data = 't-zgj-Delete'
       state.JyElMessageBox.content.data = '确认要删除该员工吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '删除'
     }
-    if (cell.name === 't-zgj-index.updatePwd') {
+    if (cell.name === 't-zgj-findpwd.resetPassword') {
       passTitle.value = 't-zgj-findpwd.resetPassword'
       showPass.value = true
     }
@@ -1076,8 +1050,16 @@
       showUpload.value = true
     }
   }
+  const closeMoreDialog = () => {
+    state.showToastDialog.show = false
+    setTimeout(() => {
+      state.showToastDialog.oneBtn = false
+      state.showToastDialog.confirmText = 't-zgj-select.confirm'
+    }, 1000)
+  }
   // 提交弹窗
   const submitElMessageBox = type => {
+    console.log(type)
     if (type === '停用') {
       api.userDisable(state.componentsBatch.userIds[0]).then(res => {
         if (res.code === 200) {
@@ -1097,6 +1079,15 @@
       })
     }
     if (type === '删除') {
+      console.log(state.JyElMessageBox.column)
+      if (state.JyElMessageBox.column.flag === '启用') {
+        state.JyElMessageBox.header.data = 't-zgj-Delete'
+        state.JyElMessageBox.content.data = '请停用该员工后再进行删除'
+        state.JyElMessageBox.oneBtn = true
+        state.JyElMessageBox.type = '提示'
+        state.JyElMessageBox.confirmText = 't-zgj-know'
+        return false
+      }
       api.userDelete(state.componentsBatch.userIds[0]).then(res => {
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
@@ -1107,30 +1098,40 @@
     }
     if (type === '批量停用') {
       api.userBatchDisable(state.componentsBatch.userIds).then(res => {
-        console.log(res)
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
-          state.JyElMessageBox.show = false
+          state.showToastDialog.show = false
           table.value.reloadData()
         }
       })
     }
     if (type === '批量启用') {
       api.userBatchEnable(state.componentsBatch.userIds).then(res => {
-        console.log(res)
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
-          state.JyElMessageBox.show = false
+          state.showToastDialog.show = false
           table.value.reloadData()
         }
       })
     }
     if (type === '批量删除') {
+      const enableList = []
+      state.componentsBatch.selectionData.forEach(element => {
+        if (element.flag === '启用') {
+          enableList.push(element)
+        }
+      })
+      if (enableList.length > 0) {
+        state.showToastDialog.content.data = '请将以下员工停用后再进行删除'
+        state.componentsBatch.selectionData = enableList
+        state.showToastDialog.confirmText = 't-zgj-know'
+        state.showToastDialog.oneBtn = true
+        return false
+      }
       api.userBatchDelete(state.componentsBatch.userIds).then(res => {
-        console.log(res)
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
-          state.JyElMessageBox.show = false
+          state.showToastDialog.show = false
           table.value.reloadData()
         }
       })
@@ -1246,13 +1247,11 @@
   }
   // 树形变化
   const currentChange = type => {
-    console.log(type)
     organId.value = type.organId
     table.value.reloadData()
   }
   onMounted(() => {
     table.value.reloadData()
-    // console.log(`the component is now mounted.`)
   })
 </script>
 <style lang="scss">
