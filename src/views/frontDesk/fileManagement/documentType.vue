@@ -34,6 +34,8 @@
       <template #tree>
         <div>
           <componentsTree
+            ref="tree"
+            v-model="state.componentsTree.value"
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="{ children: 'child', label: 'fileTypeName' }"
@@ -293,14 +295,17 @@
         'default-expand-all': true,
         'expand-on-click-node': false,
         'check-strictly': true,
-        'highlight-current': true
+        'highlight-current': true,
+        'node-key': 'fileTypeId',
+        'current-node-key': '-1'
       },
       defaultProps: {
         label: 'fileTypeName',
         children: 'child',
         isLeaf: 'haveChildren',
         nodeKey: 'fileTypeId'
-      }
+      },
+      value: ''
     },
     componentsDocumentsDetails: {
       show: false,
@@ -387,13 +392,12 @@
   const getFileTypeTree = async () => {
     try {
       const res = await fileManageService.getTreeList({})
-      state.componentsTree.data = [
-        {
-          fileTypeName: '文件类型',
-          fileTypeId: '-1',
-          child: res.data || []
-        }
-      ]
+      state.componentsTree.data.push({
+        fileTypeName: '文件类型',
+        fileTypeId: '-1',
+        child: res.data || []
+      })
+      state.componentsTree.value = '-1'
       table.value.reloadData()
     } catch (error) {
       console.log('--->', error)
