@@ -15,6 +15,7 @@
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
+      @getResult="tableData = $event"
     >
       <template #title>
         <div class="title">
@@ -33,6 +34,8 @@
       <template #tree>
         <div>
           <componentsTree
+            ref="tree"
+            v-model="state.componentsTree.value"
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
             :defaultProps="{ children: 'child', label: 'fileTypeName' }"
@@ -102,6 +105,15 @@
     @sureAction="deleteFileType"
     curKey="fileTypeName"
   ></actionMoreDialog>
+
+  <!-- 批量删除失败提示 -->
+  <JyActionErrorDialog
+    @update:modelValue="state.showDeleteFTyle.show = false"
+    :show="state.showDeleteFTyle.show"
+    :selectionData="state.componentsBatch.selectionData"
+    :showToastDialogContent="showToastDialogContent"
+    label="fileTypeName"
+  ></JyActionErrorDialog>
 </template>
 
 <script setup>
@@ -133,6 +145,7 @@
   const privacyVisible = ref(false)
   const table = ref(null)
   const showToastDialogContent = ref(null)
+  const tableData = ref([])
 
   const state = reactive({
     componentsSearchForm: {
@@ -282,14 +295,17 @@
         'default-expand-all': true,
         'expand-on-click-node': false,
         'check-strictly': true,
-        'highlight-current': true
+        'highlight-current': true,
+        'node-key': 'fileTypeId',
+        'current-node-key': '-1'
       },
       defaultProps: {
         label: 'fileTypeName',
         children: 'child',
         isLeaf: 'haveChildren',
         nodeKey: 'fileTypeId'
-      }
+      },
+      value: ''
     },
     componentsDocumentsDetails: {
       show: false,
@@ -334,6 +350,16 @@
       content: {
         data: ''
       }
+    },
+    showDeleteFTyle: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
     }
   })
 
@@ -366,13 +392,12 @@
   const getFileTypeTree = async () => {
     try {
       const res = await fileManageService.getTreeList({})
-      state.componentsTree.data = [
-        {
-          fileTypeName: '文件类型',
-          fileTypeId: '-1',
-          child: res.data || []
-        }
-      ]
+      state.componentsTree.data.push({
+        fileTypeName: '文件类型',
+        fileTypeId: '-1',
+        child: res.data || []
+      })
+      state.componentsTree.value = '-1'
       table.value.reloadData()
     } catch (error) {
       console.log('--->', error)
@@ -400,6 +425,21 @@
       state.JyElMessageBox.show = false
       refresh()
     } catch (error) {
+      // 有不可删除文件类型
+      if (error.code && error.code === 500) {
+        state.showToastDialog.show = false
+        state.componentsBatch.selectionData = []
+        state.showDeleteFTyle.show = true
+        const list = tableData.value.filter(v => {
+          return error.data.includes(v.fileTypeId)
+        })
+        showToastDialogContent.value = {
+          header: '删除失败',
+          content:
+            '以下文件类型已被使用，不允许删除，若文件类型被已启用的文件类型关联或者已发起用印申请，则认为被使用。',
+          selectionData: list
+        }
+      }
       console.log('--->', error)
     }
   }

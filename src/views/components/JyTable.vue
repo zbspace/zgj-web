@@ -369,7 +369,8 @@
     'cellClick',
     'customClick',
     'clickBatchButton',
-    'clickElement'
+    'clickElement',
+    'getResult'
   ])
 
   watch(
@@ -601,6 +602,7 @@
             })
           })
         }
+        emit('getResult', state.componentsTable.data)
       },
       () => {
         loading.value = false

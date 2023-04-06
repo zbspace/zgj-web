@@ -1511,7 +1511,7 @@
       .ruleView(router.currentRoute.value.query.ruleBusinessId)
       .then(res => {
         const data = res.data
-        data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
+        // data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
         data.runFaceUser = data.runFaceUser.split(',')
         data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
         remoteUsersList.value = data.remoteSealUserList.map(i => {
