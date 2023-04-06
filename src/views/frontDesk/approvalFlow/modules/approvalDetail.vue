@@ -21,7 +21,15 @@
   >
     <div class="ap-cont-tabsCont">
       <div class="scrollbar-div">
-        <el-scrollbar style="height: 369px; overflow: auto">
+        <el-scrollbar
+          class="el-scrollbar-nomal"
+          :class="{
+            'el-scrollbar-add':
+              state.form.suggest === '5' ||
+              state.form.suggest === '4' ||
+              state.form.suggest === '3'
+          }"
+        >
           <div
             class="ap-cont-box sealDetails-basic-information"
             v-for="item in props.params.detailData"
@@ -672,6 +680,7 @@
     isVisible.value = false
   }
   const getAllDetailInfo = () => {
+    // vFormRef.value.resetFields()
     getDesign()
     getRuNode()
     // getSign()
@@ -840,6 +849,12 @@
   })
 </script>
 <style lang="scss" scoped>
+  .el-scrollbar-nomal {
+    height: 369px;
+  }
+  .el-scrollbar-add {
+    height: 335px;
+  }
   .el-form-item__content {
     margin-bottom: 12px;
   }

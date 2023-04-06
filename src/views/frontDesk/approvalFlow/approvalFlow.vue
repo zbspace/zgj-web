@@ -777,6 +777,7 @@
         state.params.definitionId = data.definitionId
         formVersionId.value = state.params.formData.formVersionId
         drawer.value.getAllDetailInfo()
+
         getFormDataJson()
         // attrState.instanceName = data.instanceName
         // loading.value = false
@@ -835,7 +836,6 @@
     //   modelNameArr.push(item.formColumnModel ? item.formColumnModel : '其他')
     // })
     formJson.forEach(v => {
-      modelNameArr.push(v.formColumnModel ? v.formColumnModel : '其他')
       for (const item in formData) {
         if (v.formColumnNo === item) {
           if (v.formColumnNo === 'sealName') {
@@ -922,33 +922,6 @@
                 type: v.formColumnModel ? v.formColumnModel : '其他'
               })
             }
-          } else if (v.formColumnNo === 'sealFile') {
-            if (formData[item].fileIds?.length > 0) {
-              formData[item].fileIds.forEach((cv, k) => {
-                formTableData.push({
-                  label:
-                    formData[item].fileIds > 1
-                      ? `用印文件${k + 1}`
-                      : '用印文件',
-                  value: cv.name,
-                  type: v.formColumnModel ? v.formColumnModel : '其他',
-                  fileUrl: cv.fileUrl
-                })
-              })
-            }
-            if (formData[item].fileAddIds?.length > 0) {
-              formData[item].fileAddIds.forEach((cv, k) => {
-                formTableData.push({
-                  label:
-                    formData[item].fileAddIds.length > 1
-                      ? `附加文件${k + 1}`
-                      : '附加文件',
-                  value: cv.name,
-                  type: v.formColumnModel ? v.formColumnModel : '其他',
-                  fileUrl: cv.fileUrl
-                })
-              })
-            }
           } else if (v.formColumnNo === 'remoteSeal') {
             formTableData.push({
               label: v.formColumnName,
@@ -976,6 +949,37 @@
                     }`,
               type: v.formColumnModel ? v.formColumnModel : '其他'
             })
+          } else if (v.formColumnNo === 'sealFile') {
+            if (formData[item].fileIds?.length > 0) {
+              console.log(
+                'formData[item].fileIds',
+                formData[item].fileIds.length
+              )
+              formData[item].fileIds.forEach((cv, k) => {
+                formTableData.push({
+                  label:
+                    formData[item].fileIds.length > 1
+                      ? `用印文件${k + 1}`
+                      : '用印文件',
+                  value: cv.name,
+                  type: v.formColumnModel ? v.formColumnModel : '其他',
+                  fileUrl: cv.fileUrl
+                })
+              })
+            }
+            if (formData[item].fileAddIds?.length > 0) {
+              formData[item].fileAddIds.forEach((cv, k) => {
+                formTableData.push({
+                  label:
+                    formData[item].fileAddIds.length > 1
+                      ? `附加文件${k + 1}`
+                      : '附加文件',
+                  value: cv.name,
+                  type: v.formColumnModel ? v.formColumnModel : '其他',
+                  fileUrl: cv.fileUrl
+                })
+              })
+            }
           } else {
             formTableData.push({
               label: v.formColumnName,
@@ -986,16 +990,18 @@
           }
         }
       }
+      modelNameArr.push(v.formColumnModel ? v.formColumnModel : '其他')
     })
     const allArr = []
     const newModeNames = Array.from(new Set(modelNameArr))
-    newModeNames.forEach(item => {
+    newModeNames.forEach((item, k) => {
       const obj = {
         title: item,
         data: [],
         labelStyle: {
           width: '8rem'
-        }
+        },
+        sort: item === '其他' ? 100 : k + 1
       }
       formTableData.forEach(v => {
         if (v.type === item) {
@@ -1005,7 +1011,14 @@
       allArr.push(obj)
     })
     console.log('allArr', allArr)
+    allArr.sort(sortArr('sort'))
     return allArr
+  }
+  // 排序
+  const sortArr = attr => {
+    return function (a, b) {
+      return a[attr] - b[attr]
+    }
   }
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'instanceTitle') {
