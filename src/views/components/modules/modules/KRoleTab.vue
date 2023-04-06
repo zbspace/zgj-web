@@ -7,6 +7,7 @@
         placeholder="搜索角色"
         :prefix-icon="Search"
         size="large"
+        @input="changeInput"
       />
     </div>
 
@@ -75,7 +76,7 @@
    * initQueryParams 初始化参数
    * selectedRole 选中项
    */
-  import { reactive, ref, computed, watch } from 'vue'
+  import { reactive, ref, computed } from 'vue'
   import {
     treeDataTranslate,
     deconstructedArray
@@ -84,6 +85,7 @@
   import KTreeModel from '../KTreeModel.vue'
   import KSearchTree from '../KSearchTree.vue'
   import Api from '@/api/common/organOrPerson'
+  import { throttle } from '@/utils/tools'
   import { ElMessage } from 'element-plus'
   const props = defineProps({
     apiModule: {
@@ -166,38 +168,44 @@
     data: []
   })
 
-  watch(
-    () => searchQuery.value,
-    val => {
-      if (!val) {
-        searchType.value = false
-      } else {
-        // 获取列表
-        Api[props.apiModule]
-          .search({
-            type: 'role',
-            keyWord: searchQuery.value
+  const searchFn = () => {
+    // 获取列表
+    Api[props.apiModule]
+      .search({
+        type: 'role',
+        keyWord: searchQuery.value
+      })
+      .then(res => {
+        treeColumnSearchData.data = res.data
+        searchType.value = true
+        if (!searchQuery.value) {
+          searchType.value = false
+        }
+        // 已经选中状态
+        if (
+          selectedData.value.length !== 0 &&
+          treeColumnSearchData.data !== 0
+        ) {
+          treeColumnSearchData.data.forEach(val => {
+            selectedData.value.forEach(item => {
+              if (val.id === item.id) {
+                val.selectedStatus = item.selectedStatus
+              }
+            })
           })
-          .then(res => {
-            treeColumnSearchData.data = res.data
-            searchType.value = true
-            // 已经选中状态
-            if (
-              selectedData.value.length !== 0 &&
-              treeColumnSearchData.data !== 0
-            ) {
-              treeColumnSearchData.data.forEach(val => {
-                selectedData.value.forEach(item => {
-                  if (val.id === item.id) {
-                    val.selectedStatus = item.selectedStatus
-                  }
-                })
-              })
-            }
-          })
-      }
+        }
+      })
+  }
+
+  const handleInp = throttle(searchFn, 800)
+
+  const changeInput = () => {
+    if (!searchQuery.value) {
+      searchType.value = false
+    } else {
+      handleInp()
     }
-  )
+  }
 
   // 自定义事件
   const emitsDemo = (attr, val, type) => {
