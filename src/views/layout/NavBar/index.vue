@@ -24,18 +24,17 @@
         >
           {{ accountInfoStore.oneDepartTitle }}
         </el-button>
-        <el-button
-          class="depart-dropdown"
-          text
+
+        <el-dropdown
+          trigger="hover"
+          :teleported="false"
+          @command="chooseDepart"
+          :disabled="state.departLists.length < 2"
           v-show="state.departLists.length > 1"
+          style="margin: auto; height: 32px"
         >
-          <el-dropdown
-            trigger="hover"
-            :teleported="false"
-            @command="chooseDepart"
-            :disabled="state.departLists.length < 2"
-          >
-            <span class="el-dropdown-link">
+          <span class="el-dropdown-link">
+            <el-button class="depart-dropdown" text>
               {{ state.currentDepart.tenantName }}
               <el-icon
                 class="el-icon--right"
@@ -43,36 +42,31 @@
               >
                 <arrow-down />
               </el-icon>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <div class="ap-enterprise">
-                  <!-- <div class="ap-enterprise-text">
-                    <div class="ap-enterprise-text-list"> 企业/组织/团队 </div>
-                  </div> -->
-                  <div class="ap-enterprise-cont">
-                    <el-dropdown-item
-                      v-for="(item, index) in state.departLists"
-                      :command="item"
-                      :disabled="
-                        Number(item.tenantId) === Number(state.tenantId)
-                      "
-                      :key="index"
-                    >
-                      <div class="ap-enterprise-cont-list">
-                        {{ item.tenantName }}
-                        <div
-                          class="defart-selected"
-                          v-if="state.tenantId === Number(item.tenantId)"
-                        />
-                      </div>
-                    </el-dropdown-item>
-                  </div>
+            </el-button>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <div class="ap-enterprise">
+                <div class="ap-enterprise-cont">
+                  <el-dropdown-item
+                    v-for="(item, index) in state.departLists"
+                    :command="item"
+                    :disabled="Number(item.tenantId) === Number(state.tenantId)"
+                    :key="index"
+                  >
+                    <div class="ap-enterprise-cont-list">
+                      {{ item.tenantName }}
+                      <div
+                        class="defart-selected"
+                        v-if="state.tenantId === Number(item.tenantId)"
+                      />
+                    </div>
+                  </el-dropdown-item>
                 </div>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </el-button>
+              </div>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
 
       <!-- nav-right -->
@@ -104,6 +98,7 @@
               :content="$t('t-help-center')"
               placement="bottom"
               :show-arrow="true"
+              :show-after="200"
             >
               <div :class="showHelpPop ? '' : 'svg-img'" class="svg-img-hover">
                 <!-- <img src="@/assets/images/navbar/help_select_icon.svg" /> -->
@@ -130,6 +125,8 @@
             trigger="hover"
             :show-arrow="false"
             :teleported="false"
+            :show-after="200"
+            :hide-after="120"
             @before-enter="showUserPop"
             @after-leave="hideUserPop"
           >
@@ -570,6 +567,7 @@
     hideUserPop()
   }
 </script>
+
 <style lang="scss" scoped>
   .nav-bar-container {
     display: flex;
@@ -766,7 +764,7 @@
             align-content: center;
             justify-content: center;
             border-radius: 4px;
-            background-color: #e2b062;
+            background-color: var(--jy-primary-4);
             color: var(--jy-in-common-use-1);
             margin-bottom: 0.5rem;
           }
@@ -910,5 +908,11 @@
         color: #fff;
       }
     }
+  }
+</style>
+
+<style lang="scss">
+  :focus-visible {
+    outline: 0;
   }
 </style>
