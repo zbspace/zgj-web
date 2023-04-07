@@ -422,11 +422,18 @@
         >
       </template>
     </JyElMessageBox>
+    <ChangeKeeper
+      :show="showChangeDialog"
+      @on-cancel="closeChage"
+      @on-confirm="submitChange"
+      ref="changeRef"
+    >
+    </ChangeKeeper>
   </div>
 </template>
 <script setup>
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
-  import { Paperclip, CircleClose } from '@element-plus/icons-vue'
+  import { Paperclip } from '@element-plus/icons-vue'
   import componentsTree from '@/views/components/tree.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import JyTable from '@/views/components/JyTable.vue'
@@ -437,11 +444,14 @@
   import staffApi from '@/api/system/companyManagement/departmentStaff'
   import JyRichEdit from '@/views/components/modules/JyRichEdit.vue'
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
+  import ChangeKeeper from '@/views/frontDesk/PrintControlManagement/LibraryOfSeals/modules/changeKeeper.vue'
   import { useRouter } from 'vue-router'
   const router = useRouter()
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
+  const showChangeDialog = ref(false)
   const vFormLibraryRef = ref(null)
+  const changeRef = ref(null)
   const depChoose = ref(null)
   const table = ref(null)
   const queryParams = ref({})
@@ -576,20 +586,6 @@
         {
           required: true,
           message: '请输入印章简称',
-          trigger: 'change'
-        }
-      ],
-      manageUserId: [
-        {
-          required: true,
-          message: '请选择管理人',
-          trigger: 'change'
-        }
-      ],
-      manageOrganId: [
-        {
-          required: true,
-          message: '请选择管理部门',
           trigger: 'change'
         }
       ],
@@ -942,6 +938,12 @@
       ]
     }
   })
+  const closeChage = () => {
+    showChangeDialog.value = false
+  }
+  const submitChange = () => {
+    showChangeDialog.value = false
+  }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -1002,6 +1004,10 @@
       state.JyElMessageBox.content.data = '请问确定销毁该印章吗？'
       state.JyElMessageBox.show = true
       state.JyElMessageBox.type = '销毁'
+    }
+    if (cell.name === 't-zgj-status.Change') {
+      showChangeDialog.value = true
+      changeRef.value.getSealInfo(column.sealId, state.typeList)
     }
   }
   const getSealsInfo = () => {

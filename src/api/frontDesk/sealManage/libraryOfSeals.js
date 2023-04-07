@@ -73,11 +73,11 @@ api.sealInfoDestroy = params => {
   })
 }
 // 印章变更
-api.sealInfoChange = params => {
+api.sealInfoChange = data => {
   return request({
     method: 'POST',
     url: '/sealInfo/change',
-    params
+    data
   })
 }
 // 印章详情
