@@ -970,36 +970,42 @@
     }
     if (cell.name === 't-zgj-seal.SetVisibility') {
       depChoose.value = 't-zgj-seal.SetVisibility'
-      const arr = []
       api.sealInfoVisible(column.sealId).then(res => {
         if (res.data.organs?.length > 0) {
-          arr.concat(res.data.organs)
+          res.data.organs.forEach(item => {
+            state.searchSelected.push(item)
+          })
         }
         if (res.data.roles?.length > 0) {
-          arr.concat(res.data.roles)
+          res.data.roles.forEach(item => {
+            state.searchSelected.push(item)
+          })
         }
         if (res.data.users?.length > 0) {
-          arr.concat(res.data.users)
+          state.searchSelected.push(res.data.users)
         }
-        state.searchSelected = arr
+        console.log('state.searchSelected', state.searchSelected)
         showDepPerDialog.value = true
         state.tabsShow = ['organ', 'user', 'role']
       })
     }
     if (cell.name === 't-zgj-seal.SetAvailable') {
       depChoose.value = 't-zgj-seal.SetAvailable'
-      const arr = []
       api.sealInfoUsable(column.sealId).then(res => {
         if (res.data.organs?.length > 0) {
-          arr.concat(res.data.organs)
+          res.data.organs.forEach(item => {
+            state.searchSelected.push(item)
+          })
         }
         if (res.data.roles?.length > 0) {
-          arr.concat(res.data.roles)
+          res.data.roles.forEach(item => {
+            state.searchSelected.push(item)
+          })
         }
         if (res.data.users?.length > 0) {
-          arr.concat(res.data.users)
+          state.searchSelected.push(res.data.users)
         }
-        state.searchSelected = arr
+        console.log('state.searchSelected', state.searchSelected)
         showDepPerDialog.value = true
         state.tabsShow = ['organ', 'user', 'role']
       })
@@ -1268,6 +1274,11 @@
         } else if (depChoose.value === 't-zgj-seal.SetVisibility') {
           // 设置可见范围
           params.id = state.sealIds
+          console.log(params.userIds)
+          if (params.userIds.length <= 0) {
+            ElMessage.error('可见人员至少需要一个！')
+            return false
+          }
           setSealInfo(api.saveSealInfoVisible(params))
         } else if (depChoose.value === 't-zgj-seal.BatchSetVisibility') {
           // 批量设置可见范围
