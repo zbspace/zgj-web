@@ -982,7 +982,9 @@
           })
         }
         if (res.data.users?.length > 0) {
-          state.searchSelected.push(res.data.users)
+          res.data.users.forEach(item => {
+            state.searchSelected.push(item)
+          })
         }
         console.log('state.searchSelected', state.searchSelected)
         showDepPerDialog.value = true
@@ -1003,7 +1005,9 @@
           })
         }
         if (res.data.users?.length > 0) {
-          state.searchSelected.push(res.data.users)
+          res.data.users.forEach(item => {
+            state.searchSelected.push(item)
+          })
         }
         console.log('state.searchSelected', state.searchSelected)
         showDepPerDialog.value = true
