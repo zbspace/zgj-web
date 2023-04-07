@@ -61,6 +61,10 @@ export function requireComp(app) {
     'JyTable',
     defineAsyncComponent(() => import('./common/JyTable/index.vue'))
   )
+  app.component(
+    'JyDrawer',
+    defineAsyncComponent(() => import('./common/JyDrawer/index.vue'))
+  )
 
   // -------------------------- business -------------------------------
   app.component(
