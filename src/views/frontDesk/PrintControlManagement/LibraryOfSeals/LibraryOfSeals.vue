@@ -959,6 +959,7 @@
   function customClick(row, column, cell, event) {
     console.log(column)
     console.log(cell)
+    state.changeSelected = []
     if (column.sealStateId === '2') {
       return
     }
@@ -967,12 +968,41 @@
       state.title = 't-zgj-Edit'
       getSealsInfo()
     }
-    if (
-      cell.name === 't-zgj-seal.SetVisibility' ||
-      cell.name === 't-zgj-seal.SetAvailable'
-    ) {
-      showDepPerDialog.value = true
-      state.tabsShow = ['user']
+    if (cell.name === 't-zgj-seal.SetVisibility') {
+      depChoose.value = 't-zgj-seal.SetVisibility'
+      const arr = []
+      api.sealInfoVisible(column.sealId).then(res => {
+        if (res.data.organs?.length > 0) {
+          arr.concat(res.data.organs)
+        }
+        if (res.data.roles?.length > 0) {
+          arr.concat(res.data.roles)
+        }
+        if (res.data.users?.length > 0) {
+          arr.concat(res.data.users)
+        }
+        state.changeSelected = arr
+        showDepPerDialog.value = true
+        state.tabsShow = ['organ', 'user', 'role']
+      })
+    }
+    if (cell.name === 't-zgj-seal.SetAvailable') {
+      depChoose.value = 't-zgj-seal.SetAvailable'
+      const arr = []
+      api.sealInfoUsable(column.sealId).then(res => {
+        if (res.data.organs?.length > 0) {
+          arr.concat(res.data.organs)
+        }
+        if (res.data.roles?.length > 0) {
+          arr.concat(res.data.roles)
+        }
+        if (res.data.users?.length > 0) {
+          arr.concat(res.data.users)
+        }
+        state.changeSelected = arr
+        showDepPerDialog.value = true
+        state.tabsShow = ['organ', 'user', 'role']
+      })
     }
     if (cell.name === 't-zgj-Delete') {
       state.JyElMessageBox.header.data = 't-zgj-Delete'
@@ -1071,12 +1101,14 @@
       ]
     }
     if (item.name === 't-zgj-seal.BatchSetVisibility') {
+      depChoose.value = 't-zgj-seal.BatchSetVisibility'
       showDepPerDialog.value = true
-      state.tabsShow = ['user']
+      state.tabsShow = ['organ', 'user', 'role']
     }
     if (item.name === 't-zgj-seal.BatchSetAvailable') {
+      depChoose.value = 't-zgj-seal.BatchSetAvailable'
       showDepPerDialog.value = true
-      state.tabsShow = ['user']
+      state.tabsShow = ['organ', 'user', 'role']
     }
   }
 
@@ -1194,15 +1226,68 @@
   const showDepPerDialog = ref(false)
   const submitSelectDepart = data => {
     if (data) {
-      state.form[depChoose.value + 'Id'] = data[0].id
-      if (depChoose.value === 'keepUser') {
-        getStaffDetail(data[0].id)
-        state.searchSelectedKeepUser = data
-      } else if (depChoose.value === 'keepOrgan') {
-        state.searchSelectedKeepOrgan = data
+      console.log(data)
+      if (depChoose.value === 'keepUser' || depChoose.value === 'keepOrgan') {
+        state.form[depChoose.value + 'Id'] = data[0].id
+        if (depChoose.value === 'keepUser') {
+          getStaffDetail(data[0].id)
+          state.searchSelectedKeepUser = data
+        } else if (depChoose.value === 'keepOrgan') {
+          state.searchSelectedKeepOrgan = data
+        }
+        state.form[depChoose.value + 'Name'] = data[0].name
+      } else {
+        if (data?.length <= 0) {
+          ElMessage.error('至少选择一个！')
+          showDepPerDialog.value = true
+          return false
+        }
+        const params = {
+          id: '',
+          ids: [],
+          roleIds: [],
+          organs: [],
+          userIds: []
+        }
+        data.forEach(item => {
+          if (item.type === 'organ') {
+            params.organs.push({
+              id: item.id,
+              includeChild: item.haveChildren ? '1' : '0'
+            })
+          } else if (item.type === 'user') {
+            params.userIds.push(item.id)
+          } else if (item.type === 'role') {
+            params.roleIds.push(item.id)
+          }
+        })
+        if (depChoose.value === 't-zgj-seal.SetAvailable') {
+          // 设置可用范围
+          params.id = state.sealIds
+          setSealInfo(api.saveSealInfoUsable(params))
+        } else if (depChoose.value === 't-zgj-seal.SetVisibility') {
+          // 设置可见范围
+          params.id = state.sealIds
+          setSealInfo(api.saveSealInfoVisible(params))
+        } else if (depChoose.value === 't-zgj-seal.BatchSetVisibility') {
+          // 批量设置可见范围
+          params.ids = state.sealIds.split(',')
+          setSealInfo(api.batchSaveSealInfoVisible(params))
+        } else if (depChoose.value === 't-zgj-seal.BatchSetAvailable') {
+          // 批量设置可用范围
+          params.ids = state.sealIds.split(',')
+          setSealInfo(api.batchSaveSealInfoUsable(params))
+        }
       }
-      state.form[depChoose.value + 'Name'] = data[0].name
     }
+  }
+  // 设置可见可用范围
+  const setSealInfo = api => {
+    api.then(res => {
+      if (res.code === 200) {
+        ElMessage.success('设置成功')
+      }
+    })
   }
   // 获取员工详情
   const getStaffDetail = id => {

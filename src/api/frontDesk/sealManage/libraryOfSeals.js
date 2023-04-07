@@ -126,4 +126,50 @@ api.sealInfoBizNo = () => {
     url: '/sealInfo/bizNo'
   })
 }
+// 查询印章可见范围
+api.sealInfoVisible = params => {
+  return request({
+    method: 'GET',
+    url: `/sealInfo/visible/${params}`
+  })
+}
+// 保存印章可见范围
+api.saveSealInfoVisible = data => {
+  return request({
+    method: 'POST',
+    url: `/sealInfo/visible/`,
+    data
+  })
+}
+// 批量保存印章可见范围
+api.batchSaveSealInfoVisible = data => {
+  return request({
+    method: 'POST',
+    url: `/sealInfo/visible/batch`,
+    data
+  })
+}
+// 查询印章可用范围
+api.sealInfoUsable = params => {
+  return request({
+    method: 'GET',
+    url: `/sealInfo/usable/${params}`
+  })
+}
+// 保存印章可用范围
+api.saveSealInfoUsable = data => {
+  return request({
+    method: 'POST',
+    url: `/sealInfo/usable/`,
+    data
+  })
+}
+// 批量保存印章可用范围
+api.batchSaveSealInfoUsable = data => {
+  return request({
+    method: 'POST',
+    url: `/sealInfo/usable/batch`,
+    data
+  })
+}
 export default api
