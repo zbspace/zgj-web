@@ -154,6 +154,7 @@
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import formApi from '@/api/system/formManagement/index'
   import { useVformInfoStore } from '@/store/vform'
+  import { CodeToText } from 'element-china-area-data'
 
   const vformInfoStore = useVformInfoStore()
   const dialogProcess = reactive({
@@ -706,6 +707,10 @@
     }
     getFormPage()
   }
+  // 点击关闭详情
+  function clickClose() {
+    state.componentsDocumentsDetails.show = false
+  }
   const clickBatchButton = item => {
     console.log(item)
     if (item.name === 'refresh') {
@@ -911,9 +916,15 @@
               type: v.formColumnModel ? v.formColumnModel : '其他'
             })
             if (formData[item].extSeal) {
+              let area = ''
+              if (formData[item].provinceId.length > 0) {
+                formData[item].provinceId.forEach(item => {
+                  area += CodeToText[item] + ' '
+                })
+              }
               formTableData.push({
                 label: `外带地址`,
-                value: formData[item].detailAddress,
+                value: area + formData[item].detailAddress,
                 type: v.formColumnModel ? v.formColumnModel : '其他'
               })
               formTableData.push({

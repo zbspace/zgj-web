@@ -3,7 +3,7 @@
     "prop": "instanceTitle",
     "label": "流程名称",
     "sortable": true,
-    "min-width": 180
+    "min-width": 190
   },
   {
     "prop": "2",
