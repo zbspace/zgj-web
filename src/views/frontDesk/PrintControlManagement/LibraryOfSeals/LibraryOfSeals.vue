@@ -959,7 +959,7 @@
   function customClick(row, column, cell, event) {
     console.log(column)
     console.log(cell)
-    state.changeSelected = []
+    state.searchSelected = []
     if (column.sealStateId === '2') {
       return
     }
@@ -981,7 +981,7 @@
         if (res.data.users?.length > 0) {
           arr.concat(res.data.users)
         }
-        state.changeSelected = arr
+        state.searchSelected = arr
         showDepPerDialog.value = true
         state.tabsShow = ['organ', 'user', 'role']
       })
@@ -999,7 +999,7 @@
         if (res.data.users?.length > 0) {
           arr.concat(res.data.users)
         }
-        state.changeSelected = arr
+        state.searchSelected = arr
         showDepPerDialog.value = true
         state.tabsShow = ['organ', 'user', 'role']
       })
