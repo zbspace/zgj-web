@@ -713,18 +713,6 @@
         }
       }
 
-      .account-icon {
-        background: url(../../assets/images/login/ercode.svg) no-repeat center
-          center;
-        background-size: 100%;
-      }
-
-      .code-icon {
-        background: url(../../assets/images/login/account.svg) no-repeat center
-          center;
-        background-size: 100%;
-      }
-
       .l-scan-box {
         text-align: center;
         .scan-title {
