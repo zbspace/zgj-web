@@ -609,7 +609,7 @@
                     box-sizing: border-box;
                   }
                   .checked {
-                    background-color: var(--jy-primary-1);
+                    // background-color: var(--jy-primary-1);
                     color: var(--jy-primary-6);
                   }
                 }
