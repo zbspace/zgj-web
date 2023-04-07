@@ -32,12 +32,6 @@ export default [
     component: () => import('../views/test')
   },
   {
-    path: '/demo',
-    name: 'Demo',
-    meta: { title: 'Test', authRequired: false },
-    component: () => import('../views/demo')
-  },
-  {
     path: '/:pathMatch(.*)',
     component: () => import('@/views/errorPage/404'),
     hidden: true
