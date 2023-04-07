@@ -113,7 +113,9 @@
                       ? 'hasContent'
                       : ''
                   "
-                  @click="clickElement(item, index)"
+                  @click="
+                    clickElement(item, index, item.defaultAttribute.multiple)
+                  "
                 >
                   <el-option
                     v-for="one in item.options"
@@ -461,6 +463,7 @@
       v-model:show="showDocumentTypeDialog"
       :searchSelected="documentTypeSelected"
       @update:searchSelected="documentTypeSubmit"
+      :multiple="multipleDocumetType"
     ></KDocumentTypeDialog>
   </div>
 </template>
@@ -687,11 +690,13 @@
     emit('reloadData')
   }
   const derivableRef = {}
+  const multipleDocumetType = ref(true)
   // 点击表单
-  function clickElement(item, index) {
+  function clickElement(item, index, multiple) {
     derivableRef[item.id].blur()
     if (item.defaultAttribute.type === 'document') {
       showDocumentTypeDialog.value = true
+      multipleDocumetType.value = multiple
       kDialogOpenId.value = item.id
       return
     }

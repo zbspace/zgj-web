@@ -563,6 +563,7 @@
     selectedData.value = []
 
     clearAllStatus(treeColumnData.data)
+    clearAllStatus(treeColumnSearchData.data)
     clearAllStatus(cacheRootLists.value)
   }
 
