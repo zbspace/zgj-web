@@ -20,7 +20,7 @@
           表单状态：<span>{{ detail.formName || '-' }}</span>
         </p>
         <p>
-          创建人：<span>{{ detail.formName || '-' }}</span>
+          创建人：<span>{{ detail.createUserName || '-' }}</span>
         </p>
         <p>
           更新时间：<span>{{ detail.modifyDatetimeStr || '-' }}</span>
@@ -34,7 +34,7 @@
           表单编码：<span>{{ detail.formNo || '-' }}</span>
         </p>
         <p>
-          关联文件类型：<span>{{ detail.formName || '-' }}</span>
+          关联文件类型：<span>{{ detail.fileTypeName || '-' }}</span>
         </p>
         <p>
           用印类型：<span>{{ detail.sealUseTypeName || '-' }}</span>

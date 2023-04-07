@@ -6,7 +6,7 @@
 * @LastEditTime 2023-03-29 16:08:13
 !-->
 <template>
-  <el-drawer
+  <JyDrawer
     v-model="isVisible"
     direction="rtl"
     @close="clickClose"
@@ -26,12 +26,11 @@
         <HisVersion :formMessageId="props.formMessageId" />
       </el-tab-pane>
     </el-tabs>
-  </el-drawer>
+  </JyDrawer>
 </template>
 
 <script setup>
   import { ref, computed } from 'vue'
-  import formManageService from '@/api/system/formManagement'
   import FormDetail from './FormDetail'
   import HisVersion from './HisVersion'
   import Operation from './Operation'
