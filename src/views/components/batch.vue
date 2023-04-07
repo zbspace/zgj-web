@@ -149,6 +149,7 @@
           placement="bottom-end"
           :width="220"
           :offset="5"
+          :show-after="200"
           popper-style="padding: 0"
         >
           <template #reference>

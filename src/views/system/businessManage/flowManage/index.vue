@@ -236,7 +236,7 @@
       defaultAttribute: {
         placeholder: '请选择',
         type: 'document',
-        multiple: true,
+        multiple: false,
         joinStr: ','
       },
       options: []

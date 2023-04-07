@@ -67,11 +67,110 @@
 
     <!-- content -->
     <div class="content-login" v-show="!state.chooseDepartBox">
-      <div
-        class="login-type"
-        @click="changeLogin"
-        :class="state.showAccountLogin ? 'account-icon' : 'code-icon'"
-      >
+      <div class="login-type" @click="changeLogin">
+        <!-- :class="state.showAccountLogin ? 'account-icon' : 'code-icon'" -->
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 80 80"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          v-show="!state.showAccountLogin"
+        >
+          <path
+            opacity="0.600028"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M0 0H76C78.2091 0 80 1.79086 80 4V80L0 0Z"
+            fill="var(--jy-primary-6)"
+          />
+          <mask
+            id="mask0_2118_64756"
+            style="mask-type: luminance"
+            maskUnits="userSpaceOnUse"
+            x="0"
+            y="0"
+            width="80"
+            height="80"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0 0H76C78.2091 0 80 1.79086 80 4V80L0 0Z"
+              fill="white"
+            />
+          </mask>
+          <g mask="url(#mask0_2118_64756)">
+            <rect
+              opacity="0.01"
+              x="17"
+              y="8"
+              width="52"
+              height="52"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M21.9211 10H64.0797C68.4473 10 72.0008 13.827 72 18.5309V42.6463C72 47.3501 68.4465 51.1771 64.0789 51.1771H44.8208V56.0789H59.0145C60.02 56.0789 60.8349 56.9565 60.8349 58.0395C60.8349 59.1224 60.02 60 59.0145 60H26.987C25.9815 60 25.1666 59.1224 25.1666 58.0395C25.1666 56.9565 25.9815 56.0789 26.987 56.0789H41.1792V51.1771H21.9211C17.5535 51.1771 14 47.3501 14 42.6463V18.5309C14 13.827 17.5535 10 21.9211 10ZM60.3048 47C63.9966 47 67 43.7658 67 39.7904H66.9992V21.2096C66.9992 17.2342 63.9959 14 60.3041 14H24.6952C21.0034 14 18 17.2342 18 21.2096V39.7904C18 43.7658 21.0034 47 24.6952 47H60.3048Z"
+              fill="white"
+            />
+            <path
+              d="M60.808 18H25.192C23.4322 18 22 19.5749 22 21.5102V40.4898C22 42.4251 23.4322 44 25.192 44H60.808C62.5678 44 64 42.4251 64 40.4898V21.511C64 19.5749 62.5686 18 60.808 18Z"
+              fill="white"
+            />
+          </g>
+        </svg>
+
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 80 80"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            opacity="0.600028"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M0 0H76C78.2091 0 80 1.79086 80 4V80L0 0Z"
+            fill="var(--jy-primary-6)"
+            v-show="state.showAccountLogin"
+          />
+          <mask
+            id="mask0_2118_64493"
+            style="mask-type: luminance"
+            maskUnits="userSpaceOnUse"
+            x="0"
+            y="0"
+            width="80"
+            height="80"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0 0H76C78.2091 0 80 1.79086 80 4V80L0 0Z"
+              fill="white"
+            />
+          </mask>
+          <g mask="url(#mask0_2118_64493)">
+            <rect
+              opacity="0.01"
+              x="20"
+              y="8"
+              width="52"
+              height="52"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M24 13H40.6221V23.755H46.4883V28.6457H40.6221H29.8695V34.5132H24V28.6457V13ZM52.3285 28.6457V34.5132H46.4883V28.6457H52.3285ZM52.3578 28.6424H52.3285V28.6457H52.3578V34.5132V40.3775H46.4883V45.2682H57.2409V51.1357V57H68V51.1357H63.1104V45.2682H68V40.3775V34.5132H63.1104H57.2442V34.51H63.1104L63.1104 28.6457H68V13H52.3578H46.4883V17.8874H52.3578V28.6424ZM52.3578 28.6424H57.2442V34.51H57.2409V28.6457H52.3578V28.6424ZM63.1104 40.3775H62.1305H57.2409V40.3807H63.1104L63.1104 40.3775ZM55.2649 15.9305H55.2877V15.9338H55.2649V15.9305ZM65.0376 15.9338H55.2877V25.7087H55.2649V25.7119L55.2877 25.7119V25.7087H65.0376V15.9338ZM65.0376 15.9338V15.9305H65.0604V25.7119L65.0408 25.7119V15.9338H65.0376ZM37.6922 25.7119L37.689 25.7119V15.9338H37.6922V25.7119ZM27.9097 15.9338V15.9305H37.689V15.9338H27.9097ZM27.9097 15.9338V25.7119L27.7502 25.7119V15.9338H27.9097ZM57.2181 17.8874H63.0843V23.7582H57.2181V17.8874ZM29.736 17.8874H35.6999V23.7582H29.736V17.8874ZM35.5697 45.2682H29.7035V51.139H35.5697V45.2682ZM24 40.3775H35.7325V34.5132H40.6188V40.3775V57H24V40.3775ZM37.689 53.0894H27.9097V43.3145H37.689V53.0894ZM52.3578 51.1357H46.4883V57H52.3578V51.1357Z"
+              fill="white"
+            />
+          </g>
+        </svg>
+
         <div
           class="l-type-tip user-select"
           :class="state.languageCh ? 'tip' : 'tip-left'"
@@ -480,7 +579,8 @@
 
             &::after {
               top: 60%;
-              border-top: 6px solid rgba($color: var(--jy-primary-6), $alpha: 0.8);
+              border-top: 6px solid
+                rgba($color: var(--jy-primary-6), $alpha: 0.8);
               border-bottom: 6px solid transparent;
             }
           }
@@ -614,13 +714,13 @@
       }
 
       .account-icon {
-        background: url(../../assets/images/login/ercode.png) no-repeat center
+        background: url(../../assets/images/login/ercode.svg) no-repeat center
           center;
         background-size: 100%;
       }
 
       .code-icon {
-        background: url(../../assets/images/login/account.png) no-repeat center
+        background: url(../../assets/images/login/account.svg) no-repeat center
           center;
         background-size: 100%;
       }

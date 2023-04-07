@@ -4,9 +4,10 @@
     <div class="select-search">
       <el-input
         v-model="searchQuery"
-        placeholder="搜索部门/成员"
+        placeholder="搜索文件类型"
         :prefix-icon="Search"
         size="large"
+        @input="changeInput"
       />
     </div>
     <!-- crumbs -->
@@ -55,7 +56,17 @@
         :rootNode="rootNode"
         tabActive="document"
         :multiple="props.multiple"
+        v-show="!searchType"
       ></KTreeModel>
+
+      <KSearchTree
+        :lists="treeColumnSearchData.data"
+        @update:lists="treeColumnSearchData.data = $event"
+        @open="openInner"
+        @searchSelected="searchSelected"
+        tabActive="document"
+        v-if="searchType"
+      ></KSearchTree>
     </div>
   </div>
 </template>
@@ -75,8 +86,10 @@
   } from '@/utils/handleTreeData.js'
   import { Search } from '@element-plus/icons-vue'
   import KTreeModel from '../KTreeModel.vue'
+  import KSearchTree from '../KSearchTree.vue'
   import Api from '@/api/common/documentType'
   import { ElMessage } from 'element-plus'
+  import { throttle } from '@/utils/tools'
   const props = defineProps({
     apiModule: {
       type: String,
@@ -150,11 +163,61 @@
   // 搜索条件
   const searchQuery = ref('')
 
+  const searchType = ref(false)
+  const treeColumnSearchData = reactive({
+    data: []
+  })
+
+  const searchFn = () => {
+    // 获取列表
+    resultOrgan({
+      keyWord: searchQuery.value
+    }).then(res => {
+      // treeColumnSearchData.data = res.data
+      const cacheData = JSON.parse(JSON.stringify(res.data))
+      if (cacheData !== 0) {
+        cacheData.forEach(item => {
+          item.type = 'document'
+        })
+        treeColumnSearchData.data = cacheData
+      }
+      searchType.value = true
+      if (!searchQuery.value) {
+        searchType.value = false
+      }
+      // 已经选中状态
+      if (selectedData.value.length !== 0 && treeColumnSearchData.data !== 0) {
+        treeColumnSearchData.data.forEach(val => {
+          selectedData.value.forEach(item => {
+            if (val.id === item.id) {
+              val.selectedStatus = item.selectedStatus
+            }
+          })
+        })
+      }
+    })
+  }
+
+  const handleInp = throttle(searchFn, 800)
+
+  const changeInput = () => {
+    if (!searchQuery.value) {
+      searchType.value = false
+    } else {
+      handleInp()
+    }
+  }
+
   // 自定义事件
   function emitsDemo(attr, val, type) {
     if (type && type === 'all') {
       handleRootChangeByAll(attr, val)
       handleSelectedChangeByAll(attr, val)
+      treeColumnSearchData.data.forEach(item => {
+        if (item.fileTypeId === attr.fileTypeId) {
+          item.selectedStatus = val
+        }
+      })
       return
     }
     if (
@@ -167,6 +230,16 @@
     }
     handleRootChangeByPart(attr, val)
     handleSelectedChangeByPart(attr, val)
+    treeColumnSearchData.data.forEach(item => {
+      if (item.fileTypeId === attr.fileTypeId) {
+        item.selectedStatus = val
+      }
+    })
+  }
+
+  // 搜索选择
+  const searchSelected = (attr, val) => {
+    emitsDemo(attr, val)
   }
 
   // 监听处理 全选 - 部分选择
@@ -469,6 +542,7 @@
       }
     })
   }
+
   // 取消选中项
   const concelSelected = attr => {
     // 删除右侧选择项
@@ -489,7 +563,22 @@
         item.disabled = false
       }
     })
+
+    treeColumnSearchData.data.forEach(item => {
+      if (item.fileTypeId === attr.fileTypeId) {
+        item.selectedStatus = 0
+        item.disabled = false
+      }
+      if (
+        item.idFullPath.split(',').includes(attr.fileTypeId) &&
+        attr.includeChild
+      ) {
+        item.selectedStatus = 0
+        item.disabled = false
+      }
+    })
   }
+
   const handleChangeIncluded1 = (status, attr) => {
     // 1.是否有children
     if (!attr.haveChildren) {
@@ -511,11 +600,13 @@
       item => !aplication.value.includes(item.fileTypeId)
     )
   }
+
   // 清空选中项
   const clearSelected = () => {
     selectedData.value = []
 
     clearAllStatus(treeColumnData.data)
+    clearAllStatus(treeColumnSearchData.data)
     clearAllStatus(cacheRootLists.value)
   }
 
@@ -590,7 +681,8 @@
   defineExpose({
     concelSelected,
     clearSelected,
-    changeSwitch
+    changeSwitch,
+    searchSelected
   })
 </script>
 

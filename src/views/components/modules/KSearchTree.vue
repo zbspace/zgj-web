@@ -57,7 +57,12 @@
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <rect opacity="0.01" width="16" height="16" fill="black" />
-                  <rect width="16" height="16" rx="2" fill="#D0963E" />
+                  <rect
+                    width="16"
+                    height="16"
+                    rx="2"
+                    fill="var(--jy-primary-6)"
+                  />
                   <path
                     fill-rule="evenodd"
                     clip-rule="evenodd"
@@ -116,7 +121,12 @@
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <rect opacity="0.01" width="16" height="16" fill="black" />
-                  <rect width="16" height="16" rx="2" fill="#D0963E" />
+                  <rect
+                    width="16"
+                    height="16"
+                    rx="2"
+                    fill="var(--jy-primary-6)"
+                  />
                   <path
                     fill-rule="evenodd"
                     clip-rule="evenodd"
@@ -175,7 +185,12 @@
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <rect opacity="0.01" width="16" height="16" fill="black" />
-                  <rect width="16" height="16" rx="2" fill="#D0963E" />
+                  <rect
+                    width="16"
+                    height="16"
+                    rx="2"
+                    fill="var(--jy-primary-6)"
+                  />
                   <path
                     fill-rule="evenodd"
                     clip-rule="evenodd"
@@ -234,7 +249,12 @@
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <rect opacity="0.01" width="16" height="16" fill="black" />
-                  <rect width="16" height="16" rx="2" fill="#D0963E" />
+                  <rect
+                    width="16"
+                    height="16"
+                    rx="2"
+                    fill="var(--jy-primary-6)"
+                  />
                   <path
                     fill-rule="evenodd"
                     clip-rule="evenodd"

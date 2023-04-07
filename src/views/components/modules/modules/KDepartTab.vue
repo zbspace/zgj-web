@@ -4,7 +4,7 @@
     <div class="select-search">
       <el-input
         v-model="searchQuery"
-        placeholder="搜索部门/成员"
+        placeholder="搜索部门"
         :prefix-icon="Search"
         size="large"
         @input="changeInput"
@@ -632,6 +632,7 @@
     selectedData.value = []
 
     clearAllStatus(treeColumnData.data)
+    clearAllStatus(treeColumnSearchData.data)
     clearAllStatus(cacheRootLists.value)
   }
 
