@@ -1476,11 +1476,8 @@
 
   // 确认选择确认人
   const submitSelected = value => {
-    ruleForm.value[kDepartOrPerson.value] = value.map(i => {
-      return {
-        userId: i.id
-      }
-    })
+    ruleForm.value[kDepartOrPerson.value] = value.map(i => i.id)
+    // ruleForm.value[kDepartOrPerson.value] = value
     if (kDepartOrPerson.value === 'remoteUsers') {
       remoteUsersList.value = value.map(i => {
         return {
@@ -1514,6 +1511,7 @@
         // data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
         data.runFaceUser = data.runFaceUser.split(',')
         data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
+        // data.remoteUsers = data.remoteSealUserList
         remoteUsersList.value = data.remoteSealUserList.map(i => {
           return {
             label: i.userName,
@@ -1521,6 +1519,7 @@
           }
         })
         data.videoUsers = data.remoteVideoList.map(i => i.userId)
+        // data.videoUsers = data.remoteVideoList
         videoUsersList.value = data.remoteVideoList.map(i => {
           return {
             label: i.userName,
