@@ -120,9 +120,7 @@
                 <img
                   class="rankDisplayData-node"
                   :src="
-                    scope.value.sealStateId === '2'
-                      ? state.downIconGray
-                      : state.downIcon
+                    scope.value.sealStateId === '2' ? downIconGray : downIcon
                   "
                   alt=""
                 />
@@ -446,6 +444,8 @@
   import tableHeader from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/libraryOfSeals.json'
   import ChangeKeeper from '@/views/frontDesk/PrintControlManagement/LibraryOfSeals/modules/changeKeeper.vue'
   import { useRouter } from 'vue-router'
+  import downIcon from '@/assets/svg/sangedian.svg'
+  import downIconGray from '@/assets/svg/sangedian-gray.svg'
   const router = useRouter()
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
@@ -510,8 +510,6 @@
     state.form.sealExplain = val
   }
   const state = reactive({
-    downIcon: '@/assets/svg/sangedian.svg',
-    downIconGray: '@/assets/svg/sangedian-gray.svg',
     butDatas: [],
     sealIds: '',
     msg: '',
