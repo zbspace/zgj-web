@@ -64,6 +64,7 @@
       v-model:show="showDocumentTypeDialog"
       @update:searchSelected="documentTypeSubmit"
       :multiple="false"
+      :queryParams="{ bindBizRule: true }"
     ></KDocumentTypeDialog>
   </form-item-wrapper>
 </template>

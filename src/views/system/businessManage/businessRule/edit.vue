@@ -135,32 +135,40 @@
             <div style="margin-left: 45px; margin-bottom: 24px">
               <div class="labelTitle">用印设置</div>
               <div class="grayBg">
-                <el-form-item label="防伪打印" prop="railSwitch">
-                  <el-checkbox
-                    v-model="ruleForm.qrCodeSwitch"
-                    label="二维码水印"
-                    true-label="1"
-                    false-label="0"
-                  />
-                  <el-checkbox
-                    v-model="ruleForm.wordWaterSwitch"
-                    label="文字水印"
-                    true-label="1"
-                    false-label="0"
-                  />
-                  <el-checkbox
-                    v-model="ruleForm.gridWaterSwitch"
-                    label="网纹水印"
-                    true-label="1"
-                    false-label="0"
-                  />
-                  <el-checkbox
-                    v-model="ruleForm.invisibleWaterMarkSwitch"
-                    label="隐形水印"
-                    true-label="1"
-                    false-label="0"
-                  />
-                </el-form-item>
+                <div class="normal-checkbox">
+                  <el-form-item label="防伪打印" prop="qrCodeSwitch">
+                    <el-checkbox
+                      v-model="ruleForm.qrCodeSwitch"
+                      label="二维码水印"
+                      true-label="1"
+                      false-label="0"
+                    />
+                  </el-form-item>
+                  <el-form-item prop="wordWaterSwitch">
+                    <el-checkbox
+                      v-model="ruleForm.wordWaterSwitch"
+                      label="文字水印"
+                      true-label="1"
+                      false-label="0"
+                    />
+                  </el-form-item>
+                  <el-form-item prop="gridWaterSwitch">
+                    <el-checkbox
+                      v-model="ruleForm.gridWaterSwitch"
+                      label="网纹水印"
+                      true-label="1"
+                      false-label="0"
+                    />
+                  </el-form-item>
+                  <el-form-item prop="invisibleWaterMarkSwitch">
+                    <el-checkbox
+                      v-model="ruleForm.invisibleWaterMarkSwitch"
+                      label="隐形水印"
+                      true-label="1"
+                      false-label="0"
+                    />
+                  </el-form-item>
+                </div>
                 <template v-if="currentTab === 1">
                   <el-row :gutter="5">
                     <el-col :span="10">
@@ -333,12 +341,13 @@
                             </el-form-item>
                           </el-col>
                           <el-col
-                            :span="18"
+                            :span="19"
                             v-if="ruleForm.frontFaceSwitch === '1'"
+                            style="display: flex"
                           >
                             <el-form-item
                               label-width="auto"
-                              label="比对时机"
+                              label="采集时机"
                               prop="frontFaceSelectVal"
                             >
                               <el-radio-group
@@ -350,6 +359,14 @@
                                 >
                                 <el-radio label="3">每次进入都采集</el-radio>
                               </el-radio-group>
+                            </el-form-item>
+                            <el-form-item label="采集需人脸检测">
+                              <el-switch
+                                v-model="ruleForm.frontFaceSwitch"
+                                active-value="1"
+                                inactive-value="0"
+                                @change="changeFrontFaceSwitch"
+                              />
                             </el-form-item>
                           </el-col>
                         </el-row>
@@ -440,16 +457,7 @@
                           </el-col>
                         </el-row>
                       </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="采集需人脸检测">
-                          <el-switch
-                            v-model="ruleForm.frontFaceSwitch"
-                            active-value="1"
-                            inactive-value="0"
-                            @change="changeFrontFaceSwitch"
-                          />
-                        </el-form-item>
-                      </el-col>
+
                       <el-col :span="8">
                         <el-form-item
                           label="盖前强制OCR核验"
@@ -1412,6 +1420,10 @@
 
   // 盖前采集人脸
   const changeFrontFaceSwitch = () => {
+    if (ruleForm.value.frontFaceDuibiSwith === '1') {
+      ruleForm.value.frontFaceSwitch = '0'
+      return messageWarning('需先关闭盖前人脸对比')
+    }
     if (ruleForm.value.frontFaceSwitch === '1') {
       ruleForm.value.frontFaceSelectVal = '1'
       ruleForm.value.frontFaceDuibiSwith = '0'
@@ -1424,6 +1436,10 @@
 
   // 盖前人脸对比
   const changeFrontFaceDuibiSwitch = () => {
+    if (ruleForm.value.frontFaceSwitch === '1') {
+      ruleForm.value.frontFaceDuibiSwith = '0'
+      return messageWarning('需先关闭盖前采集人脸')
+    }
     if (ruleForm.value.frontFaceDuibiSwith === '1') {
       ruleForm.value.frontFaceDate = '1'
       ruleForm.value.frontFaceUser = ['1']
@@ -1566,6 +1582,13 @@
     background-color: rgba($color: #000000, $alpha: 0.04);
     padding: 24px 12px 6px;
     margin-top: 8px;
+    .normal-checkbox {
+      display: flex;
+      :deep(.el-form-item__content) {
+        margin-left: 0 !important;
+        margin-right: 16px !important;
+      }
+    }
   }
 
   .tabs {

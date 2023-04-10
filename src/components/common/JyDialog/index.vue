@@ -15,6 +15,7 @@
     :destroy-on-close="destroyOnClose"
     class="jyDialog"
     @closed="closed"
+    :append-to-body="appendToBody"
   >
     <template #header>
       <div
@@ -194,6 +195,10 @@
     footer: {
       type: Boolean,
       default: true
+    },
+    appendToBody: {
+      type: Boolean,
+      default: false
     }
   })
 

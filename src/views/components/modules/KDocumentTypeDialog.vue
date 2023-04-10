@@ -10,6 +10,7 @@
     centerBtn
     :height="574"
     :width="900"
+    appendToBody
   >
     <div class="selection-content">
       <!-- left -->
