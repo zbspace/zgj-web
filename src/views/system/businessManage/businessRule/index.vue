@@ -28,14 +28,15 @@
       </template>
     </JyTable>
     <!-- 业务规则详情 -->
-    <div class="ap-box">
+    <!-- <div class="ap-box">
       <componentsDocumentsDetails
         :show="state.componentsDocumentsDetails.show"
         :visible="state.componentsDocumentsDetails.visible"
         @clickClose="clickClose"
       >
       </componentsDocumentsDetails>
-    </div>
+    </div> -->
+    <Detail v-model="state.componentsDocumentsDetails.show" />
     <!-- 单个操作弹框 -->
     <actionOneDialog
       v-model="state.JyElMessageBox.show"
@@ -106,13 +107,14 @@
 <script setup>
   import { reactive, ref, onMounted } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
+  // import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import actionOneDialog from '@/views/components/actionOneDialog.vue'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import tabHeaderJson from '@/views/tableHeaderJson/system/companyManage/departmentStaff/businessRule.json'
   import { useRouter } from 'vue-router'
   import ruleApi from '@/api/system/businessManage/businessRule'
   import { messageSuccess } from '@/hooks/useMessage'
+  import Detail from './detail'
 
   const router = useRouter()
 
