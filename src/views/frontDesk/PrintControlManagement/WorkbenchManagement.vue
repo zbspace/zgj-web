@@ -1,4 +1,9 @@
-<!-- 工作台管理 -->
+<!--
+* @Descripttion 工作台管理
+* @FileName WorkbenchManagement.vue
+* @Author WalterXsk
+* @LastEditTime 2023-04-10 16:59:47
+!-->
 <template>
   <div class="PrintControlManagement-WorkbenchManagement">
     <JyTable
