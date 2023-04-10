@@ -23,9 +23,6 @@
           创建人：<span>{{ detail.createUserName || '-' }}</span>
         </p>
         <p>
-          更新时间：<span>{{ detail.modifyDatetimeStr || '-' }}</span>
-        </p>
-        <p>
           表单说明：<span>{{ detail.readme || '-' }}</span>
         </p>
       </div>
@@ -34,13 +31,13 @@
           表单编码：<span>{{ detail.formNo || '-' }}</span>
         </p>
         <p>
-          关联文件类型：<span>{{ detail.fileTypeName || '-' }}</span>
-        </p>
-        <p>
           用印类型：<span>{{ detail.sealUseTypeName || '-' }}</span>
         </p>
         <p>
           创建时间：<span>{{ detail.createDatetimeStr || '-' }}</span>
+        </p>
+        <p>
+          更新时间：<span>{{ detail.modifyDatetimeStr || '-' }}</span>
         </p>
       </div>
     </div>
