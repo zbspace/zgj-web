@@ -186,7 +186,7 @@
                         <span class="el-dropdown-link">
                           <img
                             class="rankDisplayData-node"
-                            src="../../assets/svg/sangedian.svg"
+                            src="@/assets/svg/sangedian.svg"
                             alt=""
                           />
                         </span>

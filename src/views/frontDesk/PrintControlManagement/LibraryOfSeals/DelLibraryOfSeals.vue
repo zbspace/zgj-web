@@ -256,8 +256,8 @@
   }
   // const emit = defineEmits([])
   const state = reactive({
-    downIcon: '/src/assets/svg/sangedian.svg',
-    downIconGray: '/src/assets/svg/sangedian-gray.svg',
+    downIcon: '@/assets/svg/sangedian.svg',
+    downIconGray: '@/assets/svg/sangedian-gray.svg',
     butDatas: [],
     sealIds: '',
     msg: '',
