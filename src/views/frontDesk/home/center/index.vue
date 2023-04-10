@@ -14,6 +14,7 @@
   .home-center {
     background-color: #fff;
     display: flex;
-    margin-bottom: 24px;
+    margin: 0 auto 24px;
+    width: calc(100% - 40px);
   }
 </style>

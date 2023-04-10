@@ -1370,13 +1370,13 @@
     showDepPerDialog.value = true
   }
 
-  const clear = type => {
-    if (type === 'keepUser') {
-      state.searchSelectedKeepUser = []
-    }
-    state.form[type + 'Id'] = ''
-    state.form[type + 'Name'] = ''
-  }
+  // const clear = type => {
+  //   if (type === 'keepUser') {
+  //     state.searchSelectedKeepUser = []
+  //   }
+  //   state.form[type + 'Id'] = ''
+  //   state.form[type + 'Name'] = ''
+  // }
   const currentChange = e => {
     console.log(e)
     queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null

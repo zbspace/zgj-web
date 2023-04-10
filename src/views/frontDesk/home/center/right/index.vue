@@ -13,37 +13,37 @@
   </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
-.home-center-right {
-  width: 448px;
-
-  p {
-    margin-bottom: 0;
-  }
-
-  .title {
-    display: flex;
-    justify-content: space-between;
-    padding: 3px 16px;
+  .home-center-right {
+    width: 448px;
+    padding: 24px 24px 0;
 
     p {
-      font-size: 16px;
+      margin-bottom: 0;
     }
 
-    span {
-      color: #878a99;
-      background-color: rgba(135, 138, 153, 0.1);
-      border-color: transparent;
-      cursor: pointer;
-      padding: 4px 8px;
+    .title {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 16px;
 
-      &:hover {
-        background-color: #fff;
+      p {
+        font-size: 16px;
+      }
+
+      span {
+        color: #878a99;
+        background-color: rgba(135, 138, 153, 0.1);
+        border-color: transparent;
+        cursor: pointer;
+        padding: 4px 8px;
+
+        &:hover {
+          background-color: #fff;
+        }
       }
     }
   }
-}
 </style>

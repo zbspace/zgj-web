@@ -40,10 +40,12 @@
 
 <style lang="scss" scoped>
   .home-bottom {
-    padding: 24px;
+    padding: 20px;
     flex: 1;
     border-right: 1px solid #e9ebec;
     background: #fff;
+    margin: 0 auto;
+    width: calc(100% - 40px);
 
     p {
       margin-bottom: 0;
