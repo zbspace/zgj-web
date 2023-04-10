@@ -120,4 +120,13 @@ api.userTreeMenu = data => {
   })
 }
 
+// 根据员工查询部门
+api.organListByUser = data => {
+  return request({
+    method: 'GET',
+    url: '/user/organList',
+    data
+  })
+}
+
 export default api
