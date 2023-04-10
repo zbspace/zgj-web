@@ -34,6 +34,7 @@
           class="logoImage"
           :src="props.tenantShowInfo.homeLogoPath"
           fit="scale-down"
+          v-else
         ></el-image>
       </el-upload>
     </div>
@@ -56,6 +57,7 @@
           class="logoImage"
           :src="props.tenantShowInfo.loginLogoPath"
           fit="scale-down"
+          v-else
         ></el-image>
       </el-upload>
     </div>
