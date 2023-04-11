@@ -177,7 +177,8 @@
     Api[props.apiModule]
       .search({
         type: 'organ',
-        keyWord: searchQuery.value
+        keyWord: searchQuery.value,
+        ...props.initQueryParams
       })
       .then(res => {
         treeColumnSearchData.data = res.data
@@ -214,21 +215,21 @@
   // 自定义事件
   const emitsDemo = (attr, val, type) => {
     if (props.max && selectedData.value.length > props.max && props.multiple) {
-      ElMessage.warning(`只能选择${props.max}个角色`)
+      ElMessage.warning(`只能选择${props.max}个部门`)
       return
     }
 
     if (type && type === 'all') {
       // 判断限制人数 - all
       const cacheUser = JSON.parse(JSON.stringify(attr))
-      const userData = cacheUser.filter(item => (item.type = 'role'))
+      const userData = cacheUser.filter(item => item.type === 'organ')
 
       if (
         props.max &&
         selectedData.value.length + userData.length > props.max &&
         props.multiple
       ) {
-        ElMessage.warning(`只能选择${props.max}个角色`)
+        ElMessage.warning(`只能选择${props.max}个部门`)
         return
       }
 

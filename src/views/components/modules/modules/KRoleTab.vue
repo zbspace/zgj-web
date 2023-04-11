@@ -177,7 +177,8 @@
     Api[props.apiModule]
       .search({
         type: 'role',
-        keyWord: searchQuery.value
+        keyWord: searchQuery.value,
+        ...props.initQueryParams
       })
       .then(res => {
         treeColumnSearchData.data = res.data
@@ -220,7 +221,7 @@
     if (type && type === 'all') {
       // 判断限制人数 - all
       const cacheUser = JSON.parse(JSON.stringify(attr))
-      const userData = cacheUser.filter(item => (item.type = 'role'))
+      const userData = cacheUser.filter(item => item.type === 'role')
       if (
         props.max &&
         selectedData.value.length + userData.length > props.max &&
