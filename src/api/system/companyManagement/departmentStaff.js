@@ -124,8 +124,7 @@ api.userTreeMenu = data => {
 api.organListByUser = data => {
   return request({
     method: 'GET',
-    url: '/user/organList',
-    data
+    url: `/user/organList/${data}`
   })
 }
 

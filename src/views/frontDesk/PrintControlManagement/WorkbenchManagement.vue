@@ -510,12 +510,7 @@
 
   const userDiaogOpenType = ref('add')
 
-  const organOptions = ref([
-    {
-      organId: '1636632394121408513',
-      organName: '部门4'
-    }
-  ])
+  const organOptions = ref([])
 
   const userOptions = ref([])
 
@@ -699,7 +694,7 @@
   }
 
   const getDepartOptions = (id, isEdit) => {
-    getDepartByUserApi.organListByUser({ userId: id }).then(res => {
+    getDepartByUserApi.organListByUser(id).then(res => {
       if (res.data) {
         organOptions.value = res.data.length ? res.data : []
         if (isEdit) return
