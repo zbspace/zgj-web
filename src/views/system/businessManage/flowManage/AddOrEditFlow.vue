@@ -426,6 +426,7 @@
     }
 
     console.log(errorInfo.value.length, '错误信息', errorInfo.value)
+    console.log('编辑时', basicsResult)
     if (errorInfo.value.length > 0) return
 
     const params = {

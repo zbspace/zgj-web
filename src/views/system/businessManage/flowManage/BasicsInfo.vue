@@ -306,21 +306,27 @@
   }
 
   const handleScopeArr = val => {
+    console.log(val, '编辑室1')
     const arr = []
     if (val.length > 0 && val) {
       form.dataScope = []
       rangeList.value = val
       val.forEach(item => {
         arr.push(item.id || item.scopeId)
+        console.log(item.type, '编辑室12', item.scopeType)
         // 初始化 form.dataScope
         form.dataScope.push({
           scopeId: item.id || item.scopeId,
           scopeName: item.name || item.scopeName,
-          scopeType: item.type === 'user' ? '1' : '2'
+          scopeType: item.scopeType
+            ? item.scopeType
+            : item.type === 'user'
+            ? 1
+            : 2
         })
       })
       form.showDataScope = arr
-      console.log(form.dataScope, 'form.dataScopeform.dataScope')
+      console.log(form.dataScope, 'form.dataScopeform.dataScope123')
     } else {
       form.showDataScope = []
       form.dataScope = []
