@@ -28,15 +28,10 @@
       </template>
     </JyTable>
     <!-- 业务规则详情 -->
-    <!-- <div class="ap-box">
-      <componentsDocumentsDetails
-        :show="state.componentsDocumentsDetails.show"
-        :visible="state.componentsDocumentsDetails.visible"
-        @clickClose="clickClose"
-      >
-      </componentsDocumentsDetails>
-    </div> -->
-    <Detail v-model="state.componentsDocumentsDetails.show" />
+    <Detail
+      v-model="state.componentsDocumentsDetails.show"
+      :ruleBusinessId="ruleBusinessId"
+    />
     <!-- 单个操作弹框 -->
     <actionOneDialog
       v-model="state.JyElMessageBox.show"
@@ -107,7 +102,6 @@
 <script setup>
   import { reactive, ref, onMounted } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  // import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import actionOneDialog from '@/views/components/actionOneDialog.vue'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import tabHeaderJson from '@/views/tableHeaderJson/system/companyManage/departmentStaff/businessRule.json'
@@ -117,6 +111,7 @@
   import Detail from './detail'
 
   const router = useRouter()
+  const ruleBusinessId = ref('')
 
   const state = reactive({
     componentsSearchForm: {
@@ -343,6 +338,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     if (column.property === 'ruleBusinessName') {
+      ruleBusinessId.value = row.ruleBusinessId
       state.componentsDocumentsDetails.show = true
     }
   }
@@ -546,11 +542,6 @@
           state.showToastDialog.show = false
         })
     }
-  }
-
-  // 点击关闭
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
   }
 
   onMounted(() => {})

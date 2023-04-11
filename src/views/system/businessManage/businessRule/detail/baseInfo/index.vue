@@ -11,30 +11,30 @@
     <div class="base-info">
       <div>
         <p>
-          业务规则名称：<span>{{ detail.formName || '-' }}</span>
+          业务规则名称：<span>{{ detail.ruleBusinessName || '-' }}</span>
         </p>
         <p>
-          业务类型：<span>{{ detail.applyTypeName || '-' }}</span>
+          用印类型：<span>{{ detail.sealUseTypeName || '-' }}</span>
         </p>
         <p>
-          业务规则状态：<span>{{ detail.formName || '-' }}</span>
+          业务规则状态：<span>{{ detail.flag === '0' ? '停用' : '启用' }}</span>
         </p>
         <p>
-          更新时间：<span>{{ detail.modifyDatetimeStr || '-' }}</span>
+          更新时间：<span>{{ detail.modifyDatetime || '-' }}</span>
         </p>
         <p>
-          业务规则说明：<span>{{ detail.readme || '-' }}</span>
+          业务规则说明：<span>{{ detail.remark || '-' }}</span>
         </p>
       </div>
       <div>
         <p>
-          业务规则编码：<span>{{ detail.formNo || '-' }}</span>
+          业务规则编码：<span>{{ detail.ruleBusinessNo || '-' }}</span>
         </p>
         <p>
           关联文件类型：<span>{{ detail.fileTypeName || '-' }}</span>
         </p>
         <p>
-          创建人：<span>{{ detail.sealUseTypeName || '-' }}</span>
+          创建人：<span>{{ detail.createUserName || '-' }}</span>
         </p>
         <p>
           创建时间：<span>{{ detail.createDatetimeStr || '-' }}</span>
@@ -46,30 +46,27 @@
 
 <script setup>
   import { ref, onMounted } from 'vue'
-  import formManageService from '@/api/system/formManagement'
+  import ruleApi from '@/api/system/businessManage/businessRule'
 
   const detail = ref({})
   const loading = ref(false)
 
   const props = defineProps({
-    formMessageId: {
+    ruleBusinessId: {
       type: String,
       default: ''
     }
   })
 
-  const getFormDetail = async () => {
+  const getDetail = async () => {
     loading.value = true
-    const res = await formManageService.getFormDetail({
-      formMessageId: props.formMessageId
-    })
+    const res = await ruleApi.ruleView(props.ruleBusinessId)
     detail.value = res.data
-
     loading.value = false
   }
 
   onMounted(() => {
-    // getFormDetail()
+    getDetail()
   })
 </script>
 

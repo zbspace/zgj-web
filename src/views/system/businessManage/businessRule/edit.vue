@@ -353,19 +353,17 @@
                               <el-radio-group
                                 v-model="ruleForm.frontFaceSelectVal"
                               >
-                                <el-radio label="1">首次进入采集</el-radio>
-                                <el-radio label="2"
+                                <el-radio label="1"
                                   >每个印章首次进入采集</el-radio
                                 >
-                                <el-radio label="3">每次进入都采集</el-radio>
+                                <el-radio label="2">每次进入都采集</el-radio>
                               </el-radio-group>
                             </el-form-item>
                             <el-form-item label="采集需人脸检测">
                               <el-switch
-                                v-model="ruleForm.frontFaceSwitch"
+                                v-model="ruleForm.frontFaceCheckSwitch"
                                 active-value="1"
                                 inactive-value="0"
-                                @change="changeFrontFaceSwitch"
                               />
                             </el-form-item>
                           </el-col>
@@ -401,7 +399,7 @@
                                 </el-popover>
                               </template>
                               <el-switch
-                                v-model="ruleForm.frontFaceDuibiSwith"
+                                v-model="ruleForm.frontFaceVsSwitch"
                                 active-value="1"
                                 inactive-value="0"
                                 @change="changeFrontFaceDuibiSwitch"
@@ -410,19 +408,21 @@
                           </el-col>
                           <el-col
                             :span="18"
-                            v-if="ruleForm.frontFaceDuibiSwith === '1'"
+                            v-if="ruleForm.frontFaceVsSwitch === '1'"
                           >
                             <el-row :gutter="5">
                               <el-col :span="12">
                                 <el-form-item
                                   label-width="auto"
                                   label="比对时机"
-                                  prop="frontFaceDate"
+                                  prop="frontFaceVsOption"
                                 >
                                   <el-radio-group
-                                    v-model="ruleForm.frontFaceDate"
+                                    v-model="ruleForm.frontFaceVsOption"
                                   >
-                                    <el-radio label="1">首次进入比对</el-radio>
+                                    <el-radio label="1"
+                                      >每个印章首次进入比对</el-radio
+                                    >
                                     <el-radio label="2"
                                       >每次进入都比对</el-radio
                                     >
@@ -430,28 +430,55 @@
                                 </el-form-item>
                               </el-col>
                               <el-col :span="12">
-                                <el-form-item
-                                  label-width="auto"
-                                  label="比对人"
-                                  prop="frontFaceUser"
-                                  :rules="[
-                                    {
-                                      required: true,
-                                      message: '请选择人脸比对人'
-                                    }
-                                  ]"
-                                >
-                                  <el-checkbox-group
-                                    v-model="ruleForm.frontFaceUser"
+                                <div class="normal-checkbox">
+                                  <el-form-item
+                                    label-width="auto"
+                                    label="比对人"
+                                    prop="frontFaceVsAgentSwitch"
+                                    :rules="[
+                                      {
+                                        required: true,
+                                        trigger: 'change',
+                                        validator: (rule, value, callback) => {
+                                          if (
+                                            ruleForm.frontFaceVsAgentSwitch ===
+                                              '0' &&
+                                            ruleForm.frontFaceVsKeeprSwitch ===
+                                              '0'
+                                          ) {
+                                            callback('请选择人脸比对人')
+                                          } else {
+                                            callback()
+                                          }
+                                        }
+                                      }
+                                    ]"
                                   >
-                                    <el-checkbox label="1"
+                                    <el-checkbox
+                                      v-model="ruleForm.frontFaceVsAgentSwitch"
+                                      true-label="1"
+                                      false-label="0"
                                       >盖章人和代办人</el-checkbox
                                     >
-                                    <el-checkbox label="2"
+                                  </el-form-item>
+
+                                  <el-form-item
+                                    label-width="auto"
+                                    prop="frontFaceVsKeeprSwitch"
+                                  >
+                                    <el-checkbox
+                                      v-model="ruleForm.frontFaceVsKeeprSwitch"
+                                      true-label="1"
+                                      false-label="0"
+                                      @change="
+                                        ruleFormRef.validateField(
+                                          'frontFaceVsAgentSwitch'
+                                        )
+                                      "
                                       >盖章人和保管人</el-checkbox
                                     >
-                                  </el-checkbox-group>
-                                </el-form-item>
+                                  </el-form-item>
+                                </div>
                               </el-col>
                             </el-row>
                           </el-col>
@@ -915,7 +942,7 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <el-row :gutter="15">
+                    <!-- <el-row :gutter="15">
                       <el-col :span="5">
                         <el-form-item label="人脸检测" prop="runFaceSwitch">
                           <template #label>
@@ -983,7 +1010,7 @@
                           </el-col>
                         </el-row>
                       </el-col>
-                    </el-row>
+                    </el-row> -->
                   </div>
                 </el-timeline-item>
                 <el-timeline-item hide-timestamp>
@@ -1281,9 +1308,11 @@
     videoUsers = []
     frontFaceSwitch = '0'
     frontFaceSelectVal = ''
-    frontFaceDuibiSwith = '0'
-    frontFaceDate = ''
-    frontFaceUser = []
+    frontFaceVsSwitch = '0'
+    frontFaceVsOption = ''
+    // frontFaceUser = []
+    frontFaceVsAgentSwitch = '0'
+    frontFaceVsKeeprSwitch = '0'
     frontOcrSwitch = '0'
     frontQrCodeSwitch = '0'
     runPhotoSwitch = '0'
@@ -1298,9 +1327,9 @@
     runViolenceMoveSwitch = '0'
     runDistanceSwitch = '0'
     runDefinitionSwitch = '0'
-    runFaceSwitch = '0'
-    runFaceDate = ''
-    runFaceUser = []
+    // runFaceSwitch = '0'
+    // runFaceDate = ''
+    // runFaceUser = []
     laterAutoSaveSwitch = '0'
     laterQrCodeSwitch = '0'
     archiveSwitch = '0'
@@ -1308,6 +1337,7 @@
     archiveQrCodeSwitch = '0'
     archivePageSwitch = '0'
     archiveOcrSwitch = '0'
+    frontFaceCheckSwitch = '0'
   }
   let ruleBusinessNo = generatingNumber()
   const ruleForm = ref(new BusinessRule())
@@ -1360,7 +1390,7 @@
     ruleFormRef.value.validate(valid => {
       if (valid) {
         const ruleFormParams = JSON.parse(JSON.stringify(ruleForm.value))
-        ruleFormParams.runFaceUser = ruleFormParams.runFaceUser.join(',')
+        // ruleFormParams.runFaceUser = ruleFormParams.runFaceUser.join(',')
         ruleApi.addOrUpdate(ruleFormParams).then(() => {
           messageSuccess(
             ruleForm.value.ruleBusinessId ? '编辑成功' : '添加成功'
@@ -1420,15 +1450,17 @@
 
   // 盖前采集人脸
   const changeFrontFaceSwitch = () => {
-    if (ruleForm.value.frontFaceDuibiSwith === '1') {
+    if (ruleForm.value.frontFaceVsSwitch === '1') {
       ruleForm.value.frontFaceSwitch = '0'
       return messageWarning('需先关闭盖前人脸对比')
     }
     if (ruleForm.value.frontFaceSwitch === '1') {
       ruleForm.value.frontFaceSelectVal = '1'
-      ruleForm.value.frontFaceDuibiSwith = '0'
-      ruleForm.value.frontFaceDate = ''
-      ruleForm.value.frontFaceUser = []
+      ruleForm.value.frontFaceVsSwitch = '0'
+      ruleForm.value.frontFaceVsOption = ''
+      ruleForm.value.frontFaceVsAgentSwitch = '0'
+      ruleForm.value.frontFaceVsKeeprSwitch = '0'
+      // ruleForm.value.frontFaceUser = []
     } else {
       ruleForm.value.frontFaceSelectVal = ''
     }
@@ -1437,17 +1469,21 @@
   // 盖前人脸对比
   const changeFrontFaceDuibiSwitch = () => {
     if (ruleForm.value.frontFaceSwitch === '1') {
-      ruleForm.value.frontFaceDuibiSwith = '0'
+      ruleForm.value.frontFaceVsSwitch = '0'
       return messageWarning('需先关闭盖前采集人脸')
     }
-    if (ruleForm.value.frontFaceDuibiSwith === '1') {
-      ruleForm.value.frontFaceDate = '1'
-      ruleForm.value.frontFaceUser = ['1']
+    if (ruleForm.value.frontFaceVsSwitch === '1') {
+      ruleForm.value.frontFaceVsOption = '1'
+      // ruleForm.value.frontFaceUser = ['1']
+      ruleForm.value.frontFaceVsAgentSwitch = '0'
+      ruleForm.value.frontFaceVsKeeprSwitch = '0'
       ruleForm.value.frontFaceSwitch = '0'
       ruleForm.value.frontFaceSelectVal = ''
     } else {
-      ruleForm.value.frontFaceDate = ''
-      ruleForm.value.frontFaceUser = []
+      ruleForm.value.frontFaceVsOption = ''
+      // ruleForm.value.frontFaceUser = []
+      ruleForm.value.frontFaceVsAgentSwitch = '0'
+      ruleForm.value.frontFaceVsKeeprSwitch = '0'
     }
   }
 
@@ -1461,15 +1497,15 @@
   }
 
   // 人脸检测
-  const changeRunFaceSwitch = () => {
-    if (ruleForm.value.runFaceSwitch === '1') {
-      ruleForm.value.runFaceDate = '1'
-      ruleForm.value.runFaceUser = ['1']
-    } else {
-      ruleForm.value.runFaceDate = ''
-      ruleForm.value.runFaceUser = []
-    }
-  }
+  // const changeRunFaceSwitch = () => {
+  //   if (ruleForm.value.runFaceSwitch === '1') {
+  //     ruleForm.value.runFaceDate = '1'
+  //     ruleForm.value.runFaceUser = ['1']
+  //   } else {
+  //     ruleForm.value.runFaceDate = ''
+  //     ruleForm.value.runFaceUser = []
+  //   }
+  // }
 
   // 归档
   const changeArchiveSwitch = () => {
@@ -1525,7 +1561,7 @@
       .then(res => {
         const data = res.data
         // data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
-        data.runFaceUser = data.runFaceUser.split(',')
+        // data.runFaceUser = data.runFaceUser.split(',')
         data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
         // data.remoteUsers = data.remoteSealUserList
         remoteUsersList.value = data.remoteSealUserList.map(i => {

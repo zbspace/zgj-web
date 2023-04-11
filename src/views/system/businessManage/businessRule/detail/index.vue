@@ -17,10 +17,10 @@
   >
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="业务规则详情" name="1">
-        <BaseInfo :formMessageId="props.formMessageId" />
+        <BaseInfo :ruleBusinessId="props.ruleBusinessId" />
       </el-tab-pane>
       <el-tab-pane label="流程记录" name="2">
-        <FlowRecord :formMessageId="props.formMessageId" />
+        <FlowRecord :ruleBusinessId="props.ruleBusinessId" />
       </el-tab-pane>
     </el-tabs>
   </JyDrawer>
@@ -42,7 +42,7 @@
       type: String,
       default: ''
     },
-    formMessageId: {
+    ruleBusinessId: {
       type: String,
       default: ''
     }
