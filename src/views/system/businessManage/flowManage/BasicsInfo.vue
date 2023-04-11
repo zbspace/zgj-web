@@ -150,7 +150,7 @@
       @on-confirm="confirmTip"
       @on-cancel="cancelTip"
     >
-      切换会初始化已经设计好的流程，are you sure?
+      变更会清空已设计的流程，请问确定要继续吗？
     </JyMessageBox>
   </div>
 </template>
