@@ -401,6 +401,7 @@
     accountLoginForm.accountNo = accountInfo && accountInfo.accountNo
     accountLoginForm.accountPass = accountInfo && accountInfo.accountPass
     state.rememberPas = accountInfo && accountInfo.rememberPas
+    state.protocal = accountInfo && accountInfo.rememberPas
   })
 
   // 监听 tabs 切换

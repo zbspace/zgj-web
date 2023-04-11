@@ -19,7 +19,11 @@
             <el-input v-model="form.flowName" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="业务类型" prop="applyTypeId">
-            <el-select v-model="form.applyTypeId">
+            <el-select
+              v-model="form.applyTypeId"
+              ref="selectApplyRef"
+              @click="changeSelect"
+            >
               <el-option-group
                 v-for="group in props.businessList"
                 :key="group.applyTypeName"
@@ -40,8 +44,12 @@
             v-if="form.applyTypeId === props.sealApplyInitId"
           >
             <el-radio-group v-model="form.sealUseTypeId">
-              <el-radio label="1" size="large">物理用印</el-radio>
-              <el-radio label="2" size="large">电子签章</el-radio>
+              <el-radio label="1" size="large" @change="changeRadio('2')">
+                物理用印
+              </el-radio>
+              <el-radio label="2" size="large" @change="changeRadio('1')">
+                电子签章
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item
@@ -135,13 +143,23 @@
       :searchSelected="searchSelectedDocument"
       @update:searchSelected="handleFileSelected"
     ></KDocumentTypeDialog>
+
+    <JyMessageBox
+      v-model="tipVisible"
+      :mode="1"
+      @on-confirm="confirmTip"
+      @on-cancel="cancelTip"
+    >
+      切换会初始化已经设计好的流程，are you sure?
+    </JyMessageBox>
   </div>
 </template>
 <script setup>
   import { reactive, ref, watch, computed } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
-
+  import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  const flowStore = useFlowStore()
   const props = defineProps({
     businessList: {
       type: Array,
@@ -178,9 +196,19 @@
           readme: ''
         }
       }
+    },
+    modelLinkId: {
+      type: Object,
+      deftault: () => {
+        return {}
+      }
     }
   })
-  const emits = defineEmits('update:modelValue', 'update:sealId')
+  const emits = defineEmits(
+    'update:modelValue',
+    'update:sealId',
+    'update:modelLinkId'
+  )
   const showDepPerDialog = ref(false)
   const showDocumentType = ref(false)
   const searchSelected = ref([])
@@ -189,6 +217,7 @@
   const fileTypeList = ref([])
   const rangeList = ref([])
   const ruleFormRef = ref(null)
+  const tipVisible = ref(false)
 
   const form = reactive({
     flowName: '',
@@ -316,14 +345,69 @@
         form.dataScope.push({
           scopeId: item.id || item.scopeId,
           scopeName: item.name || item.scopeName,
-          scopeType: item.type === 'user' ? '1' : '2'
+          scopeType: item.scopeType
+            ? item.scopeType
+            : item.type === 'user'
+            ? 1
+            : 2
         })
       })
       form.showDataScope = arr
-      console.log(form.dataScope, 'form.dataScopeform.dataScope')
     } else {
       form.showDataScope = []
       form.dataScope = []
+    }
+  }
+
+  // 监听 流程设计是否初始化完成
+  const testIds = computed({
+    get() {
+      return props.modelLinkId
+    },
+    set(value) {
+      emits('update:modelLinkId', value)
+    }
+  })
+
+  const typeTip = ref('apply')
+
+  const selectApplyRef = ref(null)
+  const changeSelect = () => {
+    // 判断是否已有设计 - 有提示信息
+    selectApplyRef.value.blur()
+    tipVisible.value = true
+    typeTip.value = 'apply'
+  }
+
+  const confirmTip = () => {
+    tipVisible.value = false
+    if (typeTip.value === 'apply') {
+      selectApplyRef.value.toggleMenu()
+    } else {
+      form.sealUseTypeId = form.sealUseTypeId === '1' ? '2' : '1'
+    }
+    // TODO：重新初始化流程设计
+    flowStore.setModelId('', '')
+    testIds.value = {
+      modleId: '',
+      definitionId: ''
+    }
+  }
+
+  const cancelTip = () => {
+    tipVisible.value = false
+    if (typeTip.value === 'apply') {
+      selectApplyRef.value.blur()
+    }
+  }
+
+  const changeRadio = val => {
+    // 判断是否已有设计 - 有提示信息
+    if (testIds.value.modelId) {
+      form.sealUseTypeId = val
+      // 打开 提示弹框
+      tipVisible.value = true
+      typeTip.value = 'sealType'
     }
   }
 

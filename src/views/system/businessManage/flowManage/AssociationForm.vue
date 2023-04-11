@@ -257,7 +257,6 @@
   const editFormMessageId = ref('')
   // 选中
   const clickEditForm = attr => {
-    console.log(attr.formMessageId, '===')
     editFormMessageId.value = attr.formMessageId
     resetFlag.value = false
     FlowApi.getFormJsonById({ formMessageId: attr.formMessageId }).then(res => {
