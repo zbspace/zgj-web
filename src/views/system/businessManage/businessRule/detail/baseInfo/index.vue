@@ -31,7 +31,7 @@
           业务规则编码：<span>{{ detail.ruleBusinessNo || '-' }}</span>
         </p>
         <p>
-          关联文件类型：<span>{{ detail.fileTypeName || '-' }}</span>
+          关联文件类型：<span>{{ fileTypeNames || '-' }}</span>
         </p>
         <p>
           创建人：<span>{{ detail.createUserName || '-' }}</span>
@@ -45,11 +45,19 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, computed } from 'vue'
   import ruleApi from '@/api/system/businessManage/businessRule'
 
   const detail = ref({})
   const loading = ref(false)
+
+  const fileTypeNames = computed(v => {
+    return (
+      (detail.value.fileTypeList &&
+        detail.value.fileTypeList.map(v => v.fileTypeName).join('、')) ||
+      '-'
+    )
+  })
 
   const props = defineProps({
     ruleBusinessId: {
