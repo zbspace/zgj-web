@@ -441,6 +441,7 @@
       :searchSelected="searchSelected"
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
+      :multiple="multipleDialog"
     />
     <!-- 往来单位弹框选择 -->
     <JyRelatedCompany
@@ -691,6 +692,7 @@
   }
   const derivableRef = {}
   const multipleDocumetType = ref(true)
+  const multipleDialog = ref(true)
   // 点击表单
   function clickElement(item, index, multiple) {
     derivableRef[item.id].blur()
@@ -703,6 +705,7 @@
     showDepPerDialog.value = true
     kDialogOpenId.value = item.id
     kDepartOrPerson.value = item.id
+    multipleDialog.value = multiple
     if (item.defaultAttribute.type === 'user') {
       tabsShow.value = ['user']
       searchSelected.value = []

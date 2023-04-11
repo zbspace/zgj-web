@@ -1,4 +1,9 @@
-<!-- 工作台管理 -->
+<!--
+* @Descripttion 工作台管理
+* @FileName WorkbenchManagement.vue
+* @Author WalterXsk
+* @LastEditTime 2023-04-10 16:59:47
+!-->
 <template>
   <div class="PrintControlManagement-WorkbenchManagement">
     <JyTable
@@ -19,9 +24,9 @@
           <div>工作台管理</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="add"
-                >+ {{ $t('t-zgj-add') }}</el-button
-              >
+              <el-button type="primary" @click="add">
+                + {{ $t('t-zgj-add') }}
+              </el-button>
             </div>
           </div>
         </div>
@@ -46,7 +51,7 @@
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      :width="1000"
+      :width="880"
       :height="600"
       @confirm="submitForm"
     >
@@ -55,126 +60,171 @@
         :rules="rules"
         ref="vFormLibraryRef"
         label-width="120px"
+        style="padding: 20px"
       >
-        <el-form-item label="工作台编码" prop="benchNo">
-          <el-input v-model="form.benchNo" disabled />
-        </el-form-item>
-        <el-form-item label="工作台名称" prop="benchName">
-          <el-input v-model="form.benchName" clearable />
-        </el-form-item>
-        <el-form-item label="设备串号" prop="benchSn">
-          <el-input v-model="form.benchSn" clearable />
-        </el-form-item>
-        <el-form-item label="保管人" prop="manUserId">
-          <div class="select-box-contBox">
-            <el-input
-              class="ap-box-contBox-input width-100"
-              readonly
-              v-model="form.manUserName"
-              placeholder="请选择"
-            />
-            <div class="ap-box-contBox-icon">
-              <el-icon
-                v-if="form.manUserId"
-                style="margin-right: 5px"
-                color="#aaaaaa"
-                @click="clear('manUser')"
-                ><CircleClose
-              /></el-icon>
-              <img
-                @click="chooseOrgan('manUser')"
-                class="ap-box-contBox-icon-img"
-                src="@/assets/svg/ketanchude.svg"
-                alt=""
-              />
-            </div>
-          </div>
-        </el-form-item>
-        <el-form-item label="所属部门" prop="manOrganId">
-          <div class="select-box-contBox">
-            <el-input
-              class="ap-box-contBox-input width-100"
-              readonly
-              v-model="form.manOrganName"
-              placeholder="请选择"
-            />
-            <div class="ap-box-contBox-icon">
-              <el-icon
-                v-if="form.manOrganId"
-                style="margin-right: 5px"
-                color="#aaaaaa"
-                @click="clear('manOrgan')"
-                ><CircleClose
-              /></el-icon>
-              <img
-                @click="chooseOrgan('manOrgan')"
-                class="ap-box-contBox-icon-img"
-                src="@/assets/svg/ketanchude.svg"
-              />
-            </div>
-          </div>
-        </el-form-item>
-        <el-form-item label="设备状态" prop="flag">
-          <el-radio-group v-model="form.flag">
-            <el-radio label="1" size="large">正常</el-radio>
-            <el-radio label="0" size="large">停用</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="盖章码盖章" prop="sealCode">
-          <template #label>
-            <span>盖章码盖章 </span>
-            <el-popover
-              placement="top"
-              effect="dark"
-              trigger="hover"
-              content="仅控制工作台未登录情况下的入口显示"
-            >
-              <template #reference>
-                <svg
-                  class="svg-icon el-tooltip__trigger"
-                  aria-hidden="true"
-                  data-v-11cc4082=""
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="工作台编码" prop="benchNo">
+              <el-input v-model="form.benchNo" disabled />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="工作台名称" prop="benchName">
+              <el-input v-model="form.benchName" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="设备串号" prop="benchSn">
+              <el-input v-model="form.benchSn" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="保管人" prop="manUserId">
+              <div class="contbox">
+                <el-select
+                  v-model="form.manUserId"
+                  ref="selectRef"
+                  placeholder="请选择"
+                  @click="getDivision"
+                  style="width: 100%"
                 >
-                  <use xlink:href="#icon-el-info" data-v-11cc4082=""></use>
-                </svg>
+                  <el-option
+                    v-for="item in userOptions"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <div class="box-icon">
+                  <img
+                    class="box-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="所属部门" prop="manOrganId">
+              <div class="select-box-contBox">
+                <el-select
+                  v-model="form.manOrganId"
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in organOptions"
+                    :key="item.organId"
+                    :label="item.organName"
+                    :value="item.organId"
+                  />
+                </el-select>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="备注" prop="readme">
+              <el-input v-model="form.readme" type="textarea" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="设备状态" prop="flag">
+              <el-radio-group v-model="form.flag">
+                <el-radio label="1" size="large">正常</el-radio>
+                <el-radio label="0" size="large">停用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="盖章码盖章" prop="sealCode">
+              <template #label>
+                <span>盖章码盖章 </span>
+                <el-popover
+                  placement="top"
+                  effect="dark"
+                  trigger="hover"
+                  content="仅控制工作台未登录情况下的入口显示"
+                >
+                  <template #reference>
+                    <svg
+                      class="svg-icon el-tooltip__trigger"
+                      aria-hidden="true"
+                      data-v-11cc4082=""
+                    >
+                      <use xlink:href="#icon-el-info" data-v-11cc4082=""></use>
+                    </svg>
+                  </template>
+                </el-popover>
               </template>
-            </el-popover>
-          </template>
-          <el-radio-group v-model="form.sealCode">
-            <el-radio label="1" size="large">是</el-radio>
-            <el-radio label="0" size="large">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="人脸快捷盖章" prop="faceSeal">
-          <el-radio-group v-model="form.faceSeal">
-            <el-radio label="1" size="large">是</el-radio>
-            <el-radio label="0" size="large">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="语音交互" prop="voiceDialogue">
-          <el-radio-group v-model="form.voiceDialogue">
-            <el-radio label="1" size="large">启用</el-radio>
-            <el-radio label="0" size="large">禁用</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="红外电子围栏" prop="irFence">
-          <el-radio-group v-model="form.irFence">
-            <el-radio label="1" size="large">启用</el-radio>
-            <el-radio label="0" size="large">禁用</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="人脸识别登录" prop="faceLogin">
-          <el-radio-group v-model="form.faceLogin">
-            <el-radio label="1" size="large">启用</el-radio>
-            <el-radio label="0" size="large">禁用</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="自动锁屏" prop="autoLock">
-          <el-radio-group v-model="form.autoLock">
-            <el-radio label="1" size="large">启用</el-radio>
-            <el-radio label="0" size="large">禁用</el-radio>
-          </el-radio-group>
-        </el-form-item>
+              <el-radio-group v-model="form.sealCode">
+                <el-radio label="1" size="large">是</el-radio>
+                <el-radio label="0" size="large">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="人脸快捷盖章" prop="faceSeal">
+              <el-radio-group v-model="form.faceSeal">
+                <el-radio label="1" size="large">是</el-radio>
+                <el-radio label="0" size="large">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="语音交互" prop="voiceDialogue">
+              <el-radio-group v-model="form.voiceDialogue">
+                <el-radio label="1" size="large">启用</el-radio>
+                <el-radio label="0" size="large">禁用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="红外电子围栏" prop="irFence">
+              <el-radio-group v-model="form.irFence">
+                <el-radio label="1" size="large">启用</el-radio>
+                <el-radio label="0" size="large">禁用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="人脸识别登录" prop="faceLogin">
+              <el-radio-group v-model="form.faceLogin">
+                <el-radio label="1" size="large">启用</el-radio>
+                <el-radio label="0" size="large">禁用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="自动锁屏" prop="autoLock">
+              <el-radio-group v-model="form.autoLock">
+                <el-radio label="1" size="large">启用</el-radio>
+                <el-radio label="0" size="large">禁用</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="休眠" prop="dormantOpen">
@@ -206,19 +256,17 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="备注" prop="readme">
-          <el-input v-model="form.readme" type="textarea" clearable />
-        </el-form-item>
       </el-form>
     </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
-      v-if="showDeptDialog"
+      v-if="showDepPerDialog"
       :show="showDepPerDialog"
       @update:show="closeShow"
       :searchSelected="searchSelected"
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
+      :multiple="false"
     >
     </kDepartOrPersonVue>
     <JyElMessageBox
@@ -237,22 +285,22 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, nextTick, onBeforeMount, onMounted } from 'vue'
+  import { ref, reactive } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsDocumentsDetails from '../../components/documentsDetails'
+  import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import { ElMessage } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import workbenchManagement from '@/api/frontDesk/printControl/workbenchManagement'
   import { generatingNumber } from '@/utils/tools'
   import tableHearder from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/workbenchManagement.json'
+  import getDepartByUserApi from '@/api/system/companyManagement/departmentStaff'
+  import { getItem } from '@/utils/storage'
   const showFormDialog = ref(false)
   const showDepPerDialog = ref(false)
   const vFormLibraryRef = ref(null)
   const table = ref(null)
-  const showDeptDialog = ref(false)
-  const tabsShow = ref(['organ'])
+  const tabsShow = ref(['user'])
   const searchSelected = ref([])
-  const kDepartOrPerson = ref(null)
   const currentActionWorkbench = ref(null)
   const confirmLoading = ref(false)
 
@@ -276,7 +324,6 @@
     dormantValue: '',
     readme: ''
   })
-
   const rules = reactive({
     benchNo: [
       {
@@ -461,77 +508,96 @@
     }
   })
 
+  const userDiaogOpenType = ref('add')
+
+  const organOptions = ref([])
+
+  const userOptions = ref([])
+
   const add = () => {
     showFormDialog.value = true
-    nextTick(() => {
-      vFormLibraryRef.value.resetFields()
-      form.benchId = ''
-      form.benchNo = generatingNumber()
-      form.manOrganName = ''
-      form.manUserName = ''
-    })
+    userDiaogOpenType.value = 'add'
+    vFormLibraryRef.value && vFormLibraryRef.value.resetFields()
+    // 新增默认当前登录人
+    const userName =
+      getItem('accountInfo') && getItem('accountInfo').userInfo
+        ? getItem('accountInfo').userInfo.userName
+        : ''
+    const userId =
+      getItem('accountInfo') && getItem('accountInfo').userInfo
+        ? getItem('accountInfo').userInfo.userId
+        : ''
+    // TODO: 根据登录人 获取 主职部门及兼职部门
+    userId && getDepartOptions(userId)
+
+    form.benchId = ''
+    form.benchNo = generatingNumber()
+    form.manOrganId = form.manOrganId ? form.manOrganId : ''
+    form.manUserName = userName
+    form.manUserId = userId
+    form.dormantOpen = '0'
+    if (userDiaogOpenType.value === 'add') {
+      searchSelected.value = [
+        {
+          id: userId,
+          name: userName,
+          type: 'user'
+        }
+      ]
+      userOptions.value = [
+        {
+          id: userId,
+          name: userName
+        }
+      ]
+    }
   }
 
-  const chooseOrgan = type => {
-    showDeptDialog.value = true
-    kDepartOrPerson.value = type
-    if (type === 'manOrgan') {
-      tabsShow.value = ['organ']
-      searchSelected.value = form.organPid
-        ? [
-            {
-              id: form.organPid,
-              name: form.organPName
-            }
-          ]
-        : []
-    } else {
-      tabsShow.value = ['user']
-      searchSelected.value = form.leaderUserId
-        ? [
-            {
-              id: form.leaderUserId,
-              name: form.leaderUserName
-            }
-          ]
-        : []
+  const selectRef = ref(null)
+  const getDivision = () => {
+    selectRef.value.blur()
+    showDepPerDialog.value = true
+    tabsShow.value = ['user']
+    if (userDiaogOpenType.value !== 'add') {
+      // 编辑时回显
+      searchSelected.value = [
+        {
+          id: form.manUserId,
+          name: form.manUserName,
+          type: 'user'
+        }
+      ]
     }
-    setTimeout(() => {
-      showDepPerDialog.value = true
-    }, 200)
   }
 
   const closeShow = () => {
     showDepPerDialog.value = false
-    setTimeout(() => {
-      showDeptDialog.value = false
-    }, 200)
-  }
-
-  const clear = type => {
-    if (type === 'manUser') {
-      form.manUserId = ''
-      form.manUserName = ''
-    } else {
-      form.manOrganId = ''
-      form.manOrganName = ''
-    }
   }
 
   const submit = value => {
-    if (kDepartOrPerson.value === 'manUser') {
-      form.manUserId = value.length ? value[0].id : ''
-      form.manUserName = value.length ? value[0].name : ''
-    } else {
-      form.manOrganId = value.length ? value[0].id : ''
-      form.manOrganName = value.length ? value[0].name : ''
-    }
+    userOptions.value = value.length ? value : []
+    searchSelected.value = value.length
+      ? [
+          {
+            id: value.length ? value[0].id : '',
+            name: value.length ? value[0].name : '',
+            type: 'user'
+          }
+        ]
+      : []
+    form.manUserId = value.length ? value[0].id : ''
+    form.manUserName = value.length ? value[0].name : ''
+    form.manOrganId = ''
+    form.manUserId && getDepartOptions(form.manUserId)
   }
 
   const submitForm = () => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         confirmLoading.value = true
+        if (form.dormantOpen === '0') {
+          delete form.dormantValue
+        }
         if (form.benchId) {
           workbenchManagement
             .edit(form)
@@ -544,6 +610,7 @@
               confirmLoading.value = false
             })
         } else {
+          console.log(form, '新增的form表单')
           workbenchManagement
             .add(form)
             .then(() => {
@@ -575,29 +642,36 @@
     if (cell.name === 't-zgj-Edit') {
       showFormDialog.value = true
       form.benchId = column.benchId
-      nextTick(() => {
-        vFormLibraryRef.value.resetFields()
-        workbenchManagement.detail(column.benchId).then(res => {
-          const data = res.data
-          form.benchId = data.benchId
-          form.benchNo = data.benchNo || ''
-          form.benchSn = data.benchSn || ''
-          form.benchName = data.benchName || ''
-          form.manUserId = data.manUserId || ''
-          form.manUserName = data.manUserName || ''
-          form.manOrganId = data.manOrganId || ''
-          form.manOrganName = data.manOrganName || ''
-          form.flag = data.flag || '1'
-          form.sealCode = data.sealCode || '1'
-          form.faceSeal = data.faceSeal || '1'
-          form.voiceDialogue = data.voiceDialogue || '1'
-          form.irFence = data.irFence || '1'
-          form.faceLogin = data.faceLogin || '1'
-          form.autoLock = data.autoLock || '1'
-          form.dormantOpen = data.dormantOpen || '0'
-          form.dormantValue = data.dormantValue || null
-          form.readme = data.readme || ''
-        })
+      userDiaogOpenType.value = 'edit'
+      vFormLibraryRef.value && vFormLibraryRef.value.resetFields()
+      workbenchManagement.detail(column.benchId).then(res => {
+        const data = res.data
+        form.benchId = data.benchId
+        form.benchNo = data.benchNo || ''
+        form.benchSn = data.benchSn || ''
+        form.benchName = data.benchName || ''
+        form.manUserId = data.manUserId || ''
+        form.manUserName = data.manUserName || ''
+        form.manOrganId = data.manOrganId || ''
+        form.manOrganName = data.manOrganName || ''
+        form.flag = data.flag || '1'
+        form.sealCode = data.sealCode || '1'
+        form.faceSeal = data.faceSeal || '1'
+        form.voiceDialogue = data.voiceDialogue || '1'
+        form.irFence = data.irFence || '1'
+        form.faceLogin = data.faceLogin || '1'
+        form.autoLock = data.autoLock || '1'
+        form.dormantOpen = data.dormantOpen || '0'
+        form.dormantValue = data.dormantValue || null
+        form.readme = data.readme || ''
+
+        userOptions.value = [
+          {
+            id: data.manUserId,
+            name: data.manUserName
+          }
+        ]
+        data.manUserId && getDepartOptions(data.manUserId, true)
       })
     }
     if (cell.name === 't-zgj-Delete') {
@@ -619,12 +693,17 @@
       })
   }
 
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
+  const getDepartOptions = (id, isEdit) => {
+    getDepartByUserApi.organListByUser(id).then(res => {
+      if (res.data) {
+        organOptions.value = res.data.length ? res.data : []
+        if (isEdit) return
+        const userDefaultData = res.data.filter(item => item.userDefault)
+        form.manOrganId =
+          userDefaultData.length !== 0 ? userDefaultData[0].organId : ''
+      }
+    })
+  }
 </script>
 <style lang="scss" scoped>
   .PrintControlManagement-WorkbenchManagement {
@@ -661,6 +740,31 @@
       .batch-desc {
         @include mixin-margin-right(12);
       }
+    }
+
+    .box-icon {
+      position: absolute;
+      right: 0.8rem;
+      cursor: pointer;
+      height: 50%;
+      display: flex;
+      align-items: center;
+
+      .box-icon-img {
+        height: 100%;
+      }
+    }
+  }
+</style>
+
+<style lang="scss">
+  .contbox {
+    width: calc(100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    .el-input__suffix {
+      display: none;
     }
   }
 </style>

@@ -18,9 +18,9 @@
           <div>印章类型</div>
           <div class="title-more">
             <div class="title-more-add">
-              <el-button type="primary" @click="clickEditor('t-zgj-add')"
-                >+ {{ $t('t-zgj-add') }}</el-button
-              >
+              <el-button type="primary" @click="clickEditor('t-zgj-add')">
+                + {{ $t('t-zgj-add') }}
+              </el-button>
             </div>
             <div class="title-more-down"> </div>
           </div>
@@ -51,10 +51,14 @@
           <el-input v-model="formData.sealTypeNo" disabled />
         </el-form-item>
         <el-form-item label="印章类型名称" prop="sealTypeName">
-          <el-input v-model="formData.sealTypeName" />
+          <el-input v-model="formData.sealTypeName" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="描述" prop="readme">
-          <el-input v-model="formData.readme" type="textarea" />
+          <el-input
+            v-model="formData.readme"
+            type="textarea"
+            placeholder="请填写"
+          />
         </el-form-item>
       </el-form>
     </JyDialog>
@@ -251,7 +255,11 @@
       vFormLibraryRef.value.resetFields()
       if (title === 't-zgj-add') {
         sealTypeId.value = null
-        formData.value.sealTypeNo = generatingNumber()
+        formData.value = {
+          sealTypeNo: generatingNumber(),
+          sealTypeName: '',
+          readme: ''
+        }
       } else {
         if (column) {
           const columns = JSON.parse(JSON.stringify(column))
