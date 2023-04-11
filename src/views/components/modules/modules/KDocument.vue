@@ -171,7 +171,8 @@
   const searchFn = () => {
     // 获取列表
     resultOrgan({
-      keyword: searchQuery.value
+      keyword: searchQuery.value,
+      ...props.initQueryParams
     }).then(res => {
       // treeColumnSearchData.data = res.data
       const cacheData = JSON.parse(JSON.stringify(res.data))
