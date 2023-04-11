@@ -84,6 +84,9 @@
                           ruleForm.fileTypeIds && ruleForm.fileTypeIds.length
                       }"
                       @click="clickFileType"
+                      collapse-tags
+                      collapse-tags-tooltip
+                      :max-collapse-tags="3"
                     >
                       <el-option
                         v-for="one in fileTypeList"
@@ -1580,6 +1583,7 @@
         })
         delete data.fileTypes
         ruleBusinessNo = data.ruleBusinessNo
+        data.fileTypeIds = data.fileTypeList.map(v => v.fileTypeId)
         ruleForm.value = data
       })
   }
