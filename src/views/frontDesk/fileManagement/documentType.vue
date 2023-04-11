@@ -392,6 +392,7 @@
   const getFileTypeTree = async () => {
     try {
       const res = await fileManageService.getTreeList({})
+      state.componentsTree.data = []
       state.componentsTree.data.push({
         fileTypeName: '文件类型',
         fileTypeId: '-1',

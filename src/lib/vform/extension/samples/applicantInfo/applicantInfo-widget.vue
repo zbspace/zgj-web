@@ -33,28 +33,24 @@
             field.options.required ? 'required' : ''
           ]"
         >
-          <el-input
+          <el-select
+            placeholder="请选择"
+            style="width: 100%"
             v-model="fieldModel.applyOrganName"
             v-show="!field.options.hidden"
             :size="field.options.size"
             :disabled="field.options.disabled"
             :readonly="field.options.readonly"
             :clearable="field.options.clearable"
-            @blur="validate"
-            @click="openSelectUser"
-            @clear="onClear"
             @change="onChange"
           >
-            <template #append>
-              <el-button
-                icon="el-icon-search"
-                :size="field.options.size"
-                :readonly="field.options.readonly"
-                :disabled="field.options.disabled"
-                @click="openSelectUser(index)"
-              ></el-button>
-            </template>
-          </el-input>
+            <el-option
+              v-for="item in organOptions"
+              :key="item.organId"
+              :label="item.organName"
+              :value="item.organId"
+            />
+          </el-select>
           <div
             class="el-form-item__error"
             v-if="field.options.requiredTextShow && field.options.required"
@@ -89,6 +85,7 @@
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { getItem } from '@/utils/storage'
+  import getDepartByUserApi from '@/api/system/companyManagement/departmentStaff'
 
   export default {
     name: 'ApplicantInfoWidget',
@@ -138,7 +135,8 @@
           applyOrganId: '',
           applyOrganName: ''
         },
-        rules: []
+        rules: [],
+        organOptions: []
       }
     },
     computed: {
@@ -170,6 +168,7 @@
     },
     mounted() {
       this.handleOnMounted()
+      this.getDepartOptions()
     },
     methods: {
       setRequiredTextShow(v) {
@@ -236,6 +235,17 @@
           this.setRequiredTextShow(true)
         } else {
           this.setRequiredTextShow(false)
+        }
+      },
+
+      async getDepartOptions() {
+        try {
+          const res = await getDepartByUserApi.organListByUser(
+            this.fieldModel.applyUserId || ''
+          )
+          this.organOptions = res.data.length ? res.data : []
+        } catch (error) {
+          console.log('--->', error)
         }
       }
     }
