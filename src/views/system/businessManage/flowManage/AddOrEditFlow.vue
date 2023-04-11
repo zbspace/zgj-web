@@ -89,6 +89,7 @@
               ref="refBasicsInfo"
               v-model="linkId"
               v-model:sealId="linkSealUseTypeId"
+              v-model:modelLinkId="modelIds"
               v-show="state.checkedIndex == '1'"
               :businessList="props.businessList"
               :sealApplyInitId="props.sealApplyInitId"
@@ -295,14 +296,16 @@
         formMessageId.value = res.data.formMessageId
       })
   }
+
   // 编辑 - 初始化form
   if (props.openType === 'edit') {
     editInit()
   }
+
   const changeTabs = async attr => {
     if (attr.index === '3') {
       // 1 编辑
-      if (props.openType === 'edit') {
+      if (props.openType === 'edit' && modelIds.value.modelId) {
         loadingModel.value = true
         handleTabFn(attr)
         if (!editInitModel.value) {
@@ -377,6 +380,7 @@
       }
     })
   }
+
   const jyBoxCancel = () => {
     state.jyBoxShow = false
   }
@@ -425,8 +429,6 @@
       })
     }
 
-    console.log(errorInfo.value.length, '错误信息', errorInfo.value)
-    console.log('编辑时', basicsResult)
     if (errorInfo.value.length > 0) return
 
     const params = {
@@ -442,7 +444,6 @@
       })
     } else if (props.openType === 'edit') {
       ModelApi.detail({ modelId: props.editModleIds.modelId }).then(res => {
-        // flowStore.setModelId(props.editModleIds.modelId, res.definitionId)
         apiFlow
           .flowEdit({
             ...params,
@@ -462,6 +463,7 @@
     () => modelIds.value,
     val => {
       if (val) {
+        console.log(val, '更新后地id')
         if (!val || !val.modelId) return
         flowStore.setModelId(val.modelId, val.definitionId)
       }

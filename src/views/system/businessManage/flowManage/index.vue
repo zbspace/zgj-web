@@ -806,7 +806,7 @@
         break
       case '批量停用':
         list.forEach(v => {
-          idList.push({ processId: v.flowMessageId })
+          idList.push(v.flowMessageId)
         })
         batchOptApi(
           '批量停用',
@@ -815,7 +815,7 @@
         break
       case '批量启用':
         list.forEach(v => {
-          idList.push({ processId: v.flowMessageId })
+          idList.push(v.flowMessageId)
         })
         batchOptApi(
           '批量启用',

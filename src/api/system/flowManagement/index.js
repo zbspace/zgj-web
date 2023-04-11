@@ -106,7 +106,7 @@ api.batchDelete = data => {
 api.batachEnable = data => {
   return request({
     method: 'POST',
-    url: '/flow/batachEnable',
+    url: '/flow/batchEnable',
     data
   })
 }
