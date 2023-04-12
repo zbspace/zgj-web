@@ -1281,6 +1281,7 @@
       :searchSelected="documentTypeSelected"
       @update:searchSelected="documentTypeSubmit"
       :queryParams="queryParams"
+      v-if="showDocumentTypeDialog"
     ></KDocumentTypeDialog>
   </div>
 </template>
@@ -1595,6 +1596,9 @@
         ruleBusinessNo = data.ruleBusinessNo
         data.fileTypeIds = data.fileTypeList.map(v => v.fileTypeId)
         ruleForm.value = data
+        documentTypeSelected.value = data.fileTypeList.map(v => {
+          return { ...v, type: 'document' }
+        })
       })
   }
 
