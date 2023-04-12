@@ -200,7 +200,7 @@
 
   // 监听 向下包含 切换
   const changeSwitch = (switchStatus, attr) => {
-    kdocument.value.changeSwitch(switchStatus, attr)
+    kdocument.value && kdocument.value.changeSwitch(switchStatus, attr)
   }
 
   // 关闭弹窗

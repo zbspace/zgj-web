@@ -20,7 +20,7 @@
           <div class="title-desc">
             <img
               class="title-desc-img"
-              src="../../../../assets/svg/jiantou-zuo.svg"
+              src="@/assets/svg/front/sealApply/back.svg"
               alt=""
               @click="clickBackPage"
             />

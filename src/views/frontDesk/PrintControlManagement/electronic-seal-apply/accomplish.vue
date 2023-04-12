@@ -15,7 +15,7 @@
           <div class="title-desc">
             <img
               class="title-desc-img"
-              src="@/assets/svg/jiantou-zuo.svg"
+              src="@/assets/svg/front/sealApply/back.svg"
               alt=""
               @click="clickBackPage"
             />
@@ -35,7 +35,7 @@
             <div class="custom-cont-icon">
               <img
                 class="custom-cont-icon-img"
-                src="@/assets/svg/yongyin-shenqing-wancheng-lv.svg"
+                src="@/assets/svg/front/sealApply/success_icon.svg"
                 alt=""
               />
             </div>

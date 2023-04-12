@@ -3,7 +3,7 @@
     <div class="head" v-if="loading">
       <img
         class="img"
-        src="@/assets/svg/jiantou-zuo.svg"
+        src="@/assets/svg/front/sealApply/back.svg"
         alt=""
         @click="goBack"
       />
