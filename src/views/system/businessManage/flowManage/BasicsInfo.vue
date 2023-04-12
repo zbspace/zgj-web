@@ -290,13 +290,14 @@
           form.readme = val.readme
           handleScopeArr(val.dataScope)
           handleFileArr(val.fileType)
-
           searchSelected.value = val.dataScope.map(item => {
             return {
-              id: item.scopeId,
-              name: item.scopeName,
-              type: item.scopeType === 2 ? 'organ' : 'user',
-              includeChild: item.includeChild
+              id: item.scopeId || item.id,
+              name: item.scopeName || item.name,
+              type: item.type,
+              includeChild: item.includeChild,
+              haveChildren: item.haveChildren,
+              idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
             }
           })
 
@@ -305,7 +306,8 @@
               fileTypeId: item.fileTypeId,
               fileTypeName: item.fileTypeName,
               type: 'document',
-              includeChild: item.includeChild
+              includeChild: item.includeChild,
+              haveChildren: item.haveChildren
             }
           })
         }
@@ -350,7 +352,7 @@
 
   const handleScopeArr = val => {
     const arr = []
-    if (val.length > 0 && val) {
+    if (val && val.length > 0) {
       form.dataScope = []
       rangeList.value = val
       val.forEach(item => {
