@@ -103,7 +103,7 @@
       padding: 0;
       .el-dialog__header {
         padding: 0;
-        display: flex;
+        display: flex !important;
         align-items: center;
         margin-right: 0;
         height: 55px;
@@ -128,7 +128,7 @@
       .el-dialog__body {
         height: auto;
         min-height: auto;
-        padding: 0 24px 0 64px;
+        padding: 0 24px 0 64px !important;
         font-family: 'PingFang SC';
         font-style: normal;
         font-weight: 400;
@@ -139,6 +139,7 @@
       .el-dialog__footer {
         padding: 24px;
         border: none;
+        text-align: right;
       }
     }
     :deep(.message-box-2) {

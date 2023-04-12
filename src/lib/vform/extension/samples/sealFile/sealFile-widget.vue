@@ -20,22 +20,18 @@
         field.options.required ? 'required' : ''
       ]"
     >
-      <div class="upload-file" :class="[fileList1.length && 'upload-file-big']">
+      <div class="upload-file">
         <el-upload
-          :file-list="fileList1"
+          :file-list="tempFileList"
           ref="upload"
           class="upload-demo"
-          list-type="text"
           multiple
-          :on-success="onSuccess"
           :disabled="field.options.disabled"
-          :on-preview="onPreview"
           :http-request="
             options => {
               handleRequest(options, 1)
             }
           "
-          :on-change="onChange"
         >
           <el-button type="primary" :disabled="field.options.disabled">
             <el-icon color="#fff"> <ArrowDown /> </el-icon> 本机上传
@@ -46,6 +42,24 @@
             </div>
           </template>
         </el-upload>
+        <div
+          class="cur-upload-list"
+          v-for="(item, index) in fieldModel.fileIds"
+          :key="item.fileId"
+        >
+          <div @click="edit(item, index, 1)" v-if="item.fileSubImages">{{
+            item.fileOriginName || '-'
+          }}</div>
+          <div @click="onPreview(item)" v-else>{{
+            item.fileOriginName || '-'
+          }}</div>
+          <svg
+            class="iconpark-icon"
+            @click="fieldModel.fileIds.splice(index, 1)"
+          >
+            <use href="#remove"></use>
+          </svg>
+        </div>
       </div>
       <div
         class="el-form-item__error"
@@ -64,29 +78,18 @@
       :class="[labelAlign, customClass]"
       :size="field.options.size"
     >
-      <div
-        class="upload-file"
-        :class="[
-          fieldModel.fileAddIds &&
-            fieldModel.fileAddIds.length &&
-            'upload-file-big'
-        ]"
-      >
+      <div class="upload-file">
         <el-upload
           :file-list="fileList2"
           ref="upload"
           class="upload-demo"
-          list-type="text"
           multiple
-          :on-success="onSuccess2"
-          :on-preview="onPreview"
           :disabled="field.options.disabled"
           :http-request="
             options => {
               handleRequest(options, 2)
             }
           "
-          :on-change="onChange"
         >
           <div>
             <el-button type="primary" :disabled="field.options.disabled">
@@ -102,20 +105,44 @@
             </div>
           </template>
         </el-upload>
+        <div
+          class="cur-upload-list"
+          v-for="(item, index) in fieldModel.fileAddIds"
+          :key="item.fileId"
+        >
+          <div @click="edit(item, index, 2)" v-if="item.fileSubImages">{{
+            item.fileOriginName || '-'
+          }}</div>
+          <div @click="onPreview(item)" v-else>{{
+            item.fileOriginName || '-'
+          }}</div>
+          <svg
+            class="iconpark-icon"
+            @click="fieldModel.fileAddIds.splice(index, 1)"
+          >
+            <use href="#remove"></use>
+          </svg>
+        </div>
       </div>
     </el-form-item>
+    <!-- 用印文件 -->
+    <JyUseSealFiles
+      v-model="visible"
+      :imgFiles="imgFiles"
+      :curIndex="curIndex"
+      :fileOriginName="fileOriginName"
+      @confirm="confirm"
+    />
   </static-content-wrapper>
-  <JyUseSealFiles v-model="visible" :fileUrls="imgUrls" @confirm="confirm" />
 </template>
 <script>
   import StaticContentWrapper from '@/lib/vform/components/form-designer/form-widget/field-widget/static-content-wrapper'
   import emitter from '@/lib/vform/utils/emitter'
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
-  import { genFileId } from 'element-plus'
   import { ArrowDown } from '@element-plus/icons-vue'
   import SealApplyService from '@/api/frontDesk/printControl/sealApply'
-  import { messageError, messageWarning } from '@/hooks/useMessage'
+  import { messageError, messageSuccess } from '@/hooks/useMessage'
   import JyUseSealFiles from '@/components/business/JyUseSealFiles'
 
   export default {
@@ -155,14 +182,18 @@
     data() {
       return {
         visible: false,
-        fileList1: [],
+        tempFileList: [],
         fileList2: [],
-        toUploadFiles: 0,
+        curFileList1: [],
+        curFileList2: [],
+        fileOriginName: '',
+        curIndex: null,
+        curType: 1,
         fieldModel: {
           fileIds: [],
           fileAddIds: []
         },
-        imgUrls: [],
+        imgFiles: [],
         rules: [],
         curImgIndex: 0
       }
@@ -213,80 +244,105 @@
           changeFn.call(this)
         }
       },
+      edit(row, index, type) {
+        this.visible = true
+        this.fileOriginName = row.fileOriginName
+        this.imgFiles = row.fileSubImages
+        this.curIndex = index
+        this.curType = type
+      },
       getSelectedLabel() {
         return this.$refs.fieldEditor.selectedLabel
       },
-
-      handleExceed(files) {
-        this.$refs.upload.clearFiles()
-        const file = files[0]
-        file.uid = genFileId()
-        this.$refs.upload.handleStart(file)
-      },
       confirm(file) {
-        this.fieldModel.fileIds.push(file)
+        if (file) {
+          if (this.curIndex !== null) {
+            if (file.fileSubImages && file.fileSubImages.length) {
+              if (this.curType === 1) {
+                this.fieldModel.fileIds.splice(this.curIndex, 1, file)
+              } else {
+                this.fieldModel.fileAddIds.splice(this.curIndex, 1, file)
+              }
+            } else {
+              if (this.curType === 1) {
+                this.fieldModel.fileIds.splice(this.curIndex, 1)
+              } else {
+                this.fieldModel.fileAddIds.splice(this.curIndex, 1)
+              }
+            }
+            messageSuccess('编辑成功')
+          }
+          if (this.curIndex === null) {
+            if (this.curType === 1) {
+              this.fieldModel.fileIds.push(file)
+              this.setRequiredTextShow(false)
+              this.field.options.requiredHint = ''
+            } else {
+              this.fieldModel.fileAddIds.push(file)
+            }
+          }
+        }
+        this.curIndex = null
+        this.curType = 1
+        this.imgFiles = []
       },
-      onSuccess(response, uploadFile, uploadFiles) {
-        this.fileList1 = this.fieldModel.fileIds
-        this.setRequiredTextShow(false)
-        this.field.options.requiredHint = ''
-      },
-      onSuccess2(response, uploadFile, uploadFiles) {
-        this.fileList2 = this.fieldModel.fileAddIds
-      },
+
       onPreview(response) {
         window.open(response.fileUrl, '_blank')
       },
-      onChange(uploadFile, uploadFiles) {
-        this.toUploadFiles = uploadFiles.length
-      },
       async handleRequest(options, type) {
+        this.curType = type
         const str = options.file.name.split('.').pop()
-        if (['png', 'jpg', 'jpeg'].includes(str)) {
-          messageWarning('暂不支持图片格式')
-          return options.onError()
-        }
         if (
-          !['doc', 'docx', 'pdf', 'xls', 'xlsx', 'application/pdf'].includes(
-            str
-          )
+          ![
+            'doc',
+            'docx',
+            'pdf',
+            'xls',
+            'xlsx',
+            'application/pdf',
+            'png',
+            'jpg',
+            'jpeg'
+          ].includes(str)
         ) {
           messageError('请上传指定格式文件')
-          return options.onError()
+          return false
         } else if (options.file.size / 1024 / 1024 > 199) {
           messageError('单个文件大小不能超过199M!')
-          return options.onError()
+          return false
         }
         const formData = new FormData()
         formData.append('uploadFile', options.file)
         try {
           const res = await SealApplyService.uploadFile(formData)
-          if (['png', 'jpg', 'jpeg'].includes(str)) {
-            this.imgUrls.push({
-              ...res.data,
-              ...{
-                id: this.curImgIndex++
-              }
+          if (['png', 'jpg', 'jpeg'].includes(str) && this.curType === 1) {
+            this.imgFiles.push({
+              ...res.data
             })
             this.visible = true
+            return false
           } else {
-            if (type === 1) {
+            if (this.curType === 1) {
               this.fieldModel.fileIds.push({
-                ...res.data,
-                ...{
-                  name: options.file.name
-                }
+                fileId: res.data.fileId,
+                fileSizeByte: res.data.fileSizeByte,
+                fileSuffix: res.data.fileSuffix,
+                fileOriginName: res.data.fileOriginName,
+                fileUrl: res.data.fileUrl
               })
+              this.setRequiredTextShow(false)
+              this.field.options.requiredHint = ''
             } else {
               this.fieldModel.fileAddIds.push({
-                ...res.data,
-                ...{
-                  name: options.file.name
-                }
+                fileId: res.data.fileId,
+                fileSizeByte: res.data.fileSizeByte,
+                fileSuffix: res.data.fileSuffix,
+                fileOriginName: res.data.fileOriginName,
+                fileUrl: res.data.fileUrl
               })
             }
           }
-          options.onSuccess()
         } catch (error) {
           //
         }
@@ -311,9 +367,9 @@
     min-height: 135px;
     text-align: left;
   }
-  .upload-file-big {
-    min-height: 197px;
-  }
+  // .upload-file-big {
+  //   min-height: 197px;
+  // }
   :deep(.upload-demo) {
     width: 100%;
     button {
@@ -336,6 +392,16 @@
       background-color: rgba(0, 0, 0, 0.04);
       padding-left: 12px;
     }
+
+    .el-upload-list__item {
+      width: 360px;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+    .el-upload-list {
+      display: none;
+    }
     .el-upload__tip {
       font-family: 'PingFang SC';
       font-style: normal;
@@ -345,13 +411,33 @@
       color: rgba(0, 0, 0, 0.45);
       border-bottom: 1px solid rgba(0, 0, 0, 0.06);
       padding-bottom: 16px;
-      margin-top: 16px;
     }
-    .el-upload-list__item {
-      width: 360px;
-      &:hover {
-        background-color: transparent;
-      }
+  }
+
+  .cur-upload-list {
+    display: flex;
+    align-items: center;
+    width: 360px;
+    height: 46px;
+
+    justify-content: space-between;
+    div {
+      background: rgba(0, 0, 0, 0.04);
+      width: 88%;
+      padding-left: 12px;
+      height: 46px;
+      line-height: 46px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      color: #3e78d0;
+      cursor: pointer;
+    }
+    .iconpark-icon {
+      width: 20px;
+      height: 20px;
+      color: rgba(0, 0, 0, 0.65);
+      cursor: pointer;
     }
   }
 
