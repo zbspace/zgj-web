@@ -32,9 +32,18 @@
           </div>
         </div>
         <div class="info-form">
-          <el-form :model="form" label-width="80px" status-icon>
+          <el-form
+            :model="form"
+            label-width="80px"
+            status-icon
+            style="width: 500px"
+          >
             <el-form-item label="业务类型" prop="applyTypeId" required>
-              <el-select v-model="form.applyTypeId">
+              <el-select
+                v-model="form.applyTypeId"
+                ref="selectApplyRef"
+                @click="changeSelect"
+              >
                 <el-option-group
                   v-for="group in props.businessList"
                   :key="group.applyTypeName"
@@ -55,8 +64,12 @@
               v-if="form.applyTypeId === props.sealApplyInitId"
             >
               <el-radio-group v-model="form.sealUseTypeId">
-                <el-radio label="1" size="large">物理用印</el-radio>
-                <el-radio label="2" size="large">电子签章</el-radio>
+                <el-radio label="1" size="large" @change="changeRadio('2')">
+                  物理用印
+                </el-radio>
+                <el-radio label="2" size="large" @change="changeRadio('1')">
+                  电子签章
+                </el-radio>
               </el-radio-group>
             </el-form-item>
           </el-form>
@@ -65,41 +78,44 @@
           class="info-noContent"
           v-if="state.list.data.length === 0 && flagStatus"
         >
-          <div class="info-noContent-backcolor" @click="clickEdit">
-            <img src="@/assets/svg/system/flow/vector.svg" />
-            <div class="text">去创建</div>
-          </div>
           <div class="info-noContent-desc">
             <img src="@/assets/svg/system/flow/info.svg" />
             暂无可关联的表单
           </div>
         </div>
+
         <div
           class="info-list"
           v-if="form.applyTypeId && state.list.data.length !== 0"
         >
-          <div class="container-list">
-            <div
-              class="list"
-              v-for="(item, index) in state.list.data"
-              :key="index"
-            >
-              <div class="list-desc">
-                {{ item.formName }}
-              </div>
+          <el-scrollbar style="height: 100%" view-style="padding: 0 54px">
+            <div class="container-list">
+              <div
+                class="list"
+                v-for="(item, index) in state.list.data"
+                :key="index"
+              >
+                <div class="list-desc">
+                  {{ item.formName }}
+                </div>
 
-              <div style="margin-top: 4px">
-                <el-button
-                  type="primary"
-                  class="btn"
-                  @click="clickEditForm(item)"
-                >
-                  选择
-                </el-button>
+                <div style="margin-top: 4px">
+                  <el-button
+                    type="primary"
+                    class="btn"
+                    @click="clickEditForm(item)"
+                  >
+                    选择
+                  </el-button>
+                </div>
               </div>
+              <div class="info-noContent-backcolor" @click="clickEdit">
+                <img src="@/assets/svg/system/flow/vector.svg" />
+                <div class="text">去创建</div>
+              </div>
+              <i></i><i></i><i></i><i></i><i></i><i></i>
             </div>
-            <i></i><i></i>
-          </div>
+          </el-scrollbar>
         </div>
       </div>
     </div>
@@ -151,6 +167,15 @@
       :showToastDialogContent="showToastDialogContent"
       label="flowName"
     ></JyActionErrorDialog>
+
+    <JyMessageBox
+      v-model="tipVisible"
+      :mode="1"
+      @on-confirm="confirmTip"
+      @on-cancel="cancelTip"
+    >
+      变更会清空已设计的流程，请问确定要继续吗？
+    </JyMessageBox>
   </div>
 </template>
 <script setup>
@@ -159,11 +184,14 @@
   import FlowApi from '@/api/system/flowManagement'
   import { ModelApi } from '@/api/flow/ModelApi'
   import sealApplyService from '@/api/frontDesk/printControl/sealApply'
+  import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  const flowStore = useFlowStore()
   const refFillFormInformation = ref(null)
   const formJson = ref('')
   const vformObj = ref(null)
   const resetFlag = ref(true)
   const flagStatus = ref(false)
+  const tipVisible = ref(false)
 
   const state = reactive({
     currentState: '1', // 1选择表单  2 编辑表单
@@ -249,10 +277,71 @@
     formMessageId: {
       type: String,
       default: ''
+    },
+    modelLinkId: {
+      type: Object,
+      deftault: () => {
+        return {}
+      }
     }
   })
 
-  const emits = defineEmits('update:modelValue', 'update:sealId')
+  const emits = defineEmits(
+    'update:modelValue',
+    'update:sealId',
+    'update:modelLinkId'
+  )
+
+  // 监听 流程设计是否初始化完成
+  const testIds = computed({
+    get() {
+      return props.modelLinkId
+    },
+    set(value) {
+      emits('update:modelLinkId', value)
+    }
+  })
+
+  const typeTip = ref('apply')
+
+  const selectApplyRef = ref(null)
+  const changeSelect = () => {
+    // 判断是否已有设计 - 有提示信息
+    selectApplyRef.value.blur()
+    tipVisible.value = true
+    typeTip.value = 'apply'
+  }
+
+  const confirmTip = () => {
+    tipVisible.value = false
+    if (typeTip.value === 'apply') {
+      selectApplyRef.value.toggleMenu()
+    } else {
+      form.sealUseTypeId = form.sealUseTypeId === '1' ? '2' : '1'
+    }
+    flowStore.setModelId('', '')
+    testIds.value = {
+      modleId: '',
+      definitionId: ''
+    }
+  }
+
+  const cancelTip = () => {
+    tipVisible.value = false
+    if (typeTip.value === 'apply') {
+      selectApplyRef.value.blur()
+    }
+  }
+
+  const changeRadio = val => {
+    // 判断是否已有设计 - 有提示信息
+    if (testIds.value.modelId) {
+      form.sealUseTypeId = val
+      // 打开 提示弹框
+      tipVisible.value = true
+      typeTip.value = 'sealType'
+    }
+  }
 
   const editFormMessageId = ref('')
   // 选中
@@ -283,10 +372,17 @@
 
   // 点击编辑
   const clickEdit = () => {
-    getFlowList(editFormMessageId.value, null, 'edit')
+    getFlowList(editFormMessageId.value)
   }
   const showToastDialogContent = ref(null)
-  async function getFlowList(formMessageId, column, type) {
+  async function getFlowList(formMessageId) {
+    if (!formMessageId) {
+      vformObj.value = {
+        formMessageId: null
+      }
+      state.JyElMessageBox.show = true
+      return
+    }
     const res = await sealApplyService.flowList({
       formMessageId
     })
@@ -294,12 +390,13 @@
       state.showRelatedfFlow.show = true
       showToastDialogContent.value = {
         header: '提示',
-        content:
-          '当前表单被已启用的以下流程所使用，仅当以下流程停用才允许' +
-          (type === 'edit' ? '编辑' : '删除'),
+        content: '当前表单被已启用的以下流程所使用，仅当以下流程停用才允许编辑',
         selectionData: res.data
       }
     } else {
+      vformObj.value = {
+        formMessageId: null
+      }
       state.JyElMessageBox.show = true
     }
   }
@@ -372,7 +469,7 @@
   watch(
     () => form.sealUseTypeId,
     val => {
-      if (!val) return
+      if (!val || testIds.value.modelId) return
       getFromList()
     },
     {
@@ -414,9 +511,12 @@
 </script>
 <style lang="scss" scoped>
   .flowManage-Association-form {
-    width: 1194px;
-    min-height: calc(95% - 1rem);
-    margin-top: 1rem;
+    margin: auto;
+    width: calc(100vw - 160px);
+    height: calc(100vh - 92px);
+    min-height: 500px;
+    min-width: 800px;
+    margin-top: 16px;
     background-color: var(--jy-color-fill--5);
     position: relative;
     color: var(--jy-color-text-1);
@@ -498,7 +598,9 @@
     .info-form {
       margin-top: 24px;
       box-sizing: border-box;
-      padding: 0 357px;
+      // padding: 0 357px;
+      display: flex;
+      justify-content: center;
     }
 
     .info-noContent {
@@ -506,45 +608,45 @@
       display: flex;
       justify-content: center;
       flex-flow: wrap;
+    }
 
-      .info-noContent-backcolor {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 258px;
-        height: 110px;
-        background: rgba(0, 0, 0, 0.02);
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        border-radius: 4px;
-        margin-top: 24px;
-        cursor: pointer;
-        .text {
-          margin-top: 20px;
-          color: rgba(0, 0, 0, 0.85);
-          font-size: 14px;
-        }
+    .info-noContent-backcolor {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 258px;
+      height: 110px;
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+      margin: 15px 10px 0 0;
+      cursor: pointer;
+      .text {
+        margin-top: 20px;
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 14px;
       }
+    }
 
-      .info-noContent-desc {
-        width: 100%;
-        margin-top: 16px;
+    .info-noContent-desc {
+      width: 100%;
+      margin-top: 16px;
 
-        img {
-          width: 16px;
-        }
+      img {
+        width: 16px;
       }
     }
 
     .info-list {
       margin-top: 16px;
-      padding: 0 54px;
-
+      height: calc(100vh - 490px);
+      overflow: hidden;
       .container-list {
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        margin-right: -15px;
+        // margin-right: -15px;
       }
       .list {
         display: flex;
@@ -573,7 +675,7 @@
       /* 和列表一样的宽度和margin值 */
       .container-list > i {
         width: 258px;
-        margin-right: 15px;
+        margin: 15px 10px 0 0;
       }
 
       .btn {

@@ -1280,6 +1280,7 @@
       v-model:show="showDocumentTypeDialog"
       :searchSelected="documentTypeSelected"
       @update:searchSelected="documentTypeSubmit"
+      :queryParams="queryParams"
     ></KDocumentTypeDialog>
   </div>
 </template>
@@ -1294,6 +1295,7 @@
   import { useRouter } from 'vue-router'
   import ruleApi from '@/api/system/businessManage/businessRule'
   import { messageSuccess, messageWarning } from '@/hooks/useMessage'
+  import { getItem } from '@/utils/storage'
   const router = useRouter()
   class BusinessRule {
     ruleBusinessId = ''
@@ -1353,6 +1355,14 @@
   const searchSelected = ref([])
   const kDepartOrPerson = ref(null)
   const tabsShow = ref(['user'])
+
+  const userId =
+    getItem('accountInfo') && getItem('accountInfo').userInfo
+      ? getItem('accountInfo').userInfo.userId
+      : ''
+  const queryParams = ref({
+    userId
+  })
 
   const rules = ref({
     ruleBusinessName: [

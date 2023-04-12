@@ -136,9 +136,9 @@
             <!-- select 下拉选择框-->
             <div class="ap-box-cont select" v-else-if="item.type == 'select'">
               <div class="ap-box-label" :style="props.style.labelStyle">
-                <span class="ap-box-label-necessary" v-if="item.isNecessary"
-                  >*</span
-                >
+                <span class="ap-box-label-necessary" v-if="item.isNecessary">
+                  *
+                </span>
                 {{ item.label }}
               </div>
               <div class="ap-box-contBox">
@@ -153,6 +153,7 @@
                       : false
                   "
                   @change="reloadData"
+                  :filterable="item.filterable"
                 >
                   <el-option
                     v-for="data in item.options"
@@ -465,6 +466,7 @@
       :searchSelected="documentTypeSelected"
       @update:searchSelected="documentTypeSubmit"
       :multiple="multipleDocumetType"
+      :queryParams="queryParams"
     ></KDocumentTypeDialog>
   </div>
 </template>
@@ -472,7 +474,7 @@
   import { reactive, onBeforeMount, computed, ref, watch } from 'vue'
   import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-
+  import { getItem } from '@/utils/storage'
   import request from '@/utils/request'
   const props = defineProps({
     // 标识
@@ -571,6 +573,14 @@
     }
   })
 
+  const userId =
+    getItem('accountInfo') && getItem('accountInfo').userInfo
+      ? getItem('accountInfo').userInfo.userId
+      : ''
+  const queryParams = ref({
+    userId
+  })
+
   // 计算 占满一行
   const computedFill = computed(() => {
     return (item, index) => {
@@ -658,7 +668,6 @@
       }
       if (item.requestObj) {
         request(item.requestObj).then(res => {
-          console.log(res)
           item.options = res.data
         })
       }

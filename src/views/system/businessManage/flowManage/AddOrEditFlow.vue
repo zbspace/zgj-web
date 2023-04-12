@@ -100,6 +100,7 @@
               ref="refAssociationForm"
               v-model="linkId"
               v-model:sealId="linkSealUseTypeId"
+              v-model:modelLinkId="modelIds"
               v-show="state.checkedIndex == '2'"
               :businessList="props.businessList"
               :sealApplyInitId="props.sealApplyInitId"
@@ -571,13 +572,13 @@
       }
       .content {
         width: 100%;
-        height: calc(100% - 4rem);
+        height: calc(100vh - 56px);
         background-color: #f2f2f2;
         display: flex;
         align-items: flex-start;
         justify-content: center;
         position: relative;
-        z-index: 0;
+        z-index: 100;
       }
     }
   }

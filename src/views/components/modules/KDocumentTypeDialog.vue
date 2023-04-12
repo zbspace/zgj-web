@@ -173,7 +173,7 @@
   if (props.editDeploy) {
     const paramsKey = Api[props.apiModule].key
     apiInterface(props.queryParams[paramsKey], 'selected').then(res => {
-      allSelected.value = res.data.organs
+      // allSelected.value = res.data.organs // 编辑时 文件类型返回
       firstShow.value = true
     })
   } else {
