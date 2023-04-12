@@ -21,7 +21,7 @@
       @close="close"
       @closed="closed"
       v-bind="props.attributes"
-      :destroy-on-close="true"
+      :destroy-on-close="props.destroyOnClose"
     >
       <template #header>
         <slot name="header">
@@ -75,6 +75,10 @@
     modelValue: {
       type: Boolean,
       default: false
+    },
+    destroyOnClose: {
+      type: Boolean,
+      default: true
     },
     direction: {
       type: String,

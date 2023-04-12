@@ -13,13 +13,12 @@
     title="详情"
     class="detail-drawer"
     size="800px"
-    destroy-on-close
   >
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="业务规则详情" name="1">
         <BaseInfo :ruleBusinessId="props.ruleBusinessId" />
       </el-tab-pane>
-      <el-tab-pane label="流程记录" name="2">
+      <el-tab-pane label="操作记录" name="2">
         <FlowRecord :ruleBusinessId="props.ruleBusinessId" />
       </el-tab-pane>
     </el-tabs>

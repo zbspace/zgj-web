@@ -395,6 +395,10 @@
     })
   }
 
+  const closeCopyTabel = () => {
+    state.showFormDialog.show = false
+  }
+
   // 单个弹框确认
   const submitElMessageBox = () => {
     if (state.JyElMessageBox.type === 't-zgj-Delete') {

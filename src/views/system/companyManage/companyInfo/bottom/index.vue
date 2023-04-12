@@ -22,17 +22,22 @@
           type: 1
         }"
         :before-upload="beforeUpload"
+        :on-success="onSuccess1"
+        :on-error="onError"
       >
-        <div class="uploadTip" v-if="!props.tenantShowInfo.homeLogoPath">
+        <div
+          class="uploadTip"
+          v-if="!shapeIcon1 && !props.tenantShowInfo.homeLogoPath"
+        >
           <div>
-            <img class="uploadIcon" :src="shapeIcon" />
+            <img class="uploadIcon" :src="shapeIcon1" />
             <p>上传首页LOGO</p>
           </div>
         </div>
 
         <el-image
           class="logoImage"
-          :src="props.tenantShowInfo.homeLogoPath"
+          :src="shapeIcon1 || props.tenantShowInfo.homeLogoPath"
           fit="scale-down"
           v-else
         ></el-image>
@@ -48,14 +53,19 @@
         }"
         :show-file-list="false"
         :before-upload="beforeUpload"
+        :on-success="onSuccess2"
+        :on-error="onError"
       >
-        <div class="uploadTip" v-if="!props.tenantShowInfo.loginLogoPath">
-          <img class="uploadIcon" :src="shapeIcon" />
+        <div
+          class="uploadTip"
+          v-if="!shapeIcon2 && !props.tenantShowInfo.loginLogoPath"
+        >
+          <img class="uploadIcon" :src="shapeIcon2" />
           <p>上传登录页LOGO</p>
         </div>
         <el-image
           class="logoImage"
-          :src="props.tenantShowInfo.loginLogoPath"
+          :src="shapeIcon2 || props.tenantShowInfo.loginLogoPath"
           fit="scale-down"
           v-else
         ></el-image>
@@ -71,6 +81,10 @@
   import apis from '@/api/system/companyManagement/companyInfo'
   import { setWaterMark, removeWatermark } from '@/utils/water'
   import dayjs from 'dayjs'
+  import { messageError } from '@/hooks/useMessage'
+
+  const shapeIcon1 = ref(null)
+  const shapeIcon2 = ref(null)
 
   const emit = defineEmits(['reloadData'])
   const props = defineProps({
@@ -136,6 +150,16 @@
       ElMessage.warning('上传图片大小不能超过2MB')
       return false
     }
+  }
+
+  const onSuccess1 = (response, uploadFile) => {
+    shapeIcon1.value = response.data
+  }
+  const onSuccess2 = (response, uploadFile) => {
+    shapeIcon2.value = response.data
+  }
+  const onError = (error, uploadFile, uploadFiles) => {
+    messageError(error)
   }
 </script>
 
