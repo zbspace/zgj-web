@@ -142,6 +142,7 @@
       v-model:show="showDocumentType"
       :searchSelected="searchSelectedDocument"
       @update:searchSelected="handleFileSelected"
+      :queryParams="queryParams"
     ></KDocumentTypeDialog>
 
     <JyMessageBox
@@ -159,6 +160,8 @@
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
   import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  import { getItem } from '@/utils/storage'
+
   const flowStore = useFlowStore()
   const props = defineProps({
     businessList: {
@@ -191,6 +194,7 @@
           applyTypeId: '',
           sealUseTypeId: '1',
           fileTypeIds: [],
+          fileTypeScope: [],
           showDataScope: [],
           dataScope: [],
           readme: ''
@@ -224,6 +228,7 @@
     applyTypeId: '',
     sealUseTypeId: '1',
     fileTypeIds: [],
+    fileTypeScope: [],
     showDataScope: [],
     dataScope: [],
     readme: ''
@@ -267,6 +272,13 @@
     ]
   })
 
+  const userId =
+    getItem('accountInfo') && getItem('accountInfo').userInfo
+      ? getItem('accountInfo').userInfo.userId
+      : ''
+  const queryParams = ref({
+    userId
+  })
   watch(
     () => props.editBasicsForm,
     val => {
@@ -283,7 +295,8 @@
             return {
               id: item.scopeId,
               name: item.scopeName,
-              type: item.scopeType === 2 ? 'organ' : 'user'
+              type: item.scopeType === 2 ? 'organ' : 'user',
+              includeChild: item.includeChild
             }
           })
 
@@ -291,7 +304,8 @@
             return {
               fileTypeId: item.fileTypeId,
               fileTypeName: item.fileTypeName,
-              type: 'document'
+              type: 'document',
+              includeChild: item.includeChild
             }
           })
         }
@@ -345,6 +359,7 @@
         form.dataScope.push({
           scopeId: item.id || item.scopeId,
           scopeName: item.name || item.scopeName,
+          includeChild: item.includeChild,
           scopeType: item.scopeType
             ? item.scopeType
             : item.type === 'user'
@@ -386,7 +401,7 @@
     } else {
       form.sealUseTypeId = form.sealUseTypeId === '1' ? '2' : '1'
     }
-    // TODO：重新初始化流程设计
+    // 重新初始化流程设计
     flowStore.setModelId('', '')
     testIds.value = {
       modleId: '',
@@ -442,12 +457,15 @@
     val.forEach(item => {
       arr.push({
         fileTypeId: item.fileTypeId,
-        fileTypeName: item.fileTypeName
+        fileTypeName: item.fileTypeName,
+        includeChild: item.includeChild ? '1' : '0',
+        type: 'document'
       })
       selectIds.push(item.fileTypeId)
     })
     fileTypeList.value = arr
     form.fileTypeIds = selectIds
+    form.fileTypeScope = arr
   }
 
   defineExpose({
@@ -457,10 +475,12 @@
 </script>
 <style lang="scss" scoped>
   .flowManage-basics-info {
-    margin: 0%;
-    width: 90%;
-    height: calc(95% - 1rem);
-    margin-top: 1rem;
+    margin: auto;
+    width: calc(100vw - 160px);
+    height: calc(100vh - 92px);
+    min-height: 500px;
+    min-width: 800px;
+    margin-top: 16px;
     background-color: var(--jy-color-fill--5);
     .info-box {
       width: 680px;

@@ -208,4 +208,13 @@ api.getFormDetail = params => {
     params
   })
 }
+
+// 流程  搜素 - 表单列表
+api.getFormSeachList = params => {
+  return request({
+    method: 'GET',
+    url: '/form/list',
+    params
+  })
+}
 export default api

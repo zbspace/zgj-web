@@ -264,22 +264,21 @@
       ]
     },
     {
-      id: 'relationForm',
+      id: 'formMessageId',
       label: '关联表单',
       type: 'select',
-      optionLabel: 'label',
-      optionValue: 'value',
+      optionLabel: 'formName',
+      optionValue: 'formMessageId',
+      filterable: true,
       inCommonUse: false,
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         placeholder: '请选择'
       },
-      options: [
-        {
-          value: '1',
-          label: '全部'
-        }
-      ]
+      requestObj: {
+        method: 'GET',
+        url: '/form/list'
+      }
     }
   ]
 
@@ -341,22 +340,21 @@
       style: {}
     },
     {
-      id: 'relationForm',
+      id: 'formMessageId',
       label: '关联表单',
       type: 'select',
-      optionLabel: 'label',
-      optionValue: 'value',
+      optionLabel: 'formName',
+      optionValue: 'formMessageId',
+      filterable: true,
       inCommonUse: false,
       // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
       defaultAttribute: {
         placeholder: '请选择'
       },
-      options: [
-        {
-          value: '1',
-          label: '全部'
-        }
-      ]
+      requestObj: {
+        method: 'GET',
+        url: '/form/list'
+      }
     }
   ]
 

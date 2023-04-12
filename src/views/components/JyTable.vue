@@ -92,6 +92,7 @@
                 v-bind="item"
                 :key="index"
                 v-if="item.show !== false"
+                show-overflow-tooltip
               >
                 <template #default="scope">
                   <div class="switch" v-if="item.customDisplayType == 'switch'">
