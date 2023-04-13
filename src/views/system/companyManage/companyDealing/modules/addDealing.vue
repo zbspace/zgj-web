@@ -80,11 +80,11 @@
           placeholder="请输入联系方式"
         />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item label="备注" prop="readme">
         <el-input
           type="textarea"
           :rows="4"
-          v-model="state.componentsAddForm.formData.remark"
+          v-model="state.componentsAddForm.formData.readme"
           placehoder="请输入备注"
         />
       </el-form-item>
@@ -105,8 +105,6 @@
 <script setup>
   import { ref, reactive, computed, watch } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog.vue'
-  import { ElMessage } from 'element-plus'
-  import { CircleClose } from '@element-plus/icons-vue'
   import api from '@/api/system/companyManagement/companyDealing'
   const formRef = ref(null)
   const showDepPerDialog = ref(false)
@@ -137,7 +135,7 @@
         contactName: '',
         contactInformation: '',
         relatedCompanyId: '',
-        remark: ''
+        readme: ''
       },
       formRules: {
         relatedCompanyName: [
