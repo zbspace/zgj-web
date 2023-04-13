@@ -353,18 +353,18 @@
 
   const selectOrgan = tenantId => {
     loginApi.chooseOrgan(tenantId).then(async res => {
-      localStorage.setItem('tenantId', Number(tenantId))
+      localStorage.setItem('tenantId', tenantId)
 
       const redirect = getRedirect()
       menusInfoStore.currentType =
         redirect.indexOf('/system') > -1 ? 'system' : 'business'
       await menusInfoStore.setMenus()
 
-      getUserLoginInfo(Number(tenantId))
+      getUserLoginInfo()
     })
   }
 
-  function getWater(isOneDepart, initTenanId) {
+  function getWater(isOneDepart) {
     companyApi.getTenantInfo().then(res => {
       if (res.data.tenantShowInfo) {
         localStorage.setItem('watermark', res.data.tenantShowInfo.pageWatermark)
@@ -380,12 +380,8 @@
       } else {
         removeWatermark()
       }
-      // initTenanId - 初始化id
       if (isOneDepart) {
         accountInfo.setOneDeaprtTitle(res.data && res.data.tenant.tenantTitle)
-        accountInfo.setUserDepartInfo(res.data && res.data.tenant.tenantTitle)
-      } else {
-        accountInfo.setUserDepartInfo(res.data && res.data.tenant)
       }
     })
   }
@@ -400,7 +396,7 @@
     router.replace(redirect)
   }
 
-  const getUserLoginInfo = initTenanId => {
+  const getUserLoginInfo = () => {
     // 获取用户信息 - 缓存
     navBarApi.getUserInfo().then(userInfo => {
       const obj = {
@@ -408,7 +404,7 @@
         userName: userInfo.data && userInfo.data.userName
       }
       accountInfo.setUserInfo(obj)
-      getWater(false, initTenanId)
+      getWater(false)
       goHome()
     })
   }

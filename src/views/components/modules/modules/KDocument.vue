@@ -131,7 +131,7 @@
       fileTypeName: '文件类型',
       haveChildren: true,
       type: 'document',
-      idFullPath: '-1'
+      idFullPathSet: '-1'
     }
   ]
   // 静态数据
@@ -465,7 +465,7 @@
           }
           // 向下包含反选
           if (
-            item.idFullPath.split(',').includes(val.fileTypeId) &&
+            item.idFullPathSet.includes(val.fileTypeId) &&
             val.includeChild &&
             item.fileTypeId !== val.fileTypeId
           ) {
@@ -520,10 +520,7 @@
         item.disabled = false
         item.includeChild = false
       }
-      if (
-        item.idFullPath.split(',').includes(attr.fileTypeId) &&
-        attr.includeChild
-      ) {
+      if (item.idFullPathSet.includes(attr.fileTypeId) && attr.includeChild) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -556,10 +553,7 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (
-        item.idFullPath.split(',').includes(attr.fileTypeId) &&
-        attr.includeChild
-      ) {
+      if (item.idFullPathSet.includes(attr.fileTypeId) && attr.includeChild) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -570,10 +564,7 @@
         item.selectedStatus = 0
         item.disabled = false
       }
-      if (
-        item.idFullPath.split(',').includes(attr.fileTypeId) &&
-        attr.includeChild
-      ) {
+      if (item.idFullPathSet.includes(attr.fileTypeId) && attr.includeChild) {
         item.selectedStatus = 0
         item.disabled = false
       }
@@ -592,7 +583,7 @@
     // 2.判断已选中是否被包含
     const str = JSON.parse(JSON.stringify(selectedData.value))
     str.forEach(item => {
-      if (item.idFullPath.split(',').includes(attr.fileTypeId)) {
+      if (item.idFullPathSet.includes(attr.fileTypeId)) {
         aplication.value.push(item.fileTypeId)
       }
     })
@@ -668,7 +659,7 @@
     const str = JSON.parse(JSON.stringify(selectedData.value))
     str.forEach(item => {
       if (
-        item.idFullPath.split(',').includes(attr.fileTypeId) &&
+        item.idFullPathSet.includes(attr.fileTypeId) &&
         item.fileTypeId !== attr.fileTypeId
       ) {
         aplication.value.push(item.fileTypeId)

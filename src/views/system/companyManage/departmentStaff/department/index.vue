@@ -121,6 +121,7 @@
               readonly
               v-model="form.organPName"
               placeholder="请选择"
+              @click="chooseOrgan('organP')"
             />
             <div class="ap-box-contBox-icon">
               <el-icon
@@ -131,7 +132,6 @@
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('organP')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -146,6 +146,7 @@
               readonly
               v-model="form.leaderUserName"
               placeholder="请选择"
+              @click="chooseOrgan('leaderUser')"
             />
             <div class="ap-box-contBox-icon">
               <el-icon
@@ -156,7 +157,6 @@
                 ><CircleClose
               /></el-icon>
               <img
-                @click="chooseOrgan('leaderUser')"
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
                 alt=""
@@ -178,6 +178,7 @@
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
       :multiple="false"
+      :hasTopRoot="false"
     />
     <!-- 批量操作 -->
     <actionMoreDialog

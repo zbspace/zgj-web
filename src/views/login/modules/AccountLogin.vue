@@ -475,7 +475,7 @@
         loginApi.tenantInfoList().then(async departListResult => {
           setItem('departLists', JSON.stringify(departListResult.data))
           const index = departListResult.data.findIndex(
-            i => Number(i.tenantId) === Number(loginResult.data.lastTenantId)
+            i => i.tenantId === loginResult.data.lastTenantId
           )
           if (index === -1) {
             if (departListResult.data && departListResult.data.length === 1) {
@@ -483,15 +483,12 @@
               loginApi
                 .chooseOrgan(departListResult.data[0].tenantId)
                 .then(async () => {
-                  setItem('tenantId', Number(departListResult.data[0].tenantId))
+                  setItem('tenantId', departListResult.data[0].tenantId)
                   const redirect = getRedirect()
                   menusInfoStore.currentType =
                     redirect.indexOf('/system') > -1 ? 'system' : 'business'
                   await menusInfoStore.setMenus()
-                  getUserLoginInfo(
-                    true,
-                    Number(departListResult.data[0].tenantId)
-                  )
+                  getUserLoginInfo(true)
                 })
             } else {
               // 进入列表选择页面
@@ -505,11 +502,11 @@
               redirect.indexOf('/system') > -1 ? 'system' : 'business'
             await menusInfoStore.setMenus()
 
-            setItem('tenantId', Number(loginResult.data.lastTenantId))
+            setItem('tenantId', loginResult.data.lastTenantId)
             if (departListResult.data && departListResult.data.length === 1) {
-              getUserLoginInfo(true, Number(loginResult.data.lastTenantId))
+              getUserLoginInfo(true)
             } else {
-              getUserLoginInfo(false, Number(loginResult.data.lastTenantId))
+              getUserLoginInfo(false)
             }
           }
         })
@@ -520,7 +517,7 @@
     )
   }
 
-  const getUserLoginInfo = (bool, initTenanId) => {
+  const getUserLoginInfo = bool => {
     // 获取用户信息 - 缓存
     navBarApi.getUserInfo().then(userInfo => {
       const obj = {
@@ -528,7 +525,7 @@
         userName: userInfo.data && userInfo.data.userName
       }
       accountInfo.setUserInfo(obj)
-      emits('getWater', bool, initTenanId)
+      emits('getWater', bool)
       goHome()
     })
   }
