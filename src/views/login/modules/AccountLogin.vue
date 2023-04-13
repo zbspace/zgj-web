@@ -488,7 +488,10 @@
                   menusInfoStore.currentType =
                     redirect.indexOf('/system') > -1 ? 'system' : 'business'
                   await menusInfoStore.setMenus()
-                  getUserLoginInfo(true)
+                  getUserLoginInfo(
+                    true,
+                    Number(departListResult.data[0].tenantId)
+                  )
                 })
             } else {
               // 进入列表选择页面
@@ -501,12 +504,12 @@
             menusInfoStore.currentType =
               redirect.indexOf('/system') > -1 ? 'system' : 'business'
             await menusInfoStore.setMenus()
-            // getUserLoginInfo()
+
             setItem('tenantId', Number(loginResult.data.lastTenantId))
             if (departListResult.data && departListResult.data.length === 1) {
-              getUserLoginInfo(true)
+              getUserLoginInfo(true, Number(loginResult.data.lastTenantId))
             } else {
-              getUserLoginInfo(false)
+              getUserLoginInfo(false, Number(loginResult.data.lastTenantId))
             }
           }
         })
@@ -517,7 +520,7 @@
     )
   }
 
-  const getUserLoginInfo = bool => {
+  const getUserLoginInfo = (bool, initTenanId) => {
     // 获取用户信息 - 缓存
     navBarApi.getUserInfo().then(userInfo => {
       const obj = {
@@ -525,7 +528,7 @@
         userName: userInfo.data && userInfo.data.userName
       }
       accountInfo.setUserInfo(obj)
-      emits('getWater', bool)
+      emits('getWater', bool, initTenanId)
       goHome()
     })
   }

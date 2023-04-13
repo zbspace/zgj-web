@@ -360,11 +360,11 @@
         redirect.indexOf('/system') > -1 ? 'system' : 'business'
       await menusInfoStore.setMenus()
 
-      getUserLoginInfo()
+      getUserLoginInfo(Number(tenantId))
     })
   }
 
-  function getWater(isOneDepart) {
+  function getWater(isOneDepart, initTenanId) {
     companyApi.getTenantInfo().then(res => {
       if (res.data.tenantShowInfo) {
         localStorage.setItem('watermark', res.data.tenantShowInfo.pageWatermark)
@@ -380,8 +380,12 @@
       } else {
         removeWatermark()
       }
+      // initTenanId - 初始化id
       if (isOneDepart) {
         accountInfo.setOneDeaprtTitle(res.data && res.data.tenant.tenantTitle)
+        accountInfo.setUserDepartInfo(res.data && res.data.tenant.tenantTitle)
+      } else {
+        accountInfo.setUserDepartInfo(res.data && res.data.tenant)
       }
     })
   }
@@ -396,7 +400,7 @@
     router.replace(redirect)
   }
 
-  const getUserLoginInfo = () => {
+  const getUserLoginInfo = initTenanId => {
     // 获取用户信息 - 缓存
     navBarApi.getUserInfo().then(userInfo => {
       const obj = {
@@ -404,7 +408,7 @@
         userName: userInfo.data && userInfo.data.userName
       }
       accountInfo.setUserInfo(obj)
-      getWater(false)
+      getWater(false, initTenanId)
       goHome()
     })
   }
