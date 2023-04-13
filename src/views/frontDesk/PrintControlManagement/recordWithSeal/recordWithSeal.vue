@@ -277,7 +277,7 @@
     },
     JyElMessageBox: {
       type: '',
-      row: '',
+      column: {},
       flag: '',
       show: false,
       header: {
@@ -446,7 +446,7 @@
   // 点击表格按钮
   function customClick(row, column, cell, event) {
     state.JyElMessageBox.type = cell.name
-    state.JyElMessageBox.row = row
+    state.JyElMessageBox.column = column
     if (cell.name === 't-zgj-Revocation') {
       state.JyElMessageBox.header.data = '提示？'
       state.JyElMessageBox.content.data =
@@ -496,13 +496,14 @@
 
   const submitElMessageBox = () => {
     if (state.JyElMessageBox.type === 't-zgj-Revocation') {
+      console.log(state.JyElMessageBox.column)
       ApproverApi.withdraw({
-        taskId: state.JyElMessageBox.row.taskId
+        instanceId: state.JyElMessageBox.column.gunsSysId
       })
         .then(() => {
           sealApplyIntellect
             .cancel({
-              sealUseApplyIds: state.JyElMessageBox.row.useSealApplyId
+              sealUseApplyIds: state.JyElMessageBox.column.useSealApplyId
             })
             .then(() => {
               jyTable.value.reloadData()
