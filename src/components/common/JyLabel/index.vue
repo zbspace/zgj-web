@@ -19,6 +19,7 @@
         >
           {{ props.btn1 }}
         </el-button>
+        <slot name="right"></slot>
       </div>
     </div>
   </div>

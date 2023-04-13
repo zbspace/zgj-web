@@ -353,7 +353,7 @@
 
   const selectOrgan = tenantId => {
     loginApi.chooseOrgan(tenantId).then(async res => {
-      localStorage.setItem('tenantId', Number(tenantId))
+      localStorage.setItem('tenantId', tenantId)
 
       const redirect = getRedirect()
       menusInfoStore.currentType =

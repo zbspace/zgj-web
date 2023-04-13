@@ -32,7 +32,7 @@
               <div class="ap-cont-liuc-buzou-icon">
                 <img
                   class="ap-cont-liuc-buzou-icon-img"
-                  src="../../../../assets/svg/yongyin-shenqing-kaishi.svg"
+                  src="@/assets/svg/front/sealApply/step_icon1.svg"
                   alt=""
                 />
               </div>
@@ -41,7 +41,7 @@
             <div class="ap-cont-liuc-tubiao">
               <img
                 class="ap-cont-liuc-tubiao-img"
-                src="../../../../assets/svg/yongyin-shenqing-xiayibu.svg"
+                src="@/assets/svg/front/sealApply/step_next.svg"
                 alt=""
               />
             </div>
@@ -49,7 +49,7 @@
               <div class="ap-cont-liuc-buzou-icon">
                 <img
                   class="ap-cont-liuc-buzou-icon-img"
-                  src="../../../../assets/svg/yongyin-shenqing-liucheng.svg"
+                  src="@/assets/svg/front/sealApply/step_icon2.svg"
                   alt=""
                 />
               </div>
@@ -58,7 +58,7 @@
             <div class="ap-cont-liuc-tubiao">
               <img
                 class="ap-cont-liuc-tubiao-img"
-                src="../../../../assets/svg/yongyin-shenqing-xiayibu.svg"
+                src="@/assets/svg/front/sealApply/step_next.svg"
                 alt=""
               />
             </div>
@@ -66,7 +66,7 @@
               <div class="ap-cont-liuc-buzou-icon">
                 <img
                   class="ap-cont-liuc-buzou-icon-img"
-                  src="../../../../assets/svg/yongyin-shenqing-wancheng.svg"
+                  src="@/assets/svg/front/sealApply/step_icon3.svg"
                   alt=""
                 />
               </div>
@@ -78,7 +78,7 @@
               <div class="ap-cont-liebiao-list-back">
                 <img
                   class="ap-cont-liebiao-list-back-img"
-                  src="../../../../assets/svg/yongyin-shenqing-biaodan-back.svg"
+                  src="@/assets/svg/front/sealApply/form_icon.svg"
                   alt=""
                 />
               </div>

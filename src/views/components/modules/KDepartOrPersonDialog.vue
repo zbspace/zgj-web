@@ -33,6 +33,7 @@
             v-show="active === 'organ'"
             :multiple="props.multiple"
             :max="props.max"
+            :hasTopRoot="true"
           ></KDepartTab>
 
           <KUserTab
@@ -241,6 +242,7 @@
    * activeTab 选中tab
    * multiple 是否多选
    * max Number - 目前支持user
+   * hasTopRoot 是否包含顶级 组织
    */
   import i18n from '@/utils/i18n'
   import { ref, watch } from 'vue'
@@ -293,6 +295,10 @@
     },
     max: {
       type: Number
+    },
+    hasTopRoot: {
+      type: Boolean,
+      default: false
     }
   })
 

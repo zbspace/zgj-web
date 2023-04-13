@@ -180,7 +180,7 @@
           state.searchSelected = [
             {
               id: data.organId,
-              idFullPath: data.organId,
+              idFullPathSet: [data.organId],
               name: data.organName,
               type: 'organ'
             }

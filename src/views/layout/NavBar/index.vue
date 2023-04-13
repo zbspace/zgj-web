@@ -51,14 +51,14 @@
                   <el-dropdown-item
                     v-for="(item, index) in state.departLists"
                     :command="item"
-                    :disabled="Number(item.tenantId) === Number(state.tenantId)"
+                    :disabled="item.tenantId === state.tenantId"
                     :key="index"
                   >
                     <div class="ap-enterprise-cont-list">
                       {{ item.tenantName }}
                       <div
                         class="defart-selected"
-                        v-if="state.tenantId === Number(item.tenantId)"
+                        v-if="state.tenantId === item.tenantId"
                       />
                     </div>
                   </el-dropdown-item>
@@ -400,14 +400,16 @@
   }
 
   const getCurrentDepart = () => {
-    const departId = Number(localStorage.getItem('tenantId'))
+    const departId = localStorage.getItem('tenantId')
     state.tenantId = departId
     if (departId) {
-      const index = state.departLists.findIndex(
-        i => Number(i.tenantId) === departId
-      )
+      const index = state.departLists.findIndex(i => i.tenantId === departId)
       if (index > -1) {
         state.currentDepart = state.departLists[index]
+        // 存储 当前用户对应部门
+        accountInfoStore.setUserDepartName(
+          state.departLists[index] && state.departLists[index].tenantName
+        )
       }
     }
   }
@@ -429,7 +431,16 @@
   const confirmClick = () => {
     loginApi.chooseOrgan(state.chooseTenant.tenantId).then(
       async () => {
-        localStorage.setItem('tenantId', Number(state.chooseTenant.tenantId))
+        localStorage.setItem('tenantId', state.chooseTenant.tenantId)
+        // 存储 当前用户对应部门
+        const index = state.departLists.findIndex(
+          i => i.tenantId === state.chooseTenant.tenantId
+        )
+        if (index > -1) {
+          accountInfoStore.setUserDepartName(
+            state.departLists[index] && state.departLists[index].tenantName
+          )
+        }
 
         const redirect = getRedirect()
         menusInfoStore.currentType =
@@ -509,6 +520,7 @@
       if (res.success) {
         accountInfoStore.setToken(null)
         accountInfoStore.setUserInfo(null)
+        accountInfoStore.setUserDepartName(null)
         localStorage.removeItem('tenantId')
         localStorage.removeItem('menusInfo')
         localStorage.removeItem('departLists')

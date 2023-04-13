@@ -475,7 +475,7 @@
         loginApi.tenantInfoList().then(async departListResult => {
           setItem('departLists', JSON.stringify(departListResult.data))
           const index = departListResult.data.findIndex(
-            i => Number(i.tenantId) === Number(loginResult.data.lastTenantId)
+            i => i.tenantId === loginResult.data.lastTenantId
           )
           if (index === -1) {
             if (departListResult.data && departListResult.data.length === 1) {
@@ -483,7 +483,7 @@
               loginApi
                 .chooseOrgan(departListResult.data[0].tenantId)
                 .then(async () => {
-                  setItem('tenantId', Number(departListResult.data[0].tenantId))
+                  setItem('tenantId', departListResult.data[0].tenantId)
                   const redirect = getRedirect()
                   menusInfoStore.currentType =
                     redirect.indexOf('/system') > -1 ? 'system' : 'business'
@@ -501,8 +501,8 @@
             menusInfoStore.currentType =
               redirect.indexOf('/system') > -1 ? 'system' : 'business'
             await menusInfoStore.setMenus()
-            // getUserLoginInfo()
-            setItem('tenantId', Number(loginResult.data.lastTenantId))
+
+            setItem('tenantId', loginResult.data.lastTenantId)
             if (departListResult.data && departListResult.data.length === 1) {
               getUserLoginInfo(true)
             } else {
