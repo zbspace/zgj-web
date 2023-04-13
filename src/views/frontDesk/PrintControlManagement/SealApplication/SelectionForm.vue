@@ -1,4 +1,9 @@
-<!-- 用印申请 选中表单 -->
+<!--
+* @Descripttion 用印申请 选中表单
+* @FileName SelectionForm.vue
+* @Author WalterXsk
+* @LastEditTime 2023-04-12 16:23:36
+!-->
 <template>
   <div class="Seal-application-Selection-form">
     <componentsLayout Layout="title,custom">
@@ -20,86 +25,73 @@
             :prefix-icon="Search"
           >
           </el-input>
-          <!-- <div class="ap-cont-info">
-            <div class="ap-cont-info-icon">
-              <img
-                class="ap-cont-info-icon-img"
-                src="../../../../assets/svg/gantanhao-lan.svg"
-                alt=""
-              />
-            </div>
-            <div class="ap-cont-info-desc">
-              有已发起意外退出的用印申请【上海科创招投标建筑制材专属项目合同】
-            </div>
-            <div class="ap-cont-info-caozuo"> 继续完成用印申请 </div>
-          </div> -->
-          <div class="ap-cont-title"> 请选择所需表单 </div>
-          <div class="ap-cont-desc">
+          <div class="cont-title"> 请选择所需表单 </div>
+          <div class="cont-desc">
             请根据以下步骤完善表单内容及确认审批流程
           </div>
-          <div class="ap-cont-liuc">
-            <div class="ap-cont-liuc-buzou">
-              <div class="ap-cont-liuc-buzou-icon">
+          <div class="cont-liuc">
+            <div class="step">
+              <div class="step-icon">
                 <img
-                  class="ap-cont-liuc-buzou-icon-img"
-                  src="../../../../assets/svg/yongyin-shenqing-kaishi.svg"
+                  class="step-icon-img"
+                  src="@/assets/svg/front/sealApply/step_icon1.svg"
                   alt=""
                 />
               </div>
-              <div class="ap-cont-liuc-buzou-text"> 填写表单信息 </div>
+              <div class="step-text"> 填写表单信息 </div>
             </div>
-            <div class="ap-cont-liuc-tubiao">
+            <div class="cont-liuc-tubiao">
               <img
-                class="ap-cont-liuc-tubiao-img"
-                src="../../../../assets/svg/yongyin-shenqing-xiayibu.svg"
+                class="cont-liuc-tubiao-img"
+                src="@/assets/svg/front/sealApply/step_next.svg"
                 alt=""
               />
             </div>
-            <div class="ap-cont-liuc-buzou">
-              <div class="ap-cont-liuc-buzou-icon">
+            <div class="step">
+              <div class="step-icon">
                 <img
-                  class="ap-cont-liuc-buzou-icon-img"
-                  src="../../../../assets/svg/yongyin-shenqing-liucheng.svg"
+                  class="step-icon-img"
+                  src="@/assets/svg/front/sealApply/step_icon2.svg"
                   alt=""
                 />
               </div>
-              <div class="ap-cont-liuc-buzou-text"> 确认审批流程 </div>
+              <div class="step-text"> 确认审批流程 </div>
             </div>
-            <div class="ap-cont-liuc-tubiao">
+            <div class="cont-liuc-tubiao">
               <img
-                class="ap-cont-liuc-tubiao-img"
-                src="../../../../assets/svg/yongyin-shenqing-xiayibu.svg"
+                class="cont-liuc-tubiao-img"
+                src="@/assets/svg/front/sealApply/step_next.svg"
                 alt=""
               />
             </div>
-            <div class="ap-cont-liuc-buzou">
-              <div class="ap-cont-liuc-buzou-icon">
+            <div class="step">
+              <div class="step-icon">
                 <img
-                  class="ap-cont-liuc-buzou-icon-img"
-                  src="../../../../assets/svg/yongyin-shenqing-wancheng.svg"
+                  class="step-icon-img"
+                  src="@/assets/svg/front/sealApply/step_icon3.svg"
                   alt=""
                 />
               </div>
-              <div class="ap-cont-liuc-buzou-text"> 完成用印申请 </div>
+              <div class="step-text"> 完成用印申请 </div>
             </div>
           </div>
-          <div class="ap-cont-liebiao">
+          <div class="cont-liebiao">
             <div
-              class="ap-cont-liebiao-list"
+              class="column-list"
               v-for="(item, index) in applyLists"
               :key="index"
             >
-              <div class="ap-cont-liebiao-list-back">
+              <div class="column-list-back">
                 <img
-                  class="ap-cont-liebiao-list-back-img"
-                  src="../../../../assets/svg/yongyin-shenqing-biaodan-back.svg"
+                  class="column-list-back-img"
+                  src="@/assets/svg/front/sealApply/form_icon.svg"
                   alt=""
                 />
               </div>
-              <div class="ap-cont-liebiao-list-desc">
+              <div class="column-list-desc">
                 {{ item.formName }}
               </div>
-              <div class="ap-cont-liebiao-list-but">
+              <div class="column-list-but">
                 <el-button
                   type="primary"
                   @click="clickListBut(item.formMessageId, item.formVersionId)"
@@ -107,10 +99,7 @@
                   去申请
                 </el-button>
               </div>
-              <div
-                class="ap-cont-liebiao-list-template"
-                @click="clickSavedTemplate"
-              >
+              <div class="column-list-template" @click="clickSavedTemplate">
                 <span class="text">保存的模板</span>
                 <i class="icon">
                   <svg class="iconpark-icon"><use href="#icon3"></use></svg>
@@ -139,26 +128,27 @@
       :height="600"
       @close="submitForm"
     >
-      <div class="optional-module">
-        <div class="optional-module-list" v-for="n in 15" :key="n">
-          <div class="optional-module-list-title">
-            <div class="optional-module-list-title-desc">
-              文件类型文件类型文件类型文件类型
-            </div>
-            <div class="optional-module-list-title-time">
-              2022-09-11 10:21:55
-            </div>
+      <div class="optional">
+        <div class="optional-list" v-for="n in 15" :key="n">
+          <div class="list-title">
+            <div class="list-title-desc"> 文件类型 </div>
+            <div class="list-title-time"> 2022-09-11 10:21:55 </div>
           </div>
-          <div class="optional-module-list-desc">
-            <div class="optional-module-list-desc-text">
+          <div class="optional-list-desc">
+            <div class="optional-list-desc-text">
               单据名称单据名称单据名称单据名称单据名称单据名称
             </div>
-            <div class="optional-module-list-desc-but">
+            <div class="optional-list-desc-but">
               <div class="button shiyong">使用</div>
               <div class="button shanchu">删除</div>
             </div>
           </div>
         </div>
+        <JyLabel label="失效模版" btn1="一键清除">
+          <template #tip>
+            <span class="tip"> 表单已更新，历史表单对应的模板会自动失效 </span>
+          </template>
+        </JyLabel>
       </div>
     </JyDialog>
   </div>
@@ -248,7 +238,7 @@
         width: 30%;
       }
 
-      .ap-cont-info {
+      .cont-info {
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -260,18 +250,18 @@
         position: relative;
         margin-bottom: 1rem;
 
-        .ap-cont-info-icon {
+        .cont-info-icon {
           margin-right: 0.5rem;
         }
 
-        .ap-cont-info-caozuo {
+        .cont-info-caozuo {
           position: absolute;
           right: 0.5rem;
           color: var(--jy-info-6);
         }
       }
 
-      .ap-cont-title {
+      .cont-title {
         display: flex;
         justify-content: center;
         font-size: var(--jy-font-size-title-1);
@@ -279,86 +269,86 @@
         margin-bottom: 1rem;
       }
 
-      .ap-cont-desc {
+      .cont-desc {
         display: flex;
         justify-content: center;
         margin-bottom: 1rem;
         color: var(--jy-color-text-2);
       }
 
-      .ap-cont-liuc {
+      .cont-liuc {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-bottom: 1rem;
 
-        .ap-cont-liuc-buzou {
+        .step {
           padding: 1rem;
           box-sizing: border-box;
 
-          .ap-cont-liuc-buzou-icon {
+          .step-icon {
             margin-bottom: 0.5rem;
           }
         }
 
-        .ap-cont-liuc-tubiao {
+        .cont-liuc-tubiao {
           padding: 1rem;
           box-sizing: border-box;
         }
       }
 
-      .ap-cont-liebiao {
+      .cont-liebiao {
         display: flex;
         flex-flow: wrap;
 
         @media screen and (max-width: 900px) {
-          .ap-cont-liebiao-list {
+          .column-list {
             width: 100%;
             margin: 0;
           }
         }
 
         @media screen and (min-width: 900px) and (max-width: 1200px) {
-          .ap-cont-liebiao-list {
+          .column-list {
             width: calc((100% - 15px) / 2);
           }
 
-          .ap-cont-liebiao-list:nth-of-type(2n) {
+          .column-list:nth-of-type(2n) {
             margin: 0 0 15px 0;
           }
         }
 
         @media screen and (min-width: 1200px) and (max-width: 1500px) {
-          .ap-cont-liebiao-list {
+          .column-list {
             width: calc((100% - 30px) / 3);
           }
 
-          .ap-cont-liebiao-list:nth-of-type(3n) {
+          .column-list:nth-of-type(3n) {
             margin: 0 0 15px 0;
           }
         }
 
         @media screen and (min-width: 1500px) and (max-width: 1750px) {
-          .ap-cont-liebiao-list {
+          .column-list {
             width: calc((100% - 45px) / 4);
           }
 
-          .ap-cont-liebiao-list:nth-of-type(4n) {
+          .column-list:nth-of-type(4n) {
             margin: 0 0 15px 0;
           }
         }
 
         @media screen and (min-width: 1750px) {
-          .ap-cont-liebiao-list {
+          .column-list {
             width: calc((100% - 60px) / 5);
           }
 
-          .ap-cont-liebiao-list:nth-of-type(5n) {
+          .column-list:nth-of-type(5n) {
             margin: 0 0 15px 0;
           }
         }
 
-        .ap-cont-liebiao-list {
+        .column-list {
           // width: 20rem;
           margin: 0 15px 15px 0;
           padding: 10px;
@@ -371,7 +361,7 @@
           background-color: var(--jy-color-fill--1);
           position: relative;
           overflow: hidden;
-          .ap-cont-liebiao-list-back {
+          .column-list-back {
             width: 10rem;
             height: 10rem;
             display: flex;
@@ -379,16 +369,16 @@
             align-items: center;
           }
 
-          .ap-cont-liebiao-list-desc {
+          .column-list-desc {
             width: 100%;
             margin-bottom: 0.5rem;
             color: var(--jy-color-text-1);
           }
 
-          // .ap-cont-liebiao-list-but {
+          // .column-list-but {
           //   margin-bottom: 0.5rem;
           // }
-          .ap-cont-liebiao-list-template {
+          .column-list-template {
             position: absolute;
             top: 1rem;
             right: 0%;
@@ -415,8 +405,13 @@
         }
       }
     }
-    .optional-module {
-      .optional-module-list {
+    .optional {
+      .tip {
+        font-size: 14px;
+        color: rgba($color: #000000, $alpha: 0.45);
+        margin-left: 8px;
+      }
+      .optional-list {
         display: flex;
         border: 1px solid var(--jy-color-border-1);
         border-radius: var(--jy-border-radius-4);
@@ -424,31 +419,31 @@
         padding: 1rem;
         box-sizing: border-box;
         flex-flow: wrap;
-        .optional-module-list-title {
+        .list-title {
           width: 100%;
           display: flex;
           justify-content: space-between;
           margin-bottom: 0.5rem;
-          .optional-module-list-title-desc {
+          .list-title-desc {
             width: calc(100% - 10rem);
             color: var(--jy-color-text-1);
           }
-          .optional-module-list-title-time {
+          .list-title-time {
             width: 10rem;
             text-align: right;
             color: var(--jy-color-text-3);
             font-size: var(--jy-font-size-body-1);
           }
         }
-        .optional-module-list-desc {
+        .optional-list-desc {
           width: 100%;
           display: flex;
           justify-content: space-between;
-          .optional-module-list-desc-text {
+          .optional-list-desc-text {
             width: calc(100% - 10rem);
             color: var(--jy-color-text-3);
           }
-          .optional-module-list-desc-but {
+          .optional-list-desc-but {
             display: flex;
             .button {
               padding: 0.2rem 1rem;

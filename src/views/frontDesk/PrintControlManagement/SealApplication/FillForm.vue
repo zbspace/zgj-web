@@ -15,7 +15,7 @@
           <div class="title-desc">
             <img
               class="title-desc-img"
-              src="../../../../assets/svg/jiantou-zuo.svg"
+              src="@/assets/svg/front/sealApply/back.svg"
               alt=""
               @click="clickBackPage"
             />
@@ -93,7 +93,7 @@
                           <div class="PrintingProcess-content-list-cont-title">
                             <img
                               class="PrintingProcess-content-list-cont-title-img"
-                              src="@/assets/svg/yongyin-shenqing-rili-lan.svg"
+                              src="@/assets/svg/front/sealApply/calendar.svg"
                               alt=""
                             />
                             <span
@@ -115,7 +115,7 @@
                             >
                               <img
                                 class="PrintingProcess-content-list-cont-list-icon-img"
-                                src="@/assets/svg/yongyin-shenqing-wenhao-hui.svg"
+                                src="@/assets/svg/front/sealApply/tips.svg"
                                 alt=""
                               />
                             </div>
@@ -124,7 +124,7 @@
                         <div class="PrintingProcess-content-list-iocn">
                           <img
                             class="PrintingProcess-content-list-iocn-img"
-                            src="@/assets/svg/yongyin-shenqing-xiayibu.svg"
+                            src="@/assets/svg/front/sealApply/step_next.svg"
                             alt=""
                             v-if="
                               index <
@@ -145,17 +145,6 @@
         <div class="fixed" v-if="step === 'one'">
           <div class="ap-fixed">
             <el-button type="primary" @click="clickNextStep">下一步</el-button>
-          </div>
-        </div>
-        <div class="fixed" v-if="step === 'two'">
-          <div class="ap-fixed">
-            <el-button
-              type="primary"
-              :loading="submitLoading"
-              @click="clickSubmit"
-              >提交</el-button
-            >
-            <el-button @click="clickPrevious">上一步</el-button>
             <el-button class="ap-fixed-save">
               <span class="ap-fixed-save-text"> 保存模板 </span>
               <el-tooltip
@@ -174,6 +163,17 @@
                 </i>
               </el-tooltip>
             </el-button>
+          </div>
+        </div>
+        <div class="fixed" v-if="step === 'two'">
+          <div class="ap-fixed">
+            <el-button
+              type="primary"
+              :loading="submitLoading"
+              @click="clickSubmit"
+              >提交
+            </el-button>
+            <el-button @click="clickPrevious">上一步</el-button>
           </div>
         </div>
       </template>

@@ -639,6 +639,7 @@
   }
 
   const handleScope = data => {
+    // TODO:处理 用户和部门状态 organScope \ organUserScope
     if (!data.dataScope || data.dataScope.length <= 0) return '-'
     const arr = []
     data.dataScope.map(item => arr.push(item.scopeName))

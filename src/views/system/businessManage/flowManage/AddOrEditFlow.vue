@@ -284,10 +284,12 @@
         flowMessageId: props.editModleIds.flowMessageId
       })
       .then(res => {
+        const organInfo = res.data.organScope ? res.data.organScope : []
+        const userInfo = res.data.organUserScope ? res.data.organUserScope : []
         editBasicsForm.value = {
           applyTypeId: res.data.applyTypeId,
           fileType: res.data.fileType,
-          dataScope: res.data.dataScope,
+          dataScope: organInfo.concat(userInfo),
           flowName: res.data.flowName,
           readme: res.data.readme,
           sealUseTypeId: res.data.sealUseTypeId
