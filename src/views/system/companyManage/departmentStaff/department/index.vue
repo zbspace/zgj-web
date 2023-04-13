@@ -56,6 +56,7 @@
             :load="loadFn"
             @current-change="currentChange"
             @node-contextmenu="nodeContextmenu"
+            v-if="loadTree"
           ></el-tree>
           <el-card
             class="box-card"
@@ -103,16 +104,16 @@
         label-width="80px"
       >
         <el-form-item label="部门名称" prop="organName">
-          <el-input v-model="form.organName" clearable />
+          <el-input v-model="form.organName" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="组织类型" prop="organTypeId">
           <el-radio-group v-model="form.organTypeId">
-            <el-radio label="ot1" size="large">部门</el-radio>
-            <el-radio label="ot2" size="large">单位</el-radio>
+            <el-radio label="department" size="large">部门</el-radio>
+            <el-radio label="unit" size="large">单位</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="部门编码" prop="organNo">
-          <el-input v-model="form.organNo" clearable />
+          <el-input v-model="form.organNo" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="上级部门" prop="organPName">
           <div class="select-box-contBox">
@@ -124,13 +125,6 @@
               @click="chooseOrgan('organP')"
             />
             <div class="ap-box-contBox-icon">
-              <el-icon
-                v-if="form.organPName"
-                style="margin-right: 5px"
-                color="#aaaaaa"
-                @click="clear('organP')"
-                ><CircleClose
-              /></el-icon>
               <img
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
@@ -139,23 +133,16 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="部门领导" prop="leaderUserId">
+        <el-form-item label="部门领导" prop="organLeaderId">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="form.leaderUserName"
+              v-model="form.organLeaderName"
               placeholder="请选择"
               @click="chooseOrgan('leaderUser')"
             />
             <div class="ap-box-contBox-icon">
-              <el-icon
-                v-if="form.leaderUserId"
-                style="margin-right: 5px"
-                color="#aaaaaa"
-                @click="clear('leaderUser')"
-                ><CircleClose
-              /></el-icon>
               <img
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
@@ -165,7 +152,7 @@
           </div>
         </el-form-item>
         <el-form-item label="备注" prop="readme">
-          <el-input v-model="form.readme" type="textarea" clearable />
+          <el-input v-model="form.readme" type="textarea" />
         </el-form-item>
       </el-form>
     </JyDialog>
@@ -178,7 +165,7 @@
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
       :multiple="false"
-      :hasTopRoot="false"
+      :hasTopRoot="true"
     />
     <!-- 批量操作 -->
     <actionMoreDialog
@@ -218,7 +205,7 @@
   import department from '@/api/system/companyManagement/department'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/department.json'
-  import { CircleClose } from '@element-plus/icons-vue'
+  import { getItem } from '@/utils/storage'
 
   const showFormDialog = ref(false)
   const showDepPerDialog = ref(false)
@@ -246,11 +233,11 @@
     organId: '',
     organNo: '',
     organName: '',
-    organTypeId: 'ot1',
+    organTypeId: 'department',
     organPid: '',
     organPName: '',
-    leaderUserId: '',
-    leaderUserName: '',
+    organLeaderId: '',
+    organLeaderName: '',
     readme: ''
   })
   const rules = reactive({
@@ -425,7 +412,7 @@
         },
         {
           label: '组织主管',
-          value: data.leaderUserName
+          value: data.organLeaderName
         },
         {
           label: '上级组织',
@@ -467,11 +454,9 @@
           form.organPid = data.organPid
           form.organPName =
             data.organPName ||
-            JSON.parse(localStorage.getItem('departLists')).find(
-              i => i.tenantId === localStorage.getItem('tenantId')
-            ).tenantName
-          form.leaderUserId = data.leaderUserId
-          form.leaderUserName = data.leaderUserName
+            (getItem('accountInfo') && getItem('accountInfo').userDepartName)
+          form.organLeaderId = data.organLeaderId
+          form.organLeaderName = data.organLeaderName
           form.readme = data.readme
         })
       })
@@ -490,6 +475,12 @@
       } else {
         state.showOneAction.content.data = '是否启用该部门？'
       }
+    } else if (cell.name === 't-zgj-Delete') {
+      currentAction.value = 't-zgj-Delete'
+      currentActionDept.value = column.organId
+      state.showOneAction.show = true
+      state.showOneAction.header.data = '提示'
+      state.showOneAction.content.data = '是否删除该部门？'
     }
   }
 
@@ -577,17 +568,19 @@
         ? [
             {
               id: form.organPid,
-              name: form.organPName
+              name: form.organPName,
+              type: 'organ'
             }
           ]
         : []
     } else {
       tabsShow.value = ['user']
-      searchSelected.value = form.leaderUserId
+      searchSelected.value = form.organLeaderId
         ? [
             {
-              id: form.leaderUserId,
-              name: form.leaderUserName
+              id: form.organLeaderId,
+              name: form.organLeaderName,
+              type: 'user'
             }
           ]
         : []
@@ -604,47 +597,55 @@
     }, 200)
   }
 
-  const clear = type => {
-    if (type === 'organP') {
-      form.organPid = ''
-      form.organPName = ''
-    } else {
-      form.leaderUserId = ''
-      form.leaderUserName = ''
-    }
-  }
   const add = () => {
     showFormDialog.value = true
     nextTick(() => {
       form.organPid = ''
       form.organId = ''
+      form.organPName = ''
+      form.organLeaderName = ''
       vFormLibraryRef.value.resetFields()
     })
   }
+  const loadTree = ref(true)
   const submitLibraryForm = () => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         if (form.organId) {
-          department.edit(form).then(() => {
-            showFormDialog.value = false
-            firstNode.value.loaded = false
-            firstNode.value.expand()
-            table.value.reloadData()
-          })
-        } else {
-          department.add(form).then(() => {
-            firstNode.value = deptTreeRef.value.getNode(form.organPid)
-            if (firstNode.value) {
-              state.componentsTree.defaultAttribute['current-node-key'] =
-                form.organPid
-              organId.value = form.organPid
+          loadTree.value = false
+          department
+            .edit(form)
+            .then(() => {
               showFormDialog.value = false
               firstNode.value.loaded = false
               firstNode.value.expand()
-            }
+              table.value.reloadData()
+              loadTree.value = true
+            })
+            .catch(() => {
+              loadTree.value = true
+            })
+        } else {
+          firstNode.value = deptTreeRef.value.getNode(form.organPid)
+          loadTree.value = false
+          department
+            .add(form)
+            .then(() => {
+              if (firstNode.value) {
+                state.componentsTree.defaultAttribute['current-node-key'] =
+                  form.organPid
+                organId.value = form.organPid
+                showFormDialog.value = false
+                firstNode.value.loaded = false
+                firstNode.value.expand()
+              }
 
-            table.value.reloadData()
-          })
+              table.value.reloadData()
+              loadTree.value = true
+            })
+            .catch(() => {
+              loadTree.value = true
+            })
         }
       }
     })
@@ -654,8 +655,8 @@
       form.organPid = value.length ? value[0].id : ''
       form.organPName = value.length ? value[0].name : ''
     } else {
-      form.leaderUserId = value.length ? value[0].id : ''
-      form.leaderUserName = value.length ? value[0].name : ''
+      form.organLeaderId = value.length ? value[0].id : ''
+      form.organLeaderName = value.length ? value[0].name : ''
     }
   }
 
@@ -669,9 +670,8 @@
           firstTreeData.value = res.data
           return resolve([
             {
-              organName: JSON.parse(localStorage.getItem('departLists')).find(
-                i => i.tenantId === localStorage.getItem('tenantId')
-              ).tenantName,
+              organName:
+                getItem('accountInfo') && getItem('accountInfo').userDepartName,
               organId: '-1',
               haveChildren: false,
               children: []
@@ -681,8 +681,8 @@
         .then(() => {
           nextTick(() => {
             const nodeData = firstNode.value.childNodes[0]
-            nodeData.expanded = true
-            nodeData.loadData()
+            nodeData && (nodeData.expanded = true)
+            nodeData && nodeData.loadData()
           })
         })
     } else if (node.level === 1) {
@@ -749,8 +749,8 @@
           JSON.parse(localStorage.getItem('departLists')).find(
             i => i.tenantId === localStorage.getItem('tenantId')
           ).tenantName
-        form.leaderUserId = data.leaderUserId
-        form.leaderUserName = data.leaderUserName
+        form.organLeaderId = data.organLeaderId
+        form.organLeaderName = data.organLeaderName
         form.readme = data.readme
       })
     })

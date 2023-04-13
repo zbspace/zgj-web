@@ -27,7 +27,7 @@
     "show": true
   },
   {
-    "prop": "leaderUserName",
+    "prop": "organLeaderName",
     "label": "部门主管",
     "min-width": 150,
     "show": true
@@ -55,13 +55,16 @@
         "name": "t-zgj-Edit"
       },
       {
+        "name": "status"
+      },
+      {
+        "name": "t-zgj-Delete"
+      },
+      {
         "name": "t-zgj-F_SEAL_INFO_UP"
       },
       {
         "name": "t-zgj-F_SEAL_INFO_DOWN"
-      },
-      {
-        "name": "status"
       }
     ]
   }

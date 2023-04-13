@@ -410,7 +410,7 @@
   import department from '@/api/system/companyManagement/department'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import actionOneDialog from '@/views/components/actionOneDialog'
-
+  import { getItem } from '@/utils/storage'
   // 显示新增员工弹窗
   const showStaffDialog = ref(false)
   // 显示部门弹窗
@@ -706,9 +706,8 @@
           firstTreeData.value = res.data
           return resolve([
             {
-              organName: JSON.parse(localStorage.getItem('departLists')).find(
-                i => i.tenantId === localStorage.getItem('tenantId')
-              ).tenantName,
+              organName:
+                getItem('accountInfo') && getItem('accountInfo').userDepartName,
               organId: '-1',
               haveChildren: false,
               children: []

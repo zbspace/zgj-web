@@ -33,7 +33,7 @@
             v-show="active === 'organ'"
             :multiple="props.multiple"
             :max="props.max"
-            :hasTopRoot="true"
+            :hasTopRoot="props.hasTopRoot"
           ></KDepartTab>
 
           <KUserTab
@@ -77,7 +77,16 @@
               {{ selectedRole.length }} {{ $t('t-zgj-person.Role') }}
             </span>
           </div>
-          <div class="select-close clear-t" @click="clearSelected">
+          <div
+            class="select-close clear-t"
+            @click="clearSelected"
+            v-if="
+              selectedDepart.length +
+                selectedUser.length +
+                selectedRole.length !==
+              0
+            "
+          >
             {{ $t('t-zgj-dialog-clear') }}
           </div>
         </div>

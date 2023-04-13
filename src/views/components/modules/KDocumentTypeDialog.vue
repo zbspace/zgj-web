@@ -38,7 +38,11 @@
               {{ allSelected.length }} {{ $t('t-zgj-cg-menu-wenjian-leixing') }}
             </span>
           </div>
-          <div class="select-close clear-t" @click="clearSelected">
+          <div
+            class="select-close clear-t"
+            @click="clearSelected"
+            v-show="allSelected.length !== 0"
+          >
             {{ $t('t-zgj-dialog-clear') }}
           </div>
         </div>
