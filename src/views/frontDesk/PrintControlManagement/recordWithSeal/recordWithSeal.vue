@@ -129,6 +129,7 @@
   import listApprovingJson from '@/views/frontDesk/PrintControlManagement/recordWithSeal/searchFormJson/listApprovingJson'
   import listNotUseJson from '@/views/frontDesk/PrintControlManagement/recordWithSeal/searchFormJson/listNotUseJson'
   import listFileVerificationJson from '@/views/frontDesk/PrintControlManagement/recordWithSeal/searchFormJson/listFileVerificationJson'
+  import { messageSuccess } from '@/hooks/useMessage'
 
   const router = useRouter()
   const showDepPerDialog = ref(false)
@@ -501,23 +502,15 @@
         instanceId: state.JyElMessageBox.column.gunsSysId
       })
         .then(() => {
-          sealApplyIntellect
-            .cancel({
-              sealUseApplyIds: state.JyElMessageBox.column.useSealApplyId
-            })
-            .then(() => {
-              jyTable.value.reloadData()
-            })
-            .finally(() => {
-              state.JyElMessageBox.show = false
-            })
+          messageSuccess('撤销成功')
+          jyTable.value.reloadData()
         })
         .finally(() => {
           state.JyElMessageBox.show = false
         })
     } else if (state.JyElMessageBox.type === 't-zgj-Void') {
       ApproverApi.withdraw({
-        taskId: state.JyElMessageBox.row.taskId
+        instanceId: state.JyElMessageBox.column.gunsSysId
       })
         .then(() => {
           sealApplyIntellect
