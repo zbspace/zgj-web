@@ -194,7 +194,7 @@
           treeColumnSearchData.data.forEach(val => {
             selectedData.value.forEach(item => {
               if (val.id === item.id) {
-                val.selectedStatus = item.selectedStatus
+                val.selectedStatus = 2
               }
             })
           })

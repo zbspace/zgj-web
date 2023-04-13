@@ -108,8 +108,8 @@
         </el-form-item>
         <el-form-item label="组织类型" prop="organTypeId">
           <el-radio-group v-model="form.organTypeId">
-            <el-radio label="ot1" size="large">部门</el-radio>
-            <el-radio label="ot2" size="large">单位</el-radio>
+            <el-radio label="department" size="large">部门</el-radio>
+            <el-radio label="unit" size="large">单位</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="部门编码" prop="organNo">
@@ -133,12 +133,12 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="部门领导" prop="leaderUserId">
+        <el-form-item label="部门领导" prop="organLeaderId">
           <div class="select-box-contBox">
             <el-input
               class="ap-box-contBox-input width-100"
               readonly
-              v-model="form.leaderUserName"
+              v-model="form.organLeaderName"
               placeholder="请选择"
               @click="chooseOrgan('leaderUser')"
             />
@@ -165,7 +165,7 @@
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
       :multiple="false"
-      :hasTopRoot="false"
+      :hasTopRoot="true"
     />
     <!-- 批量操作 -->
     <actionMoreDialog
@@ -233,11 +233,11 @@
     organId: '',
     organNo: '',
     organName: '',
-    organTypeId: 'ot1',
+    organTypeId: 'department',
     organPid: '',
     organPName: '',
-    leaderUserId: '',
-    leaderUserName: '',
+    organLeaderId: '',
+    organLeaderName: '',
     readme: ''
   })
   const rules = reactive({
@@ -412,7 +412,7 @@
         },
         {
           label: '组织主管',
-          value: data.leaderUserName
+          value: data.organLeaderName
         },
         {
           label: '上级组织',
@@ -455,8 +455,8 @@
           form.organPName =
             data.organPName ||
             (getItem('accountInfo') && getItem('accountInfo').userDepartName)
-          form.leaderUserId = data.leaderUserId
-          form.leaderUserName = data.leaderUserName
+          form.organLeaderId = data.organLeaderId
+          form.organLeaderName = data.organLeaderName
           form.readme = data.readme
         })
       })
@@ -475,6 +475,12 @@
       } else {
         state.showOneAction.content.data = '是否启用该部门？'
       }
+    } else if (cell.name === 't-zgj-Delete') {
+      currentAction.value = 't-zgj-Delete'
+      currentActionDept.value = column.organId
+      state.showOneAction.show = true
+      state.showOneAction.header.data = '提示'
+      state.showOneAction.content.data = '是否删除该部门？'
     }
   }
 
@@ -562,17 +568,19 @@
         ? [
             {
               id: form.organPid,
-              name: form.organPName
+              name: form.organPName,
+              type: 'organ'
             }
           ]
         : []
     } else {
       tabsShow.value = ['user']
-      searchSelected.value = form.leaderUserId
+      searchSelected.value = form.organLeaderId
         ? [
             {
-              id: form.leaderUserId,
-              name: form.leaderUserName
+              id: form.organLeaderId,
+              name: form.organLeaderName,
+              type: 'user'
             }
           ]
         : []
@@ -594,6 +602,8 @@
     nextTick(() => {
       form.organPid = ''
       form.organId = ''
+      form.organPName = ''
+      form.organLeaderName = ''
       vFormLibraryRef.value.resetFields()
     })
   }
@@ -645,8 +655,8 @@
       form.organPid = value.length ? value[0].id : ''
       form.organPName = value.length ? value[0].name : ''
     } else {
-      form.leaderUserId = value.length ? value[0].id : ''
-      form.leaderUserName = value.length ? value[0].name : ''
+      form.organLeaderId = value.length ? value[0].id : ''
+      form.organLeaderName = value.length ? value[0].name : ''
     }
   }
 
@@ -671,8 +681,8 @@
         .then(() => {
           nextTick(() => {
             const nodeData = firstNode.value.childNodes[0]
-            nodeData.expanded = true
-            nodeData.loadData()
+            nodeData && (nodeData.expanded = true)
+            nodeData && nodeData.loadData()
           })
         })
     } else if (node.level === 1) {
@@ -739,8 +749,8 @@
           JSON.parse(localStorage.getItem('departLists')).find(
             i => i.tenantId === localStorage.getItem('tenantId')
           ).tenantName
-        form.leaderUserId = data.leaderUserId
-        form.leaderUserName = data.leaderUserName
+        form.organLeaderId = data.organLeaderId
+        form.organLeaderName = data.organLeaderName
         form.readme = data.readme
       })
     })

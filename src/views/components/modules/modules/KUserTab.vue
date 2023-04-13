@@ -185,6 +185,7 @@
         if (!searchQuery.value) {
           searchType.value = false
         }
+        console.log(selectedData.value, '返回结果', res.data)
         // 已经选中状态
         if (
           selectedData.value.length !== 0 &&
@@ -193,7 +194,7 @@
           treeColumnSearchData.data.forEach(val => {
             selectedData.value.forEach(item => {
               if (val.id === item.id) {
-                val.selectedStatus = item.selectedStatus
+                val.selectedStatus = 2
               }
             })
           })
