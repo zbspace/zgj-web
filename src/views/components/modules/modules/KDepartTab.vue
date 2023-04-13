@@ -90,6 +90,7 @@
   import Api from '@/api/common/organOrPerson'
   import { ElMessage } from 'element-plus'
   import { throttle } from '@/utils/tools'
+  import { getItem } from '@/utils/storage'
   const props = defineProps({
     apiModule: {
       type: String,
@@ -113,6 +114,10 @@
     },
     max: {
       type: Number
+    },
+    hasTopRoot: {
+      type: Boolean,
+      default: false
     }
   })
   const emits = defineEmits(['update:selectedDepart'])
@@ -125,19 +130,49 @@
       emits('update:selectedDepart', val)
     }
   })
+  const rootNodeId = ref('')
+  rootNodeId.value = props.hasTopRoot ? 'root' : '-1'
+
+  const rootTopName =
+    getItem('accountInfo') && getItem('accountInfo').userDepartName
+      ? getItem('accountInfo').userDepartName
+      : '公司'
 
   // 部门选择新增根节点（不展示）
-  const rootNode = [
-    {
-      id: '-1',
-      pid: '0',
-      name: '组织架构',
-      sort: 3,
-      haveChildren: true,
-      type: 'organ',
-      idFullPathSet: '-1'
-    }
-  ]
+  const rootNode = props.hasTopRoot
+    ? [
+        {
+          id: rootNodeId.value,
+          pid: '0',
+          name: '组织架构',
+          sort: 3,
+          haveChildren: true,
+          type: 'organ',
+          idFullPathSet: '-1'
+        },
+        {
+          id: '-1',
+          pid: rootNodeId.value,
+          name: rootTopName,
+          haveChildren: true,
+          type: 'organ',
+          idFullPathSet: '-1',
+          selectedStatus: 0,
+          disabled: false
+        }
+      ]
+    : [
+        {
+          id: rootNodeId.value,
+          pid: '0',
+          name: '组织架构',
+          sort: 3,
+          haveChildren: true,
+          type: 'organ',
+          idFullPathSet: '-1'
+        }
+      ]
+
   // 静态数据
   const state = reactive({
     lists: []
@@ -409,8 +444,13 @@
     if (attr.length === 0) {
       path.push({
         curmbsName: '组织架构',
-        id: '-1'
+        id: rootNodeId.value
       })
+      props.hasTopRoot &&
+        path.push({
+          curmbsName: rootTopName,
+          id: '-1'
+        })
       return path
     }
 

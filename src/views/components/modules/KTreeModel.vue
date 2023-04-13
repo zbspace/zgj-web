@@ -610,7 +610,7 @@
 
   // 初始化默认展开下一级
   onMounted(() => {
-    openInner(props.rootNode[0])
+    openInner(props.rootNode[props.rootNode.length - 1])
   })
 </script>
 

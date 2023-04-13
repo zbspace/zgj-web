@@ -13,7 +13,8 @@ export const useAccountInfoStore = defineStore({
       rememberPasTime: '',
       token: '',
       userInfo: {},
-      oneDepartTitle: ''
+      oneDepartTitle: '',
+      userDepartName: ''
     }
   },
   getters: {},
@@ -38,6 +39,9 @@ export const useAccountInfoStore = defineStore({
     },
     setOneDeaprtTitle(title) {
       this.oneDepartTitle = title
+    },
+    setUserDepartName(name) {
+      this.userDepartName = name
     }
   },
   // 开启数据缓存
