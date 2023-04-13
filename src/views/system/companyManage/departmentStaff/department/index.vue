@@ -56,6 +56,7 @@
             :load="loadFn"
             @current-change="currentChange"
             @node-contextmenu="nodeContextmenu"
+            v-if="loadTree"
           ></el-tree>
           <el-card
             class="box-card"
@@ -103,7 +104,7 @@
         label-width="80px"
       >
         <el-form-item label="部门名称" prop="organName">
-          <el-input v-model="form.organName" clearable />
+          <el-input v-model="form.organName" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="组织类型" prop="organTypeId">
           <el-radio-group v-model="form.organTypeId">
@@ -112,7 +113,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="部门编码" prop="organNo">
-          <el-input v-model="form.organNo" clearable />
+          <el-input v-model="form.organNo" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="上级部门" prop="organPName">
           <div class="select-box-contBox">
@@ -124,13 +125,6 @@
               @click="chooseOrgan('organP')"
             />
             <div class="ap-box-contBox-icon">
-              <el-icon
-                v-if="form.organPName"
-                style="margin-right: 5px"
-                color="#aaaaaa"
-                @click="clear('organP')"
-                ><CircleClose
-              /></el-icon>
               <img
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
@@ -149,13 +143,6 @@
               @click="chooseOrgan('leaderUser')"
             />
             <div class="ap-box-contBox-icon">
-              <el-icon
-                v-if="form.leaderUserId"
-                style="margin-right: 5px"
-                color="#aaaaaa"
-                @click="clear('leaderUser')"
-                ><CircleClose
-              /></el-icon>
               <img
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
@@ -165,7 +152,7 @@
           </div>
         </el-form-item>
         <el-form-item label="备注" prop="readme">
-          <el-input v-model="form.readme" type="textarea" clearable />
+          <el-input v-model="form.readme" type="textarea" />
         </el-form-item>
       </el-form>
     </JyDialog>
@@ -218,7 +205,7 @@
   import department from '@/api/system/companyManagement/department'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/department.json'
-  import { CircleClose } from '@element-plus/icons-vue'
+  import { getItem } from '@/utils/storage'
 
   const showFormDialog = ref(false)
   const showDepPerDialog = ref(false)
@@ -467,9 +454,7 @@
           form.organPid = data.organPid
           form.organPName =
             data.organPName ||
-            JSON.parse(localStorage.getItem('departLists')).find(
-              i => i.tenantId === localStorage.getItem('tenantId')
-            ).tenantName
+            (getItem('accountInfo') && getItem('accountInfo').userDepartName)
           form.leaderUserId = data.leaderUserId
           form.leaderUserName = data.leaderUserName
           form.readme = data.readme
@@ -604,15 +589,6 @@
     }, 200)
   }
 
-  const clear = type => {
-    if (type === 'organP') {
-      form.organPid = ''
-      form.organPName = ''
-    } else {
-      form.leaderUserId = ''
-      form.leaderUserName = ''
-    }
-  }
   const add = () => {
     showFormDialog.value = true
     nextTick(() => {
@@ -621,30 +597,45 @@
       vFormLibraryRef.value.resetFields()
     })
   }
+  const loadTree = ref(true)
   const submitLibraryForm = () => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         if (form.organId) {
-          department.edit(form).then(() => {
-            showFormDialog.value = false
-            firstNode.value.loaded = false
-            firstNode.value.expand()
-            table.value.reloadData()
-          })
-        } else {
-          department.add(form).then(() => {
-            firstNode.value = deptTreeRef.value.getNode(form.organPid)
-            if (firstNode.value) {
-              state.componentsTree.defaultAttribute['current-node-key'] =
-                form.organPid
-              organId.value = form.organPid
+          loadTree.value = false
+          department
+            .edit(form)
+            .then(() => {
               showFormDialog.value = false
               firstNode.value.loaded = false
               firstNode.value.expand()
-            }
+              table.value.reloadData()
+              loadTree.value = true
+            })
+            .catch(() => {
+              loadTree.value = true
+            })
+        } else {
+          firstNode.value = deptTreeRef.value.getNode(form.organPid)
+          loadTree.value = false
+          department
+            .add(form)
+            .then(() => {
+              if (firstNode.value) {
+                state.componentsTree.defaultAttribute['current-node-key'] =
+                  form.organPid
+                organId.value = form.organPid
+                showFormDialog.value = false
+                firstNode.value.loaded = false
+                firstNode.value.expand()
+              }
 
-            table.value.reloadData()
-          })
+              table.value.reloadData()
+              loadTree.value = true
+            })
+            .catch(() => {
+              loadTree.value = true
+            })
         }
       }
     })
@@ -669,9 +660,8 @@
           firstTreeData.value = res.data
           return resolve([
             {
-              organName: JSON.parse(localStorage.getItem('departLists')).find(
-                i => i.tenantId === localStorage.getItem('tenantId')
-              ).tenantName,
+              organName:
+                getItem('accountInfo') && getItem('accountInfo').userDepartName,
               organId: '-1',
               haveChildren: false,
               children: []
