@@ -41,7 +41,7 @@
                 <el-button
                   type="primary"
                   :disabled="countdownTime >= 0"
-                  @click="visibleVcode = true"
+                  @click="sendVCode"
                   >{{
                     countdownTime < 0
                       ? '获取验证码'
@@ -100,6 +100,8 @@
       @on-success="success"
       @on-failed="failed"
     />
+
+    <Verify captchaType="blockPuzzle" ref="verify" v-if="openVerify"></Verify>
   </div>
 </template>
 
@@ -109,6 +111,8 @@
   import apis from '@/api/system/companyManagement/companyInfo'
   import userApi from '@/api/system/companyManagement/departmentStaff'
   import { ElMessage } from 'element-plus'
+  import Verify from '@/views/login/components/verifition/Verify'
+
   class SuperAdmin {
     name = ''
     data = ''
@@ -124,6 +128,9 @@
   const userList = ref([])
   const timer = ref(null)
   const countdownTime = ref(-1)
+  const openVerify = ref(true)
+  const verify = ref(null)
+
   const props = defineProps({
     visible: {
       type: Boolean,
@@ -239,6 +246,7 @@
   }
 
   const sendVCode = () => {
+    verify.value.show()
     countdownTime.value = 60
     if (!timer.value) {
       timer.value = setInterval(() => {
@@ -251,8 +259,10 @@
       }, 1000)
       apis.getVerificationCode({
         type: formData.value.verification,
-        mobile: 13626262626,
-        email: 'xxxxqq.com'
+        contact:
+          formData.value.verification === 1
+            ? props.superAdminInfo.adminTel
+            : props.superAdminInfo.adminEmail
       })
     }
   }
@@ -263,10 +273,10 @@
     countdownTime.value = -1
   }
 
-  const success = () => {
-    // console.log('--->', 'success')
-    sendVCode()
-  }
+  // const success = () => {
+  //   // console.log('--->', 'success')
+  //   sendVCode()
+  // }
   const failed = () => {
     console.log('--->', 'failed')
   }
