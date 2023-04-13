@@ -225,7 +225,12 @@
         </div>
       </div>
     </div>
-    <Verify captchaType="blockPuzzle" ref="verify" v-if="openVerify"></Verify>
+    <Verify
+      captchaType="blockPuzzle"
+      v-model="openVerify"
+      v-if="openVerify"
+      @success="loginFn"
+    ></Verify>
     <!-- 重置密码弹窗 -->
     <UpdagePasswordDialog
       v-if="state.showUpdateDialog"
@@ -432,7 +437,6 @@
   }
 
   const loginFn = attr => {
-    openVerify.value = true
     let params = {
       accountNo: accountLoginForm.accountNo,
       accountPass: md5(accountLoginForm.accountPass)
@@ -452,7 +456,7 @@
       loginResult => {
         if (loginResult.code === 210600) {
           loginLoading.value = false
-          proxy.$refs.verify.show()
+          openVerify.value = true
           return
         }
         loginLoading.value = false

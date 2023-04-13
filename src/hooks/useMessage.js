@@ -1,6 +1,9 @@
 import { ElMessage } from 'element-plus'
 export function messageError(error) {
-  if (error.msg || typeof error === 'string') {
+  if (error.msg) {
+    return
+  }
+  if (typeof error === 'string') {
     ElMessage.error(error)
   }
 }

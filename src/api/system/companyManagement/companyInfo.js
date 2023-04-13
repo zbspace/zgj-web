@@ -66,4 +66,13 @@ api.updateAdmin = data => {
     data
   })
 }
+
+// 校验更改超管验证码
+api.verifyCode = data => {
+  return request({
+    method: 'POST',
+    url: '/tenant/tenantAdminInfo/verifyCode',
+    data
+  })
+}
 export default api

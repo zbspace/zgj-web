@@ -4,6 +4,7 @@
       :title="step === 1 ? '身份验证' : '变更超级管理员'"
       v-model="isVisible"
       @on-closed="onClosed"
+      @on-opened="getUserList"
     >
       <div class="authentication-form">
         <el-form
@@ -94,14 +95,15 @@
         </el-button>
         <el-button @click="cancel"> 取消 </el-button>
       </template>
+      <Verify
+        captchaType="blockPuzzle"
+        v-model="openVerify"
+        v-if="openVerify"
+        @success="success"
+        getUrl="/tenant/tenantAdminInfo/getImageVerifyCode/blockPuzzle"
+        checkUrl="/tenant/tenantAdminInfo/verifyCode"
+      ></Verify>
     </JyDialog>
-    <JyVertifyBox
-      v-model="visibleVcode"
-      @on-success="success"
-      @on-failed="failed"
-    />
-
-    <Verify captchaType="blockPuzzle" ref="verify" v-if="openVerify"></Verify>
   </div>
 </template>
 
@@ -112,6 +114,7 @@
   import userApi from '@/api/system/companyManagement/departmentStaff'
   import { ElMessage } from 'element-plus'
   import Verify from '@/views/login/components/verifition/Verify'
+  import { messageError } from '@/hooks/useMessage'
 
   class SuperAdmin {
     name = ''
@@ -123,12 +126,12 @@
   }
   const formData = ref(new SuperAdmin())
   const formRef = ref(null)
-  const visibleVcode = ref(false)
   const step = ref(1)
   const userList = ref([])
   const timer = ref(null)
   const countdownTime = ref(-1)
-  const openVerify = ref(true)
+  const haveChecked = ref(false)
+  const openVerify = ref(false)
   const verify = ref(null)
 
   const props = defineProps({
@@ -147,15 +150,6 @@
       }
     }
   })
-
-  watch(
-    () => props.modelValue,
-    newVal => {
-      if (newVal) {
-        getUserList()
-      }
-    }
-  )
 
   const emit = defineEmits(['update:modelValue', 'updateSuperAdminInfo'])
   const rules = reactive({
@@ -186,13 +180,20 @@
   })
 
   const next = async () => {
-    await formRef.value.validate((valid, fields) => {
-      if (valid) {
-        step.value = 2
-      } else {
-        console.log('error', fields)
-      }
-    })
+    try {
+      await formRef.value.validate()
+      await apis.verifyCode({
+        type: formData.value.verification,
+        contact:
+          formData.value.verification === 1
+            ? props.superAdminInfo.adminTel
+            : props.superAdminInfo.adminEmail,
+        verifyCode: formData.value.vcode
+      })
+      step.value = 2
+    } catch (error) {
+      messageError(error)
+    }
   }
 
   const getUserList = () => {
@@ -245,25 +246,32 @@
     }, 300)
   }
 
-  const sendVCode = () => {
-    verify.value.show()
-    countdownTime.value = 60
-    if (!timer.value) {
-      timer.value = setInterval(() => {
-        if (countdownTime.value < 0) {
-          clearInterval(timer.value)
-          timer.value = null
-        } else {
-          countdownTime.value--
+  const sendVCode = async () => {
+    if (!haveChecked.value) {
+      openVerify.value = true
+    } else {
+      if (!timer.value) {
+        try {
+          await apis.getVerificationCode({
+            type: formData.value.verification,
+            contact:
+              formData.value.verification === 1
+                ? props.superAdminInfo.adminTel
+                : props.superAdminInfo.adminEmail
+          })
+          countdownTime.value = 60
+          timer.value = setInterval(() => {
+            if (countdownTime.value < 0) {
+              clearInterval(timer.value)
+              timer.value = null
+            } else {
+              countdownTime.value--
+            }
+          }, 1000)
+        } catch (error) {
+          ///
         }
-      }, 1000)
-      apis.getVerificationCode({
-        type: formData.value.verification,
-        contact:
-          formData.value.verification === 1
-            ? props.superAdminInfo.adminTel
-            : props.superAdminInfo.adminEmail
-      })
+      }
     }
   }
 
@@ -273,13 +281,12 @@
     countdownTime.value = -1
   }
 
-  // const success = () => {
-  //   // console.log('--->', 'success')
-  //   sendVCode()
-  // }
-  const failed = () => {
-    console.log('--->', 'failed')
+  const success = captchaVerification => {
+    haveChecked.value = true
+    sendVCode()
   }
+
+  defineExpose({ success })
 </script>
 
 <script>

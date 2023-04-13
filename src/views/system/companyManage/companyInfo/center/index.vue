@@ -229,6 +229,7 @@
     v-model="changeSAVisible"
     :superAdminInfo="props.tenantAdminInfo"
     @updateSuperAdminInfo="updateSuperAdminInfo"
+    v-if="changeSAVisible"
   />
 </template>
 

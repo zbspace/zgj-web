@@ -1,149 +1,123 @@
 <template>
-  <div :class="mode == 'pop' ? 'mask' : ''" v-show="showBox">
+  <div v-if="isVisible">
     <div
-      :class="mode == 'pop' ? 'verifybox' : ''"
+      class="verifybox"
       :style="{ 'max-width': parseInt(imgSize.width) + 30 + 'px' }"
     >
-      <div class="verifybox-top" v-if="mode == 'pop'">
+      <div class="verifybox-top">
         请完成安全验证
         <span class="verifybox-close" @click="closeBox(false)">
           <i class="iconfont icon-close"></i>
         </span>
       </div>
-      <div
-        class="verifybox-bottom"
-        :style="{ padding: mode == 'pop' ? '15px' : '0' }"
-      >
-        <!-- 验证码容器 -->
-        <component
-          v-if="componentType"
+      <div class="verifybox-bottom" v-loading="loading">
+        <VerifySlide
+          v-if="componentType && isVisible"
           :is="componentType"
           :captchaType="captchaType"
           :type="verifyType"
           :figure="figure"
           :arith="arith"
-          :mode="mode"
+          mode="pop"
           :vSpace="vSpace"
           :explain="explain"
           :imgSize="imgSize"
           :blockSize="blockSize"
           :barSize="barSize"
-          ref="instance"
-        ></component>
+          @success="success"
+          :getUrl="getUrl"
+          :checkUrl="checkUrl"
+        />
       </div>
     </div>
   </div>
 </template>
-<script type="text/babel">
-  /**
-   * Verify 验证码组件
-   * @description 分发验证码使用
-   * */
+
+<script setup>
   import VerifySlide from './Verify/VerifySlide'
-  import { computed, ref, toRefs, watchEffect, getCurrentInstance } from 'vue'
+  import { computed, ref, toRefs } from 'vue'
   import { removeItem, getItem } from '@/utils/storage'
-  export default {
-    name: 'Vue2Verify',
-    components: {
-      VerifySlide
+
+  const verifyType = ref(undefined)
+  const componentType = ref(undefined)
+
+  const props = defineProps({
+    modelValue: {
+      type: Boolean,
+      default: false
     },
-    props: {
-      captchaType: {
-        type: String,
-        required: true
-      },
-      figure: {
-        type: Number
-      },
-      arith: {
-        type: Number
-      },
-      mode: {
-        type: String,
-        default: 'pop'
-      },
-      vSpace: {
-        type: Number
-      },
-      explain: {
-        type: String
-      },
-      imgSize: {
-        type: Object,
-        default() {
-          return {
-            width: '310px',
-            height: '155px'
-          }
+    captchaType: {
+      type: String,
+      required: true
+    },
+    figure: {
+      type: Number
+    },
+    arith: {
+      type: Number
+    },
+    vSpace: {
+      type: Number
+    },
+    explain: {
+      type: String
+    },
+    imgSize: {
+      type: Object,
+      default() {
+        return {
+          width: '310px',
+          height: '155px'
         }
-      },
-      blockSize: {
-        type: Object
-      },
-      barSize: {
-        type: Object
       }
     },
-    setup(props) {
-      const { captchaType, mode } = toRefs(props)
-      const clickShow = ref(false)
-      const verifyType = ref(undefined)
-      const componentType = ref(undefined)
-
-      const instance = ref({})
-      const { proxy } = getCurrentInstance()
-      const showBox = computed(() => {
-        if (mode.value === 'pop') {
-          return clickShow.value
-        } else {
-          return true
-        }
-      })
-      /**
-       * refresh
-       * @description 刷新
-       * */
-      const refresh = () => {
-        console.log(instance.value)
-        if (instance.value.refresh) {
-          instance.value.refresh()
-        }
-      }
-      const closeBox = bool => {
-        clickShow.value = false
-        !bool && removeItem('captchaInfo')
-        refresh()
-        bool && proxy.$parent.loginFn(getItem('captchaInfo'))
-      }
-      const show = () => {
-        if (mode.value === 'pop') {
-          clickShow.value = true
-        }
-      }
-      watchEffect(() => {
-        switch (captchaType.value) {
-          case 'blockPuzzle':
-            verifyType.value = '2'
-            componentType.value = 'VerifySlide'
-            break
-        }
-      })
-
-      return {
-        clickShow,
-        verifyType,
-        componentType,
-        instance,
-        showBox,
-        closeBox,
-        show
-      }
+    blockSize: {
+      type: Object
+    },
+    barSize: {
+      type: Object
+    },
+    visible: {
+      type: Boolean,
+      default: true
     }
+  })
+
+  const { captchaType } = toRefs(props)
+
+  const emit = defineEmits(['success', 'update:modelValue'])
+
+  const isVisible = computed({
+    get() {
+      return props.modelValue
+    },
+    set(value) {
+      emit('update:modelValue', value)
+    }
+  })
+
+  const closeBox = bool => {
+    isVisible.value = false
+    !bool && removeItem('captchaInfo')
   }
+
+  const success = captchaVerification => {
+    isVisible.value = false
+    emit('success', getItem('captchaInfo'))
+  }
+
+  if (captchaType.value === 'blockPuzzle') {
+    verifyType.value = '2'
+    componentType.value = 'VerifySlide'
+  }
+</script>
+
+<script>
+  export default { name: 'Vue2Verify' }
 </script>
 <style>
   .verifybox {
-    position: relative;
+    position: fixed;
     box-sizing: border-box;
     border-radius: 2px;
     border: 1px solid #e4e7eb;
