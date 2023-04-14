@@ -763,7 +763,7 @@
       },
 
       // 获取自定义组件数据并收集非空验证信息
-      getAdditionalList() {
+      getAdditionalList(needValidation) {
         const _self = this
         const additionalList = []
         traverseFieldWidgets(this.widgetList, widget => {
@@ -783,7 +783,7 @@
             const widgetInstance = _self.getWidgetRef(dataId)
             const widgetData = widgetInstance.getValue()
             // 收集自定义字段校验提示
-            if (widget.options.required) {
+            if (widget.options.required && needValidation) {
               if (widget.type === 'contactUnit') {
                 // 往来单位
                 Object.keys(widgetData).forEach(propName => {
@@ -953,13 +953,15 @@
 
       getFormData(needValidation = true) {
         const self = this
-        if (!needValidation) {
-          return this.formDataModel
-        }
-        const additionalList = this.getAdditionalList()
+
+        const additionalList = this.getAdditionalList(needValidation)
         additionalList.forEach(data => {
           Object.assign(this.formDataModel, data)
         })
+
+        if (!needValidation) {
+          return this.formDataModel
+        }
 
         if (this.requiredMsgList.length <= 0) {
           // 扩展字段取值加入formData

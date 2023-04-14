@@ -206,7 +206,6 @@
     advancedFields as AFS,
     customFields as CFS
   } from './widgetsConfig'
-  // import {formTemplates} from './templatesConfig'
   import { addWindowResizeHandler, generateId } from '@/lib/vform/utils/util'
   import i18n from '@/lib/vform/utils/i18n'
   import { getArrFromTree } from '@/utils/tools'

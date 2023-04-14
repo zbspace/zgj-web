@@ -476,9 +476,9 @@ export const fileTypeSchema = {
     requiredHint: '',
     validation: '',
     validationHint: '',
-    labelKey: 'fileTypeName',
-    valueKey: 'fileTypeId',
-    optionItems: '',
+    labelKey: 'name',
+    valueKey: 'id',
+    optionItems: [],
     // -------------------
     customClass: '', // 自定义css类名
     labelIconClass: null,

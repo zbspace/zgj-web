@@ -200,6 +200,7 @@
   import VFlowDesign from '@/views/components/FlowDesign/index.vue'
   import { ElMessage } from 'element-plus'
   import { generatingNumber } from '@/utils/tools'
+  import { fileManageService } from '@/api/frontDesk/fileManage'
 
   const router = useRouter()
   const route = useRoute()
@@ -354,17 +355,16 @@
   }
 
   // 保存模版
-  const saveTem = () => {
+  const saveTem = async () => {
     formDataTem.value = null
     // 名称-文件类型必填
-    refFillFormInformation.value.getFormData(false).then(formData => {
-      if (!formData.fileTypeId && !formData.applyName) {
-        ElMessage.warning('单据名称和文件类型必填，否则不允许保存模板')
-        return
-      }
-      formDataTem.value = formData
-      tipVisible.value = true
-    })
+    const formData = await refFillFormInformation.value.getFormData(false)
+    if (!formData.fileTypeId && !formData.applyName) {
+      ElMessage.warning('单据名称和文件类型必填，否则不允许保存模板')
+      return
+    }
+    formDataTem.value = formData
+    tipVisible.value = true
   }
 
   function changeFlow() {
@@ -511,15 +511,26 @@
       })
       .then(res => {
         fillFormInformationJson.value = JSON.parse(res.data.formInfo)
-
-        sealApply.templateView(route.query.useId).then(res => {
-          formVersionId.value = res.data.formVersionId
+        sealApply.templateView(route.query.useId).then(res1 => {
+          if (res1.data.fileTypeId) {
+            getFileTypeDetail(res1.data.fileTypeId)
+          }
+          formVersionId.value = res1.data.formVersionId
           refFillFormInformation.value.setFormData(
-            JSON.parse(res.data.templateValue)
+            JSON.parse(res1.data.templateValue)
           )
         })
       })
   }
+
+  const getFileTypeDetail = async fileTypeId => {
+    const res = await fileManageService.getFileTypeInfo(fileTypeId)
+    state.cache.optionData.fileTypeId = [
+      { fileTypeName: res.data.fileTypeName, fileTypeId: res.data.fileTypeId }
+    ]
+    refFillFormInformation.value.reloadOptionData()
+  }
+
   onBeforeMount(() => {
     if (route.query.useId) {
       useInfo()

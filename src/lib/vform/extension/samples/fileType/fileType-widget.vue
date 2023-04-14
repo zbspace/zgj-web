@@ -160,6 +160,7 @@
           this.fieldModel = list[0].fileTypeId
           this.fileTypeName = list[0].fileTypeName
           // eslint-disable-next-line vue/no-mutating-props
+          this.field.options.optionItems = []
           this.field.options.optionItems.push({
             label: this.fileTypeName,
             value: this.fieldModel
