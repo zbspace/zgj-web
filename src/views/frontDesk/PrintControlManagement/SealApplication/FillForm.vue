@@ -519,6 +519,12 @@
           refFillFormInformation.value.setFormData(
             JSON.parse(res1.data.templateValue)
           )
+          nextTick(() => {
+            refFillFormInformation.value.setFieldValue(
+              'applyNo',
+              generatingNumber()
+            )
+          })
         })
       })
   }

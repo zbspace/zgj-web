@@ -233,17 +233,15 @@
 
     // 非编辑 - 导出（相应模式）
     changeResult.value = changeResult.value.concat(allSelected.value)
-    const handleResult = []
-    if (changeResult.value.length > 0) {
-      changeResult.value.forEach(item => {
-        handleResult.push({
-          ...item,
-          fileTypeId: item.id,
-          fileTypeName: item.name
-        })
-      })
-    }
-    emits('update:searchSelected', handleResult)
+    // const handleResult = []
+    // if (changeResult.value.length > 0) {
+    //   changeResult.value.forEach(item => {
+    //     handleResult.push({
+    //       ...item
+    //     })
+    //   })
+    // }
+    emits('update:searchSelected', changeResult.value)
     emits('update:show', false)
     changeResult.value = []
   }
