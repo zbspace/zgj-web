@@ -69,10 +69,10 @@
                 @click="getDivision"
               >
                 <el-option
-                  :label="item.fileTypeName"
-                  :value="item.fileTypeId"
+                  :label="item.name"
+                  :value="item.id"
                   v-for="item in fileTypeList"
-                  :key="item.fileTypeId"
+                  :key="item.id"
                 />
               </el-select>
               <div class="box-icon">
@@ -288,9 +288,13 @@
           form.applyTypeId = val.applyTypeId
           form.sealUseTypeId = val.sealUseTypeId
           form.readme = val.readme
-          handleScopeArr(val.dataScope)
-          handleFileArr(val.fileType)
-          searchSelected.value = val.dataScope.map(item => {
+
+          const cacheFileScope = JSON.parse(JSON.stringify(val.fileTypeScope))
+          const cacheDataScope = JSON.parse(JSON.stringify(val.dataScope))
+
+          handleScopeArr(cacheDataScope)
+          handleFileArr(cacheFileScope)
+          searchSelected.value = cacheDataScope.map(item => {
             return {
               id: item.scopeId || item.id,
               name: item.scopeName || item.name,
@@ -301,12 +305,12 @@
             }
           })
 
-          searchSelectedDocument.value = val.fileType.map(item => {
+          searchSelectedDocument.value = cacheFileScope.map(item => {
             return {
-              id: item.id || item.fileTypeId,
-              name: item.name || item.fileTypeName,
+              id: item.id,
+              name: item.name,
               type: 'fileType',
-              includeChild: item.includeChild,
+              includeChild: item.includeChild === '1',
               haveChildren: item.haveChildren,
               idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
             }
@@ -456,17 +460,22 @@
 
   const handleFileArr = val => {
     const arr = []
+    const arr1 = []
     const selectIds = []
     val.forEach(item => {
       arr.push({
-        fileTypeId: item.fileTypeId,
-        fileTypeName: item.fileTypeName,
+        fileTypeId: item.id,
+        fileTypeName: item.name,
         includeChild: item.includeChild ? '1' : '0',
         type: 'fileType'
       })
-      selectIds.push(item.fileTypeId)
+      arr1.push({
+        id: item.id,
+        name: item.name
+      })
+      selectIds.push(item.id)
     })
-    fileTypeList.value = arr
+    fileTypeList.value = arr1
     form.fileTypeIds = selectIds
     form.fileTypeScope = arr
   }

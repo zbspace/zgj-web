@@ -263,7 +263,7 @@
   const loadingModel = ref(false)
   const editBasicsForm = ref({
     applyTypeId: '',
-    fileType: [],
+    fileTypeScope: [],
     dataScope: [],
     flowName: '',
     readme: '',
@@ -288,7 +288,7 @@
         const userInfo = res.data.organUserScope ? res.data.organUserScope : []
         editBasicsForm.value = {
           applyTypeId: res.data.applyTypeId,
-          fileType: res.data.fileType,
+          fileTypeScope: res.data.fileTypeScope,
           dataScope: organInfo.concat(userInfo),
           flowName: res.data.flowName,
           readme: res.data.readme,
@@ -403,7 +403,7 @@
       }
     }
     const associationResult = refAssociationForm.value.getAssociationValue()
-    console.log(associationResult, '表单', Array.isArray(associationResult))
+
     if (Array.isArray(associationResult)) {
       for (const k in associationResult[0]) {
         errorInfo.value.push({

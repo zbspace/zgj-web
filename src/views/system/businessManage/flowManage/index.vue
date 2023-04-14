@@ -648,7 +648,7 @@
   const handleFile = data => {
     if (!data.fileType || data.fileType.length <= 0) return '-'
     const arr = []
-    data.fileType.map(item => arr.push(item.fileTypeName))
+    data.fileType.map(item => arr.push(item.name))
     return arr.join(',')
   }
   const customClick = (row, column, cell, event) => {

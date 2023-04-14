@@ -111,7 +111,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="所属部门" prop="manOrganId">
+            <el-form-item label="保管部门" prop="manOrganId">
               <div class="select-box-contBox">
                 <el-select
                   v-model="form.manOrganId"
