@@ -439,7 +439,7 @@
 
   // 监听 向下包含 切换
   const changeSwitch = (switchStatus, attr) => {
-    kdepart.value.changeSwitch(switchStatus, attr)
+    kdepart.value && kdepart.value.changeSwitch(switchStatus, attr)
   }
 
   // 关闭弹窗
