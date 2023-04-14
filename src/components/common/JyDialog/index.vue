@@ -94,35 +94,37 @@
       </el-scrollbar>
     </div>
     <template #footer>
-      <div class="footer-custom" v-if="footer">
-        <!-- 两个按钮 -->
-        <div
-          v-if="!oneBtn"
-          class="default-footer-btns"
-          :class="props.centerBtn ? 'one-btn' : 'two-btn'"
-        >
-          <el-button
-            type="primary"
-            :loading="props.confirmLoading"
-            @click.stop="handleShow(false, true, 'confrim')"
-            >{{ props.confirmText }}</el-button
+      <slot name="footer">
+        <div class="footer-custom" v-if="footer">
+          <!-- 两个按钮 -->
+          <div
+            v-if="!oneBtn"
+            class="default-footer-btns"
+            :class="props.centerBtn ? 'one-btn' : 'two-btn'"
           >
-          <el-button plain @click.stop="handleShow(false, true)">{{
-            props.concelText
-          }}</el-button>
-        </div>
+            <el-button
+              type="primary"
+              :loading="props.confirmLoading"
+              @click.stop="handleShow(false, true, 'confrim')"
+              >{{ props.confirmText }}</el-button
+            >
+            <el-button plain @click.stop="handleShow(false, true)">{{
+              props.concelText
+            }}</el-button>
+          </div>
 
-        <!-- 一个按钮 -->
-        <div
-          class="default-footer-btns"
-          v-if="oneBtn"
-          :class="!props.centerBtn ? 'one-btn' : 'two-btn'"
-        >
-          <el-button type="primary" @click.stop="handleShow(false, true)">{{
-            props.confirmText
-          }}</el-button>
+          <!-- 一个按钮 -->
+          <div
+            class="default-footer-btns"
+            v-if="oneBtn"
+            :class="!props.centerBtn ? 'one-btn' : 'two-btn'"
+          >
+            <el-button type="primary" @click.stop="handleShow(false, true)">{{
+              props.confirmText
+            }}</el-button>
+          </div>
         </div>
-      </div>
+      </slot>
     </template>
   </el-dialog>
 </template>

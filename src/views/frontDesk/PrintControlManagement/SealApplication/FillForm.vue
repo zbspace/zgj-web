@@ -178,11 +178,21 @@
         </div>
       </template>
     </componentsLayout>
+
+    <JyMessageBox
+      v-model="tipVisible"
+      :mode="1"
+      @on-confirm="confirmTip"
+      @on-cancel="cancelTip"
+      title="保存模版"
+    >
+      若当前文件类型已有模版则会覆盖，若当前文件类型没有模板则会创建，请问确定要保存吗？
+    </JyMessageBox>
   </div>
 </template>
 <script setup>
   import { reactive, onBeforeMount, onMounted, ref, nextTick } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   import SealApplicationStep from '@/views/components/sealApplication/JyStep.vue'
   import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
@@ -192,11 +202,12 @@
   import { generatingNumber } from '@/utils/tools'
 
   const router = useRouter()
+  const route = useRoute()
   const refVFlowDesign = ref(null)
   const initObj = ref(null)
   const applyTypeId = ref(null)
   const sealUseTypeId = ref(null)
-  const formVersionId = ref(router.currentRoute.value.query.formVersionId)
+  const formVersionId = ref(route.query.formVersionId)
   const flowVersionId = ref(null)
   const submitLoading = ref(false)
   // const emit = defineEmits([])
@@ -289,6 +300,30 @@
   const fillFormInformationJson = ref(null)
   const flowLists = ref([])
   const flowMessageId = ref(null)
+  const tipVisible = ref(false)
+  const formDataTem = ref(null)
+
+  const confirmTip = () => {
+    sealApply
+      .templateAdd({
+        formVersionId: formVersionId.value,
+        templateName: formDataTem.value.applyName,
+        fileTypeId: formDataTem.value.fileTypeId,
+        templateValue: JSON.stringify(formDataTem.value)
+      })
+      .then(res => {
+        ElMessage.success('保存模板成功')
+        tipVisible.value = false
+        router.go(-1)
+      })
+      .catch(() => {
+        tipVisible.value = false
+      })
+  }
+
+  const cancelTip = () => {
+    tipVisible.value = false
+  }
 
   // 点击返回上一页
   function clickBackPage() {
@@ -306,7 +341,7 @@
       step.value = 'two'
       sealApply
         .flowList({
-          formMessageId: router.currentRoute.value.params.id
+          formMessageId: route.params.id
         })
         .then(res => {
           if (res.data && res.data.length) {
@@ -321,24 +356,17 @@
 
   // 保存模版
   const saveTem = () => {
+    formDataTem.value = null
     // 名称-文件类型必填
     refFillFormInformation.value.getFormData(false).then(formData => {
+      console.log(formData.fileTypeIdm, '===fileTypeId')
       if (!formData.fileTypeId && !formData.applyName) {
         ElMessage.warning('单据名称和文件类型必填，否则不允许保存模板')
         return
       }
-      sealApply
-        .templateAdd({
-          formVersionId: formVersionId.value,
-          templateName: formData.applyName,
-          fileTypeId: formData.fileTypeId,
-          templateValue: `${formData}`
-        })
-        .then(res => {
-          ElMessage.success('保存模板成功')
-        })
+      formDataTem.value = formData
+      tipVisible.value = true
     })
-    // 每个文件类型只能保存一个模版
   }
 
   function changeFlow() {
@@ -420,7 +448,7 @@
         ...state.cache.formData,
         formVersionId: formVersionId.value,
         flowVersionId: flowVersionId.value,
-        formMessageId: router.currentRoute.value.params.id,
+        formMessageId: route.params.id,
         flowMessageId: flowMessageId.value
       }
     }
@@ -428,10 +456,9 @@
     sealApply
       .submit(params)
       .then(res => {
-        // console.log(res)
         sealApply
           .add({
-            formMessageId: router.currentRoute.value.params.id,
+            formMessageId: route.params.id,
             formVersionId: formVersionId.value,
             flowVersionId: flowVersionId.value,
             applyTypeId: applyTypeId.value,
@@ -464,7 +491,7 @@
   const infoDetail = () => {
     sealApply
       .formQuery({
-        formMessageId: router.currentRoute.value.params.id
+        formMessageId: route.params.id
       })
       .then(res => {
         applyTypeId.value = res.data.applyTypeId
@@ -479,9 +506,28 @@
       })
   }
 
+  const useInfo = () => {
+    sealApply
+      .formQuery({
+        formMessageId: route.params.id
+      })
+      .then(res => {
+        fillFormInformationJson.value = JSON.parse(res.data.formInfo)
+
+        sealApply.templateView(route.query.useId).then(res => {
+          formVersionId.value = res.data.formVersionId
+          refFillFormInformation.value.setFormData(
+            JSON.parse(res.data.templateValue)
+          )
+        })
+      })
+  }
   onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-    infoDetail()
+    if (route.query.useId) {
+      useInfo()
+    } else {
+      infoDetail()
+    }
   })
   onMounted(() => {
     // console.log(`the component is now mounted.`)

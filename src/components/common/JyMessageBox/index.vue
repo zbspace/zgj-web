@@ -14,7 +14,7 @@
           <div v-if="props.mode === 1">
             <div class="header-div">
               <img src="@/assets/svg/common/warning.svg" alt="" />
-              <span>提示</span>
+              <span>{{ props.title || '提示' }}</span>
             </div>
           </div>
           <div v-if="props.mode === 2">
@@ -68,6 +68,10 @@
     comfirmBtnText: {
       type: String,
       default: 't-zgj-select.confirm'
+    },
+    title: {
+      type: String,
+      default: ''
     }
   })
   const emit = defineEmits(['update:modelValue', 'on-confirm', 'on-cancel'])
@@ -106,8 +110,9 @@
         display: flex !important;
         align-items: center;
         margin-right: 0;
-        height: 55px;
-        padding-left: 24px;
+        height: 70px;
+        padding-left: 32px;
+        padding-top: 12px;
         .header-div {
           display: flex;
           align-items: center;
@@ -128,7 +133,7 @@
       .el-dialog__body {
         height: auto;
         min-height: auto;
-        padding: 0 24px 0 64px !important;
+        padding: 0 32px 0 64px !important;
         font-family: 'PingFang SC';
         font-style: normal;
         font-weight: 400;
@@ -137,7 +142,7 @@
         color: rgba(0, 0, 0, 0.65);
       }
       .el-dialog__footer {
-        padding: 24px;
+        padding: 24px 32px 24px 32px;
         border: none;
         text-align: right;
       }

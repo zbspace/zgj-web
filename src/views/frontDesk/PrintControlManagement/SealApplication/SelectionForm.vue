@@ -101,7 +101,9 @@
               </div>
               <div
                 class="column-list-template"
-                @click="clickSavedTemplate(item.formVersionId)"
+                @click="
+                  clickSavedTemplate(item.formMessageId, item.formVersionId)
+                "
               >
                 <span class="text">保存的模板</span>
                 <i class="icon">
@@ -125,8 +127,6 @@
       :show="showFormDialog"
       title="选择模板"
       :centerBtn="true"
-      :confirmText="$t('t-zgj-operation.submit')"
-      :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
       @close="submitForm"
@@ -139,7 +139,7 @@
         >
           <div class="list-title">
             <div class="list-title-desc"> {{ item.fileTypeName }} </div>
-            <div class="list-title-time"> 2022-09-11 10:21:55 </div>
+            <div class="list-title-time"> {{ item.createDatetime }}</div>
           </div>
           <div class="optional-list-desc">
             <div class="optional-list-desc-text">
@@ -152,7 +152,11 @@
               >
                 使用
               </div>
-              <div class="button shanchu">删除</div>
+              <div
+                class="button shanchu"
+                @click="deleteTemplate(item.useSealApplyTemplateId)"
+                >删除</div
+              >
             </div>
           </div>
         </div>
@@ -173,7 +177,7 @@
         >
           <div class="list-title">
             <div class="list-title-desc"> {{ item.fileTypeName }} </div>
-            <div class="list-title-time"> 2022-09-11 10:21:55 </div>
+            <div class="list-title-time"> {{ item.createDatetime }} </div>
           </div>
           <div class="optional-list-desc">
             <div class="optional-list-desc-text">
@@ -182,7 +186,18 @@
           </div>
         </div>
       </div>
+      <template #footer><span></span></template>
     </JyDialog>
+
+    <JyMessageBox
+      v-model="tipVisible"
+      :mode="1"
+      @on-confirm="confirmTip"
+      @on-cancel="cancelTip"
+      title="保存模版"
+    >
+      若当前文件类型已有模版则会覆盖，若当前文件类型没有模板则会创建，请问确定要保存吗？
+    </JyMessageBox>
   </div>
 </template>
 <script setup>
@@ -199,7 +214,25 @@
   const applyLists = ref([])
   const keyword = ref('')
   const loading = ref(false)
+  const tipVisible = ref(false)
 
+  const deleteUseId = ref('')
+  const confirmTip = () => {
+    sealApply
+      .deleteTem(deleteUseId.value)
+      .then(res => {
+        tipVisible.value = false
+        ElMessage.success('删除成功')
+        loadTemList()
+      })
+      .catch(() => {
+        tipVisible.value = false
+      })
+  }
+
+  const cancelTip = () => {
+    tipVisible.value = false
+  }
   // 点击列表按钮
   function clickListBut(formMessageId, formVersionId) {
     router.push({
@@ -211,25 +244,47 @@
 
   const templateList = ref([])
   const validTemplates = ref([])
+  const chooseTemMessageId = ref('')
+  const reloadVersionId = ref('')
   // 选择模版
-  function clickSavedTemplate(formVersionId) {
+  function clickSavedTemplate(formMessageId, formVersionId) {
     templateList.value = []
     validTemplates.value = []
-    sealApply.templateList({ formVersionId }).then(res => {
-      if (res.data) {
-        templateList.value = res.data.templates ? res.data.templates : []
-        validTemplates.value = res.data.validTemplates
-          ? res.data.validTemplates
-          : []
-        showFormDialog.value = true
-      } else {
-        ElMessage.warning('暂无模版')
-      }
-    })
+    chooseTemMessageId.value = formMessageId
+    reloadVersionId.value = formVersionId
+
+    loadTemList()
   }
 
   const useTemplate = id => {
-    sealApply.templateView(id).then(res => {})
+    router.push({
+      name: 'selectionForms',
+      params: { id: chooseTemMessageId.value },
+      query: { formVersionId: null, useId: id }
+    })
+  }
+
+  const deleteTemplate = id => {
+    tipVisible.value = true
+    deleteUseId.value = id
+  }
+
+  const loadTemList = () => {
+    sealApply
+      .templateList({ formVersionId: reloadVersionId.value })
+      .then(res => {
+        if (res.data) {
+          templateList.value = res.data.templates ? res.data.templates : []
+          validTemplates.value = res.data.validTemplates
+            ? res.data.validTemplates
+            : []
+          showFormDialog.value = true
+        } else {
+          templateList.value = []
+          validTemplates.value = []
+          showFormDialog.value = true
+        }
+      })
   }
 
   // 提交 保存的模板
