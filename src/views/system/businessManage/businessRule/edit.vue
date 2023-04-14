@@ -59,19 +59,6 @@
             <el-row :gutter="5">
               <el-col :span="10">
                 <el-form-item label="文件类型" prop="fileTypeIds">
-                  <!-- <el-select
-                    v-model="ruleForm.fileTypeIds"
-                    multiple
-                    placeholder="请选择"
-                    style="width: 100%"
-                  >
-                    <el-option
-                      v-for="item in fileTypeList"
-                      :key="item.fileTypeId"
-                      :label="item.fileTypeName"
-                      :value="item.fileTypeId"
-                    />
-                  </el-select> -->
                   <div class="ap-box-contBox" style="width: 100%">
                     <el-select
                       v-model="ruleForm.fileTypeIds"
@@ -89,10 +76,10 @@
                       :max-collapse-tags="3"
                     >
                       <el-option
-                        v-for="one in fileTypeList"
-                        :key="one.fileTypeId"
-                        :label="one.fileTypeName"
-                        :value="one.fileTypeId"
+                        v-for="one in fileTypeOptions"
+                        :key="one.id"
+                        :label="one.name"
+                        :value="one.id"
                       />
                     </el-select>
                     <div class="ap-box-contBox-icon" @click="clickFileType">
@@ -1344,6 +1331,7 @@
     archivePageSwitch = '0'
     archiveOcrSwitch = '0'
     frontFaceCheckSwitch = '0'
+    fileTypeList = []
   }
   let ruleBusinessNo = generatingNumber()
   const ruleForm = ref(new BusinessRule())
@@ -1396,7 +1384,7 @@
     ]
   })
 
-  const fileTypeList = ref([])
+  const fileTypeOptions = ref([])
   const showDocumentTypeDialog = ref(false)
   const documentTypeSelected = ref([])
 
@@ -1425,7 +1413,7 @@
 
   const getFileTypeList = () => {
     fileManageService.getFileTypeList().then(res => {
-      fileTypeList.value = res.data
+      fileTypeOptions.value = res.data
     })
   }
 
@@ -1442,24 +1430,21 @@
 
   // 文件类型提交
   const documentTypeSubmit = value => {
-    console.log(value)
-    ruleForm.value.fileTypeIds = value.map(i => i.fileTypeId)
-    // const index = state.cache.formData.findIndex(
-    //   i => i.id === kDialogOpenId.value
-    // )
-    // if (index > -1) {
-    //   if (state.cache.formData[index].defaultAttribute.multiple) {
-    //     state.cache.formData[index].values = value.map(i => i.id)
-    //   } else {
-    //     state.cache.formData[index].values = value[0].id
-    //   }
-    //   state.cache.formData[index].options = value.map(i => {
-    //     return {
-    //       label: i.name,
-    //       value: i.id
-    //     }
-    //   })
-    // }
+    ruleForm.value.fileTypeIds = value.map(i => i.fileTypeId || i.id)
+    ruleForm.value.fileTypeList = value.map(i => {
+      return {
+        fileTypeId: i.fileTypeId || i.id,
+        includeChild: i.includeChild ? '1' : '0'
+      }
+    })
+    documentTypeSelected.value = value.map(v => {
+      return {
+        ...v,
+        type: 'fileType',
+        id: v.fileTypeId || v.id,
+        name: v.fileTypeName || v.name
+      }
+    })
   }
 
   // 盖前采集人脸
@@ -1574,10 +1559,7 @@
       .ruleView(router.currentRoute.value.query.ruleBusinessId)
       .then(res => {
         const data = res.data
-        // data.fileTypeIds = data.fileTypes.map(i => i.fileTypeId)
-        // data.runFaceUser = data.runFaceUser.split(',')
         data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
-        // data.remoteUsers = data.remoteSealUserList
         remoteUsersList.value = data.remoteSealUserList.map(i => {
           return {
             label: i.userName,
@@ -1585,7 +1567,6 @@
           }
         })
         data.videoUsers = data.remoteVideoList.map(i => i.userId)
-        // data.videoUsers = data.remoteVideoList
         videoUsersList.value = data.remoteVideoList.map(i => {
           return {
             label: i.userName,
@@ -1596,8 +1577,15 @@
         ruleBusinessNo = data.ruleBusinessNo
         data.fileTypeIds = data.fileTypeList.map(v => v.fileTypeId)
         ruleForm.value = data
+        console.log(data.fileTypeList, '====')
         documentTypeSelected.value = data.fileTypeList.map(v => {
-          return { ...v, type: 'fileType' }
+          return {
+            ...v,
+            type: 'fileType',
+            id: v.fileTypeId,
+            name: v.fileTypeName,
+            includeChild: v.includeChild === '1'
+          }
         })
       })
   }
