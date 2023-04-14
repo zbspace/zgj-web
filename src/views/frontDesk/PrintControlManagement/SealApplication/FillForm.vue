@@ -184,9 +184,9 @@
       :mode="1"
       @on-confirm="confirmTip"
       @on-cancel="cancelTip"
-      title="保存模版"
+      title="删除模版"
     >
-      若当前文件类型已有模版则会覆盖，若当前文件类型没有模板则会创建，请问确定要保存吗？
+      请问确定要删除吗？
     </JyMessageBox>
   </div>
 </template>

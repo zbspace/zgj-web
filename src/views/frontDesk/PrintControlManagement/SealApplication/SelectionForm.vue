@@ -186,6 +186,12 @@
           </div>
         </div>
       </div>
+      <div
+        v-if="templateList.length + validTemplates.length === 0"
+        class="data-null"
+      >
+        <img src="@/assets/svg/common/data_null.svg" />
+      </div>
       <template #footer><span></span></template>
     </JyDialog>
 
@@ -577,5 +583,11 @@
         }
       }
     }
+  }
+  .data-null {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 460px;
   }
 </style>
