@@ -79,8 +79,7 @@ api.templateClearInvalid = data => {
 api.templateView = data => {
   return request({
     method: 'GET',
-    url: '/sealApply/template/view',
-    params: data
+    url: `/sealApply/template/view/${data}`
   })
 }
 // 附件上传
