@@ -160,6 +160,19 @@
       return Promise.reject(error)
     }
   }
+
+  /**
+   * 获取表单单个字段值
+   * @param {*} fieldName 字段名称
+   */
+  const getFieldValue = async fieldName => {
+    try {
+      return vFormRef.value.getFieldValue(fieldName)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
   // 设置表单数据对象
   const setFormData = data => {
     vFormRef.value.setFormData(data)
@@ -298,7 +311,8 @@
     setFormColumnBasic,
     setFormTemplate,
     initDesigner,
-    disableForm
+    disableForm,
+    getFieldValue
   })
 </script>
 
