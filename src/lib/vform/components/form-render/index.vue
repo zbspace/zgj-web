@@ -953,14 +953,13 @@
 
       getFormData(needValidation = true) {
         const self = this
+        if (!needValidation) {
+          return this.formDataModel
+        }
         const additionalList = this.getAdditionalList()
         additionalList.forEach(data => {
           Object.assign(this.formDataModel, data)
         })
-
-        if (!needValidation) {
-          return this.formDataModel
-        }
 
         if (this.requiredMsgList.length <= 0) {
           // 扩展字段取值加入formData
