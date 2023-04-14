@@ -158,7 +158,7 @@
     },
     height: {
       type: Number,
-      default: 500
+      default: 600
     },
     fullscreen: {
       type: Boolean,
@@ -286,6 +286,7 @@
     // overflow-y: auto;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     // border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    min-height: 300px;
   }
 
   .footer-custom {

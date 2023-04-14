@@ -181,11 +181,7 @@
         </el-scrollbar>
       </el-tab-pane>
 
-      <el-tab-pane
-        :label="i18nt('designer.setting.dataSource')"
-        name="3"
-        v-if="userType === 'root'"
-      >
+      <el-tab-pane :label="i18nt('designer.setting.dataSource')" name="3">
         <el-scrollbar
           class="ds-setting-scrollbar"
           :style="{ height: scrollerHeight }"

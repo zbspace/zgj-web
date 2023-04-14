@@ -2,9 +2,9 @@
   <div>
     <VFormRender
       v-if="props.mode === 'render'"
-      :form-json="formJson"
-      :form-data="formData"
-      :option-data="optionData"
+      :form-json="props.formJson"
+      :form-data="props.formData"
+      :optionData="props.optionData"
       ref="vFormRef"
       @formChange="formChange"
       @appendButtonClick="appendButtonClick"
@@ -173,6 +173,18 @@
     }
   }
 
+  /**
+   * 重新加载选项数据
+   * @param widgetNames 指定重新加载的组件名称或组件名数组，不传则重新加载所有选项字段
+   */
+  const reloadOptionData = async widgetNames => {
+    try {
+      return vFormRef.value.reloadOptionData(widgetNames)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
   // 设置表单数据对象
   const setFormData = data => {
     vFormRef.value.setFormData(data)
@@ -312,7 +324,8 @@
     setFormTemplate,
     initDesigner,
     disableForm,
-    getFieldValue
+    getFieldValue,
+    reloadOptionData
   })
 </script>
 

@@ -102,17 +102,18 @@
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
-      :height="600"
+      :height="300"
       @close="submitLibraryForm"
       :key="fromState.title"
+      :destroyOnClose="true"
     >
-      <v-form-render
+      <JyVform
+        mode="render"
         :form-json="fromState.formJson"
-        :form-data="fromState.formJson"
         :option-data="fromState.optionData"
         :ref="fromState.vFormLibraryRef"
       >
-      </v-form-render>
+      </JyVform>
     </JyDialog>
     <!-- 人员选择  -->
     <kDepartOrPersonVue
@@ -136,24 +137,15 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
-  // import componentsTree from '../../components/tree'
-  // import componentsBreadcrumb from '../../components/breadcrumb'
   import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/JyTabs.vue'
   import componentsLayout from '../../components/Layout.vue'
   import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import StampApplicationJson from '@/views/addDynamicFormJson/StampApplication.json'
   import StampChangeJson from '@/views/addDynamicFormJson/StampChange.json'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
@@ -640,7 +632,6 @@
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    // console.log(row, column, cell, event);
     if (column.property === '3') {
       state.componentsDocumentsDetails.show = true
     }
@@ -706,13 +697,6 @@
       showDepPerDialog.value = true
     }
   }
-
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-  })
 </script>
 <style lang="scss" scoped>
   .PrintControlManagement-ApplicationForSeal {

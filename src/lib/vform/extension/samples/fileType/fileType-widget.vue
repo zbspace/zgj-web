@@ -38,13 +38,14 @@
         </svg>
       </template>
       <el-option
-        v-for="item in fileTypeOptions"
-        :key="item.fileTypeId"
-        :label="item.fileTypeName"
-        :value="item.fileTypeId"
+        v-for="item in field.options.optionItems"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
       >
       </el-option>
     </el-select>
+
     <template v-if="isReadMode">
       <span class="readonly-mode-field">{{ contentForReadMode }}</span>
     </template>
@@ -114,7 +115,6 @@
         fieldModel: null,
         fileTypeName: '',
         fileTypeId: '',
-        fileTypeOptions: [],
         showDocumentTypeDialog: false,
         rules: [
           {
@@ -145,21 +145,24 @@
       this.registerToRefList()
       this.initEventHandler()
       this.initFieldModel()
+      this.initOptionItems()
     },
     beforeUnmount() {
       this.unregisterFromRefList()
     },
     methods: {
       setRequiredTextShow(v) {
+        // eslint-disable-next-line vue/no-mutating-props
         this.field.options.requiredTextShow = v
       },
       documentTypeSubmit(list) {
         if (list.length) {
           this.fieldModel = list[0].fileTypeId
           this.fileTypeName = list[0].fileTypeName
-          this.fileTypeOptions.splice(0, 1, {
-            fileTypeName: this.fileTypeName,
-            fileTypeId: this.fieldModel
+          // eslint-disable-next-line vue/no-mutating-props
+          this.field.options.optionItems.push({
+            label: this.fileTypeName,
+            value: this.fieldModel
           })
           this.setRequiredTextShow(false)
         } else {

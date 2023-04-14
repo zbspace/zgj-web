@@ -450,7 +450,7 @@ export const fileTypeSchema = {
   icon: 'wenjianleixing1',
   formItemFlag: true,
   options: {
-    name: '',
+    name: 'fileTypeId',
     label: '文件类型',
     nameDisabled: true,
     labelAlign: 'right',
@@ -472,12 +472,13 @@ export const fileTypeSchema = {
     dsEnabled: false, // 是否使用数据源数据
     dsName: '', // 数据源名称
     dataSetName: '', // 数据集名称
-    labelKey: 'label',
-    valueKey: 'value',
     required: true,
     requiredHint: '',
     validation: '',
     validationHint: '',
+    labelKey: 'fileTypeName',
+    valueKey: 'fileTypeId',
+    optionItems: '',
     // -------------------
     customClass: '', // 自定义css类名
     labelIconClass: null,
