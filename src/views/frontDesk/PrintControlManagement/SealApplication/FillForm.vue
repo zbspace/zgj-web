@@ -145,7 +145,7 @@
         <div class="fixed" v-if="step === 'one'">
           <div class="ap-fixed">
             <el-button type="primary" @click="clickNextStep">下一步</el-button>
-            <el-button class="ap-fixed-save">
+            <el-button class="ap-fixed-save" @click="saveTem">
               <span class="ap-fixed-save-text"> 保存模板 </span>
               <el-tooltip
                 class="box-item"
@@ -317,6 +317,28 @@
           }
         })
     })
+  }
+
+  // 保存模版
+  const saveTem = () => {
+    // 名称-文件类型必填
+    refFillFormInformation.value.getFormData(false).then(formData => {
+      if (!formData.fileTypeId && !formData.applyName) {
+        ElMessage.warning('单据名称和文件类型必填，否则不允许保存模板')
+        return
+      }
+      sealApply
+        .templateAdd({
+          formVersionId: formVersionId.value,
+          templateName: formData.applyName,
+          fileTypeId: formData.fileTypeId,
+          templateValue: `${formData}`
+        })
+        .then(res => {
+          ElMessage.success('保存模板成功')
+        })
+    })
+    // 每个文件类型只能保存一个模版
   }
 
   function changeFlow() {

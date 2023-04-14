@@ -99,7 +99,10 @@
                   去申请
                 </el-button>
               </div>
-              <div class="column-list-template" @click="clickSavedTemplate">
+              <div
+                class="column-list-template"
+                @click="clickSavedTemplate(item.formVersionId)"
+              >
                 <span class="text">保存的模板</span>
                 <i class="icon">
                   <svg class="iconpark-icon"><use href="#icon3"></use></svg>
@@ -129,37 +132,67 @@
       @close="submitForm"
     >
       <div class="optional">
-        <div class="optional-list" v-for="n in 15" :key="n">
+        <div
+          class="optional-list"
+          v-for="(item, index) in templateList"
+          :key="index"
+        >
           <div class="list-title">
-            <div class="list-title-desc"> 文件类型 </div>
+            <div class="list-title-desc"> {{ item.fileTypeName }} </div>
             <div class="list-title-time"> 2022-09-11 10:21:55 </div>
           </div>
           <div class="optional-list-desc">
             <div class="optional-list-desc-text">
-              单据名称单据名称单据名称单据名称单据名称单据名称
+              {{ item.templateName }}
             </div>
             <div class="optional-list-desc-but">
-              <div class="button shiyong">使用</div>
+              <div
+                class="button shiyong"
+                @click="useTemplate(item.useSealApplyTemplateId)"
+              >
+                使用
+              </div>
               <div class="button shanchu">删除</div>
             </div>
           </div>
         </div>
-        <JyLabel label="失效模版" btn1="一键清除">
+        <JyLabel
+          label="失效模版"
+          btn1="一键清除"
+          v-show="validTemplates.length !== 0"
+        >
           <template #tip>
             <span class="tip"> 表单已更新，历史表单对应的模板会自动失效 </span>
           </template>
         </JyLabel>
+        <div
+          class="optional-list1"
+          v-for="(item, index) in validTemplates"
+          :key="index"
+          v-show="validTemplates.length !== 0"
+        >
+          <div class="list-title">
+            <div class="list-title-desc"> {{ item.fileTypeName }} </div>
+            <div class="list-title-time"> 2022-09-11 10:21:55 </div>
+          </div>
+          <div class="optional-list-desc">
+            <div class="optional-list-desc-text">
+              {{ item.templateName }}
+            </div>
+          </div>
+        </div>
       </div>
     </JyDialog>
   </div>
 </template>
 <script setup>
-  import { ref, onBeforeMount, onMounted } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import componentsLayout from '@/views/components/Layout.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import { Search } from '@element-plus/icons-vue'
   import { debounce } from '@/utils/tools'
+  import { ElMessage } from 'element-plus'
 
   const router = useRouter()
   const showFormDialog = ref(false)
@@ -176,9 +209,27 @@
     })
   }
 
-  // 点击 保存的模板
-  function clickSavedTemplate() {
-    showFormDialog.value = true
+  const templateList = ref([])
+  const validTemplates = ref([])
+  // 选择模版
+  function clickSavedTemplate(formVersionId) {
+    templateList.value = []
+    validTemplates.value = []
+    sealApply.templateList({ formVersionId }).then(res => {
+      if (res.data) {
+        templateList.value = res.data.templates ? res.data.templates : []
+        validTemplates.value = res.data.validTemplates
+          ? res.data.validTemplates
+          : []
+        showFormDialog.value = true
+      } else {
+        ElMessage.warning('暂无模版')
+      }
+    })
+  }
+
+  const useTemplate = id => {
+    sealApply.templateView(id).then(res => {})
   }
 
   // 提交 保存的模板
@@ -203,11 +254,7 @@
       })
   }
 
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
   onMounted(() => {
-    // console.log(`the component is now mounted.`)
     applyList()
   })
 </script>
@@ -419,46 +466,58 @@
         padding: 1rem;
         box-sizing: border-box;
         flex-flow: wrap;
-        .list-title {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 0.5rem;
-          .list-title-desc {
-            width: calc(100% - 10rem);
-            color: var(--jy-color-text-1);
-          }
-          .list-title-time {
-            width: 10rem;
-            text-align: right;
-            color: var(--jy-color-text-3);
-            font-size: var(--jy-font-size-body-1);
-          }
+      }
+
+      .optional-list1 {
+        display: flex;
+        // border: 1px solid var(--jy-color-border-1);
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: var(--jy-border-radius-4);
+        margin: 1rem 0rem;
+        padding: 1rem;
+        box-sizing: border-box;
+        flex-flow: wrap;
+      }
+
+      .list-title {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        .list-title-desc {
+          width: calc(100% - 10rem);
+          color: var(--jy-color-text-1);
         }
-        .optional-list-desc {
-          width: 100%;
+        .list-title-time {
+          width: 10rem;
+          text-align: right;
+          color: var(--jy-color-text-3);
+          font-size: var(--jy-font-size-body-1);
+        }
+      }
+      .optional-list-desc {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .optional-list-desc-text {
+          width: calc(100% - 10rem);
+          color: var(--jy-color-text-3);
+        }
+        .optional-list-desc-but {
           display: flex;
-          justify-content: space-between;
-          .optional-list-desc-text {
-            width: calc(100% - 10rem);
-            color: var(--jy-color-text-3);
+          .button {
+            padding: 0.2rem 1rem;
+            border-radius: var(--jy-border-radius-2);
+            border: 1px solid var(--jy-color-border-1);
+            font-size: var(--jy-font-size-body-1);
+            margin-left: 0.5rem;
+            color: var(--jy-color-text-2);
+            cursor: pointer;
           }
-          .optional-list-desc-but {
-            display: flex;
-            .button {
-              padding: 0.2rem 1rem;
-              border-radius: var(--jy-border-radius-2);
-              border: 1px solid var(--jy-color-border-1);
-              font-size: var(--jy-font-size-body-1);
-              margin-left: 0.5rem;
-              color: var(--jy-color-text-2);
-              cursor: pointer;
-            }
-            .shiyong {
-              color: var(--jy-info-6);
-              background-color: var(--jy-info-1);
-              border-color: var(--jy-info-1);
-            }
+          .shiyong {
+            color: var(--jy-info-6);
+            background-color: var(--jy-info-1);
+            border-color: var(--jy-info-1);
           }
         }
       }
