@@ -153,9 +153,9 @@
     return res
   }
   // 获取表单数据对象
-  const getFormData = async () => {
+  const getFormData = async (needValidation = true) => {
     try {
-      return vFormRef.value.getFormData()
+      return vFormRef.value.getFormData(needValidation)
     } catch (error) {
       return Promise.reject(error)
     }
