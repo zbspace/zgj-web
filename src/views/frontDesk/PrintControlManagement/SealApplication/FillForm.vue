@@ -314,7 +314,6 @@
       .then(res => {
         ElMessage.success('保存模板成功')
         tipVisible.value = false
-        router.go(-1)
       })
       .catch(() => {
         tipVisible.value = false
@@ -359,7 +358,6 @@
     formDataTem.value = null
     // 名称-文件类型必填
     refFillFormInformation.value.getFormData(false).then(formData => {
-      console.log(formData.fileTypeIdm, '===fileTypeId')
       if (!formData.fileTypeId && !formData.applyName) {
         ElMessage.warning('单据名称和文件类型必填，否则不允许保存模板')
         return
