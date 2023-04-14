@@ -105,5 +105,11 @@ api.getMoneyType = () => {
     url: 'sealApply/moneyType/list'
   })
 }
-
+// 删除模版
+api.deleteTem = data => {
+  return request({
+    method: 'POST',
+    url: `/sealApply/template/delete/${data}`
+  })
+}
 export default api

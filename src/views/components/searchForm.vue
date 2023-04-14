@@ -705,7 +705,7 @@
   // 点击表单
   function clickElement(item, index, multiple) {
     derivableRef[item.id].blur()
-    if (item.defaultAttribute.type === 'document') {
+    if (item.defaultAttribute.type === 'fileType') {
       showDocumentTypeDialog.value = true
       multipleDocumetType.value = multiple
       kDialogOpenId.value = item.id

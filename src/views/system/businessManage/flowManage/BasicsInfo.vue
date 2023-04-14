@@ -303,11 +303,12 @@
 
           searchSelectedDocument.value = val.fileType.map(item => {
             return {
-              fileTypeId: item.fileTypeId,
-              fileTypeName: item.fileTypeName,
-              type: 'document',
+              id: item.id || item.fileTypeId,
+              name: item.name || item.fileTypeName,
+              type: 'fileType',
               includeChild: item.includeChild,
-              haveChildren: item.haveChildren
+              haveChildren: item.haveChildren,
+              idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
             }
           })
         }
@@ -461,7 +462,7 @@
         fileTypeId: item.fileTypeId,
         fileTypeName: item.fileTypeName,
         includeChild: item.includeChild ? '1' : '0',
-        type: 'document'
+        type: 'fileType'
       })
       selectIds.push(item.fileTypeId)
     })

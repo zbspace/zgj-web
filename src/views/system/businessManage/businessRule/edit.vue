@@ -1597,7 +1597,7 @@
         data.fileTypeIds = data.fileTypeList.map(v => v.fileTypeId)
         ruleForm.value = data
         documentTypeSelected.value = data.fileTypeList.map(v => {
-          return { ...v, type: 'document' }
+          return { ...v, type: 'fileType' }
         })
       })
   }

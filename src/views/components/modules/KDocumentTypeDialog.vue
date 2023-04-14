@@ -71,7 +71,7 @@
                 />
               </svg>
             </div>
-            <div class="select-label">{{ item.name || item.fileTypeName }}</div>
+            <div class="select-label">{{ item.name }}</div>
           </div>
           <div style="display: flex; height: 25px">
             <el-switch
@@ -187,7 +187,7 @@
   if (props.searchSelected.length > 0) {
     // allSelected.value = toRefs(props.searchSelected)
     allSelected.value = props.searchSelected.filter(
-      item => item.type === 'document'
+      item => item.type === 'fileType'
     )
   }
 
@@ -238,8 +238,8 @@
       changeResult.value.forEach(item => {
         handleResult.push({
           ...item,
-          id: item.fileTypeId,
-          name: item.fileTypeName
+          fileTypeId: item.id,
+          fileTypeName: item.name
         })
       })
     }

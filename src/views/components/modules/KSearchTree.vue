@@ -72,7 +72,7 @@
                 </svg>
               </div>
             </div>
-            <div v-else-if="props.tabActive === 'document'">
+            <div v-else-if="props.tabActive === 'fileType'">
               <!-- 未选 -->
               <div
                 v-show="!item.selectedStatus && !item.disabled"
@@ -358,7 +358,7 @@
               viewBox="0 0 10 12"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              v-show="item.type === 'document'"
+              v-show="item.type === 'fileType'"
             >
               <path
                 fill-rule="evenodd"

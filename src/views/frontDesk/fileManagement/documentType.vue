@@ -448,11 +448,10 @@
   const queryVisibleRByFileType = async fileTypeId => {
     try {
       const res = await fileManageService.queryVisibleRByFileType(fileTypeId)
-      userSelected.value = [
-        ...res.data.organs,
-        ...res.data.roles,
-        ...res.data.users
-      ]
+      const roles = res.data.roles ? res.data.roles : []
+      const organs = res.data.organs ? res.data.organs : []
+      const users = res.data.users ? res.data.users : []
+      userSelected.value = [...organs, ...roles, ...users]
       showDepPerDialog.value = true
     } catch (error) {
       console.log('--->', error)
