@@ -157,8 +157,8 @@
       },
       documentTypeSubmit(list) {
         if (list.length) {
-          this.fieldModel = list[0].fileTypeId
-          this.fileTypeName = list[0].fileTypeName
+          this.fieldModel = list[0].id
+          this.fileTypeName = list[0].name
           // eslint-disable-next-line vue/no-mutating-props
           this.field.options.optionItems = []
           this.field.options.optionItems.push({
