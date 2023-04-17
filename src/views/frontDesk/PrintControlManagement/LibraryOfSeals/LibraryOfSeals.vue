@@ -151,14 +151,15 @@
       </template>
     </JyTable>
     <!-- 单据详情 -->
-    <div class="ap-box">
+    <!-- <div class="ap-box">
       <componentsDocumentsDetails
         :show="state.componentsDocumentsDetails.show"
         :visible="state.componentsDocumentsDetails.visible"
         @clickClose="clickClose"
       >
       </componentsDocumentsDetails>
-    </div>
+    </div> -->
+    <Detail :sealId="sealId" v-model="state.componentsDocumentsDetails.show" />
 
     <!-- 印章库 -->
     <JyDialog
@@ -273,11 +274,6 @@
                   placeholder="请选择"
                 />
                 <div class="ap-box-contBox-icon" v-if="!state.form.sealId">
-                  <!-- <el-icon
-                    v-if="state.form.keepUserName"
-                    @click="clear('keepUser')"
-                    ><CircleClose
-                  /></el-icon> -->
                   <img
                     @click="chooseOrgan('keepUser', ['user'], false)"
                     class="ap-box-contBox-icon-img"
@@ -337,7 +333,7 @@
           <el-upload
             v-model:file-list="fileList"
             class="upload-demo"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            action=""
             :on-change="handleChange"
           >
             <div class="btnContainer">
@@ -434,7 +430,6 @@
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import { Paperclip } from '@element-plus/icons-vue'
   import componentsTree from '@/views/components/tree.vue'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import JyTable from '@/views/components/JyTable.vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { ElMessage } from 'element-plus'
@@ -447,6 +442,7 @@
   import { useRouter } from 'vue-router'
   import downIcon from '@/assets/svg/sangedian.svg'
   import downIconGray from '@/assets/svg/sangedian-gray.svg'
+  import Detail from './detail'
   const router = useRouter()
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
@@ -456,6 +452,7 @@
   const depChoose = ref(null)
   const table = ref(null)
   const queryParams = ref({})
+  const sealId = ref(null)
 
   // 新增印章
   const add = () => {
@@ -948,6 +945,7 @@
     // console.log(row, column, cell, event);
     if (column.property === 'sealName') {
       state.componentsDocumentsDetails.show = true
+      sealId.value = row.sealId
     }
   }
   // 点击关闭详情

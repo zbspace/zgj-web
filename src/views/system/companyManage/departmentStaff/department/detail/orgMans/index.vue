@@ -2,8 +2,8 @@
 * @Descripttion index.vue
 * @FileName index.vue
 * @Author zb
-* @module 
-* @LastEditTime 2023-03-29 16:26:49
+* @module 保管记录
+* @LastEditTime 2023-04-10 10:19:14
 !-->
 <template>
   <JyTable
@@ -13,40 +13,38 @@
     :highlightCurrentRow="true"
   >
     <el-table-column type="index" label="序号" width="60"> </el-table-column>
-    <el-table-column label="版本号" prop="modifyDatetime"> </el-table-column>
-    <el-table-column label="版本时间" prop="formVerison"> </el-table-column>
+    <el-table-column label="人员列表" prop="userName"> </el-table-column>
+    <el-table-column label="账号" prop="accountNo"> </el-table-column>
   </JyTable>
 </template>
 
 <script setup>
   import { ref, onMounted } from 'vue'
-  import formManageService from '@/api/system/formManagement'
+  import departmentService from '@/api/system/companyManagement/department'
 
   const tableData = ref([])
   const loading = ref(false)
 
   const props = defineProps({
-    formMessageId: {
+    organId: {
       type: String,
       default: ''
     }
   })
 
-  const queryHisVersion = async () => {
+  const userInfoList = async () => {
     loading.value = true
-    const res = await formManageService.queryHisVersion({
-      operationId: props.formMessageId
-    })
+    const res = await departmentService.userInfoList(props.organId)
     tableData.value = res.data || []
     loading.value = false
   }
 
   onMounted(() => {
-    queryHisVersion()
+    userInfoList()
   })
 </script>
 
 <script>
-  export default { name: 'HisVersion' }
+  export default { name: 'OrgMans' }
 </script>
 <style lang="scss" scoped></style>

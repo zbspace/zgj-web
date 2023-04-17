@@ -2,8 +2,8 @@
 * @Descripttion index.vue
 * @FileName index.vue
 * @Author zb
-* @module 
-* @LastEditTime 2023-03-29 16:26:49
+* @module 操作记录
+* @LastEditTime 2023-04-10 10:19:14
 !-->
 <template>
   <JyTable
@@ -13,40 +13,40 @@
     :highlightCurrentRow="true"
   >
     <el-table-column type="index" label="序号" width="60"> </el-table-column>
-    <el-table-column label="版本号" prop="modifyDatetime"> </el-table-column>
-    <el-table-column label="版本时间" prop="formVerison"> </el-table-column>
+    <el-table-column label="操作人" prop="operator"> </el-table-column>
+    <el-table-column label="操作时间" prop="operateDatetime"> </el-table-column>
+    <el-table-column label="操作记录" prop="operateAction"> </el-table-column>
+    <el-table-column label="操作说明" prop="operateDesc"> </el-table-column>
   </JyTable>
 </template>
 
 <script setup>
   import { ref, onMounted } from 'vue'
-  import formManageService from '@/api/system/formManagement'
+  import sealService from '@/api/frontDesk/sealManage/libraryOfSeals'
 
   const tableData = ref([])
   const loading = ref(false)
 
   const props = defineProps({
-    formMessageId: {
+    sealId: {
       type: String,
       default: ''
     }
   })
 
-  const queryHisVersion = async () => {
+  const operationList = async () => {
     loading.value = true
-    const res = await formManageService.queryHisVersion({
-      operationId: props.formMessageId
-    })
+    const res = await sealService.operationList(props.sealId)
     tableData.value = res.data || []
     loading.value = false
   }
 
   onMounted(() => {
-    queryHisVersion()
+    operationList()
   })
 </script>
 
 <script>
-  export default { name: 'HisVersion' }
+  export default { name: 'OperationRecord' }
 </script>
 <style lang="scss" scoped></style>

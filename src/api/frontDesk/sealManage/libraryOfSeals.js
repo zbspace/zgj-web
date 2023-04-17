@@ -81,11 +81,10 @@ api.sealInfoChange = data => {
   })
 }
 // 印章详情
-api.sealDetailInfo = params => {
+api.sealDetailInfo = sealId => {
   return request({
     method: 'GET',
-    url: '/sealInfo/info',
-    params
+    url: '/sealInfo/info/' + sealId
   })
 }
 // 印章还原
@@ -112,11 +111,17 @@ api.list = params => {
   })
 }
 // 印章保管记录
-api.sealInfoKeepList = params => {
+api.sealInfoKeepList = sealId => {
   return request({
     method: 'GET',
-    url: '/sealInfo/keep/list',
-    params
+    url: '/sealInfo/keep/list/' + sealId
+  })
+}
+// 印章操作记录
+api.operationList = sealId => {
+  return request({
+    method: 'GET',
+    url: '/sealInfo/operation/list/' + sealId
   })
 }
 // 印章编码

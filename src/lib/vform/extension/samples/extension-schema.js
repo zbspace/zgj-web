@@ -67,6 +67,9 @@ export const sealNameSchema = {
     clearable: true,
     requiredHint: '',
     dsEnabled: false, // 是否使用数据源数据
+    labelKey: 'seal',
+    valueKey: 'sealId',
+    optionItems: [],
     // -------------------
     customClass: '', // 自定义css类名
     // -------------------

@@ -76,15 +76,19 @@
       </template>
     </JyTable>
     <!-- </componentsLayout> -->
-    <!-- 部门与单位详情 -->
-    <div class="ap-box">
+    <!-- <div class="ap-box">
       <componentsDocumentsDetails
         :show="state.componentsDocumentsDetails.show"
         :visible="state.componentsDocumentsDetails.visible"
         @clickClose="clickClose"
       >
       </componentsDocumentsDetails>
-    </div>
+    </div> -->
+    <!-- 部门与单位详情 -->
+    <Detail
+      :organId="organId"
+      v-model="state.componentsDocumentsDetails.show"
+    />
     <!-- 新增部门 -->
     <JyDialog
       @update:show="showFormDialog = $event"
@@ -200,12 +204,12 @@
 <script setup>
   import { reactive, onBeforeMount, ref, nextTick } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import department from '@/api/system/companyManagement/department'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/department.json'
   import { getItem } from '@/utils/storage'
+  import Detail from './detail'
 
   const showFormDialog = ref(false)
   const showDepPerDialog = ref(false)
@@ -391,52 +395,54 @@
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    department.detail(row.organId).then(res => {
-      const data = res.data
-      const detail = [
-        {
-          label: '部门名称',
-          value: data.organName
-        },
-        {
-          label: '部门编码',
-          value: data.organNo
-        },
-        {
-          label: '组织类型',
-          value: data.organTypeName
-        },
-        {
-          label: '组织人数',
-          value: data.organUserNum || 0
-        },
-        {
-          label: '组织主管',
-          value: data.organLeaderName
-        },
-        {
-          label: '上级组织',
-          value: data.organPName
-        },
-        {
-          label: '更新时间',
-          value: data.modifyDatetime,
-          lineStyle: {
-            width: '100%'
-          }
-        },
-        {
-          label: '备注',
-          value: data.readme,
-          lineStyle: {
-            width: '100%'
-          }
-        }
-      ]
-      state.componentsDocumentsDetails.visible[0]['basicInformation-data'] =
-        detail
-      state.componentsDocumentsDetails.show = true
-    })
+    organId.value = row.organId
+    state.componentsDocumentsDetails.show = true
+    // department.detail(row.organId).then(res => {
+    //   const data = res.data
+    //   const detail = [
+    //     {
+    //       label: '部门名称',
+    //       value: data.organName
+    //     },
+    //     {
+    //       label: '部门编码',
+    //       value: data.organNo
+    //     },
+    //     {
+    //       label: '组织类型',
+    //       value: data.organTypeName
+    //     },
+    //     {
+    //       label: '组织人数',
+    //       value: data.organUserNum || 0
+    //     },
+    //     {
+    //       label: '组织主管',
+    //       value: data.organLeaderName
+    //     },
+    //     {
+    //       label: '上级组织',
+    //       value: data.organPName
+    //     },
+    //     {
+    //       label: '更新时间',
+    //       value: data.modifyDatetime,
+    //       lineStyle: {
+    //         width: '100%'
+    //       }
+    //     },
+    //     {
+    //       label: '备注',
+    //       value: data.readme,
+    //       lineStyle: {
+    //         width: '100%'
+    //       }
+    //     }
+    //   ]
+    //   state.componentsDocumentsDetails.visible[0]['basicInformation-data'] =
+    //     detail
+    //   state.componentsDocumentsDetails.show = true
+    // })
   }
 
   function customClick(row, column, cell, event) {
@@ -511,6 +517,7 @@
           firstNode.value.loaded = false
           firstNode.value.expand()
           table.value.reloadData()
+          loadFn()
         })
         .finally(() => {
           showToastDialog.value = false

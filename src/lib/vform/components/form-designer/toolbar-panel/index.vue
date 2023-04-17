@@ -180,10 +180,10 @@
         </div>
         <template #footer>
           <div class="dialog-footer">
-            <!-- <el-button type="primary" @click="getFormData">{{
+            <el-button type="primary" @click="getFormData">{{
               i18nt('designer.hint.getFormData')
             }}</el-button>
-            <el-button type="primary" @click="resetForm">{{
+            <!-- <el-button type="primary" @click="resetForm">{{
               i18nt('designer.hint.resetForm')
             }}</el-button>
             <el-button type="primary" @click="setFormDisabled">{{

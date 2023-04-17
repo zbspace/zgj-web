@@ -40,9 +40,9 @@
   })
   const emit = defineEmits([])
 
-  const queryOperation = () => {
+  const queryOperation = async () => {
     loading.value = true
-    const res = formManageService.queryOperation({
+    const res = await formManageService.queryOperation({
       formMessageId: props.formMessageId
     })
     tableData.value = res.data || []

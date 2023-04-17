@@ -21,6 +21,14 @@ api.subOrganList = organId => {
   })
 }
 
+// 获取 组织人员
+api.userInfoList = organId => {
+  return request({
+    method: 'GET',
+    url: `/organ/userInfoList/${organId}`
+  })
+}
+
 // 部门详情
 api.detail = organId => {
   return request({

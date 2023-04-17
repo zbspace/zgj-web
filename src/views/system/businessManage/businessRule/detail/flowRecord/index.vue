@@ -32,9 +32,9 @@
     }
   })
 
-  const queryHisVersion = () => {
+  const queryHisVersion = async () => {
     loading.value = true
-    const res = formManageService.queryHisVersion({
+    const res = await formManageService.queryHisVersion({
       operationId: props.formMessageId
     })
     tableData.value = res.data || []
