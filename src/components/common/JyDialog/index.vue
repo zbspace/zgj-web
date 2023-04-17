@@ -88,7 +88,13 @@
     <div class="content-custom" :style="{ height: height }">
       <!-- 默认插槽 -->
       <el-scrollbar>
-        <div style="width: calc(100% - 10px); padding-right: 24px">
+        <div
+          style="
+            width: calc(100% - 10px);
+            padding-right: 24px;
+            height: calc(100% - 40px);
+          "
+        >
           <slot> </slot>
         </div>
       </el-scrollbar>

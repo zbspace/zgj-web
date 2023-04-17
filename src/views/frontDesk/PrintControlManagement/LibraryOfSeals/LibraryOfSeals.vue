@@ -359,6 +359,7 @@
       :multiple="state.multiple"
       @update:searchSelected="submitSelectDepart"
       :searchSelected="state.searchSelected"
+      :userMin="visibleMin"
     >
     </kDepartOrPersonVue>
     <!-- 弹窗提示 -->
@@ -431,7 +432,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
+  import { reactive, onBeforeMount, ref } from 'vue'
   import { Paperclip } from '@element-plus/icons-vue'
   import componentsTree from '@/views/components/tree.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails'
@@ -940,9 +941,11 @@
   const closeChage = () => {
     showChangeDialog.value = false
   }
+
   const submitChange = () => {
     showChangeDialog.value = false
   }
+
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     // console.log(row, column, cell, event);
@@ -954,10 +957,9 @@
   function clickClose() {
     state.componentsDocumentsDetails.show = false
   }
+  const visibleMin = ref(0)
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(column)
-    console.log(cell)
     state.searchSelected = []
     if (column.sealStateId === '2') {
       return
@@ -985,9 +987,9 @@
             state.searchSelected.push(item)
           })
         }
-        console.log('state.searchSelected', state.searchSelected)
         showDepPerDialog.value = true
         state.tabsShow = ['organ', 'user', 'role']
+        visibleMin.value = 1
       })
     }
     if (cell.name === 't-zgj-seal.SetAvailable') {
@@ -1011,6 +1013,7 @@
         console.log('state.searchSelected', state.searchSelected)
         showDepPerDialog.value = true
         state.tabsShow = ['organ', 'user', 'role']
+        visibleMin.value = 0
       })
     }
     if (cell.name === 't-zgj-Delete') {
@@ -1049,6 +1052,7 @@
       changeRef.value.getSealInfo(column.sealId, state.typeList)
     }
   }
+
   const getSealsInfo = () => {
     state.searchSelectedKeepOrgan = []
     api.sealInfo(state.sealIds).then(res => {
@@ -1059,9 +1063,11 @@
       }
     })
   }
+
   const clickElement = (item, index) => {
     console.log(item)
   }
+
   const clickBatchButton = (item, datas) => {
     console.log(item)
     state.sealIds = ''
@@ -1113,11 +1119,13 @@
       depChoose.value = 't-zgj-seal.BatchSetVisibility'
       showDepPerDialog.value = true
       state.tabsShow = ['organ', 'user', 'role']
+      visibleMin.value = 0
     }
     if (item.name === 't-zgj-seal.BatchSetAvailable') {
       depChoose.value = 't-zgj-seal.BatchSetAvailable'
       showDepPerDialog.value = true
       state.tabsShow = ['organ', 'user', 'role']
+      visibleMin.value = 0
     }
   }
 
@@ -1151,6 +1159,7 @@
       table.value.reloadData()
     })
   }
+
   // 确定批量删除
   const sureBatchDel = () => {
     const list = state.componentsBatch.selectionData
@@ -1187,10 +1196,12 @@
       }
     })
   }
+
   // 关闭表单复制弹窗
   function closeBatchTabel() {
     state.showToastDialog.show = false
   }
+
   // 提交弹窗
   const submitElMessageBox = type => {
     console.log('state.sealIds', state.sealIds)
@@ -1208,6 +1219,7 @@
       apiOpt(type, api.sealInfoDestroy(state.sealIds))
     }
   }
+
   const apiOpt = (typeName, apiName) => {
     apiName.then(res => {
       if (res.code === 200) {
@@ -1218,6 +1230,7 @@
       }
     })
   }
+
   // 获取印章类型
   const typeList = () => {
     typeApis.list({ searchKey: '' }).then(res => {
@@ -1232,7 +1245,9 @@
       table.value.reloadData()
     })
   }
+
   const showDepPerDialog = ref(false)
+
   const submitSelectDepart = data => {
     if (data) {
       console.log(data)
@@ -1262,7 +1277,7 @@
           if (item.type === 'organ') {
             params.organs.push({
               id: item.id,
-              includeChild: item.haveChildren ? '1' : '0'
+              includeChild: item.includeChild
             })
           } else if (item.type === 'user') {
             params.userIds.push(item.id)
@@ -1295,6 +1310,7 @@
       }
     }
   }
+
   // 设置可见可用范围
   const setSealInfo = api => {
     api.then(res => {
@@ -1303,6 +1319,7 @@
       }
     })
   }
+
   // 获取员工详情
   const getStaffDetail = id => {
     state.searchSelectedKeepOrgan = []
@@ -1331,6 +1348,7 @@
       }
     })
   }
+
   const chooseOrgan = (type, tabs, multiple) => {
     state.multiple = multiple
     depChoose.value = type
@@ -1371,13 +1389,6 @@
     showDepPerDialog.value = true
   }
 
-  // const clear = type => {
-  //   if (type === 'keepUser') {
-  //     state.searchSelectedKeepUser = []
-  //   }
-  //   state.form[type + 'Id'] = ''
-  //   state.form[type + 'Name'] = ''
-  // }
   const currentChange = e => {
     console.log(e)
     queryParams.value = e.sealTypeId ? { sealTypeIds: e.sealTypeId } : null
@@ -1389,12 +1400,7 @@
     })
   }
   onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
     typeList()
-    // librarySealPage()
-  })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
   })
 </script>
 <style lang="scss" scoped>
