@@ -97,10 +97,10 @@
                 @click="getFileType"
               >
                 <el-option
-                  :label="item.name || item.scopeName"
-                  :value="item.id || item.scopeId"
+                  :label="item.name"
+                  :value="item.id"
                   v-for="item in rangeList"
-                  :key="item.id || item.scopeId"
+                  :key="item.id"
                 />
               </el-select>
               <div class="box-icon">
@@ -294,27 +294,22 @@
 
           handleScopeArr(cacheDataScope)
           handleFileArr(cacheFileScope)
-          searchSelected.value = cacheDataScope.map(item => {
-            return {
-              id: item.scopeId || item.id,
-              name: item.scopeName || item.name,
-              type: item.type,
-              includeChild: item.includeChild,
-              haveChildren: item.haveChildren,
-              idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
-            }
-          })
 
-          searchSelectedDocument.value = cacheFileScope.map(item => {
-            return {
-              id: item.id,
-              name: item.name,
-              type: 'fileType',
-              includeChild: item.includeChild === '1',
-              haveChildren: item.haveChildren,
-              idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
-            }
-          })
+          searchSelected.value = cacheDataScope
+          searchSelectedDocument.value = cacheFileScope
+          // searchSelected.value = cacheDataScope.map(item => {
+          //   return {
+          //     ...item,
+          //     idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
+          //   }
+          // })
+
+          // searchSelectedDocument.value = cacheFileScope.map(item => {
+          //   return {
+          //     ...item,
+          //     idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
+          //   }
+          // })
         }
       }
     }
@@ -361,17 +356,13 @@
       form.dataScope = []
       rangeList.value = val
       val.forEach(item => {
-        arr.push(item.id || item.scopeId)
-        // 初始化 form.dataScope
+        arr.push(item.id)
+
         form.dataScope.push({
-          scopeId: item.id || item.scopeId,
-          scopeName: item.name || item.scopeName,
+          scopeId: item.id,
+          scopeName: item.name,
           includeChild: item.includeChild,
-          scopeType: item.scopeType
-            ? item.scopeType
-            : item.type === 'user'
-            ? 1
-            : 2
+          scopeType: item.type === 'user' ? 1 : 2
         })
       })
       form.showDataScope = arr

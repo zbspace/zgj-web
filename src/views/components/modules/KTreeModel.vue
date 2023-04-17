@@ -106,7 +106,7 @@
     </div>
 
     <!-- 列表 -->
-    <div class="k-select-list">
+    <el-scrollbar class="k-select-list">
       <div class="k-column" v-for="(item, index) in cacheShowList" :key="index">
         <div class="k-tree-left">
           <!-- checkbox -->
@@ -490,7 +490,7 @@
           下级
         </div>
       </div>
-    </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -628,7 +628,8 @@
 
     .k-select-list {
       flex: 1;
-      overflow-y: auto;
+      height: 100%;
+      padding-right: 24px;
     }
     .k-column {
       display: flex;

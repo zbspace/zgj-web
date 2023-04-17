@@ -17,7 +17,7 @@
       <div class="selection-left user-select">
         <!-- tab栏 -->
 
-        <div v-if="firstShow">
+        <div v-if="firstShow" style="height: 100%">
           <KDocument
             ref="kdocument"
             :initQueryParams="props.queryParams"
@@ -47,6 +47,9 @@
           </div>
         </div>
 
+        <div v-show="allSelected.length === 0" class="null-img">
+          <img src="@/assets/svg/common/data_null.svg" />
+        </div>
         <!-- 文件类型 -->
         <div
           class="select-right-column p"
@@ -76,6 +79,8 @@
           <div style="display: flex; height: 25px">
             <el-switch
               v-model="item.includeChild"
+              active-value="1"
+              inactive-value="0"
               v-if="item.haveChildren && props.multiple"
               style="margin-right: 12px"
               @change="changeSwitch($event, item)"
@@ -109,7 +114,7 @@
 <script setup>
   /**
    * selectedStatus 0(未选中) 2（全部）
-   * includeChild 向下包含 Boolean
+   * includeChild 向下包含 String
    * apiModule: api对应的模块
    * queryParams: 请求参数
    * editDeploy: 修改选中项时，初始化已选
@@ -269,12 +274,24 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      height: 100%;
     }
 
     .selection-right {
       flex: 1;
       // height: 380px;
       overflow-y: auto;
+
+      .null-img {
+        height: calc(100% - 40px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 171px;
+          height: 122.5px;
+        }
+      }
 
       .select-right-column {
         display: flex;
@@ -313,5 +330,11 @@
         padding: 6px 0px 12px 24px;
       }
     }
+  }
+</style>
+
+<style lang="scss">
+  .el-scrollbar__view {
+    height: 100%;
   }
 </style>
