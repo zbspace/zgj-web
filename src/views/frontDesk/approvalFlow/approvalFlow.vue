@@ -960,6 +960,12 @@
                     }`,
               type: v.formColumnModel ? v.formColumnModel : '其他'
             })
+          } else if (v.formColumnNo === 'agentMan') {
+            formTableData.push({
+              label: v.formColumnName,
+              value: formData[item].unitNames,
+              unitIds: formData[item].unitIds
+            })
           } else if (v.formColumnNo === 'sealFile') {
             if (formData[item].fileIds?.length > 0) {
               console.log(
@@ -972,7 +978,7 @@
                     formData[item].fileIds.length > 1
                       ? `用印文件${k + 1}`
                       : '用印文件',
-                  value: cv.name,
+                  value: cv.fileOriginName,
                   type: v.formColumnModel ? v.formColumnModel : '其他',
                   fileUrl: cv.fileUrl
                 })
@@ -985,7 +991,7 @@
                     formData[item].fileAddIds.length > 1
                       ? `附加文件${k + 1}`
                       : '附加文件',
-                  value: cv.name,
+                  value: cv.fileOriginName,
                   type: v.formColumnModel ? v.formColumnModel : '其他',
                   fileUrl: cv.fileUrl
                 })
