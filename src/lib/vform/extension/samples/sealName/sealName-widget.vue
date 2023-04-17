@@ -269,6 +269,7 @@
       },
       setValue(value) {
         this.filedList = value
+        this.filedOptions = this.filedList
       },
 
       // 打开弹窗选择数据
