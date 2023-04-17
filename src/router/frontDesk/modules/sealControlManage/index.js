@@ -406,7 +406,7 @@ const routes = {
           },
           component: () =>
             import(
-              '@/views/frontDesk/PrintControlManagement/WorkbenchManagement.vue'
+              '@/views/frontDesk/PrintControlManagement/equipmentManage/workbenchManage/index.vue'
             )
         },
         {

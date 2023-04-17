@@ -33,14 +33,18 @@
       </template>
     </JyTable>
     <!-- 工作台详情 -->
-    <div class="ap-box">
+    <!-- <div class="ap-box">
       <componentsDocumentsDetails
         :show="state.componentsDocumentsDetails.show"
         :visible="state.componentsDocumentsDetails.visible"
         @clickClose="clickClose"
       >
       </componentsDocumentsDetails>
-    </div>
+    </div> -->
+    <Detail
+      v-model="state.componentsDocumentsDetails.show"
+      :benchId="benchId"
+    />
 
     <!-- 动态表单 -->
     <JyDialog
@@ -287,7 +291,6 @@
 <script setup>
   import { ref, reactive } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails'
   import { ElMessage } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import workbenchManagement from '@/api/frontDesk/printControl/workbenchManagement'
@@ -295,6 +298,8 @@
   import tableHearder from '@/views/tableHeaderJson/frontDesk/PrintControlManagement/workbenchManagement.json'
   import getDepartByUserApi from '@/api/system/companyManagement/departmentStaff'
   import { getItem } from '@/utils/storage'
+  import Detail from './detail'
+
   const showFormDialog = ref(false)
   const showDepPerDialog = ref(false)
   const vFormLibraryRef = ref(null)
@@ -303,6 +308,7 @@
   const searchSelected = ref([])
   const currentActionWorkbench = ref(null)
   const confirmLoading = ref(false)
+  const benchId = ref(null)
 
   const form = reactive({
     benchId: '',
@@ -629,6 +635,7 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     if (column.property === 'benchName') {
+      benchId.value = row.benchId
       state.componentsDocumentsDetails.show = true
     }
   }
