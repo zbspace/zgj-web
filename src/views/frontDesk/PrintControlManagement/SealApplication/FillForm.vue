@@ -184,9 +184,9 @@
       :mode="1"
       @on-confirm="confirmTip"
       @on-cancel="cancelTip"
-      title="删除模版"
+      title="保存模版"
     >
-      请问确定要删除吗？
+      若当前文件类型已有模版则会覆盖，若当前文件类型没有模板则会创建，请问确定要保存吗？
     </JyMessageBox>
   </div>
 </template>
@@ -519,12 +519,6 @@
           refFillFormInformation.value.setFormData(
             JSON.parse(res1.data.templateValue)
           )
-          nextTick(() => {
-            refFillFormInformation.value.setFieldValue(
-              'applyNo',
-              generatingNumber()
-            )
-          })
         })
       })
   }

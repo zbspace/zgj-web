@@ -23,7 +23,7 @@
             :border="false"
           ></VTabs>
         </div>
-        <div v-if="firstShow">
+        <div v-if="firstShow" style="height: 100%">
           <KDepartTab
             ref="kdepart"
             :initQueryParams="props.queryParams"
@@ -80,7 +80,7 @@
           <div
             class="select-close clear-t"
             @click="clearSelected"
-            v-if="
+            v-show="
               selectedDepart.length +
                 selectedUser.length +
                 selectedRole.length !==
@@ -89,6 +89,17 @@
           >
             {{ $t('t-zgj-dialog-clear') }}
           </div>
+        </div>
+        <div
+          v-show="
+            selectedDepart.length +
+              selectedUser.length +
+              selectedRole.length ===
+            0
+          "
+          class="null-img"
+        >
+          <img src="@/assets/svg/common/data_null.svg" />
         </div>
 
         <!-- 部门 -->
@@ -242,7 +253,7 @@
 <script setup>
   /**
    * selectedStatus 0(未选中) 2（全部）
-   * includeChild 向下包含 Boolean
+   * includeChild 向下包含 String
    * apiModule: api对应的模块
    * queryParams: 请求参数
    * editDeploy: 修改选中项时，初始化已选
@@ -303,6 +314,9 @@
       default: true
     },
     max: {
+      type: Number
+    },
+    userMin: {
       type: Number
     },
     hasTopRoot: {
@@ -449,6 +463,11 @@
   // 导出数据
   const changeResult = ref([])
   const confirmDialog = () => {
+    // userMin
+    if (props.userMin && props.userMin > selectedUser.value.length) {
+      ElMessage.warning(`人员至少需要${props.userMin}个！`)
+      return
+    }
     // 编辑
     if (props.editDeploy) {
       const userid = selectedUser.value.map(item => item.id)
@@ -513,12 +532,24 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      height: 100%;
     }
 
     .selection-right {
       flex: 1;
       // height: 380px;
       overflow-y: auto;
+
+      .null-img {
+        height: calc(100% - 40px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 171px;
+          height: 122.5px;
+        }
+      }
 
       .select-right-column {
         display: flex;
@@ -557,5 +588,11 @@
         padding: 6px 0px 12px 24px;
       }
     }
+  }
+</style>
+
+<style lang="scss">
+  .el-scrollbar__view {
+    height: 100%;
   }
 </style>

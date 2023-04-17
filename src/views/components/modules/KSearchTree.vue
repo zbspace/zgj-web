@@ -1,7 +1,11 @@
 <template>
   <div class="k-custom-tree">
     <!-- 列表 -->
-    <div class="k-select-list">
+    <el-scrollbar class="k-select-list">
+      <div v-show="cacheShowList.length === 0" class="null-img">
+        <img src="@/assets/svg/common/data_null.svg" />
+      </div>
+
       <div class="k-column" v-for="(item, index) in cacheShowList" :key="index">
         <div class="k-tree-left">
           <!-- checkbox -->
@@ -372,11 +376,11 @@
 
           <!-- 标题 -->
           <div class="k-label user-select">
-            {{ item.name || item.fileTypeName }}
+            {{ item.name }}
           </div>
         </div>
       </div>
-    </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -424,7 +428,8 @@
     height: 100%;
     .k-select-list {
       flex: 1;
-      overflow-y: auto;
+      height: 100%;
+      padding-right: 24px;
     }
     .k-column {
       display: flex;
@@ -458,5 +463,20 @@
         cursor: pointer;
       }
     }
+  }
+  .null-img {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 171px;
+      height: 122.5px;
+    }
+  }
+</style>
+<style lang="scss">
+  .el-scrollbar__view {
+    height: 100%;
   }
 </style>

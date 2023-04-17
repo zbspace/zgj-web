@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <!-- search -->
     <div class="select-search">
       <el-input
@@ -75,7 +75,7 @@
 <script setup>
   /**
    * selectedStatus 0(未选中) 2（全部）
-   * includeChild 向下包含 Boolean
+   * includeChild 向下包含 String
    * apiModule: api对应的模块
    * initQueryParams 初始化参数
    * selectedRole 选中项
@@ -436,7 +436,8 @@
       const res = result.data
       res.forEach(item => {
         item.selectedStatus = 0
-        item.includeChild = !!item.includeChild
+        item.includeChild =
+          typeof item.includeChild !== 'string' ? '0' : item.includeChild
         item.disabled = !!item.disabled
       })
       // 展示时，需要对比右侧选择状态
@@ -624,8 +625,9 @@
   }
 
   .select-list {
-    padding: 4px 24px 0 0;
+    padding: 4px 0px 0 0;
     flex: 1;
+    height: calc(100% - 100px);
   }
 
   // &::after {

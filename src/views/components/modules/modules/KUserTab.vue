@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <!-- search -->
     <div class="select-search">
       <el-input
@@ -636,8 +636,9 @@
   }
 
   .select-list {
-    padding: 4px 24px 0 0;
+    padding: 4px 0px 0 0;
     flex: 1;
+    height: calc(100% - 100px);
   }
 
   // &::after {

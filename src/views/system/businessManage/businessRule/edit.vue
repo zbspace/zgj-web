@@ -1430,21 +1430,14 @@
 
   // 文件类型提交
   const documentTypeSubmit = value => {
-    ruleForm.value.fileTypeIds = value.map(i => i.fileTypeId || i.id)
+    ruleForm.value.fileTypeIds = value.map(i => i.id)
     ruleForm.value.fileTypeList = value.map(i => {
       return {
-        fileTypeId: i.fileTypeId || i.id,
-        includeChild: i.includeChild ? '1' : '0'
+        fileTypeId: i.id,
+        includeChild: i.includeChild
       }
     })
-    documentTypeSelected.value = value.map(v => {
-      return {
-        ...v,
-        type: 'fileType',
-        id: v.fileTypeId || v.id,
-        name: v.fileTypeName || v.name
-      }
-    })
+    documentTypeSelected.value = value
   }
 
   // 盖前采集人脸
@@ -1575,18 +1568,10 @@
         })
         delete data.fileTypes
         ruleBusinessNo = data.ruleBusinessNo
-        data.fileTypeIds = data.fileTypeList.map(v => v.fileTypeId)
+        data.fileTypeIds = data.fileTypeList.map(v => v.id)
         ruleForm.value = data
         console.log(data.fileTypeList, '====')
-        documentTypeSelected.value = data.fileTypeList.map(v => {
-          return {
-            ...v,
-            type: 'fileType',
-            id: v.fileTypeId,
-            name: v.fileTypeName,
-            includeChild: v.includeChild === '1'
-          }
-        })
+        documentTypeSelected.value = data.fileTypeList
       })
   }
 
