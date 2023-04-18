@@ -62,10 +62,12 @@
 
     <!-- 选择文件类型 -->
     <KDocumentTypeDialog
+      v-if="searchSelected.length !== 0 || showDocumentTypeDialog"
       v-model:show="showDocumentTypeDialog"
       @update:searchSelected="documentTypeSubmit"
       :multiple="false"
       :queryParams="{ bindBizRule: true }"
+      :searchSelected="searchSelected"
     ></KDocumentTypeDialog>
   </form-item-wrapper>
 </template>
@@ -122,7 +124,8 @@
             message: '请选择文件类型',
             trigger: 'change'
           }
-        ]
+        ],
+        searchSelected: []
       }
     },
     computed: {
@@ -139,6 +142,11 @@
         } else {
           return this.formConfig.labelAlign || 'label-left-align'
         }
+      },
+      test: {
+        get() {
+          return this.field
+        }
       }
     },
     created() {
@@ -146,6 +154,25 @@
       this.initEventHandler()
       this.initFieldModel()
       this.initOptionItems()
+    },
+
+    watch: {
+      test: {
+        handler(val) {
+          if (!val.options.optionItems || val.options.optionItems.length === 0)
+            return
+          this.searchSelected = [
+            {
+              id: val.options.optionItems[0].value,
+              name: val.options.optionItems[0].label,
+              type: 'fileType',
+              idFullPathSet: []
+            }
+          ]
+        },
+        deep: true,
+        immediate: true
+      }
     },
     beforeUnmount() {
       this.unregisterFromRefList()
@@ -165,6 +192,14 @@
             label: this.fileTypeName,
             value: this.fieldModel
           })
+          this.searchSelected = [
+            {
+              id: list[0].id,
+              name: list[0].name,
+              type: 'fileType',
+              idFullPathSet: []
+            }
+          ]
           this.setRequiredTextShow(false)
         } else {
           this.fieldModel = ''
