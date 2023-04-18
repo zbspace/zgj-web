@@ -11,10 +11,10 @@
     <div class="base-info">
       <div>
         <p>
-          工作台名称：<span>{{ detail.ruleBusinessName || '-' }}</span>
+          工作台名称：<span>{{ detail.benchName || '-' }}</span>
         </p>
         <p>
-          设备串号：<span>{{ detail.sealCode || '-' }}</span>
+          设备串号：<span>{{ detail.benchSn || '-' }}</span>
         </p>
         <p>
           保管人：<span>{{ detail.manUserName || '-' }}</span>
@@ -23,10 +23,10 @@
           创建人：<span>{{ detail.createUserName || '-' }}</span>
         </p>
         <p>
-          软件版本号：<span>{{ detail.remark || '-' }}</span>
+          软件版本号：<span>{{ 'todo' || '-' }}</span>
         </p>
         <p>
-          固件版本号：<span>{{ detail.remark || '-' }}</span>
+          固件版本号：<span>{{ 'todo' || '-' }}</span>
         </p>
         <p>
           备注：<span>{{ detail.readme || '-' }}</span>
@@ -63,7 +63,12 @@
           人脸识别登录：<span>{{ ['否', '是'][detail.faceLogin] || '-' }}</span>
         </p>
         <p>
-          休眠：<span>{{ ['否', '是'][detail.dormantOpen] || '-' }}</span>
+          休眠：<span
+            >{{ ['否', '是'][detail.dormantOpen] || '-' }}
+            <span v-if="detail.dormantOpen === '1'"
+              >（静默 {{ detail.dormantValue }} 分钟后休眠）</span
+            ></span
+          >
         </p>
       </div>
       <div>
@@ -82,19 +87,11 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed } from 'vue'
+  import { ref, onMounted } from 'vue'
   import workbenchService from '@/api/frontDesk/printControl/workbenchManagement'
 
   const detail = ref({})
   const loading = ref(false)
-
-  const fileTypeNames = computed(v => {
-    return (
-      (detail.value.fileTypeList &&
-        detail.value.fileTypeList.map(v => v.fileTypeName).join('、')) ||
-      '-'
-    )
-  })
 
   const props = defineProps({
     benchId: {
