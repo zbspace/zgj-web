@@ -20,7 +20,7 @@
           保管人：<span>{{ detail.manUserName || '-' }}</span>
         </p>
         <p>
-          创建人：<span>{{ detail.createUserName || '-' }}</span>
+          创建人：<span>{{ detail.createUser || '-' }}</span>
         </p>
         <p>
           软件版本号：<span>{{ 'todo' || '-' }}</span>

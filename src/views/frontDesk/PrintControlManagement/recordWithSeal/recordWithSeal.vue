@@ -509,24 +509,35 @@
           state.JyElMessageBox.show = false
         })
     } else if (state.JyElMessageBox.type === 't-zgj-Void') {
-      ApproverApi.withdraw({
-        instanceId: state.JyElMessageBox.column.gunsSysId
-      })
+      sealApplyIntellect
+        .invalid({
+          sealUseApplyIds: [state.JyElMessageBox.column.useSealApplyId]
+        })
         .then(() => {
-          sealApplyIntellect
-            .invalid({
-              sealUseApplyIds: state.JyElMessageBox.row.useSealApplyId
-            })
-            .then(() => {
-              jyTable.value.reloadData()
-            })
-            .finally(() => {
-              state.JyElMessageBox.show = false
-            })
+          jyTable.value.reloadData()
+          messageSuccess('作废成功')
         })
         .finally(() => {
           state.JyElMessageBox.show = false
         })
+      // ApproverApi.withdraw({
+      //   instanceId: state.JyElMessageBox.column.gunsSysId
+      // })
+      //   .then(() => {
+      //     sealApplyIntellect
+      //       .invalid({
+      //         sealUseApplyIds: state.JyElMessageBox.row.useSealApplyId
+      //       })
+      //       .then(() => {
+      //         jyTable.value.reloadData()
+      //       })
+      //       .finally(() => {
+      //         state.JyElMessageBox.show = false
+      //       })
+      //   })
+      //   .finally(() => {
+      //     state.JyElMessageBox.show = false
+      //   })
     }
   }
 
