@@ -25,13 +25,13 @@
         </div>
       </template>
       <template #custom>
-        <el-scrollbar height="calc(100vh - 250px)">
+        <div class="custom-buzhou">
+          <SealApplicationStep
+            :data="state.cache.flowList"
+          ></SealApplicationStep>
+        </div>
+        <el-scrollbar height="calc(100vh - 300px)">
           <div class="custom">
-            <div class="custom-buzhou">
-              <SealApplicationStep
-                :data="state.cache.flowList"
-              ></SealApplicationStep>
-            </div>
             <JyVform
               v-show="step === 'one'"
               v-if="fillFormInformationJson"
@@ -43,99 +43,87 @@
             >
             </JyVform>
             <div v-if="step === 'two'">
-              <documentsDetailsPortion>
-                <template #title>
-                  <div class="topTitles">
-                    <div>审批流程</div>
-                    <el-select
-                      v-model="flowMessageId"
-                      placeholder="请选择流程"
-                      @change="changeFlow"
-                    >
-                      <el-option
-                        v-for="item in flowLists"
-                        :key="item.flowMessageId"
-                        :label="item.flowName"
-                        :value="item.flowMessageId"
-                      />
-                    </el-select>
-                  </div>
+              <JyLabel label="审批流程">
+                <template #right>
+                  <el-select
+                    v-model="flowMessageId"
+                    placeholder="请选择流程"
+                    @change="changeFlow"
+                  >
+                    <el-option
+                      v-for="item in flowLists"
+                      :key="item.flowMessageId"
+                      :label="item.flowName"
+                      :value="item.flowMessageId"
+                    />
+                  </el-select>
                 </template>
-                <template #content>
-                  <div style="height: calc(100vh - 500px)" v-if="initObj">
-                    <VFlowDesign
-                      ref="refVFlowDesign"
-                      :defaultAttribute="{
-                        readable: true,
-                        mapable: false,
-                        scroll: false,
-                        top: '100'
-                      }"
-                      :initObj="initObj"
-                    ></VFlowDesign>
-                  </div>
-                </template>
-              </documentsDetailsPortion>
+              </JyLabel>
+              <div style="height: calc(100vh - 500px)" v-if="initObj">
+                <VFlowDesign
+                  ref="refVFlowDesign"
+                  :defaultAttribute="{
+                    readable: true,
+                    mapable: false,
+                    scroll: false,
+                    top: '100'
+                  }"
+                  :initObj="initObj"
+                ></VFlowDesign>
+              </div>
+
               <div class="PrintingProcess">
-                <documentsDetailsPortion>
-                  <template #title>
-                    <div>用印流程</div>
-                  </template>
-                  <template #content>
-                    <div class="PrintingProcess-content">
+                <JyLabel label="用印流程" />
+
+                <div class="PrintingProcess-content">
+                  <div
+                    class="PrintingProcess-content-list"
+                    v-for="(item, index) in state.cache.PrintingProcess.list"
+                    :key="index"
+                  >
+                    <div class="PrintingProcess-content-list-cont">
+                      <div class="PrintingProcess-content-list-cont-title">
+                        <img
+                          class="PrintingProcess-content-list-cont-title-img"
+                          src="@/assets/svg/front/sealApply/calendar.svg"
+                          alt=""
+                        />
+                        <span
+                          class="PrintingProcess-content-list-cont-title-span"
+                          >{{ item.title }}</span
+                        >
+                      </div>
                       <div
-                        class="PrintingProcess-content-list"
-                        v-for="(item, index) in state.cache.PrintingProcess
-                          .list"
-                        :key="index"
+                        class="PrintingProcess-content-list-cont-list"
+                        v-for="(node, num) in item.list"
+                        :key="num"
                       >
-                        <div class="PrintingProcess-content-list-cont">
-                          <div class="PrintingProcess-content-list-cont-title">
-                            <img
-                              class="PrintingProcess-content-list-cont-title-img"
-                              src="@/assets/svg/front/sealApply/calendar.svg"
-                              alt=""
-                            />
-                            <span
-                              class="PrintingProcess-content-list-cont-title-span"
-                              >{{ item.title }}</span
-                            >
-                          </div>
-                          <div
-                            class="PrintingProcess-content-list-cont-list"
-                            v-for="(node, num) in item.list"
-                            :key="num"
-                          >
-                            <div
-                              class="PrintingProcess-content-list-cont-list-name"
-                              >{{ node.name }}
-                            </div>
-                            <div
-                              class="PrintingProcess-content-list-cont-list-icon"
-                            >
-                              <img
-                                class="PrintingProcess-content-list-cont-list-icon-img"
-                                src="@/assets/svg/front/sealApply/tips.svg"
-                                alt=""
-                              />
-                            </div>
-                          </div>
+                        <div class="PrintingProcess-content-list-cont-list-name"
+                          >{{ node.name }}
                         </div>
-                        <div class="PrintingProcess-content-list-iocn">
+                        <div
+                          class="PrintingProcess-content-list-cont-list-icon"
+                        >
                           <img
-                            class="PrintingProcess-content-list-iocn-img"
-                            src="@/assets/svg/front/sealApply/step_next.svg"
+                            class="PrintingProcess-content-list-cont-list-icon-img"
+                            src="@/assets/svg/front/sealApply/tips.svg"
                             alt=""
-                            v-if="
-                              index <
-                              state.cache.PrintingProcess.list.length - 1
-                            "
                           />
                         </div>
                       </div>
                     </div>
-                  </template>
-                </documentsDetailsPortion>
+                    <div class="PrintingProcess-content-list-iocn">
+                      <img
+                        class="PrintingProcess-content-list-iocn-img"
+                        src="@/assets/svg/front/sealApply/step_next.svg"
+                        alt=""
+                        v-if="
+                          index < state.cache.PrintingProcess.list.length - 1
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -195,7 +183,6 @@
   import { useRouter, useRoute } from 'vue-router'
   import componentsLayout from '../../../components/Layout.vue'
   import SealApplicationStep from '@/views/components/sealApplication/JyStep.vue'
-  import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import VFlowDesign from '@/views/components/FlowDesign/index.vue'
   import { ElMessage } from 'element-plus'
@@ -571,6 +558,7 @@
     }
 
     .PrintingProcess {
+      min-width: 1440px;
       .PrintingProcess-content {
         display: flex;
         flex-flow: wrap;
@@ -628,67 +616,67 @@
       // padding-right: 1.25rem;
       box-sizing: border-box;
       text-align: center;
-      padding: 0 16px 0;
+      padding: 10px 16px 0;
       max-height: calc(100vh - 210px);
-      .custom-buzhou {
+    }
+
+    .custom-buzhou {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      box-sizing: border-box;
+
+      .custom-buzhou-list {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0;
-        box-sizing: border-box;
 
-        .custom-buzhou-list {
+        .custom-buzhou-list-desc {
           display: flex;
           justify-content: center;
           align-items: center;
+          width: 10rem;
 
-          .custom-buzhou-list-desc {
+          .custom-buzhou-list-desc-index {
+            width: 1.5rem;
+            height: 1.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 10rem;
-
-            .custom-buzhou-list-desc-index {
-              width: 1.5rem;
-              height: 1.5rem;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              background-color: var(--jy-color-fill--3);
-              color: var(--jy-color-text-3);
-              border-radius: var(--jy-border-radius-2);
-              margin-right: 0.5rem;
-            }
-
-            .custom-buzhou-list-desc-text {
-              font-size: var(--jy-font-size-title-1);
-              color: var(--jy-color-text-3);
-            }
+            background-color: var(--jy-color-fill--3);
+            color: var(--jy-color-text-3);
+            border-radius: var(--jy-border-radius-2);
+            margin-right: 0.5rem;
           }
 
-          .custom-buzhou-list-jiantou {
-            width: 7rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+          .custom-buzhou-list-desc-text {
+            font-size: var(--jy-font-size-title-1);
+            color: var(--jy-color-text-3);
           }
         }
 
-        .indexActive {
-          background-color: var(--jy-primary-6) !important;
-          color: var(--jy-in-common-use-1) !important;
-        }
-
-        .textActive {
-          color: var(--jy-color-text-1) !important;
-        }
-
-        .font-color-45 {
-          color: var(--jy-color-text-3) !important;
+        .custom-buzhou-list-jiantou {
+          width: 7rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
       }
-    }
 
+      .indexActive {
+        background-color: var(--jy-primary-6) !important;
+        color: var(--jy-in-common-use-1) !important;
+      }
+
+      .textActive {
+        color: var(--jy-color-text-1) !important;
+      }
+
+      .font-color-45 {
+        color: var(--jy-color-text-3) !important;
+      }
+    }
     .ap-fixed {
       width: calc(100%);
       position: absolute;
