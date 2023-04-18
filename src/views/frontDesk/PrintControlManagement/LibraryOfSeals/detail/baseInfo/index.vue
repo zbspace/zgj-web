@@ -46,7 +46,14 @@
           印章类型：<span>{{ detail.sealTypeName || '-' }}</span>
         </p>
         <p>
-          印模：<span><a>查看</a></span>
+          印模：<span>
+            <a
+              v-if="detail.shapes && detail.shapes.length"
+              @click="onPreview(detail.shapes[0].fileUrl)"
+              >查看</a
+            >
+            <span v-else>-</span>
+          </span>
         </p>
         <p>
           保管部门：<span>{{ detail.keepOrganName || '-' }}</span>
@@ -89,6 +96,10 @@
     const res = await sealService.sealDetailInfo(props.sealId)
     detail.value = res.data
     loading.value = false
+  }
+
+  const onPreview = fileUrl => {
+    window.open(fileUrl, '_blank')
   }
 
   onMounted(() => {

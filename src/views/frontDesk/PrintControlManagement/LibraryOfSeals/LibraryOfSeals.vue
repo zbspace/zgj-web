@@ -333,8 +333,12 @@
           <el-upload
             v-model:file-list="fileList"
             class="upload-demo"
-            action=""
+            action="/api/sealInfo/shape/upload"
             :on-change="handleChange"
+            :limit="1"
+            :on-success="onsuccess"
+            :on-exceed="onExceed"
+            ref="upload"
           >
             <div class="btnContainer">
               <el-button type="primary" text size="small">
@@ -444,6 +448,7 @@
   import downIcon from '@/assets/svg/sangedian.svg'
   import downIconGray from '@/assets/svg/sangedian-gray.svg'
   import Detail from './detail'
+  import { messageWarning } from '@/hooks/useMessage'
   const router = useRouter()
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
@@ -454,6 +459,8 @@
   const table = ref(null)
   const queryParams = ref({})
   const sealId = ref(null)
+  const upload = ref(null)
+  const fileList = ref([])
 
   // 新增印章
   const add = () => {
@@ -474,6 +481,20 @@
       }
     })
   }
+
+  const onsuccess = response => {
+    state.form.shapes = [
+      {
+        fileId: response.data,
+        fileSourceType: '1' // 浏览器
+      }
+    ]
+  }
+
+  const onExceed = () => {
+    messageWarning('需要先删除当前已有的印模')
+  }
+
   // 保存新增/修改数据
   const submitLibraryForm = type => {
     console.log(state.form)
@@ -533,7 +554,13 @@
       extShow: '1',
       bylawsUrl: '',
       sealExplain: '',
-      stampAttachments: ''
+      stampAttachments: '',
+      shapes: [
+        {
+          fileId: '',
+          fileSourceType: '1'
+        }
+      ]
     },
     JyElMessageBox: {
       show: false,
@@ -1056,6 +1083,13 @@
     api.sealInfo(state.sealIds).then(res => {
       if (res.code === 200) {
         state.form = res.data
+        fileList.value = [
+          {
+            name:
+              (res.data.shapes[0] && res.data.shapes[0].fileOriginName) || '',
+            url: (res.data.shapes[0] && res.data.shapes[0].fileUrl) || ''
+          }
+        ]
         getStaffDetail(res.data.keepUserId)
         showLibraryDialog.value = true
       }
