@@ -29,7 +29,7 @@ export const useFlowStore = defineStore('flow', {
     //  缩略图
     mapImg: '',
     // 缩略图参考内容
-    mapMapping: '#flow-designer-wrap',
+    mapMapping: '#flow-designer-container',
     // 临时添加节点
     tempNodes: [],
     // 缩放比例
@@ -92,11 +92,11 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/8/10 18:20
      */
     addNode(data) {
-      if (data.nodeType === 0) {
+      if (data.nodeType == 0) {
         //  开始
         if (Object.prototype.hasOwnProperty.call(this.node, 'nodeName')) {
           // 如果添加的是并行节点
-          if (data.addNode.nodeType === 9) {
+          if (data.addNode.nodeType == 9) {
             data.addNode.childNode.childNode = this.node
             data.addNode.childNode.childNode.nodePid =
               data.addNode.childNode.nodeId
@@ -110,7 +110,7 @@ export const useFlowStore = defineStore('flow', {
       } else {
         if (data.nodeId) {
           data.currNode.conditionNodes.forEach(conditionNode => {
-            if (conditionNode.nodeId === data.nodeId) {
+            if (conditionNode.nodeId == data.nodeId) {
               // 获取当前操作节点
               addFlowNode(this.node, conditionNode, data.addNode)
             }
@@ -138,7 +138,7 @@ export const useFlowStore = defineStore('flow', {
       const conditionNode = node.conditionNodes[len - 1]
       conditionNode.attr.priorityLevel = len + 1 + ''
       let condition = null
-      if (conditionNode.nodeType === 3) {
+      if (conditionNode.nodeType == 3) {
         // 分支
         condition = addCondition(node, len)
         node.conditionNodes.splice(len - 1, 0, condition)
@@ -160,16 +160,16 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/8/10 18:20
      */
     delNode(node) {
-      if (node.nodeId === this.node.nodeId) {
+      if (node.nodeId == this.node.nodeId) {
         if (node.childNode) {
           this.node = node.childNode
         } else {
           this.node = {}
         }
       } else if (
-        node.nodeType === 3 ||
-        node.nodeType === 8 ||
-        node.nodeType === 10
+        node.nodeType == 3 ||
+        node.nodeType == 8 ||
+        node.nodeType == 10
       ) {
         // 条件(意见)分支节点和并行节点
         delFlowBranchNode(this, this.node, node, this.tempNodes)
@@ -178,8 +178,8 @@ export const useFlowStore = defineStore('flow', {
         // 如果当前审批节点的子节点是意见分支,需要级联删除意见分支
         if (
           node.childNode &&
-          node.nodeType === 1 &&
-          node.childNode.nodeType === 7
+          node.nodeType == 1 &&
+          node.childNode.nodeType == 7
         ) {
           delFlowBranchNode(
             this,
@@ -205,7 +205,7 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/8/10 18:20
      */
     updateNode({ currNode, field, value }) {
-      if (currNode.nodeId === this.node.nodeId) {
+      if (currNode.nodeId == this.node.nodeId) {
         this.node[field] = value
       } else {
         updateFlowNode(this.node, currNode, field, value)
@@ -246,17 +246,18 @@ export const useFlowStore = defineStore('flow', {
     async initFreeFlow(modelId, definitionId) {
       // 重置
       this.setNode()
-      if (modelId && modelId !== this.modelId) {
+      if (modelId && modelId != this.modelId) {
         this.modelId = modelId
       }
-      if (definitionId && definitionId !== this.definitionId) {
+      if (definitionId && definitionId != this.definitionId) {
         this.definitionId = definitionId
       }
       this.modelModality = 1
       const model = await this.getModel()
-      if (model.modelModality === 2) {
+      if (model.modelModality == 2) {
         // 进行缓存
         this.modelModality = 2
+        this.node.childNode = null
         addFlowNode(this.node, this.node, addFreeNode())
       }
     },
@@ -265,7 +266,6 @@ export const useFlowStore = defineStore('flow', {
      * @returns
      */
     getModel() {
-      console.log(this.modelId, this.definitionId, '====')
       return Request.getAndLoadData('/model/detail', {
         modelId: this.modelId,
         definitionId: this.definitionId,
@@ -299,7 +299,7 @@ export const useFlowStore = defineStore('flow', {
       this.definitionId = definitionId
       this.getBaseColumns()
       this.getFormColumns()
-      // this.getPosition()
+      // this.getPosition();
       // this.getRole()
       // this.getApproverTypeList()
     },
@@ -331,7 +331,7 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/9/27 11:46
      */
     getPosition() {
-      if (this.positions.length === 0) {
+      if (this.positions.length == 0) {
         Request.getAndLoadData('/hrPosition/list', {}).then(
           datas => (this.positions = datas)
         )
@@ -345,7 +345,7 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/9/27 11:46
      */
     getRole() {
-      if (this.roles.length === 0) {
+      if (this.roles.length == 0) {
         Request.getAndLoadData('/sysRole/getRoleSelectList', {}).then(
           datas => (this.roles = datas)
         )
@@ -358,7 +358,7 @@ export const useFlowStore = defineStore('flow', {
      * @date 2022/9/27 11:46
      */
     getApproverTypeList() {
-      if (this.roles.length === 0) {
+      if (this.roles.length == 0) {
         Request.getAndLoadData('/hrOrgApprover/getApproverTypeList', {}).then(
           datas => (this.approverTypes = datas)
         )

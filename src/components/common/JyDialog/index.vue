@@ -88,13 +88,7 @@
     <div class="content-custom" :style="{ height: height }">
       <!-- 默认插槽 -->
       <el-scrollbar>
-        <div
-          style="
-            width: calc(100% - 10px);
-            padding-right: 24px;
-            height: calc(100% - 40px);
-          "
-        >
+        <div :style="props.customStyle">
           <slot> </slot>
         </div>
       </el-scrollbar>
@@ -207,6 +201,16 @@
     appendToBody: {
       type: Boolean,
       default: false
+    },
+    customStyle: {
+      type: Object,
+      default() {
+        return {
+          width: 'calc(100% - 10px)',
+          paddingRight: '24px',
+          height: 'calc(100% - 40px)'
+        }
+      }
     }
   })
 
@@ -288,12 +292,8 @@
   }
 
   .content-custom {
-    // flex: 1;
-    // flex-shrink: 0;
-    padding: 12px 0px 12px 24px;
-    // overflow-y: auto;
+    padding: 12px 0px 6px 24px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
-    // border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     min-height: 300px;
   }
 

@@ -23,7 +23,7 @@
                     <close-circle-outlined v-if="props.node.conditionNodes.length - 1 == index" style="color: red" />
                   </span>
                 </div>
-                <div v-if="!props.readable && !conditionNode.deletable" class="close-icon">
+                <div v-if="conditionNode.canDelete && !props.readable && !conditionNode.deletable" class="close-icon">
                   <close-circle-outlined @click.stop="conditionNode.deletable = true" />
                 </div>
                 <!-- 删除提示 -->

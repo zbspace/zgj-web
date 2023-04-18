@@ -154,7 +154,7 @@
     // 初始化
     if (props.node.privileges && props.node.privileges.length == 0) {
       // privileges.value = await flowStore.getPrivileges()
-      // 假数据
+      // TODO：①发起人表单权限假数据
       privileges.value = [
         {
           createTime: '2022-11-27 12: 31: 00',

@@ -174,9 +174,9 @@
 <script setup>
   import { ref, reactive } from 'vue'
   import useIcon from '../../hooks/useIcon'
-  // import GDept from '@/components/GDept/index.vue';
+  import GDept from '@/components/GDept/index.vue'
   import FlowNoticeSelect from '../../common/FlowNoticeSelect.vue'
-  // import { UserApi } from '@/api/system/user/UserApi'
+  // import { UserApi } from '@/api/system/user/UserApi';
   // 图标
   const { optionIcon } = useIcon()
 
@@ -247,13 +247,7 @@
    * 用户数据
    */
   const userSource = ({ page, limit, where, orders }) => {
-    // return UserApi.getUserPages({
-    //   ...where,
-    //   ...orders,
-    //   pageNo: page,
-    //   pageSize: limit
-    // })
-    return {}
+    // return UserApi.getUserPages({ ...where, ...orders, pageNo: page, pageSize: limit });
   }
 </script>
 <style lang="less" scoped>

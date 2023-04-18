@@ -72,15 +72,13 @@ const mapMask = computed(() => {
 // 页面挂载后执行
 onMounted(async () => {
   // 流程设计窗口
-  flowDesign.value = document.querySelector('#flow-designer-wrap');
+  flowDesign.value = document.querySelector(flowStore.mapMapping);
   // 流程小地图窗口
   flowMap.value = document.querySelector('#flow-min-map');
   // 小地图红色窗口
   flowMapMsk.value = document.querySelector('#flow-min-map-mask');
   // 初始流程设计窗口高度
   initSize(flowDesign);
-  // 更新地图
-  flowStore.updateMap();
 
   // 监听鼠标移动
   window.addEventListener('mousemove', handleMouseMove);
@@ -96,6 +94,8 @@ onMounted(async () => {
       scroll.value = false;
     }
     initSize(flowDesign);
+    // 更新地图
+    flowStore.updateMap();
   }, 1000);
 });
 
