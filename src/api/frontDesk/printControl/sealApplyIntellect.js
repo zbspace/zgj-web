@@ -99,4 +99,20 @@ api.relieveUseLimit = data => {
     data
   })
 }
+// 还原
+api.return = data => {
+  return request({
+    method: 'POST',
+    url: '/sealApply/return',
+    data
+  })
+}
+// 删除
+api.delete = data => {
+  return request({
+    method: 'POST',
+    url: '/sealApply/delete',
+    data
+  })
+}
 export default api

@@ -14,7 +14,7 @@
       tableClick="useSealFileName"
       @cellClick="cellClick"
       @customClick="customClick"
-      @clickBatchButton="clickBatchButton"
+      @clickBatchButton="batchDel"
     >
       <template #title>
         <div class="title">
@@ -38,11 +38,16 @@
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item
+                      @click="router.push({ name: 'VoidApply' })"
+                      >查看已作废的单据</el-dropdown-item
+                    >
+                    <!-- <el-dropdown-item
                       v-for="(item, index) in state.componentsTitle.more.data"
                       :key="index"
+                      @click="customClick(item, index)"
                     >
                       {{ item.name }}
-                    </el-dropdown-item>
+                    </el-dropdown-item> -->
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -104,6 +109,16 @@
       @update:modelValue="state.JyElMessageBox.show"
       @submitElMessageBox="submitElMessageBox"
     ></actionOneDialog>
+
+    <!-- 批量操作弹框提示 -->
+    <actionMoreDialog
+      @update:modelValue="state.showToastDialog.show = false"
+      :show="state.showToastDialog.show"
+      :selectionData="state.componentsBatch.selectionData"
+      :showToastDialogContent="showToastDialogContent"
+      label="useSealFileName"
+      @sureAction="deleteMore"
+    ></actionMoreDialog>
   </div>
 </template>
 <script setup>
@@ -130,9 +145,12 @@
   import listNotUseJson from '@/views/frontDesk/PrintControlManagement/recordWithSeal/searchFormJson/listNotUseJson'
   import listFileVerificationJson from '@/views/frontDesk/PrintControlManagement/recordWithSeal/searchFormJson/listFileVerificationJson'
   import { messageSuccess } from '@/hooks/useMessage'
+  import actionMoreDialog from '@/views/components/actionMoreDialog'
 
   const router = useRouter()
   const showDepPerDialog = ref(false)
+  const showToastDialogContent = ref(null)
+
   const dialogProcess = reactive({
     show: false,
     title: '流程终止',
@@ -167,7 +185,8 @@
       more: {
         data: [
           {
-            name: '查看已作废的单据'
+            name: '查看已作废的单据',
+            codle: '1'
           }
         ]
       }
@@ -297,7 +316,17 @@
       //     method: 'GET'
       //   }
       // }
-    ]
+    ],
+    showToastDialog: {
+      show: false,
+      header: {
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
+      },
+      content: {
+        data: ''
+      }
+    }
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
@@ -632,6 +661,34 @@
 
     nextTick(() => {
       jyTable.value.reloadData()
+    })
+  }
+
+  // 批量作废
+  function batchDel(item, selectionData) {
+    state.componentsBatch.selectionData = selectionData
+    showToastDialogContent.value = {
+      header: {
+        data: '批量作废'
+      },
+      content: {
+        data: '作废后当前记录将从当前表格中消失，请问确定要作废么？'
+      }
+    }
+    state.showToastDialog.show = true
+  }
+
+  // 确定批量作废
+  const deleteMore = () => {
+    const list = state.componentsBatch.selectionData
+    const idList = []
+    list.forEach(v => {
+      idList.push(v.useSealApplyId)
+    })
+    sealApplyIntellect.invalid({ sealUseApplyIds: idList }).then(res => {
+      jyTable.value.reloadData()
+      messageSuccess('作废成功')
+      state.showToastDialog.show = false
     })
   }
 

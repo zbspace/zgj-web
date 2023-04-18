@@ -113,6 +113,18 @@ const routes = {
             )
         },
         {
+          path: 'recordWithSeal/voidApply',
+          name: 'VoidApply',
+          meta: {
+            title: '已作废单据',
+            authRequired: true
+          },
+          component: () =>
+            import(
+              '@/views/frontDesk/PrintControlManagement/recordWithSeal/voidApply/index.vue'
+            )
+        },
+        {
           path: 'recordWithInvalid',
           name: 'RecordWithInvalid',
           meta: {
