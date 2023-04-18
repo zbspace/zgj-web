@@ -114,6 +114,7 @@
               v-loading="loadingModel"
               :initObj="modelIds"
               :openType="openType"
+              style="height: calc(100vh - 92px)"
             ></VFlowDesign>
             <AdvancedSetup
               v-show="state.checkedIndex == '4'"
