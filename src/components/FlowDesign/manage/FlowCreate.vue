@@ -226,6 +226,7 @@ const reload = () => {
     formState.modelName = props.modelSource.modelName;
     formState.modelKey = props.modelSource.modelKey;
     formState.categoryId = props.modelSource.categoryId;
+    formState.modelModality = props.modelSource.modelModality;
     formState.formIdList = props.modelSource.formIdList;
     formState.assignees = props.modelSource.assignees;
     formState.formShowType = props.modelSource.formShowType;
@@ -241,6 +242,7 @@ const reload = () => {
         formState.modelName = result.modelName;
         formState.modelKey = result.modelKey;
         formState.categoryId = result.categoryId;
+        formState.modelModality = result.modelModality;
         formState.formIdList = result.formIdList;
         formState.assignees = [];
         if (result.assignees && result.assignees.length > 0) {

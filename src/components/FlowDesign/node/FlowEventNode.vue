@@ -4,7 +4,7 @@
       <div class="flow-item" :class="{ 'flow-item-active': isActive }" @click="!props.readable && open('flowEventSetting', props.node)">
         <div class="node-name" :class="nameClass(node, 'node-temmi')">
           事件
-          <div v-if="!props.readable" class="close-icon">
+          <div v-if="props.node.canDelete && !props.readable" class="close-icon">
             <close-circle-outlined @click.stop="delNode(props.node)" />
           </div>
         </div>

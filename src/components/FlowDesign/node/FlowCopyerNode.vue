@@ -23,7 +23,7 @@
           <FlowNodeContent :content="props.node.content" />
           <!-- 错误提示 -->
           <exclamation-circle-outlined v-if="props.node.error" class="node-error" />
-          <div v-if="!readable && !node.deletable" class="close-icon">
+          <div v-if="node.canDelete && !readable && !node.deletable" class="close-icon">
             <close-circle-outlined @click.stop="props.node.deletable = true" />
           </div>
           <!-- 删除提示 -->

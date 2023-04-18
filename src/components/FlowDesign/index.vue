@@ -1,43 +1,67 @@
 <template>
   <div class="flow-designer" :style="wrapStyle">
     <div id="flow-designer-wrap" class="flow-designer-wrap">
-      <div class="flow-designer-container" v-drag="drag" :style="zoomStyle">
-        <el-scrollbar height="100%">
-          <div class="flow-designer-box">
-            <FlowStartNode :node="nodeData" />
-            <FlowNode
-              :node="nodeData"
-              :readable="readable"
-              @nodeUpdate="nodeUpdate"
-            />
-            <FlowEndNode :node="nodeData" :readable="readable" />
-          </div>
-        </el-scrollbar>
+      <div
+        id="flow-designer-container"
+        class="flow-designer-container"
+        v-drag="props.drag"
+        :style="zoomStyle"
+      >
+        <div class="flow-designer-box">
+          <FlowStartNode :node="nodeData" />
+          <FlowNode
+            :node="nodeData"
+            :readable="props.readable"
+            @nodeUpdate="nodeUpdate"
+          />
+          <FlowEndNode :node="nodeData" :readable="props.readable" />
+        </div>
       </div>
-      <!-- <FlowZoom v-if="!readable" v-model="zoomValue" :top="top" /> -->
-      <!-- <FlowStatus v-if="readable" :navable="navable" :top="top" /> -->
+      <FlowZoom v-if="!props.readable" v-model="zoomValue" :top="props.top" />
+      <!-- <FlowStatus v-if="props.readable" :navable="navable" :top="props.top" /> -->
     </div>
     <FlowHelper
-      v-if="!readable"
+      v-if="!props.readable"
       @import="handleImport"
       @export="handleExport"
     />
     <!-- 节点运行状态 -->
-    <!-- <FlowMinMap v-if="mapable && !isMobile()" /> -->
+    <!-- <FlowMinMap v-if="props.mapable && !isMobile()" /> -->
   </div>
 </template>
 
 <script setup>
-  import { ref, reactive, computed, onMounted } from 'vue'
+  import { ref, reactive, toRaw, computed, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
+  import useCommon from './hooks/useCommon'
   import { downloadFile } from '@/utils/common-util'
   import { useFlowStore } from './store/flow'
+  import { getStartNode } from './data/load-node-data'
   import { validate } from './hooks/useNodeHelper'
+  import FlowStartNode from './node/FlowStartNode.vue'
+  import FlowEndNode from './node/FlowEndNode.vue'
+  import FlowNode from './node/FlowNode.vue'
+  import FlowStatus from './panel/FlowStatus.vue'
+  import FlowHelper from './panel/FlowHelper.vue'
+  // import FlowMinMap from './panel/FlowMinMap.vue';
 
   // 获取路由参数
   const route = useRoute()
+  // 公共
+  const { isMobile } = useCommon()
   // flowStore
   const flowStore = useFlowStore()
+
+  // 样式
+  const wrapStyle = reactive({
+    // 存在自定义nav时候需要减去nav高度
+    height: props.navable
+      ? 'calc(100vh - ' + Number(props.top) + 'px)'
+      : '80vh',
+    overflow: 'hidden'
+    // 'overflow-y': props.scrollY ? 'auto' : 'hidden',
+    // 'overflow-x': props.scroll ? 'auto' : 'hidden'
+  })
 
   // zoom初始值
   const zoomValue = ref(100)
@@ -81,15 +105,6 @@
     }
   })
 
-  // 样式
-  const wrapStyle = reactive({
-    // 存在自定义nav时候需要减去nav高度
-    height: props.navable ? 'calc(100vh - ' + Number(props.top) + 'px)' : '80vh'
-    // overflow: 'hidden'
-    // 'overflow-y': props.scrollY ? 'auto' : 'hidden',
-    // 'overflow-x': props.scroll ? 'auto' : 'hidden'
-  })
-
   // 模型id
   const modelId = ref(null)
   // 最近定义ID
@@ -103,11 +118,13 @@
   const zoomStyle = computed(() => {
     flowStore.updateZoomValue(zoomValue.value)
     const zoom = zoomValue.value / 100
+    // let left = zoomValue.value * 3;
+    // let top = 20;
     return {
       zoom: zoomValue.value < 100 ? zoom : 0,
       transform: zoomValue.value >= 100 ? `scale(${zoom},${zoom})` : 0,
-      transformOrigin: '0 0'
-      // paddingBottom: '30px'
+      transformOrigin: '0 0',
+      paddingBottom: '30px'
       // paddingTop: '30px',
       // left: `${left}px`,
       // top: `${top}px`
@@ -121,17 +138,15 @@
     if (!route.query.definitionId) {
       // back();
     }
-    if (route.query.modelId && route.query.definitionId) {
-      modelId.value = route.query.modelId
-      definitionId.value = route.query.definitionId
-      // 当默认初始化时
-      if (!props.node) {
-        // 当前模型是否为自由流程,则添加自由流程
-        flowStore.initFreeFlow(modelId.value, definitionId.value)
-      } else {
-        // 初始化
-        handleSetData(props.node)
-      }
+    modelId.value = route.query.modelId
+    definitionId.value = route.query.definitionId
+    // 当默认初始化时
+    if (!props.node) {
+      // 当前模型是否为自由流程,则添加自由流程
+      flowStore.initFreeFlow(modelId.value, definitionId.value)
+    } else {
+      // 初始化
+      handleSetData(props.node)
     }
   })
 
@@ -147,10 +162,10 @@
 
   // 导入json数据，继续编辑
   const handleSetData = json => {
-    // console.log('result=======================',json)
-    // flowStore.node = json
-    if (json && JSON.stringify(json) !== '{}') {
+    if (json && JSON.stringify(json) != '{}') {
       flowStore.node = json
+    } else {
+      flowStore.node = getStartNode()
     }
   }
 
@@ -200,7 +215,7 @@
   const filterData = (jsonObj, columns) => {
     if (jsonObj !== null && typeof jsonObj === 'object') {
       Object.entries(jsonObj).forEach(([key, value]) => {
-        if (key === 'privileges') {
+        if (key == 'privileges') {
           const privileges = []
           columns.forEach(item => {
             const config = {

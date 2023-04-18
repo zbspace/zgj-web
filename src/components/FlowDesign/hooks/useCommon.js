@@ -107,14 +107,14 @@ export default function () {
     };
   });
 
-// 通知类型
-const noticeTypeComputed = computed(() => noticeType => {
-  if (noticeType) {
-    return toUgroup(noticeType);
-  } else {
-    return [];
-  }
-});
+  // 通知类型
+  const noticeTypeComputed = computed(() => noticeType => {
+    if (noticeType) {
+      return toUgroup(noticeType);
+    } else {
+      return [];
+    }
+  });
 
   /**
    *   获取ID
@@ -210,6 +210,25 @@ const noticeTypeComputed = computed(() => noticeType => {
     return indexs.map(value => 1 << value).sort();
   };
 
+  /**
+   * 防抖
+   * @param {*} fn
+   * @param {*} delay
+   */
+  const debounce = (fn, delay = 2000) => {
+    let timer = null;
+    return (...args) => {
+      // 判断定时器是否存在，清除定时器
+      if (timer) {
+        clearTimeout(timer);
+      }
+      // 重新调用setTimeout
+      timer = setTimeout(() => {
+        fn.call(this, ...args);
+      }, delay);
+    };
+  };
+
   return {
     loading,
     nodeName,
@@ -229,6 +248,7 @@ const noticeTypeComputed = computed(() => noticeType => {
     isMobile,
     getflowIcon,
     getAssetsFile,
-    toUgroup
+    toUgroup,
+    debounce
   };
 }

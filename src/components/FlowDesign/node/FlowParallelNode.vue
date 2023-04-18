@@ -28,7 +28,7 @@
                 <FlowNodeContent :content="conditionNode.content" defaultValue="配置筛选条件" />
                 <!-- 错误提示 -->
                 <exclamation-circle-outlined v-if="conditionNode.error" class="node-error" />
-                <div v-if="!readable && !conditionNode.deletable" class="close-icon">
+                <div v-if="conditionNode.canDelete && !readable && !conditionNode.deletable" class="close-icon">
                   <close-circle-outlined @click.stop="conditionNode.deletable = true" />
                 </div>
                 <!-- 删除提示 -->

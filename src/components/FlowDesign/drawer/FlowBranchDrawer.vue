@@ -75,13 +75,14 @@ const branchTypesComputed = computed(() => nodeType => {
 // 侧边头样式
 const headerStyle = computed(() => nodeType => {
   if (nodeType == 10) {
+    // 并行
     return {
       background: 'linear-gradient(90.04deg,#ef8080 -16.37%,#f14343 137.34%)',
       'border-radius': '0px 0px 0 0'
     };
   } else {
     return {
-      background: 'linear-gradient(90.04deg,#e2d9f1 -16.37%,#9d88bf 137.34%)',
+      background: 'linear-gradient(90deg, #e2d9f1, #f65ac2), linear-gradient(#e2d9f1, #e2d9f1)',
       'border-radius': '0px 0px 0 0'
     };
   }

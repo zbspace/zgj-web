@@ -175,6 +175,8 @@ export function getStartNode() {
       childNode: null,
       // 显示添加按钮
       addable: true,
+      // 可删除
+      canDelete: false,
       // 可删除提示
       deletable: false,
       // 是否修改
@@ -186,6 +188,8 @@ export function getStartNode() {
     },
     // 显示添加按钮
     addable: false,
+    // 可删除
+    canDelete: false,
     // 可删除提示
     deletable: false,
     // 是否修改
@@ -418,6 +422,8 @@ export function addApproverNode(type) {
     childNode: null,
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 可删除提示
     deletable: false,
     // 是否修改
@@ -570,7 +576,9 @@ export function addFreeNode() {
     // 子节点
     childNode: null,
     // 显示添加按钮
-    addable: true,
+    addable: false,
+    // 可删除
+    canDelete: false,
     // 可删除提示
     deletable: false,
     // 是否修改
@@ -635,6 +643,8 @@ export function addCcNode(type) {
     configure: {},
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 可删除提示
     deletable: false,
     // 是否修改
@@ -695,6 +705,8 @@ export function addNoticeNode(type) {
     ],
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 可删除提示
     deletable: false,
     // 是否修改
@@ -720,6 +732,8 @@ export function addEventNode(type) {
     childNode: null,
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 可删除提示
     deletable: false,
     // 是否修改
@@ -745,6 +759,8 @@ export function addTimerNode(type) {
     childNode: null,
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 是否修改
     update: false,
     // 可删除提示
@@ -772,6 +788,8 @@ export function addWriteNode(type) {
     privileges: [],
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 可删除提示
     deletable: false,
     // 是否修改
@@ -800,6 +818,8 @@ export function addBranchNode(type) {
     childNode: null,
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 是否修改
     update: false,
     // 条件节点
@@ -817,6 +837,8 @@ export function addBranchNode(type) {
         childNode: null,
         // 显示添加按钮
         addable: true,
+        // 可删除
+        canDelete: true,
         // 可删除提示
         deletable: false,
         // 是否修改
@@ -844,6 +866,8 @@ export function addBranchNode(type) {
         childNode: null,
         // 显示添加按钮
         addable: true,
+        // 可删除
+        canDelete: true,
         // 可删除提示
         deletable: false,
         // 是否修改
@@ -882,6 +906,8 @@ export function addCondition(node, len) {
     nodeType: node.nodeType == 4 ? 3 : 10,
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 可删除提示
     deletable: false,
     // 是否修改
@@ -922,6 +948,8 @@ export function addSuggestNode(type) {
     childNode: null,
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 是否修改
     update: false,
     // 是否有错误
@@ -943,6 +971,8 @@ export function addSuggestNode(type) {
         childNode: null,
         // 显示添加按钮
         addable: true,
+        // 可删除
+        canDelete: true,
         // 可删除提示
         deletable: false,
         // 是否修改
@@ -968,6 +998,8 @@ export function addSuggestNode(type) {
         childNode: null,
         // 显示添加按钮
         addable: true,
+        // 可删除
+        canDelete: true,
         // 可删除提示
         deletable: false,
         // 是否修改
@@ -996,6 +1028,8 @@ export function addParallelNode(type) {
     nodeStatus: -1,
     // 显示添加按钮
     addable: true,
+    // 可删除
+    canDelete: true,
     // 是否修改
     update: false,
     // 聚合节点
@@ -1008,6 +1042,8 @@ export function addParallelNode(type) {
       childNode: null,
       // 显示添加按钮
       addable: true,
+      // 可删除
+      canDelete: true,
       // 可删除提示
       deletable: false,
       // 是否修改

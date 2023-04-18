@@ -11,6 +11,7 @@
     :height="574"
     :width="900"
     appendToBody
+    :customStyle="customStyle"
   >
     <div class="selection-content">
       <!-- left -->
@@ -28,9 +29,7 @@
           ></KDocument>
         </div>
       </div>
-
-      <!-- right -->
-      <div class="selection-right user-select">
+      <div style="display: flex; flex-direction: column; flex: 1">
         <div class="select-right-column c-p">
           <div class="clear-n">
             {{ $t('t-zgj-selectPerson.Selected') }}：
@@ -46,66 +45,68 @@
             {{ $t('t-zgj-dialog-clear') }}
           </div>
         </div>
-
-        <div v-show="allSelected.length === 0" class="null-img">
-          <img src="@/assets/svg/common/data_null.svg" />
-        </div>
-        <!-- 文件类型 -->
-        <div
-          class="select-right-column p"
-          v-for="(item, index) in allSelected"
-          :key="index"
-        >
-          <div class="select-right-label">
-            <div style="margin-right: 10px">
-              <svg
-                width="12"
-                height="19"
-                viewBox="0 0 10 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M1 0C0.447715 0 0 0.447715 0 1V10C0 10.5523 0.447715 11 1 11H9C9.55228 11 10 10.5523 10 10V3.38462L8.33333 1.69231L6.66667 0H1ZM4.16667 2.53846H1.66667V3.38462H4.16667V2.53846ZM1.66667 5.07692H8.33333V5.92308H1.66667V5.07692ZM8.33333 7.61539H1.66667V8.46154H8.33333V7.61539Z"
-                  fill="black"
-                  fill-opacity="0.25"
-                />
-              </svg>
-            </div>
-            <div class="select-label">{{ item.name }}</div>
+        <!-- right -->
+        <el-scrollbar class="selection-right user-select">
+          <div v-show="allSelected.length === 0" class="null-img">
+            <img src="@/assets/svg/common/data_null.svg" />
           </div>
-          <div style="display: flex; height: 25px">
-            <el-switch
-              v-model="item.includeChild"
-              active-value="1"
-              inactive-value="0"
-              v-if="item.haveChildren && props.multiple"
-              style="margin-right: 12px"
-              @change="changeSwitch($event, item)"
-            >
-            </el-switch>
-
-            <div class="select-close" @click="concelSelected(item)">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 14 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+          <!-- 文件类型 -->
+          <div
+            class="select-right-column p"
+            v-for="(item, index) in allSelected"
+            :key="index"
+          >
+            <div class="select-right-label">
+              <div style="margin-right: 10px">
+                <svg
+                  width="12"
+                  height="19"
+                  viewBox="0 0 10 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M1 0C0.447715 0 0 0.447715 0 1V10C0 10.5523 0.447715 11 1 11H9C9.55228 11 10 10.5523 10 10V3.38462L8.33333 1.69231L6.66667 0H1ZM4.16667 2.53846H1.66667V3.38462H4.16667V2.53846ZM1.66667 5.07692H8.33333V5.92308H1.66667V5.07692ZM8.33333 7.61539H1.66667V8.46154H8.33333V7.61539Z"
+                    fill="black"
+                    fill-opacity="0.25"
+                  />
+                </svg>
+              </div>
+              <div class="select-label">{{ item.name }}</div>
+            </div>
+            <div style="display: flex; height: 25px">
+              <el-switch
+                v-model="item.includeChild"
+                active-value="1"
+                inactive-value="0"
+                v-if="item.haveChildren && props.multiple"
+                style="margin-right: 12px"
+                @change="changeSwitch($event, item)"
               >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M0.4375 7C0.4375 3.4375 3.4375 0.4375 7 0.4375C10.5625 0.4375 13.5625 3.4375 13.5625 7C13.5625 10.5625 10.5625 13.5625 7 13.5625C3.4375 13.5625 0.4375 10.5625 0.4375 7ZM9.8125 9.71875C10.0938 9.53125 10.0938 9.15625 9.8125 8.875L7.9375 7L9.90625 5.03125C10.1875 4.75 10.1875 4.375 9.90625 4.09375C9.625 3.8125 9.25 3.8125 8.96875 4.09375L7 6.0625L5.125 4.1875C4.9375 3.90625 4.5625 3.90625 4.28125 4.1875C4 4.46875 4 4.84375 4.28125 5.03125L6.15625 6.90625L4.1875 8.875C3.90625 9.0625 3.90625 9.53125 4.1875 9.8125C4.46875 10.0938 4.84375 10.0938 5.125 9.8125L7.09375 7.84375L8.96875 9.71875C9.15625 10 9.53125 10 9.8125 9.71875Z"
-                  fill="black"
-                  fill-opacity="0.25"
-                />
-              </svg>
+              </el-switch>
+
+              <div class="select-close" @click="concelSelected(item)">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M0.4375 7C0.4375 3.4375 3.4375 0.4375 7 0.4375C10.5625 0.4375 13.5625 3.4375 13.5625 7C13.5625 10.5625 10.5625 13.5625 7 13.5625C3.4375 13.5625 0.4375 10.5625 0.4375 7ZM9.8125 9.71875C10.0938 9.53125 10.0938 9.15625 9.8125 8.875L7.9375 7L9.90625 5.03125C10.1875 4.75 10.1875 4.375 9.90625 4.09375C9.625 3.8125 9.25 3.8125 8.96875 4.09375L7 6.0625L5.125 4.1875C4.9375 3.90625 4.5625 3.90625 4.28125 4.1875C4 4.46875 4 4.84375 4.28125 5.03125L6.15625 6.90625L4.1875 8.875C3.90625 9.0625 3.90625 9.53125 4.1875 9.8125C4.46875 10.0938 4.84375 10.0938 5.125 9.8125L7.09375 7.84375L8.96875 9.71875C9.15625 10 9.53125 10 9.8125 9.71875Z"
+                    fill="black"
+                    fill-opacity="0.25"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
-        </div>
+        </el-scrollbar>
       </div>
     </div>
   </JyDialog>
@@ -158,7 +159,10 @@
       default: true
     }
   })
-
+  const customStyle = ref({
+    width: 'calc(100%)',
+    height: 'calc(100% - 40px)'
+  })
   // 消息 tabs
   const title = ref('')
   title.value = i18n.global.t('t-zgj-process.SelectUseType')
@@ -265,7 +269,7 @@
       position: absolute;
       top: -12px;
       left: 50%;
-      height: calc(100% + 24px);
+      height: calc(100% + 40px);
       width: 1px;
       background: rgba($color: #000000, $alpha: 0.05);
     }
@@ -277,58 +281,52 @@
       height: 100%;
     }
 
-    .selection-right {
-      flex: 1;
-      // height: 380px;
-      overflow-y: auto;
+    .null-img {
+      height: calc(100% - 40px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 171px;
+        height: 122.5px;
+      }
+    }
 
-      .null-img {
-        height: calc(100% - 40px);
+    .select-right-column {
+      display: flex;
+      justify-content: space-between;
+
+      .select-right-label {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        img {
-          width: 171px;
-          height: 122.5px;
-        }
       }
 
-      .select-right-column {
-        display: flex;
-        justify-content: space-between;
-
-        .select-right-label {
-          display: flex;
-        }
-
-        .select-label {
-          font-size: 14px;
-          color: rgba(0, 0, 0, 0.85);
-        }
-
-        .select-close {
-          cursor: pointer;
-          padding-top: 5px;
-        }
-
-        .clear-t {
-          color: #d04d3e;
-          font-size: 14px;
-          cursor: pointer;
-        }
-
-        .clear-n {
-          color: rgba(0, 0, 0, 0.85);
-        }
+      .select-label {
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.85);
       }
 
-      .p {
-        padding: 8px 0px 8px 24px;
+      .select-close {
+        cursor: pointer;
+        padding-top: 5px;
       }
 
-      .c-p {
-        padding: 6px 0px 12px 24px;
+      .clear-t {
+        color: #d04d3e;
+        font-size: 14px;
+        cursor: pointer;
       }
+
+      .clear-n {
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
+
+    .p {
+      padding: 8px 24px 8px 24px;
+    }
+
+    .c-p {
+      padding: 6px 24px 12px 24px;
     }
   }
 </style>

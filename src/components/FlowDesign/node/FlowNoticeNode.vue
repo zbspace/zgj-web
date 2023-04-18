@@ -2,7 +2,7 @@
   <div class="flow-row">
     <div class="flow-box">
       <div class="flow-item" :class="{ 'flow-item-active': isActive }" @click="!props.readable && open(drawer, props.node)">
-        <div class="flow-node-box" :class="{ 'has-error': props.node.error }">
+        <div class="flow-node-box" :class="{ notice: !readable, 'has-error': props.node.error }" >
           <div class="node-name" :class="nameClass(props.node, 'node-tz')">
             <EditName v-model="props.node.nodeName" />
             <img :src="noticeIcon" alt="" style="margin-left: 10px" />
@@ -11,7 +11,7 @@
           <FlowNodeContent :content="props.node.content" />
           <!-- 错误提示 -->
           <exclamation-circle-outlined v-if="props.node.error" class="node-error" />
-          <div v-if="!props.readable && !props.node.deletable" class="close-icon">
+          <div v-if="props.node.canDelete && !props.readable && !props.node.deletable" class="close-icon">
             <close-circle-outlined @click.stop="props.node.deletable = true" />
           </div>
           <!-- 删除提示 -->

@@ -34,7 +34,7 @@
                 <!-- 错误提示 -->
                 <exclamation-circle-outlined v-if="conditionNode.error" class="node-error" />
                 <!-- 删除按钮,其他情况不支持删除 -->
-                <div v-if="!props.readable && !conditionNode.deletable && node.conditionNodes.length - 1 != index" class="close-icon">
+                <div v-if="conditionNode.canDelete && !props.readable && !conditionNode.deletable && node.conditionNodes.length - 1 != index" class="close-icon">
                   <close-circle-outlined @click.stop="conditionNode.deletable = true" />
                 </div>
                 <!-- 删除提示 -->

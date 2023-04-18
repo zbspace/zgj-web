@@ -121,7 +121,6 @@
             :radioModel="true"
             call-back-type="string"
           />
-          选择部门
         </FlowDrawerContent>
         <FlowDrawerContent v-if="group.approverType == 3" name="部门审批人">
           <a-form-item
@@ -456,7 +455,14 @@
             :name="['approverGroups', k, 'approverIds']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
-            <!-- <GDept size="large" :max="2" :min="2" mode="multiple" v-model="group.approverIds" v-model:label="group.approverNames" /> -->
+            <GDept
+              size="large"
+              :max="2"
+              :min="2"
+              mode="multiple"
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+            />
           </a-form-item>
         </FlowDrawerContent>
         <!-- =============部门负责人交叉审批 END-->
@@ -496,7 +502,12 @@
             :name="['approverGroups', k, 'approverIds']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
-            <!-- <GDept size="large" :radioModel="true" v-model="group.approverIds" v-model:label="group.approverNames" /> -->
+            <GDept
+              size="large"
+              :radioModel="true"
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+            />
           </a-form-item>
         </FlowDrawerContent>
         <!-- 项目部门角色-->
@@ -505,15 +516,14 @@
             :name="['approverGroups', k, 'orgId']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
-            <!-- <GDept
+            <GDept
               v-model="group.orgId"
               v-model:label="group.orgName"
               :showButton="false"
               :size="size"
               :radioModel="true"
               call-back-type="string"
-            /> -->
-            选择部门
+            />
           </a-form-item>
         </FlowDrawerContent>
         <FlowDrawerContent v-if="group.approverType == 19" name="选择角色">
@@ -571,10 +581,9 @@
   import FlowSelect from '../../common/FlowSelect.vue'
   import FlowDrawerContent from '../FlowDrawerContent.vue'
   import GDept from '@/components/GDept/index.vue'
-  import GUser from '@/components/GUser/index.vue'
   // import GDeptApprover from '@/components/GDeptApprover/index.vue'
   import FlowPopoverTip from '../FlowPopoverTip.vue'
-  // import { UserApi } from '@/api/system/user/UserApi'
+  // import { UserApi } from '@/api/system/user/UserApi';
   // 公共
   const { size, radioStyle, approvalRadioStyle, getId } = useCommon()
   // Store
@@ -642,7 +651,6 @@
     //   pageNo: page,
     //   pageSize: limit
     // })
-    return {}
   }
 
   /**
@@ -660,7 +668,7 @@
    * 改变审批人类型
    */
   const changeApproverType = group => {
-    // debugger
+    debugger
     group.approverIds = []
     group.approverNames = []
     group.controlIds = []
@@ -754,7 +762,7 @@
    */
   const delApproval = group => {
     props.node.approverGroups.forEach((element, i) => {
-      if (element.id === group.id) {
+      if (element.id == group.id) {
         props.node.approverGroups.splice(i, 1)
       }
     })
@@ -771,13 +779,13 @@
     } else if (props.node.approverGroups.length == 1) {
       group = props.node.approverGroups[0]
       multiple = approvals.filter(
-        approval => approval.value === group.approverType
+        approval => approval.value == group.approverType
       )[0].multiple
       // 指定成员、发起人自选、节点审批人、表单内人员
       // TODO: 需要根据选择判断是否多个人
     } else if (group) {
       multiple = approvals.filter(
-        approval => approval.value === group.approverType
+        approval => approval.value == group.approverType
       )[0].multiple
       // 指定成员、发起人自选、节点审批人、表单内人员
       // TODO: 需要根据选择判断是否多个人

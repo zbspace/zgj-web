@@ -429,7 +429,7 @@
     .k-select-list {
       flex: 1;
       height: 100%;
-      padding-right: 24px;
+      padding-right: 15px;
     }
     .k-column {
       display: flex;

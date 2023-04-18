@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     :width="drawerWidth()"
-    :headerStyle="headerStyle"
+    :headerStyle="headerStyle(node.nodeType)"
     :bodyStyle="drawerBodyStyle"
     placement="right"
     :closable="true"
@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import useCommon from '../hooks/useCommon';
 import useIcon from '../hooks/useIcon';
 // import { useFlowStore } from '../store/flow';
@@ -64,12 +64,18 @@ let flowAuthForm = ref();
 let tabsActiveKey = ref('1');
 
 // 侧边头样式
-const headerStyle = reactive({
-  // 'background-color': '#6da4f2',
-  // #21B564 -16.37%, #23BE69
-  // background: 'linear-gradient(90.04deg,#29cc80 -16.37%,#5ccc98 137.34%)',
-  background: 'linear-gradient(90.04deg,#ccd053 -16.37%,#dcf306 137.34%)',
-  'border-radius': '0px 0px 0 0'
+const headerStyle = computed(() => nodeType => {
+  if (nodeType == 0) {
+    return {
+      background: 'linear-gradient(90.04deg,#29cc80 -16.37%,#5ccc98 137.34%)',
+      'border-radius': '0px 0px 0 0'
+    };
+  } else {
+    return {
+      background: 'linear-gradient(90.04deg,#ccd053 -16.37%,#dcf306 137.34%)',
+      'border-radius': '0px 0px 0 0'
+    };
+  }
 });
 
 // 显示侧边
