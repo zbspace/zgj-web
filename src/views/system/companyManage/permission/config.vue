@@ -138,14 +138,7 @@
           </div>
           <div class="item">
             <div class="item-label"></div>
-            <div class="empty">
-              <div class="box">
-                <div>
-                  <img src="@/assets/svg/common/data_null.svg" />
-                </div>
-                <!-- <div class="empty-msg">空状态</div> -->
-              </div>
-            </div>
+            <Selected />
           </div>
         </div>
       </template>
@@ -174,6 +167,7 @@
   import { useRouter, useRoute } from 'vue-router'
   import roleApis from '@/api/system/companyManagement/authorityManagement'
   import { test } from './test'
+  import Selected from './selected'
   const router = useRouter()
   const route = useRoute()
 
