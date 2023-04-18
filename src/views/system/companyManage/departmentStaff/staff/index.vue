@@ -84,6 +84,7 @@
       :height="600"
       @close="closeStaffFrom"
       @confirm="submitStaffForm"
+      class="staff-add"
     >
       <el-form
         :model="state.componentsAddForm.formData"
@@ -1283,46 +1284,47 @@
       font-size: 12px;
     }
   }
-
-  .ap-box-contBox {
-    width: calc(100%);
-    position: relative;
-    display: flex;
-    align-items: center;
-
-    .el-input__suffix {
-      display: none;
-    }
-
-    .el-select .el-input.is-disabled .el-input__wrapper {
-      cursor: pointer;
-    }
-
-    .el-select .el-input.is-disabled .el-input__inner {
-      cursor: pointer;
-    }
-
-    .el-input.is-disabled .el-input__wrapper {
-      background-color: #ffffff;
-    }
-
-    .ap-box-contBox-icon {
-      position: absolute;
-      right: 0.8rem;
-      cursor: pointer;
-      height: 14px;
+  .staff-add {
+    .ap-box-contBox {
+      width: calc(100%);
+      position: relative;
       display: flex;
       align-items: center;
 
-      .ap-box-contBox-icon-img {
-        height: 100%;
+      .el-input__suffix {
+        display: none;
       }
-    }
 
-    :deep {
-      .el-input__inner {
-        padding-right: 1.5rem;
-        box-sizing: border-box;
+      .el-select .el-input.is-disabled .el-input__wrapper {
+        cursor: pointer;
+      }
+
+      .el-select .el-input.is-disabled .el-input__inner {
+        cursor: pointer;
+      }
+
+      .el-input.is-disabled .el-input__wrapper {
+        background-color: #ffffff;
+      }
+
+      .ap-box-contBox-icon {
+        position: absolute;
+        right: 0.8rem;
+        cursor: pointer;
+        height: 14px;
+        display: flex;
+        align-items: center;
+
+        .ap-box-contBox-icon-img {
+          height: 100%;
+        }
+      }
+
+      :deep {
+        .el-input__inner {
+          padding-right: 1.5rem;
+          box-sizing: border-box;
+        }
       }
     }
   }
