@@ -285,7 +285,13 @@
                   :src="state.componentsAddForm.formData.userFaceUrl"
                   class="avatar"
                 />
-                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                <svg
+                  class="iconpark-icon"
+                  v-else
+                  style="width: 28px; color: var(--el-text-color-secondary)"
+                >
+                  <use href="#icon-add"></use>
+                </svg>
                 <template #tip>
                   <div class="el-upload__tip"
                     >1.支持上传JPG/JPEG/PNG格式的人脸图片，大小不超过5M</div
