@@ -61,7 +61,7 @@
                   type="primary"
                   icon="el-icon-plus"
                   :size="field.options.size"
-                  :disabled="field.options.disabled"
+                  :disabled="field.options.disabled || designState"
                   @click="addItem"
                 ></el-button>
               </template>
