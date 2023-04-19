@@ -2,7 +2,7 @@
 * @Descripttion 工作台管理
 * @FileName WorkbenchManagement.vue
 * @Author WalterXsk
-* @LastEditTime 2023-04-10 16:59:47
+ * @LastEditTime: 2023-04-19
 !-->
 <template>
   <div class="PrintControlManagement-WorkbenchManagement">
@@ -363,7 +363,7 @@
       {
         required: true,
         message: '请选择所属部门',
-        trigger: 'change'
+        trigger: 'blur'
       }
     ]
   })
@@ -678,7 +678,8 @@
             name: data.manUserName
           }
         ]
-        data.manUserId && getDepartOptions(data.manUserId, true)
+        data.manUserId &&
+          getDepartOptions(data.manUserId, true, data.manOrganId)
       })
     }
     if (cell.name === 't-zgj-Delete') {
@@ -700,11 +701,17 @@
       })
   }
 
-  const getDepartOptions = (id, isEdit) => {
+  const getDepartOptions = (id, isEdit, organId) => {
+    organOptions.value = []
     getDepartByUserApi.organListByUser(id).then(res => {
       if (res.data) {
         organOptions.value = res.data.length ? res.data : []
-        if (isEdit) return
+        if (isEdit) {
+          if (organOptions.value.findIndex(i => i.organId === organId) === -1) {
+            form.manOrganId = null
+          }
+          return
+        }
         const userDefaultData = res.data.filter(item => item.userDefault)
         form.manOrganId =
           userDefaultData.length !== 0 ? userDefaultData[0].organId : ''
