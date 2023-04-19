@@ -7,11 +7,11 @@
 !-->
 <template>
   <div class="permission-selected">
-    <p class="label">
+    <p class="label" v-if="roleList.organs.length">
       <svg class="iconpark-icon"><use href="#bumen"></use></svg>
       选中部门
     </p>
-    <div class="permission-selected-role-list">
+    <div class="permission-selected-role-list" v-if="roleList.organs.length">
       <div v-for="(item, index) in roleList.organs" :key="index">
         <div
           class="organ"
@@ -23,7 +23,9 @@
             <span v-if="item.includeChild === '0'">（不包含下级）</span>
             <span v-else>（包含下级）</span>
           </p>
-          <a v-if="item.includeChild === '0'" @click="openDialog(item.userInfo)"
+          <a
+            v-if="item.includeChild === '0'"
+            @click="getUserListByOrgan(item.organInfo[0].id)"
             >查看员工 》</a
           >
         </div>
@@ -39,17 +41,17 @@
             :key="i"
           >
             <p>{{ getOrgan(v) }}</p>
-            <a @click="openDialog(v.userInfo)">查看员工 》</a>
+            <a @click="getUserListByOrgan(v[v.length - 1].id)">查看员工 》</a>
           </div>
         </div>
       </div>
     </div>
 
-    <p class="label">
+    <p class="label" v-if="roleList.users.length">
       <svg class="iconpark-icon"><use href="#yuangong"></use></svg>
       选中员工</p
     >
-    <div class="permission-selected-role-list">
+    <div class="permission-selected-role-list" v-if="roleList.users.length">
       <div v-for="(item, index) in roleList.users" :key="index">
         <div class="organ"> {{ getOrgan(item.organInfo) }} </div>
 
@@ -76,6 +78,7 @@
         </div>
       </div>
     </div>
+
     <div class="empty" v-if="!roleList.users.length && !roleList.organs.length">
       <div class="box">
         <div>
@@ -109,6 +112,7 @@
   import permissionService from '@/api/common/organOrPerson'
   import { useRoute } from 'vue-router'
   import { messageError } from '@/hooks/useMessage'
+  import api from '@/api/system/companyManagement/departmentStaff'
 
   const route = useRoute()
   const roleList = ref({
@@ -138,6 +142,17 @@
           route.query.roleId
         )
       roleList.value = res.data
+    } catch (error) {
+      messageError(error)
+    }
+  }
+
+  // 获取 角色关联的数据权限信息
+  const getUserListByOrgan = async id => {
+    try {
+      showDepPerDialog.value = true
+      const res = await api.userListByOrgan(id)
+      curRoleList.value = res.data
     } catch (error) {
       messageError(error)
     }

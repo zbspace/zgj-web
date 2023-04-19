@@ -128,4 +128,12 @@ api.organListByUser = data => {
   })
 }
 
+// 获取 主部门用户关联信息
+api.userListByOrgan = data => {
+  return request({
+    method: 'GET',
+    url: `/user/userInfo/${data}`
+  })
+}
+
 export default api
