@@ -306,10 +306,12 @@
 
   const selectApplyRef = ref(null)
   const changeSelect = () => {
-    // 判断是否已有设计 - 有提示信息
-    selectApplyRef.value.blur()
-    tipVisible.value = true
-    typeTip.value = 'apply'
+    if (testIds.value.modelId) {
+      // 判断是否已有设计 - 有提示信息
+      selectApplyRef.value.blur()
+      tipVisible.value = true
+      typeTip.value = 'apply'
+    }
   }
 
   const confirmTip = () => {
@@ -513,7 +515,7 @@
   .flowManage-Association-form {
     margin: auto;
     width: calc(100vw - 160px);
-    height: calc(100vh - 92px);
+    height: calc(100vh - 192px);
     min-height: 500px;
     min-width: 800px;
     margin-top: 16px;
@@ -640,7 +642,7 @@
 
     .info-list {
       margin-top: 16px;
-      height: calc(100vh - 490px);
+      height: calc(100vh - 600px);
       overflow: hidden;
       .container-list {
         display: flex;

@@ -1,11 +1,11 @@
 <template>
   <componentsLayout
     :style="{
-      padding: '16px'
+      padding: '16px 24px'
     }"
     :free="true"
   >
-    <div class="components-Layout">
+    <div class="components-Layout1">
       <!-- title -->
       <div class="card-title">渠道管理</div>
 
@@ -97,7 +97,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .components-Layout {
+  .components-Layout1 {
     margin: 0%;
     width: 100%;
     height: 100%;
@@ -112,12 +112,9 @@
     @include mixin-padding-bottom(10);
     @include mixin-padding-left(20);
     @include mixin-padding-right(0);
-    box-sizing: border-box;
-    border-radius: var(--jy-border-radius-4);
-    background-color: var(--jy-in-common-use-1);
     // margin-top: 24px;
     position: relative;
-
+    background: #fff;
     .card-title {
       color: rgba(0, 0, 0, 0.85);
       font-size: 22px;

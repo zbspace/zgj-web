@@ -148,6 +148,7 @@
               collapse-tags-tooltip
               :max-collapse-tags="5"
               @click="chooseOrgan('partTimeOrgan', true)"
+              @remove-tag="removeDeptTag($event, 'partTimeOrgan')"
             >
               <el-option
                 v-for="one in state.tabSelects.partTimeOrgansSelected"
@@ -227,6 +228,7 @@
               style="width: 100%"
               popper-class="hidePoper"
               @click="chooseOrgan('roles', true)"
+              @remove-tag="removeDeptTag($event, 'roles')"
             >
               <el-option
                 v-for="one in state.tabSelects.rolesSelected"
@@ -1255,6 +1257,47 @@
   const currentChange = type => {
     organId.value = type.organId
     table.value.reloadData()
+  }
+  const removeDeptTag = (val, type) => {
+    if (type === 'partTimeOrgan') {
+      state.tabSelects.searchSelected =
+        state.tabSelects.partTimeOrgansSelected.length > 0
+          ? state.tabSelects.partTimeOrgansSelected.map(i => {
+              return {
+                ...i,
+                id: i.value,
+                name: i.label,
+                type: 'organ'
+              }
+            })
+          : []
+      state.tabSelects.partTimeOrgansSelected = clearTagFn(
+        state.tabSelects.searchSelected,
+        val
+      )
+    }
+    if (type === 'roles') {
+      state.tabSelects.searchSelected =
+        state.tabSelects.rolesSelected.length > 0
+          ? state.tabSelects.rolesSelected.map(i => {
+              return {
+                ...i,
+                id: i.value,
+                name: i.label,
+                type: 'role'
+              }
+            })
+          : []
+      state.tabSelects.rolesSelected = clearTagFn(
+        state.tabSelects.searchSelected,
+        val
+      )
+    }
+  }
+
+  const clearTagFn = (attr, val) => {
+    if (!Array.isArray(attr) || attr.length === 0) return attr
+    return attr.filter(item => item.id !== val)
   }
   onMounted(() => {
     table.value.reloadData()

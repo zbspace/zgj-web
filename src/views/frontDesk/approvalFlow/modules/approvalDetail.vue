@@ -218,6 +218,9 @@
                 <el-select
                   v-model="state.carbonSelected"
                   multiple
+                  collapse-tags
+                  collapse-tags-tooltip
+                  :max-collapse-tags="5"
                   placeholder="+请选择抄送人"
                   style="width: 100%"
                   popper-class="hidePoper"
@@ -225,6 +228,7 @@
                     hasContent: state.carbonSelected.length
                   }"
                   @click="chooseOrgan('carbon')"
+                  @remove-tag="removeUserTag"
                 >
                   <el-option
                     v-for="one in state.carbonSelected"
@@ -841,6 +845,15 @@
     if (list && list.length > 0) {
       addSignMode.value = 1
     }
+  }
+
+  const removeUserTag = val => {
+    state.searchSelected = clearTagFn(state.searchSelected, val)
+  }
+
+  const clearTagFn = (attr, val) => {
+    if (!Array.isArray(attr) || attr.length === 0) return attr
+    return attr.filter(item => item.id !== val)
   }
   onMounted(() => {})
 

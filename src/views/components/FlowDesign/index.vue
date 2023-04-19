@@ -112,13 +112,10 @@
 
 <style scoped lang="scss">
   .contanier-flow {
-    // width: 90%;
-    // height: calc(100% - 30px);
-    // margin-top: 16px;
     margin: auto;
     width: calc(100vw - 160px);
-    // height: calc(100vh - 92px);
-    height: 90%;
+    height: calc(100vh - 192px);
+    // height: 90%;
     min-height: 500px;
     min-width: 800px;
     margin-top: 16px;
