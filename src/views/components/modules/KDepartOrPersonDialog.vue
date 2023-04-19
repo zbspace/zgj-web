@@ -127,7 +127,13 @@
                   />
                 </svg>
               </div>
-              <div class="select-label">{{ item.name }}</div>
+              <div
+                class="select-label"
+                :style="
+                  item.haveChildren && props.multiple ? '' : 'width: 340px'
+                "
+                >{{ item.name }}</div
+              >
             </div>
             <div style="display: flex; height: 25px">
               <el-switch
@@ -184,7 +190,9 @@
                   />
                 </svg>
               </div>
-              <div class="select-label">{{ item.name }}</div>
+              <div class="select-label" style="width: 340px">{{
+                item.name
+              }}</div>
             </div>
             <div class="select-close" @click="concelSelected(item)">
               <svg
@@ -226,7 +234,9 @@
                   />
                 </svg>
               </div>
-              <div class="select-label">{{ item.name }}</div>
+              <div class="select-label" style="width: 340px">{{
+                item.name
+              }}</div>
             </div>
             <div class="select-close" @click="concelSelected(item)">
               <svg
@@ -555,6 +565,7 @@
     .select-right-column {
       display: flex;
       justify-content: space-between;
+      align-items: center;
 
       .select-right-label {
         display: flex;
@@ -563,11 +574,18 @@
       .select-label {
         font-size: 14px;
         color: rgba(0, 0, 0, 0.85);
+        width: 280px;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .select-close {
         cursor: pointer;
-        padding-top: 5px;
+        height: 20px;
+        display: flex;
+        align-items: center;
       }
 
       .clear-t {
@@ -593,5 +611,11 @@
 <style lang="scss">
   .el-scrollbar__view {
     height: 100%;
+  }
+
+  .select-right-column {
+    .el-switch {
+      height: 20px;
+    }
   }
 </style>
