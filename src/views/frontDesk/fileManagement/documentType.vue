@@ -110,8 +110,7 @@
   <JyActionErrorDialog
     @update:modelValue="state.showDeleteFTyle.show = false"
     :show="state.showDeleteFTyle.show"
-    :selectionData="state.componentsBatch.selectionData"
-    :showToastDialogContent="showToastDialogContent"
+    :showToastDialogContent="showErrorToastDialogContent"
     label="fileTypeName"
   ></JyActionErrorDialog>
 </template>
@@ -145,6 +144,7 @@
   const privacyVisible = ref(false)
   const table = ref(null)
   const showToastDialogContent = ref(null)
+  const showErrorToastDialogContent = ref(null)
   const tableData = ref([])
 
   const state = reactive({
@@ -422,26 +422,27 @@
       } else {
         await fileManageService.fileTypeDelete(curFileTypeId.value)
         messageSuccess('成功删除文件类型')
+        state.JyElMessageBox.show = false
       }
-      state.JyElMessageBox.show = false
       refresh()
     } catch (error) {
       // 有不可删除文件类型
-      if (error.code && error.code === 500) {
+      if (error.code && error.code === 500 && error.data?.length) {
         state.showToastDialog.show = false
+        state.JyElMessageBox.show = false
         state.componentsBatch.selectionData = []
         state.showDeleteFTyle.show = true
         const list = tableData.value.filter(v => {
           return error.data.includes(v.fileTypeId)
         })
-        showToastDialogContent.value = {
+        showErrorToastDialogContent.value = {
           header: '删除失败',
           content:
             '以下文件类型已被使用，不允许删除，若文件类型被已启用的文件类型关联或者已发起用印申请，则认为被使用。',
           selectionData: list
         }
       }
-      console.log('--->', error)
+      // console.log('--->', error)
     }
   }
 
