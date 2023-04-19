@@ -561,6 +561,40 @@ export const containers = [
       onDrawerOpened: '',
       onDrawerBeforeClose: ''
     }
+  },
+  {
+    type: 'divider',
+    icon: 'divider',
+    formItemFlag: false,
+    options: {
+      name: '',
+      label: '',
+      columnWidth: '200px',
+      direction: 'horizontal',
+      contentPosition: 'center',
+      hidden: false,
+      // -------------------
+      customClass: '', // 自定义css类名
+      // -------------------
+      onCreated: '',
+      onMounted: ''
+    }
+  },
+  {
+    type: 'static-text',
+    icon: 'static-text',
+    formItemFlag: false,
+    options: {
+      name: '',
+      columnWidth: '200px',
+      hidden: false,
+      textContent: 'static text',
+      // -------------------
+      customClass: '', // 自定义css类名
+      // -------------------
+      onCreated: '',
+      onMounted: ''
+    }
   }
 ]
 
@@ -1158,22 +1192,22 @@ export const basicFields = [
     }
   },
 
-  {
-    type: 'static-text',
-    icon: 'static-text',
-    formItemFlag: false,
-    options: {
-      name: '',
-      columnWidth: '200px',
-      hidden: false,
-      textContent: 'static text',
-      // -------------------
-      customClass: '', // 自定义css类名
-      // -------------------
-      onCreated: '',
-      onMounted: ''
-    }
-  },
+  // {
+  //   type: 'static-text',
+  //   icon: 'static-text',
+  //   formItemFlag: false,
+  //   options: {
+  //     name: '',
+  //     columnWidth: '200px',
+  //     hidden: false,
+  //     textContent: 'static text',
+  //     // -------------------
+  //     customClass: '', // 自定义css类名
+  //     // -------------------
+  //     onCreated: '',
+  //     onMounted: ''
+  //   }
+  // },
 
   {
     type: 'html-text',
@@ -1216,27 +1250,26 @@ export const basicFields = [
       onMounted: '',
       onClick: ''
     }
-  },
-
-  {
-    type: 'divider',
-    icon: 'divider',
-    formItemFlag: false,
-    options: {
-      name: '',
-      label: '',
-      columnWidth: '200px',
-      direction: 'horizontal',
-      contentPosition: 'center',
-      hidden: false,
-      // -------------------
-      customClass: '', // 自定义css类名
-      // -------------------
-      onCreated: '',
-      onMounted: ''
-    }
   }
 
+  // {
+  //   type: 'divider',
+  //   icon: 'divider',
+  //   formItemFlag: false,
+  //   options: {
+  //     name: '',
+  //     label: '',
+  //     columnWidth: '200px',
+  //     direction: 'horizontal',
+  //     contentPosition: 'center',
+  //     hidden: false,
+  //     // -------------------
+  //     customClass: '', // 自定义css类名
+  //     // -------------------
+  //     onCreated: '',
+  //     onMounted: ''
+  //   }
+  // }
   //
 ]
 
