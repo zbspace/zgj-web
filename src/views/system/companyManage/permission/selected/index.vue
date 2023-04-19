@@ -11,7 +11,7 @@
       <svg class="iconpark-icon"><use href="#bumen"></use></svg>
       选中部门
     </p>
-    <div class="role-list">
+    <div class="permission-selected-role-list">
       <div v-for="(item, index) in roleList.organs" :key="index">
         <div
           class="organ"
@@ -23,7 +23,9 @@
             <span v-if="item.includeChild === '0'">（不包含下级）</span>
             <span v-else>（包含下级）</span>
           </p>
-          <a v-if="item.includeChild === '0'">查看员工 》</a>
+          <a v-if="item.includeChild === '0'" @click="openDialog(item.userInfo)"
+            >查看员工 》</a
+          >
         </div>
         <div class="child-organ" v-if="item.includeChild !== '0'">
           <div
@@ -37,7 +39,7 @@
             :key="i"
           >
             <p>{{ getOrgan(v) }}</p>
-            <a>查看员工 》</a>
+            <a @click="openDialog(v.userInfo)">查看员工 》</a>
           </div>
         </div>
       </div>
@@ -47,7 +49,7 @@
       <svg class="iconpark-icon"><use href="#yuangong"></use></svg>
       选中员工</p
     >
-    <div class="role-list">
+    <div class="permission-selected-role-list">
       <div v-for="(item, index) in roleList.users" :key="index">
         <div class="organ"> {{ getOrgan(item.organInfo) }} </div>
 
@@ -63,7 +65,11 @@
             </div>
           </div>
 
-          <div class="role sum" v-if="item.userInfo.length > 3">
+          <div
+            class="role sum"
+            v-if="item.userInfo.length > 3"
+            @click="openDialog(item.userInfo)"
+          >
             <svg class="iconpark-icon"><use href="#role-active"></use></svg>
             +{{ item.userInfo.length }}
           </div>
@@ -78,6 +84,24 @@
       </div>
     </div>
   </div>
+
+  <JyDialog
+    @update:show="showDepPerDialog = $event"
+    :show="showDepPerDialog"
+    destroy-on-close
+    title="成员信息"
+    :width="900"
+    :footer="false"
+  >
+    <div class="permission-selected-role-list">
+      <div class="role-container" ref="roleRef">
+        <div v-for="(v, i) in curRoleList" :key="i" class="role">
+          <svg class="iconpark-icon"><use href="#yuangong"></use></svg>
+          {{ v.name }}
+        </div>
+      </div>
+    </div>
+  </JyDialog>
 </template>
 
 <script setup>
@@ -91,12 +115,19 @@
     organs: [],
     users: []
   })
+  const showDepPerDialog = ref(false)
+  const curRoleList = ref([])
 
   const props = defineProps({})
   const emit = defineEmits([])
 
   const getOrgan = arr => {
     return arr.map(v => v.name).join(' > ')
+  }
+
+  const openDialog = list => {
+    showDepPerDialog.value = true
+    curRoleList.value = list
   }
 
   // 获取 角色关联的数据权限信息
@@ -154,8 +185,7 @@
         transform: translateY(-50%) translateX(-50%);
       }
     }
-
-    .role-list {
+    .permission-selected-role-list {
       width: 80%;
       min-height: 100px;
       background: rgba(0, 0, 0, 0.04);
@@ -216,8 +246,85 @@
           position: absolute;
           right: 0;
           top: 0;
+          cursor: pointer;
         }
       }
+      .iconpark-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+    }
+  }
+</style>
+<style lang="scss">
+  .permission-selected-role-list {
+    min-height: 100px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+    margin: 8px 0;
+    padding: 24px 24px 1px 24px;
+    margin-bottom: 24px;
+    .organ {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      color: rgba(0, 0, 0, 0.85);
+      margin-bottom: 8px;
+      span {
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+    .child-organ {
+      width: 100%;
+      min-height: 30px;
+      left: 0px;
+      top: 30px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 2px;
+      margin-bottom: 24px;
+      padding: 24px 24px 0;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    .role-container {
+      position: relative;
+      .role-container-a {
+        height: 40px;
+        overflow: hidden;
+        margin-bottom: 24px;
+        width: calc(100% - 102px);
+      }
+      .role {
+        display: inline-flex;
+        align-items: center;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 38px;
+        color: rgba(0, 0, 0, 0.85);
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 2px;
+        padding: 0 16px;
+        margin-right: 12px;
+        margin-bottom: 16px;
+      }
+      .sum {
+        color: #3e78d0;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
+    .iconpark-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
     }
   }
 </style>
