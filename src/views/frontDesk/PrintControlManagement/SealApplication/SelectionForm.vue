@@ -83,7 +83,14 @@
             >
               <div class="column-list-back">
                 <img
+                  class="column-list-back-img active"
+                  :src="item.imageUrl"
+                  alt=""
+                  v-if="item.imageUrl"
+                />
+                <img
                   class="column-list-back-img"
+                  v-else
                   src="@/assets/svg/front/sealApply/form_icon.svg"
                   alt=""
                 />
@@ -475,6 +482,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            .column-list-back-img {
+              width: 100%;
+            }
+            .active {
+              cursor: pointer;
+            }
           }
 
           .column-list-desc {
