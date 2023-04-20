@@ -12,7 +12,7 @@
     </div>
 
     <!-- crumbs -->
-    <div class="select-crumbs user-select" v-show="!searchType">
+    <div class="select-crumbs user-select">
       <!-- 自定义面包屑 -->
       <div class="custom-bread" v-show="true">
         <!-- 循环 -->

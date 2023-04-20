@@ -516,9 +516,9 @@
   }
 
   // 点击关闭
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
-  }
+  // function clickClose() {
+  //   state.componentsDocumentsDetails.show = false
+  // }
 
   const chooseOrgan = type => {
     showDeptDialog.value = true
