@@ -1,11 +1,11 @@
 <template>
   <componentsLayout
     :style="{
-      padding: '16px'
+      padding: '16px 24px'
     }"
     :free="true"
   >
-    <div class="components-Layout">
+    <div class="components-Layout1">
       <!-- title -->
       <div class="ap-box-title">全局参数设置</div>
 
@@ -64,7 +64,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .components-Layout {
+  .components-Layout1 {
     margin: 0%;
     width: 100%;
     height: 100%;
@@ -77,10 +77,7 @@
     flex-direction: column;
     @include mixin-padding-top(10);
     @include mixin-padding-right(0);
-    box-sizing: border-box;
-    border-radius: var(--jy-border-radius-4);
-    background-color: var(--jy-in-common-use-1);
-    // margin-top: 18px;
+    background: #fff;
     position: relative;
   }
   .ap-box-title {

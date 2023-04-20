@@ -149,7 +149,7 @@
       height: 100%;
     }
     .padding-16 {
-      @include mixin-padding(16);
+      padding: 16px 24px;
       box-sizing: border-box;
     }
     .ap-deliberate {

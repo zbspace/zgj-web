@@ -78,6 +78,10 @@
           class="info-noContent"
           v-if="state.list.data.length === 0 && flagStatus"
         >
+          <div class="info-noContent-backcolor" @click="clickEdit">
+            <img src="@/assets/svg/system/flow/vector.svg" />
+            <div class="text">去创建</div>
+          </div>
           <div class="info-noContent-desc">
             <img src="@/assets/svg/system/flow/info.svg" />
             暂无可关联的表单
@@ -306,10 +310,12 @@
 
   const selectApplyRef = ref(null)
   const changeSelect = () => {
-    // 判断是否已有设计 - 有提示信息
-    selectApplyRef.value.blur()
-    tipVisible.value = true
-    typeTip.value = 'apply'
+    if (testIds.value.modelId) {
+      // 判断是否已有设计 - 有提示信息
+      selectApplyRef.value.blur()
+      tipVisible.value = true
+      typeTip.value = 'apply'
+    }
   }
 
   const confirmTip = () => {
@@ -349,7 +355,7 @@
     editFormMessageId.value = attr.formMessageId
     resetFlag.value = false
     FlowApi.getFormJsonById({ formMessageId: attr.formMessageId }).then(res => {
-      form.formMessageId = res.data.formMessageId
+      form.formMessageId = res.data.formDefinitionId
       state.currentState = '2'
       formJson.value = (res.success && JSON.parse(res.data.formInfo)) || ''
       vformObj.value = attr
@@ -513,7 +519,7 @@
   .flowManage-Association-form {
     margin: auto;
     width: calc(100vw - 160px);
-    height: calc(100vh - 92px);
+    height: calc(100vh - 192px);
     min-height: 500px;
     min-width: 800px;
     margin-top: 16px;
@@ -640,7 +646,7 @@
 
     .info-list {
       margin-top: 16px;
-      height: calc(100vh - 490px);
+      height: calc(100vh - 600px);
       overflow: hidden;
       .container-list {
         display: flex;

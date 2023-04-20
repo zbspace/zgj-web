@@ -67,6 +67,7 @@
                 collapse-tags-tooltip
                 :max-collapse-tags="4"
                 @click="getDivision"
+                @remove-tag="removeFileTag"
               >
                 <el-option
                   :label="item.name"
@@ -95,6 +96,7 @@
                 collapse-tags-tooltip
                 :max-collapse-tags="4"
                 @click="getFileType"
+                @remove-tag="removeDeptTag"
               >
                 <el-option
                   :label="item.name"
@@ -279,6 +281,7 @@
   const queryParams = ref({
     userId
   })
+
   watch(
     () => props.editBasicsForm,
     val => {
@@ -297,19 +300,6 @@
 
           searchSelected.value = cacheDataScope
           searchSelectedDocument.value = cacheFileScope
-          // searchSelected.value = cacheDataScope.map(item => {
-          //   return {
-          //     ...item,
-          //     idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
-          //   }
-          // })
-
-          // searchSelectedDocument.value = cacheFileScope.map(item => {
-          //   return {
-          //     ...item,
-          //     idFullPathSet: item.idFullPathSet ? item.idFullPathSet : []
-          //   }
-          // })
         }
       }
     }
@@ -386,10 +376,12 @@
 
   const selectApplyRef = ref(null)
   const changeSelect = () => {
-    // 判断是否已有设计 - 有提示信息
-    selectApplyRef.value.blur()
-    tipVisible.value = true
-    typeTip.value = 'apply'
+    if (testIds.value.modelId) {
+      // 判断是否已有设计 - 有提示信息
+      selectApplyRef.value.blur()
+      tipVisible.value = true
+      typeTip.value = 'apply'
+    }
   }
 
   const confirmTip = () => {
@@ -471,6 +463,19 @@
     form.fileTypeScope = arr
   }
 
+  // select tag clear
+  const removeFileTag = val => {
+    searchSelectedDocument.value = clearTagFn(searchSelectedDocument.value, val)
+  }
+
+  const removeDeptTag = val => {
+    searchSelected.value = clearTagFn(searchSelected.value, val)
+  }
+
+  const clearTagFn = (attr, val) => {
+    if (!Array.isArray(attr) || attr.length === 0) return attr
+    return attr.filter(item => item.id !== val)
+  }
   defineExpose({
     getBasicsFormValue,
     form
@@ -480,7 +485,7 @@
   .flowManage-basics-info {
     margin: auto;
     width: calc(100vw - 160px);
-    height: calc(100vh - 92px);
+    height: calc(100vh - 192px);
     min-height: 500px;
     min-width: 800px;
     margin-top: 16px;

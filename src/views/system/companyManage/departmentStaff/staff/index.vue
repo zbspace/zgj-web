@@ -148,6 +148,7 @@
               collapse-tags-tooltip
               :max-collapse-tags="5"
               @click="chooseOrgan('partTimeOrgan', true)"
+              @remove-tag="removeDeptTag($event, 'partTimeOrgan')"
             >
               <el-option
                 v-for="one in state.tabSelects.partTimeOrgansSelected"
@@ -227,6 +228,7 @@
               style="width: 100%"
               popper-class="hidePoper"
               @click="chooseOrgan('roles', true)"
+              @remove-tag="removeDeptTag($event, 'roles')"
             >
               <el-option
                 v-for="one in state.tabSelects.rolesSelected"
@@ -1189,7 +1191,7 @@
         }
       } else {
         // ElMessage.error('校验失败')
-        // confirmLoading.value = false
+        confirmLoading.value = false
       }
     })
   }
@@ -1203,27 +1205,32 @@
     return arr
   }
   const submitAddStaff = data => {
-    api.userAdd(state.componentsAddForm.formData).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('新增员工成功！')
-        table.value.reloadData()
-        formStaffRef.value.resetFields()
-        showStaffDialog.value = false
-        state.tabSelects = {
-          // 部门弹窗选中信息
-          searchSelected: [],
-          // 部门选中信息
-          hostOrganSelected: [],
-          // 角色选中信息
-          rolesSelected: [],
-          // 主管选中信息
-          leaderUserSelected: []
+    api
+      .userAdd(state.componentsAddForm.formData)
+      .then(res => {
+        if (res.code === 200) {
+          ElMessage.success('新增员工成功！')
+          table.value.reloadData()
+          formStaffRef.value.resetFields()
+          showStaffDialog.value = false
+          state.tabSelects = {
+            // 部门弹窗选中信息
+            searchSelected: [],
+            // 部门选中信息
+            hostOrganSelected: [],
+            // 角色选中信息
+            rolesSelected: [],
+            // 主管选中信息
+            leaderUserSelected: []
+          }
+        } else {
+          confirmLoading.value = false
         }
-      } else {
         confirmLoading.value = false
-      }
-      confirmLoading.value = false
-    })
+      })
+      .catch(() => {
+        confirmLoading.value = false
+      })
   }
   const submitEditStaff = data => {
     api.userEdit(data).then(res => {
@@ -1255,6 +1262,47 @@
   const currentChange = type => {
     organId.value = type.organId
     table.value.reloadData()
+  }
+  const removeDeptTag = (val, type) => {
+    if (type === 'partTimeOrgan') {
+      state.tabSelects.searchSelected =
+        state.tabSelects.partTimeOrgansSelected.length > 0
+          ? state.tabSelects.partTimeOrgansSelected.map(i => {
+              return {
+                ...i,
+                id: i.value,
+                name: i.label,
+                type: 'organ'
+              }
+            })
+          : []
+      state.tabSelects.partTimeOrgansSelected = clearTagFn(
+        state.tabSelects.searchSelected,
+        val
+      )
+    }
+    if (type === 'roles') {
+      state.tabSelects.searchSelected =
+        state.tabSelects.rolesSelected.length > 0
+          ? state.tabSelects.rolesSelected.map(i => {
+              return {
+                ...i,
+                id: i.value,
+                name: i.label,
+                type: 'role'
+              }
+            })
+          : []
+      state.tabSelects.rolesSelected = clearTagFn(
+        state.tabSelects.searchSelected,
+        val
+      )
+    }
+  }
+
+  const clearTagFn = (attr, val) => {
+    if (!Array.isArray(attr) || attr.length === 0) return attr
+    return attr.filter(item => item.id !== val)
   }
   onMounted(() => {
     table.value.reloadData()

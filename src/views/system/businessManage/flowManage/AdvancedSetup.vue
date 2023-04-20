@@ -48,10 +48,12 @@
 </script>
 <style lang="scss" scoped>
   .flowManage-advanced-setup {
-    margin: 0%;
-    width: 90%;
-    height: calc(95% - 1rem);
-    margin-top: 1rem;
+    margin: auto;
+    width: calc(100vw - 160px);
+    height: calc(100vh - 192px);
+    min-height: 500px;
+    min-width: 800px;
+    margin-top: 16px;
     background-color: var(--jy-color-fill--5);
     display: flex;
     justify-content: center;
