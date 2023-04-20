@@ -2,7 +2,7 @@
 * @Descripttion 人员管理
 * @FileName personManage.vue
 * @Author WalterXsk
-* @LastEditTime 2023-03-23 15:06:53
+ * @LastEditTime: 2023-04-20
 !-->
 <template>
   <div class="PrintControlManagement-LibraryOfSeals">
@@ -48,7 +48,7 @@
                 alt=""
                 @click="clickBackPage"
               />
-              人员管理
+              人员管理<span class="role">（{{ roleName }}）</span>
             </div>
           </div>
           <div class="title-more">
@@ -108,6 +108,7 @@
   const route = useRoute()
   const table = ref(null)
   const queryParams = ref({})
+  const roleName = ref(decodeURIComponent(route.query.roleName))
   const state = reactive({
     sealIds: '',
     msg: '',
@@ -352,6 +353,22 @@
           height: 100%;
           display: flex;
           align-items: center;
+        }
+      }
+
+      .title-desc {
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        color: rgba(0, 0, 0, 0.85);
+        .title-desc-img {
+          margin-right: 0.5rem;
+          cursor: pointer;
+        }
+
+        .role {
+          font-size: 16px;
+          color: rgba(0, 0, 0, 0.65);
         }
       }
     }

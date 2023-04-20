@@ -2,7 +2,7 @@
 * @Descripttion 角色权限管理
 * @FileName index.vue
 * @Author WalterXsk
-* @LastEditTime 2023-03-22 14:19:54
+ * @LastEditTime: 2023-04-20
 !-->
 <template>
   <div>
@@ -300,13 +300,19 @@
     if (cell.name === 't-zgj-sync.AuthSetting') {
       router.push({
         path: '/system/companyManage/departmentStaff/config',
-        query: { roleId: column.roleId }
+        query: {
+          roleId: column.roleId,
+          roleName: encodeURIComponent(column.roleName)
+        }
       })
     }
     if (cell.name === 't-zgj-sync.PersonManage') {
       router.push({
         path: '/system/companyManage/departmentStaff/person',
-        query: { roleId: column.roleId }
+        query: {
+          roleId: column.roleId,
+          roleName: encodeURIComponent(column.roleName)
+        }
       })
     }
   }
@@ -387,7 +393,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .title {
     display: flex;
     align-items: center;

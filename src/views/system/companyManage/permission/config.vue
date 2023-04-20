@@ -28,7 +28,7 @@
               @click="clickBackPage"
             />
             权限配置
-            <span class="role">（管理员）</span>
+            <span class="role">（{{ roleName }}）</span>
           </div>
           <div></div>
         </div>
@@ -173,7 +173,7 @@
 
   // 消息 tabs
   const active = ref('first')
-
+  const roleName = ref(decodeURIComponent(route.query.roleName))
   const tabsLabel = ref([
     {
       name: 't-zgj-person.FunctionalPermissions',
