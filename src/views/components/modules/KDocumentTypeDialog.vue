@@ -46,7 +46,7 @@
           </div>
         </div>
         <!-- right -->
-        <el-scrollbar class="selection-right user-select">
+        <el-scrollbar class="selection-right user-select" always>
           <div v-show="allSelected.length === 0" class="null-img">
             <img src="@/assets/svg/common/data_null.svg" />
           </div>
@@ -192,7 +192,6 @@
   if (props.editDeploy) {
     const paramsKey = Api[props.apiModule].key
     apiInterface(props.queryParams[paramsKey], 'selected').then(res => {
-      // allSelected.value = res.data.organs // 编辑时 文件类型返回
       firstShow.value = true
     })
   } else {
@@ -200,7 +199,6 @@
   }
 
   if (props.searchSelected.length > 0) {
-    // allSelected.value = toRefs(props.searchSelected)
     allSelected.value = props.searchSelected.filter(
       item => item.type === 'fileType'
     )
@@ -248,14 +246,6 @@
 
     // 非编辑 - 导出（相应模式）
     changeResult.value = changeResult.value.concat(allSelected.value)
-    // const handleResult = []
-    // if (changeResult.value.length > 0) {
-    //   changeResult.value.forEach(item => {
-    //     handleResult.push({
-    //       ...item
-    //     })
-    //   })
-    // }
     emits('update:searchSelected', changeResult.value)
     emits('update:show', false)
     changeResult.value = []

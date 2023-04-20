@@ -106,7 +106,7 @@
     </div>
 
     <!-- 列表 -->
-    <el-scrollbar class="k-select-list">
+    <el-scrollbar class="k-select-list" always>
       <div class="k-column" v-for="(item, index) in cacheShowList" :key="index">
         <div class="k-tree-left">
           <!-- checkbox -->
@@ -629,7 +629,7 @@
     .k-select-list {
       flex: 1;
       height: 100%;
-      padding-right: 15px;
+      padding-right: 24px;
     }
     .k-column {
       display: flex;

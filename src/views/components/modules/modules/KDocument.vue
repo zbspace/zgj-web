@@ -788,7 +788,7 @@
   .select-list {
     padding: 4px 0px 0 0;
     flex: 1;
-    height: calc(100% - 70px);
+    height: calc(100% - 130px);
   }
 
   // &::after {
