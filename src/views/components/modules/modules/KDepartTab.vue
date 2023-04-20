@@ -231,6 +231,13 @@
               if (val.id === item.id) {
                 val.selectedStatus = 2
               }
+              if (
+                val.idFullPathSet.includes(item.id) &&
+                item.includeChild === '1' &&
+                val.id !== item.id
+              ) {
+                val.disabled = true
+              }
             })
           })
         }
@@ -305,11 +312,6 @@
 
     handleRootChangeByPart(attr, val)
     handleSelectedChangeByPart(attr, val)
-    treeColumnSearchData.data.forEach(item => {
-      if (item.id === attr.id) {
-        item.selectedStatus = val
-      }
-    })
   }
 
   // 搜索选择
@@ -341,6 +343,9 @@
       const array = []
       treeColumnData.data.forEach(item => {
         item.selectedStatus = 0
+        if (item.haveChildren) {
+          item.includeChild = '0'
+        }
         array.push(item.id)
       })
       selectedData.value = selectedData.value.filter(
@@ -392,6 +397,10 @@
       // 取消状态 - 特殊情况 包含状态 且 root树已加载
       function cancelIsChildrenStatus(data) {
         data.forEach(item => {
+          // 反选时 清空 包含状态
+          if (item.id === attr.id && attr.haveChildren) {
+            item.includeChild = '0'
+          }
           if (item.id === attr.id && includeChild === '1') {
             function innerChange(lists) {
               lists.forEach(key => {
@@ -402,7 +411,7 @@
                 }
               })
             }
-            innerChange(item.children)
+            item.children && innerChange(item.children)
           }
 
           if (item.children && item.children.length > 0) {
@@ -412,13 +421,28 @@
       }
 
       cancelIsChildrenStatus(cacheRootLists.value)
+
+      if (searchType.value) {
+        treeColumnSearchData.data.forEach(item => {
+          if (
+            item.idFullPathSet.includes(attr.id) &&
+            (attr.includeChild === '1' || !attr.includeChild) &&
+            item.id !== attr.id
+          ) {
+            item.disabled = false
+            item.selectedStatus = 0
+          }
+        })
+      }
     } else {
       const cacheSelectedData = JSON.parse(JSON.stringify(selectedData.value))
 
       if (searchType.value) {
         treeColumnSearchData.data.forEach(item => {
           if (item.id === attr.id) {
-            item.selectedStatus = 2
+            if (item.id === attr.id && attr.haveChildren) {
+              item.includeChild = '0'
+            }
             cacheSelectedData.splice(selectedData.value.length, 0, item)
           }
         })
@@ -433,6 +457,14 @@
         }
       })
       selectedData.value = cacheSelectedData
+    }
+
+    if (searchType.value) {
+      treeColumnSearchData.data.forEach(item => {
+        if (item.id === attr.id) {
+          item.selectedStatus = val
+        }
+      })
     }
   }
 
@@ -690,7 +722,6 @@
 
   // 监听 向下包含 切换
   const changeSwitch = (switchStatus, attr) => {
-    console.log(switchStatus, attr)
     // 处理选中值
     handleChangeIncluded(switchStatus, attr)
 
@@ -725,6 +756,28 @@
     // 重置 treeColumnData
     const pid = treeColumnData.data[0].pid
     recursionTreeData(cacheRootLists.value, pid)
+
+    if (searchType.value) {
+      treeColumnSearchData.data.forEach(val => {
+        if (
+          val.idFullPathSet.includes(attr.id) &&
+          attr.includeChild === '1' &&
+          val.id !== attr.id
+        ) {
+          val.disabled = true
+          val.selectedStatus = 2
+        }
+
+        if (
+          val.idFullPathSet.includes(attr.id) &&
+          attr.includeChild === '0' &&
+          val.id !== attr.id
+        ) {
+          val.disabled = false
+          val.selectedStatus = 0
+        }
+      })
+    }
   }
 
   const handleChangeIncluded = (status, attr) => {

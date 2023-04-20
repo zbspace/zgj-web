@@ -78,6 +78,10 @@
           class="info-noContent"
           v-if="state.list.data.length === 0 && flagStatus"
         >
+          <div class="info-noContent-backcolor" @click="clickEdit">
+            <img src="@/assets/svg/system/flow/vector.svg" />
+            <div class="text">去创建</div>
+          </div>
           <div class="info-noContent-desc">
             <img src="@/assets/svg/system/flow/info.svg" />
             暂无可关联的表单
@@ -351,7 +355,7 @@
     editFormMessageId.value = attr.formMessageId
     resetFlag.value = false
     FlowApi.getFormJsonById({ formMessageId: attr.formMessageId }).then(res => {
-      form.formMessageId = res.data.formMessageId
+      form.formMessageId = res.data.formDefinitionId
       state.currentState = '2'
       formJson.value = (res.success && JSON.parse(res.data.formInfo)) || ''
       vformObj.value = attr

@@ -7,7 +7,7 @@
         v-drag="props.drag"
         :style="zoomStyle"
       >
-        <div class="flow-designer-box">
+        <el-scrollbar class="flow-designer-box">
           <FlowStartNode :node="nodeData" />
           <FlowNode
             :node="nodeData"
@@ -15,7 +15,7 @@
             @nodeUpdate="nodeUpdate"
           />
           <FlowEndNode :node="nodeData" :readable="props.readable" />
-        </div>
+        </el-scrollbar>
       </div>
       <FlowZoom v-if="!props.readable" v-model="zoomValue" :top="props.top" />
       <!-- <FlowStatus v-if="props.readable" :navable="navable" :top="props.top" /> -->

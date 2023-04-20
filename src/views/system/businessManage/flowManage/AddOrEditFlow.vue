@@ -129,7 +129,7 @@
       v-model="state.jyBoxShow"
       :show="state.jyBoxShow"
       :defaultAttribute="{}"
-      @on-cancel="jyBoxCancel"
+      @on-cancel="state.jyBoxShow = false"
     >
       <template #header>
         {{ state.jyBoxHeader }}
@@ -138,7 +138,9 @@
         {{ state.jyBoxCont }}
       </template>
       <template #footer>
-        <el-button type="primary" @click="jyBoxCancel">确定</el-button>
+        <el-button type="primary" @click="state.jyBoxShow = false">
+          确定
+        </el-button>
       </template>
     </JyElMessageBox>
   </div>
@@ -153,8 +155,8 @@
   import apiFlow from '@/api/system/flowManagement'
   import editModelApi from '@/api/frontDesk/printControl/sealApply'
   import { ElMessage } from 'element-plus'
-  import { useFlowStore } from '@/components/FlowDesign/store/flow'
   import { ModelApi } from '@/api/flow/ModelApi'
+  import { useFlowStore } from '@/components/FlowDesign/store/flow'
   const flowStore = useFlowStore()
   const linkSealUseTypeId = ref('1')
   // 异步组件
@@ -383,10 +385,6 @@
         state.checkedIndex = item.index
       }
     })
-  }
-
-  const jyBoxCancel = () => {
-    state.jyBoxShow = false
   }
 
   // 点击保存

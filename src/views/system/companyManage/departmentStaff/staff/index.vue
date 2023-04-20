@@ -1191,7 +1191,7 @@
         }
       } else {
         // ElMessage.error('校验失败')
-        // confirmLoading.value = false
+        confirmLoading.value = false
       }
     })
   }
@@ -1205,27 +1205,32 @@
     return arr
   }
   const submitAddStaff = data => {
-    api.userAdd(state.componentsAddForm.formData).then(res => {
-      if (res.code === 200) {
-        ElMessage.success('新增员工成功！')
-        table.value.reloadData()
-        formStaffRef.value.resetFields()
-        showStaffDialog.value = false
-        state.tabSelects = {
-          // 部门弹窗选中信息
-          searchSelected: [],
-          // 部门选中信息
-          hostOrganSelected: [],
-          // 角色选中信息
-          rolesSelected: [],
-          // 主管选中信息
-          leaderUserSelected: []
+    api
+      .userAdd(state.componentsAddForm.formData)
+      .then(res => {
+        if (res.code === 200) {
+          ElMessage.success('新增员工成功！')
+          table.value.reloadData()
+          formStaffRef.value.resetFields()
+          showStaffDialog.value = false
+          state.tabSelects = {
+            // 部门弹窗选中信息
+            searchSelected: [],
+            // 部门选中信息
+            hostOrganSelected: [],
+            // 角色选中信息
+            rolesSelected: [],
+            // 主管选中信息
+            leaderUserSelected: []
+          }
+        } else {
+          confirmLoading.value = false
         }
-      } else {
         confirmLoading.value = false
-      }
-      confirmLoading.value = false
-    })
+      })
+      .catch(() => {
+        confirmLoading.value = false
+      })
   }
   const submitEditStaff = data => {
     api.userEdit(data).then(res => {

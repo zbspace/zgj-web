@@ -45,8 +45,6 @@
     flowStore.initFreeFlow(props.initObj.modelId, props.initObj.definitionId)
     flowDesign.value.handleSetData({})
   })
-  // Loading
-  const loading = ref(false)
   // 最近定义ID
   const definitionId = ref(props.initObj.definitionId || null)
   // 模型id
@@ -56,7 +54,6 @@
    * 流程设计保存
    */
   const designSave = async type => {
-    loading.value = true
     const node = flowDesign.value.handleSave()
     if (!node || !modelId.value)
       return [
@@ -89,18 +86,13 @@
         node
       }
       if (type !== 'designModel') {
-        console.log('修改时的id', params.modelId, params.definitionId)
         // 修改
-        ModelApi.updateDesignUpgrade(params).then(() => {
-          loading.value = false
-        })
+        await ModelApi.updateDesignUpgrade(params)
       } else {
         // 新增
         const result = await ModelApi.saveDesign(params)
         if (result && result.success) return props.initObj
       }
-    } else {
-      loading.value = false
     }
   }
 
