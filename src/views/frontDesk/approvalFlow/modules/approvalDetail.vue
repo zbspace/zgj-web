@@ -30,26 +30,13 @@
               state.form.suggest === '3'
           }"
         >
-          <div
-            class="ap-cont-box sealDetails-basic-information"
-            v-for="item in props.params.detailData"
-            :key="item.title"
+          <JyVform
+            v-if="props.params.formJson"
+            mode="render"
+            :formJson="props.params.formJson"
+            :formData="props.params.formJson"
           >
-            <documentsDetailsPortion>
-              <template #title>
-                <div class="ap-cont-box-title-label">{{ item.title }}</div>
-              </template>
-              <template #content>
-                <div>
-                  <documentsDetailsInformationList
-                    :data="item.data"
-                    :labelStyle="item.labelStyle"
-                  >
-                  </documentsDetailsInformationList>
-                </div>
-              </template>
-            </documentsDetailsPortion>
-          </div>
+          </JyVform>
         </el-scrollbar>
       </div>
     </div>
@@ -279,19 +266,17 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed, onMounted, nextTick } from 'vue'
+  import { ref, reactive, computed, onMounted } from 'vue'
   import { ElMessage } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  import documentsDetailsPortion from '@/views/components/documentsDetails/portion.vue'
-  import documentsDetailsInformationList from '@/views/components/documentsDetails/informationList.vue'
   import { ApproverApi } from '@/api/flow/ApproverApi'
   import { NodeAttrApi } from '@/api/flow/NodeAttrApi'
   import loadApproverData from '@/components/FlowDesign/data/load-approver-data'
   import useCommon from '@/components/FlowDesign/hooks/useCommon'
-  import { CircleClose } from '@element-plus/icons-vue'
   import { ModelApi } from '@/api/flow/ModelApi'
   import { TaskApi } from '@/api/flow/TaskApi'
   import { RuTaskSignApi } from '@/api/flow/RuTaskSignApi'
+  import sealApply from '@/api/frontDesk/printControl/sealApply'
   const { toUgroup } = useCommon()
   // 数据
   const { backApprovalTypeDatas } = loadApproverData()
@@ -337,7 +322,7 @@
   const datas = ref([])
   // 被退回人列表
   const tasks = ref([])
-
+  console.log(props.params.formJson, '返回的params数据对接')
   const depChoose = ref('')
   const emit = defineEmits(['update:show', 'on-confirm', 'on-cancel'])
   const state = reactive({

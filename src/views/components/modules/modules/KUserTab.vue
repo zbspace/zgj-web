@@ -14,7 +14,7 @@
     <!-- crumbs -->
     <div class="select-crumbs user-select">
       <!-- 自定义面包屑 -->
-      <div class="custom-bread" v-show="true">
+      <div class="custom-bread">
         <!-- 循环 -->
         <div class="bread-item" v-for="(item, i) in curmbs" :key="i">
           <el-tooltip
@@ -639,6 +639,8 @@
     padding: 4px 0px 0 0;
     flex: 1;
     height: calc(100% - 130px);
+    // padding-bottom: 35px;
+    // overflow: hidden;
   }
 
   // &::after {

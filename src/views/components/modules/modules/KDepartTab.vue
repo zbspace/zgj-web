@@ -13,7 +13,7 @@
     <!-- crumbs -->
     <div class="select-crumbs user-select">
       <!-- 自定义面包屑 -->
-      <div class="custom-bread" v-show="true">
+      <div class="custom-bread">
         <!-- 循环 -->
         <div class="bread-item" v-for="(item, i) in curmbs" :key="i">
           <el-tooltip

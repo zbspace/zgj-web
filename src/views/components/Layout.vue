@@ -257,10 +257,10 @@
       }
       :deep {
         .el-scrollbar {
-          overflow: visible;
+          // overflow: visible;
         }
         .el-scrollbar__bar {
-          right: -1rem;
+          // right: -1rem;
         }
       }
     }

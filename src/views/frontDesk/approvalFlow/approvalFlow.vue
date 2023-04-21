@@ -79,41 +79,6 @@
         </componentsPagination>
       </template>
     </componentsLayout>
-    <!-- <JyTable
-      url="/queryTask/todo"
-      ref="table"
-      :needAutoRequest="false"
-      :componentsSearchForm="state.componentsSearchForm"
-      :componentsTableHeader="state.componentsTable.header"
-      :componentsBatch="state.componentsBatch"
-      :queryParams="queryParams"
-      tableClick="sealName"
-      @cellClick="cellClick"
-      @customClick="customClick"
-      @clickBatchButton="clickBatchButton"
-    >
-      <template #title>
-        <div class="title">
-          <div>流程审批</div>
-          <div class="title-more">
-            <div class="title-more-add">
-              <el-button type="primary">导出台账</el-button>
-            </div>
-            <div class="title-more-down"> </div>
-          </div>
-        </div>
-      </template>
-      <template #tabs>
-        <div>
-          <componentsTabs
-            :activeName="state.componentsTabs.activeName"
-            :data="state.componentsTabs.data"
-            @tab-change="tabChange"
-          >
-          </componentsTabs>
-        </div>
-      </template>
-    </JyTable> -->
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -124,8 +89,10 @@
       </componentsDocumentsDetails>
     </div>
     <ApprovalDetail
+      v-if="dialogProcess.show"
       ref="drawer"
       :show="dialogProcess.show"
+      @update:show="show = $event"
       :params="state.params"
       :title="dialogProcess.title"
       @on-cancel="closeDetail"
@@ -134,8 +101,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
-  import JyTable from '@/views/components/JyTable.vue'
+  import { ref, reactive, onMounted } from 'vue'
   import componentsTable from '../../components/table'
   import componentsSearchForm from '../../components/searchForm'
   import componentsPagination from '../../components/pagination.vue'
@@ -145,19 +111,16 @@
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import ApprovalDetail from '@/views/frontDesk/approvalFlow/modules/approvalDetail.vue'
-  // import ApprovalJson from '@/views/addDynamicFormJson/Approval.json'
   import toDoHeaderJson from '@/views/tableHeaderJson/frontDesk/approvalFlow/approvalFlowTodo.json'
   import DoneHeaderJson from '@/views/tableHeaderJson/frontDesk/approvalFlow/approvalFlowDone.json'
   import dayjs from 'dayjs'
   import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
-  import formApi from '@/api/system/formManagement/index'
   import { useVformInfoStore } from '@/store/vform'
-  import { CodeToText } from 'element-china-area-data'
 
   const vformInfoStore = useVformInfoStore()
-  const dialogProcess = reactive({
+  const dialogProcess = ref({
     show: false,
     title: 't-zgj-Approval',
     formJson: RecordSealToReviewJson
@@ -474,15 +437,14 @@
     }
   })
   const closeDetail = data => {
-    dialogProcess.show = false
+    dialogProcess.value.show = false
   }
   const handelSubmit = data => {
-    dialogProcess.show = false
+    dialogProcess.value.show = false
     getFormPage()
   }
   // 切换分页
   function tabChange(activeName) {
-    // console.log(activeName);
     state.componentsTabs.activeName = activeName
     if (activeName === '1') {
       state.componentsTable.header = toDoHeaderJson
@@ -744,9 +706,7 @@
 
   // 点击表格按钮
   function customClick(row, column, cell, event) {
-    console.log(column)
-    console.log(cell)
-    dialogProcess.title = cell.name
+    dialogProcess.value.title = cell.name
     if (cell.name === 't-zgj-Approval') {
       state.params.instanceId = column.instanceId
       state.params.taskId = column.taskId
@@ -773,31 +733,22 @@
     }
     InstanceApi.detail(params)
       .then(data => {
-        console.log(data)
-        console.log(JSON.parse(data.formJson))
         state.params.formData = JSON.parse(data.formJson)
         state.params.modelName = data.modelName
         state.params.modelId = data.modelId
         state.params.nodeId = data.nodeId
         state.params.definitionId = data.definitionId
         formVersionId.value = state.params.formData.formVersionId
-        drawer.value.getAllDetailInfo()
+        // drawer.value.getAllDetailInfo()
 
-        getFormDataJson()
-        // attrState.instanceName = data.instanceName
-        // loading.value = false
-        // initAffix()
         if (state.params.instanceStatus === 1) {
           getButtons()
         }
 
-        dialogProcess.show = true
-        dialogProcess.title = title
-        console.log(dialogProcess.show)
+        dialogProcess.value.show = true
+        dialogProcess.value.title = title
       })
-      .catch(() => {
-        // loading.value = false
-      })
+      .catch(() => {})
   }
   /**
    * 按钮
@@ -812,231 +763,9 @@
     if (result) {
       // 按钮
       state.params.buttons = result.filter(t => t.checked)
-      console.log('getButtons', state.params.buttons)
     }
   }
-  /**
-   * 获取动态表单信息
-   */
-  const getFormDataJson = () => {
-    formApi
-      .queryColumInfoByFormId({ formVersionId: formVersionId.value })
-      .then(res => {
-        state.params.formJson = res.data
-        console.log('getFormDataJson', res)
-        const d = handelData(state.params.formData, state.params.formJson)
-        state.params.detailData = d
-        console.log('formJson', d)
-      })
-  }
-  /**
-   * 处理表单详情数据
-   * @param {*} formData
-   * @param {*} formJson
-   */
-  const handelData = (formData, formJson) => {
-    const formTableData = []
-    const modelNameArr = []
-    // formJson.forEach(item => {
-    //   modelNameArr.push(item.formColumnModel ? item.formColumnModel : '其他')
-    // })
-    formJson.forEach(v => {
-      for (const item in formData) {
-        if (v.formColumnNo === item) {
-          if (v.formColumnNo === 'sealName') {
-            if (formData[item].length > 0) {
-              formData[item].forEach((cv, k) => {
-                formTableData.push({
-                  label: `印章${k > 0 ? k + 1 : ''}名称`,
-                  value: cv.seal,
-                  type: v.formColumnModel ? v.formColumnModel : '其他'
-                })
-                if (cv.applySealNum > 0) {
-                  formTableData.push({
-                    label: `盖章次数`,
-                    value: cv.applySealNum,
-                    type: v.formColumnModel ? v.formColumnModel : '其他'
-                  })
-                }
-                formTableData.push({
-                  label: `骑缝盖章`,
-                  value: cv.markSeal ? '是' : '否',
-                  type: v.formColumnModel ? v.formColumnModel : '其他'
-                })
-              })
-            }
-          } else if (v.formColumnNo === 'applicantInfo') {
-            for (const i in formData[item]) {
-              console.log(i)
-              if (i === 'applyOrganName') {
-                formTableData.push({
-                  label: '所属部门',
-                  value: formData[item][i],
-                  type: v.formColumnModel ? v.formColumnModel : '其他'
-                })
-              } else if (i === 'applyUserName') {
-                formTableData.push({
-                  label: '申请人员',
-                  value: formData[item][i],
-                  type: v.formColumnModel ? v.formColumnModel : '其他'
-                })
-              }
-            }
-          } else if (v.formColumnNo === 'contactUnit') {
-            const organNameList = []
-            if (formData[item].length > 0) {
-              formData[item].forEach((cv, k) => {
-                organNameList.push(cv.relatedCompanyName)
-              })
-              formTableData.push({
-                label: `往来单位`,
-                value: organNameList.length > 0 ? organNameList.join(',') : '-',
-                type: v.formColumnModel ? v.formColumnModel : '其他'
-              })
-            }
-          } else if (v.formColumnNo === 'limitTimeSeal') {
-            formTableData.push({
-              label: `限时用印`,
-              value: formData[item].timeLimit === 1 ? '是' : '否',
-              type: v.formColumnModel ? v.formColumnModel : '其他'
-            })
-            if (formData[item].timeLimit === 1) {
-              if (formData[item].sealTime.length > 0) {
-                formTableData.push({
-                  label: `用印时间`,
-                  value: `${formData[item].sealTime[0]}~${formData[item].sealTime[1]}`,
-                  type: v.formColumnModel ? v.formColumnModel : '其他'
-                })
-              }
-            }
-          } else if (v.formColumnNo === 'usesealBesides') {
-            formTableData.push({
-              label: `印章外带`,
-              value: formData[item].extSeal ? '是' : '否',
-              type: v.formColumnModel ? v.formColumnModel : '其他'
-            })
-            if (formData[item].extSeal) {
-              let area = ''
-              if (formData[item].provinceId.length > 0) {
-                formData[item].provinceId.forEach(item => {
-                  area += CodeToText[item] + ' '
-                })
-              }
-              formTableData.push({
-                label: `外带地址`,
-                value: area + formData[item].detailAddress,
-                type: v.formColumnModel ? v.formColumnModel : '其他'
-              })
-              formTableData.push({
-                label: `外带时间`,
-                value: `${formData[item].besidesTime[0]}~${formData[item].besidesTime[1]}`,
-                type: v.formColumnModel ? v.formColumnModel : '其他'
-              })
-            }
-          } else if (v.formColumnNo === 'remoteSeal') {
-            formTableData.push({
-              label: v.formColumnName,
-              value: formData[item] ? '是' : '否',
-              type: v.formColumnModel ? v.formColumnModel : '其他'
-            })
-          } else if (v.formColumnNo === 'videoSeal') {
-            formTableData.push({
-              label: v.formColumnName,
-              value: formData[item] ? '是' : '否',
-              type: v.formColumnModel ? v.formColumnModel : '其他'
-            })
-          } else if (v.formColumnNo === 'contractAmount') {
-            formTableData.push({
-              label: v.formColumnName,
-              value:
-                formData[item].amount === ''
-                  ? '-'
-                  : `${formData[item].amount} ${
-                      vformInfoStore.moneyType.find(v => {
-                        return v.moneyTypeId === formData[item].unit
-                          ? formData[item].unit
-                          : ''
-                      })?.moneyTypeName
-                    }`,
-              type: v.formColumnModel ? v.formColumnModel : '其他'
-            })
-          } else if (v.formColumnNo === 'agentMan') {
-            formTableData.push({
-              label: v.formColumnName,
-              value: formData[item].unitNames,
-              unitIds: formData[item].unitIds
-            })
-          } else if (v.formColumnNo === 'sealFile') {
-            if (formData[item].fileIds?.length > 0) {
-              console.log(
-                'formData[item].fileIds',
-                formData[item].fileIds.length
-              )
-              formData[item].fileIds.forEach((cv, k) => {
-                formTableData.push({
-                  label:
-                    formData[item].fileIds.length > 1
-                      ? `用印文件${k + 1}`
-                      : '用印文件',
-                  value: cv.fileOriginName,
-                  type: v.formColumnModel ? v.formColumnModel : '其他',
-                  fileUrl: cv.fileUrl
-                })
-              })
-            }
-            if (formData[item].fileAddIds?.length > 0) {
-              formData[item].fileAddIds.forEach((cv, k) => {
-                formTableData.push({
-                  label:
-                    formData[item].fileAddIds.length > 1
-                      ? `附加文件${k + 1}`
-                      : '附加文件',
-                  value: cv.fileOriginName,
-                  type: v.formColumnModel ? v.formColumnModel : '其他',
-                  fileUrl: cv.fileUrl
-                })
-              })
-            }
-          } else {
-            formTableData.push({
-              label: v.formColumnName,
-              value: formData[item],
-              type: v.formColumnModel ? v.formColumnModel : '其他',
-              orderNumber: item.orderNumber
-            })
-          }
-        }
-      }
-      modelNameArr.push(v.formColumnModel ? v.formColumnModel : '其他')
-    })
-    const allArr = []
-    const newModeNames = Array.from(new Set(modelNameArr))
-    newModeNames.forEach((item, k) => {
-      const obj = {
-        title: item,
-        data: [],
-        labelStyle: {
-          width: '8rem'
-        },
-        sort: item === '其他' ? 100 : k + 1
-      }
-      formTableData.forEach(v => {
-        if (v.type === item) {
-          obj.data.push(v)
-        }
-      })
-      allArr.push(obj)
-    })
-    console.log('allArr', allArr)
-    allArr.sort(sortArr('sort'))
-    return allArr
-  }
-  // 排序
-  const sortArr = attr => {
-    return function (a, b) {
-      return a[attr] - b[attr]
-    }
-  }
+
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'instanceTitle') {
       state.componentsDocumentsDetails.show = true
@@ -1134,13 +863,10 @@
       }
     )
   }
-  onBeforeMount(() => {
-    // console.log(`the component is now onBeforeMount.`)
-  })
+
   onMounted(() => {
     getFormPage()
     vformInfoStore.getMoneyType()
-    // console.log(`the component is now mounted.`)
   })
 </script>
 <style lang="scss" scoped>
