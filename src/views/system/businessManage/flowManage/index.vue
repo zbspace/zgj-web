@@ -581,7 +581,7 @@
             },
             {
               label: '关联表单',
-              value: handleFile(data)
+              value: data.formMessageName || '-'
             }
             // {
             //   label: '超时提醒',
@@ -639,18 +639,22 @@
   }
 
   const handleScope = data => {
-    // TODO:处理 用户和部门状态 organScope \ organUserScope
-    if (!data.dataScope || data.dataScope.length <= 0) return '-'
+    const organScope = data.organScope ? data.organScope : []
+    const organUserScope = data.organUserScope ? data.organUserScope : []
+    const dataScopeLength = organScope.length + organUserScope.length
+    const dataScope = organScope.concat(organUserScope)
+    if (dataScopeLength.length <= 0) return '-'
     const arr = []
-    data.dataScope.map(item => arr.push(item.scopeName))
+    dataScope.map(item => arr.push(item.name))
+
     return arr.join(',')
   }
-  const handleFile = data => {
-    if (!data.fileType || data.fileType.length <= 0) return '-'
-    const arr = []
-    data.fileType.map(item => arr.push(item.name))
-    return arr.join(',')
-  }
+  // const handleFile = data => {
+  //   if (!data.fileType || data.fileType.length <= 0) return '-'
+  //   const arr = []
+  //   data.fileType.map(item => arr.push(item.name))
+  //   return arr.join(',')
+  // }
   const customClick = (row, column, cell, event) => {
     state.columnData = column
     state.flowMessageId = column.flowMessageId
@@ -838,7 +842,6 @@
 
   // 点击关闭
   const clickClose = () => {
-    console.log('--->', state.componentsDocumentsDetails.show)
     // state.componentsDocumentsDetails.show = false
   }
 

@@ -74,6 +74,7 @@
                       collapse-tags
                       collapse-tags-tooltip
                       :max-collapse-tags="3"
+                      @remove-tag="removeFileTag"
                     >
                       <el-option
                         v-for="one in fileTypeOptions"
@@ -222,6 +223,7 @@
                               ruleForm.remoteUsers.length
                           }"
                           @click="clickDialog('remoteUsers')"
+                          @remove-tag="removeTag($event, 'remote')"
                         >
                           <el-option
                             v-for="one in remoteUsersList"
@@ -258,6 +260,7 @@
                               ruleForm.videoUsers && ruleForm.videoUsers.length
                           }"
                           @click="clickDialog('videoUsers')"
+                          @remove-tag="removeTag($event, 'video')"
                         >
                           <el-option
                             v-for="one in videoUsersList"
@@ -1506,13 +1509,18 @@
     }
   }
 
+  const remoteSelect = ref([])
+  const videoSelect = ref([])
   // 选择确认人
   const clickDialog = type => {
-    console.log(type)
     showDeptDialog.value = true
     kDepartOrPerson.value = type
-    searchSelected.value = ruleForm.value[type]
-    console.log(searchSelected.value)
+    // searchSelected.value = ruleForm.value[type]
+    if (type === 'remoteUsers') {
+      searchSelected.value = remoteSelect.value
+    } else {
+      searchSelected.value = videoSelect.value
+    }
     setTimeout(() => {
       showDepPerDialog.value = true
     }, 200)
@@ -1529,6 +1537,7 @@
           value: i.id
         }
       })
+      remoteSelect.value = value
     } else {
       videoUsersList.value = value.map(i => {
         return {
@@ -1536,6 +1545,7 @@
           value: i.id
         }
       })
+      videoSelect.value = value
     }
   }
 
@@ -1559,6 +1569,13 @@
             value: i.userId
           }
         })
+        remoteSelect.value = data.remoteSealUserList.map(item => {
+          return {
+            id: item.userId,
+            name: item.userName,
+            type: 'user'
+          }
+        })
         data.videoUsers = data.remoteVideoList.map(i => i.userId)
         videoUsersList.value = data.remoteVideoList.map(i => {
           return {
@@ -1567,14 +1584,34 @@
           }
         })
         delete data.fileTypes
+        videoSelect.value = data.remoteVideoList.map(item => {
+          return {
+            id: item.userId,
+            name: item.userName,
+            type: 'user'
+          }
+        })
         ruleBusinessNo = data.ruleBusinessNo
         data.fileTypeIds = data.fileTypeList.map(v => v.id)
         ruleForm.value = data
-        console.log(data.fileTypeList, '====')
         documentTypeSelected.value = data.fileTypeList
       })
   }
 
+  const removeFileTag = val => {
+    documentTypeSelected.value = clearTagFn(documentTypeSelected.value, val)
+  }
+  const removeTag = (val, type) => {
+    if (type === 'remote') {
+      remoteSelect.value = clearTagFn(remoteSelect.value, val)
+    } else {
+      videoSelect.value = clearTagFn(videoSelect.value, val)
+    }
+  }
+  const clearTagFn = (attr, val) => {
+    if (!Array.isArray(attr) || attr.length === 0) return attr
+    return attr.filter(item => item.id !== val)
+  }
   onMounted(() => {
     getFileTypeList()
     if (router.currentRoute.value.query.ruleBusinessId) {

@@ -59,17 +59,16 @@
                   </el-select>
                 </template>
               </JyLabel>
-              <div style="height: calc(100vh - 500px)" v-if="initObj">
-                <VFlowDesign
-                  ref="refVFlowDesign"
-                  :defaultAttribute="{
+              <div v-if="initObj" style="min-height: 500px">
+                <FlowDesign
+                  ref="flowDesign"
+                  v-bind="{
                     readable: true,
                     mapable: false,
                     scroll: false,
                     top: '100'
                   }"
-                  :initObj="initObj"
-                ></VFlowDesign>
+                />
               </div>
 
               <div class="PrintingProcess">
@@ -184,15 +183,17 @@
   import componentsLayout from '../../../components/Layout.vue'
   import SealApplicationStep from '@/views/components/sealApplication/JyStep.vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
-  import VFlowDesign from '@/views/components/FlowDesign/index.vue'
   import { ElMessage } from 'element-plus'
   import { generatingNumber } from '@/utils/tools'
   import { fileManageService } from '@/api/frontDesk/fileManage'
   import { customComponents } from '@/lib/vform/extension/samples/extension-schema.js'
 
+  import FlowDesign from '@/components/FlowDesign/index.vue'
+  import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  const flowStore = useFlowStore()
   const router = useRouter()
   const route = useRoute()
-  const refVFlowDesign = ref(null)
+  const flowDesign = ref(null)
   const initObj = ref(null)
   const applyTypeId = ref(null)
   const sealUseTypeId = ref(null)
@@ -365,13 +366,15 @@
 
   function flowDetail(modelId, definitionId) {
     initObj.value = { modelId, definitionId }
+    flowStore.setModelId(modelId, definitionId)
     sealApply
       .flowDetail({
         ...initObj.value,
         edit: true
       })
       .then(res => {
-        refVFlowDesign.value.handleSetData(res.data.data)
+        flowStore.initFreeFlow(modelId, definitionId)
+        flowDesign.value.handleSetData(res.data.data)
       })
   }
 

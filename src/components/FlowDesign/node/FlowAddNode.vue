@@ -23,14 +23,14 @@
             <img :src="ccIcon" class="anticon" />
             <span>抄送节点</span>
           </a-menu-item>
-          <a-menu-item key="6" @click="addType(6)">
+          <!-- <a-menu-item key="6" @click="addType(6)">
             <img :src="writeIcon" class="anticon" />
             <span>办理节点</span>
           </a-menu-item>
           <a-menu-item key="20" @click="addType(20)">
             <img :src="noticeIcon" class="anticon" />
             <span>通知节点</span>
-          </a-menu-item>
+          </a-menu-item> -->
           <!--  <a-menu-item key="5" @click="addType(5)">
             <img :src="webhookIcon" class="anticon" />
             <span>事件节点</span>
