@@ -6,7 +6,17 @@
 !-->
 <template>
   <div class="approvalFlow-approvalFlow">
-    <componentsLayout Layout="title,tabs,searchForm,table,pagination,batch">
+    <JyTable
+      :url="`/queryTask/${currentActiveName}`"
+      ref="jyTable"
+      hasTabs
+      :componentsSearchForm="state.componentsSearchForm"
+      :componentsTableHeader="state.componentsTable.header"
+      :componentsBatch="state.componentsBatch"
+      tableClick="instanceTitle"
+      @cellClick="cellClick"
+      @customClick="customClick"
+    >
       <template #title>
         <div class="title">
           <div> {{ $t('t-zgj-workflow.ApprovalProcess') }} </div>
@@ -22,63 +32,15 @@
       <template #tabs>
         <div>
           <componentsTabs
-            :activeName="state.componentsTabs.activeName"
+            :activeName="currentActiveName"
             :data="state.componentsTabs.data"
             @tab-change="tabChange"
           >
           </componentsTabs>
         </div>
       </template>
-      <template #searchForm>
-        <div>
-          <componentsSearchForm
-            :data="state.componentsSearchForm.data"
-            :butData="state.componentsSearchForm.butData"
-            :style="state.componentsSearchForm.style"
-            @clickElement="clickElement"
-            @clickSubmit="clickSubmit"
-          >
-          </componentsSearchForm>
-        </div>
-      </template>
-      <template #batch>
-        <div class="batch">
-          <componentsBatch
-            :tableHeader="state.componentsTable.header"
-            :data="state.componentsBatch.data"
-            :defaultAttribute="state.componentsBatch.defaultAttribute"
-            @clickBatchButton="clickBatchButton"
-          >
-          </componentsBatch>
-        </div>
-      </template>
-      <template #table>
-        <div>
-          <componentsTable
-            :defaultAttribute="state.componentsTable.defaultAttribute"
-            :data="state.componentsTable.data"
-            :header="state.componentsTable.header"
-            :paginationData="state.componentsPagination.data"
-            isSelection
-            height="800"
-            :loading="state.componentsTable.loading"
-            @selection-change="selectionChange"
-            @custom-click="customClick"
-            @cellClick="cellClick"
-          >
-          </componentsTable>
-        </div>
-      </template>
-      <template #pagination>
-        <componentsPagination
-          :data="state.componentsPagination.data"
-          :defaultAttribute="state.componentsPagination.defaultAttribute"
-          @size-change="sizeChange"
-          @current-change="currentChange"
-        >
-        </componentsPagination>
-      </template>
-    </componentsLayout>
+    </JyTable>
+
     <!-- 单据详情 -->
     <div class="ap-box">
       <componentsDocumentsDetails
@@ -102,12 +64,7 @@
 </template>
 <script setup>
   import { ref, reactive, onMounted } from 'vue'
-  import componentsTable from '../../components/table'
-  import componentsSearchForm from '../../components/searchForm'
-  import componentsPagination from '../../components/pagination.vue'
   import componentsTabs from '../../components/JyTabs.vue'
-  import componentsLayout from '../../components/Layout.vue'
-  import componentsBatch from '@/views/components/batch.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import RecordSealToReviewJson from '@/views/addDynamicFormJson/RecordSealToReview.json'
   import ApprovalDetail from '@/views/frontDesk/approvalFlow/modules/approvalDetail.vue'
@@ -118,6 +75,7 @@
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import { useVformInfoStore } from '@/store/vform'
+  import JyTable from '@/views/components/JyTable.vue'
 
   const vformInfoStore = useVformInfoStore()
   const dialogProcess = ref({
@@ -128,13 +86,7 @@
   const drawer = ref(null)
   // 动态表单版本Id
   const formVersionId = ref('')
-  // 动态表单Id
-  const formMessageId = ref('')
-  // 流程版本Id
-  const flowVersionId = ref('')
-  // 流程Id
-  const flowMessageId = ref('')
-  const showDialog = ref(false)
+  const currentActiveName = ref('todo')
   const state = reactive({
     searchSelected: [],
     approvalModes: {
@@ -215,14 +167,14 @@
       data: [
         {
           label: '待审批',
-          name: '1'
+          name: 'todo'
         },
         {
           label: '已审批',
-          name: '2'
+          name: 'done'
         }
       ],
-      activeName: '1'
+      activeName: 'todo'
     },
     componentsDocumentsDetails: {
       show: false,
@@ -250,103 +202,7 @@
           width: '100px'
         }
       },
-      data: [
-        {
-          id: 'keyword',
-          label: '关键词',
-          type: 'input',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '单据名称'
-          }
-        },
-        {
-          id: 'picker',
-          label: '申请时间',
-          type: 'picker',
-          pickerType: 'date',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'daterange',
-            'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
-          },
-          style: {}
-        },
-        {
-          id: 'applyOrganId',
-          label: '申请部门',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'organ',
-            placeholder: '+选择部门'
-          },
-          options: [],
-          values: []
-        },
-        {
-          id: 'applyTypeId',
-          label: '流程类型',
-          type: 'select',
-          options: [
-            {
-              label: '用印申请',
-              value: '1'
-            },
-            {
-              label: '刻章申请',
-              value: '2'
-            },
-            {
-              label: '销毁申请',
-              value: '3'
-            },
-            {
-              label: '停用申请',
-              value: '4'
-            },
-            {
-              label: '变更申请',
-              value: '5'
-            },
-            {
-              label: '启用申请',
-              value: '6'
-            }
-          ],
-          defaultAttribute: {
-            multiple: false
-          }
-        },
-        {
-          id: 'relatedCompanyId',
-          label: '往来单位',
-          type: 'dialog',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'JyRelatedCompany',
-            placeholder: '+往来单位'
-          },
-          options: [],
-          values: []
-        },
-        {
-          id: 'sealIds',
-          label: '印章名称',
-          type: 'dialog',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'JySelectSeal',
-            multiple: false,
-            placeholder: '+选择印章'
-          },
-          options: [],
-          values: []
-        }
-      ],
+      data: [],
       butData: [
         {
           id: 'more',
@@ -443,265 +299,238 @@
     dialogProcess.value.show = false
     getFormPage()
   }
+  const todoSearchForm = [
+    {
+      id: 'keyword',
+      label: '关键词',
+      type: 'input',
+      inCommonUse: true,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '单据名称'
+      }
+    },
+    {
+      id: 'picker',
+      label: '申请时间',
+      type: 'picker',
+      pickerType: 'date',
+      inCommonUse: true,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'daterange',
+        'start-placeholder': '开始时间',
+        'end-placeholder': '结束时间'
+      },
+      style: {}
+    },
+    {
+      id: 'applyOrganId',
+      label: '申请部门',
+      type: 'derivable',
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '+选择部门'
+      }
+    },
+    {
+      id: 'applyTypeId',
+      label: '流程类型',
+      type: 'select',
+      options: [
+        {
+          label: '用印申请',
+          value: '1'
+        },
+        {
+          label: '刻章申请',
+          value: '2'
+        },
+        {
+          label: '销毁申请',
+          value: '3'
+        },
+        {
+          label: '停用申请',
+          value: '4'
+        },
+        {
+          label: '变更申请',
+          value: '5'
+        },
+        {
+          label: '启用申请',
+          value: '6'
+        }
+      ],
+      defaultAttribute: {
+        multiple: false
+      }
+    },
+    {
+      id: 'relatedCompanyId',
+      label: '往来单位',
+      type: 'dialog',
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'JyRelatedCompany',
+        placeholder: '+往来单位'
+      },
+      options: [],
+      values: []
+    },
+    {
+      id: 'sealIds',
+      label: '印章名称',
+      type: 'dialog',
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'JySelectSeal',
+        multiple: false,
+        placeholder: '+选择印章'
+      },
+      options: [],
+      values: []
+    }
+  ]
+  const doneSearchForm = [
+    {
+      id: 'keyword',
+      label: '关键词',
+      type: 'input',
+      inCommonUse: true,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        placeholder: '单据名称'
+      }
+    },
+    {
+      id: 'picker',
+      label: '申请时间',
+      type: 'picker',
+      pickerType: 'date',
+      inCommonUse: true,
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'daterange',
+        'start-placeholder': '开始时间',
+        'end-placeholder': '结束时间'
+      },
+      style: {}
+    },
+    {
+      id: 'approvalStatus',
+      label: '审批状态',
+      type: 'select',
+      options: [
+        {
+          label: '未审批',
+          value: '1'
+        },
+        {
+          label: '已审批',
+          value: '2'
+        }
+      ],
+      defaultAttribute: {
+        multiple: false
+      }
+    },
+    {
+      id: 'applyOrganId',
+      label: '申请部门',
+      type: 'derivable',
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'organ',
+        placeholder: '+选择部门'
+      },
+      options: [],
+      values: []
+    },
+    {
+      id: 'applyTypeId',
+      label: '流程类型',
+      type: 'select',
+      options: [
+        {
+          label: '用印申请',
+          value: '1'
+        },
+        {
+          label: '刻章申请',
+          value: '2'
+        },
+        {
+          label: '销毁申请',
+          value: '3'
+        },
+        {
+          label: '停用申请',
+          value: '4'
+        },
+        {
+          label: '变更申请',
+          value: '5'
+        },
+        {
+          label: '启用申请',
+          value: '6'
+        }
+      ],
+      defaultAttribute: {
+        multiple: false
+      }
+    },
+    {
+      id: 'relatedCompanyId',
+      label: '往来单位',
+      type: 'dialog',
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'JyRelatedCompany',
+        placeholder: '+往来单位'
+      },
+      options: [],
+      values: []
+    },
+    {
+      id: 'sealIds',
+      label: '印章名称',
+      type: 'dialog',
+      // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+      defaultAttribute: {
+        type: 'JySelectSeal',
+        multiple: false,
+        placeholder: '+选择印章'
+      },
+      options: [],
+      values: []
+    }
+  ]
+  state.componentsSearchForm.data = todoSearchForm
   // 切换分页
   function tabChange(activeName) {
     state.componentsTabs.activeName = activeName
-    if (activeName === '1') {
+    if (activeName === 'todo') {
       state.componentsTable.header = toDoHeaderJson
       state.componentsTable.data = []
-    } else if (activeName === '2') {
+    } else if (activeName === 'done') {
       state.componentsTable.header = DoneHeaderJson
       state.componentsTable.data = []
     }
 
     // 查询条件
-    if (activeName === '1') {
-      state.componentsSearchForm.data = [
-        {
-          id: 'keyword',
-          label: '关键词',
-          type: 'input',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '单据名称'
-          }
-        },
-        {
-          id: 'picker',
-          label: '申请时间',
-          type: 'picker',
-          pickerType: 'date',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'daterange',
-            'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
-          },
-          style: {}
-        },
-        {
-          id: 'applyOrganId',
-          label: '申请部门',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '+选择部门'
-          }
-        },
-        {
-          id: 'applyTypeId',
-          label: '流程类型',
-          type: 'select',
-          options: [
-            {
-              label: '用印申请',
-              value: '1'
-            },
-            {
-              label: '刻章申请',
-              value: '2'
-            },
-            {
-              label: '销毁申请',
-              value: '3'
-            },
-            {
-              label: '停用申请',
-              value: '4'
-            },
-            {
-              label: '变更申请',
-              value: '5'
-            },
-            {
-              label: '启用申请',
-              value: '6'
-            }
-          ],
-          defaultAttribute: {
-            multiple: false
-          }
-        },
-        {
-          id: 'relatedCompanyId',
-          label: '往来单位',
-          type: 'dilog',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'JyRelatedCompany',
-            placeholder: '+往来单位'
-          },
-          options: [],
-          values: []
-        },
-        {
-          id: 'sealIds',
-          label: '印章名称',
-          type: 'dilog',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'JySelectSeal',
-            multiple: false,
-            placeholder: '+选择印章'
-          },
-          options: [],
-          values: []
-        }
-      ]
-    } else if (activeName === '2') {
-      state.componentsSearchForm.data = [
-        {
-          id: 'keyword',
-          label: '关键词',
-          type: 'input',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            placeholder: '单据名称'
-          }
-        },
-        {
-          id: 'picker',
-          label: '申请时间',
-          type: 'picker',
-          pickerType: 'date',
-          inCommonUse: true,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'daterange',
-            'start-placeholder': '开始时间',
-            'end-placeholder': '结束时间'
-          },
-          style: {}
-        },
-        {
-          id: 'approvalStatus',
-          label: '审批状态',
-          type: 'select',
-          options: [
-            {
-              label: '未审批',
-              value: '1'
-            },
-            {
-              label: '已审批',
-              value: '2'
-            }
-          ],
-          defaultAttribute: {
-            multiple: false
-          }
-        },
-        {
-          id: 'applyOrganId',
-          label: '申请部门',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'organ',
-            placeholder: '+选择部门'
-          },
-          options: [],
-          values: []
-        },
-        {
-          id: 'applyTypeId',
-          label: '流程类型',
-          type: 'select',
-          options: [
-            {
-              label: '用印申请',
-              value: '1'
-            },
-            {
-              label: '刻章申请',
-              value: '2'
-            },
-            {
-              label: '销毁申请',
-              value: '3'
-            },
-            {
-              label: '停用申请',
-              value: '4'
-            },
-            {
-              label: '变更申请',
-              value: '5'
-            },
-            {
-              label: '启用申请',
-              value: '6'
-            }
-          ],
-          defaultAttribute: {
-            multiple: false
-          }
-        },
-        {
-          id: 'relatedCompanyId',
-          label: '往来单位',
-          type: 'dilog',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'JyRelatedCompany',
-            placeholder: '+往来单位'
-          },
-          options: [],
-          values: []
-        },
-        {
-          id: 'sealIds',
-          label: '印章名称',
-          type: 'dilog',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'JySelectSeal',
-            multiple: false,
-            placeholder: '+选择印章'
-          },
-          options: [],
-          values: []
-        }
-      ]
+    if (activeName === 'todo') {
+      state.componentsSearchForm.data = todoSearchForm
+    } else if (activeName === 'done') {
+      state.componentsSearchForm.data = doneSearchForm
     }
     getFormPage()
   }
   // 点击关闭详情
   function clickClose() {
     state.componentsDocumentsDetails.show = false
-  }
-  const clickBatchButton = item => {
-    console.log(item)
-    if (item.name === 'refresh') {
-      state.componentsPagination.data.index = 1
-      state.componentsTable.data = []
-      state.componentsPagination.data.amount = 0
-      getFormPage()
-    }
-  }
-  // 分页页数变化
-  const currentChange = data => {
-    state.componentsPagination.data.index = data
-    getFormPage()
-  }
-  // 每页请求数量变化
-  const sizeChange = data => {
-    state.componentsPagination.data.pageNumber = data
-    state.componentsPagination.data.index = 1
-    getFormPage()
-  }
-  // 当选择项发生变化时会触发该事件
-  function selectionChange(selection) {
-    console.log(selection)
-    state.componentsBatch.selectionData = selection
-    if (state.componentsBatch.selectionData.length > 0) {
-      state.componentsBatch.defaultAttribute.disabled = false
-    } else {
-      state.componentsBatch.defaultAttribute.disabled = true
-    }
   }
 
   // 点击表格按钮
@@ -771,18 +600,7 @@
       state.componentsDocumentsDetails.show = true
     }
   }
-  const clickSubmit = (item, index) => {
-    if (item.id === 'reset') {
-      state.componentsSearchForm.data.forEach(element => {
-        delete state.componentsSearchForm.data[element]
-      })
-    }
-    getFormPage()
-  }
-  // 点击搜索表单
-  function clickElement(item, index) {
-    // console.log(item, index)
-  }
+
   // 获取表格列表
   const getFormPage = () => {
     const searchData = state.componentsSearchForm.data
