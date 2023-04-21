@@ -4,8 +4,8 @@
 export const ACE_BASE_PATH =
   'https://ks3-cn-beijing.ksyun.com/vform2021/ace-mini'
 
-// export const BEAUTIFIER_PATH =
-//   'https://ks3-cn-beijing.ksyun.com/vform2021/js-beautify/1.14.0/beautifier.min.js'
+export const BEAUTIFIER_PATH =
+  'https://ks3-cn-beijing.ksyun.com/vform2021/js-beautify/1.14.0/beautifier.min.js'
 
 // 生产需要隐藏的设置属性
 export const NeedHidOptions = [
