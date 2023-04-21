@@ -71,7 +71,6 @@
     traverseAllWidgets,
     traverseFieldWidgetsOfContainer
   } from '@/lib/vform/utils/util'
-  import { MOCK_CASE_URL, VARIANT_FORM_VERSION } from '@/lib/vform/utils/config'
   import i18n, { changeLocale } from '@/lib/vform/utils/i18n'
   import axios from 'axios'
 
@@ -143,7 +142,7 @@
             importJsonButton: true, // 是否显示导入JSON按钮
             exportJsonButton: true, // 是否显示导出JSON器按钮
             exportCodeButton: true, // 是否显示导出代码按钮
-            generateSFCButton: true, // 是否显示生成SFC按钮
+            // generateSFCButton: true, // 是否显示生成SFC按钮
             logoHeader: true, // 是否显示Logo头部区域（仅Pro）
 
             toolbarMaxWidth: 450, // 设计器工具按钮栏最大宽度（单位像素）
@@ -168,7 +167,6 @@
     },
     data() {
       return {
-        vFormVersion: VARIANT_FORM_VERSION,
         curLangName: '',
         curLocale: '',
 
@@ -233,7 +231,6 @@
         })
       })
 
-      this.loadCase()
       this.loadFieldListFromServer()
     },
     methods: {
@@ -276,31 +273,6 @@
           aDom.href = url
           // window.open(url, '_blank') //直接打开新窗口，会被浏览器拦截
         }
-      },
-
-      loadCase() {
-        if (!this.caseName) {
-          return
-        }
-
-        axios
-          .get(MOCK_CASE_URL + this.caseName + '.txt')
-          .then(res => {
-            if (res.data.code) {
-              this.$message.error(this.i18nt('designer.hint.sampleLoadedFail'))
-              return
-            }
-
-            this.setFormJson(res.data)
-            this.$message.success(
-              this.i18nt('designer.hint.sampleLoadedSuccess')
-            )
-          })
-          .catch(error => {
-            this.$message.error(
-              this.i18nt('designer.hint.sampleLoadedFail') + ':' + error
-            )
-          })
       },
 
       initLocale() {
@@ -443,9 +415,9 @@
       /**
        * 生成SFC代码
        */
-      generateSFC() {
-        this.$refs.toolbarRef.generateSFC()
-      },
+      // generateSFC() {
+      //   this.$refs.toolbarRef.generateSFC()
+      // },
 
       /**
        * 获取所有字段组件
