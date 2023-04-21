@@ -20,14 +20,10 @@
     <el-input v-model="organId" v-if="false"></el-input>
     <el-input v-model="fieldModel.unitIds" v-if="false"></el-input>
     <el-form-item
-      label="代办人"
+      :label="field.options.label"
       :rules="rules"
       :label-width="field.options.labelWidth + 'px'"
-      :class="[
-        labelAlign,
-        customClass,
-        field.options.required ? 'required' : ''
-      ]"
+      :class="[labelAlign, field.options.required ? 'required' : '']"
     >
       <el-input
         v-model="fieldModel.unitNames"
@@ -54,7 +50,7 @@
       <div
         class="el-form-item__error"
         v-if="field.options.requiredTextShow && field.options.required"
-        >{{ field.options.requiredHint || '字段值不可为空' }}</div
+        >{{ '请输入' }}</div
       >
     </el-form-item>
 
@@ -136,11 +132,6 @@
       }
     },
     computed: {
-      customClass() {
-        return this.field.options.customClass
-          ? this.field.options.customClass.join(' ')
-          : ''
-      },
       labelAlign() {
         if (this.field.options.labelAlign) {
           return this.field.options.labelAlign

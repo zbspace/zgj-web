@@ -15,7 +15,7 @@
         <el-form-item
           label="印章外带"
           :label-width="field.options.labelWidth"
-          :class="[labelAlign, customClass]"
+          :class="[labelAlign]"
         >
           <el-checkbox
             v-model="fieldModel.extSeal"
@@ -37,13 +37,10 @@
         <el-form-item
           label="外带时间"
           :label-width="field.options.labelWidth"
-          class="limit-item"
-          :class="[
-            labelAlign,
-            customClass,
-            field.options.required ? 'required' : ''
-          ]"
+          class="limit-item required"
+          :class="[labelAlign]"
           v-show="fieldModel.extSeal"
+          placeholder="请输入"
         >
           <el-date-picker
             v-model="fieldModel.besidesTime"
@@ -65,7 +62,7 @@
           <div
             class="el-form-item__error"
             v-if="field.options.besidesTimeRequiredShow"
-            >{{ '字段值不可为空' }}</div
+            >{{ '请输入' }}</div
           >
         </el-form-item>
       </el-col>
@@ -75,16 +72,12 @@
         <el-form-item
           :label-width="field.options.labelWidth"
           label="外带地点"
-          class="limit-item"
+          class="limit-item required"
           v-show="fieldModel.extSeal"
-          :class="[
-            labelAlign,
-            customClass,
-            field.options.required ? 'required' : ''
-          ]"
+          :class="[labelAlign]"
         >
           <el-cascader
-            placeholder="请选择地区"
+            placeholder="请选择"
             style="width: 800px"
             :size="field.options.size"
             :disabled="field.options.disabled"
@@ -97,21 +90,18 @@
           <div
             class="el-form-item__error"
             v-if="field.options.addRequiredShow"
-            >{{ '字段值不可为空' }}</div
+            >{{ '请选择' }}</div
           >
         </el-form-item>
       </el-col>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <el-form-item
-          :label="addTitle"
+          label="详细地址"
           :label-width="field.options.labelWidth"
-          class="limit-item"
+          class="limit-item required"
           v-show="fieldModel.extSeal"
-          :class="[
-            labelAlign,
-            customClass,
-            field.options.required ? 'required' : ''
-          ]"
+          :class="[labelAlign]"
+          placeholder="请输入"
         >
           <el-input
             v-model="fieldModel.detailAddress"
@@ -122,7 +112,7 @@
           <div
             class="el-form-item__error"
             v-if="field.options.detailAddRequiredShow"
-            >{{ '字段值不可为空' }}</div
+            >{{ '请输入' }}</div
           >
         </el-form-item>
       </el-col>
@@ -193,11 +183,6 @@
       }
     },
     computed: {
-      customClass() {
-        return this.field.options.customClass
-          ? this.field.options.customClass.join(' ')
-          : ''
-      },
       labelAlign() {
         if (this.field.options.labelAlign) {
           return this.field.options.labelAlign

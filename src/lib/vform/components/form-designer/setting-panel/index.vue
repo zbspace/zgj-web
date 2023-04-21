@@ -181,7 +181,11 @@
         </el-scrollbar>
       </el-tab-pane>
 
-      <el-tab-pane :label="i18nt('designer.setting.dataSource')" name="3">
+      <el-tab-pane
+        :label="i18nt('designer.setting.dataSource')"
+        name="3"
+        v-if="DEV"
+      >
         <el-scrollbar
           class="ds-setting-scrollbar"
           :style="{ height: scrollerHeight }"
@@ -240,6 +244,10 @@
   import i18n from '@/lib/vform/utils/i18n'
   import emitter from '@/lib/vform/utils/emitter'
   import { propertyRegistered } from '@/lib/vform/components/form-designer/setting-panel/propertyRegister'
+  import {
+    NeedHidOptions,
+    NeedHidOptionsDEV
+  } from '@/lib/vform/utils/config.js'
 
   const { COMMON_PROPERTIES, ADVANCED_PROPERTIES, EVENT_PROPERTIES } =
     WidgetProperties
@@ -289,7 +297,8 @@
         curEventName: '',
         eventHeader: '',
 
-        subFormChildWidgetFlag: false
+        subFormChildWidgetFlag: false,
+        DEV: import.meta.env.DEV
       }
     },
     computed: {
@@ -348,7 +357,6 @@
       } else {
         this.activeTab = '1'
       }
-
       // this.scrollerHeight = window.innerHeight - 56 + 'px'
       this.scrollerHeight = 'calc(100vh - 105px)'
       addWindowResizeHandler(() => {
@@ -376,7 +384,8 @@
       },
 
       hasPropEditor(propName, editorName) {
-        if (!editorName) {
+        const options = this.DEV ? NeedHidOptionsDEV : NeedHidOptions
+        if (!editorName || options.includes(propName)) {
           return false
         }
 

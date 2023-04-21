@@ -14,8 +14,7 @@
       :style="{ width: widget.options.cardWidth + '!important' || '' }"
       :class="[
         selected ? 'selected' : '',
-        !!widget.options.folded ? 'folded' : '',
-        customClass
+        !!widget.options.folded ? 'folded' : ''
       ]"
       style="
         padding: 20px 0;
@@ -108,10 +107,6 @@
     computed: {
       selected() {
         return this.widget.id === this.designer.selectedId
-      },
-
-      customClass() {
-        return this.widget.options.customClass || ''
       }
     },
     created() {

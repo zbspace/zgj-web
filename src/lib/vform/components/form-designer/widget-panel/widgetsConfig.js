@@ -595,6 +595,22 @@ export const containers = [
       onCreated: '',
       onMounted: ''
     }
+  },
+  {
+    type: 'moduleContainer',
+    icon: 'zhage',
+    category: 'container',
+    widgetList: [],
+    options: {
+      name: '',
+      label: '模块',
+      hidden: false,
+      folded: false,
+      showFold: true,
+      cardWidth: '100%',
+      shadow: 'never',
+      model: ''
+    }
   }
 ]
 
@@ -622,7 +638,7 @@ export const basicFields = [
       clearable: true,
       showPassword: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -669,7 +685,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -708,7 +724,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -764,7 +780,7 @@ export const basicFields = [
         { value: '2', linkages: [] }
       ],
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -809,7 +825,7 @@ export const basicFields = [
         { label: 'check 3', value: 3 }
       ],
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -859,7 +875,7 @@ export const basicFields = [
         { label: 'select 3', value: 3 }
       ],
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       fieldLinkage: [
@@ -904,7 +920,7 @@ export const basicFields = [
       editable: false,
       format: 'HH:mm:ss', // 时间格式
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -945,7 +961,7 @@ export const basicFields = [
       editable: false,
       format: 'HH:mm:ss', // 时间格式
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -987,7 +1003,7 @@ export const basicFields = [
       format: 'YYYY-MM-DD', // 日期显示格式
       valueFormat: 'YYYY-MM-DD', // 日期对象格式
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -1030,7 +1046,7 @@ export const basicFields = [
       format: 'YYYY-MM-DD', // 日期显示格式
       valueFormat: 'YYYY-MM-DD', // 日期对象格式
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -1100,7 +1116,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -1138,7 +1154,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -1170,7 +1186,7 @@ export const basicFields = [
       disabled: false,
       hidden: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       validation: '',
       validationHint: '',
       // -------------------
@@ -1288,17 +1304,17 @@ export const advancedFields = [
       disabled: false,
       hidden: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       customRule: '',
       customRuleHint: '',
       // -------------------
-      uploadURL: '',
+      uploadURL: '/api/form/column/upload',
       uploadTip: '',
       withCredentials: false,
       multipleSelect: false,
       showFileList: true,
       limit: 3,
-      fileMaxSize: 5, // MB
+      fileMaxSize: 199, // MB
       fileTypes: ['jpg', 'jpeg', 'png'],
       // headers: [],
       // -------------------
@@ -1332,17 +1348,17 @@ export const advancedFields = [
       disabled: false,
       hidden: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       customRule: '',
       customRuleHint: '',
       // -------------------
-      uploadURL: '',
+      uploadURL: '/api/form/column/upload',
       uploadTip: '',
       withCredentials: false,
       multipleSelect: false,
       showFileList: true,
       limit: 3,
-      fileMaxSize: 5, // MB
+      fileMaxSize: 199, // MB
       fileTypes: ['doc', 'docx', 'xls', 'xlsx'],
       // headers: [],
       // -------------------
@@ -1378,7 +1394,7 @@ export const advancedFields = [
       disabled: false,
       hidden: false,
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       customRule: '',
       customRuleHint: '',
       // -------------------
@@ -1433,7 +1449,7 @@ export const advancedFields = [
         { label: 'select 3', value: 3 }
       ],
       required: false,
-      requiredHint: '',
+      // requiredHint: '',
       customRule: '',
       customRuleHint: '',
       // -------------------

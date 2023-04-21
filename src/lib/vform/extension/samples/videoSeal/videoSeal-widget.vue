@@ -15,10 +15,6 @@
       v-model="fieldModel"
       :class="[isReadMode ? 'readonly-mode-switch' : '']"
       :disabled="field.options.disabled"
-      :active-text="field.options.activeText"
-      :inactive-text="field.options.inactiveText"
-      :active-color="field.options.activeColor"
-      :inactive-color="field.options.inactiveColor"
       :width="field.options.switchWidth"
       @change="onHandleChangeEvent($event)"
     >
@@ -83,12 +79,6 @@
       this.unregisterFromRefList()
     },
     methods: {
-      handleCloseCustomEvent() {
-        if (this.field.options.onClose) {
-          const changeFn = new Function(this.field.options.onClose)
-          changeFn.call(this)
-        }
-      },
       onHandleChangeEvent(e) {
         if (this.globalModel.formModel.remoteSeal) {
           messageWarning('远程盖章模式下暂不支持此功能')

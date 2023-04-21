@@ -18,7 +18,6 @@ import {
   basicFields,
   customFields
 } from '@/lib/vform/components/form-designer/widget-panel/widgetsConfig.js'
-import { VARIANT_FORM_VERSION } from '@/lib/vform/utils/config'
 import eventBus from '@/lib/vform/utils/event-bus'
 import { customComponents } from '@/lib/vform/extension/samples/extension-schema.js'
 
@@ -47,14 +46,6 @@ export function createDesigner(vueInstance) {
     initDesigner(resetFormJson) {
       this.widgetList = []
       this.formConfig = deepClone(defaultFormConfig)
-
-      // 输出版本信息和语雀链接
-      console.info(
-        `%cVariantForm %cVer${VARIANT_FORM_VERSION} %chttps://www.yuque.com/visualdev/vform3`,
-        'color:#409EFF;font-size: 22px;font-weight:bolder',
-        'color:#999;font-size: 12px',
-        'color:#333'
-      )
 
       if (!resetFormJson) {
         this.initHistoryData()

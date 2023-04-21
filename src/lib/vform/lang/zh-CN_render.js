@@ -1,6 +1,5 @@
 export default {
   render: {
-
     hint: {
       prompt: '提示',
       confirm: '确定',
@@ -22,7 +21,7 @@ export default {
       unsupportedFileType: '不支持格式: ',
       fileSizeExceed: '文件大小已超出: ',
       refNotFound: '组件未找到: ',
-      fieldRequired: '字段值不可为空',
+      fieldRequired: '请输入',
       invalidNumber: '数据格式错误',
       selectFile: ' 选择文件',
       downloadFile: '下载',
@@ -35,7 +34,7 @@ export default {
       subFormAddActionHint: '新增行',
       insertSubFormRow: '插入行',
       deleteSubFormRow: '删除行',
-      nonSubFormType: '组件类型不是子表单',
+      nonSubFormType: '组件类型不是子表单'
     }
   }
 }

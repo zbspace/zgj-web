@@ -14,11 +14,7 @@
       label="用印文件"
       :label-width="field.options.labelWidth"
       :size="field.options.size"
-      :class="[
-        labelAlign,
-        customClass,
-        field.options.required ? 'required' : ''
-      ]"
+      :class="[labelAlign, field.options.required ? 'required' : '']"
     >
       <div class="upload-file">
         <el-upload
@@ -65,17 +61,14 @@
         class="el-form-item__error"
         v-if="field.options.requiredTextShow && field.options.required"
       >
-        {{ field.options.requiredHint || '请上传用印文件' }}
+        请上传
       </div>
-      <div class="el-form-item__error" v-if="field.options.requiredHint">{{
-        field.options.requiredHint
-      }}</div>
     </el-form-item>
 
     <el-form-item
       label="补充附件"
       :label-width="field.options.labelWidth"
-      :class="[labelAlign, customClass]"
+      :class="[labelAlign]"
       :size="field.options.size"
     >
       <div class="upload-file">
@@ -199,9 +192,6 @@
       }
     },
     computed: {
-      customClass() {
-        return this.field.options.customClass
-      },
       labelAlign() {
         if (this.field.options.labelAlign) {
           return this.field.options.labelAlign
@@ -238,12 +228,6 @@
       setValue(value) {
         this.fieldModel = value
       },
-      handleCloseCustomEvent() {
-        if (this.field.options.onClose) {
-          const changeFn = new Function(this.field.options.onClose)
-          changeFn.call(this)
-        }
-      },
       edit(row, index, type) {
         this.visible = true
         this.fileOriginName = row.fileOriginName
@@ -276,7 +260,6 @@
             if (this.curType === 1) {
               this.fieldModel.fileIds.push(file)
               this.setRequiredTextShow(false)
-              this.field.options.requiredHint = ''
             } else {
               this.fieldModel.fileAddIds.push(file)
             }
@@ -332,7 +315,6 @@
                 fileUrl: res.data.fileUrl
               })
               this.setRequiredTextShow(false)
-              this.field.options.requiredHint = ''
             } else {
               this.fieldModel.fileAddIds.push({
                 fileId: res.data.fileId,
@@ -367,9 +349,7 @@
     min-height: 135px;
     text-align: left;
   }
-  // .upload-file-big {
-  //   min-height: 197px;
-  // }
+
   :deep(.upload-demo) {
     width: 100%;
     button {

@@ -10,12 +10,12 @@
     :sub-form-col-index="subFormColIndex"
     :sub-form-row-id="subFormRowId"
   >
-    <el-row :gutter="12" :class="customClass">
+    <el-row :gutter="12">
       <el-col :span="12">
         <el-form-item
           label="申请人"
           :label-width="field.options.labelWidth"
-          :class="[labelAlign, customClass]"
+          :class="[labelAlign]"
           :size="field.options.size"
         >
           <el-input v-model="fieldModel.applyUserName" disabled></el-input>
@@ -25,24 +25,20 @@
       <el-col :span="12">
         <el-form-item
           label="申请部门"
-          :rules="rules"
           :label-width="field.options.labelWidth + 'px'"
-          :class="[
-            labelAlign,
-            customClass,
-            field.options.required ? 'required' : ''
-          ]"
+          :class="[labelAlign, 'required']"
         >
           <el-select
             placeholder="请选择"
             style="width: 100%"
-            v-model="fieldModel.applyOrganName"
+            v-model="fieldModel.applyOrganId"
             v-show="!field.options.hidden"
             :size="field.options.size"
             :disabled="field.options.disabled"
             :readonly="field.options.readonly"
             :clearable="field.options.clearable"
             @change="onChange"
+            @clear="onClear"
           >
             <el-option
               v-for="item in organOptions"
@@ -53,28 +49,13 @@
           </el-select>
           <div
             class="el-form-item__error"
-            v-if="field.options.requiredTextShow && field.options.required"
+            v-if="field.options.requiredTextShow"
           >
-            {{ field.options.requiredHint || '请选择' }}
+            {{ '请选择' }}
           </div>
-          <div class="el-form-item__error" v-if="field.options.requiredHint">{{
-            field.options.requiredHint
-          }}</div>
         </el-form-item>
       </el-col>
     </el-row>
-
-    <!-- 申请部门 -->
-    <kDepartOrPersonVue
-      :multiple="false"
-      :show="xzyzDialogVisible"
-      @update:show="xzyzDialogVisible = $event"
-      :searchSelected="[]"
-      @update:searchSelected="submit"
-      :tabsShow="tabsShow"
-      :queryParams="queryParams"
-      v-if="xzyzDialogVisible"
-    />
   </static-content-wrapper>
 </template>
 
@@ -83,9 +64,9 @@
   import emitter from '@/lib/vform/utils/emitter'
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
-  import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import { getItem } from '@/utils/storage'
   import getDepartByUserApi from '@/api/system/companyManagement/departmentStaff'
+  import { messageError } from '@/hooks/useMessage'
 
   export default {
     name: 'ApplicantInfoWidget',
@@ -117,14 +98,11 @@
       }
     },
     components: {
-      StaticContentWrapper,
-      kDepartOrPersonVue
+      StaticContentWrapper
     },
     data() {
       return {
-        xzyzDialogVisible: false,
-        queryParams: { roleId: 'r1' },
-        tabsShow: ['organ'],
+        rules: [],
         fieldModel: {
           applyUserId: getItem('accountInfo')
             ? getItem('accountInfo').userInfo.userId
@@ -135,14 +113,10 @@
           applyOrganId: '',
           applyOrganName: ''
         },
-        rules: [],
         organOptions: []
       }
     },
     computed: {
-      customClass() {
-        return this.field.options.customClass
-      },
       labelAlign() {
         if (this.field.options.labelAlign) {
           return this.field.options.labelAlign
@@ -158,9 +132,7 @@
     created() {
       this.registerToRefList()
       this.initEventHandler()
-      this.initOptionItems()
       this.initFieldModel()
-      this.buildFieldRules()
       this.handleOnCreated()
     },
     beforeUnmount() {
@@ -172,6 +144,7 @@
     },
     methods: {
       setRequiredTextShow(v) {
+        // eslint-disable-next-line vue/no-mutating-props
         this.field.options.requiredTextShow = v
       },
       getValue() {
@@ -180,58 +153,22 @@
       setValue(value) {
         this.fieldModel = value
       },
-      handleCloseCustomEvent() {
-        if (this.field.options.onClose) {
-          const changeFn = new Function(this.field.options.onClose)
-          changeFn.call(this)
-        }
-      },
-      getSelectedLabel() {
-        return this.$refs.fieldEditor.selectedLabel
-      },
-      onChange(value) {},
-      // 打开弹窗选择数据
-      openSelectUser() {
-        this.xzyzDialogVisible = true
-      },
 
-      submit(list) {
-        const selectRecords = list
-        this.xzyzDialogVisible = false
-        if (selectRecords.length === 0) {
-          return
+      onChange(value) {
+        if (value) {
+          const cur = this.organOptions.find(v => value === v.organId)
+          this.fieldModel.applyOrganName = (cur && cur.organName) || ''
+          this.validate()
         }
-        let applyOrganName = ''
-        let applyOrganId = ''
-        for (let i = 0; i < selectRecords.length; i++) {
-          if (i === 0) {
-            applyOrganId = selectRecords[i].id
-            applyOrganName = selectRecords[i].name
-          } else {
-            applyOrganId = applyOrganId + ',' + selectRecords[i].id
-            applyOrganName = applyOrganName + ',' + selectRecords[i].name
-          }
-        }
-        this.fieldModel.applyOrganId = applyOrganId
-        this.fieldModel.applyOrganName = applyOrganName
-
-        if (!this.fieldModel.applyOrganId) {
-          this.field.options.requiredHint = '请选择部门'
-          this.fieldModel.applyOrganName = ''
-        } else {
-          this.field.options.requiredHint = ''
-        }
-        this.validate()
       },
 
       onClear() {
         this.fieldModel.applyOrganId = ''
         this.fieldModel.applyOrganName = ''
-        this.validate()
       },
 
       validate() {
-        if (!this.fieldModel.applyOrganName) {
+        if (!this.fieldModel.applyOrganId) {
           this.setRequiredTextShow(true)
         } else {
           this.setRequiredTextShow(false)
@@ -244,8 +181,13 @@
             this.fieldModel.applyUserId || ''
           )
           this.organOptions = res.data.length ? res.data : []
+          const cur = this.organOptions.find(v => {
+            return v.userDefault === '1'
+          })
+          this.fieldModel.applyOrganId = (cur && cur.organId) || ''
+          this.fieldModel.applyOrganName = (cur && cur.organName) || ''
         } catch (error) {
-          console.log('--->', error)
+          messageError(error)
         }
       }
     }

@@ -19,7 +19,7 @@ import {
   limitTimeSealSchema,
   fileTypeSchema,
   agentManSchema,
-  moduleContainerSchema,
+  // moduleContainerSchema,
   contractAmountSchema
 } from '@/lib/vform/extension/samples/extension-schema'
 import CardWidget from '@/lib/vform/extension/samples/card/card-widget'
@@ -273,7 +273,7 @@ export const loadExtension = function (app) {
   app.component(AgentManWidget.name, AgentManWidget) // 注册组件
 
   // 模块/容器
-  addCustomWidgetSchema(moduleContainerSchema) // 加载组件Json Schema
+  // addCustomWidgetSchema(moduleContainerSchema) // 加载组件Json Schema
   app.component(ModuleContainerWidget.name, ModuleContainerWidget) // 注册组件
   app.component(ModuleContainerItem.name, ModuleContainerItem) // 注册组件
 

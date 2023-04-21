@@ -9,7 +9,7 @@
     :sub-form-row-index="subFormRowIndex"
     :sub-form-col-index="subFormColIndex"
     :sub-form-row-id="subFormRowId"
-    :class="[labelAlign, customClass, field.options.required ? 'required' : '']"
+    :class="[labelAlign, field.options.required ? 'required' : '']"
   >
     <el-select
       ref="fieldEditor"
@@ -17,8 +17,6 @@
       v-show="!isReadMode"
       class="full-width-input select-prefix"
       :disabled="field.options.disabled"
-      :clearable="field.options.clearable"
-      :filterable="field.options.filterable"
       :allow-create="field.options.allowCreate"
       :automatic-dropdown="field.options.automaticDropdown"
       :multiple="field.options.multiple"
@@ -26,8 +24,6 @@
       :placeholder="
         field.options.placeholder || i18nt('render.hint.selectPlaceholder')
       "
-      :remote="field.options.remote"
-      :remote-method="remoteQuery"
       @blur="handleBlurCustomEvent"
       @click.stop="onClick"
       popper-class="select-hidden"
@@ -38,7 +34,7 @@
         </svg>
       </template>
       <el-option
-        v-for="item in field.options.optionItems"
+        v-for="item in optionItems"
         :key="item.value"
         :label="item.label"
         :value="item.value"
@@ -54,7 +50,7 @@
       class="el-form-item__error"
       v-if="field.options.requiredTextShow && field.options.required"
     >
-      {{ field.options.requiredHint || '请选择' }}
+      请选择
     </div>
     <div class="el-form-item__error" v-if="field.options.requiredHint">{{
       field.options.requiredHint
@@ -125,13 +121,11 @@
             trigger: 'change'
           }
         ],
-        searchSelected: []
+        searchSelected: [],
+        optionItems: []
       }
     },
     computed: {
-      customClass() {
-        return this.field.options.customClass
-      },
       labelAlign() {
         if (this.field.options.labelAlign) {
           return this.field.options.labelAlign
@@ -159,12 +153,11 @@
     watch: {
       test: {
         handler(val) {
-          if (!val.options.optionItems || val.options.optionItems.length === 0)
-            return
+          if (!this.optionItems || this.optionItems.length === 0) return
           this.searchSelected = [
             {
-              id: val.options.optionItems[0].value,
-              name: val.options.optionItems[0].label,
+              id: this.optionItems[0].value,
+              name: this.optionItems[0].label,
               type: 'fileType',
               idFullPathSet: []
             }
@@ -186,9 +179,8 @@
         if (list.length) {
           this.fieldModel = list[0].id
           this.fileTypeName = list[0].name
-          // eslint-disable-next-line vue/no-mutating-props
-          this.field.options.optionItems = []
-          this.field.options.optionItems.push({
+          this.optionItems = []
+          this.optionItems.push({
             label: this.fileTypeName,
             value: this.fieldModel
           })

@@ -116,7 +116,7 @@
         >
           {{ i18nt('designer.toolbar.exportCode') }}</el-button
         >
-        <el-button
+        <!-- <el-button
           v-if="showToolButton('generateSFCButton')"
           link
           type="primary"
@@ -128,7 +128,7 @@
         >
         <template v-for="(idx, slotName) in $slots">
           <slot :name="slotName"></slot>
-        </template>
+        </template> -->
       </div>
     </div>
 
@@ -412,7 +412,7 @@
       </el-dialog>
     </div>
 
-    <div
+    <!-- <div
       v-if="showExportSFCDialogFlag"
       class=""
       v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']"
@@ -482,7 +482,7 @@
           </div>
         </template>
       </el-dialog>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -774,7 +774,7 @@
               value = defaultFileName
             }
 
-            if (getQueryParam('vscode') == 1) {
+            if (getQueryParam('vscode') === 1) {
               this.vsSaveFile(value, fileContent)
               return
             }
@@ -895,22 +895,22 @@
         this.saveAsFile(this.htmlCode, `vform${generateId()}.html`)
       },
 
-      generateSFC() {
-        loadBeautifier(beautifier => {
-          this.sfcCode = genSFC(
-            this.designer.formConfig,
-            this.designer.widgetList,
-            beautifier
-          )
-          this.sfcCodeV3 = genSFC(
-            this.designer.formConfig,
-            this.designer.widgetList,
-            beautifier,
-            true
-          )
-          this.showExportSFCDialogFlag = true
-        })
-      },
+      // generateSFC() {
+      //   loadBeautifier(beautifier => {
+      //     this.sfcCode = genSFC(
+      //       this.designer.formConfig,
+      //       this.designer.widgetList,
+      //       beautifier
+      //     )
+      //     this.sfcCodeV3 = genSFC(
+      //       this.designer.formConfig,
+      //       this.designer.widgetList,
+      //       beautifier,
+      //       true
+      //     )
+      //     this.showExportSFCDialogFlag = true
+      //   })
+      // },
 
       copyV2SFC(e) {
         copyToClipboard(

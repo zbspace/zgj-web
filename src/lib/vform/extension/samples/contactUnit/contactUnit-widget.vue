@@ -12,7 +12,6 @@
   >
     <el-form-item
       label="往来单位"
-      :rules="rules"
       :label-width="field.options.labelWidth + 'px'"
       :class="[
         labelAlign,
@@ -25,7 +24,6 @@
         :size="field.options.size"
         :disabled="field.options.disabled"
         :readonly="field.options.readonly"
-        :clearable="field.options.clearable"
         multiple
         collapse-tags
         collapse-tags-tooltip
@@ -53,7 +51,7 @@
       <div
         class="el-form-item__error"
         v-if="field.options.requiredTextShow && field.options.required"
-        >{{ field.options.requiredHint || '字段值不可为空' }}</div
+        >请选择</div
       >
     </el-form-item>
     <!-- 往来单位 -->
@@ -72,7 +70,6 @@
   import emitter from '@/lib/vform/utils/emitter'
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
-  import { nextTick } from 'vue'
 
   export default {
     name: 'ContactUnitWidget',
@@ -106,13 +103,9 @@
     },
     data() {
       return {
-        // fieldModel: {
-        //   unitIds: '',
-        //   unitNames: ''
-        // },
+        rules: [],
         fieldModel: [],
         fieldModels: null,
-        rules: [],
         thisIndex: null,
         xzyzDialogVisible: false
       }
@@ -146,10 +139,8 @@
       /* 注意：子组件mounted在父组件created之后、父组件mounted之前触发，故子组件mounted需要用到的prop
          需要在父组件created中初始化！！ */
       this.registerToRefList()
-      // this.initFieldModel()
+      this.initFieldModel()
       this.initEventHandler()
-      this.buildFieldRules()
-
       this.handleOnCreated()
     },
 
@@ -172,20 +163,8 @@
       setValue(value) {
         this.fieldModel = value
       },
-      valueChange(v) {
-        if (!v) {
-          this.fieldModel.unitIds = null
-          this.fieldModel.name = null
-        }
-        this.validate()
-      },
-      onClear() {
-        this.fieldModel.unitIds = null
-        this.fieldModel.name = null
-        this.validate()
-      },
       validate() {
-        if (!this.fieldModel.unitIds) {
+        if (!this.fieldModel.length) {
           this.setRequiredTextShow(true)
         } else {
           this.setRequiredTextShow(false)
@@ -204,6 +183,7 @@
         this.xzyzDialogVisible = false
         this.fieldModel = list
         this.fieldModels = list.map(i => i.relatedCompanyId)
+        this.validate()
       },
       removeTag(val) {
         const index = this.fieldModel.findIndex(i => i.relatedCompanyId === val)

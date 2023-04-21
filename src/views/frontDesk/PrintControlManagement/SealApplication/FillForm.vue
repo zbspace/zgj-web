@@ -188,6 +188,7 @@
   import { ElMessage } from 'element-plus'
   import { generatingNumber } from '@/utils/tools'
   import { fileManageService } from '@/api/frontDesk/fileManage'
+  import { customComponents } from '@/lib/vform/extension/samples/extension-schema.js'
 
   const router = useRouter()
   const route = useRoute()
@@ -389,21 +390,7 @@
       ElMessage.warning('请选择审批流程')
       return
     }
-    const fixedParamsArr = [
-      'applyNo',
-      'applyName',
-      'sealName',
-      'fileCount',
-      'contactUnit',
-      'usesealBesides',
-      'remoteSeal',
-      'videoSeal',
-      'sealFile',
-      'applicantInfo',
-      'fileTypeId',
-      'agentMan',
-      'limitTimeSeal'
-    ]
+    const fixedParamsArr = customComponents
     let fixedParams = {}
     let customApplyField = {}
     for (const item in state.cache.formData) {

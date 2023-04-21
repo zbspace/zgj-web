@@ -8,6 +8,7 @@
         :column="1"
         size="small"
         border
+        :key="dsIdx"
       >
         <template #title>
           <span :title="ds.description">{{ ds.uniqueName }}</span>
@@ -155,6 +156,7 @@
           <el-row
             v-for="(rh, hIdx) in dsModel.headers"
             class="rh-row"
+            :key="hIdx"
             :gutter="8"
           >
             <el-col :span="8">
@@ -244,6 +246,7 @@
             v-for="(rp, pIdx) in dsModel.params"
             class="rd-row"
             :gutter="8"
+            :key="pIdx"
           >
             <el-col :span="8">
               <el-form-item
@@ -325,7 +328,12 @@
           </el-row>
         </el-form-item>
         <el-form-item :label="i18nt('designer.setting.dsRequestData')">
-          <el-row v-for="(rd, dIdx) in dsModel.data" class="rd-row" :gutter="8">
+          <el-row
+            v-for="(rd, dIdx) in dsModel.data"
+            class="rd-row"
+            :gutter="8"
+            :key="dIdx"
+          >
             <el-col :span="8">
               <el-form-item
                 :prop="'data.' + dIdx + '.name'"
@@ -477,6 +485,7 @@
                 v-for="(dSet, dIdx) in dsModel.dataSets"
                 class="rd-row"
                 :gutter="8"
+                :key="dIdx"
               >
                 <el-col :span="7">
                   <el-form-item

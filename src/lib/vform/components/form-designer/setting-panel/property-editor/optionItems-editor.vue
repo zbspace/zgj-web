@@ -2,16 +2,16 @@
   <el-form-item label-width="0">
     <el-divider class="custom-divider-margin-top">{{i18nt('designer.setting.optionsSetting')}}</el-divider>
   </el-form-item>
-  <el-form-item :label="i18nt('designer.setting.labelKeyName')">
+  <el-form-item :label="i18nt('designer.setting.labelKeyName')" v-if="!options.includes('labelKey')">
     <el-input v-model="optionModel.labelKey"></el-input>
   </el-form-item>
-  <el-form-item :label="i18nt('designer.setting.valueKeyName')">
+  <el-form-item :label="i18nt('designer.setting.valueKeyName')" v-if="!options.includes('valueKey')">
     <el-input v-model="optionModel.valueKey"></el-input>
   </el-form-item>
   <el-form-item v-if="hasConfig('childrenKey')" :label="i18nt('designer.setting.childrenKeyName')">
     <el-input v-model="optionModel.childrenKey"></el-input>
   </el-form-item>
-  <el-form-item :label="i18nt('designer.setting.dsEnabled')">
+  <el-form-item :label="i18nt('designer.setting.dsEnabled')" v-if="!options.includes('dsEnabled')">
     <el-switch v-model="optionModel.dsEnabled"></el-switch>
   </el-form-item>
   <el-form-item v-if="!!optionModel.dsEnabled" :label="i18nt('designer.setting.dsName')">
@@ -36,7 +36,10 @@
   import OptionItemsSetting from "@/lib/vform/components/form-designer/setting-panel/option-items-setting"
   import propertyMixin from "@/lib/vform/components/form-designer/setting-panel/property-editor/propertyMixin";
   import {getDSByName} from "@/lib/vform/utils/util"
-
+  import {
+    NeedHidOptions,
+    NeedHidOptionsDEV
+  } from '@/lib/vform/utils/config.js'
   export default {
     name: "optionItems-editor",
     mixins: [i18n, propertyMixin],
@@ -99,6 +102,9 @@
         this.loadDataSet(this.optionModel.dsName)
       },
 
+    },
+    created(){
+      this.options = import.meta.env.DEV ? NeedHidOptionsDEV : NeedHidOptions
     }
   }
 </script>

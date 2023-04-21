@@ -13,20 +13,21 @@
     <el-form-item
       label="合同金额"
       :label-width="field.options.labelWidth + 'px'"
-      :class="[labelAlign, customClass]"
+      :class="[labelAlign, field.options.required ? 'required' : '']"
     >
       <el-input
         @input="onInput"
         v-model="fieldModel.amount"
-        clearable
+        :clearable="field.options.clearable"
         placeholder="请输入"
         maxLength="13"
         :disabled="field.options.disabled"
+        @blur="validate"
       >
         <template #append>
           <el-select
             v-model="fieldModel.unit"
-            placeholder="请选择"
+            placeholder="请输入"
             style="width: 100px"
           >
             <el-option
@@ -38,6 +39,9 @@
           </el-select>
         </template>
       </el-input>
+      <div class="el-form-item__error" v-if="field.options.requiredTextShow"
+        >请输入</div
+      >
     </el-form-item>
   </static-content-wrapper>
 </template>
@@ -138,6 +142,10 @@
     },
 
     methods: {
+      setRequiredTextShow(v) {
+        // eslint-disable-next-line vue/no-mutating-props
+        this.field.options.requiredTextShow = v
+      },
       ...mapActions(useVformInfoStore, ['getMoneyType']),
       getValue() {
         return this.fieldModel
@@ -145,8 +153,12 @@
       setValue(value) {
         this.fieldModel = value
       },
-      onClear() {
-        this.fieldModel.amount = ''
+      validate() {
+        if (this.field.options.required && !this.fieldModel.amount) {
+          this.setRequiredTextShow(true)
+        } else {
+          this.setRequiredTextShow(false)
+        }
       },
       onInput(e) {
         let val = this.fieldModel.amount.toString()

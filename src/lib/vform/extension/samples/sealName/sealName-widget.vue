@@ -21,11 +21,6 @@
               customClass,
               field.options.required ? 'required' : ''
             ]"
-            :rules="{
-              required: true,
-              message: '请选择印章',
-              trigger: 'change'
-            }"
           >
             <div style="width: 100%; display: flex; height: 32px">
               <el-select
@@ -76,7 +71,7 @@
               </template>
             </div>
             <div class="el-form-item__error" v-if="obj.sealRequiredTextShow">{{
-              '字段值不可为空'
+              '请选择'
             }}</div>
           </el-form-item>
         </el-col>
@@ -104,7 +99,7 @@
             <div
               class="el-form-item__error"
               v-if="obj.routineSealRequiredTextShow"
-              >{{ '字段值不可为空' }}</div
+              >{{ '请输入' }}</div
             >
           </el-form-item>
         </el-col>
@@ -223,9 +218,6 @@
         }
 
         return this.field.options.type
-      },
-      applyTypeId() {
-        return this.field.options.applyTypeId
       }
     },
     beforeCreate() {

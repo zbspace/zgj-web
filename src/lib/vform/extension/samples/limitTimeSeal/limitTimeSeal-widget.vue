@@ -10,13 +10,13 @@
     :sub-form-col-index="subFormColIndex"
     :sub-form-row-id="subFormRowId"
   >
-    <el-row :gutter="12" :class="customClass">
+    <el-row :gutter="12">
       <el-col :span="12">
         <el-form-item
           label="限时用印"
           :label-width="field.options.labelWidth"
           :size="field.options.size"
-          :class="[labelAlign, customClass]"
+          :class="[labelAlign]"
         >
           <el-radio-group
             v-model="fieldModel.timeLimit"
@@ -24,7 +24,7 @@
             :disabled="field.options.disabled"
           >
             <el-radio
-              v-for="(item, index) in field.options.optionItems"
+              v-for="(item, index) in optionItems"
               :key="index"
               :label="item.value"
               :disabled="item.disabled"
@@ -40,18 +40,13 @@
           label="盖章时间"
           multiple
           :label-width="field.options.labelWidth"
-          :class="[
-            selected ? 'selected' : '',
-            labelAlign,
-            customClass,
-            field.options.required ? 'required' : ''
-          ]"
+          :class="[labelAlign, 'required']"
           :size="field.options.size"
           v-if="fieldModel.timeLimit === 1"
         >
           <el-date-picker
             ref="fieldEditor"
-            :type="field.options.type"
+            type="datetimerange"
             v-model="fieldModel.sealTime"
             :disabled="field.options.disabled"
             :readonly="field.options.readonly"
@@ -78,9 +73,9 @@
           <template v-if="isReadMode">
             <span class="readonly-mode-field">{{ contentForReadMode }}</span>
           </template>
-          <div class="el-form-item__error" v-if="field.options.requiredHint">{{
-            field.options.requiredHint
-          }}</div>
+          <div class="el-form-item__error" v-if="field.options.requiredTextShow"
+            >请选择</div
+          >
         </el-form-item>
       </el-col>
     </el-row>
@@ -127,25 +122,18 @@
     },
     data() {
       return {
+        rules: [],
         fieldModel: {
           timeLimit: 2,
           sealTime: []
         },
-        rules: [
-          // {
-          //   required: true,
-          //   trigger: ["blur", "change"],
-          //   message:
-          //     this.field.options.requiredHint ||
-          //     this.i18nt("designer.setting.fieldValueRequired"),
-          // },
+        optionItems: [
+          { label: '是', value: 1 },
+          { label: '否', value: 2 }
         ]
       }
     },
     computed: {
-      customClass() {
-        return this.field.options.customClass
-      },
       labelAlign() {
         if (this.field.options.labelAlign) {
           return this.field.options.labelAlign
@@ -162,7 +150,6 @@
       this.registerToRefList()
       this.initFieldModel()
       this.initEventHandler()
-      this.buildFieldRules()
       this.handleOnCreated()
     },
     beforeUnmount() {
@@ -172,26 +159,32 @@
       this.handleOnMounted()
     },
     methods: {
+      setRequiredTextShow(v) {
+        // eslint-disable-next-line vue/no-mutating-props
+        this.field.options.requiredTextShow = v
+      },
       getValue() {
         return this.fieldModel
       },
       setValue(value) {
         this.fieldModel = value
       },
-      handleCloseCustomEvent() {
-        if (this.field.options.onClose) {
-          const changeFn = new Function(this.field.options.onClose)
-          changeFn.call(this)
-        }
-      },
       getSelectedLabel() {
         return this.$refs.fieldEditor.selectedLabel
       },
       onChange(value) {
-        if (!value) {
-          this.field.options.requiredHint = '请选择限时盖章时间'
+        if (value) {
+          this.validate()
+        }
+      },
+      validate() {
+        if (
+          this.fieldModel.timeLimit === 1 &&
+          (this.fieldModel.sealTime === null || !this.fieldModel.sealTime[0])
+        ) {
+          this.setRequiredTextShow(true)
         } else {
-          this.field.options.requiredHint = ''
+          this.setRequiredTextShow(false)
         }
       }
     }

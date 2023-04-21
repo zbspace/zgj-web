@@ -85,7 +85,7 @@
   import i18n, { changeLocale } from '@/lib/vform/utils/i18n'
   import DynamicDialog from './dynamic-dialog'
   import DynamicDrawer from './dynamic-drawer'
-  import { customComponents } from '@/lib/vform/extension/samples/extension-schema.js'
+  import { customValidateComponents } from '@/lib/vform/extension/samples/extension-schema.js'
   import { customFormData } from '@/lib/vform/extension/custom-form-data'
   export default {
     name: 'VFormRender',
@@ -767,17 +767,7 @@
         const _self = this
         const additionalList = []
         traverseFieldWidgets(this.widgetList, widget => {
-          if (
-            widget.type === 'usesealBesides' ||
-            widget.type === 'agentMan' ||
-            widget.type === 'applicantInfo' ||
-            widget.type === 'sealFile' ||
-            widget.type === 'limitTimeSeal' ||
-            widget.type === 'sealName' ||
-            widget.type === 'contactUnit' ||
-            widget.type === 'fileTypeId' ||
-            widget.type === 'contractAmount'
-          ) {
+          if (customValidateComponents.includes(widget.type)) {
             const data = {}
             const dataId = widget.id
             const widgetInstance = _self.getWidgetRef(dataId)
@@ -786,16 +776,12 @@
             if (widget.options.required && needValidation) {
               if (widget.type === 'contactUnit') {
                 // 往来单位
-                Object.keys(widgetData).forEach(propName => {
-                  if (propName === 'unitIds') {
-                    if (!widgetData[propName]) {
-                      _self.requiredMsgList.push('往来单位未选择')
-                      widgetInstance.setRequiredTextShow(true)
-                    } else {
-                      widgetInstance.setRequiredTextShow(false)
-                    }
-                  }
-                })
+                if (!widgetData.length) {
+                  _self.requiredMsgList.push('往来单位未选择')
+                  widgetInstance.setRequiredTextShow(true)
+                } else {
+                  widgetInstance.setRequiredTextShow(false)
+                }
               }
               if (widget.type === 'sealName') {
                 // 印章名称
@@ -841,68 +827,14 @@
                   }
                 })
               }
-              if (widget.type === 'usesealBesides') {
-                // 印章外带
-                let extSeal = false
-                const str = '印章外带信息未完善'
-                let count = 0
-                Object.keys(widgetData).forEach(propName => {
-                  if (propName === 'extSeal') {
-                    extSeal = widgetData[propName]
-                  } else {
-                    if (propName === 'besidesTime') {
-                      if (widgetData[propName].length === 0) {
-                        count++
-                        widgetInstance.setBesidesTimeRequiredShow(true)
-                      } else {
-                        widgetInstance.setBesidesTimeRequiredShow(false)
-                      }
-                    }
-                    if (propName === 'provinceId') {
-                      if (widgetData[propName].length === 0) {
-                        count++
-                        widgetInstance.setAddRequiredShow(true)
-                      } else {
-                        widgetInstance.setAddRequiredShow(false)
-                      }
-                    }
-                    if (propName === 'detailAddress') {
-                      if (!widgetData[propName]) {
-                        count++
-                        widgetInstance.setDetailAddRequiredShow(true)
-                      } else {
-                        widgetInstance.setDetailAddRequiredShow(false)
-                      }
-                    }
-                  }
-                })
-                if (extSeal && count > 0) {
-                  _self.requiredMsgList.push(str)
-                }
-              }
+
               if (widget.type === 'applicantInfo') {
                 // 申请人信息
                 Object.keys(widgetData).forEach(propName => {
-                  if (propName === 'applyOrganName') {
+                  if (propName === 'applyOrganId') {
                     if (!widgetData[propName]) {
                       _self.requiredMsgList.push('部门未选择')
-                      widgetInstance.field.options.requiredHint = '请选择部门'
-                    } else {
-                      widgetInstance.field.options.requiredHint = ''
-                    }
-                  }
-                })
-              }
-              if (widget.type === 'limitTimeSeal') {
-                // 限时盖章
-                Object.keys(widgetData).forEach(propName => {
-                  if (propName === 'sealTime' && widgetData.timeLimit === 1) {
-                    if (!widgetData[propName] || !widgetData[propName].length) {
-                      _self.requiredMsgList.push('限时盖章时间未选择')
-                      widgetInstance.field.options.requiredHint =
-                        '请选择限时盖章时间'
-                    } else {
-                      widgetInstance.field.options.requiredHint = ''
+                      widgetInstance.field.options.requiredTextShow = true
                     }
                   }
                 })
@@ -913,10 +845,9 @@
                   if (propName === 'fileIds') {
                     if (!widgetData[propName].length) {
                       _self.requiredMsgList.push('请上传用印文件')
-                      widgetInstance.field.options.requiredHint =
-                        '请上传用印文件'
+                      widgetInstance.field.options.requiredTextShow = true
                     } else {
-                      widgetInstance.field.options.requiredHint = ''
+                      widgetInstance.field.options.requiredTextShow = false
                     }
                   }
                 })
@@ -942,8 +873,63 @@
                   widgetInstance.setRequiredTextShow(false)
                 }
               }
+              if (widget.type === 'contractAmount') {
+                if (!widgetData.amount) {
+                  _self.requiredMsgList.push('合同金额不能为空')
+                  widgetInstance.setRequiredTextShow(true)
+                } else {
+                  widgetInstance.setRequiredTextShow(false)
+                }
+              }
             }
-
+            if (widget.type === 'usesealBesides') {
+              // 印章外带
+              const extSeal = widgetData.extSeal
+              const str = '印章外带信息未完善'
+              let count = 0
+              if (extSeal) {
+                Object.keys(widgetData).forEach(propName => {
+                  if (propName === 'besidesTime') {
+                    if (widgetData[propName].length === 0) {
+                      count++
+                      widgetInstance.setBesidesTimeRequiredShow(true)
+                    } else {
+                      widgetInstance.setBesidesTimeRequiredShow(false)
+                    }
+                  }
+                  if (propName === 'provinceId') {
+                    if (widgetData[propName].length === 0) {
+                      count++
+                      widgetInstance.setAddRequiredShow(true)
+                    } else {
+                      widgetInstance.setAddRequiredShow(false)
+                    }
+                  }
+                  if (propName === 'detailAddress') {
+                    if (!widgetData[propName]) {
+                      count++
+                      widgetInstance.setDetailAddRequiredShow(true)
+                    } else {
+                      widgetInstance.setDetailAddRequiredShow(false)
+                    }
+                  }
+                })
+                if (extSeal && count > 0) {
+                  _self.requiredMsgList.push(str)
+                }
+              }
+            }
+            if (widget.type === 'limitTimeSeal') {
+              if (
+                widgetData.timeLimit === 1 &&
+                (widgetData.sealTime === null || !widgetData.sealTime[0])
+              ) {
+                _self.requiredMsgList.push('请选择限时用印时间')
+                widgetInstance.setRequiredTextShow(true)
+              } else {
+                widgetInstance.setRequiredTextShow(false)
+              }
+            }
             data[dataId] = widgetData
             additionalList.push(data)
           }
@@ -982,11 +968,11 @@
 
         const promise2 = this.$refs.renderForm.validate()
         const promise = Promise.all([promise1, promise2]).then(
-          value => {
+          () => {
             return Promise.resolve(self.formDataModel)
           },
           error => {
-            return Promise.reject('表单数据校验失败')
+            return Promise.reject(error)
           }
         )
         return promise

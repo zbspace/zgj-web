@@ -32,6 +32,7 @@
 									      :key="item.value"
 									      :label="item.label"
 									      :value="item.value"
+												:disabled="prefabricationFieldList.includes(item.value)"
 									    />
 					      </el-select>
 					    </el-form-item>
@@ -101,6 +102,7 @@
       selectedWidget: Object,
       optionModel: Object,
     },
+    inject: ['getPrefabricationFieldList'],
 		data(){
 			return {
 				addValue:"",
@@ -112,6 +114,7 @@
 		},
 		created() {
 			this.getFieldWidgetList()
+			this.prefabricationFieldList = this.getPrefabricationFieldList()
 		},
     methods: {
 			openDialog(){
