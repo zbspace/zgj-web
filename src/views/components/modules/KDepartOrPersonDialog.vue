@@ -146,7 +146,9 @@
                   v-model="item.includeChild"
                   active-value="1"
                   inactive-value="0"
-                  v-if="item.haveChildren && props.multiple"
+                  v-if="
+                    item.haveChildren && props.multiple && props.haveIncluded
+                  "
                   style="margin-right: 12px"
                   @change="changeSwitch($event, item)"
                 >
@@ -341,6 +343,10 @@
     hasTopRoot: {
       type: Boolean,
       default: false
+    },
+    haveIncluded: {
+      type: Boolean,
+      default: true
     }
   })
 

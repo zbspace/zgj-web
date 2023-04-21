@@ -292,9 +292,11 @@
   import { useAccountInfoStore } from '@/store/accountInfo'
   import navBarApi from '@/api/common/navbar.js'
   import { useMenusInfoStore } from '@/store/menus'
-
+  import { useHomeLogoUrl } from '@/store/logo'
+  import { getItem, setItem } from '@/utils/storage'
   const accountInfo = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
+  const homeLogoUrl = useHomeLogoUrl()
   const router = useRouter()
   const route = useRoute()
 
@@ -353,7 +355,7 @@
 
   const selectOrgan = tenantId => {
     loginApi.chooseOrgan(tenantId).then(async res => {
-      localStorage.setItem('tenantId', tenantId)
+      setItem('tenantId', tenantId)
 
       const redirect = getRedirect()
       menusInfoStore.currentType =
@@ -366,14 +368,17 @@
 
   function getWater(isOneDepart) {
     companyApi.getTenantInfo().then(res => {
+      res.data.tenantShowInfo &&
+        res.data.tenantShowInfo.homeLogoPath &&
+        homeLogoUrl.setHomeUrl(res.data.tenantShowInfo.homeLogoPath)
       if (res.data.tenantShowInfo) {
-        localStorage.setItem('watermark', res.data.tenantShowInfo.pageWatermark)
+        setItem('watermark', res.data.tenantShowInfo.pageWatermark)
       } else {
-        localStorage.setItem('watermark', '1')
+        setItem('watermark', '1')
       }
-      if (localStorage.getItem('watermark') === '1') {
+      if (String(getItem('watermark')) === '1') {
         const text =
-          JSON.parse(localStorage.getItem('accountInfo')).userInfo.userName +
+          getItem('accountInfo').userInfo.userName +
           ' ' +
           dayjs().format('YYYY-MM-DD HH:mm')
         setWaterMark(text)
@@ -383,6 +388,8 @@
       if (isOneDepart) {
         accountInfo.setOneDeaprtTitle(res.data && res.data.tenant.tenantTitle)
       }
+
+      goHome()
     })
   }
 
@@ -405,7 +412,7 @@
       }
       accountInfo.setUserInfo(obj)
       getWater(false)
-      goHome()
+      // goHome()
     })
   }
   onMounted(() => {})

@@ -82,7 +82,8 @@
   import { setWaterMark, removeWatermark } from '@/utils/water'
   import dayjs from 'dayjs'
   import { messageError } from '@/hooks/useMessage'
-
+  import { useHomeLogoUrl } from '@/store/logo'
+  const homeLogoUrl = useHomeLogoUrl()
   const shapeIcon1 = ref(null)
   const shapeIcon2 = ref(null)
 
@@ -154,6 +155,7 @@
 
   const onSuccess1 = (response, uploadFile) => {
     shapeIcon1.value = response.data
+    homeLogoUrl.setHomeUrl(response.data)
   }
   const onSuccess2 = (response, uploadFile) => {
     shapeIcon2.value = response.data
