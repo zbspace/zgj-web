@@ -17,6 +17,11 @@ export class ModelApi {
     return Request.getAndLoadData('/model/getCategoryDetailList', params)
   }
 
+  // 指定的模型信息
+  static getModelKey(params) {
+    return Request.getAndLoadData('/model/key', params)
+  }
+
   /**
    * 获取分页列表
    *

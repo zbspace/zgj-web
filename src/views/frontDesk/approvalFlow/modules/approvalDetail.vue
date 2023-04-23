@@ -27,39 +27,43 @@
         @update:active="active = $event"
         :border="false"
       ></JyTabs>
-      <FlowDesign
-        ref="flowDesign"
-        v-bind="{
-          readable: true,
-          mapable: false,
-          scroll: true,
-          top: '20'
+
+      <el-scrollbar
+        class="el-scrollbar-nomal"
+        :class="{
+          'el-scrollbar-add':
+            state.form.suggest === '3' ||
+            state.form.suggest === '4' ||
+            state.form.suggest === '5'
         }"
-        :node="node"
-        v-if="node"
-        :wrapStyle="wrapStyle"
-      />
-      <div class="ap-cont-tabsCont">
-        <div class="scrollbar-div">
-          <el-scrollbar
-            class="el-scrollbar-nomal"
-            :class="{
-              'el-scrollbar-add':
-                state.form.suggest === '5' ||
-                state.form.suggest === '4' ||
-                state.form.suggest === '3'
-            }"
-          >
-            <JyVform
-              v-if="props.params.formJson"
-              mode="render"
-              :formJson="props.params.formJson"
-              :formData="props.params.formJson"
-            >
-            </JyVform>
-          </el-scrollbar>
-        </div>
+        always
+        v-show="active === 'first'"
+      >
+        <JyVform
+          mode="render"
+          :formJson="props.params.formJson"
+          :formData="props.params.formData"
+          ref="formInformation"
+        >
+        </JyVform>
+      </el-scrollbar>
+
+      <div v-show="active === 'second'" class="top-container">
+        <FlowDesign
+          ref="flowDesign"
+          v-bind="{
+            readable: true,
+            mapable: false,
+            scroll: true,
+            top: '20'
+          }"
+          :node="node"
+          v-if="node"
+          :wrapStyle="wrapStyle"
+        />
       </div>
+      <div v-if="active === 'third'" class="top-container"></div>
+
       <div class="approval-footer">
         <el-form
           :model="state.form"
@@ -133,6 +137,9 @@
                 <el-select
                   v-model="state.approverSelected"
                   multiple
+                  collapse-tags
+                  collapse-tags-tooltip
+                  :max-collapse-tags="6"
                   placeholder="+请选择审批人"
                   style="width: 100%"
                   popper-class="hidePoper"
@@ -230,7 +237,7 @@
                     multiple
                     collapse-tags
                     collapse-tags-tooltip
-                    :max-collapse-tags="5"
+                    :max-collapse-tags="6"
                     placeholder="+请选择抄送人"
                     style="width: 100%"
                     popper-class="hidePoper"
@@ -295,19 +302,20 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed, onMounted } from 'vue'
+  import { ref, reactive, computed, onBeforeMount } from 'vue'
   import { ElMessage } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
-  import { ApproverApi } from '@/api/flow/ApproverApi'
-  import { NodeAttrApi } from '@/api/flow/NodeAttrApi'
   import loadApproverData from '@/components/FlowDesign/data/load-approver-data'
   import useCommon from '@/components/FlowDesign/hooks/useCommon'
-  import { ModelApi } from '@/api/flow/ModelApi'
-  import { TaskApi } from '@/api/flow/TaskApi'
-  import { RuTaskSignApi } from '@/api/flow/RuTaskSignApi'
   import JyTabs from '@/components/common/JyTabs.vue'
   import FlowDesign from '@/components/FlowDesign/index.vue'
   import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  import { ModelApi } from '@/api/flow/ModelApi'
+  import { TaskApi } from '@/api/flow/TaskApi'
+  import { ApproverApi } from '@/api/flow/ApproverApi'
+  import { NodeAttrApi } from '@/api/flow/NodeAttrApi'
+  import { RuTaskSignApi } from '@/api/flow/RuTaskSignApi'
+  import FormInfoApi from '@/api/system/flowManagement'
   const flowStore = useFlowStore()
   const { toUgroup } = useCommon()
   // 数据
@@ -359,7 +367,8 @@
   // 最新实例ID
   const instanceId = ref(null)
   // 表单内容
-  const formData = ref(null)
+  const formJson = ref(null)
+  const formInformation = ref(null)
   // 任务ID
   const taskId = ref('')
   const approvalMode = ref('')
@@ -718,27 +727,7 @@
     emit('on-cancel', value)
     isVisible.value = false
   }
-  const getAllDetailInfo = () => {
-    // vFormRef.value.resetFields()
-    getDesign()
-    getRuNode()
-    // getSign()
-  }
-  const getDesign = () => {
-    const params = {
-      modelId: props.params.modelId,
-      definitionId: props.params.definitionId,
-      edit: false
-    }
-    ModelApi.getDesign(params)
-      .then(result => {
-        console.log('getDesignresult', result)
-        if (result) {
-          flowDesign.value.handleSetData(result)
-        }
-      })
-      .catch(() => {})
-  }
+
   const approvalsChange = item => {
     if (item === '1') {
       state.form.remark = '同意'
@@ -892,8 +881,7 @@
   }
 
   const node = ref(null)
-  onMounted(() => {
-    // getDesign()
+  onBeforeMount(() => {
     ModelApi.predictionDesign({
       formData: JSON.parse(
         '{"applyNo":"20230421233434308","applyName":"walter-apply-001","sealName":[{"seal":"上海测试有限公司合同章","sealId":"1637991906868817921","applySealNum":1,"sealIot":"1","markSeal":false,"sealRequiredTextShow":false,"routineSealRequiredTextShow":false}],"fileCount":1,"fileTypeId":"1648588402209067010","contractAmount":{"amount":"","unit":"1"},"formVersionId":"1649223107237441538","flowVersionId":"1649235933049974785","formMessageId":"1649223107203887107","flowMessageId":"1649229719977127938"}'
@@ -901,21 +889,30 @@
       instanceId: '1649236071776579585',
       definitionId: '1649235931967844354'
     }).then(res => {
-      // flowDesign.value.handleSetData(res.data)
       node.value = res.data
     })
+    // getFormInfo()
+    getRuNode()
   })
-
-  defineExpose({
-    getAllDetailInfo
-  })
+  const getFormInfo = () => {
+    const params = {
+      modelId: props.params.modelId,
+      definitionId: props.params.definitionId
+    }
+    FormInfoApi.queryByGunsId(params).then(res => {
+      formJson.value = res.data
+      formInformation.value.setFormData(props.params.formData)
+    })
+  }
 </script>
+
 <style lang="scss" scoped>
   .el-scrollbar-nomal {
-    height: 369px;
+    height: calc(100% - 200px);
+    padding: 10px 24px 60px 0;
   }
   .el-scrollbar-add {
-    height: 335px;
+    height: calc(100% - 260px);
   }
   .el-form-item__content {
     margin-bottom: 12px;
@@ -924,6 +921,10 @@
     .content-custom {
       padding: 0;
     }
+  }
+
+  .top-container {
+    height: 100%;
   }
 
   .approval-footer {
