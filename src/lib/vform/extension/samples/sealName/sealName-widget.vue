@@ -248,7 +248,7 @@
       },
       setValue(value) {
         this.filedList = value
-        this.filedOptions = this.filedList
+        this.filedOptions = [...this.filedList]
       },
 
       // 打开弹窗选择数据
@@ -263,14 +263,10 @@
           return (this.sealTypes = row)
         }
         this.filedList.splice(this.thisIndex, 1, {
-          ...this.filedList[this.thisIndex],
+          // ...this.filedList[this.thisIndex],
           ...{ seal: row.sealName, sealId: row.sealId, sealIot: row.sealIot }
         })
-        this.filedOptions.push({
-          seal: row.sealName,
-          sealId: row.sealId,
-          sealIot: row.sealIot
-        })
+        this.filedOptions = [...this.filedList]
         this.xzyzDialogVisible = false
         if (this.filedList[this.thisIndex].sealId) {
           this.setRequiredTextShow(
