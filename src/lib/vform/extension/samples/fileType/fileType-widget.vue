@@ -74,6 +74,8 @@
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
   import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
+  import { messageError } from '@/hooks/useMessage'
+  import { fileManageService } from '@/api/frontDesk/fileManage'
 
   export default {
     name: 'FileTypeIdWidget',
@@ -182,7 +184,9 @@
         if (list.length) {
           this.fieldModel = list[0].id
           this.fileTypeName = list[0].name
+          // eslint-disable-next-line vue/no-mutating-props
           this.field.options.optionItems = []
+          // eslint-disable-next-line vue/no-mutating-props
           this.field.options.optionItems.push({
             label: this.fileTypeName,
             value: this.fieldModel
@@ -203,6 +207,23 @@
       },
       onClick() {
         this.showDocumentTypeDialog = true
+      },
+
+      async getFileTypeDetail(fileTypeId) {
+        try {
+          const res = await fileManageService.getFileTypeInfo(fileTypeId)
+          if (res.data && res.data.fileTypeId) {
+            // eslint-disable-next-line vue/no-mutating-props
+            this.field.options.optionItems = [
+              {
+                label: res.data.fileTypeName,
+                value: res.data.fileTypeId
+              }
+            ]
+          }
+        } catch (error) {
+          messageError(error)
+        }
       }
     }
   }

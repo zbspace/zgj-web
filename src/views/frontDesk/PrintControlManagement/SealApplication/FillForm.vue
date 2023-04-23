@@ -492,23 +492,15 @@
       .then(res => {
         fillFormInformationJson.value = JSON.parse(res.data.formInfo)
         sealApply.templateView(route.query.useId).then(res1 => {
-          if (res1.data.fileTypeId) {
-            getFileTypeDetail(res1.data.fileTypeId)
-          }
+          // if (res1.data.fileTypeId) {
+          //   getFileTypeDetail(res1.data.fileTypeId)
+          // }
           formVersionId.value = res1.data.formVersionId
           refFillFormInformation.value.setFormData(
             JSON.parse(res1.data.templateValue)
           )
         })
       })
-  }
-
-  const getFileTypeDetail = async fileTypeId => {
-    const res = await fileManageService.getFileTypeInfo(fileTypeId)
-    state.cache.optionData.fileTypeId = [
-      { fileTypeName: res.data.fileTypeName, fileTypeId: res.data.fileTypeId }
-    ]
-    refFillFormInformation.value.reloadOptionData()
   }
 
   onBeforeMount(() => {
