@@ -24,11 +24,11 @@
       :rules="rules"
       :label-width="field.options.labelWidth + 'px'"
       :class="[labelAlign, field.options.required ? 'required' : '']"
+      :size="field.options.size"
     >
       <el-input
         v-model="fieldModel.unitNames"
         v-show="!field.options.hidden"
-        :size="field.options.size"
         :disabled="field.options.disabled"
         :readonly="field.options.readonly"
         :clearable="field.options.clearable"

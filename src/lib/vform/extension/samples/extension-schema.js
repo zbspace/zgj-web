@@ -260,7 +260,8 @@ export const fileTypeSchema = {
     size: '',
     labelWidth: 100,
     disabled: false,
-    required: true
+    required: true,
+    optionItems: []
   }
 }
 
@@ -321,7 +322,8 @@ export const contractAmountSchema = {
     type: 'datetimerange',
     required: false,
     requiredTextShow: false,
-    clearable: false
+    clearable: false,
+    size: ''
   }
 }
 

@@ -14,6 +14,7 @@
       label="合同金额"
       :label-width="field.options.labelWidth + 'px'"
       :class="[labelAlign, field.options.required ? 'required' : '']"
+      :size="field.options.size"
     >
       <el-input
         @input="onInput"

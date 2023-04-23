@@ -27,13 +27,13 @@
           label="申请部门"
           :label-width="field.options.labelWidth + 'px'"
           :class="[labelAlign, 'required']"
+          :size="field.options.size"
         >
           <el-select
             placeholder="请选择"
             style="width: 100%"
             v-model="fieldModel.applyOrganId"
             v-show="!field.options.hidden"
-            :size="field.options.size"
             :disabled="field.options.disabled"
             :readonly="field.options.readonly"
             :clearable="field.options.clearable"

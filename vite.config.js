@@ -137,7 +137,8 @@ export default defineConfig((mode, command) => {
         // '@/../lib/vform/designer.umd.js',
         'ant-design-vue',
         'ant-design-vue/es',
-        'vuedraggable'
+        'vuedraggable',
+        'quill'
       ]
     }
   }

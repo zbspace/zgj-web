@@ -16,10 +16,10 @@
           label="印章外带"
           :label-width="field.options.labelWidth"
           :class="[labelAlign]"
+          :size="field.options.size"
         >
           <el-checkbox
             v-model="fieldModel.extSeal"
-            :size="field.options.size"
             @change="onChange"
             :disabled="field.options.disabled"
           />
@@ -41,10 +41,10 @@
           :class="[labelAlign]"
           v-show="fieldModel.extSeal"
           placeholder="请输入"
+          :size="field.options.size"
         >
           <el-date-picker
             v-model="fieldModel.besidesTime"
-            :size="field.options.size"
             :disabled="field.options.disabled"
             type="datetimerange"
             range-separator="-"
@@ -75,11 +75,11 @@
           class="limit-item required"
           v-show="fieldModel.extSeal"
           :class="[labelAlign]"
+          :size="field.options.size"
         >
           <el-cascader
             placeholder="请选择"
             style="width: 800px"
-            :size="field.options.size"
             :disabled="field.options.disabled"
             :options="addressData"
             v-model="fieldModel.provinceId"
@@ -102,10 +102,10 @@
           v-show="fieldModel.extSeal"
           :class="[labelAlign]"
           placeholder="请输入"
+          :size="field.options.size"
         >
           <el-input
             v-model="fieldModel.detailAddress"
-            :size="field.options.size"
             @change="onAddChange"
             :disabled="field.options.disabled"
           ></el-input>

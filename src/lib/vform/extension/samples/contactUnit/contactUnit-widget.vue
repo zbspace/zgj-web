@@ -13,15 +13,11 @@
     <el-form-item
       label="往来单位"
       :label-width="field.options.labelWidth + 'px'"
-      :class="[
-        labelAlign,
-        customClass,
-        field.options.required ? 'required' : ''
-      ]"
+      :class="[labelAlign, field.options.required ? 'required' : '']"
+      :size="field.options.size"
     >
       <el-select
         v-model="fieldModels"
-        :size="field.options.size"
         :disabled="field.options.disabled"
         :readonly="field.options.readonly"
         multiple
@@ -111,11 +107,6 @@
       }
     },
     computed: {
-      customClass() {
-        return this.field.options.customClass
-          ? this.field.options.customClass.join(' ')
-          : ''
-      },
       labelAlign() {
         if (this.field.options.labelAlign) {
           return this.field.options.labelAlign

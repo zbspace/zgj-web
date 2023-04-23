@@ -16,16 +16,12 @@
           <el-form-item
             :label="'印章名称' + (index + 1)"
             :label-width="field.options.labelWidth"
-            :class="[
-              labelAlign,
-              customClass,
-              field.options.required ? 'required' : ''
-            ]"
+            :class="[labelAlign, field.options.required ? 'required' : '']"
+            :size="field.options.size"
           >
-            <div style="width: 100%; display: flex; height: 32px">
+            <div style="width: 100%; display: flex">
               <el-select
                 ref="fieldEditor"
-                :size="field.options.size"
                 v-model="obj.sealId"
                 class="full-width-input select-prefix"
                 :disabled="field.options.disabled"
@@ -55,7 +51,6 @@
                 <el-button
                   type="primary"
                   icon="el-icon-plus"
-                  :size="field.options.size"
                   :disabled="field.options.disabled || designState"
                   @click="addItem"
                 ></el-button>
@@ -64,7 +59,6 @@
                 <el-button
                   type="primary"
                   icon="el-icon-delete"
-                  :size="field.options.size"
                   :disabled="field.options.disabled"
                   @click="deleteItem(index)"
                 ></el-button>
@@ -80,11 +74,8 @@
           <el-form-item
             label="印章次数"
             :label-width="field.options.labelWidth"
-            :class="[
-              labelAlign,
-              customClass,
-              field.options.required ? 'required' : ''
-            ]"
+            :class="[labelAlign, field.options.required ? 'required' : '']"
+            :size="field.options.size"
           >
             <el-input-number
               v-model="obj.applySealNum"
@@ -109,7 +100,8 @@
           <el-form-item
             label="骑缝盖章"
             :label-width="field.options.labelWidth"
-            :class="[labelAlign, customClass]"
+            :class="[labelAlign]"
+            :size="field.options.size"
           >
             <el-switch
               v-model="obj.markSeal"
@@ -196,11 +188,6 @@
       }
     },
     computed: {
-      customClass() {
-        return this.field.options.customClass
-          ? this.field.options.customClass.join(' ')
-          : ''
-      },
       labelAlign() {
         if (this.field.options.labelAlign) {
           return this.field.options.labelAlign

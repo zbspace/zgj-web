@@ -12,15 +12,20 @@
     :sub-form-row-id="subFormRowId"
   >
     <div :class="{ 'readonly-mode-rich-editor': isReadMode }">
-      <!-- <quill-editor
-              ref="fieldEditor"
-              v-model:value="fieldModel"
-              :options="editorOption"
-              :disabled="field.options.disabled || isReadMode"
-              @blur="handleRichEditorBlurEvent"
-              @focus="handleRichEditorFocusEvent"
-              @change="handleRichEditorChangeEvent"
-              :style="!!field.options.contentHeight ? `height: ${field.options.contentHeight};`: ''"></quill-editor> -->
+      <quill-editor
+        ref="fieldEditor"
+        v-model:value="fieldModel"
+        :options="editorOption"
+        :disabled="field.options.disabled || isReadMode"
+        @blur="handleRichEditorBlurEvent"
+        @focus="handleRichEditorFocusEvent"
+        @change="handleRichEditorChangeEvent"
+        :style="
+          !!field.options.contentHeight
+            ? `height: ${field.options.contentHeight};`
+            : ''
+        "
+      ></quill-editor>
     </div>
   </form-item-wrapper>
 </template>
@@ -31,8 +36,7 @@
   import i18n from '@/lib/vform/utils/i18n'
   import { deepClone } from '@/lib/vform/utils/util'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
-
-  // import { Quill, quillEditor } from 'vue3-quill'
+  import { quillEditor } from 'vue3-quill'
 
   export default {
     name: 'RichEditorWidget',
@@ -64,8 +68,8 @@
       }
     },
     components: {
-      FormItemWrapper
-      // quillEditor,
+      FormItemWrapper,
+      quillEditor
     },
     data() {
       return {

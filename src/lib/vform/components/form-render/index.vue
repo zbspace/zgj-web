@@ -440,7 +440,6 @@
             this.formDataModel[wItem.options.name] = deepClone(initialValue)
           }
         }
-
         // 设置自定义组件的formDataModel
         // if(customComponents.includes(wItem.options.name)){
         //   if(wItem.options.childAttrs){
@@ -939,7 +938,6 @@
 
       getFormData(needValidation = true) {
         const self = this
-
         const additionalList = this.getAdditionalList(needValidation)
         additionalList.forEach(data => {
           Object.assign(this.formDataModel, data)
@@ -971,8 +969,8 @@
           () => {
             return Promise.resolve(self.formDataModel)
           },
-          error => {
-            return Promise.reject(error)
+          () => {
+            return Promise.reject('表单数据校验失败')
           }
         )
         return promise

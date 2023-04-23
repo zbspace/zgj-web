@@ -34,7 +34,7 @@
         </svg>
       </template>
       <el-option
-        v-for="item in optionItems"
+        v-for="item in field.options.optionItems"
         :key="item.value"
         :label="item.label"
         :value="item.value"
@@ -121,8 +121,7 @@
             trigger: 'change'
           }
         ],
-        searchSelected: [],
-        optionItems: []
+        searchSelected: []
       }
     },
     computed: {
@@ -153,11 +152,15 @@
     watch: {
       test: {
         handler(val) {
-          if (!this.optionItems || this.optionItems.length === 0) return
+          if (
+            !this.field.options.optionItems ||
+            this.field.options.optionItems.length === 0
+          )
+            return
           this.searchSelected = [
             {
-              id: this.optionItems[0].value,
-              name: this.optionItems[0].label,
+              id: this.field.options.optionItems[0].value,
+              name: this.field.options.optionItems[0].label,
               type: 'fileType',
               idFullPathSet: []
             }
@@ -179,8 +182,8 @@
         if (list.length) {
           this.fieldModel = list[0].id
           this.fileTypeName = list[0].name
-          this.optionItems = []
-          this.optionItems.push({
+          this.field.options.optionItems = []
+          this.field.options.optionItems.push({
             label: this.fileTypeName,
             value: this.fieldModel
           })

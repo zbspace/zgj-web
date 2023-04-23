@@ -1314,7 +1314,7 @@ export const advancedFields = [
       multipleSelect: false,
       showFileList: true,
       limit: 3,
-      fileMaxSize: 199, // MB
+      fileMaxSize: 50, // MB
       fileTypes: ['jpg', 'jpeg', 'png'],
       // headers: [],
       // -------------------
@@ -1358,7 +1358,7 @@ export const advancedFields = [
       multipleSelect: false,
       showFileList: true,
       limit: 3,
-      fileMaxSize: 199, // MB
+      fileMaxSize: 50, // MB
       fileTypes: ['doc', 'docx', 'xls', 'xlsx'],
       // headers: [],
       // -------------------

@@ -7,14 +7,23 @@ export const ACE_BASE_PATH =
 export const BEAUTIFIER_PATH =
   'https://ks3-cn-beijing.ksyun.com/vform2021/js-beautify/1.14.0/beautifier.min.js'
 
+// 不同业务必填字段集合
+export const mustKeys = [
+  'applyNo',
+  'applyName',
+  'sealName',
+  'fileCount',
+  'fileTypeId'
+]
+
 // 生产需要隐藏的设置属性
 export const NeedHidOptions = [
-  'labelHidden',
+  // 'labelHidden',
   'customClass',
-  'readonly',
-  'clearable',
+  // 'readonly',
+  // 'clearable',
   'hidden',
-  'validation',
+  // 'validation',
   'validationHint',
   // 数据源
   'dsEnabled',
@@ -27,19 +36,20 @@ export const NeedHidOptions = [
   'allowCreate',
   'remote'
 ]
+
 // DEV需要隐藏的设置属性
 export const NeedHidOptionsDEV = [
-  'labelHidden',
-  'customClass',
-  'readonly',
-  'hidden',
-  // 基础控件
-  'clearable',
-  'dsEnabled',
-  'labelKey',
-  'valueKey',
-  'automaticDropdown',
-  'allowCreate',
-  'remote',
-  'withCredentials'
+  // 'labelHidden',
+  // 'customClass',
+  // 'readonly',
+  // 'hidden',
+  // // 基础控件
+  // 'clearable',
+  // 'dsEnabled',
+  // 'labelKey',
+  // 'valueKey',
+  // 'automaticDropdown',
+  // 'allowCreate',
+  // 'remote',
+  // 'withCredentials'
 ]
