@@ -17,11 +17,6 @@ export class ModelApi {
     return Request.getAndLoadData('/model/getCategoryDetailList', params)
   }
 
-  // 指定的模型信息
-  static getModelKey(params) {
-    return Request.getAndLoadData('/model/key', params)
-  }
-
   /**
    * 获取分页列表
    *
@@ -150,5 +145,25 @@ export class ModelApi {
    */
   static updateDesignUpgrade(params) {
     return Request.post('/model/design/upgrade', params)
+  }
+
+  /**
+   * 获取流程设计-含有流程预测的功能
+   *
+   * @author luopeng
+   * @date 2022/08/23 15:27
+   */
+  static predictionDesign(params) {
+    return Request.post('/model/predictionDesign', params)
+  }
+
+  /**
+   * 获取流程设计-获取下个节点信息
+   *
+   * @author luopeng
+   * @date 2022/08/23 15:27
+   */
+  static predictionNextNode(params) {
+    return Request.post('/model/predictionNextNode', params)
   }
 }

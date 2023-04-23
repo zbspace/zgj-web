@@ -18,57 +18,77 @@
     :width="900"
     :footer="false"
     @close="closeDialog"
+    :noScroll="false"
   >
-    <div class="ap-cont-tabsCont">
-      <div class="scrollbar-div">
-        <el-scrollbar
-          class="el-scrollbar-nomal"
-          :class="{
-            'el-scrollbar-add':
-              state.form.suggest === '5' ||
-              state.form.suggest === '4' ||
-              state.form.suggest === '3'
-          }"
-        >
-          <JyVform
-            v-if="props.params.formJson"
-            mode="render"
-            :formJson="props.params.formJson"
-            :formData="props.params.formJson"
+    <template #noScroll>
+      <JyTabs
+        :label="tabsLabel"
+        :active="active"
+        @update:active="active = $event"
+        :border="false"
+      ></JyTabs>
+      <FlowDesign
+        ref="flowDesign"
+        v-bind="{
+          readable: true,
+          mapable: false,
+          scroll: true,
+          top: '20'
+        }"
+        :node="node"
+        v-if="node"
+        :wrapStyle="wrapStyle"
+      />
+      <div class="ap-cont-tabsCont">
+        <div class="scrollbar-div">
+          <el-scrollbar
+            class="el-scrollbar-nomal"
+            :class="{
+              'el-scrollbar-add':
+                state.form.suggest === '5' ||
+                state.form.suggest === '4' ||
+                state.form.suggest === '3'
+            }"
           >
-          </JyVform>
-        </el-scrollbar>
-      </div>
-    </div>
-    <div class="approval-footer">
-      <el-form
-        :model="state.form"
-        :rules="state.rules"
-        ref="vFormRef"
-        label-width="110px"
-      >
-        <el-form-item label="审批选项" prop="suggest">
-          <el-radio-group
-            @change="approvalsChange"
-            v-model="state.form.suggest"
-          >
-            <el-radio label="1">同意</el-radio>
-            <el-radio label="2">不同意</el-radio>
-            <!-- <el-radio label="5">征询他人意见</el-radio> -->
-            <el-radio label="3">转交</el-radio>
-            <!-- <el-radio label="4">加签</el-radio> -->
-            <!-- <el-radio label="6">退回</el-radio> -->
-            <el-radio
-              :label="item.buttonCode"
-              v-for="item in props.params.buttons.filter(b =>
-                ['agree', 'reject'].includes(b.buttonCode)
-              )"
-              :key="item.buttonCode"
-              >{{ item.buttonName }}</el-radio
+            <JyVform
+              v-if="props.params.formJson"
+              mode="render"
+              :formJson="props.params.formJson"
+              :formData="props.params.formJson"
             >
-          </el-radio-group>
-        </el-form-item>
-        <!-- <el-form-item
+            </JyVform>
+          </el-scrollbar>
+        </div>
+      </div>
+      <div class="approval-footer">
+        <el-form
+          :model="state.form"
+          :rules="state.rules"
+          ref="vFormRef"
+          label-width="110px"
+        >
+          <el-form-item label="审批选项" prop="suggest">
+            <el-radio-group
+              @change="approvalsChange"
+              v-model="state.form.suggest"
+            >
+              <el-radio label="1">同意</el-radio>
+              <el-radio label="2">不同意</el-radio>
+              <!-- <el-radio label="5">征询他人意见</el-radio> -->
+              <el-radio label="3">转交</el-radio>
+              <!-- <el-radio label="4">加签</el-radio> -->
+              <!-- <el-radio label="6">退回</el-radio> -->
+              <el-radio
+                :label="item.buttonCode"
+                v-for="item in props.params.buttons.filter(b =>
+                  ['agree', 'reject'].includes(b.buttonCode)
+                )"
+                :key="item.buttonCode"
+                >{{ item.buttonName }}</el-radio
+              >
+            </el-radio-group>
+          </el-form-item>
+          <!-- <el-form-item
           label="下一步审批人"
           v-if="state.form.suggest === '1'"
           prop="nextApprover"
@@ -99,82 +119,85 @@
             </div>
           </div>
         </el-form-item> -->
-        <el-form-item
-          label="审批人"
-          prop="approver"
-          v-if="
-            state.form.suggest === '5' ||
-            state.form.suggest === '4' ||
-            state.form.suggest === '3'
-          "
-        >
-          <div class="contentBoxes">
-            <div class="ap-box-contBox">
-              <el-select
-                v-model="state.approverSelected"
-                multiple
-                placeholder="+请选择审批人"
-                style="width: 100%"
-                popper-class="hidePoper"
-                :class="{
-                  hasContent: state.approverSelected.length
-                }"
-                @click="chooseOrgan('approver')"
-              >
-                <el-option
-                  v-for="one in state.approverSelected"
-                  :key="one.value"
-                  :label="one.label"
-                  :value="one.value"
-                />
-              </el-select>
-              <div class="ap-box-contBox-icon" @click="chooseOrgan('approver')">
-                <img
-                  class="ap-box-contBox-icon-img"
-                  src="@/assets/svg/ketanchude.svg"
-                  alt=""
-                />
+          <el-form-item
+            label="审批人"
+            prop="approver"
+            v-if="
+              state.form.suggest === '5' ||
+              state.form.suggest === '4' ||
+              state.form.suggest === '3'
+            "
+          >
+            <div class="contentBoxes">
+              <div class="ap-box-contBox">
+                <el-select
+                  v-model="state.approverSelected"
+                  multiple
+                  placeholder="+请选择审批人"
+                  style="width: 100%"
+                  popper-class="hidePoper"
+                  :class="{
+                    hasContent: state.approverSelected.length
+                  }"
+                  @click="chooseOrgan('approver')"
+                >
+                  <el-option
+                    v-for="one in state.approverSelected"
+                    :key="one.value"
+                    :label="one.label"
+                    :value="one.value"
+                  />
+                </el-select>
+                <div
+                  class="ap-box-contBox-icon"
+                  @click="chooseOrgan('approver')"
+                >
+                  <img
+                    class="ap-box-contBox-icon-img"
+                    src="@/assets/svg/ketanchude.svg"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </el-form-item>
-        <el-form-item
-          v-if="tasks.length > 0"
-          label="被退回人"
-          name="destTaskId"
-          :rules="[{ required: true, message: '请选择人员!' }]"
-        >
-          <el-radio-group
-            v-model:value="state.form.destTaskId"
-            class="w-fill"
-            :size="size"
+          </el-form-item>
+          <el-form-item
+            v-if="tasks.length > 0"
+            label="被退回人"
+            name="destTaskId"
+            :rules="[{ required: true, message: '请选择人员!' }]"
           >
-            <el-radio v-for="(task, i) in tasks" :key="i" :value="task.value">
-              <span>{{ task.label }}</span>
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item
-          label="退回后发起审批"
-          prop="approver"
-          v-if="state.form.suggest === '6'"
-        >
-          <el-select
-            style="width: 264px"
-            v-model="sate.form.adminId"
-            filterable
-            @change="changeAdmin"
-          >
-            <el-option
-              v-for="(data, i) in datas"
-              :key="i"
-              :label="data[labelName]"
-              :value="data[valueName]"
-              >{{ data[labelName] }}</el-option
+            <el-radio-group
+              v-model:value="state.form.destTaskId"
+              class="w-fill"
+              :size="size"
             >
-          </el-select>
-        </el-form-item>
-        <!-- <el-form-item
+              <el-radio v-for="(task, i) in tasks" :key="i" :value="task.value">
+                <span>{{ task.label }}</span>
+              </el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            label="退回后发起审批"
+            prop="approver"
+            v-if="state.form.suggest === '6'"
+          >
+            <el-select
+              style="width: 264px"
+              v-model="sate.form.adminId"
+              filterable
+              @change="changeAdmin"
+            >
+              <el-option
+                v-for="(data, i) in datas"
+                :key="i"
+                :label="data[labelName]"
+                :value="data[valueName]"
+                >{{ data[labelName] }}</el-option
+              >
+            </el-select>
+          </el-form-item>
+          <!-- <el-form-item
             label="加签方式"
             prop="addSignMode"
             v-if="state.form.suggest === '4'"
@@ -193,65 +216,71 @@
               </el-radio>
             </el-radio-group>
           </el-form-item> -->
-        <el-form-item label="添加抄送" prop="carbon">
-          <div class="select-box-contBox">
-            <el-checkbox
-              v-model="state.form.carbon"
-              style="margin-right: 12px"
-              size="mini"
-            ></el-checkbox>
-            <div class="contentBoxes" v-if="state.form.carbon">
-              <div class="ap-box-contBox">
-                <el-select
-                  v-model="state.carbonSelected"
-                  multiple
-                  collapse-tags
-                  collapse-tags-tooltip
-                  :max-collapse-tags="5"
-                  placeholder="+请选择抄送人"
-                  style="width: 100%"
-                  popper-class="hidePoper"
-                  :class="{
-                    hasContent: state.carbonSelected.length
-                  }"
-                  @click="chooseOrgan('carbon')"
-                  @remove-tag="removeUserTag"
-                >
-                  <el-option
-                    v-for="one in state.carbonSelected"
-                    :key="one.value"
-                    :label="one.label"
-                    :value="one.value"
-                  />
-                </el-select>
-                <div class="ap-box-contBox-icon" @click="chooseOrgan('carbon')">
-                  <img
-                    class="ap-box-contBox-icon-img"
-                    src="@/assets/svg/ketanchude.svg"
-                    alt=""
-                  />
+          <el-form-item label="添加抄送" prop="carbon">
+            <div class="select-box-contBox">
+              <el-checkbox
+                v-model="state.form.carbon"
+                style="margin-right: 12px"
+                size="mini"
+              ></el-checkbox>
+              <div class="contentBoxes" v-if="state.form.carbon">
+                <div class="ap-box-contBox">
+                  <el-select
+                    v-model="state.carbonSelected"
+                    multiple
+                    collapse-tags
+                    collapse-tags-tooltip
+                    :max-collapse-tags="5"
+                    placeholder="+请选择抄送人"
+                    style="width: 100%"
+                    popper-class="hidePoper"
+                    :class="{
+                      hasContent: state.carbonSelected.length
+                    }"
+                    @click="chooseOrgan('carbon')"
+                    @remove-tag="removeUserTag"
+                  >
+                    <el-option
+                      v-for="one in state.carbonSelected"
+                      :key="one.value"
+                      :label="one.label"
+                      :value="one.value"
+                    />
+                  </el-select>
+                  <div
+                    class="ap-box-contBox-icon"
+                    @click="chooseOrgan('carbon')"
+                  >
+                    <img
+                      class="ap-box-contBox-icon-img"
+                      src="@/assets/svg/ketanchude.svg"
+                      alt=""
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </el-form-item>
-        <el-form-item label="审批意见" prop="remark">
-          <el-input
-            v-model="state.form.remark"
-            maxlength="100"
-            show-word-limit
-            type="textarea"
-            placeholder="请输入"
-          />
-        </el-form-item>
-      </el-form>
-      <div class="footer-btns">
-        <el-button type="primary" :loading="btnLoading" @click="sumitForm">{{
-          $t('t-zgj-operation.submit')
-        }}</el-button>
-        <el-button @click="close">{{ $t('t-zgj-operation.cancel') }}</el-button>
+          </el-form-item>
+          <el-form-item label="审批意见" prop="remark">
+            <el-input
+              v-model="state.form.remark"
+              maxlength="100"
+              show-word-limit
+              type="textarea"
+              placeholder="请输入"
+            />
+          </el-form-item>
+        </el-form>
+        <div class="footer-btns">
+          <el-button type="primary" :loading="btnLoading" @click="sumitForm">{{
+            $t('t-zgj-operation.submit')
+          }}</el-button>
+          <el-button @click="close">{{
+            $t('t-zgj-operation.cancel')
+          }}</el-button>
+        </div>
       </div>
-    </div>
+    </template>
   </JyDialog>
   <!-- 人员选择  -->
   <kDepartOrPersonVue
@@ -276,7 +305,10 @@
   import { ModelApi } from '@/api/flow/ModelApi'
   import { TaskApi } from '@/api/flow/TaskApi'
   import { RuTaskSignApi } from '@/api/flow/RuTaskSignApi'
-  import sealApply from '@/api/frontDesk/printControl/sealApply'
+  import JyTabs from '@/components/common/JyTabs.vue'
+  import FlowDesign from '@/components/FlowDesign/index.vue'
+  import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  const flowStore = useFlowStore()
   const { toUgroup } = useCommon()
   // 数据
   const { backApprovalTypeDatas } = loadApproverData()
@@ -297,6 +329,21 @@
       }
     }
   })
+  const active = ref('first')
+  const tabsLabel = ref([
+    {
+      name: '用印详情',
+      value: 'first'
+    },
+    {
+      name: '审批流程',
+      value: 'second'
+    },
+    {
+      name: '操作记录',
+      value: 'third'
+    }
+  ])
   const vFormRef = ref(null)
   const btnLoading = ref(false)
   // 加签方式，如果是前加签,或是后加签前一个节点没有审批, 操作按钮不可用
@@ -304,7 +351,7 @@
   // 流程记录
   const records = ref(null)
   // 子组件
-  const flowDesign = ref()
+  const flowDesign = ref(null)
   // 模型id
   const modelId = ref(null)
   // 最新定义ID
@@ -322,7 +369,10 @@
   const datas = ref([])
   // 被退回人列表
   const tasks = ref([])
-  console.log(props.params.formJson, '返回的params数据对接')
+  const wrapStyle = ref({
+    height: 'calc(100% - 270px)',
+    overflow: 'hidden'
+  })
   const depChoose = ref('')
   const emit = defineEmits(['update:show', 'on-confirm', 'on-cancel'])
   const state = reactive({
@@ -684,7 +734,7 @@
       .then(result => {
         console.log('getDesignresult', result)
         if (result) {
-          // flowDesign.value.handleSetData(result)
+          flowDesign.value.handleSetData(result)
         }
       })
       .catch(() => {})
@@ -840,7 +890,21 @@
     if (!Array.isArray(attr) || attr.length === 0) return attr
     return attr.filter(item => item.id !== val)
   }
-  onMounted(() => {})
+
+  const node = ref(null)
+  onMounted(() => {
+    // getDesign()
+    ModelApi.predictionDesign({
+      formData: JSON.parse(
+        '{"applyNo":"20230421233434308","applyName":"walter-apply-001","sealName":[{"seal":"上海测试有限公司合同章","sealId":"1637991906868817921","applySealNum":1,"sealIot":"1","markSeal":false,"sealRequiredTextShow":false,"routineSealRequiredTextShow":false}],"fileCount":1,"fileTypeId":"1648588402209067010","contractAmount":{"amount":"","unit":"1"},"formVersionId":"1649223107237441538","flowVersionId":"1649235933049974785","formMessageId":"1649223107203887107","flowMessageId":"1649229719977127938"}'
+      ),
+      instanceId: '1649236071776579585',
+      definitionId: '1649235931967844354'
+    }).then(res => {
+      // flowDesign.value.handleSetData(res.data)
+      node.value = res.data
+    })
+  })
 
   defineExpose({
     getAllDetailInfo
@@ -874,6 +938,7 @@
     background: #ffffff;
     box-shadow: 0px -9px 22px rgb(0 0 0 / 3%);
     overflow: auto;
+    z-index: 8;
     .footer-approver {
       font: size 14px;
       color: rgba($color: #000000, $alpha: 0.45);

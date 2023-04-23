@@ -98,7 +98,7 @@
       </el-scrollbar>
     </div>
     <div
-      class="content-custom"
+      class="content-no-scroll"
       :style="{ height: height }"
       v-if="!props.noScroll"
     >
@@ -311,6 +311,13 @@
     padding: 12px 0px 6px 24px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     min-height: 300px;
+  }
+
+  .content-no-scroll {
+    padding: 12px 0px 6px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    min-height: 300px;
+    overflow: hidden;
   }
 
   .footer-custom {
