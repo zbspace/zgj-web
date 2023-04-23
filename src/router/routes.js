@@ -32,6 +32,18 @@ export default [
     component: () => import('../views/test')
   },
   {
+    path: '/encrypt',
+    name: 'Encrypt',
+    meta: { title: 'encrypt', authRequired: false },
+    component: () => import('../views/encrypt/encrypt')
+  },
+  {
+    path: '/decryption',
+    name: 'Decryption',
+    meta: { title: 'decryption', authRequired: false },
+    component: () => import('../views/encrypt/decryption')
+  },
+  {
     path: '/:pathMatch(.*)',
     component: () => import('@/views/errorPage/404'),
     hidden: true

@@ -166,6 +166,7 @@
       @include mixin-padding-bottom(16);
       @include mixin-padding-left(20);
       @include mixin-padding-right(20);
+      // margin-right: 20px;
       box-sizing: border-box;
       border-radius: var(--jy-border-radius-4);
       background-color: var(--jy-in-common-use-1);
@@ -257,10 +258,10 @@
       }
       :deep {
         .el-scrollbar {
-          overflow: visible;
+          // overflow: visible;
         }
         .el-scrollbar__bar {
-          right: -1rem;
+          // right: -1rem;
         }
       }
     }

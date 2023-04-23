@@ -524,9 +524,12 @@
         params[item.id] = item.value
       }
     })
+    // TODO: 分页字段
     const requestDatas = {
       current: state.componentsPagination.data.index,
       size: state.componentsPagination.data.pageNumber,
+      pageNo: state.componentsPagination.data.index,
+      pageSize: state.componentsPagination.data.pageNumber,
       sorts: orderBy.value
         ? orderBy.value.prop +
           ',' +
@@ -553,9 +556,13 @@
       ...requestData
     }).then(
       result => {
-        state.componentsTable.data = result.data.records
-        state.componentsPagination.data.amount = result.data.total
-        state.componentsPagination.defaultAttribute.total = result.data.total
+        // TODO: 审批流程待处理
+        state.componentsTable.data =
+          result.data.records || result.data.data.records
+        state.componentsPagination.data.amount =
+          result.data.total || result.data.data.total
+        state.componentsPagination.defaultAttribute.total =
+          result.data.total || result.data.data.total
         loading.value = false
         if (props.computedData.length) {
           props.computedData.forEach(i => {

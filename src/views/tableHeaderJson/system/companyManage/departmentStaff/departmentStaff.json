@@ -48,6 +48,7 @@
     "fixed": "right",
     "min-width": 365,
     "show": true,
+    "align": "center",
     "rankDisplayData": [
       {
         "name": "t-zgj-Edit"

@@ -1,7 +1,7 @@
 <template>
   <div class="k-custom-tree">
     <!-- 列表 -->
-    <el-scrollbar class="k-select-list">
+    <el-scrollbar class="k-select-list" always>
       <div v-show="cacheShowList.length === 0" class="null-img">
         <img src="@/assets/svg/common/data_null.svg" />
       </div>
@@ -429,7 +429,7 @@
     .k-select-list {
       flex: 1;
       height: 100%;
-      padding-right: 15px;
+      padding-right: 24px;
     }
     .k-column {
       display: flex;

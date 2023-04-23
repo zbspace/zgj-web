@@ -260,12 +260,12 @@
 </template>
 <script setup>
   import i18n from '@/utils/i18n'
-  import { reactive, watch, onMounted, ref, getCurrentInstance } from 'vue'
+  import { reactive, watch, onMounted, ref } from 'vue'
   import VerificationBtn from '../components/VerificationBtn.vue'
   import UpdagePasswordDialog from './UpdagePasswordDialog.vue'
   import ImmediateRegister from './Register.vue'
   import { useAccountInfoStore } from '@/store/accountInfo'
-  import { useRoute, useRouter } from 'vue-router'
+  import { useRoute } from 'vue-router'
   import { ElMessage } from 'element-plus'
   import md5 from 'js-md5'
   import { setItem, getItem } from '@/utils/storage.js'
@@ -274,11 +274,9 @@
   import Verify from '../components/verifition/Verify'
   import { useMenusInfoStore } from '@/store/menus'
 
-  const { proxy } = getCurrentInstance()
   const accountInfo = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
   const route = useRoute()
-  const router = useRouter()
   const showDialog = ref(false)
   const title = ref(null)
   const content = ref(null)
@@ -431,10 +429,10 @@
       ? decodeURIComponent(route.query.redirect)
       : '/frontDesk/home'
   }
-  const goHome = () => {
-    const redirect = getRedirect()
-    router.replace(redirect)
-  }
+  // const goHome = () => {
+  //   const redirect = getRedirect()
+  //   router.replace(redirect)
+  // }
 
   const loginFn = attr => {
     let params = {
@@ -530,7 +528,7 @@
       }
       accountInfo.setUserInfo(obj)
       emits('getWater', bool)
-      goHome()
+      // goHome()
     })
   }
 
