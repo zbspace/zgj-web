@@ -5,24 +5,15 @@
 
       <div class="box">
         <el-form :model="form" label-width="120px">
-          <el-form-item label="加密内容">
+          <el-form-item label="解密内容">
             <el-input
               v-model="form.messge"
               type="textarea"
-              placeholder="加密内容"
+              placeholder="解密内容"
             />
           </el-form-item>
 
-          <el-form-item label="加密密码">
-            <el-input
-              v-model="form.pwdStr"
-              placeholder="请输入"
-              min="8"
-              max="100"
-            />
-          </el-form-item>
-
-          <el-form-item label="加密算法">
+          <el-form-item label="解密算法">
             <el-input
               v-model="form.algorithm"
               placeholder="请输入"
@@ -38,6 +29,14 @@
             </el-radio-group>
           </el-form-item>
 
+          <el-form-item label="解密密码">
+            <el-input
+              v-model="form.pwdStr"
+              placeholder="请输入"
+              min="8"
+              max="100"
+            />
+          </el-form-item>
           <!-- <el-form-item label="加密结果"> </el-form-item> -->
         </el-form>
 
@@ -49,7 +48,7 @@
         /> -->
 
         <div class="btn">
-          <el-button type="primary" @click="onSubmit">加密</el-button>
+          <el-button type="primary" @click="onSubmit">解密</el-button>
         </div>
       </div>
     </div>
