@@ -74,6 +74,7 @@
   import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
   import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
+  import FormInfoApi from '@/api/system/flowManagement'
   import { useVformInfoStore } from '@/store/vform'
   import JyTable from '@/views/components/JyTable.vue'
 
@@ -96,8 +97,8 @@
       4: '或签中'
     },
     params: {
+      formJson: null,
       formData: {},
-      formJson: {},
       taskId: '',
       // 最新实例ID
       instanceId: '',
@@ -542,7 +543,7 @@
       state.params.approvalMode = column.approvalMode
       state.params.instanceStatus = column.instanceStatus
       state.params.approvalMode = column.approvalMode
-      getDetail(column.instanceId, 't-zgj-Approval')
+      getDetail(column, 't-zgj-Approval')
     }
     if (cell.name === 't-zgj-F_WORKFLOW_RE_APPROVAL') {
       state.params.instanceId = column.instanceId
@@ -550,15 +551,15 @@
       state.params.approvalMode = column.approvalMode
       state.params.instanceStatus = column.instanceStatus
       state.params.approvalMode = column.approvalMode
-      getDetail(column.instanceId, 't-zgj-F_WORKFLOW_RE_APPROVAL')
+      getDetail(column, 't-zgj-F_WORKFLOW_RE_APPROVAL')
     }
   }
   /**
    * 获取当前流程模型详情
    */
-  const getDetail = (instanceId, title) => {
+  const getDetail = (column, title) => {
     const params = {
-      instanceId
+      instanceId: column.instanceId
     }
     InstanceApi.detail(params)
       .then(data => {
@@ -568,16 +569,27 @@
         state.params.nodeId = data.nodeId
         state.params.definitionId = data.definitionId
         formVersionId.value = state.params.formData.formVersionId
-        // drawer.value.getAllDetailInfo()
 
         if (state.params.instanceStatus === 1) {
           getButtons()
         }
 
-        dialogProcess.value.show = true
-        dialogProcess.value.title = title
+        getFormInfo(column, title)
       })
       .catch(() => {})
+  }
+
+  // 获取动态表单模版
+  const getFormInfo = (column, title) => {
+    const params = {
+      modelId: column.modelId,
+      definitionId: column.definitionId
+    }
+    FormInfoApi.queryByGunsId(params).then(res => {
+      state.params.formJson = JSON.parse(res.data)
+      dialogProcess.value.show = true
+      dialogProcess.value.title = title
+    })
   }
   /**
    * 按钮

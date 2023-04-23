@@ -155,4 +155,13 @@ api.getFormJsonById = params => {
     params
   })
 }
+
+// 根据第三方流程id获取表单Json信息
+api.queryByGunsId = params => {
+  return request({
+    method: 'GET',
+    url: '/form/queryByGunsId',
+    params
+  })
+}
 export default api
