@@ -191,8 +191,7 @@
   import { customComponents } from '@/lib/vform/extension/samples/extension-schema.js'
 
   import FlowDesign from '@/components/FlowDesign/index.vue'
-  import { useFlowStore } from '@/components/FlowDesign/store/flow'
-  const flowStore = useFlowStore()
+
   const router = useRouter()
   const route = useRoute()
   const flowDesign = ref(null)
