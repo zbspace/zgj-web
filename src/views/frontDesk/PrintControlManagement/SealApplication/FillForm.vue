@@ -59,17 +59,19 @@
                   </el-select>
                 </template>
               </JyLabel>
-              <div v-if="initObj" style="min-height: 500px">
-                <FlowDesign
-                  ref="flowDesign"
-                  v-bind="{
-                    readable: true,
-                    mapable: false,
-                    scroll: false,
-                    top: '100'
-                  }"
-                />
-              </div>
+              <FlowDesign
+                ref="flowDesign"
+                v-bind="{
+                  readable: true,
+                  mapable: false,
+                  scroll: false,
+                  scrollY: false,
+                  top: '50'
+                }"
+                :node="node"
+                v-if="node"
+                :wrapStyle="wrapStyle"
+              />
 
               <div class="PrintingProcess">
                 <JyLabel label="用印流程" />
@@ -292,7 +294,11 @@
   const flowMessageId = ref(null)
   const tipVisible = ref(false)
   const formDataTem = ref(null)
-
+  const wrapStyle = ref({
+    'min-height': '500px',
+    overflow: 'auto'
+  })
+  const node = ref(null)
   const confirmTip = () => {
     sealApply
       .templateAdd({
@@ -366,15 +372,13 @@
 
   function flowDetail(modelId, definitionId) {
     initObj.value = { modelId, definitionId }
-    flowStore.setModelId(modelId, definitionId)
     sealApply
       .flowDetail({
         ...initObj.value,
         edit: true
       })
       .then(res => {
-        flowStore.initFreeFlow(modelId, definitionId)
-        flowDesign.value.handleSetData(res.data.data)
+        node.value = res.data.data
       })
   }
 

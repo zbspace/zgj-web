@@ -85,7 +85,11 @@
         <slot name="header" v-else></slot>
       </div>
     </template>
-    <div class="content-custom" :style="{ height: height }">
+    <div
+      class="content-custom"
+      :style="{ height: height }"
+      v-if="props.noScroll"
+    >
       <!-- 默认插槽 -->
       <el-scrollbar>
         <div :style="props.customStyle">
@@ -93,6 +97,14 @@
         </div>
       </el-scrollbar>
     </div>
+    <div
+      class="content-no-scroll"
+      :style="{ height: height }"
+      v-if="!props.noScroll"
+    >
+      <slot name="noScroll"></slot>
+    </div>
+
     <template #footer>
       <slot name="footer">
         <div class="footer-custom" v-if="footer">
@@ -211,6 +223,10 @@
           height: 'calc(100% - 40px)'
         }
       }
+    },
+    noScroll: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -295,6 +311,13 @@
     padding: 12px 0px 6px 24px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     min-height: 300px;
+  }
+
+  .content-no-scroll {
+    padding: 12px 0px 6px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    min-height: 300px;
+    overflow: hidden;
   }
 
   .footer-custom {

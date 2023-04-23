@@ -327,6 +327,7 @@
       :tabsShow="state.tabsShow"
       @update:searchSelected="submitSelectDepart"
       :searchSelected="state.tabSelects.searchSelected"
+      :haveIncluded="false"
     >
     </kDepartOrPersonVue>
     <!-- 单据详情 -->

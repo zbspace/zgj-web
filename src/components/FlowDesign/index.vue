@@ -1,5 +1,8 @@
 <template>
-  <div class="flow-designer" :style="wrapStyle">
+  <div
+    class="flow-designer"
+    :style="props.wrapStyle ? props.wrapStyle : wrapStyle"
+  >
     <div id="flow-designer-wrap" class="flow-designer-wrap">
       <div
         id="flow-designer-container"
@@ -7,7 +10,7 @@
         v-drag="props.drag"
         :style="zoomStyle"
       >
-        <el-scrollbar class="flow-designer-box">
+        <el-scrollbar class="flow-designer-box" always v-if="props.scrollY">
           <FlowStartNode :node="nodeData" />
           <FlowNode
             :node="nodeData"
@@ -16,6 +19,16 @@
           />
           <FlowEndNode :node="nodeData" :readable="props.readable" />
         </el-scrollbar>
+
+        <div v-if="!props.scrollY" class="flow-designer-box">
+          <FlowStartNode :node="nodeData" />
+          <FlowNode
+            :node="nodeData"
+            :readable="props.readable"
+            @nodeUpdate="nodeUpdate"
+          />
+          <FlowEndNode :node="nodeData" :readable="props.readable" />
+        </div>
       </div>
       <FlowZoom v-if="!props.readable" v-model="zoomValue" :top="props.top" />
       <!-- <FlowStatus v-if="props.readable" :navable="navable" :top="props.top" /> -->
@@ -51,17 +64,6 @@
   const { isMobile } = useCommon()
   // flowStore
   const flowStore = useFlowStore()
-
-  // 样式
-  const wrapStyle = reactive({
-    // 存在自定义nav时候需要减去nav高度
-    height: props.navable
-      ? 'calc(100vh - ' + Number(props.top) + 'px)'
-      : '80vh',
-    overflow: 'hidden'
-    // 'overflow-y': props.scrollY ? 'auto' : 'hidden',
-    // 'overflow-x': props.scroll ? 'auto' : 'hidden'
-  })
 
   // zoom初始值
   const zoomValue = ref(100)
@@ -102,7 +104,24 @@
     drag: {
       type: Boolean,
       default: false
+    },
+    wrapStyle: {
+      type: Object,
+      default: () => {
+        return null
+      }
     }
+  })
+
+  // 样式
+  const wrapStyle = reactive({
+    // 存在自定义nav时候需要减去nav高度
+    height: props.navable
+      ? 'calc(100vh - ' + Number(props.top) + 'px)'
+      : '80vh',
+    overflow: 'hidden'
+    // 'overflow-y': props.scrollY ? 'auto' : 'hidden',
+    // 'overflow-x': props.scroll ? 'auto' : 'hidden'
   })
 
   // 模型id

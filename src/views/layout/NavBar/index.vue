@@ -12,7 +12,18 @@
         <!-- logo -->
         <router-link to="/" class="nav-logo">
           <span class="logo-lg">
-            <img src="@/assets/icon/logo.png" alt="" height="37" />
+            <img
+              src="@/assets/icon/logo.png"
+              alt=""
+              height="37"
+              v-show="!homeLogoUrl.homeUrl"
+            />
+            <img
+              :src="homeLogoUrl.homeUrl"
+              alt=""
+              height="37"
+              v-show="homeLogoUrl.homeUrl"
+            />
           </span>
         </router-link>
 
@@ -369,6 +380,9 @@
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'
   import { ElMessage } from 'element-plus'
+  import { getItem, setItem, removeItem } from '@/utils/storage'
+  import { useHomeLogoUrl } from '@/store/logo'
+  const homeLogoUrl = useHomeLogoUrl()
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
   const languageStore = useLanguageStore()
@@ -379,7 +393,7 @@
       CurrentSystemType: 'business' // business / system
     },
     language: i18n.global.locale,
-    departLists: JSON.parse(localStorage.getItem('departLists')),
+    departLists: getItem('departLists'),
     tenantId: null,
     currentDepart: {},
     chooseTenant: {},
@@ -393,14 +407,14 @@
       }
     }
   })
-
+  console.log(homeLogoUrl.url, '=====')
   const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
   if (CurrentSystemType) {
     state.application.CurrentSystemType = CurrentSystemType
   }
 
   const getCurrentDepart = () => {
-    const departId = localStorage.getItem('tenantId')
+    const departId = String(getItem('tenantId'))
     state.tenantId = departId
     if (departId) {
       const index = state.departLists.findIndex(i => i.tenantId === departId)
@@ -431,7 +445,7 @@
   const confirmClick = () => {
     loginApi.chooseOrgan(state.chooseTenant.tenantId).then(
       async () => {
-        localStorage.setItem('tenantId', state.chooseTenant.tenantId)
+        setItem('tenantId', state.chooseTenant.tenantId)
         // 存储 当前用户对应部门
         const index = state.departLists.findIndex(
           i => i.tenantId === state.chooseTenant.tenantId
@@ -521,9 +535,10 @@
         accountInfoStore.setToken(null)
         accountInfoStore.setUserInfo(null)
         accountInfoStore.setUserDepartName(null)
-        localStorage.removeItem('tenantId')
-        localStorage.removeItem('menusInfo')
-        localStorage.removeItem('departLists')
+        removeItem('tenantId')
+        removeItem('menusInfo')
+        removeItem('departLists')
+        removeItem('homeLogoPath')
         // 跳转到登录页
         ElMessage.success('退出登录！')
         router.replace({

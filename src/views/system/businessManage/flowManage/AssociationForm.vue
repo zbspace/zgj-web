@@ -252,7 +252,8 @@
     ProcessType: false,
     sealUseTypeId: '1',
     applyTypeId: '',
-    formMessageId: ''
+    formMessageId: '',
+    formDefinitionId: ''
   })
 
   const props = defineProps({
@@ -355,7 +356,8 @@
     editFormMessageId.value = attr.formMessageId
     resetFlag.value = false
     FlowApi.getFormJsonById({ formMessageId: attr.formMessageId }).then(res => {
-      form.formMessageId = res.data.formDefinitionId
+      form.formMessageId = res.data.formMessageId
+      form.formDefinitionId = res.data.formDefinitionId
       state.currentState = '2'
       formJson.value = (res.success && JSON.parse(res.data.formInfo)) || ''
       vformObj.value = attr
@@ -409,14 +411,14 @@
 
   // 获取信息值
   const getAssociationValue = () => {
-    if (!form.formMessageId) {
+    if (!form.formDefinitionId) {
       return [
         {
-          formMessageId: [
+          formDefinitionId: [
             {
               message: '请选择关联表单',
               fieldValue: '',
-              field: 'formMessageId'
+              field: 'formDefinitionId'
             }
           ]
         }
@@ -486,7 +488,7 @@
 
   const saveAddModel = flowName => {
     return new Promise((resolve, reject) => {
-      if (!form.formMessageId) {
+      if (!form.formDefinitionId) {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject('请选择表单')
         return
@@ -495,7 +497,7 @@
       const random = Math.random()
       ModelApi.add({
         modelKey: random,
-        formIdList: [form.formMessageId],
+        formIdList: [form.formDefinitionId],
         modelName: flowName
       }).then(() => {
         ModelApi.getModelKey({
