@@ -44,6 +44,7 @@
           :formJson="props.params.formJson"
           :formData="props.params.formData"
           ref="formInformation"
+          @onLoaded="onload"
         >
         </JyVform>
       </el-scrollbar>
@@ -433,6 +434,9 @@
     }
   })
 
+  const onload = () => {
+    formInformation.value.setFormData(props.params.formData)
+  }
   // // 删除操作人
   // const delTags = (item, type) => {
   //   if (type === 'approver') {
@@ -883,27 +887,14 @@
   const node = ref(null)
   onBeforeMount(() => {
     ModelApi.predictionDesign({
-      formData: JSON.parse(
-        '{"applyNo":"20230421233434308","applyName":"walter-apply-001","sealName":[{"seal":"上海测试有限公司合同章","sealId":"1637991906868817921","applySealNum":1,"sealIot":"1","markSeal":false,"sealRequiredTextShow":false,"routineSealRequiredTextShow":false}],"fileCount":1,"fileTypeId":"1648588402209067010","contractAmount":{"amount":"","unit":"1"},"formVersionId":"1649223107237441538","flowVersionId":"1649235933049974785","formMessageId":"1649223107203887107","flowMessageId":"1649229719977127938"}'
-      ),
-      instanceId: '1649236071776579585',
-      definitionId: '1649235931967844354'
+      formData: props.params.formData,
+      instanceId: props.params.instanceId,
+      definitionId: props.params.definitionId
     }).then(res => {
       node.value = res.data
     })
-    // getFormInfo()
     getRuNode()
   })
-  const getFormInfo = () => {
-    const params = {
-      modelId: props.params.modelId,
-      definitionId: props.params.definitionId
-    }
-    FormInfoApi.queryByGunsId(params).then(res => {
-      formJson.value = res.data
-      formInformation.value.setFormData(props.params.formData)
-    })
-  }
 </script>
 
 <style lang="scss" scoped>
