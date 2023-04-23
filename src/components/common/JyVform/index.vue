@@ -212,8 +212,8 @@
 
   // ---------------------------------VFormRender+VFormDesigner api 通过组件实例调用-----------
   // 获取设计器组件实例
-  const getWidgetRef = () => {
-    return vFormRef.value.getWidgetRef()
+  const getWidgetRef = widgetName => {
+    return vFormRef.value.getWidgetRef(widgetName)
   }
 
   // 动态加载表单JSON对象

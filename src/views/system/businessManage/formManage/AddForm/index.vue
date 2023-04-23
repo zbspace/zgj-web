@@ -249,10 +249,12 @@
     } else {
       await vformRef.value.setFormColumnBasic(formData.value.applyTypeId)
     }
-    nextTick(() => {
-      vformRef.value.setFormTemplate(formData.value.applyTypeId)
+    nextTick(async () => {
+      await vformRef.value.setFormTemplate(formData.value.applyTypeId)
+      nextTick(() => {
+        getFormColumnMust()
+      })
     })
-    getFormColumnMust()
   }
 
   // 处理选项
@@ -330,6 +332,8 @@
       })
       mustProps.value = res.data || []
       prefabricationFieldList.value = res.data || []
+      // 设置空间options中的nameDisabled属性为true
+      // const obj = vformRef.value.getFieldWidgets()
     } catch (error) {
       console.log('--->', error)
     }

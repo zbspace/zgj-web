@@ -1,6 +1,12 @@
 <template>
-  <el-form-item :label="i18nt('designer.setting.displayType')" v-if="selectedWidget.type === 'input'">
-    <el-select v-model="optionModel.type">
+  <el-form-item
+    :label="i18nt('designer.setting.displayType')"
+    v-if="selectedWidget.type === 'input'"
+  >
+    <el-select
+      v-model="optionModel.type"
+      :disabled="!!optionModel.nameDisabled"
+    >
       <el-option label="text" value="text"></el-option>
       <!-- 当input的type设置为number时，如果输入非数字字符，则v-model拿到的值为空字符串，无法实现输入校验！故屏蔽之！！ -->
       <!--
@@ -12,22 +18,18 @@
 </template>
 
 <script>
-  import i18n from "@/lib/vform/utils/i18n"
+  import i18n from '@/lib/vform/utils/i18n'
 
   export default {
-    name: "type-editor",
+    name: 'TypeEditor',
     mixins: [i18n],
     props: {
       designer: Object,
       selectedWidget: Object,
-      optionModel: Object,
+      optionModel: Object
     },
-    computed: {
-
-    }
+    computed: {}
   }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
