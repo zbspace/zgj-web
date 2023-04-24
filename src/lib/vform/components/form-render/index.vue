@@ -782,50 +782,6 @@
                   widgetInstance.setRequiredTextShow(false)
                 }
               }
-              if (widget.type === 'sealName') {
-                // 印章名称
-                widgetData.forEach((data, index) => {
-                  const str = '印章名称' + (index + 1) + '信息未完善'
-                  let count = 0
-                  Object.keys(data).forEach(propName => {
-                    if (propName === 'sealId') {
-                      if (!data[propName]) {
-                        count++
-                        widgetInstance.setRequiredTextShow(
-                          'sealRequiredTextShow',
-                          index,
-                          true
-                        )
-                      } else {
-                        widgetInstance.setRequiredTextShow(
-                          'sealRequiredTextShow',
-                          index,
-                          false
-                        )
-                      }
-                    }
-                    if (propName === 'applySealNum') {
-                      if (!data[propName]) {
-                        count++
-                        widgetInstance.setRequiredTextShow(
-                          'routineSealRequiredTextShow',
-                          index,
-                          true
-                        )
-                      } else {
-                        widgetInstance.setRequiredTextShow(
-                          'routineSealRequiredTextShow',
-                          index,
-                          false
-                        )
-                      }
-                    }
-                  })
-                  if (count > 0) {
-                    _self.requiredMsgList.push(str)
-                  }
-                })
-              }
 
               if (widget.type === 'applicantInfo') {
                 // 申请人信息
@@ -928,6 +884,50 @@
               } else {
                 widgetInstance.setRequiredTextShow(false)
               }
+            }
+            if (widget.type === 'sealName') {
+              // 印章名称
+              widgetData.forEach((data, index) => {
+                const str = '印章名称' + (index + 1) + '信息未完善'
+                let count = 0
+                Object.keys(data).forEach(propName => {
+                  if (propName === 'sealId') {
+                    if (!data[propName]) {
+                      count++
+                      widgetInstance.setRequiredTextShow(
+                        'sealRequiredTextShow',
+                        index,
+                        true
+                      )
+                    } else {
+                      widgetInstance.setRequiredTextShow(
+                        'sealRequiredTextShow',
+                        index,
+                        false
+                      )
+                    }
+                  }
+                  if (propName === 'applySealNum') {
+                    if (!data[propName]) {
+                      count++
+                      widgetInstance.setRequiredTextShow(
+                        'routineSealRequiredTextShow',
+                        index,
+                        true
+                      )
+                    } else {
+                      widgetInstance.setRequiredTextShow(
+                        'routineSealRequiredTextShow',
+                        index,
+                        false
+                      )
+                    }
+                  }
+                })
+                if (count > 0) {
+                  _self.requiredMsgList.push(str)
+                }
+              })
             }
             data[dataId] = widgetData
             additionalList.push(data)

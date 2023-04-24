@@ -781,8 +781,8 @@ export const basicFields = [
       ],
       required: false,
       // requiredHint: '',
-      validation: '',
-      validationHint: '',
+      // validation: '',
+      // validationHint: '',
       // -------------------
       customClass: '', // 自定义css类名
       labelIconClass: null,
@@ -826,8 +826,8 @@ export const basicFields = [
       ],
       required: false,
       // requiredHint: '',
-      validation: '',
-      validationHint: '',
+      // validation: '',
+      // validationHint: '',
       // -------------------
       customClass: '', // 自定义css类名
       labelIconClass: null,
@@ -876,8 +876,8 @@ export const basicFields = [
       ],
       required: false,
       // requiredHint: '',
-      validation: '',
-      validationHint: '',
+      // validation: '',
+      // validationHint: '',
       fieldLinkage: [
         { value: '1', linkages: [] },
         { value: '2', linkages: [] }
@@ -921,8 +921,8 @@ export const basicFields = [
       format: 'HH:mm:ss', // 时间格式
       required: false,
       // requiredHint: '',
-      validation: '',
-      validationHint: '',
+      // validation: '',
+      // validationHint: '',
       // -------------------
       customClass: '', // 自定义css类名
       labelIconClass: null,
@@ -962,8 +962,8 @@ export const basicFields = [
       format: 'HH:mm:ss', // 时间格式
       required: false,
       // requiredHint: '',
-      validation: '',
-      validationHint: '',
+      // validation: '',
+      // validationHint: '',
       // -------------------
       customClass: '', // 自定义css类名
       labelIconClass: null,
@@ -1004,8 +1004,8 @@ export const basicFields = [
       valueFormat: 'YYYY-MM-DD', // 日期对象格式
       required: false,
       // requiredHint: '',
-      validation: '',
-      validationHint: '',
+      // validation: '',
+      // validationHint: '',
       // -------------------
       customClass: '', // 自定义css类名
       labelIconClass: null,

@@ -34,7 +34,8 @@ export const NeedHidOptions = [
   'uploadURL',
   'automaticDropdown',
   'allowCreate',
-  'remote'
+  'remote',
+  'uniqueName' // 禁用唯一名称
 ]
 
 // DEV需要隐藏的设置属性

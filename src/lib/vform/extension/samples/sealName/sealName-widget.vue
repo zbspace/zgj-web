@@ -16,7 +16,7 @@
           <el-form-item
             :label="'印章名称' + (index + 1)"
             :label-width="field.options.labelWidth"
-            :class="[labelAlign, field.options.required ? 'required' : '']"
+            :class="[labelAlign, 'required']"
             :size="field.options.size"
           >
             <div style="width: 100%; display: flex">
@@ -74,7 +74,7 @@
           <el-form-item
             label="印章次数"
             :label-width="field.options.labelWidth"
-            :class="[labelAlign, field.options.required ? 'required' : '']"
+            :class="[labelAlign, 'required']"
             :size="field.options.size"
           >
             <el-input-number

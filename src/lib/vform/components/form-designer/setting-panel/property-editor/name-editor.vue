@@ -17,7 +17,7 @@
         v-model="optionModel.name"
         :readonly="widgetNameReadonly"
         @change="updateWidgetNameAndRef"
-        :disabled="!!optionModel.nameDisabled"
+        :disabled="options.includes('uniqueName')"
       ></el-input>
     </template>
     <template v-else>
@@ -44,6 +44,10 @@
   import SvgIcon from '@/lib/vform/components/svg-icon'
   import i18n from '@/lib/vform/utils/i18n'
   import { isEmptyStr } from '@/lib/vform/utils/util'
+  import {
+    NeedHidOptions,
+    NeedHidOptionsDEV
+  } from '@/lib/vform/utils/config.js'
 
   export default {
     name: 'NameEditor',
@@ -59,6 +63,7 @@
     inject: ['serverFieldList', 'getDesignerConfig'],
     data() {
       return {
+        options: [],
         nameRequiredRule: [{ required: true, message: 'name required' }]
       }
     },
@@ -70,6 +75,9 @@
       widgetNameReadonly() {
         return !!this.getDesignerConfig().widgetNameReadonly
       }
+    },
+    created() {
+      this.options = import.meta.env.DEV ? NeedHidOptionsDEV : NeedHidOptions
     },
     methods: {
       updateWidgetNameAndRef(newName) {
