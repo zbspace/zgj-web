@@ -1065,8 +1065,13 @@
         return foundSFRef.setSubFormValues(subFormValues)
       },
 
-      disableForm() {
-        const wNameList = Object.keys(this.widgetRefList)
+      disableForm(list = null) {
+        let wNameList = []
+        if (list) {
+          wNameList = list
+        } else {
+          wNameList = Object.keys(this.widgetRefList)
+        }
         wNameList.forEach(wName => {
           const foundW = this.getWidgetRef(wName)
           if (foundW) {

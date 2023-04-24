@@ -206,8 +206,8 @@
     vFormRef.value.showDialog()
   }
   // 禁用编辑
-  const disableForm = () => {
-    vFormRef.value.disableForm()
+  const disableForm = (disableForm = null) => {
+    vFormRef.value.disableForm(disableForm)
   }
 
   // ---------------------------------VFormRender+VFormDesigner api 通过组件实例调用-----------
