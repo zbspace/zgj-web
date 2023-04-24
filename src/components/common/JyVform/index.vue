@@ -206,8 +206,16 @@
     vFormRef.value.showDialog()
   }
   // 禁用编辑
-  const disableForm = (disableForm = null) => {
-    vFormRef.value.disableForm(disableForm)
+  const disableForm = () => {
+    vFormRef.value.disableForm()
+  }
+  // 禁用小部件
+  const disableWidgets = (widgetNames = null) => {
+    vFormRef.value.disableWidgets(widgetNames)
+  }
+  // 隐藏小部件
+  const hideWidgets = (widgetNames = null) => {
+    vFormRef.value.hideWidgets(widgetNames)
   }
 
   // ---------------------------------VFormRender+VFormDesigner api 通过组件实例调用-----------
@@ -325,7 +333,9 @@
     initDesigner,
     disableForm,
     getFieldValue,
-    reloadOptionData
+    reloadOptionData,
+    hideWidgets,
+    disableWidgets
   })
 </script>
 
