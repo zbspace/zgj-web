@@ -310,14 +310,13 @@
   import useCommon from '@/components/FlowDesign/hooks/useCommon'
   import JyTabs from '@/components/common/JyTabs.vue'
   import FlowDesign from '@/components/FlowDesign/index.vue'
-  import { useFlowStore } from '@/components/FlowDesign/store/flow'
+  import { customComponents } from '@/lib/vform/extension/samples/extension-schema.js'
   import { ModelApi } from '@/api/flow/ModelApi'
   import { TaskApi } from '@/api/flow/TaskApi'
   import { ApproverApi } from '@/api/flow/ApproverApi'
   import { NodeAttrApi } from '@/api/flow/NodeAttrApi'
   import { RuTaskSignApi } from '@/api/flow/RuTaskSignApi'
-  import FormInfoApi from '@/api/system/flowManagement'
-  const flowStore = useFlowStore()
+  import sealApply from '@/api/frontDesk/printControl/sealApply'
   const { toUgroup } = useCommon()
   // 数据
   const { backApprovalTypeDatas } = loadApproverData()
@@ -435,9 +434,9 @@
   })
 
   const onload = () => {
-    formInformation.value.setFormData(props.params.formData)
     formInformation.value.disableWidgets(props.params.disableWidgets)
     formInformation.value.hideWidgets(props.params.hideWidgets)
+    formInformation.value.setFormData(props.params.formData)
   }
   // // 删除操作人
   // const delTags = (item, type) => {
@@ -460,26 +459,104 @@
   // }
   // 提交审批
   const sumitForm = () => {
-    console.log('提交')
     vFormRef.value.validate(valid => {
       if (valid) {
         btnLoading.value = true
-        console.log(state.form.suggest)
-        // ElMessage.success('审批成功')
-        // btnLoading.value = false
-        if (state.form.suggest === '1') {
-          onAgree()
-        } else if (state.form.suggest === '2') {
-          onReject()
-        } else if (state.form.suggest === '3') {
-          onTurn()
-        } else if (state.form.suggest === '4') {
-          onAssignee()
-        } else if (state.form.suggest === '5') {
-          consultSubmit()
-        } else if (state.form.suggest === '6') {
-          // onFinish()
-        }
+
+        const fixedParamsArr = customComponents
+        let fixedParams = {}
+        let customApplyField = {}
+        const cacheFormData = props.params.formData
+        const formInfoData = ref(null)
+        formInformation.value.getFormData().then(async formData => {
+          formInfoData.value = formData
+
+          // 处理表单key
+          for (const item in formInfoData.value) {
+            const index = fixedParamsArr.indexOf(item)
+            if (index > -1) {
+              fixedParams = {
+                ...fixedParams,
+                ...{
+                  [item]: cacheFormData[item]
+                }
+              }
+            } else {
+              customApplyField = {
+                ...customApplyField,
+                ...{
+                  [item]: cacheFormData[item]
+                }
+              }
+            }
+          }
+
+          // 获取 用印详情 id信息
+          const ids = await sealApply.formQuery({
+            formMessageId: cacheFormData.formMessageId
+          })
+
+          const instanceIdRes = await sealApply.queryIdByGunsId({
+            gunsSysId: props.params.instanceId
+          })
+
+          if (JSON.stringify(customApplyField) !== '{}') {
+            const sealFileRes = await sealApply.applyPdfFile({
+              sealUseApplyId: instanceIdRes.data
+            })
+            console.log(sealFileRes, 'sealFileRes返回的pdf')
+            customApplyField.sealFile = sealFileRes.data
+          }
+
+          console.log(
+            {
+              formMessageId: cacheFormData.formMessageId,
+              formVersionId: cacheFormData.formVersionId,
+              flowVersionId: cacheFormData.flowVersionId,
+              flowMessageId: cacheFormData.flowMessageId,
+              applyTypeId: ids.data.applyTypeId,
+              sealUseTypeId: ids.data.sealUseTypeId,
+              gunsSysId: props.params.instanceId,
+              sealUseApplyId: instanceIdRes.data,
+              customApplyField:
+                JSON.stringify(customApplyField) === '{}'
+                  ? null
+                  : customApplyField,
+              ...fixedParams
+            },
+            '修改前的参数'
+          )
+          // 编辑动态表单
+          await sealApply.editForm({
+            formMessageId: cacheFormData.formMessageId,
+            formVersionId: cacheFormData.formVersionId,
+            flowVersionId: cacheFormData.flowVersionId,
+            flowMessageId: cacheFormData.flowMessageId,
+            applyTypeId: ids.data.applyTypeId,
+            sealUseTypeId: ids.data.sealUseTypeId,
+            gunsSysId: props.params.instanceId,
+            sealUseApplyId: instanceIdRes.data,
+            customApplyField:
+              JSON.stringify(customApplyField) === '{}'
+                ? null
+                : customApplyField,
+            ...fixedParams
+          })
+
+          if (state.form.suggest === '1') {
+            onAgree()
+          } else if (state.form.suggest === '2') {
+            onReject()
+          } else if (state.form.suggest === '3') {
+            onTurn()
+          } else if (state.form.suggest === '4') {
+            onAssignee()
+          } else if (state.form.suggest === '5') {
+            consultSubmit()
+          } else if (state.form.suggest === '6') {
+            // onFinish()
+          }
+        })
       } else {
         // ElMessage.error('校验失败')
       }

@@ -126,7 +126,27 @@ api.clearValid = data => {
 api.editForm = data => {
   return request({
     method: 'POST',
-    url: `/sealApply/edit`
+    url: `/sealApply/edit`,
+    data
   })
 }
+
+// 第三方流程实例ID查询用印申请ID
+api.queryIdByGunsId = params => {
+  return request({
+    method: 'GET',
+    url: '/sealApply/queryIdByGunsId',
+    params
+  })
+}
+
+// 查询用印申请文件（带url）
+api.applyPdfFile = params => {
+  return request({
+    method: 'GET',
+    url: '/sealApply/file/apply',
+    params
+  })
+}
+
 export default api
