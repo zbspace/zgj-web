@@ -407,7 +407,6 @@
       }
     }
   })
-  console.log(homeLogoUrl.url, '=====')
   const CurrentSystemType = sessionStorage.getItem('CurrentSystemType')
   if (CurrentSystemType) {
     state.application.CurrentSystemType = CurrentSystemType

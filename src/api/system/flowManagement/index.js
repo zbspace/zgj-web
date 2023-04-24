@@ -164,4 +164,13 @@ api.queryByGunsId = params => {
     params
   })
 }
+
+// 获取 流程所选用户集合
+api.getUserSelectedListByGunsSysIds = data => {
+  return request({
+    method: 'POST',
+    url: '/user/getUserSelectedListByGunsSysIds',
+    data
+  })
+}
 export default api

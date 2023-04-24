@@ -19,5 +19,13 @@ export const approvalFlow = {
       url: '/flow/task/pageHisApproval',
       params
     })
+  },
+
+  getPrivileges: params => {
+    return request({
+      method: 'GET',
+      url: '/model/design/node/privileges',
+      params
+    })
   }
 }

@@ -7,8 +7,8 @@
 <template>
   <div class="approvalFlow-approvalFlow">
     <JyTable
-      :url="`/queryTask/${currentActiveName}`"
-      ref="jyTable"
+      :url="`/queryTask/${state.componentsTabs.activeName}`"
+      ref="table"
       hasTabs
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
@@ -32,7 +32,7 @@
       <template #tabs>
         <div>
           <componentsTabs
-            :activeName="currentActiveName"
+            :activeName="state.componentsTabs.activeName"
             :data="state.componentsTabs.data"
             @tab-change="tabChange"
           >
@@ -70,14 +70,11 @@
   import ApprovalDetail from '@/views/frontDesk/approvalFlow/modules/approvalDetail.vue'
   import toDoHeaderJson from '@/views/tableHeaderJson/frontDesk/approvalFlow/approvalFlowTodo.json'
   import DoneHeaderJson from '@/views/tableHeaderJson/frontDesk/approvalFlow/approvalFlowDone.json'
-  import dayjs from 'dayjs'
   import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
-  import { QueryTaskApi } from '@/api/flow/QueryTaskApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import FormInfoApi from '@/api/system/flowManagement'
   import { useVformInfoStore } from '@/store/vform'
   import JyTable from '@/views/components/JyTable.vue'
-
   const vformInfoStore = useVformInfoStore()
   const dialogProcess = ref({
     show: false,
@@ -87,7 +84,6 @@
   const drawer = ref(null)
   // 动态表单版本Id
   const formVersionId = ref('')
-  const currentActiveName = ref('todo')
   const state = reactive({
     searchSelected: [],
     approvalModes: {
@@ -293,12 +289,13 @@
       data: []
     }
   })
+  const table = ref(null)
   const closeDetail = data => {
     dialogProcess.value.show = false
   }
   const handelSubmit = data => {
     dialogProcess.value.show = false
-    getFormPage()
+    table.value.reloadData()
   }
   const todoSearchForm = [
     {
@@ -510,7 +507,7 @@
     }
   ]
   state.componentsSearchForm.data = todoSearchForm
-  // 切换分页
+  // 切换 tab
   function tabChange(activeName) {
     state.componentsTabs.activeName = activeName
     if (activeName === 'todo') {
@@ -527,7 +524,7 @@
     } else if (activeName === 'done') {
       state.componentsSearchForm.data = doneSearchForm
     }
-    getFormPage()
+    table.value.reloadData()
   }
   // 点击关闭详情
   function clickClose() {
@@ -573,8 +570,8 @@
         if (state.params.instanceStatus === 1) {
           getButtons()
         }
-
         getFormInfo(column, title)
+        getPrivileges(data.privileges)
       })
       .catch(() => {})
   }
@@ -607,95 +604,30 @@
     }
   }
 
+  const getPrivileges = attr => {
+    const disableWidgets = []
+    attr.forEach(item => {
+      if (item.readable) {
+        disableWidgets.push(item.fieldKey)
+      }
+    })
+    const hideWidgets = []
+    attr.forEach(item => {
+      if (item.displayable) {
+        hideWidgets.push(item.fieldKey)
+      }
+    })
+    state.params.disableWidgets = disableWidgets
+    state.params.hideWidgets = hideWidgets
+  }
+
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'instanceTitle') {
       state.componentsDocumentsDetails.show = true
     }
   }
 
-  // 获取表格列表
-  const getFormPage = () => {
-    const searchData = state.componentsSearchForm.data
-    const queryParams = {}
-    searchData.forEach(item => {
-      if (item.type === 'picker') {
-        if (item.pickerType === 'date') {
-          if (item.value) {
-            queryParams.applyStartTime = dayjs(item.value[0]).format(
-              'YYYY-MM-DD HH:mm:ss'
-            )
-            queryParams.applyEndTime = dayjs(item.value[1]).format(
-              'YYYY-MM-DD HH:mm:ss'
-            )
-          }
-        }
-      }
-      queryParams[item.id] = item.value
-    })
-    queryParams.pageNo = state.componentsPagination.data.index || 1
-    queryParams.pageSize = state.componentsPagination.data.pageNumber || 10
-    state.componentsTable.loading = true
-    if (state.componentsTabs.activeName === '1') {
-      queryTodoTask(queryParams)
-    } else {
-      queryDoneTask(queryParams)
-    }
-  }
-  /**
-   *查询待审批
-   * @param {*} queryParams
-   */
-  const queryTodoTask = queryParams => {
-    QueryTaskApi.queryTodoTask(queryParams).then(
-      res => {
-        console.log(res)
-        state.componentsTable.data = res.records
-        state.componentsPagination.data.amount = res.total
-        state.componentsPagination.defaultAttribute.total = res.total
-        state.componentsTable.loading = false
-        state.componentsTable.data.forEach(item => {
-          item.createTime = item.createTime
-            ? dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')
-            : item.createTime
-          item.approvalModeName = state.approvalModes[item.approvalMode]
-        })
-      },
-      () => {
-        state.componentsTable.loading = false
-      }
-    )
-  }
-  /**
-   * 查询已审批
-   * @param {*} queryParams
-   */
-  const queryDoneTask = queryParams => {
-    QueryTaskApi.queryDoneTask(queryParams).then(
-      res => {
-        console.log(res)
-        state.componentsTable.data = res.records
-        state.componentsPagination.data.amount = res.total
-        state.componentsPagination.defaultAttribute.total = res.total
-        state.componentsTable.loading = false
-        state.componentsTable.loading = false
-        state.componentsTable.data.forEach(item => {
-          item.completionTime = item.completionTime
-            ? dayjs(item.completionTime).format('YYYY-MM-DD HH:mm:ss')
-            : item.completionTime
-          item.createTime = item.createTime
-            ? dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')
-            : item.createTime
-          item.approvalModeName = state.approvalModes[item.approvalMode]
-        })
-      },
-      () => {
-        state.componentsTable.loading = false
-      }
-    )
-  }
-
   onMounted(() => {
-    getFormPage()
     vformInfoStore.getMoneyType()
   })
 </script>

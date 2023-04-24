@@ -27,7 +27,7 @@ export function getStartNode() {
     privileges: [],
     // 子节点
     childNode: {
-      nodeId: getId(),
+      nodeId: getId(10),
       nodeName: '审批人',
       nodeType: 1,
       // 流程节点状态(用于只读模式, 0:未进行 1:进行中  2:已完成)

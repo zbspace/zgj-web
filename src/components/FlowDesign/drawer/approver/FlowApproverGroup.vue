@@ -158,12 +158,20 @@
             :name="['approverGroups', k, 'approverIds']"
             :rules="[{ required: true, message: '不能为空' }]"
           >
-            <FlowSelect
+            <!-- <FlowSelect
               v-model="group.approverIds"
               v-model:label="group.approverNames"
               valueName="roleId"
               labelName="roleName"
               :datas="flowStore.roles"
+            /> -->
+            <GRole
+              type="button"
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+              :dataSource="userSource"
+              showButton
+              @change="changeUser"
             />
           </a-form-item>
         </FlowDrawerContent>
@@ -199,7 +207,7 @@
         <FlowDrawerContent
           v-if="group.approverType == 8"
           name="指定成员"
-          text="(不能超过 25 人)"
+          text=""
         >
           <a-form-item
             :name="['approverGroups', k, 'approverIds']"
@@ -207,7 +215,6 @@
           >
             <GUser
               type="button"
-              :max="25"
               v-model="group.approverIds"
               v-model:label="group.approverNames"
               :dataSource="userSource"
