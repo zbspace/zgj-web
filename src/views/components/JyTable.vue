@@ -560,9 +560,13 @@
         state.componentsTable.data =
           result.data.records || result.data.data.records
         state.componentsPagination.data.amount =
-          result.data.total || result.data.data.total
+          result.data.total === 0
+            ? result.data.total
+            : result.data.total || result.data.data.total
         state.componentsPagination.defaultAttribute.total =
-          result.data.total || result.data.data.total
+          result.data.total === 0
+            ? result.data.total
+            : result.data.total || result.data.data.total
         loading.value = false
         if (props.computedData.length) {
           props.computedData.forEach(i => {

@@ -10,14 +10,14 @@
         <span>表单</span>
       </div>
       <div class="flow-drawer-privilege-option-column">
-        <div :class="columnItemClass" v-if="props.readable">
-          <a-checkbox :checked="writableChecked" @change="onAllWritableChange">
-            编辑
-          </a-checkbox>
-        </div>
         <div :class="columnItemClass">
           <a-checkbox :checked="readableChecked" @change="onAllReadableChange">
             只读
+          </a-checkbox>
+        </div>
+        <div :class="columnItemClass" v-if="props.readable">
+          <a-checkbox :checked="writableChecked" @change="onAllWritableChange">
+            编辑
           </a-checkbox>
         </div>
         <div :class="columnItemClass">
@@ -51,15 +51,6 @@
           <span>{{ item.name }}</span>
         </div>
         <div class="flow-drawer-privilege-option-column">
-          <div :class="columnItemClass" v-if="props.readable">
-            <a-checkbox
-              :checked="item.writable"
-              :v-model="item.writable"
-              @change="writableChange($event, item)"
-            >
-              编辑
-            </a-checkbox>
-          </div>
           <div :class="columnItemClass">
             <a-checkbox
               :checked="item.readable"
@@ -69,6 +60,16 @@
               只读
             </a-checkbox>
           </div>
+          <div :class="columnItemClass" v-if="props.readable">
+            <a-checkbox
+              :checked="item.writable"
+              :v-model="item.writable"
+              @change="writableChange($event, item)"
+            >
+              编辑
+            </a-checkbox>
+          </div>
+
           <div :class="columnItemClass">
             <a-checkbox
               :checked="item.displayable"
@@ -134,102 +135,37 @@
   })
 
   const writableChecked = computed(() => {
-    return privileges.value.filter(item => item.writable == false).length == 0
+    return privileges.value.filter(item => item.writable === false).length === 0
   })
 
   const readableChecked = computed(() => {
-    return privileges.value.filter(item => item.readable == false).length == 0
+    return privileges.value.filter(item => item.readable === false).length === 0
   })
 
   const displayableChecked = computed(() => {
     return (
-      privileges.value.filter(item => item.displayable == false).length == 0
+      privileges.value.filter(item => item.displayable === false).length === 0
     )
   })
 
   const requiredChecked = computed(() => {
-    return privileges.value.filter(item => item.required == false).length == 0
+    return privileges.value.filter(item => item.required === false).length === 0
   })
 
   // 页面挂载后执行
   onMounted(async () => {
     // 初始化
-    if (props.node.privileges && props.node.privileges.length == 0) {
+    if (props.node.privileges && props.node.privileges.length === 0) {
       privileges.value = await flowStore.getPrivileges()
-      console.log(privileges.value, 'privileges.valueb表单权限')
-      // TODO：①发起人表单权限假数据
-      // privileges.value = [
-      //   {
-      //     createTime: '2022-11-27 12: 31: 00',
-      //     createUser: '1339550467939639299',
-      //     updateTime: null,
-      //     updateUser: null,
-      //     nodePrivilegesId: '1596723235200790529',
-      //     modelId: '1596550552731209730',
-      //     definitionId: '1596550552739598338',
-      //     nodeId: '1596723224647921666',
-      //     formId: '1589976128312606721',
-      //     fieldId: '1589976917521235970',
-      //     fieldName: null,
-      //     fieldKey: null,
-      //     fieldModel: null,
-      //     name: '合同名称',
-      //     writable: true,
-      //     readable: false,
-      //     displayable: false,
-      //     required: false,
-      //     tenantId: null
-      //   },
-      //   {
-      //     createTime: '2022-11-27 12: 31: 00',
-      //     createUser: '1339550467939639299',
-      //     updateTime: null,
-      //     updateUser: null,
-      //     nodePrivilegesId: '1596723235200790530',
-      //     modelId: '1596550552731209730',
-      //     definitionId: '1596550552739598338',
-      //     nodeId: '1596723224647921666',
-      //     formId: '1589976128312606721',
-      //     fieldId: '1589976917521235972',
-      //     fieldName: null,
-      //     fieldKey: null,
-      //     fieldModel: null,
-      //     name: '公司主体',
-      //     writable: true,
-      //     readable: false,
-      //     displayable: false,
-      //     required: false,
-      //     tenantId: null
-      //   },
-      //   {
-      //     createTime: '2022-11-27 12: 31: 00',
-      //     createUser: '1339550467939639299',
-      //     updateTime: null,
-      //     updateUser: null,
-      //     nodePrivilegesId: '1596723235200790531',
-      //     modelId: '1596550552731209730',
-      //     definitionId: '1596550552739598338',
-      //     nodeId: '1596723224647921666',
-      //     formId: '1589976128312606721',
-      //     fieldId: '1589976917521235974',
-      //     fieldName: null,
-      //     fieldKey: null,
-      //     fieldModel: null,
-      //     name: '项目名称',
-      //     writable: true,
-      //     readable: false,
-      //     displayable: false,
-      //     required: false,
-      //     tenantId: null
-      //   }
-      // ]
       privileges.value.forEach(item => {
-        if (props.readable) {
+        // TODO: 默认只读 - 待测试
+        if (!props.readable) {
           setWritable(true, item)
         } else {
           setReadable(true, item)
         }
       })
+      // eslint-disable-next-line vue/no-mutating-props
       props.node.privileges = privileges
     } else {
       privileges.value = props.node.privileges ? props.node.privileges : []

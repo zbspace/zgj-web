@@ -187,7 +187,6 @@
   import sealApply from '@/api/frontDesk/printControl/sealApply'
   import { ElMessage } from 'element-plus'
   import { generatingNumber } from '@/utils/tools'
-  import { fileManageService } from '@/api/frontDesk/fileManage'
   import { customComponents } from '@/lib/vform/extension/samples/extension-schema.js'
 
   import FlowDesign from '@/components/FlowDesign/index.vue'
@@ -490,6 +489,8 @@
         formMessageId: route.params.id
       })
       .then(res => {
+        applyTypeId.value = res.data.applyTypeId
+        sealUseTypeId.value = res.data.sealUseTypeId
         fillFormInformationJson.value = JSON.parse(res.data.formInfo)
         sealApply.templateView(route.query.useId).then(res1 => {
           // if (res1.data.fileTypeId) {

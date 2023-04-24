@@ -436,6 +436,8 @@
 
   const onload = () => {
     formInformation.value.setFormData(props.params.formData)
+    formInformation.value.disableWidgets(props.params.disableWidgets)
+    formInformation.value.hideWidgets(props.params.hideWidgets)
   }
   // // 删除操作人
   // const delTags = (item, type) => {
@@ -886,6 +888,7 @@
 
   const node = ref(null)
   onBeforeMount(() => {
+    // 获取流程展示
     ModelApi.predictionDesign({
       formData: props.params.formData,
       instanceId: props.params.instanceId,
@@ -893,6 +896,7 @@
     }).then(res => {
       node.value = res.data
     })
+    // 获取记录
     getRuNode()
   })
 </script>

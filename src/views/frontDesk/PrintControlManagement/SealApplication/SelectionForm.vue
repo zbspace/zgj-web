@@ -162,8 +162,9 @@
               <div
                 class="button shanchu"
                 @click="deleteTemplate(item.useSealApplyTemplateId)"
-                >删除</div
               >
+                删除
+              </div>
             </div>
           </div>
         </div>
@@ -171,6 +172,7 @@
           label="失效模版"
           btn1="一键清除"
           v-show="validTemplates.length !== 0"
+          @on-click-cancel="onClickCancel"
         >
           <template #tip>
             <span class="tip"> 表单已更新，历史表单对应的模板会自动失效 </span>
@@ -322,6 +324,17 @@
       })
   }
 
+  // 清除模版
+  const onClickCancel = () => {
+    sealApply
+      .clearValid({
+        formVersionId: reloadVersionId.value
+      })
+      .then(res => {
+        ElMessage.success('清除成功')
+        validTemplates.value = []
+      })
+  }
   onMounted(() => {
     applyList()
   })

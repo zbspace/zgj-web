@@ -62,9 +62,9 @@ api.templateAdd = data => {
 // 模板列表
 api.templateList = data => {
   return request({
-    method: 'GET',
+    method: 'POST',
     url: '/sealApply/template/list',
-    params: data
+    data
   })
 }
 // 清除无效模板
@@ -110,6 +110,23 @@ api.deleteTem = data => {
   return request({
     method: 'POST',
     url: `/sealApply/template/delete/${data}`
+  })
+}
+
+// 清除失效模版
+api.clearValid = data => {
+  return request({
+    method: 'POST',
+    url: `/sealApply/template/clearValid`,
+    data
+  })
+}
+
+// 用印申请编辑
+api.editForm = data => {
+  return request({
+    method: 'POST',
+    url: `/sealApply/edit`
   })
 }
 export default api
