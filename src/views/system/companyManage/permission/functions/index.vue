@@ -7,7 +7,10 @@
   !-->
 <template>
   <div class="Functions-container">
-    <el-scrollbar :height="'calc(100vh - 300px)'">
+    <el-scrollbar
+      :height="'calc(100vh - 300px)'"
+      style="padding: 10px 24px 24px 24px"
+    >
       <el-checkbox-group v-model="functionIds">
         <template v-for="item1 in permissionData" :key="item1.id">
           <div class="container1 container">
@@ -394,9 +397,14 @@
     }
     .bottom-btns {
       height: 62px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      border-top: 1px solid #eee;
     }
   }
 </style>

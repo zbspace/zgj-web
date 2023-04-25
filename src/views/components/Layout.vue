@@ -1,5 +1,5 @@
 <template>
-  <div class="components-Layout Custom-button">
+  <div class="components-Layout">
     <div
       class="ap-parcel"
       :style="props.style"
@@ -8,10 +8,14 @@
       <div class="ap-free" v-if="props.free">
         <slot></slot>
       </div>
-      <div class="ap-deliberate" v-if="props.special">
+      <div class="ap-deliberate" :style="props.cardStyle" v-if="props.special">
         <slot></slot>
       </div>
-      <div class="ap-deliberate" v-if="!props.free && !props.special">
+      <div
+        class="ap-deliberate"
+        :style="props.cardStyle"
+        v-if="!props.free && !props.special"
+      >
         <div class="ap-box-breadcrumb" v-if="state.Layout.breadcrumb">
           <slot name="breadcrumb"></slot>
         </div>
@@ -104,6 +108,13 @@
       default: () => {
         return {}
       }
+    },
+    // 卡片样式
+    cardStyle: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   })
   const state = reactive({
@@ -154,25 +165,17 @@
     }
     .ap-deliberate {
       width: 100%;
-      // height: 100%;
       min-height: calc(100vh - 96px);
       display: flex;
-      // flex-flow: wrap;
       align-content: flex-start;
       justify-content: flex-start;
       align-items: flex-start;
       flex-direction: column;
-      @include mixin-padding-top(10);
-      @include mixin-padding-bottom(16);
-      @include mixin-padding-left(20);
-      @include mixin-padding-right(20);
-      // margin-right: 20px;
       box-sizing: border-box;
+      padding: 24px;
       border-radius: var(--jy-border-radius-4);
       background-color: var(--jy-in-common-use-1);
-      // margin-top: 18px;
       position: relative;
-      // overflow: auto;
     }
     .ap-free {
       width: 100%;

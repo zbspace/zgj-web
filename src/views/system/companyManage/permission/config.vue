@@ -1,7 +1,10 @@
 <!-- 用印申请 选中表单 -->
 <template>
   <div class="accomplish-container">
-    <componentsLayout Layout="breadcrumb,title,custom,fixed">
+    <componentsLayout
+      Layout="breadcrumb,title,custom,fixed"
+      :cardStyle="cardStyle"
+    >
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
@@ -46,81 +49,6 @@
 
         <!-- 功能数据权限 -->
         <div class="function" v-show="active === 'first'">
-          <!-- <div class="tab-container">
-            <ul class="tab-name">
-              <li>菜单名称</li>
-              <li>操作项</li>
-            </ul>
-            <div v-for="(item, index) in permissionData" :key="index">
-              <ul class="tab-grant" v-if="item.maxLevel == 2">
-                <li>
-                  <el-checkbox
-                    :indeterminate="item.indeterminate"
-                    v-model="item.checked"
-                    @change="handleCheckAll(item.checked, item)"
-                  >
-                    {{ item.name }}
-                  </el-checkbox>
-                </li>
-                <li>
-                  <el-checkbox-group
-                    v-model="item.checkedArr"
-                    @change="handleCheckedItem(item.checkedArr, item)"
-                  >
-                    <el-checkbox
-                      v-for="(receive, ri) in item.children"
-                      :label="receive.id"
-                      :key="ri"
-                    >
-                      {{ receive.name }}
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </li>
-              </ul>
-              <div v-if="item.maxLevel == 3">
-                <ul class="tab-grant">
-                  <li>
-                    <el-checkbox
-                      :indeterminate="item.indeterminate"
-                      v-model="item.checked"
-                      @change="handleCheckTop(item.checked, item)"
-                      >{{ item.name }}
-                    </el-checkbox>
-                  </li>
-                  <li></li>
-                </ul>
-                <ul
-                  class="tab-system"
-                  v-for="(itemB, Bi) in item.children"
-                  :key="Bi"
-                >
-                  <li style="padding-left: 45px">
-                    <el-checkbox
-                      :indeterminate="itemB.indeterminate"
-                      v-model="itemB.checked"
-                      @change="handleCheckAll(itemB.checked, itemB, item)"
-                    >
-                      {{ itemB.name }}
-                    </el-checkbox>
-                  </li>
-                  <li>
-                    <el-checkbox-group
-                      v-model="itemB.checkedArr"
-                      @change="handleCheckedItem(itemB.checkedArr, itemB, item)"
-                    >
-                      <el-checkbox
-                        v-for="(receive, ri) in itemB.children"
-                        :label="receive.id"
-                        :key="ri"
-                      >
-                        {{ receive.name }}
-                      </el-checkbox>
-                    </el-checkbox-group>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div> -->
           <Functions />
         </div>
         <!-- 数据权限 -->
@@ -129,8 +57,8 @@
             <div class="item-label">默认数据权限</div>
             <div>
               {{ indx.label }}
-              <span class="i"> （{{ indx.msg }}） </span></div
-            >
+              <span class="i"> （{{ indx.msg }}） </span>
+            </div>
           </div>
 
           <div class="item">
@@ -167,7 +95,6 @@
   import KDepartOrPersonDialog from '@/views/components/modules/KDepartOrPersonDialog.vue'
   import { useRouter, useRoute } from 'vue-router'
   import roleApis from '@/api/system/companyManagement/authorityManagement'
-  import { test } from './test'
   import Selected from './selected'
   import Functions from './functions'
   import { messageError } from '@/hooks/useMessage'
@@ -210,27 +137,6 @@
     indx.value = labelInfo.value[i]
   })
 
-  const handlePermission = data => {
-    let count = 0
-
-    data.length &&
-      data.forEach(v => {
-        if (v.children && v.children.length) {
-          count++
-          v.checked = false
-          v.checkedArr = []
-          v.indeterminate = false
-          handlePermission(v.children)
-        } else {
-          if (count) {
-            // level = v.level
-          }
-          count = 0
-        }
-      })
-    return data
-  }
-
   const getAllPublic = async () => {
     try {
       const res = await api.getAllPublic()
@@ -240,53 +146,7 @@
     }
   }
 
-  // permissionData.value = JSON.parse(JSON.stringify(handlePermission(test)))
   getAllPublic()
-
-  const handleCheckAll = (val, Item, fatherItem) => {
-    Item.indeterminate = false
-    Item.checkedArr = []
-    Item.checked = false
-    if (val) {
-      Item.checked = true
-      if (Item.children && Item.children.length) {
-        Item.children.forEach(v => {
-          Item.checkedArr.push(v.id)
-        })
-      }
-    }
-    if (fatherItem) {
-      const checkedArr = fatherItem.children.filter(v => v.checked)
-      fatherItem.checked = checkedArr.length === fatherItem.children.length
-      fatherItem.indeterminate =
-        checkedArr.length > 0 && checkedArr.length < fatherItem.children.length
-    }
-  }
-  const handleCheckedItem = (val, Item, fatherItem) => {
-    const checkedCount = val.length
-    Item.checked = checkedCount === (Item.children && Item.children.length)
-    Item.indeterminate =
-      checkedCount > 0 && checkedCount < (Item.children && Item.children.length)
-    if (fatherItem) {
-      const checkedArr = fatherItem.children.filter(v => v.checked)
-      fatherItem.checked = checkedArr.length === fatherItem.children.length
-      fatherItem.indeterminate =
-        checkedArr.length > 0 && checkedArr.length < fatherItem.children.length
-    }
-  }
-
-  const handleCheckTop = (val, Item) => {
-    Item.checked = val
-    Item.checkedArr = []
-    Item.children.forEach(v => {
-      v.checked = val
-      v.checkedArr = []
-      val &&
-        v.children.forEach(c => {
-          v.checkedArr.push(c.id)
-        })
-    })
-  }
 
   const clickBackPage = () => {
     router.go(-1)
@@ -301,17 +161,24 @@
   const callBack = attr => {
     console.log(attr, '===')
   }
+
+  const cardStyle = ref({
+    padding: '10px 0 0px 0px'
+  })
 </script>
 <style lang="scss" scoped>
   .accomplish-container {
     margin: 0%;
     position: relative;
 
+    .breadcrumb {
+      padding-left: 24px;
+    }
     .title {
       display: flex;
       align-items: center;
       justify-content: space-between;
-
+      padding-left: 24px;
       .title-desc {
         display: flex;
         align-items: center;
@@ -331,6 +198,7 @@
 
     .custom-tabs {
       margin-top: 12px;
+      margin-left: 16px;
     }
 
     .function {
@@ -414,6 +282,7 @@
     }
 
     .custom-data {
+      padding-left: 24px;
       .item {
         display: flex;
         margin: 20px 0;

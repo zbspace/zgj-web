@@ -1,7 +1,10 @@
 <!-- 用印申请 选中表单 -->
 <template>
   <div class="Seal-application-fill-form">
-    <componentsLayout Layout="breadcrumb,title,custom,fixed">
+    <componentsLayout
+      Layout="breadcrumb,title,custom,fixed"
+      :cardStyle="cardStyle"
+    >
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
@@ -30,7 +33,7 @@
             :data="state.cache.flowList"
           ></SealApplicationStep>
         </div>
-        <el-scrollbar height="calc(100vh - 300px)">
+        <el-scrollbar height="calc(100vh - 300px)" style="padding-right: 24px">
           <div class="custom">
             <JyVform
               v-show="step === 'one'"
@@ -59,8 +62,9 @@
                   </el-select>
                 </template>
               </JyLabel>
+
               <FlowDesign
-                ref="flowDesign"
+                id="flow"
                 v-bind="{
                   readable: true,
                   mapable: false,
@@ -292,11 +296,12 @@
   const flowMessageId = ref(null)
   const tipVisible = ref(false)
   const formDataTem = ref(null)
-  const wrapStyle = ref({
-    'min-height': '500px',
-    overflow: 'auto'
-  })
+  const wrapStyle = ref({})
   const node = ref(null)
+  const cardStyle = ref({
+    padding: '24px 0 24px 24px'
+  })
+
   const confirmTip = () => {
     sealApply
       .templateAdd({
@@ -375,8 +380,16 @@
         ...initObj.value,
         edit: true
       })
-      .then(res => {
+      .then(async res => {
         node.value = res.data.data
+
+        nextTick(() => {
+          wrapStyle.value = {
+            height:
+              document.getElementById('flow-designer-box').clientHeight + 'px',
+            overflow: 'hidden'
+          }
+        })
       })
   }
 
@@ -511,10 +524,7 @@
       infoDetail()
     }
   })
-  onMounted(() => {
-    // console.log(`the component is now mounted.`)
-    // infoDetail()
-  })
+  onMounted(() => {})
 </script>
 <style lang="scss" scoped>
   .Seal-application-fill-form {

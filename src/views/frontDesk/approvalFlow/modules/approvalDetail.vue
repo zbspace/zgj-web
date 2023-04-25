@@ -356,24 +356,10 @@
   const btnLoading = ref(false)
   // 加签方式，如果是前加签,或是后加签前一个节点没有审批, 操作按钮不可用
   const addSignMode = ref(0)
-  // 流程记录
-  const records = ref(null)
   // 子组件
   const flowDesign = ref(null)
-  // 模型id
-  const modelId = ref(null)
-  // 最新定义ID
-  const definitionId = ref(null)
-  // 最新实例ID
-  const instanceId = ref(null)
-  // 表单内容
-  const formJson = ref(null)
   const formInformation = ref(null)
-  // 任务ID
-  const taskId = ref('')
-  const approvalMode = ref('')
-  // 按钮列表
-  const buttons = ref([])
+
   // 退回后发起审批列表
   const datas = ref([])
   // 被退回人列表

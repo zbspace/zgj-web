@@ -1,7 +1,7 @@
 <template>
   <div class="editBusinessRule">
     <componentsLayout special>
-      <div style="width: 100%; padding: 24px 16px 0 16px">
+      <div style="width: 100%; padding-left: 24px; padding-top: 20px">
         <el-breadcrumb separator="/">
           <el-breadcrumb-item
             style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
@@ -30,7 +30,8 @@
         }}</div>
         <el-scrollbar
           height="calc(100vh - 280px)"
-          style="overflow-x: hidden; padding-bottom: 20px"
+          style="overflow-x: hidden; padding: 10px 24px 10px 0"
+          always
         >
           <el-form
             ref="ruleFormRef"
@@ -1724,7 +1725,9 @@
   .editBusinessRule .el-timeline {
     padding-left: 14px;
   }
-
+  .el-timeline-item__tail {
+    left: 6px;
+  }
   .editBusinessRule {
     .el-divider {
       margin: 8px 0 16px;

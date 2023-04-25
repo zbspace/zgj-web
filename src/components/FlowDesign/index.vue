@@ -20,7 +20,11 @@
           <FlowEndNode :node="nodeData" :readable="props.readable" />
         </el-scrollbar>
 
-        <div v-if="!props.scrollY" class="flow-designer-box">
+        <div
+          v-if="!props.scrollY"
+          class="flow-designer-box"
+          id="flow-designer-box"
+        >
           <FlowStartNode :node="nodeData" />
           <FlowNode
             :node="nodeData"
