@@ -122,9 +122,6 @@
   const showDepPerDialog = ref(false)
   const curRoleList = ref([])
 
-  const props = defineProps({})
-  const emit = defineEmits([])
-
   const getOrgan = arr => {
     return arr.map(v => v.name).join(' > ')
   }

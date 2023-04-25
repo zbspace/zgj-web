@@ -219,7 +219,30 @@ export function getArrFromTree(arr, child, key) {
   const tempArr = []
   const fn = arr => {
     arr.forEach(v => {
-      tempArr.push(v[key])
+      tempArr.push((key && v[key]) || v)
+      if (v[child] && v[child].length) {
+        fn(v[child])
+      }
+    })
+  }
+  fn(arr)
+  return tempArr
+}
+
+/**
+ * 获取指定树节点
+ * @param {*} arr
+ * @param {*} child
+ * @param {*} key
+ * @param {*} value
+ */
+export function getArrNodeFromTree(arr, child, key, value) {
+  const tempArr = []
+  const fn = arr => {
+    arr.forEach(v => {
+      if (v[key] === value) {
+        tempArr.push(v)
+      }
       if (v[child] && v[child].length) {
         fn(v[child])
       }

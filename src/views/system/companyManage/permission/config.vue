@@ -46,7 +46,7 @@
 
         <!-- 功能数据权限 -->
         <div class="function" v-show="active === 'first'">
-          <div class="tab-container">
+          <!-- <div class="tab-container">
             <ul class="tab-name">
               <li>菜单名称</li>
               <li>操作项</li>
@@ -120,7 +120,8 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
+          <Functions />
         </div>
         <!-- 数据权限 -->
         <div class="custom-data" v-if="active === 'second'">
@@ -168,6 +169,10 @@
   import roleApis from '@/api/system/companyManagement/authorityManagement'
   import { test } from './test'
   import Selected from './selected'
+  import Functions from './functions'
+  import { messageError } from '@/hooks/useMessage'
+  import api from '@/api/system/companyManagement/departmentStaff'
+
   const router = useRouter()
   const route = useRoute()
 
@@ -226,7 +231,17 @@
     return data
   }
 
-  permissionData.value = JSON.parse(JSON.stringify(handlePermission(test)))
+  const getAllPublic = async () => {
+    try {
+      const res = await api.getAllPublic()
+      permissionData.value = res.data
+    } catch (error) {
+      messageError(error)
+    }
+  }
+
+  // permissionData.value = JSON.parse(JSON.stringify(handlePermission(test)))
+  getAllPublic()
 
   const handleCheckAll = (val, Item, fatherItem) => {
     Item.indeterminate = false

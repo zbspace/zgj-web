@@ -136,4 +136,29 @@ api.userListByOrgan = data => {
   })
 }
 
+// 获取 功能权限信息
+api.getAllPublic = data => {
+  return request({
+    method: 'GET',
+    url: `function/all/public`
+  })
+}
+
+// 获取 角色已选择的功能权限
+api.getSelectedFunctionIds = data => {
+  return request({
+    method: 'GET',
+    url: `/role/getSelectedFunctionIds/${data}`
+  })
+}
+
+// 修改 角色已选择的功能权限
+api.roleFunctionEdit = data => {
+  return request({
+    method: 'POST',
+    url: `/role/function/edit`,
+    data
+  })
+}
+
 export default api
