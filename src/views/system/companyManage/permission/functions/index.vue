@@ -217,8 +217,9 @@
       const fathers = findFathers(value)
       fathers.forEach(element => {
         // 2-1. 判断子节点是否都被选中
-        const arr = getArrFromTree([value], 'children', 'id')
+        const arr = getArrFromTree([element], 'children', 'id')
         const tempNodes = functionIds.value.filter(id => arr.includes(id))
+        console.log('--->', element.name, tempNodes.length, arr.length - 1)
         if (tempNodes.length === arr.length - 1) {
           functionIds.value.push(element.id)
         }
@@ -235,7 +236,7 @@
       const fathers = findFathers(value)
       if (fathers.length) {
         functionIds.value = functionIds.value.filter(
-          id => !fathers.includes(id)
+          id => !fathers.map(v => v.id).includes(id)
         )
       }
     }
@@ -244,13 +245,13 @@
   const findFathers = obj => {
     const tempArr = []
     while (obj.pid !== '-1') {
-      tempArr.push(obj.pid)
       obj = getArrNodeFromTree(
         permissionData.value,
         'children',
         'id',
         obj.pid
       )[0]
+      tempArr.push(obj)
     }
     return tempArr
   }
