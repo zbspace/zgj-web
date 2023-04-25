@@ -207,7 +207,7 @@
   const change = value => {
     const haveId = functionIds.value.includes(value.id)
     // 1. 被选中
-    if (haveId) {
+    if (haveId && value.type !== 'point') {
       // 1-1. 所有子节点都选中
       if (value.children) {
         const arr = getArrFromTree([value], 'children', 'id')
@@ -226,7 +226,7 @@
       })
     }
     // 2. 未被选中
-    if (!haveId) {
+    if (!haveId && value.type !== 'point') {
       // 2-1. 所有子节点都取消选中
       if (value.children) {
         const arr = getArrFromTree([value], 'children', 'id')
@@ -268,7 +268,9 @@
       return false
     }
     // 2. 判断子节点是否有被选中
-    const arr = getArrFromTree([node], 'children', 'id')
+    const arr = getArrFromTree([node], 'children')
+      .filter(v => v.type !== 'point')
+      .map(v => v.id)
     const tempNodes = functionIds.value.filter(id => arr.includes(id))
     if (tempNodes.length) {
       return true
