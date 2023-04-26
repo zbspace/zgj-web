@@ -22,6 +22,9 @@
           }}</span>
         </p>
         <p>
+          硬件版本：<span> {{ detail.hardwareVersion || '-' }}</span>
+        </p>
+        <p>
           保管人：<span>{{ detail.keepUserName || '-' }}</span>
         </p>
         <p>
@@ -54,6 +57,9 @@
             >
             <span v-else>-</span>
           </span>
+        </p>
+        <p>
+          固件版本：<span> {{ detail.firmwareVersion || '-' }}</span>
         </p>
         <p>
           保管部门：<span>{{ detail.keepOrganName || '-' }}</span>
