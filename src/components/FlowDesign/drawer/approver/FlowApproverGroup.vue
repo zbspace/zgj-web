@@ -19,6 +19,7 @@
             />
           </span>
         </template>
+
         <!-- 审批人类型 -->
         <FlowDrawerContent :name="props.title" prefix="选择">
           <a-radio-group
@@ -45,8 +46,54 @@
             </a-radio>
           </a-radio-group>
         </FlowDrawerContent>
-        <!-- 上级 -->
-        <FlowDrawerContent v-if="group.approverType == 1" name="指定层级">
+
+        <!-- ① 指定审批人 -->
+        <FlowDrawerContent
+          v-if="group.approverType == 8"
+          name="指定审批人"
+          text=""
+        >
+          <a-form-item
+            :name="['approverGroups', k, 'approverIds']"
+            :rules="[{ required: true, message: '不能为空' }]"
+          >
+            <GUser
+              type="button"
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+              :dataSource="userSource"
+              showButton
+              @change="changeUser"
+            />
+          </a-form-item>
+        </FlowDrawerContent>
+
+        <!-- ② 指定角色 -->
+        <FlowDrawerContent v-if="group.approverType == 5" name="指定角色">
+          <a-form-item
+            :name="['approverGroups', k, 'approverIds']"
+            :rules="[{ required: true, message: '不能为空' }]"
+          >
+            <!-- <FlowSelect
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+              valueName="roleId"
+              labelName="roleName"
+              :datas="flowStore.roles"
+            /> -->
+            <GRole
+              type="button"
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+              :dataSource="userSource"
+              showButton
+              @change="changeUser"
+            />
+          </a-form-item>
+        </FlowDrawerContent>
+
+        <!-- ③ 直接主管 -->
+        <FlowDrawerContent v-if="group.approverType == 1" name="直接主管">
           <a-radio-group
             :size="size"
             v-model:value="group.levelMode"
@@ -77,8 +124,9 @@
             />
           </a-form-item>
         </FlowDrawerContent>
-        <!-- 部门负责人 -->
-        <FlowDrawerContent v-if="group.approverType == 2" name="指定层级">
+
+        <!-- ④ 部门负责人 -->
+        <FlowDrawerContent v-if="group.approverType == 2" name="部门负责人">
           <a-radio-group
             v-model:value="group.levelMode"
             :size="size"
@@ -111,6 +159,58 @@
             />
           </a-form-item>
         </FlowDrawerContent>
+
+        <!-- ⑤ 发起人自选 -->
+        <FlowDrawerContent v-if="group.approverType == 9" name="选择方式">
+          <a-radio-group
+            :size="size"
+            v-model:value="group.selectMode"
+            class="w-fill"
+            @change="changeSelectMode(group.selectMode)"
+          >
+            <a-radio :value="1">
+              <span>多选</span>
+            </a-radio>
+            <a-radio :value="2">
+              <span>单选</span>
+            </a-radio>
+          </a-radio-group>
+        </FlowDrawerContent>
+
+        <FlowDrawerContent v-if="group.approverType == 9" name="选择范围">
+          <a-radio-group
+            v-model:value="group.selectRange"
+            :size="size"
+            class="w-fill"
+          >
+            <a-radio
+              v-for="(assigneeScope, i) in assigneeScopes"
+              :key="i"
+              :value="assigneeScope.value"
+            >
+              <span>{{ assigneeScope.name }}</span>
+            </a-radio>
+          </a-radio-group>
+        </FlowDrawerContent>
+
+        <FlowDrawerContent
+          v-if="group.approverType == 9"
+          name="候选成员"
+          text=""
+        >
+          <a-form-item :name="['approverGroups', k, 'approverIds']">
+            <GUser
+              type="button"
+              v-model="group.approverIds"
+              v-model:label="group.approverNames"
+              :dataSource="userSource"
+              showButton
+              @change="changeUser"
+            />
+          </a-form-item>
+        </FlowDrawerContent>
+
+        <!-- ===== 不需要 ===== -->
         <!-- 部门审批人 -->
         <FlowDrawerContent v-if="group.approverType == 3" name="选择部门">
           <GDept
@@ -152,29 +252,6 @@
             />
           </a-form-item>
         </FlowDrawerContent>
-        <!-- 角色 -->
-        <FlowDrawerContent v-if="group.approverType == 5" name="选择系统角色">
-          <a-form-item
-            :name="['approverGroups', k, 'approverIds']"
-            :rules="[{ required: true, message: '不能为空' }]"
-          >
-            <!-- <FlowSelect
-              v-model="group.approverIds"
-              v-model:label="group.approverNames"
-              valueName="roleId"
-              labelName="roleName"
-              :datas="flowStore.roles"
-            /> -->
-            <GRole
-              type="button"
-              v-model="group.approverIds"
-              v-model:label="group.approverNames"
-              :dataSource="userSource"
-              showButton
-              @change="changeUser"
-            />
-          </a-form-item>
-        </FlowDrawerContent>
         <!-- 岗位 -->
         <FlowDrawerContent v-if="group.approverType == 6" name="选择岗位">
           <a-form-item
@@ -200,75 +277,6 @@
               v-model="group.approverIds"
               v-model:label="group.approverNames"
               :datas="userGroups"
-            />
-          </a-form-item>
-        </FlowDrawerContent>
-        <!-- 指定成员 -->
-        <FlowDrawerContent
-          v-if="group.approverType == 8"
-          name="指定成员"
-          text=""
-        >
-          <a-form-item
-            :name="['approverGroups', k, 'approverIds']"
-            :rules="[{ required: true, message: '不能为空' }]"
-          >
-            <GUser
-              type="button"
-              v-model="group.approverIds"
-              v-model:label="group.approverNames"
-              :dataSource="userSource"
-              showButton
-              @change="changeUser"
-            />
-          </a-form-item>
-        </FlowDrawerContent>
-
-        <!-- 发起人自选 -->
-        <FlowDrawerContent v-if="group.approverType == 9" name="选择方式">
-          <a-radio-group
-            :size="size"
-            v-model:value="group.selectMode"
-            class="w-fill"
-            @change="changeSelectMode(group.selectMode)"
-          >
-            <a-radio :value="1">
-              <span>多选</span>
-            </a-radio>
-            <a-radio :value="2">
-              <span>单选</span>
-            </a-radio>
-          </a-radio-group>
-        </FlowDrawerContent>
-        <FlowDrawerContent v-if="group.approverType == 9" name="选择范围">
-          <a-radio-group
-            v-model:value="group.selectRange"
-            :size="size"
-            class="w-fill"
-          >
-            <a-radio
-              v-for="(assigneeScope, i) in assigneeScopes"
-              :key="i"
-              :value="assigneeScope.value"
-            >
-              <span>{{ assigneeScope.name }}</span>
-            </a-radio>
-          </a-radio-group>
-        </FlowDrawerContent>
-        <FlowDrawerContent
-          v-if="group.approverType == 9"
-          name="候选成员"
-          text="(不能超过 25 人, 如配置候选成员将覆盖选择范围！)"
-        >
-          <a-form-item :name="['approverGroups', k, 'approverIds']">
-            <GUser
-              type="button"
-              :max="25"
-              v-model="group.approverIds"
-              v-model:label="group.approverNames"
-              :dataSource="userSource"
-              showButton
-              @change="changeUser"
             />
           </a-form-item>
         </FlowDrawerContent>
@@ -405,7 +413,6 @@
           </a-form-item>
         </FlowDrawerContent>
         <!-- =============表单内人员 END-->
-
         <!-- =============表单内部门 START-->
         <FlowDrawerContent v-if="group.approverType == 14" name="部门控件">
           <a-form-item
@@ -455,7 +462,6 @@
           </a-form-item>
         </FlowDrawerContent>
         <!-- =============表单内部门 END-->
-
         <!-- =============部门负责人交叉审批 START-->
         <FlowDrawerContent v-if="group.approverType == 15" name="选择两个部门">
           <a-form-item
@@ -473,7 +479,6 @@
           </a-form-item>
         </FlowDrawerContent>
         <!-- =============部门负责人交叉审批 END-->
-
         <!-- 项目角色 -->
         <FlowDrawerContent v-if="group.approverType == 16" name="选择项目角色">
           <a-form-item
@@ -489,7 +494,6 @@
             />
           </a-form-item>
         </FlowDrawerContent>
-
         <!-- 项目成员 -->
         <!-- <FlowDrawerContent v-if="group.approverType == 17" name="选择项目角色">
           <a-form-item :name="['approverGroups', k, 'approverIds']" :rules="[{ required: true, message: '不能为空' }]">
@@ -502,7 +506,6 @@
             />
           </a-form-item>
         </FlowDrawerContent> -->
-
         <!-- 部门成员-->
         <FlowDrawerContent v-if="group.approverType == 18" name="选择部门">
           <a-form-item
@@ -547,7 +550,6 @@
             />
           </a-form-item>
         </FlowDrawerContent>
-
         <!-- 选择审批 -->
         <FlowDrawerContent
           v-if="group.approverType == 20"
@@ -570,12 +572,12 @@
           </a-form-item>
         </FlowDrawerContent>
       </a-card>
-      <AddButton
+      <!-- <AddButton
         v-if="show"
         prefix="添加"
         :title="title"
         @click="addApproval"
-      />
+      /> -->
     </a-space>
   </a-form>
   <!-- {{props.node}} -->

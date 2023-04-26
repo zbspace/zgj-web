@@ -38,7 +38,7 @@
   },
   {
     "prop": "modifyDatetime",
-    "label": "更新时间",
+    "label": "创建时间",
     "sortable": true,
     "min-width": 180,
     "show": true

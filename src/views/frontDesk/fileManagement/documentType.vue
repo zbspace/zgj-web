@@ -23,8 +23,8 @@
           <div class="title-more">
             <div class="title-more-add">
               <el-button type="primary" @click="dialogVisible = true"
-                >+ 增加</el-button
-              >
+                >+ {{ $t('t-zgj-add') }}
+              </el-button>
             </div>
             <div class="title-more-down"> </div>
           </div>
@@ -225,18 +225,32 @@
     componentsTable: {
       header: [
         {
+          prop: 'fileTypeNo',
+          label: '文件类型编码',
+          sortable: true,
+          show: true,
+          'min-width': 150
+        },
+        {
           prop: 'fileTypeName',
           label: '文件类型名称',
           sortable: true,
           show: true,
           'min-width': 150
         },
+        // {
+        //   prop: 'fileTypeSn',
+        //   label: '文件类型说明',
+        //   sortable: true,
+        //   show: true,
+        //   'min-width': 150
+        // },
         {
-          prop: 'fileTypeSn',
-          label: '文件类型说明',
+          prop: 'level',
+          label: '文件类型层级',
           sortable: true,
           show: true,
-          'min-width': 150
+          'min-width': 110
         },
         {
           prop: 'fileSum',

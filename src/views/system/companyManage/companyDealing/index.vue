@@ -32,8 +32,9 @@
                       (state.column = {})
                   }
                 "
-                >+ {{ $t('t-zgj-add') }}</el-button
               >
+                + {{ $t('t-zgj-add') }}
+              </el-button>
             </div>
             <div class="title-more-down">
               <el-dropdown>
@@ -81,6 +82,7 @@
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      :showClose="false"
       @confirmClick="confirmClick($t(state.JyElMessageBox.header.data))"
     >
       <template #header>
@@ -235,6 +237,7 @@
           fixed: 'right',
           width: '120px',
           show: true,
+          align: 'center',
           rankDisplayData: [
             {
               name: 't-zgj-Edit'
@@ -253,7 +256,6 @@
           background: 'var(--jy-color-fill--3)'
         },
         'cell-style': ({ row, column, rowIndex, columnIndex }) => {
-          // console.log({ row, column, rowIndex, columnIndex });
           if (column.property === 'relatedCompanyName') {
             return {
               color: 'var(--jy-info-6)',
@@ -321,9 +323,8 @@
   }
   // 提交
   const submitFromDialog = (data, type) => {
-    console.log('submitFromDialog', data, type)
     if (data.code === 200) {
-      ElMessage.success(`${type}了一条记录！`)
+      ElMessage.success(`${type}成功！`)
       showFormDialog.value = false
       table.value.reloadData()
     }
@@ -358,7 +359,6 @@
               }
             }
           ]
-
           state.componentsDocumentsDetails.visible.forEach(item => {
             if (item.name === 'Current-Business-Details') {
               state.componentsDocumentsDetails.visible[0][
@@ -383,7 +383,6 @@
       state.title = 't-zgj-Edit'
       api.detailRelatedCompany(column.relatedCompanyId).then(res => {
         if (res.code === 200) {
-          console.log(res)
           state.column = res.data
           showFormDialog.value = true
         }
@@ -396,11 +395,9 @@
     }
   }
   const confirmClick = data => {
-    console.log(data)
     delRows(data)
   }
   const delRows = delType => {
-    console.log(state.relatedCompanyIds)
     api
       .deleteRelatedCompany({ relatedCompanyIds: state.relatedCompanyIds })
       .then(res => {
@@ -415,10 +412,7 @@
   // 批量操作
   const clickBatchButton = (item, selection) => {
     state.relatedCompanyIds = []
-    console.log(state.componentsBatch.selectionData)
     const list = (state.componentsBatch.selectionData = selection)
-    console.log('list', list)
-    console.log(list[0])
     let nameList = ''
     const nameArr = []
     const nameIdArr = []

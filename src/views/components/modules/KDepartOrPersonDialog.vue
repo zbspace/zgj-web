@@ -284,6 +284,7 @@
    * multiple 是否多选
    * max Number - 目前支持user
    * hasTopRoot 是否包含顶级 组织
+   * haveIncluded 是否包括包含关系
    */
   import i18n from '@/utils/i18n'
   import { ref, watch } from 'vue'

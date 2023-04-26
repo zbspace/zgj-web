@@ -103,6 +103,7 @@
                   :ref="el => setRef(el, item)"
                   collapse-tags
                   collapse-tags-tooltip
+                  :max-collapse-tags="2"
                   style="width: 100%"
                   popper-class="popperHidden"
                   :class="
@@ -443,6 +444,7 @@
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
       :multiple="multipleDialog"
+      :haveIncluded="false"
     />
     <!-- 往来单位弹框选择 -->
     <JyRelatedCompany
@@ -746,7 +748,6 @@
 
   // 点击按钮
   function clickSubmit(item, index) {
-    console.log(item, 'clickSubmit')
     emit('clickSubmit', item, index)
   }
 

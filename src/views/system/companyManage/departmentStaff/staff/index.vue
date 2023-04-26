@@ -14,7 +14,6 @@
       :componentsSearchForm="state.componentsSearchForm"
       :componentsTableHeader="state.componentsTable.header"
       :componentsBatch="state.componentsBatch"
-      :queryParams="{ organId }"
       tableClick="userName"
       statusColoum="flag"
       openValue="启用"
@@ -22,6 +21,7 @@
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
     >
+      <!-- :queryParams="{ organId }" -->
       <template #title>
         <div class="title">
           <div>{{ $t('t-zgj-F_SYSTEM_PERSON_MANAGE') }}</div>
@@ -583,7 +583,7 @@
           id: 'faceState',
           label: '人脸状态',
           type: 'select',
-          inCommonUse: true,
+          inCommonUse: false,
           options: [
             {
               faceState: '0',
@@ -600,17 +600,22 @@
           defaultAttribute: {
             placeholder: '请选择'
           }
+        },
+        {
+          id: 'organId',
+          requestParams: 'organId',
+          label: '所属部门',
+          type: 'derivable',
+          inCommonUse: false,
+          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+          defaultAttribute: {
+            type: 'organ',
+            placeholder: '请选择',
+            joinStr: ',',
+            multiple: false
+          },
+          values: []
         }
-        // {
-        //   id: 'organId',
-        //   label: '所属部门',
-        //   type: 'select',
-        //   inCommonUse: true,
-        //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-        //   defaultAttribute: {
-        //     placeholder: '请选择'
-        //   }
-        // }
       ],
       butData: [
         {
@@ -677,10 +682,6 @@
         {
           label: '员工详情',
           name: 'Staff-Details'
-        },
-        {
-          label: '流程记录',
-          name: ''
         }
       ]
     },

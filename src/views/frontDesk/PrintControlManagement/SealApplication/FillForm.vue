@@ -197,7 +197,6 @@
 
   const router = useRouter()
   const route = useRoute()
-  const flowDesign = ref(null)
   const initObj = ref(null)
   const applyTypeId = ref(null)
   const sealUseTypeId = ref(null)

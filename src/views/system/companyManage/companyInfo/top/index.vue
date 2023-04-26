@@ -2,7 +2,16 @@
   <div class="comp-info-top">
     <div class="bg">
       <div class="left">
-        <img src="@/assets/svg/verification/verification-error.svg" alt="" />
+        <img
+          src="@/assets/svg/verification/verification-error.svg"
+          v-show="!homeLogoUrl.homeUrl"
+          style="object-fit: fill; width: 52px; height: 28px"
+        />
+        <img
+          :src="homeLogoUrl.homeUrl"
+          v-show="homeLogoUrl.homeUrl"
+          style="object-fit: fill; width: 52px; height: 28px"
+        />
       </div>
       <div class="right">
         <div class="name"> {{ props.tenant.tenantName }} </div>
@@ -26,6 +35,8 @@
   import companyInfoApi from '@/api/system/companyManagement/companyInfo'
   import { ElMessage } from 'element-plus'
   import { useAccountInfoStore } from '@/store/accountInfo'
+  import { useHomeLogoUrl } from '@/store/logo'
+  const homeLogoUrl = useHomeLogoUrl()
   const accountInfo = useAccountInfoStore()
   const emit = defineEmits(['reloadData'])
 

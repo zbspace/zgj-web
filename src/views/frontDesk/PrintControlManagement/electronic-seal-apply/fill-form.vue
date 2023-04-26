@@ -775,8 +775,9 @@
     .ap-fixed {
       width: calc(100%);
       position: absolute;
-      bottom: 0%;
-      height: 4rem;
+      bottom: 0;
+      left: 0;
+      height: 64px;
       display: flex;
       justify-content: center;
       align-items: center;

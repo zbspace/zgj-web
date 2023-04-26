@@ -367,6 +367,7 @@
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      :showClose="false"
     >
       <template #header>
         <div class="header-div">

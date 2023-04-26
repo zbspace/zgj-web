@@ -20,8 +20,8 @@
           <div class="title-more">
             <div class="title-more-add">
               <el-button type="primary" @click="addBussinessRule"
-                >+ 增加</el-button
-              >
+                >+ {{ $t('t-zgj-add') }}
+              </el-button>
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@
           id: 'updateTime',
           label: '更新时间',
           type: 'picker',
-          inCommonUse: true,
+          inCommonUse: false,
           requestType: 'array',
           startRequest: 'updateStartTime',
           endRequest: 'updateEndTime',
@@ -174,7 +174,7 @@
           id: 'sealUseTypeId',
           label: '用印类型',
           type: 'select',
-          inCommonUse: true,
+          inCommonUse: false,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择'
@@ -195,7 +195,7 @@
           requestParams: 'fileTypeId',
           label: '文件类型',
           type: 'derivable',
-          inCommonUse: true,
+          inCommonUse: false,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
             placeholder: '请选择',

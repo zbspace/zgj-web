@@ -64,7 +64,6 @@
         :rules="rules"
         ref="vFormLibraryRef"
         label-width="120px"
-        style="padding: 20px"
       >
         <el-row>
           <el-col :span="24">
@@ -274,13 +273,18 @@
     >
     </kDepartOrPersonVue>
     <JyElMessageBox
+      :mode="1"
       v-model="state.JyElMessageBox.show"
       :show="state.JyElMessageBox.show"
       :defaultAttribute="{}"
+      :showClose="false"
       @confirmClick="confirmOneClick"
     >
       <template #header>
-        {{ state.JyElMessageBox.header.data }}
+        <div class="header-div">
+          <img :src="state.JyElMessageBox.header.icon" alt="" />
+          <span>{{ $t(state.JyElMessageBox.header.data) }}</span>
+        </div>
       </template>
       <template #content>
         {{ state.JyElMessageBox.content.data }}
@@ -506,7 +510,8 @@
     JyElMessageBox: {
       show: false,
       header: {
-        data: ''
+        data: '',
+        icon: '/src/assets/svg/common/warning.svg'
       },
       content: {
         data: ''
@@ -684,7 +689,7 @@
     }
     if (cell.name === 't-zgj-Delete') {
       currentActionWorkbench.value = column.benchId
-      state.JyElMessageBox.header.data = '提示？'
+      state.JyElMessageBox.header.data = 't-zgj-tips'
       state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
       state.JyElMessageBox.show = true
     }

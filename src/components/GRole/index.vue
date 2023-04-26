@@ -13,10 +13,10 @@
       >
         <a-select-option
           v-for="item in selectedList"
-          :value="item.userId"
-          :key="item.userId"
+          :value="item.id"
+          :key="item.id"
         >
-          {{ item.nickName }}
+          {{ item.name }}
         </a-select-option>
       </a-select>
       <a-button
@@ -38,15 +38,11 @@
           </template>
         </a-button>
       </div>
-      <div
-        class="add-user-item"
-        v-for="item in selectedList"
-        :key="item.userId"
-      >
+      <div class="add-user-item" v-for="item in selectedList" :key="item.id">
         <a-avatar size="small">
           <template #icon><UserOutlined /></template>
         </a-avatar>
-        <div>{{ item.nickName }}</div>
+        <div>{{ item.name }}</div>
         <close-outlined @click="removeSelectedItem(item)" />
       </div>
     </div>
@@ -66,6 +62,7 @@
 <script setup name="GUser">
   import { ref, watch, onMounted } from 'vue'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
+  import FlowApi from '@/api/system/flowManagement/index'
   import { remove } from 'lodash-es'
   const showDepPerDialog = ref(false)
   const tabsShow = ref(['role'])
@@ -108,18 +105,22 @@
   })
 
   const reload = async userIds => {
-    // TODO: 通过用户ids获取用户信息
-    // const res = await UserApi.getUsersByUserIds({ userIds })
-    // if (res.data) {
-    //   res.data.forEach(item => {
-    //     currentValue.value.push(item.userId)
-    //     selectedList.value.push(item)
-    //     emit(
-    //       'update:label',
-    //       selectedList.value.map(a => a.nickName)
-    //     )
-    //   })
-    // }
+    const res = await FlowApi.getRoleSelectedListByGunsSysIds(userIds)
+    if (res.data) {
+      res.data.forEach(item => {
+        currentValue.value.push(item.id)
+        selectedList.value.push(item)
+        searchSelected.value.push({
+          id: item.id,
+          name: item.name,
+          type: item.type
+        })
+        emit(
+          'update:label',
+          selectedList.value.map(a => a.name)
+        )
+      })
+    }
   }
 
   const showUserPlusModal = () => {
@@ -127,15 +128,16 @@
   }
 
   const removeSelectedItem = record => {
-    remove(selectedList.value, item => item.userId === record.userId)
-    remove(currentValue.value, item => item === record.userId)
-    remove(searchSelected.value, item => item.id === record.userId)
+    remove(selectedList.value, item => item.id === record.id)
+    remove(currentValue.value, item => item === record.id)
+    remove(searchSelected.value, item => item.id === record.id)
     // 只有ID
     // userselectorPlus.value.delRecord(record)
+    console.log(currentValue.value, 'currentValue.value1234')
     emit('update:modelValue', currentValue.value)
     emit(
       'update:label',
-      selectedList.value.map(a => a.nickName)
+      selectedList.value.map(a => a.name)
     )
     emit('update:data', selectedList)
   }
@@ -157,8 +159,8 @@
     currentValue.value = []
     for (let index = 0; index < records.length; index++) {
       const element = {
-        userId: records[index].id,
-        nickName: records[index].name
+        id: records[index].id,
+        name: records[index].name
       }
       selectedList.value.push(element)
       // 只有ID
@@ -168,7 +170,7 @@
     emit('update:modelValue', currentValue.value)
     emit(
       'update:label',
-      selectedList.value.map(a => a.nickName)
+      selectedList.value.map(a => a.name)
     )
     emit('update:data', selectedList)
     emit('change', selectedList.value)

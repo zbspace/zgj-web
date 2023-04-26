@@ -173,4 +173,14 @@ api.getUserSelectedListByGunsSysIds = data => {
     data
   })
 }
+
+// 获取 流程所选角色集合
+api.getRoleSelectedListByGunsSysIds = data => {
+  return request({
+    method: 'POST',
+    url: '/role/getRoleSelectedListByGunsSysIds',
+    data
+  })
+}
+
 export default api

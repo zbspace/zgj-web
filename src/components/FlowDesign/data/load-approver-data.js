@@ -168,7 +168,43 @@ export default function () {
   // 审批人项
   const approvals = reactive([
     {
-      name: '上级',
+      name: '指定审批人',
+      value: 8,
+      disabled: false,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: true
+    },
+    {
+      name: '指定角色',
+      value: 5,
+      disabled: false,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: true,
+      popovers: [
+        {
+          title: '什么是角色？',
+          content:
+            '系統角色指团队成员的专业分工类别，如人事、行政、财务等，每类角色可由 1 位或多位成员组成'
+        },
+        {
+          title: '如何使用？',
+          content:
+            '用角色作为审批人，当有成员离职变动时，该角色中的其他成员可继续完成审批，从而避免审批流程失效的情况'
+        },
+        {
+          content:
+            '提示：若选择的角色中包含多名成员，则按照设置“多人审批时采用的审批方式”来处理'
+        }
+      ],
+      href: '',
+      hrefName: ''
+    },
+    {
+      name: '直接主管',
       code: 'higherLevel',
       value: 1,
       // 多个组时需要disabled
@@ -197,9 +233,19 @@ export default function () {
             '部门负责人审批与上级审批的区别？一个部门内可能存在多层的上下级关系，但通常有指定的部门负责人。由部门负责人审批 ，则不涉及上下级关系，直接由该固定人员进行审批'
         }
       ],
-      href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
-      hrefName: '如何配置部门负责人？'
+      href: '',
+      hrefName: ''
     },
+    {
+      name: '发起人自选',
+      value: 9,
+      // 多个组时需要disabled
+      disabled: true,
+      // 是否可以多个组
+      addable: false,
+      // 是否多个
+      multiple: true
+    }
     // {
     //   name: '部门审批人',
     //   value: 3,
@@ -241,33 +287,6 @@ export default function () {
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
       hrefName: '如何配置部门负责人？'
     }, */
-    {
-      name: '系統角色',
-      value: 5,
-      disabled: false,
-      // 是否可以多个组
-      addable: true,
-      // 是否多个
-      multiple: true,
-      popovers: [
-        {
-          title: '什么是角色？',
-          content:
-            '系統角色指团队成员的专业分工类别，如人事、行政、财务等，每类角色可由 1 位或多位成员组成'
-        },
-        {
-          title: '如何使用？',
-          content:
-            '用角色作为审批人，当有成员离职变动时，该角色中的其他成员可继续完成审批，从而避免审批流程失效的情况'
-        },
-        {
-          content:
-            '提示：若选择的角色中包含多名成员，则按照设置“多人审批时采用的审批方式”来处理'
-        }
-      ],
-      href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
-      hrefName: '如何配置系統角色？'
-    },
     // {
     //   name: '系統岗位',
     //   value: 6,
@@ -317,25 +336,6 @@ export default function () {
       href: 'https://www.feishu.cn/hc/zh-CN/articles/360044810913',
       hrefName: '如何配置用户组？'
     } , */
-    {
-      name: '指定成员',
-      value: 8,
-      disabled: false,
-      // 是否可以多个组
-      addable: true,
-      // 是否多个
-      multiple: true
-    },
-    {
-      name: '发起人自选',
-      value: 9,
-      // 多个组时需要disabled
-      disabled: true,
-      // 是否可以多个组
-      addable: false,
-      // 是否多个
-      multiple: true
-    }
     // {
     //   name: '发起人自己',
     //   value: 10,

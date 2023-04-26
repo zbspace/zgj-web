@@ -50,15 +50,16 @@
         v-if="props.node.attr.approvalMethod == 1"
         v-model:activeKey="tabsActiveKey"
       >
-        <a-tab-pane forceRender key="1" tab="审批设置">
+        <a-tab-pane forceRender key="1" tab="审批人">
           <FlowApproverGroup
             ref="flowApproverGroup"
             v-model:multiple="multiple"
             :node="props.node"
             :title="props.node.nodeType == 1 ? '审批人' : '办理人'"
           />
+          <FlowApproverNodeAttr :node="props.node" :multiple="multiple" />
         </a-tab-pane>
-        <a-tab-pane forceRender key="2" tab="选项设置">
+        <a-tab-pane forceRender key="2" tab="选项设置" v-if="false">
           <FlowApproverNodeAttr :node="props.node" :multiple="multiple" />
         </a-tab-pane>
         <a-tab-pane forceRender key="3" tab="表单权限">
@@ -66,7 +67,7 @@
             <FlowAuthForm :node="props.node" readable />
           </FlowDrawerContent>
         </a-tab-pane>
-        <a-tab-pane forceRender key="4" tab="高级设置">
+        <a-tab-pane forceRender key="4" tab="操作权限">
           <FlowApproverSenior :node="props.node" />
         </a-tab-pane>
         <a-tab-pane forceRender key="5" tab="通知设置">

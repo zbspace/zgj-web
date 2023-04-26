@@ -13,7 +13,7 @@
     :confirmText="$t('t-zgj-operation.submit')"
     :concelText="$t('t-zgj-operation.cancel')"
     :width="900"
-    :height="400"
+    :height="420"
     @close="closeForm"
     @confirm="submitForm"
   >
@@ -247,10 +247,10 @@
     })
   }
   // 清除部门信息
-  const clear = type => {
-    state.componentsAddForm.formData.organName = ''
-    state.componentsAddForm.formData.organId = ''
-  }
+  // const clear = type => {
+  //   state.componentsAddForm.formData.organName = ''
+  //   state.componentsAddForm.formData.organId = ''
+  // }
 
   // 选择部门弹窗
   const chooseOrgan = item => {

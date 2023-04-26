@@ -21,8 +21,8 @@
           <div class="title-more">
             <div class="title-more-add">
               <el-button type="primary" @click="add"
-                >+ {{ $t('t-zgj-add') }}</el-button
-              >
+                >+ {{ $t('t-zgj-add') }}
+              </el-button>
             </div>
             <div class="title-more-down">
               <el-dropdown popper-class="more-operation-dropdown">
@@ -97,8 +97,8 @@
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      :width="800"
-      :height="450"
+      :width="900"
+      :height="400"
       @confirm="submitLibraryForm"
     >
       <el-form

@@ -219,7 +219,7 @@
       default() {
         return {
           width: 'calc(100% - 10px)',
-          paddingRight: '24px',
+          padding: '10px 24px 10px 0',
           height: 'calc(100% - 40px)'
         }
       }
