@@ -49,11 +49,13 @@ export const sealNameSchema = {
     labelWidth: 100,
     size: '',
     disabled: false,
+    limitNum: 0,
     // required: true,
     // -------------------
     filedList: [
       {
         seal: '',
+        limitNum: 0,
         sealId: '',
         applySealNum: '',
         sealRequiredTextShow: false,

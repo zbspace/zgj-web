@@ -76,6 +76,7 @@
             :label-width="field.options.labelWidth"
             :class="[labelAlign, 'required']"
             :size="field.options.size"
+            v-if="field.options.limitNum === 0"
           >
             <el-input-number
               v-model="obj.applySealNum"
@@ -91,6 +92,17 @@
               class="el-form-item__error"
               v-if="obj.routineSealRequiredTextShow"
               >{{ '请输入' }}</div
+            >
+          </el-form-item>
+          <el-form-item
+            label="印章次数"
+            :label-width="field.options.labelWidth"
+            :class="[labelAlign]"
+            :size="field.options.size"
+            v-else
+          >
+            <span style="color: var(--el-disabled-text-color)"
+              >不限制印章次数</span
             >
           </el-form-item>
         </el-col>
@@ -229,6 +241,7 @@
         applySealNum: 1,
         sealIot: '', // 智能印章
         markSeal: false,
+        limitNum: this.field.options.limitNum, // 是否限制次数
         sealRequiredTextShow: false,
         routineSealRequiredTextShow: false
       }
@@ -263,7 +276,7 @@
           return (this.sealTypes = row)
         }
         this.filedList.splice(this.thisIndex, 1, {
-          // ...this.filedList[this.thisIndex],
+          ...this.filedList[this.thisIndex],
           ...{ seal: row.sealName, sealId: row.sealId, sealIot: row.sealIot }
         })
         this.filedOptions = [...this.filedList]
@@ -285,6 +298,7 @@
           sealId: '',
           applySealNum: 1,
           sealIot: '', // 智能印章
+          limitNum: this.field.options.limitNum, // 是否限制次数
           markSeal: false,
           sealRequiredTextShow: false,
           routineSealRequiredTextShow: false

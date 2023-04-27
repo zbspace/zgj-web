@@ -98,6 +98,13 @@ export const loadExtension = function (app) {
     PEFactory.createInputTextEditor('cardWidth', 'extension.setting.cardWidth')
   )
 
+  PERegister.registerCPEditor(
+    app,
+    'sealName-limitNum',
+    'sealName-limitNum-editor',
+    PEFactory.createInputTextEditor('limitNum', 'extension.setting.limitNum')
+  )
+
   const shadowOptions = [
     { label: 'never', value: 'never' },
     { label: 'hover', value: 'hover' },

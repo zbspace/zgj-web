@@ -5,6 +5,7 @@ export const customFormData = {
       seal: '',
       sealId: '',
       applySealNum: '',
+      limitNum: 0,
       sealRequiredTextShow: false,
       routineSealRequiredTextShow: false
     }
