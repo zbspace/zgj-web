@@ -137,6 +137,7 @@
   import SealApplyService from '@/api/frontDesk/printControl/sealApply'
   import { messageError, messageSuccess } from '@/hooks/useMessage'
   import JyUseSealFiles from '@/components/business/JyUseSealFiles'
+  import { API_BASE_PREFIX } from '@/utils/constants.js'
 
   export default {
     name: 'SealFileWidget',
@@ -220,6 +221,7 @@
     },
     methods: {
       setRequiredTextShow(v) {
+        // eslint-disable-next-line vue/no-mutating-props
         this.field.options.requiredTextShow = v
       },
       getValue() {
@@ -312,7 +314,7 @@
                 fileSizeByte: res.data.fileSizeByte,
                 fileSuffix: res.data.fileSuffix,
                 fileOriginName: res.data.fileOriginName,
-                fileUrl: res.data.fileUrl
+                fileUrl: location.origin + API_BASE_PREFIX + res.data.fileUrl
               })
               this.setRequiredTextShow(false)
             } else {
@@ -321,7 +323,7 @@
                 fileSizeByte: res.data.fileSizeByte,
                 fileSuffix: res.data.fileSuffix,
                 fileOriginName: res.data.fileOriginName,
-                fileUrl: res.data.fileUrl
+                fileUrl: location.origin + API_BASE_PREFIX + res.data.fileUrl
               })
             }
           }

@@ -97,7 +97,7 @@
   import { messageError, messageWarning } from '@/hooks/useMessage'
   import { ref, nextTick, computed } from 'vue'
   import SealApplyService from '@/api/frontDesk/printControl/sealApply'
-  import { API_BASE_PREFIX } from './constants.js'
+  import { API_BASE_PREFIX } from '@/utils/constants.js'
 
   const formData = ref({ fileOriginName: '' })
   const fileList = ref([])
