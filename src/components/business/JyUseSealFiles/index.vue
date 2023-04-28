@@ -97,6 +97,7 @@
   import { messageError, messageWarning } from '@/hooks/useMessage'
   import { ref, nextTick, computed } from 'vue'
   import SealApplyService from '@/api/frontDesk/printControl/sealApply'
+  import { API_BASE_PREFIX } from './constants.js'
 
   const formData = ref({ fileOriginName: '' })
   const fileList = ref([])
@@ -163,6 +164,7 @@
     formData.append('uploadFile', options.file)
     try {
       const res = await SealApplyService.uploadFile(formData)
+      res.data.fileUrl = location.origin + API_BASE_PREFIX + res.data.fileUrl
       fileList.value.push(res.data)
       options.onSuccess()
     } catch (error) {
