@@ -7,15 +7,6 @@ export const ACE_BASE_PATH =
 export const BEAUTIFIER_PATH =
   'https://ks3-cn-beijing.ksyun.com/vform2021/js-beautify/1.14.0/beautifier.min.js'
 
-// 不同业务必填字段集合
-export const mustKeys = [
-  'applyNo',
-  'applyName',
-  'sealName',
-  'fileCount',
-  'fileTypeId'
-]
-
 // 生产需要隐藏的设置属性
 export const NeedHidOptions = [
   // 'labelHidden',

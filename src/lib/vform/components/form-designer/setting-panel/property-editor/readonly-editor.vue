@@ -1,23 +1,40 @@
 <template>
   <el-form-item :label="i18nt('designer.setting.readonly')">
-    <el-switch v-model="optionModel.readonly"></el-switch>
+    <el-switch v-model="optionModel.readonly" :disabled="disabled"></el-switch>
   </el-form-item>
 </template>
 
 <script>
-  import i18n from "@/lib/vform/utils/i18n"
+  import i18n from '@/lib/vform/utils/i18n'
 
   export default {
-    name: "readonly-editor",
+    name: 'ReadonlyEditor',
     mixins: [i18n],
+    inject: ['getPrefabricationFieldList'],
     props: {
       designer: Object,
       selectedWidget: Object,
-      optionModel: Object,
+      optionModel: Object
     },
+    data() {
+      return {
+        list: []
+      }
+    },
+    computed: {
+      disabled() {
+        return this.list.includes(this.optionModel.name)
+      }
+    },
+    methods: {
+      init() {
+        this.list = this.getPrefabricationFieldList() || []
+      }
+    },
+    created() {
+      this.init()
+    }
   }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
