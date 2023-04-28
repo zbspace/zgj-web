@@ -302,6 +302,8 @@
         try {
           const res = await SealApplyService.uploadFile(formData)
           if (['png', 'jpg', 'jpeg'].includes(str) && this.curType === 1) {
+            res.data.fileUrl =
+              location.origin + API_BASE_PREFIX + res.data.fileUrl
             this.imgFiles.push({
               ...res.data
             })
