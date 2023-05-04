@@ -10,6 +10,7 @@
     v-model="isVisible"
     title="用印文件"
     centerBtn
+    :closeOnPressEscape="false"
     @opened="onOpened"
     @close="close"
     @confirm="confirm"

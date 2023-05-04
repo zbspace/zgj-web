@@ -2,7 +2,7 @@
 * @Descripttion index.vue
 * @FileName index.vue
 * @Author zb
-* @LastEditTime 2023-03-09 13:47:26
+ * @LastEditTime: 2023-05-04
 !-->
 <template>
   <el-dialog
@@ -16,6 +16,7 @@
     class="jyDialog"
     @closed="closed"
     :append-to-body="appendToBody"
+    :close-on-press-escape="props.closeOnPressEscape"
   >
     <template #header>
       <div
@@ -213,6 +214,10 @@
     appendToBody: {
       type: Boolean,
       default: false
+    },
+    closeOnPressEscape: {
+      type: Boolean,
+      default: true
     },
     customStyle: {
       type: Object,
