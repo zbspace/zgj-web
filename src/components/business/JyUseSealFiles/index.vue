@@ -3,7 +3,7 @@
 * @fileOriginName index.vue
 * @Author zb
 * @module 用印文件
-* @LastEditTime 2023-03-29 10:08:47
+ * @LastEditTime: 2023-05-04
 !-->
 <template>
   <JyDialog
@@ -56,7 +56,7 @@
         >
           <template #item="{ element: item, index }">
             <div class="file">
-              <img :src="item.fileUrl" alt="" />
+              <img :src="item.fileUrl" style="object-fit: scale-down" />
               <p>
                 <svg class="iconpark-icon" @click="showPreview(index)">
                   <use href="#eye-8o856i26"></use>
@@ -279,11 +279,16 @@
         left: 50%;
         transform: translateX(-50%);
         display: none;
+        margin: 0;
         .iconpark-icon {
           width: 20px;
           height: 20px;
           color: #fff;
           cursor: pointer;
+        }
+
+        .iconpark-icon:nth-of-type(1) {
+          margin-right: 10px;
         }
       }
       &:hover {
