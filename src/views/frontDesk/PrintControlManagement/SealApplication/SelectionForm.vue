@@ -2,7 +2,7 @@
 * @Descripttion 用印申请 选中表单
 * @FileName SelectionForm.vue
 * @Author WalterXsk
-* @LastEditTime 2023-04-12 16:23:36
+ * @LastEditTime: 2023-05-04
 !-->
 <template>
   <div class="Seal-application-Selection-form">
@@ -84,7 +84,7 @@
               <div class="column-list-back">
                 <img
                   class="column-list-back-img active"
-                  :src="item.imageUrl"
+                  :src="`/api${item.imageUrl}`"
                   alt=""
                   v-if="item.imageUrl"
                 />
