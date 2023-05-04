@@ -82,12 +82,20 @@
               :key="index"
             >
               <div class="column-list-back">
-                <img
+                <el-image
                   class="column-list-back-img active"
-                  :src="`/api${item.imageUrl}`"
-                  alt=""
+                  :src="API_BASE_PREFIX + item.imageUrl"
                   v-if="item.imageUrl"
-                />
+                  fit="scale-down"
+                  :preview-src-list="[API_BASE_PREFIX + item.imageUrl]"
+                >
+                  <template #error>
+                    <img
+                      class="image-slot"
+                      src="@/assets/svg/front/sealApply/form_icon.svg"
+                    />
+                  </template>
+                </el-image>
                 <img
                   class="column-list-back-img"
                   v-else
@@ -223,6 +231,7 @@
   import { Search } from '@element-plus/icons-vue'
   import { debounce } from '@/utils/tools'
   import { ElMessage } from 'element-plus'
+  import { API_BASE_PREFIX } from '@/utils/constants.js'
 
   const router = useRouter()
   const showFormDialog = ref(false)
@@ -497,6 +506,16 @@
             align-items: center;
             .column-list-back-img {
               width: 100%;
+              height: 100%;
+
+              .image-slot {
+                width: 100%;
+              }
+
+              :deep(.el-image-viewer__canvas img) {
+                background-color: #ffffff;
+                padding: 20px;
+              }
             }
             .active {
               cursor: pointer;
