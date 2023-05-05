@@ -3,6 +3,7 @@ import frontDeskRoutes from './frontDesk/index.js'
 export default [
   {
     path: '/',
+    name: 'HomePage',
     component: () => import('@/views/layout/index.vue'),
     meta: {
       authRequired: true

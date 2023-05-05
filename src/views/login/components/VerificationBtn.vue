@@ -27,8 +27,13 @@
       default: () => {
         return {}
       }
+    },
+    customClick: {
+      type: Boolean,
+      default: false
     }
   })
+  const emits = defineEmits('customClickFn')
   const state = reactive({
     timer: 60,
     sendMsg: false
@@ -44,6 +49,10 @@
 
   // 发送短信
   const start = () => {
+    if (props.customClick) {
+      emits('customClickFn')
+      return
+    }
     if (state.sendMsg) return
     state.sendMsg = true
     ElMessage.success('短信发送成功')

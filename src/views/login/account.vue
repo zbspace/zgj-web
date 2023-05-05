@@ -353,6 +353,7 @@
     state.scanCodeError = false
   }
 
+  // 选择企业
   const selectOrgan = tenantId => {
     loginApi.chooseOrgan(tenantId).then(async res => {
       setItem('tenantId', tenantId)
@@ -368,9 +369,9 @@
 
   function getWater(isOneDepart) {
     companyApi.getTenantInfo().then(res => {
-      res.data.tenantShowInfo &&
-        res.data.tenantShowInfo.homeLogoPath &&
+      if (res.data.tenantShowInfo && res.data.tenantShowInfo.homeLogoPath) {
         homeLogoUrl.setHomeUrl(res.data.tenantShowInfo.homeLogoPath)
+      }
       if (res.data.tenantShowInfo) {
         setItem('watermark', res.data.tenantShowInfo.pageWatermark)
       } else {
@@ -387,6 +388,8 @@
       }
       if (isOneDepart) {
         accountInfo.setOneDeaprtTitle(res.data && res.data.tenant.tenantTitle)
+      } else {
+        accountInfo.setOneDeaprtTitle()
       }
 
       goHome()
