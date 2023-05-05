@@ -236,12 +236,12 @@
         functionIds.value = functionIds.value.filter(id => !arr.includes(id))
       }
       // 2-2. 所有父节点取消选中
-      const fathers = findFathers(value)
-      if (fathers.length) {
-        functionIds.value = functionIds.value.filter(
-          id => !fathers.map(v => v.id).includes(id)
-        )
-      }
+      // const fathers = findFathers(value)
+      // if (fathers.length) {
+      //   functionIds.value = functionIds.value.filter(
+      //     id => !fathers.map(v => v.id).includes(id)
+      //   )
+      // }
     }
   }
 
