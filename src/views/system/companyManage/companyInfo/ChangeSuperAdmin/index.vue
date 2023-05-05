@@ -108,7 +108,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed, watch } from 'vue'
+  import { ref, reactive, computed } from 'vue'
   import JyDialog from '@/components/common/JyDialog/index2'
   import apis from '@/api/system/companyManagement/companyInfo'
   import userApi from '@/api/system/companyManagement/departmentStaff'
@@ -132,7 +132,6 @@
   const countdownTime = ref(-1)
   const haveChecked = ref(false)
   const openVerify = ref(false)
-  const verify = ref(null)
 
   const props = defineProps({
     visible: {

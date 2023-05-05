@@ -659,8 +659,9 @@
     state.columnData = column
     state.flowMessageId = column.flowMessageId
     state.title = cell.name
-    // if (cell.name === 't-zgj-qyWechat.Copy') {
-    // }
+    if (cell.name === 't-zgj-qyWechat.Copy') {
+      ElMessage.warning(`功能暂未实现，敬请期待`)
+    }
     // showLibraryDialog.value = true
     if (cell.name === 't-zgj-Edit') {
       if (column.flag === '1') {
@@ -673,8 +674,6 @@
         editModleIds.value.modelId = column.modelId
       }
     }
-    // if (cell.name === '复制') {
-    // }
     if (cell.name === 't-zgj-Delete') {
       state.MessageBox.header.data = '提示'
       state.MessageBox.content.data = '确认要删除流程吗？'
