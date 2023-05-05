@@ -2,7 +2,7 @@
 * @Descripttion 印章库
 * @FileName LibraryOfSeals.vue
 * @Author Guanpf
-* @LastEditTime 2023-03-29 17:08:12
+ * @LastEditTime: 2023-05-05
 !-->
 <template>
   <div class="PrintControlManagement-LibraryOfSeals">
@@ -171,7 +171,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
       :height="600"
-      destroy-on-close
+      destroyOnClose
       @confirm="submitLibraryForm"
       @close="closeForm"
     >
@@ -433,7 +433,7 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, ref } from 'vue'
+  import { reactive, onBeforeMount, ref, nextTick } from 'vue'
   import { Paperclip } from '@element-plus/icons-vue'
   import componentsTree from '@/views/components/tree.vue'
   import JyTable from '@/views/components/JyTable.vue'
@@ -466,19 +466,23 @@
   // 新增印章
   const add = () => {
     state.title = '新增'
-    if (vFormLibraryRef.value) {
+    state.form.sealExplain = ''
+    showLibraryDialog.value = true
+    nextTick(() => {
       vFormLibraryRef.value.resetFields()
-    }
-    for (const i in state.form) {
-      state.form[i] = ''
-    }
-    getSealsBizNo()
+      for (const i in state.form) {
+        state.form[i] = ''
+      }
+      state.form.extShow = '1'
+      state.form.shapes = []
+      fileList.value = []
+      getSealsBizNo()
+    })
   }
   const getSealsBizNo = () => {
     api.sealInfoBizNo().then(res => {
       if (res.code === 200) {
         state.form.sealNo = res.data
-        showLibraryDialog.value = true
       }
     })
   }
@@ -528,6 +532,7 @@
     state.searchSelectedKeepUser = []
   }
   const getMsg = val => {
+    console.log(val)
     state.form.sealExplain = val
   }
   const state = reactive({
@@ -556,12 +561,7 @@
       bylawsUrl: '',
       sealExplain: '',
       stampAttachments: '',
-      shapes: [
-        {
-          fileId: '',
-          fileSourceType: '1'
-        }
-      ]
+      shapes: []
     },
     JyElMessageBox: {
       show: false,
@@ -980,9 +980,9 @@
     }
   }
   // 点击关闭详情
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
-  }
+  // function clickClose() {
+  //   state.componentsDocumentsDetails.show = false
+  // }
   const visibleMin = ref(0)
   // 点击表格按钮
   function customClick(row, column, cell, event) {

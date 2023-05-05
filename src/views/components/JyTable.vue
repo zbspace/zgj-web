@@ -558,7 +558,7 @@
       result => {
         // TODO: 审批流程待处理
         state.componentsTable.data =
-          result.data.records || result.data.data.records
+          result.data.records || result.data.data.records || []
         state.componentsPagination.data.amount =
           result.data.total === 0
             ? result.data.total

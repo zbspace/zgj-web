@@ -228,9 +228,9 @@
                         >
                           <el-option
                             v-for="one in remoteUsersList"
-                            :key="one.value"
-                            :label="one.label"
-                            :value="one.value"
+                            :key="one.userId"
+                            :label="one.userName"
+                            :value="one.userId"
                           />
                         </el-select>
                         <div
@@ -265,9 +265,9 @@
                         >
                           <el-option
                             v-for="one in videoUsersList"
-                            :key="one.value"
-                            :label="one.label"
-                            :value="one.value"
+                            :key="one.userId"
+                            :label="one.userName"
+                            :value="one.userId"
                           />
                         </el-select>
                         <div
@@ -1396,6 +1396,7 @@
     ruleFormRef.value.validate(valid => {
       if (valid) {
         const ruleFormParams = JSON.parse(JSON.stringify(ruleForm.value))
+        console.log('--->', ruleFormParams)
         // ruleFormParams.runFaceUser = ruleFormParams.runFaceUser.join(',')
         ruleApi.addOrUpdate(ruleFormParams).then(() => {
           messageSuccess(
@@ -1534,18 +1535,20 @@
     if (kDepartOrPerson.value === 'remoteUsers') {
       remoteUsersList.value = value.map(i => {
         return {
-          label: i.name,
-          value: i.id
+          userName: i.name,
+          userId: i.id
         }
       })
       remoteSelect.value = value
     } else {
+      console.log(value)
       videoUsersList.value = value.map(i => {
         return {
-          label: i.name,
-          value: i.id
+          userName: i.name,
+          userId: i.id
         }
       })
+      console.log('--->', videoUsersList.value)
       videoSelect.value = value
     }
   }
@@ -1563,37 +1566,55 @@
       .ruleView(router.currentRoute.value.query.ruleBusinessId)
       .then(res => {
         const data = res.data
-        data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
-        remoteUsersList.value = data.remoteSealUserList.map(i => {
-          return {
-            label: i.userName,
-            value: i.userId
-          }
-        })
-        remoteSelect.value = data.remoteSealUserList.map(item => {
-          return {
-            id: item.userId,
-            name: item.userName,
-            type: 'user'
-          }
-        })
-        data.videoUsers = data.remoteVideoList.map(i => i.userId)
-        videoUsersList.value = data.remoteVideoList.map(i => {
-          return {
-            label: i.userName,
-            value: i.userId
-          }
-        })
-        delete data.fileTypes
-        videoSelect.value = data.remoteVideoList.map(item => {
-          return {
-            id: item.userId,
-            name: item.userName,
-            type: 'user'
-          }
-        })
+        if (data.remoteSealUserList) {
+          data.remoteUsers = data.remoteSealUserList.map(i => i.userId)
+          remoteUsersList.value = data.remoteSealUserList.map(i => {
+            return {
+              userName: i.userName,
+              userId: i.userId
+            }
+          })
+          remoteSelect.value = data.remoteSealUserList.map(item => {
+            return {
+              id: item.userId,
+              name: item.userName,
+              type: 'user'
+            }
+          })
+          delete data.remoteSealUserList
+        } else {
+          data.remoteUsers = []
+        }
+        if (data.remoteVideoList) {
+          data.videoUsers = data.remoteVideoList.map(i => i.userId)
+          videoUsersList.value = data.remoteVideoList.map(i => {
+            return {
+              userName: i.userName,
+              userId: i.userId
+            }
+          })
+          delete data.fileTypes
+          videoSelect.value = data.remoteVideoList.map(item => {
+            return {
+              id: item.userId,
+              name: item.userName,
+              type: 'user'
+            }
+          })
+          delete data.remoteVideoList
+        } else {
+          data.videoUsers = []
+        }
+
         ruleBusinessNo = data.ruleBusinessNo
+        console.log(data.fileTypeList)
         data.fileTypeIds = data.fileTypeList.map(v => v.id)
+        data.fileTypeList = data.fileTypeList.map(v => {
+          return {
+            fileTypeId: v.id,
+            includeChild: v.includeChild
+          }
+        })
         ruleForm.value = data
         documentTypeSelected.value = data.fileTypeList
       })
