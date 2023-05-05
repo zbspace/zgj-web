@@ -11,6 +11,7 @@ export default [
     children: [
       {
         path: '',
+        name: 'Home',
         redirect: '/frontDesk/home'
       },
       frontDeskRoutes,

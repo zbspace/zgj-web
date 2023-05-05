@@ -53,6 +53,10 @@
       emits('customClickFn')
       return
     }
+    countDown()
+  }
+
+  const countDown = () => {
     if (state.sendMsg) return
     state.sendMsg = true
     ElMessage.success('短信发送成功')
@@ -65,6 +69,10 @@
       state.timer--
     }, 1000)
   }
+
+  defineExpose({
+    countDown
+  })
 </script>
 
 <style scoped lang="scss">

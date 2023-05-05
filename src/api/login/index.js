@@ -20,6 +20,14 @@ api.sendVerificationCode = data => {
   })
 }
 
+api.byVerifiableCode = data => {
+  return request({
+    method: 'POST',
+    url: '/login/byVerifiableCode',
+    data
+  })
+}
+
 // 获取登录用户企业列表
 api.tenantInfoList = params => {
   return request({
