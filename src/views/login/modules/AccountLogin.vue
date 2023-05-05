@@ -61,7 +61,11 @@
                   clearable
                 />
 
-                <VerificationBtn :customStyle="customStyle" />
+                <VerificationBtn
+                  :customStyle="customStyle"
+                  :customClick="true"
+                  @customClickFn="customClick"
+                />
               </div>
             </el-form-item>
           </el-form>
@@ -454,6 +458,7 @@
           return
         }
         loginLoading.value = false
+        openVerify.value = false
         // 存储登录用户信息
         accountInfo.setToken({
           token: loginResult.data.tokenValue
@@ -468,6 +473,82 @@
         } else {
           accountInfo.removeLoginStatus()
         }
+
+        // 获取登录列表
+        loginApi.tenantInfoList().then(async departListResult => {
+          setItem('departLists', JSON.stringify(departListResult.data))
+          const index = departListResult.data.findIndex(
+            i => i.tenantId === loginResult.data.lastTenantId
+          )
+          if (index === -1) {
+            if (departListResult.data && departListResult.data.length === 1) {
+              // 初始化 且 一个企业
+              loginApi
+                .chooseOrgan(departListResult.data[0].tenantId)
+                .then(async () => {
+                  setItem('tenantId', departListResult.data[0].tenantId)
+                  const redirect = getRedirect()
+                  menusInfoStore.currentType =
+                    redirect.indexOf('/system') > -1 ? 'system' : 'business'
+                  await menusInfoStore.setMenus()
+                  getUserLoginInfo(true)
+                })
+            } else {
+              // 进入列表选择页面
+              emits('update:modelValue', true)
+              emits('update:departLists', departListResult.data)
+            }
+          } else {
+            // 已经选择企业
+            const redirect = getRedirect()
+            menusInfoStore.currentType =
+              redirect.indexOf('/system') > -1 ? 'system' : 'business'
+            await menusInfoStore.setMenus()
+
+            setItem('tenantId', loginResult.data.lastTenantId)
+            if (departListResult.data && departListResult.data.length === 1) {
+              getUserLoginInfo(true)
+            } else {
+              getUserLoginInfo(false)
+            }
+          }
+        })
+      },
+      () => {
+        loginLoading.value = false
+      }
+    )
+  }
+
+  const loginByCodeFn = attr => {
+    let params = {
+      accountNo: accountLoginForm.accountNo,
+      accountPass: md5(accountLoginForm.accountPass)
+    }
+    if (attr) {
+      params = {
+        accountNo: accountLoginForm.accountNo,
+        accountPass: md5(accountLoginForm.accountPass),
+        captchaToken: attr.token,
+        captcha: attr.pointJson,
+        secretKey: attr.secretKey
+      }
+    }
+    // 验证码登录
+    loginLoading.value = true
+    loginApi.sendVerificationCode(params).then(
+      loginResult => {
+        if (loginResult.code === 210600) {
+          loginLoading.value = false
+          openVerify.value = true
+          return
+        }
+        loginLoading.value = false
+        openVerify.value = false
+        // 存储登录用户信息
+        accountInfo.setToken({
+          token: loginResult.data.tokenValue
+        })
 
         // 获取登录列表
         loginApi.tenantInfoList().then(async departListResult => {
@@ -542,7 +623,12 @@
 
     formRef.value.validate(async valid => {
       if (valid) {
-        loginFn()
+        if (!state.activeCodeLogin) {
+          // ① 账号密码登录
+          loginFn()
+        } else {
+          // ② 验证码登录 - 删除
+        }
       }
     })
   }
@@ -554,8 +640,17 @@
   const customStyle = {
     height: '48px'
   }
+
+  const customClick = () => {
+    loginformCodeRef.value.validateField('inputPhone', async valid => {
+      if (valid) {
+        openVerify.value = true
+      }
+    })
+  }
   defineExpose({
-    loginFn
+    loginFn,
+    loginByCodeFn
   })
 </script>
 

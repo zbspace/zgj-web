@@ -17,12 +17,14 @@
               alt=""
               height="37"
               v-show="!homeLogoUrl.homeUrl"
+              style="object-fit: fill; width: 115px; height: 37px"
             />
             <img
               :src="homeLogoUrl.homeUrl"
               alt=""
               height="37"
               v-show="homeLogoUrl.homeUrl"
+              style="object-fit: fill; width: 115px; height: 37px"
             />
           </span>
         </router-link>
@@ -543,10 +545,10 @@
         accountInfoStore.setToken(null)
         accountInfoStore.setUserInfo(null)
         accountInfoStore.setUserDepartName(null)
+        homeLogoUrl.setHomeUrl(null)
         removeItem('tenantId')
         removeItem('menusInfo')
         removeItem('departLists')
-        removeItem('homeLogoPath')
         // 跳转到登录页
         ElMessage.success('退出登录！')
         router.replace({

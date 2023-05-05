@@ -1,7 +1,7 @@
 <template>
   <div class="app" id="app">
     <router-view v-slot="{ Component }">
-      <keep-alive exclude="LoginAccount">
+      <keep-alive exclude="LoginAccount,HomePage">
         <component :is="Component" />
       </keep-alive>
     </router-view>

@@ -11,6 +11,15 @@ api.loginByAccount = data => {
   })
 }
 
+// 验证码登录
+api.sendVerificationCode = data => {
+  return request({
+    method: 'POST',
+    url: '/login/sendVerificationCode',
+    data
+  })
+}
+
 // 获取登录用户企业列表
 api.tenantInfoList = params => {
   return request({
