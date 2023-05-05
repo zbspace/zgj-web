@@ -1,9 +1,9 @@
 <template>
-  <el-form-item label="限制印章次数">
+  <el-form-item label="不限制印章次数">
     <el-switch
       v-model="optionModel.limitNum"
-      :active-value="1"
-      :inactive-value="0"
+      :active-value="0"
+      :inactive-value="1"
     ></el-switch>
   </el-form-item>
 </template>

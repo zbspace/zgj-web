@@ -76,7 +76,7 @@
             :label-width="field.options.labelWidth"
             :class="[labelAlign, 'required']"
             :size="field.options.size"
-            v-if="field.options.limitNum === 0"
+            v-if="field.options.limitNum === 1"
           >
             <el-input-number
               v-model="obj.applySealNum"
