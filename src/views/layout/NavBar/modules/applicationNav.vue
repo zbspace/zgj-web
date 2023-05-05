@@ -5,7 +5,7 @@
 * @LastEditTime 2023-03-09 14:09:32
 !-->
 <template>
-  <div class="application-drown">
+  <el-button text class="application-drown" style="width: 28px; height: 28px">
     <el-popover
       placement="bottom"
       :width="340"
@@ -55,7 +55,7 @@
         </div>
       </div>
     </el-popover>
-  </div>
+  </el-button>
 </template>
 
 <script setup>
@@ -131,7 +131,7 @@
 <style lang="scss" scoped>
   .application-drown {
     overflow: hidden;
-    margin: 0 10px;
+    margin: 0 6px;
     :deep(.el-only-child__content) {
       display: flex;
       align-items: center;

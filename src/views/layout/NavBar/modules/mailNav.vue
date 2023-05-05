@@ -5,168 +5,174 @@
 * @LastEditTime 2023-03-09 14:10:11
 !-->
 <template>
-  <div style="margin: 0 12px" ref="dropdownMailRef">
-    <el-badge :value="5" :hidden="hiddenBadge">
-      <svg
-        @click="showMailPop = !showMailPop"
-        class="iconpark-icon"
-        :style="
-          !showMailPop && layoutStore.topbar === 'light'
-            ? ''
-            : !showMailPop && layoutStore.topbar === 'dark'
-            ? 'color: #fff'
-            : 'color: var(--jy-primary-6)'
-        "
+  <div ref="dropdownMailRef">
+    <el-button style="width: 28px; height: 28px; margin: 0 6px" text>
+      <el-badge :value="5" :hidden="hiddenBadge">
+        <svg
+          @click="showMailPop = !showMailPop"
+          class="iconpark-icon"
+          :style="
+            !showMailPop && layoutStore.topbar === 'light'
+              ? ''
+              : !showMailPop && layoutStore.topbar === 'dark'
+              ? 'color: #fff'
+              : 'color: var(--jy-primary-6)'
+          "
+        >
+          <use href="#email"></use>
+        </svg>
+      </el-badge>
+
+      <!-- 抽屉 -->
+      <el-drawer
+        v-model="showMailPop"
+        title=""
+        :with-header="false"
+        :append-to-body="true"
+        :modal="false"
+        class="drawer-class"
       >
-        <use href="#email"></use>
-      </svg>
-    </el-badge>
-
-    <!-- 抽屉 -->
-    <el-drawer
-      v-model="showMailPop"
-      title=""
-      :with-header="false"
-      :append-to-body="true"
-      :modal="false"
-      class="drawer-class"
-    >
-      <!-- header -->
-      <div class="nav-msg">
-        <div class="msg-title">
-          <div>{{ $t('t-zgj-message.Title') }}</div>
-          <div @click="closeMailPop" style="cursor: pointer">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M14 14L34 34"
-                stroke="#999"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M14 34L34 14"
-                stroke="#999"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-        </div>
-
-        <!-- <div class="msg-content" :style="{ 'max-height': maxHeight + 'px' }"> -->
-        <div class="msg-content">
-          <!-- 待我确认 -->
-          <div>
-            <div class="content-title">
-              <div class="title">{{ $t('t-to-be-confirm') }}</div>
-              <div class="view-more"
-                >{{ $t('t-view-more')
-                }}<img src="@/assets/images/navbar/nav_msg_more.svg"
-              /></div>
-            </div>
-
-            <div class="content-list user-select">
-              <div
-                class="column"
-                v-for="(item, index) in toBeConfirmedList"
-                :key="index"
+        <!-- header -->
+        <div class="nav-msg">
+          <div class="msg-title">
+            <div>{{ $t('t-zgj-message.Title') }}</div>
+            <div @click="closeMailPop" style="cursor: pointer">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <div class="msg">{{ item.content }}</div>
-                <div class="tag">
-                  <el-tag type="warning" size="small">{{ item.label }}</el-tag>
-                  <el-tag type="info" size="small" class="t">{{
-                    item.depart
-                  }}</el-tag>
-                  <el-tag type="info" size="small">{{ item.person }}</el-tag>
-                </div>
-                <div class="date">
-                  <div class="left">{{ item.dateTime }}</div>
-                  <div class="custom-button user-select">{{
-                    $t('t-zgj-confirm')
-                  }}</div>
+                <path
+                  d="M14 14L34 34"
+                  stroke="#999"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M14 34L34 14"
+                  stroke="#999"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <!-- <div class="msg-content" :style="{ 'max-height': maxHeight + 'px' }"> -->
+          <div class="msg-content">
+            <!-- 待我确认 -->
+            <div>
+              <div class="content-title">
+                <div class="title">{{ $t('t-to-be-confirm') }}</div>
+                <div class="view-more"
+                  >{{ $t('t-view-more')
+                  }}<img src="@/assets/images/navbar/nav_msg_more.svg"
+                /></div>
+              </div>
+
+              <div class="content-list user-select">
+                <div
+                  class="column"
+                  v-for="(item, index) in toBeConfirmedList"
+                  :key="index"
+                >
+                  <div class="msg">{{ item.content }}</div>
+                  <div class="tag">
+                    <el-tag type="warning" size="small">{{
+                      item.label
+                    }}</el-tag>
+                    <el-tag type="info" size="small" class="t">{{
+                      item.depart
+                    }}</el-tag>
+                    <el-tag type="info" size="small">{{ item.person }}</el-tag>
+                  </div>
+                  <div class="date">
+                    <div class="left">{{ item.dateTime }}</div>
+                    <div class="custom-button user-select">{{
+                      $t('t-zgj-confirm')
+                    }}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- 待我审批 -->
-          <div>
-            <div class="content-title">
-              <div class="title">{{ $t('t-to-be-approval') }}</div>
-              <div class="view-more"
-                >{{ $t('t-view-more')
-                }}<img src="@/assets/images/navbar/nav_msg_more.svg"
-              /></div>
-            </div>
+            <!-- 待我审批 -->
+            <div>
+              <div class="content-title">
+                <div class="title">{{ $t('t-to-be-approval') }}</div>
+                <div class="view-more"
+                  >{{ $t('t-view-more')
+                  }}<img src="@/assets/images/navbar/nav_msg_more.svg"
+                /></div>
+              </div>
 
-            <div class="content-list user-select">
-              <div
-                class="column"
-                v-for="(item, index) in toBeConfirmedList"
-                :key="index"
-              >
-                <div class="msg">{{ item.content }}</div>
-                <div class="tag">
-                  <el-tag size="small">{{ item.label }}</el-tag>
-                  <el-tag type="info" size="small" class="t">{{
-                    item.depart
-                  }}</el-tag>
-                  <el-tag type="info" size="small">{{ item.person }}</el-tag>
-                </div>
-                <div class="date">
-                  <div class="left">{{ item.dateTime }}</div>
-                  <div class="custom-button user-select">{{
-                    $t('t-zgj-Approval')
-                  }}</div>
+              <div class="content-list user-select">
+                <div
+                  class="column"
+                  v-for="(item, index) in toBeConfirmedList"
+                  :key="index"
+                >
+                  <div class="msg">{{ item.content }}</div>
+                  <div class="tag">
+                    <el-tag size="small">{{ item.label }}</el-tag>
+                    <el-tag type="info" size="small" class="t">{{
+                      item.depart
+                    }}</el-tag>
+                    <el-tag type="info" size="small">{{ item.person }}</el-tag>
+                  </div>
+                  <div class="date">
+                    <div class="left">{{ item.dateTime }}</div>
+                    <div class="custom-button user-select">{{
+                      $t('t-zgj-Approval')
+                    }}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- 待我处理 -->
-          <div>
-            <div class="content-title">
-              <div class="title">{{ $t('t-to-be-handle') }}</div>
-              <div class="view-more"
-                >{{ $t('t-view-more')
-                }}<img src="@/assets/images/navbar/nav_msg_more.svg"
-              /></div>
-            </div>
+            <!-- 待我处理 -->
+            <div>
+              <div class="content-title">
+                <div class="title">{{ $t('t-to-be-handle') }}</div>
+                <div class="view-more"
+                  >{{ $t('t-view-more')
+                  }}<img src="@/assets/images/navbar/nav_msg_more.svg"
+                /></div>
+              </div>
 
-            <div class="content-list user-select">
-              <div
-                class="column"
-                v-for="(item, index) in toBeConfirmedList"
-                :key="index"
-              >
-                <div class="msg">{{ item.content }}</div>
-                <div class="tag">
-                  <el-tag type="warning" size="small">{{ item.label }}</el-tag>
-                  <el-tag type="info" size="small" class="t">{{
-                    item.depart
-                  }}</el-tag>
-                  <el-tag type="info" size="small">{{ item.person }}</el-tag>
-                </div>
-                <div class="date">
-                  <div class="left">{{ item.dateTime }}</div>
-                  <div class="custom-button user-select">{{
-                    $t('t-zgj-Handle')
-                  }}</div>
+              <div class="content-list user-select">
+                <div
+                  class="column"
+                  v-for="(item, index) in toBeConfirmedList"
+                  :key="index"
+                >
+                  <div class="msg">{{ item.content }}</div>
+                  <div class="tag">
+                    <el-tag type="warning" size="small">{{
+                      item.label
+                    }}</el-tag>
+                    <el-tag type="info" size="small" class="t">{{
+                      item.depart
+                    }}</el-tag>
+                    <el-tag type="info" size="small">{{ item.person }}</el-tag>
+                  </div>
+                  <div class="date">
+                    <div class="left">{{ item.dateTime }}</div>
+                    <div class="custom-button user-select">{{
+                      $t('t-zgj-Handle')
+                    }}</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </el-drawer>
+      </el-drawer>
+    </el-button>
   </div>
 </template>
 
