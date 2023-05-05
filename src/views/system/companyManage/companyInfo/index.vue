@@ -27,6 +27,7 @@
   import Top from './top'
   import Centers from './center'
   import Bottom from './bottom'
+  import { API_BASE_PREFIX } from '@/utils/constants'
   import componentsLayout from '@/views/components/Layout.vue'
   import apis from '@/api/system/companyManagement/companyInfo'
 
@@ -44,6 +45,14 @@
         tenant.value = res.data.tenant
         tenantBaseInfo.value = res.data.tenantBaseInfo
         tenantAdminInfo.value = res.data.tenantAdminInfo
+        res.data.tenantShowInfo.homeLogoPath = res.data.tenantShowInfo
+          .homeLogoPath
+          ? API_BASE_PREFIX + res.data.tenantShowInfo.homeLogoPath
+          : ''
+        res.data.tenantShowInfo.loginLogoPath = res.data.tenantShowInfo
+          .loginLogoPath
+          ? API_BASE_PREFIX + res.data.tenantShowInfo.loginLogoPath
+          : ''
         tenantShowInfo.value = res.data.tenantShowInfo
         res.data.passwordPolicy.passwordRules = []
         if (res.data.passwordPolicy.passUppercase === '1') {

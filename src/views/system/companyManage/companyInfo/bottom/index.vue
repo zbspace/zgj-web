@@ -80,6 +80,7 @@
   import { ElMessage } from 'element-plus'
   import apis from '@/api/system/companyManagement/companyInfo'
   import { setWaterMark, removeWatermark } from '@/utils/water'
+  import { API_BASE_PREFIX } from '@/utils/constants'
   import dayjs from 'dayjs'
   import { messageError } from '@/hooks/useMessage'
   import { useHomeLogoUrl } from '@/store/logo'
@@ -154,11 +155,11 @@
   }
 
   const onSuccess1 = (response, uploadFile) => {
-    shapeIcon1.value = response.data
+    shapeIcon1.value = API_BASE_PREFIX + response.data
     homeLogoUrl.setHomeUrl(response.data)
   }
   const onSuccess2 = (response, uploadFile) => {
-    shapeIcon2.value = response.data
+    shapeIcon2.value = API_BASE_PREFIX + response.data
   }
   const onError = (error, uploadFile, uploadFiles) => {
     messageError(error)

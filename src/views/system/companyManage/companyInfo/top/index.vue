@@ -8,7 +8,7 @@
           style="object-fit: fill; width: 52px; height: 28px"
         />
         <img
-          :src="homeLogoUrl.homeUrl"
+          :src="API_BASE_PREFIX + homeLogoUrl.homeUrl"
           v-show="homeLogoUrl.homeUrl"
           style="object-fit: fill; width: 52px; height: 28px"
         />
@@ -36,6 +36,7 @@
   import { ElMessage } from 'element-plus'
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { useHomeLogoUrl } from '@/store/logo'
+  import { API_BASE_PREFIX } from '@/utils/constants'
   const homeLogoUrl = useHomeLogoUrl()
   const accountInfo = useAccountInfoStore()
   const emit = defineEmits(['reloadData'])
