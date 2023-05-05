@@ -7,17 +7,35 @@
 <template>
   <div>
     <el-dialog
+      :show-close="false"
       v-model="isVisible"
       :width="width"
       destroy-on-close
       @closed="closed"
       @opened="opened"
       class="jy-dialog"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       :class="[`mode-${props.mode}`, props.class]"
       center
       :append-to-body="appendToBody"
     >
       <template #header>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="closeIcon"
+          @click="closed"
+        >
+          <path
+            d="M10 7.83365L17.5837 0.25L19.75 2.41632L12.1663 9.99998L19.75 17.5836L17.5837 19.75L10 12.1663L2.41633 19.75L0.25 17.5836L7.83367 9.99998L0.25 2.41632L2.41633 0.25L10 7.83365Z"
+            fill="black"
+            fill-opacity="0.25"
+          />
+        </svg>
         <slot name="title">
           {{ props.title }}
         </slot>
@@ -89,6 +107,7 @@
 
   const closed = () => {
     emit('on-closed')
+    isVisible.value = false
   }
 
   const opened = () => {
@@ -98,6 +117,15 @@
 
 <style lang="scss">
   .jy-dialog {
+    position: relative;
+
+    .closeIcon {
+      position: absolute;
+      right: 28px;
+      top: 28px;
+      cursor: pointer;
+    }
+
     &.mode-0 {
       .el-dialog__header {
         padding-top: 40px;

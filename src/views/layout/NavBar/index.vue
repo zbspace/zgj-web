@@ -40,6 +40,7 @@
           trigger="hover"
           :teleported="false"
           @command="chooseDepart"
+          @visible-change="visibleChange"
           :disabled="state.departLists.length < 2"
           v-show="state.departLists.length > 1"
           style="margin: auto; height: 32px"
@@ -51,7 +52,10 @@
                 class="el-icon--right"
                 v-if="state.departLists.length > 1"
               >
-                <arrow-down />
+                <arrow-down
+                  style="transition: all 0.3s"
+                  :style="showDept ? 'transform: rotate(180deg);' : ''"
+                />
               </el-icon>
             </el-button>
           </span>
@@ -388,6 +392,7 @@
   const languageStore = useLanguageStore()
   const layoutStore = useLayoutStore()
   const route = useRoute()
+  const showDept = ref(false)
   const state = reactive({
     application: {
       CurrentSystemType: 'business' // business / system
@@ -433,6 +438,10 @@
     state.JyElMessageBox.content.data =
       '是否确认切换企业，切换企业后未保存的数据将被清除，请谨慎操作'
     state.JyElMessageBox.show = true
+  }
+
+  const visibleChange = e => {
+    showDept.value = e
   }
 
   const getRedirect = () => {
