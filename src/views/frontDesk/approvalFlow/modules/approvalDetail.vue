@@ -15,7 +15,7 @@
     :confirmText="$t('t-zgj-operation.submit')"
     :concelText="$t('t-zgj-operation.cancel')"
     :height="650"
-    :width="900"
+    :width="930"
     :footer="false"
     @close="closeDialog"
     :noScroll="false"
@@ -967,7 +967,7 @@
 <style lang="scss" scoped>
   .el-scrollbar-nomal {
     height: calc(100% - 200px);
-    padding: 10px 24px 60px 0;
+    padding: 10px 24px 68px 0;
   }
   .el-scrollbar-add {
     height: calc(100% - 260px);
@@ -1080,5 +1080,10 @@
         }
       }
     }
+  }
+</style>
+<style>
+  .el-range-editor.is-disabled input {
+    background-color: transparent;
   }
 </style>

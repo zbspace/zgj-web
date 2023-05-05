@@ -20,7 +20,7 @@
               style="object-fit: fill; width: 115px; height: 37px"
             />
             <img
-              :src="homeLogoUrl.homeUrl"
+              :src="API_BASE_PREFIX + homeLogoUrl.homeUrl"
               alt=""
               height="37"
               v-show="homeLogoUrl.homeUrl"
@@ -386,6 +386,7 @@
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'
   import { ElMessage } from 'element-plus'
+  import { API_BASE_PREFIX } from '@/utils/constants'
   import { getItem, setItem, removeItem } from '@/utils/storage'
   import { useHomeLogoUrl } from '@/store/logo'
   const homeLogoUrl = useHomeLogoUrl()

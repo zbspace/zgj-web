@@ -1264,7 +1264,7 @@ export const en = {
     'Super Administrator account cannot be disabled.',
   't-zgj-person.prohibitedTips':
     'Login prohibited account cannot log in normally even if the account and password are correct, are you sure to prohibit the login?',
-  't-zgj-person.PleaseAccount': 'Please enter account/mobile no.',
+  't-zgj-person.PleaseAccount': 'Please enter account',
   't-zgj-person.PleaseMobile': 'Please enter mobile no.',
   't-zgj-person.JobNumber': 'Job No.',
   't-zgj-person.Email': 'Email',

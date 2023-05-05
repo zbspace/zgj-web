@@ -1171,7 +1171,7 @@ export const ch = {
   't-zgj-person.SuperAdminDisabled': '不能禁止超级管理员账号',
   't-zgj-person.prohibitedTips':
     '被禁止登录的帐号在帐号密码正确的情况下也无法正常登录系统，确定要禁止其登录吗？',
-  't-zgj-person.PleaseAccount': '请输入账号/手机号码',
+  't-zgj-person.PleaseAccount': '请输入账号',
   't-zgj-person.PleaseMobile': '请输入手机号码',
   't-zgj-person.JobNumber': '工号',
   't-zgj-person.Email': '邮箱',

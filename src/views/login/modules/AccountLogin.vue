@@ -32,12 +32,13 @@
           >
             <el-form-item prop="inputPhone" class="l-inpt">
               <el-input
+                maxlength="11"
                 v-model="codeLoginForm.inputPhone"
                 :placeholder="state.placeholderPhone"
                 size="large"
                 clearable
               >
-                <template #prepend>
+                <!-- <template #prepend>
                   <el-select
                     v-model="state.select"
                     placeholder="+86"
@@ -46,7 +47,7 @@
                   >
                     <el-option label="+86" value="1" />
                   </el-select>
-                </template>
+                </template> -->
               </el-input>
             </el-form-item>
 
