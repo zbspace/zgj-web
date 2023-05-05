@@ -2,7 +2,7 @@
 * @Descripttion index.vue
 * @FileName index.vue
 * @Author zb
- * @LastEditTime: 2023-05-04
+ * @LastEditTime: 2023-05-05
 !-->
 <template>
   <el-dialog
@@ -217,7 +217,7 @@
     },
     closeOnPressEscape: {
       type: Boolean,
-      default: true
+      default: false
     },
     customStyle: {
       type: Object,
