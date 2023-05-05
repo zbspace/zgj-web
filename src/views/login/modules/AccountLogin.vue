@@ -523,13 +523,13 @@
 
   const loginByCodeFn = attr => {
     let params = {
-      accountNo: accountLoginForm.accountNo,
-      accountPass: md5(accountLoginForm.accountPass)
+      inputPhone: codeLoginForm.inputPhone,
+      inputCode: md5(codeLoginForm.inputCode)
     }
     if (attr) {
       params = {
-        accountNo: accountLoginForm.accountNo,
-        accountPass: md5(accountLoginForm.accountPass),
+        inputPhone: codeLoginForm.inputPhone,
+        inputCode: md5(codeLoginForm.inputCode),
         captchaToken: attr.token,
         captcha: attr.pointJson,
         secretKey: attr.secretKey

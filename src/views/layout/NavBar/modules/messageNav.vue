@@ -5,18 +5,19 @@
 * @LastEditTime 2023-03-09 14:10:33
 !-->
 <template>
-  <div class="message-container">
-    <el-popover
-      placement="bottom"
-      :width="442"
-      trigger="click"
-      :show-arrow="false"
-      @before-enter="showPop"
-      @after-leave="hidePop"
-    >
-      <template #reference>
-        <el-badge is-dot class="badge-item" :hidden="hiddenBadge">
-          <!-- <el-button
+  <div ref="dropdownNotifyRef">
+    <el-button class="message-container" style="width: 28px; height: 28px" text>
+      <el-popover
+        placement="bottom"
+        :width="442"
+        trigger="click"
+        :show-arrow="false"
+        @before-enter="showPop"
+        @after-leave="hidePop"
+      >
+        <template #reference>
+          <el-badge is-dot class="badge-item" :hidden="hiddenBadge">
+            <!-- <el-button
             class="btn-drown"
             text
             @click="showNotifyPop = !showNotifyPop"
@@ -35,65 +36,66 @@
               class="position-absolute translate-middle p-1 bg-danger border border-light rounded-circle"
             ></span>
           </el-button> -->
-          <svg
-            class="iconpark-icon"
-            @click="showNotifyPop = !showNotifyPop"
-            :style="
-              !showNotifyPop && layoutStore.topbar === 'light'
-                ? ''
-                : !showNotifyPop && layoutStore.topbar === 'dark'
-                ? 'color: #fff'
-                : 'color: var(--jy-primary-6)'
-            "
-          >
-            <use href="#messagetip"></use>
-          </svg>
-        </el-badge>
-      </template>
-
-      <!-- tabs -->
-      <div class="nav-natify-tab">
-        <VTabs
-          :active="active"
-          :label="tabsLabel"
-          @update:active="active = $event"
-          style="padding-left: 24px"
-          :hiddenBadge="false"
-        ></VTabs>
-
-        <div class="natify-content">
-          <div v-if="active === tabsLabel[0].value" class="column">
-            <!-- content -->
-            <div
-              class="item"
-              :class="item.isRead ? '' : 'diot'"
-              v-for="(item, index) in listMsg"
-              :key="index"
+            <svg
+              class="iconpark-icon"
+              @click="showNotifyPop = !showNotifyPop"
+              :style="
+                !showNotifyPop && layoutStore.topbar === 'light'
+                  ? ''
+                  : !showNotifyPop && layoutStore.topbar === 'dark'
+                  ? 'color: #fff'
+                  : 'color: var(--jy-primary-6)'
+              "
             >
-              <div class="item-msg">{{ item.content }}</div>
-              <div class="item-time">{{ item.date }}</div>
+              <use href="#messagetip"></use>
+            </svg>
+          </el-badge>
+        </template>
+
+        <!-- tabs -->
+        <div class="nav-natify-tab">
+          <VTabs
+            :active="active"
+            :label="tabsLabel"
+            @update:active="active = $event"
+            style="padding-left: 24px"
+            :hiddenBadge="false"
+          ></VTabs>
+
+          <div class="natify-content">
+            <div v-if="active === tabsLabel[0].value" class="column">
+              <!-- content -->
+              <div
+                class="item"
+                :class="item.isRead ? '' : 'diot'"
+                v-for="(item, index) in listMsg"
+                :key="index"
+              >
+                <div class="item-msg">{{ item.content }}</div>
+                <div class="item-time">{{ item.date }}</div>
+              </div>
+            </div>
+            <div v-if="active === tabsLabel[1].value" class="column">
+              <!-- content -->
+              <div
+                class="item"
+                :class="item.isRead ? '' : 'diot'"
+                v-for="(item, index) in listNoticeMsg"
+                :key="index"
+              >
+                <div class="item-msg">{{ item.content }}</div>
+                <div class="item-time">{{ item.date }}</div>
+              </div>
             </div>
           </div>
-          <div v-if="active === tabsLabel[1].value" class="column">
-            <!-- content -->
-            <div
-              class="item"
-              :class="item.isRead ? '' : 'diot'"
-              v-for="(item, index) in listNoticeMsg"
-              :key="index"
-            >
-              <div class="item-msg">{{ item.content }}</div>
-              <div class="item-time">{{ item.date }}</div>
-            </div>
+
+          <div class="natify-footer">
+            <div>{{ $t('t-zgj-index.tab.Markread') }}</div>
+            <div>{{ $t('t-view-all-notify') }}</div>
           </div>
         </div>
-
-        <div class="natify-footer">
-          <div>{{ $t('t-zgj-index.tab.Markread') }}</div>
-          <div>{{ $t('t-view-all-notify') }}</div>
-        </div>
-      </div>
-    </el-popover>
+      </el-popover>
+    </el-button>
   </div>
 </template>
 
@@ -189,7 +191,7 @@
 
 <style lang="scss" scoped>
   .message-container {
-    margin: 0 10px;
+    margin: 0 6px;
 
     .badge-item {
       display: flex;

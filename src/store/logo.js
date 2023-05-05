@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { API_BASE_PREFIX } from '@/utils/constants'
 export const useHomeLogoUrl = defineStore({
   id: 'homeLogoPath',
   state: () => {
@@ -9,7 +10,7 @@ export const useHomeLogoUrl = defineStore({
   getters: {},
   actions: {
     setHomeUrl(url) {
-      this.homeUrl = url || ''
+      this.homeUrl = url ? API_BASE_PREFIX + url : ''
     }
   },
   // 开启数据缓存

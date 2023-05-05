@@ -90,7 +90,7 @@
       <div class="nav-right">
         <!-- 系统 -->
         <div class="ap-sys">
-          <div class="ap-sys-but" @click="changeSystemHome">
+          <el-button class="ap-sys-but" @click="changeSystemHome" text>
             <div v-if="menusInfoStore.currentType === 'business'">
               <svg class="iconpark-icon">
                 <use href="#xitonghoutai"></use>
@@ -104,7 +104,7 @@
               </svg>
               <span>{{ $t('t-front-platform') }}</span>
             </div>
-          </div>
+          </el-button>
         </div>
 
         <!-- 帮助 -->
@@ -160,6 +160,7 @@
                 </div>
                 <svg
                   class="iconpark-icon"
+                  style="transition: all 0.3s"
                   :style="
                     !showUserInfoPop && layoutStore.topbar === 'light'
                       ? ''
@@ -727,7 +728,7 @@
       .btn-ghost {
         width: 28px;
         height: 28px;
-        margin: 0 8px;
+        margin: 0 6px;
         .svg-img {
           overflow: hidden;
           img {
