@@ -295,7 +295,9 @@
       // 如果是设计器，且内容为空，需要加载指定模板
       nextTick(() => {
         if (!props.mode && !widgetList.length) {
-          vFormRef.value.setFormJson(templateList.value[0].jsonUrl)
+          vFormRef.value.setFormJson(
+            JSON.parse(JSON.stringify(templateList.value[0].jsonUrl))
+          )
         }
       })
     } catch (error) {
