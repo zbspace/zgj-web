@@ -58,7 +58,7 @@
       :columnData="state.componentsAddForm.data"
       @close="state.componentsAddForm.dialogVisible = false"
       @reloadData="reloadData"
-      :optionData="optionData"
+      :optionData="state.componentsTree.data"
     />
     <!-- 弹窗提示 -->
     <JyElMessageBox

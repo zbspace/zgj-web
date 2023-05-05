@@ -495,10 +495,20 @@
             i => i.ruleBusinessId
           )
         })
-        .then(() => {
-          messageSuccess('删除成功')
-          table.value.reloadData()
-        })
+        .then(
+          () => {
+            messageSuccess('删除成功')
+            table.value.reloadData()
+          },
+          err => {
+            if (err.data) {
+              state.showToastDialogContent.show = true
+              state.showToastDialogContent.header = '删除失败'
+              state.showToastDialogContent.content = err.msg
+              state.showToastDialogContent.selectionTableData.data = err.data
+            }
+          }
+        )
         .finally(() => {
           state.showToastDialog.show = false
         })
@@ -517,6 +527,9 @@
           err => {
             if (err.data) {
               state.showToastDialogContent.show = true
+              state.showToastDialogContent.header = '启用失败'
+              state.showToastDialogContent.content = err.msg
+              state.showToastDialogContent.selectionTableData.data = err.data
             }
           }
         )
@@ -539,6 +552,9 @@
             console.log(err)
             if (err.data) {
               state.showToastDialogContent.show = true
+              state.showToastDialogContent.header = '停用失败'
+              state.showToastDialogContent.content = err.msg
+              state.showToastDialogContent.selectionTableData.data = err.data
             }
           }
         )
