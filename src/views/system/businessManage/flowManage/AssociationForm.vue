@@ -124,7 +124,7 @@
       </div>
     </div>
     <div class="exhibition" v-if="state.currentState === '2'">
-      <div class="info-box">
+      <el-scrollbar class="info-box" always>
         <JyVform
           mode="render"
           v-if="resetFlag"
@@ -134,7 +134,7 @@
           ref="refFillFormInformation"
           @on-loaded="refFillFormInformation.disableForm()"
         />
-      </div>
+      </el-scrollbar>
       <div class="info-footer">
         <el-button type="primary" @click="clickEdit">编辑</el-button>
         <el-button @click="clickReselect">重新选择</el-button>
@@ -521,7 +521,7 @@
   .flowManage-Association-form {
     margin: auto;
     width: calc(100vw - 160px);
-    height: calc(100vh - 192px);
+    height: calc(100vh - 100px);
     min-height: 500px;
     min-width: 800px;
     margin-top: 16px;
@@ -537,8 +537,12 @@
       width: 100%;
       height: 100%;
       .info-box {
-        width: 100%;
         padding: 20px;
+        height: calc(100% - 20px);
+
+        :deep(.el-scrollbar__view) {
+          width: calc(100% - 10px);
+        }
       }
     }
 

@@ -485,7 +485,7 @@
   .flowManage-basics-info {
     margin: auto;
     width: calc(100vw - 160px);
-    height: calc(100vh - 192px);
+    height: calc(100vh - 100px);
     min-height: 500px;
     min-width: 800px;
     margin-top: 16px;

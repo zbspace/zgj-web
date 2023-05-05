@@ -122,7 +122,7 @@
     // 存在自定义nav时候需要减去nav高度
     height: props.navable
       ? 'calc(100vh - ' + Number(props.top) + 'px)'
-      : '80vh',
+      : '100%',
     overflow: 'hidden'
     // 'overflow-y': props.scrollY ? 'auto' : 'hidden',
     // 'overflow-x': props.scroll ? 'auto' : 'hidden'
