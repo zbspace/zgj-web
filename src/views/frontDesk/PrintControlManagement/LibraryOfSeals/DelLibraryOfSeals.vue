@@ -297,12 +297,12 @@
       data: [
         {
           id: 'searchKey',
-          label: '关键词',
+          label: '印章名称',
           type: 'input',
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '印章名称/保管部门/保管人/印章编码'
+            placeholder: '请输入印章名称'
           }
         }
       ],
