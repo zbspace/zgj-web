@@ -468,10 +468,6 @@
         }
         loginLoading.value = false
         openVerify.value = false
-        // 存储登录用户信息
-        accountInfo.setToken({
-          token: loginResult.data.tokenValue
-        })
 
         // 记住密码
         if (state.rememberPas) {
@@ -484,44 +480,7 @@
         }
 
         // 获取登录列表
-        loginApi.tenantInfoList().then(async departListResult => {
-          setItem('departLists', JSON.stringify(departListResult.data))
-          const index = departListResult.data.findIndex(
-            i => i.tenantId === loginResult.data.lastTenantId
-          )
-          if (index === -1) {
-            if (departListResult.data && departListResult.data.length === 1) {
-              // 初始化 且 一个企业
-              loginApi
-                .chooseOrgan(departListResult.data[0].tenantId)
-                .then(async () => {
-                  setItem('tenantId', departListResult.data[0].tenantId)
-                  const redirect = getRedirect()
-                  menusInfoStore.currentType =
-                    redirect.indexOf('/system') > -1 ? 'system' : 'business'
-                  await menusInfoStore.setMenus()
-                  getUserLoginInfo(true)
-                })
-            } else {
-              // 进入列表选择页面
-              emits('update:modelValue', true)
-              emits('update:departLists', departListResult.data)
-            }
-          } else {
-            // 已经选择企业
-            const redirect = getRedirect()
-            menusInfoStore.currentType =
-              redirect.indexOf('/system') > -1 ? 'system' : 'business'
-            await menusInfoStore.setMenus()
-
-            setItem('tenantId', loginResult.data.lastTenantId)
-            if (departListResult.data && departListResult.data.length === 1) {
-              getUserLoginInfo(true)
-            } else {
-              getUserLoginInfo(false)
-            }
-          }
-        })
+        getLoginTenantList(loginResult)
       },
       () => {
         loginLoading.value = false
@@ -560,55 +519,60 @@
       loginResult => {
         loginLoading.value = false
         openVerify.value = false
-        // 存储登录用户信息
-        accountInfo.setToken({
-          token: loginResult.data.tokenValue
-        })
 
         // 获取登录列表
-        loginApi.tenantInfoList().then(async departListResult => {
-          setItem('departLists', JSON.stringify(departListResult.data))
-          const index = departListResult.data.findIndex(
-            i => i.tenantId === loginResult.data.lastTenantId
-          )
-          if (index === -1) {
-            if (departListResult.data && departListResult.data.length === 1) {
-              // 初始化 且 一个企业
-              loginApi
-                .chooseOrgan(departListResult.data[0].tenantId)
-                .then(async () => {
-                  setItem('tenantId', departListResult.data[0].tenantId)
-                  const redirect = getRedirect()
-                  menusInfoStore.currentType =
-                    redirect.indexOf('/system') > -1 ? 'system' : 'business'
-                  await menusInfoStore.setMenus()
-                  getUserLoginInfo(true)
-                })
-            } else {
-              // 进入列表选择页面
-              emits('update:modelValue', true)
-              emits('update:departLists', departListResult.data)
-            }
-          } else {
-            // 已经选择企业
-            const redirect = getRedirect()
-            menusInfoStore.currentType =
-              redirect.indexOf('/system') > -1 ? 'system' : 'business'
-            await menusInfoStore.setMenus()
-
-            setItem('tenantId', loginResult.data.lastTenantId)
-            if (departListResult.data && departListResult.data.length === 1) {
-              getUserLoginInfo(true)
-            } else {
-              getUserLoginInfo(false)
-            }
-          }
-        })
+        getLoginTenantList(loginResult)
       },
       () => {
         loginLoading.value = false
       }
     )
+  }
+
+  const getLoginTenantList = loginResult => {
+    // 存储登录用户信息
+    accountInfo.setToken({
+      token: loginResult.data.tokenValue
+    })
+
+    loginApi.tenantInfoList().then(async departListResult => {
+      setItem('departLists', JSON.stringify(departListResult.data))
+      const index = departListResult.data.findIndex(
+        i => i.tenantId === loginResult.data.lastTenantId
+      )
+      if (index === -1) {
+        if (departListResult.data && departListResult.data.length === 1) {
+          // 初始化 且 一个企业
+          loginApi
+            .chooseOrgan(departListResult.data[0].tenantId)
+            .then(async () => {
+              setItem('tenantId', departListResult.data[0].tenantId)
+              const redirect = getRedirect()
+              menusInfoStore.currentType =
+                redirect.indexOf('/system') > -1 ? 'system' : 'business'
+              await menusInfoStore.setMenus()
+              getUserLoginInfo(true)
+            })
+        } else {
+          // 进入列表选择页面
+          emits('update:modelValue', true)
+          emits('update:departLists', departListResult.data)
+        }
+      } else {
+        // 已经选择企业
+        const redirect = getRedirect()
+        menusInfoStore.currentType =
+          redirect.indexOf('/system') > -1 ? 'system' : 'business'
+        await menusInfoStore.setMenus()
+
+        setItem('tenantId', loginResult.data.lastTenantId)
+        if (departListResult.data && departListResult.data.length === 1) {
+          getUserLoginInfo(true)
+        } else {
+          getUserLoginInfo(false)
+        }
+      }
+    })
   }
 
   const getUserLoginInfo = bool => {

@@ -92,8 +92,14 @@ service.interceptors.response.use(
     if (status === 200) {
       if (data.code === 200) {
         return data
-      } else if (data.code === 210600) {
-        // 登录获取滑块
+      } else if (
+        data.code === 210600 ||
+        data.code === 210203 ||
+        data.code === 210204 ||
+        data.code === 210207 ||
+        data.code === 210208
+      ) {
+        // 登录获取滑块 和 二维码状态返回
         return data
       } else if (data.code === '00000') {
         // 流程引擎
