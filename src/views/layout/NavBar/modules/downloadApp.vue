@@ -9,6 +9,7 @@
     @update:show="showDialog = $event"
     :show="showDialog"
     title="下载章管家APP"
+    closeOnPressEscape
     :footer="false"
     :height="440"
     :width="600"

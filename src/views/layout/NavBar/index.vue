@@ -267,6 +267,13 @@
                   }}</span>
                 </div>
 
+                <div class="dropdown-list-li" @click="showAbout = true">
+                  <img src="@/assets/images/navbar/user_info_about.svg" />
+                  <span class="dropdown-list-li-text">{{
+                    $t('t-zgj-index.zhanginAbout')
+                  }}</span>
+                </div>
+
                 <div class="dropdown-list-li" @click="handleLogout">
                   <img src="@/assets/images/navbar/user_info_layout.svg" />
                   <span class="dropdown-list-li-text">{{
@@ -354,6 +361,7 @@
     </template>
   </JyDialog>
   <VDownload v-model="showDialog"></VDownload>
+  <VAbout v-model="showAbout"></VAbout>
   <JyElMessageBox
     v-model="state.JyElMessageBox.show"
     :show="state.JyElMessageBox.show"
@@ -375,6 +383,7 @@
   import useClickQutside from '@/utils/useClickQutside.js'
   import VApplicationNav from './modules/applicationNav.vue'
   import VMailNav from './modules/mailNav.vue'
+  import VAbout from './modules/about.vue'
   import VMessageNav from './modules/messageNav.vue'
   import VDownload from './modules/downloadApp.vue'
   import router from '@/router'
@@ -396,6 +405,7 @@
   const layoutStore = useLayoutStore()
   const route = useRoute()
   const showDept = ref(false)
+  const showAbout = ref(false)
   const state = reactive({
     application: {
       CurrentSystemType: 'business' // business / system

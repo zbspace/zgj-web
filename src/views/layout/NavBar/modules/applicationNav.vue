@@ -2,7 +2,7 @@
 * @Descripttion 应用入口
 * @FileName applicationNav.vue
 * @Author WalterXsk
-* @LastEditTime 2023-03-09 14:09:32
+ * @LastEditTime: 2023-05-06
 !-->
 <template>
   <el-button text class="application-drown" style="width: 28px; height: 28px">
@@ -178,6 +178,7 @@
         flex-flow: wrap;
         align-content: center;
         justify-content: center;
+        cursor: pointer;
 
         .dropdown-list-cont-name {
           width: 100%;
