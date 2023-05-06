@@ -365,6 +365,8 @@
     // 刷新二维码
     if (!state.showAccountLogin) {
       getQrCode()
+    } else {
+      clearInterval(timer.value)
     }
   }
 
