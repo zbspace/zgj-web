@@ -5,8 +5,16 @@
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item>文件库 </el-breadcrumb-item>
-            <el-breadcrumb-item>下载记录</el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              文件库
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            >
+              下载记录
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </template>

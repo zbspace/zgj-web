@@ -1,7 +1,7 @@
 <template>
   <componentsLayout
     :style="{
-      padding: '16px'
+      padding: '16px 24px'
     }"
     :free="true"
   >
@@ -9,10 +9,15 @@
       <!-- 面包屑 -->
       <div class="inner-crumbs">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item>{{ props.resetData.title }}</el-breadcrumb-item>
-          <el-breadcrumb-item>{{
-            props.resetData.isTransfer ? '申请转办' : '申请重置'
-          }}</el-breadcrumb-item>
+          <el-breadcrumb-item
+            style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+          >
+            {{ props.resetData.title }}
+          </el-breadcrumb-item>
+          <el-breadcrumb-item
+            style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            >{{ props.resetData.isTransfer ? '申请转办' : '申请重置' }}
+          </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
 
@@ -127,15 +132,11 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    @include mixin-padding-top(10);
-    @include mixin-padding-bottom(10);
-    @include mixin-padding-left(20);
-    @include mixin-padding-right(0);
+    padding: 10px 0 10px 20px;
     box-sizing: border-box;
     border-radius: var(--jy-border-radius-4);
     background-color: var(--jy-in-common-use-1);
-    margin-top: 20px;
-    padding: 16px 20px;
+    padding: 16px 24px;
 
     .inner-page-title {
       display: flex;

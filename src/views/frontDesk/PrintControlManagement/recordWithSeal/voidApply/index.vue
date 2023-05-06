@@ -11,8 +11,16 @@
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item>用印记录 </el-breadcrumb-item>
-            <el-breadcrumb-item>查看已作废单据</el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              用印记录
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            >
+              查看已作废单据
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </template>

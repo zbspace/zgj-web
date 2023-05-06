@@ -6,30 +6,6 @@
 !-->
 <template>
   <div class="PrintControlManagement-LibraryOfSeals">
-    <!-- <componentsLayout Layout="breadcrumb,title,custom,fixed">
-      <template #breadcrumb>
-        <div class="breadcrumb">
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item>用印申请 </el-breadcrumb-item>
-            <el-breadcrumb-item>新建用印申请</el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
-      </template>
-      <template #title>
-        <div class="title">
-          <div class="title-desc">
-            <img
-              class="title-desc-img"
-              src="@/assets/svg/front/sealApply/back.svg"
-              alt=""
-              @click="clickBackPage"
-            />
-            新建用印申请
-          </div>
-          <div> </div>
-        </div>
-      </template>
-    </componentsLayout> -->
     <JyTable
       url="/sealInfo/deleted/page"
       ref="table"
@@ -44,8 +20,15 @@
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item>印章库 </el-breadcrumb-item>
-            <el-breadcrumb-item>已删除的印章</el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              印章库
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+              >已删除的印章
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </template>

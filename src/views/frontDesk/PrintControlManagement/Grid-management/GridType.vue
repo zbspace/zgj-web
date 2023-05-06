@@ -5,8 +5,15 @@
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item>格口管理 </el-breadcrumb-item>
-            <el-breadcrumb-item>格口类型</el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              格口管理
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+              >格口详情
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </template>

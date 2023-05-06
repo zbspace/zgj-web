@@ -382,22 +382,6 @@ const routes = {
             authRequired: true
           },
           component: () => import('@/views/frontDesk/home/index.vue')
-        },
-        {
-          path: 'innerPage',
-          name: 'InnerPage',
-          meta: { title: '二级页面', authRequired: true },
-          component: () =>
-            import('@/views/frontDesk/PrintControlManagement/InnerPage.vue')
-        },
-        {
-          path: 'innerTablePage',
-          name: 'InnerTablePage',
-          meta: { title: '二级页面', authRequired: true },
-          component: () =>
-            import(
-              '@/views/frontDesk/PrintControlManagement/InnerTablePage.vue'
-            )
         }
       ]
     },

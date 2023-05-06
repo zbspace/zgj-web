@@ -3,8 +3,16 @@
     <!-- 面包屑 -->
     <div class="inner-crumbs">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item>印章外借信息</el-breadcrumb-item>
-        <el-breadcrumb-item>查看历史记录</el-breadcrumb-item>
+        <el-breadcrumb-item
+          style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+        >
+          印章外借信息
+        </el-breadcrumb-item>
+        <el-breadcrumb-item
+          style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+        >
+          查看历史记录
+        </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 

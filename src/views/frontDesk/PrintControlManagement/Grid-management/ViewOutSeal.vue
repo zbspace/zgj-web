@@ -5,9 +5,21 @@
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item>格口管理 </el-breadcrumb-item>
-            <el-breadcrumb-item>盘点汇总详情</el-breadcrumb-item>
-            <el-breadcrumb-item>实被取出印章列表</el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              格口管理
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              盘点汇总详情
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            >
+              实被取出印章列表
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </template>

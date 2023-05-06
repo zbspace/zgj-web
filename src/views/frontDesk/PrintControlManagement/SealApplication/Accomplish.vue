@@ -5,8 +5,16 @@
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item>用印申请 </el-breadcrumb-item>
-            <el-breadcrumb-item>新建用印申请</el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              用印申请
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            >
+              新建用印申请
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </template>
