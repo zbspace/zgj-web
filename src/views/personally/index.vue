@@ -291,15 +291,15 @@
 
   const beforeAvatarUpload = rawFile => {
     if (
-      rawFile.type !== 'image/jpeg' ||
-      rawFile.type !== 'image/png' ||
+      rawFile.type !== 'image/jpeg' &&
+      rawFile.type !== 'image/png' &&
       rawFile.type !== 'image/jpg'
     ) {
-      ElMessage.error('Avatar picture must be JPG format!')
+      ElMessage.error('请上传格式为jpg、jpeg、png的人脸图片')
       return false
     }
-    if (rawFile.size / 1024 / 1024 > 2) {
-      ElMessage.error('Avatar picture size can not exceed 2MB!')
+    if (rawFile.size / 1024 / 1024 > 5) {
+      ElMessage.error('人脸图片最多支持5MB')
       return false
     }
     return true
