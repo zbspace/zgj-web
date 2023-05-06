@@ -199,7 +199,7 @@
         <div class="scan-msg user-select">{{ $t('t-zgj-login.scan') }}</div>
 
         <!-- 二维码 -->
-        <div class="scan-code" @click="updateScanCode">
+        <div class="scan-code">
           <div class="code">
             <div id="qrCodeBox"></div>
             <div :style="{ display: state.scanCodeError ? 'block' : 'none' }">
@@ -209,7 +209,19 @@
                 <div class="mask-title"> {{ $t('t-scan-code-error') }}</div>
 
                 <!-- 刷新 -->
-                <div class="mask-btn">{{ $t('t-zgj-refesh') }}</div>
+                <div class="mask-btn" @click="updateScanCode">
+                  {{ $t('t-zgj-refesh') }}
+                </div>
+              </div>
+            </div>
+            <div :style="{ display: state.scanCodeSuccess ? 'block' : 'none' }">
+              <div class="mask-code"></div>
+              <div class="mask-top user-select">
+                <!-- 二维码已失效 -->
+                <div class="mask-title"> 待手机端确认 </div>
+
+                <!-- 刷新 -->
+                <!-- <div class="mask-btn">{{ $t('t-zgj-refesh') }}</div> -->
               </div>
             </div>
           </div>
@@ -295,6 +307,7 @@
   import { useHomeLogoUrl } from '@/store/logo'
   import { getItem, setItem } from '@/utils/storage'
   import QRCode from 'qrcodejs2-fix'
+  import { ElMessage } from 'element-plus'
 
   const accountInfo = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
@@ -326,6 +339,7 @@
     showAccountLogin: true, // 账号密码登录页
     languageCh: true, // 中文
     scanCodeError: false, // 二维码失效
+    scanCodeSuccess: false, // 二维码待确认
     chooseDepartBox: false
   })
   const departLists = ref([])
@@ -350,24 +364,57 @@
     state.showAccountLogin = !state.showAccountLogin
     // 刷新二维码
     if (!state.showAccountLogin) {
-      loginApi.qrCode().then(res => {
-        getQrCode(res.data)
-      })
+      getQrCode()
     }
   }
-  const getQrCode = attr => {
+
+  const timer = ref(null)
+  const qrCodeQuery = ref('')
+  const getQrCode = async () => {
+    const result = await loginApi.qrCode()
+    qrCodeQuery.value = result.data
     // 清空该元素内内容
     document.getElementById('qrCodeBox').innerHTML = ''
     // eslint-disable-next-line no-new
     new QRCode(document.getElementById('qrCodeBox'), {
-      text: attr,
+      text: result.data,
       width: 180, // 二维码宽
       height: 180 // 二维码高
     })
+    clearInterval(timer.value)
+    // 递归查询扫码状态
+    intervalTime()
+    // 无伤大雅
+    state.scanCodeError = false
+  }
+
+  const getQrCodeStatus = () => {
+    loginApi.qrCodeStatus({ qrCodeToken: qrCodeQuery.value }).then(res => {
+      if (res.code === 210203) {
+        // console.log('未被扫描')
+      } else if (res.code === 210207) {
+        state.scanCodeError = true
+        clearInterval(timer.value)
+      } else if (res.code === 210204) {
+        state.scanCodeSuccess = true
+      } else if (res.code === 210208) {
+        ElMessage.waring(res.msg)
+      } else if (res.code === 200) {
+        state.scanCodeSuccess = false
+        getLoginTenantList(res)
+        clearInterval(timer.value)
+      }
+    })
+  }
+
+  const intervalTime = () => {
+    timer.value = setInterval(() => {
+      getQrCodeStatus()
+    }, 1000)
   }
   // 监听 二维码刷新
   const updateScanCode = () => {
-    state.scanCodeError = false
+    getQrCode()
   }
 
   // 选择企业
@@ -380,7 +427,7 @@
         redirect.indexOf('/system') > -1 ? 'system' : 'business'
       await menusInfoStore.setMenus()
 
-      getUserLoginInfo()
+      getUserLoginInfo(false)
     })
   }
 
@@ -423,7 +470,53 @@
     router.replace(redirect)
   }
 
-  const getUserLoginInfo = () => {
+  // 扫码成功后 处理登录状态
+  const getLoginTenantList = loginResult => {
+    // 存储登录用户信息
+    accountInfo.setToken({
+      token: loginResult.data.tokenValue
+    })
+    loginApi.tenantInfoList().then(async departListResult => {
+      setItem('departLists', JSON.stringify(departListResult.data))
+      const index = departListResult.data.findIndex(
+        i => i.tenantId === loginResult.data.lastTenantId
+      )
+      if (index === -1) {
+        if (departListResult.data && departListResult.data.length === 1) {
+          // 初始化 且 一个企业
+          loginApi
+            .chooseOrgan(departListResult.data[0].tenantId)
+            .then(async () => {
+              setItem('tenantId', departListResult.data[0].tenantId)
+              const redirect = getRedirect()
+              menusInfoStore.currentType =
+                redirect.indexOf('/system') > -1 ? 'system' : 'business'
+              await menusInfoStore.setMenus()
+              getUserLoginInfo(true)
+            })
+        } else {
+          // 进入列表选择页面
+          state.chooseDepartBox = true
+          departLists.value = departListResult.data
+        }
+      } else {
+        // 已经选择企业
+        const redirect = getRedirect()
+        menusInfoStore.currentType =
+          redirect.indexOf('/system') > -1 ? 'system' : 'business'
+        await menusInfoStore.setMenus()
+
+        setItem('tenantId', loginResult.data.lastTenantId)
+        if (departListResult.data && departListResult.data.length === 1) {
+          getUserLoginInfo(true)
+        } else {
+          getUserLoginInfo(false)
+        }
+      }
+    })
+  }
+
+  const getUserLoginInfo = bool => {
     // 获取用户信息 - 缓存
     navBarApi.getUserInfo().then(userInfo => {
       const obj = {
@@ -431,7 +524,7 @@
         userName: userInfo.data && userInfo.data.userName
       }
       accountInfo.setUserInfo(obj)
-      getWater(false)
+      getWater(bool)
       // goHome()
     })
   }
