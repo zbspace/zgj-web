@@ -6,12 +6,20 @@
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item
-              >{{ state.checkStep.useStep }}
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              {{ state.checkStep.useStep }}
             </el-breadcrumb-item>
-            <el-breadcrumb-item>{{
-              state.checkStep.ocrStep
-            }}</el-breadcrumb-item>
-            <el-breadcrumb-item>查看验证记录</el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              {{ state.checkStep.ocrStep }}
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            >
+              查看验证记录
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </template>

@@ -3,8 +3,12 @@
     <!-- 面包屑 -->
     <div class="inner-crumbs">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item>用印管理</el-breadcrumb-item>
-        <el-breadcrumb-item>用印申请</el-breadcrumb-item>
+        <el-breadcrumb-item style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+          >用印管理
+        </el-breadcrumb-item>
+        <el-breadcrumb-item style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+          >用印申请
+        </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 

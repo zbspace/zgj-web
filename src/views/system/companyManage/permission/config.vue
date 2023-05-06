@@ -173,6 +173,7 @@
 
     .breadcrumb {
       padding-left: 24px;
+      padding-top: 16px;
     }
     .title {
       display: flex;

@@ -5,9 +5,21 @@
       <template #breadcrumb>
         <div class="breadcrumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item>水印验证 </el-breadcrumb-item>
-            <el-breadcrumb-item>已验证</el-breadcrumb-item>
-            <el-breadcrumb-item>查看验证记录</el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              水印验证
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
+            >
+              已验证
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"
+            >
+              查看验证记录
+            </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </template>
