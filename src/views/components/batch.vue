@@ -114,7 +114,6 @@
         <div
           class="ap-box-right-fill quanping"
           @click="clickBatchButton({ name: 'fullscreen' })"
-          style="display: none"
         >
           <svg
             width="12"
@@ -473,7 +472,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, onBeforeMount, onMounted, watch } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted, watch, computed } from 'vue'
 
   const props = defineProps({
     // 标识
@@ -506,13 +505,17 @@
       default() {
         return []
       }
+    },
+    isFullscreen: {
+      type: Boolean,
+      default: false
     }
   })
 
   const emit = defineEmits([
     'clickBatchButton',
-    'fullScreenButton',
-    'setTableHeader'
+    'setTableHeader',
+    'isFullscreen'
   ])
 
   const state = reactive({
@@ -524,7 +527,14 @@
     noFixList: [],
     rightFixList: []
   })
-
+  const isFullscreen = computed({
+    get() {
+      return props.isFullscreen
+    },
+    set(value) {
+      emit('isFullscreen', value)
+    }
+  })
   const checkAll = ref(false)
   const indeterminate = ref(false)
 

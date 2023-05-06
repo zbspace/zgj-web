@@ -43,6 +43,7 @@
     "pinia": "^2.0.28",
     "pinia-plugin-persist": "^1.0.0",
     "qrcodejs2-fix": "0.0.1",
+    "screenfull": "^6.0.2",
     "terser": "^5.16.3",
     "vform-jy": "^3.2.49",
     "vform-vuedraggable": "^4.1.0",

@@ -278,7 +278,7 @@
       width: 100%;
       display: flex;
       justify-content: flex-end;
-      padding: 1.5rem 0;
+      padding: 24px 0;
       box-sizing: border-box;
       @include mixin-padding-right(0);
       box-sizing: border-box;
