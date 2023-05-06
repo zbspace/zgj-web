@@ -66,6 +66,7 @@
                   :customStyle="customStyle"
                   :customClick="true"
                   @customClickFn="customClick"
+                  ref="verificationBtn"
                 />
               </div>
             </el-form-item>
@@ -299,6 +300,7 @@
     }
   })
   const openVerify = ref(false)
+  const verificationBtn = ref(null)
   const emits = defineEmits([
     'update:modelValue',
     'update:departLists',
@@ -436,6 +438,12 @@
   // }
 
   const loginFn = attr => {
+    // 验证码登录
+    if (state.activeCodeLogin) {
+      loginByCodeFn(attr)
+      return
+    }
+    // 账号密码登录
     let params = {
       accountNo: accountLoginForm.accountNo,
       accountPass: md5(accountLoginForm.accountPass)
@@ -523,27 +531,33 @@
 
   const loginByCodeFn = attr => {
     let params = {
-      inputPhone: codeLoginForm.inputPhone,
-      inputCode: md5(codeLoginForm.inputCode)
+      phone: codeLoginForm.inputPhone
     }
     if (attr) {
       params = {
-        inputPhone: codeLoginForm.inputPhone,
-        inputCode: md5(codeLoginForm.inputCode),
+        type: 'LOGIN',
+        phone: codeLoginForm.inputPhone,
         captchaToken: attr.token,
         captcha: attr.pointJson,
         secretKey: attr.secretKey
       }
     }
     // 验证码登录
+    loginApi.sendVerificationCode(params).then(res => {
+      // 开始倒计时
+      verificationBtn.value.countDown()
+    })
+  }
+
+  // 短信验证码登录
+  const loginByCode = () => {
+    const params = {
+      phone: codeLoginForm.inputPhone,
+      code: codeLoginForm.inputCode
+    }
     loginLoading.value = true
-    loginApi.sendVerificationCode(params).then(
+    loginApi.byVerifiableCode(params).then(
       loginResult => {
-        if (loginResult.code === 210600) {
-          loginLoading.value = false
-          openVerify.value = true
-          return
-        }
         loginLoading.value = false
         openVerify.value = false
         // 存储登录用户信息
@@ -629,6 +643,7 @@
           loginFn()
         } else {
           // ② 验证码登录 - 删除
+          loginByCode()
         }
       }
     })

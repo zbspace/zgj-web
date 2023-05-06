@@ -201,6 +201,7 @@
         <!-- 二维码 -->
         <div class="scan-code" @click="updateScanCode">
           <div class="code">
+            <div id="qrCodeBox"></div>
             <div :style="{ display: state.scanCodeError ? 'block' : 'none' }">
               <div class="mask-code"></div>
               <div class="mask-top user-select">
@@ -212,7 +213,6 @@
               </div>
             </div>
           </div>
-
           <div class="scan-bg"></div>
         </div>
       </div>
@@ -294,6 +294,8 @@
   import { useMenusInfoStore } from '@/store/menus'
   import { useHomeLogoUrl } from '@/store/logo'
   import { getItem, setItem } from '@/utils/storage'
+  import QRCode from 'qrcodejs2-fix'
+
   const accountInfo = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
   const homeLogoUrl = useHomeLogoUrl()
@@ -323,7 +325,7 @@
   const state = reactive({
     showAccountLogin: true, // 账号密码登录页
     languageCh: true, // 中文
-    scanCodeError: true, // 二维码失效
+    scanCodeError: false, // 二维码失效
     chooseDepartBox: false
   })
   const departLists = ref([])
@@ -346,8 +348,23 @@
   // 监听 登录方式切换
   const changeLogin = () => {
     state.showAccountLogin = !state.showAccountLogin
+    // 刷新二维码
+    if (!state.showAccountLogin) {
+      loginApi.qrCode().then(res => {
+        getQrCode(res.data)
+      })
+    }
   }
-
+  const getQrCode = attr => {
+    // 清空该元素内内容
+    document.getElementById('qrCodeBox').innerHTML = ''
+    // eslint-disable-next-line no-new
+    new QRCode(document.getElementById('qrCodeBox'), {
+      text: attr,
+      width: 180, // 二维码宽
+      height: 180 // 二维码高
+    })
+  }
   // 监听 二维码刷新
   const updateScanCode = () => {
     state.scanCodeError = false
@@ -750,9 +767,9 @@
             background: #ffffff;
             border: 1px solid #f0f0f0;
             border-radius: 8px;
-            background: url(../../assets/images/login/test.png) no-repeat center
-              center;
-            background-size: 100%;
+            // background: url(../../assets/images/login/test.png) no-repeat center
+            //   center;
+            // background-size: 100%;
           }
 
           .mask-code {
@@ -889,5 +906,11 @@
       -moz-user-select: none;
       user-select: none;
     }
+  }
+  #qrCodeBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
 </style>
