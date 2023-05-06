@@ -1400,6 +1400,9 @@
       }
     }
   }
+  .el-dropdown {
+    vertical-align: middle;
+  }
   .el-upload__tip {
     margin: 0;
   }
