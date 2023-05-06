@@ -530,6 +530,7 @@
     state.searchSelected = []
     state.searchSelectedKeepOrgan = []
     state.searchSelectedKeepUser = []
+    state.searchSelectedSubOrgan = []
   }
   const getMsg = val => {
     console.log(val)
@@ -544,6 +545,7 @@
     searchSelected: [],
     searchSelectedKeepUser: [],
     searchSelectedKeepOrgan: [],
+    searchSelectedSubOrgan: [],
     title: '新增',
     typeList: [],
     form: {
@@ -676,7 +678,7 @@
           inCommonUse: true,
           // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
           defaultAttribute: {
-            placeholder: '印章名称/保管部门/保管人/印章编码'
+            placeholder: '印章名称/印章编码/保管人'
           }
         },
         {
@@ -701,20 +703,20 @@
           },
           style: {}
         },
-        {
-          id: 'keepUser',
-          requestParams: 'keepUserIds',
-          label: '保管人',
-          type: 'derivable',
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'user',
-            placeholder: '+保管人',
-            multiple: true,
-            joinStr: ','
-          },
-          values: []
-        },
+        // {
+        //   id: 'keepUser',
+        //   requestParams: 'keepUserIds',
+        //   label: '保管人',
+        //   type: 'derivable',
+        //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        //   defaultAttribute: {
+        //     type: 'user',
+        //     placeholder: '+保管人',
+        //     multiple: true,
+        //     joinStr: ','
+        //   },
+        //   values: []
+        // },
         {
           id: 'keepOrgan',
           requestParams: 'keepOrganIds',
@@ -1293,6 +1295,10 @@
           state.searchSelectedKeepOrgan = data
         }
         state.form[depChoose.value + 'Name'] = data[0].name
+      } else if (depChoose.value === 'subOrgan') {
+        state.form[depChoose.value + 'Id'] = data[0].id
+        state.form[depChoose.value + 'Name'] = data[0].name
+        state.searchSelectedSubOrgan = data
       } else {
         if (data?.length <= 0) {
           ElMessage.error('至少选择一个！')
