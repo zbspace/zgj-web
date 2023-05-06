@@ -11,22 +11,26 @@
       <div class="nav-left">
         <!-- logo -->
         <router-link to="/" class="nav-logo">
-          <span class="logo-lg">
-            <img
-              src="@/assets/icon/logo.png"
-              alt=""
-              height="37"
-              v-show="!homeLogoUrl.homeUrl"
-              style="object-fit: fill; width: 115px; height: 37px"
-            />
-            <img
-              :src="homeLogoUrl.homeUrl"
-              alt=""
-              height="37"
-              v-show="homeLogoUrl.homeUrl"
-              style="object-fit: fill; width: 115px; height: 37px"
-            />
-          </span>
+          <img
+            src="@/assets/icon/logo.png"
+            alt=""
+            height="37"
+            v-if="!homeLogoUrl.homeUrl"
+            style="object-fit: scale-down; width: 130px; height: 46px"
+          />
+          <el-image
+            style="width: 130px; height: 46px"
+            :src="homeLogoUrl.homeUrl"
+            fit="scale-down"
+            v-else
+          >
+            <template #error>
+              <img
+                src="@/assets/icon/logo.png"
+                style="object-fit: scale-down; width: 130px; height: 46px"
+              />
+            </template>
+          </el-image>
         </router-link>
 
         <!-- 公司选择 -->
