@@ -20,8 +20,8 @@
       @cellClick="cellClick"
       @customClick="customClick"
       @clickBatchButton="clickBatchButton"
+      :queryParams="{ organId }"
     >
-      <!-- :queryParams="{ organId }" -->
       <template #title>
         <div class="title">
           <div>{{ $t('t-zgj-F_SYSTEM_PERSON_MANAGE') }}</div>
@@ -600,22 +600,22 @@
           defaultAttribute: {
             placeholder: '请选择'
           }
-        },
-        {
-          id: 'organId',
-          requestParams: 'organId',
-          label: '所属部门',
-          type: 'derivable',
-          inCommonUse: false,
-          // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
-          defaultAttribute: {
-            type: 'organ',
-            placeholder: '请选择',
-            joinStr: ',',
-            multiple: false
-          },
-          values: []
         }
+        // {
+        //   id: 'organId',
+        //   requestParams: 'organId',
+        //   label: '所属部门',
+        //   type: 'derivable',
+        //   inCommonUse: false,
+        //   // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
+        //   defaultAttribute: {
+        //     type: 'organ',
+        //     placeholder: '请选择',
+        //     joinStr: ',',
+        //     multiple: false
+        //   },
+        //   values: []
+        // }
       ],
       butData: [
         {

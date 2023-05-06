@@ -254,13 +254,11 @@
       :show="showDialog"
       :title="title"
       :footer="false"
-      :width="600"
+      :width="900"
       :height="600"
       :key="title"
     >
-      <el-scrollbar height="570px">
-        <div v-html="content"></div>
-      </el-scrollbar>
+      <div v-html="content"></div>
     </JyDialog>
   </div>
 </template>
@@ -279,6 +277,8 @@
   import navBarApi from '@/api/common/navbar.js'
   import Verify from '../components/verifition/Verify'
   import { useMenusInfoStore } from '@/store/menus'
+  import xieyi from './xieyi'
+  import yinsi from './yinsi'
 
   const accountInfo = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
@@ -649,9 +649,17 @@
     })
   }
 
-  const previewAgreement = () => {}
+  const previewAgreement = () => {
+    showDialog.value = true
+    title.value = '章管家服务协议'
+    content.value = xieyi
+  }
 
-  const previewPolicy = () => {}
+  const previewPolicy = () => {
+    showDialog.value = true
+    title.value = '章管家隐私政策'
+    content.value = yinsi
+  }
 
   const customStyle = {
     height: '48px'
