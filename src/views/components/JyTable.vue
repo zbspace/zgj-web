@@ -11,6 +11,7 @@
     >
       <template #breadcrumb><slot name="breadcrumb"></slot></template>
       <template #title><slot name="title"></slot></template>
+
       <template #tabs>
         <slot name="tabs"></slot>
       </template>
@@ -29,7 +30,7 @@
         </div>
       </template>
 
-      <template #batch>
+      <!-- <template #batch>
         <div class="batch">
           <componentsBatch
             :tableHeader="props.componentsTableHeader"
@@ -40,27 +41,39 @@
           >
           </componentsBatch>
         </div>
-      </template>
+      </template> -->
 
       <template #tree>
         <slot name="tree"></slot>
       </template>
 
       <template #table>
-        <div class="components-table">
+        <div class="components-table" id="tableId">
+          <div class="batch">
+            <componentsBatch
+              :tableHeader="props.componentsTableHeader"
+              :data="props.componentsBatch ? props.componentsBatch.data : []"
+              :defaultAttribute="state.componentsBatch.defaultAttribute"
+              @clickBatchButton="clickBatchButton"
+              @setTableHeader="setTableHeader"
+              :isFullscreen="isFullscreen"
+              @update:isFullscreen="toggleFull"
+            >
+            </componentsBatch>
+          </div>
+
           <el-table
             v-bind="state.componentsTable.defaultAttribute"
             v-loading="loading"
             ref="table"
             :data="state.componentsTable.data"
-            style="width: 100%"
             @selection-change="selectionChange"
             @cell-click="cellClick"
             @row-click="rowClick"
             @custom-click="customClick"
             @sort-change="sortChange"
-            class="ap-table"
             @getSelectionRows="getSelectionRows"
+            style="width: 100%"
           >
             <el-table-column
               v-if="props.isSelection"
@@ -220,10 +233,20 @@
               </el-table-column>
             </template>
           </el-table>
+
+          <div class="pagination">
+            <componentsPagination
+              :data="state.componentsPagination.data"
+              :defaultAttribute="state.componentsPagination.defaultAttribute"
+              @size-change="sizeChange"
+              @current-change="currentChange"
+            >
+            </componentsPagination>
+          </div>
         </div>
       </template>
 
-      <template #pagination>
+      <!-- <template #pagination>
         <componentsPagination
           :data="state.componentsPagination.data"
           :defaultAttribute="state.componentsPagination.defaultAttribute"
@@ -231,7 +254,7 @@
           @current-change="currentChange"
         >
         </componentsPagination>
-      </template>
+      </template> -->
     </componentsLayout>
   </div>
 </template>
@@ -249,6 +272,7 @@
   import componentsPagination from '@/views/components/pagination'
   import componentsBatch from '@/views/components/batch'
   import request from '@/utils/request'
+  import screenfull from 'screenfull'
 
   const props = defineProps({
     url: {
@@ -393,14 +417,39 @@
     emit('clickElement', item, index)
   }
 
+  const isFullscreen = ref(false)
+
   const clickBatchButton = (item, index) => {
     if (item.name === 'refresh') {
       reloadData()
       return
     }
+    // 全屏
+    if (item.name === 'fullscreen') {
+      toggleFull()
+      return
+    }
     emit('clickBatchButton', item, state.componentsBatch.selectionData)
   }
 
+  // 全屏切换
+  const toggleFull = () => {
+    const elem = document.getElementById('tableId')
+    if (!screenfull.enabled) {
+      if (screenfull.isFullscreen) {
+        screenfull.exit()
+      } else {
+        screenfull.request(elem)
+      }
+    }
+  }
+
+  // 监听全屏变化
+  if (screenfull.isEnabled) {
+    screenfull.on('change', () => {
+      isFullscreen.value = screenfull.isFullscreen
+    })
+  }
   // 设置表格表头
   function setTableHeader(headers) {
     state.componentsTable.headers = headers
@@ -636,7 +685,8 @@
     reloadData,
     getSelectionRows,
     setTableHeader,
-    reloadSearchForm
+    reloadSearchForm,
+    toggleFull
   })
 </script>
 <style lang="scss">
@@ -658,27 +708,6 @@
   .components-table {
     margin: 0%;
     width: 100%;
-
-    // .rankDisplayData {
-    //   // display: flex;
-    //   // justify-content: space-around;
-    //   // text-align: center;
-    //   color: var(--jy-info-6);
-
-    //   .--el-button-text-color {
-    //     color: var(--jy-info-6);
-    //   }
-
-    //   .rankDisplayData-node {
-    //     cursor: pointer;
-    //     margin-right: 0.5rem;
-    //   }
-
-    //   .rankDisplayData-more {
-    //     display: inline-block;
-    //     height: 20px;
-    //   }
-    // }
 
     th {
       font-weight: var(--jy-font-weight-400);
@@ -739,5 +768,22 @@
     .center {
       justify-content: center;
     }
+  }
+
+  #tableId:not(:fullscreen) {
+    // background-color: #afa;
+  }
+
+  #tableId:fullscreen {
+    padding: 50px 50px 10px;
+    background: #ffffff;
+  }
+
+  .pagination {
+    padding: 24px 0;
+  }
+
+  .batch {
+    padding: 8px 0;
   }
 </style>
