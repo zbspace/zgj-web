@@ -69,4 +69,40 @@ api.reqChecked = data => {
     data
   })
 }
+
+// 获取 登录二维码
+api.qrCode = params => {
+  return request({
+    url: '/login/qrCode',
+    method: 'GET',
+    params
+  })
+}
+
+// 获取 登录二维码状态
+api.qrCodeStatus = params => {
+  return request({
+    url: '/login/qrCodeStatus',
+    method: 'GET',
+    params
+  })
+}
+
+// 扫描 登录二维码
+api.scanQrCode = params => {
+  return request({
+    url: '/scan/loginQrCode',
+    method: 'GET',
+    params
+  })
+}
+
+// 扫码登录
+api.loginQrCode = params => {
+  return request({
+    url: '/confirm/loginQrCode',
+    method: 'GET',
+    params
+  })
+}
 export default api
