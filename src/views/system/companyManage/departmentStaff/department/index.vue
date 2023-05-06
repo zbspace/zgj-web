@@ -33,7 +33,7 @@
                     alt=""
                     srcset=""
                   />
-                  <span>更多操作</span>
+                  <span>{{ $t('t-zgj-table.more.Operation') }}</span>
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
@@ -768,21 +768,12 @@
     align-items: center;
     justify-content: space-between;
     .title-more {
-      height: 100%;
       display: flex;
-      align-items: center;
-
-      .title-more-add {
-        margin-right: 0.5rem;
-        height: 100%;
-        display: flex;
-        align-items: center;
-      }
-
       .title-more-down {
-        height: 100%;
-        display: flex;
-        align-items: center;
+        margin-left: 5px;
+        img {
+          margin-right: 5px;
+        }
       }
     }
   }

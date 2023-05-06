@@ -958,8 +958,6 @@
           margin-right: 8px;
         }
       }
-      .btn-ghost {
-      }
       .iconpark-icon {
         color: #fff;
       }
