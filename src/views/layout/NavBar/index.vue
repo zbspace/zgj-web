@@ -109,7 +109,7 @@
 
         <!-- 帮助 -->
         <div ref="dropdownHelpRef">
-          <el-button class="btn-ghost" @click="showHelpPop = !showHelpPop" text>
+          <el-button class="btn-ghost" @click="toHelp" text>
             <el-tooltip
               effect="dark"
               :content="$t('t-help-center')"
@@ -434,6 +434,10 @@
         )
       }
     }
+  }
+
+  const toHelp = () => {
+    window.open('https://oms.zhangin.com/zgj/help/queenView.htm', '_blank')
   }
 
   const chooseDepart = e => {
