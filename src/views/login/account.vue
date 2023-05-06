@@ -376,11 +376,12 @@
     // 清空该元素内内容
     document.getElementById('qrCodeBox').innerHTML = ''
     // eslint-disable-next-line no-new
-    new QRCode(document.getElementById('qrCodeBox'), {
+    const qrCode = new QRCode(document.getElementById('qrCodeBox'), {
       text: result.data,
       width: 180, // 二维码宽
       height: 180 // 二维码高
     })
+    qrCode._el.title = '请使用章管家APP扫码登录'
     clearInterval(timer.value)
     // 递归查询扫码状态
     intervalTime()
