@@ -273,13 +273,8 @@
             },
             {
               label: '单据状态',
-              value:
-                data.useSealStateId === 'APPROVAL'
-                  ? '用印审批中'
-                  : data.useSealStateId === 'USING'
-                  ? '智能用印中'
-                  : '',
-              iconPath: '@/assets/svg/common/yuan-lv.svg',
+              value: data.useSealStateName,
+              iconPath: 'yuanLv',
               iconStyle: {},
               valStyle: {
                 color: 'var(--jy-success-6)'

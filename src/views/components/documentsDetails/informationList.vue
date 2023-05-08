@@ -16,9 +16,8 @@
           <div class="ap-cont-list-value" :style="item.valStyle">
             <img
               class="ap-cont-list-value-icon"
-              :src="item.iconPath"
+              :src="icon[item.iconPath]"
               :style="item.iconStyle"
-              alt=""
               v-if="item.iconPath"
             />
             {{ item.value }}
@@ -29,6 +28,12 @@
   </div>
 </template>
 <script setup>
+  import yuanLv from '@/assets/svg/common/yuan-lv.svg'
+  import { ref } from 'vue'
+
+  const icon = ref({
+    yuanLv
+  })
   const props = defineProps({
     // 标识
     refs: {

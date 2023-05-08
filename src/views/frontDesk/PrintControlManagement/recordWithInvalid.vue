@@ -64,7 +64,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, onBeforeMount, onMounted, nextTick } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsDocumentsDetails from '../../components/documentsDetails.vue'
   import { useRouter } from 'vue-router'
@@ -278,7 +278,7 @@
                   : data.useSealStateId === 'USING'
                   ? '智能用印中'
                   : '',
-              iconPath: '@/assets/svg/common/yuan-lv.svg',
+              iconPath: 'yuanLv',
               iconStyle: {},
               valStyle: {
                 color: 'var(--jy-success-6)'
