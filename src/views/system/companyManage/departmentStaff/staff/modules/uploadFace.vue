@@ -39,41 +39,47 @@
         <el-form-item label="人脸照片" prop="userFaceId">
           <el-upload
             class="avatar-uploader"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            action="#"
             :show-file-list="false"
             list-type="picture-card"
-            :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
+            :on-change="handleChange"
+            :auto-upload="false"
           >
             <el-input
               type="hidden"
               v-model="state.formData.userFaceId"
             ></el-input>
-            <img
-              v-if="state.formData.userFaceUrl"
-              :src="state.formData.userFaceUrl"
-              class="avatar"
-            />
+
+            <el-image
+              v-if="state.formData.userFaceUri || props.userFaceUri"
+              :src="state.formData.userFaceUri || props.userFaceUri"
+              style="padding: 6px"
+            >
+              <template #error>
+                <!-- 加载失败占位图 -->
+              </template>
+            </el-image>
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
             <template #tip>
+              <div class="el-upload__tip">
+                1.支持上传JPG/JPEG/PNG格式的人脸图片，大小不超过5M
+              </div>
               <div class="el-upload__tip"
-                >1.支持上传JPG/JPEG/PNG格式的人脸图片，大小不超过5M</div
-              >
-              <div class="el-upload__tip"
-                >2.请尽量保证人脸图形完整清晰，没有遮挡</div
-              >
+                >2.请尽量保证人脸图形完整清晰，没有遮挡
+              </div>
             </template>
           </el-upload>
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="cancel">{{
-            $t('t-zgj-operation.cancel')
-          }}</el-button>
-          <el-button type="primary" @click="comifrm">{{
-            $t('t-zgj-operation.submit')
-          }}</el-button>
+          <el-button @click="cancel">
+            {{ $t('t-zgj-operation.cancel') }}
+          </el-button>
+          <el-button type="primary" @click="comifrm">
+            {{ $t('t-zgj-operation.submit') }}
+          </el-button>
         </span>
       </template>
     </el-dialog>
@@ -82,28 +88,33 @@
 
 <script setup>
   import { ref, reactive, computed } from 'vue'
+  import api from '@/api/system/companyManagement/departmentStaff'
   import { ElMessage } from 'element-plus'
   import { Plus } from '@element-plus/icons-vue'
   const uploadForm = ref(null)
   const props = defineProps({
-    show: {
-      type: Boolean,
-      default: false
-    },
     userId: {
       type: Array,
       default: () => {
         return []
       }
+    },
+    userFaceUri: {
+      type: String,
+      default: ''
+    },
+    modelValue: {
+      type: Boolean,
+      default: false
     }
   })
-  const emit = defineEmits(['update:show', 'on-confirm', 'on-cancel'])
+  const emit = defineEmits(['update:modelValue'])
   const isVisible = computed({
     get() {
-      return props.show
+      return props.modelValue
     },
     set(value) {
-      emit('update:show', value)
+      emit('update:modelValue', value)
     }
   })
   const state = reactive({
@@ -118,18 +129,27 @@
           trigger: 'change'
         }
       ]
-    }
+    },
+    fileList: ''
   })
+  // 上传图片
+  const handleChange = file => {
+    state.fileList = file
+    state.formData.userFaceUri = file.url
+  }
+
   const handleClose = () => {
-    console.log('handleClose')
     state.props.show = false
   }
   const comifrm = value => {
-    console.log(uploadForm)
-    uploadForm.value.validate(valid => {
+    uploadForm.value.validate(async valid => {
       if (valid) {
-        console.log('修改成功')
-        emit('on-confirm', value)
+        const fd = new FormData()
+        fd.append('file', state.uploadFile.raw)
+        const fileInfoRes = await api.uploadUserFace(fd)
+        if (fileInfoRes.code !== 200) {
+          return ElMessage.warning('人脸图片上传失败')
+        }
       } else {
         ElMessage.error('请上传人脸照片')
       }
@@ -137,15 +157,11 @@
     isVisible.value = false
   }
   const cancel = value => {
-    emit('on-cancel', value)
     isVisible.value = false
-  } // 上传图片
-  const handleAvatarSuccess = (res, file) => {
-    console.log(res, file)
   }
+
   // 上传图片前处理
   const beforeAvatarUpload = file => {
-    console.log(file)
     const isJPG = file.type === 'image/jpeg'
     const isLt2M = file.size / 1024 / 1024 < 2
 

@@ -104,11 +104,14 @@
       <div class="ap-detail-label">人脸图片：</div>
       <div class="ap-detail-cont">
         <div class="ap-detail-cont-val">
-          <img
-            class="imageData-back"
+          <el-image
             :src="state.props.data.FacePicturePath"
-            alt=""
-          />
+            style="width: 80px; height: 80px"
+          >
+            <template #error>
+              <!-- 加载失败占位图 -->
+            </template>
+          </el-image>
         </div>
       </div>
     </div>
