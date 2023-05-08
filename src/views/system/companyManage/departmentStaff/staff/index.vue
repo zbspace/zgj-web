@@ -271,22 +271,28 @@
           <el-col :span="12">
             <el-form-item label="人脸照片" prop="userFaceId">
               <el-upload
-                class="avatar-uploader"
-                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                ref="uploadRef"
+                action="#"
                 :show-file-list="false"
                 list-type="picture-card"
-                :on-success="handleAvatarSuccess"
+                :on-change="handleChange"
                 :before-upload="beforeAvatarUpload"
+                :auto-upload="false"
               >
                 <el-input
                   type="hidden"
                   v-model="state.componentsAddForm.formData.userFaceId"
                 />
-                <img
-                  v-if="state.componentsAddForm.formData.userFaceUrl"
-                  :src="state.componentsAddForm.formData.userFaceUrl"
-                  class="avatar"
-                />
+
+                <el-image
+                  v-if="state.componentsAddForm.formData.userFaceUri"
+                  :src="state.componentsAddForm.formData.userFaceUri"
+                  style="padding: 6px"
+                >
+                  <template #error>
+                    <!-- 加载失败占位图 -->
+                  </template>
+                </el-image>
                 <svg
                   class="iconpark-icon"
                   v-else
@@ -397,11 +403,10 @@
     >
     </UpdatePassword>
     <UploadFace
+      v-if="showUpload"
       v-model="showUpload"
-      :show="showUpload"
       :userId="state.componentsBatch.userIds[0]"
-      @on-confirm="confirmUpload"
-      @on-cancel="closeUpload"
+      :userFaceUri="state.userUpdateFaceUri"
     >
     </UploadFace>
   </div>
@@ -421,6 +426,8 @@
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import actionOneDialog from '@/views/components/actionOneDialog'
   import { getItem } from '@/utils/storage'
+  import { API_BASE_PREFIX } from '@/utils/constants.js'
+
   // 显示新增员工弹窗
   const showStaffDialog = ref(false)
   // 显示部门弹窗
@@ -705,7 +712,9 @@
         }
       ],
       userIds: []
-    }
+    },
+    uploadFile: '',
+    userUpdateFaceUri: ''
   })
   function loadFn(node, resolve) {
     if (node.level === 0) {
@@ -750,14 +759,6 @@
   // 关闭密码弹窗
   const closePass = data => {
     showPass.value = false
-  }
-  // 提交人脸
-  const confirmUpload = data => {
-    showUpload.value = false
-  }
-  // 关闭人脸弹窗
-  const closeUpload = data => {
-    showUpload.value = false
   }
 
   // 新增员工
@@ -872,9 +873,11 @@
     showDepPerDialog.value = false
   }
   // 上传图片
-  const handleAvatarSuccess = (res, file) => {
-    console.log(res, file)
+  const handleChange = file => {
+    state.uploadFile = file
+    state.componentsAddForm.formData.userFaceUri = file.url
   }
+
   // 上传图片前处理
   const beforeAvatarUpload = file => {
     console.log(file)
@@ -952,7 +955,9 @@
             EnterpriseWechatID: res.data.qweiNo ? res.data.qweiNo : '-',
             NailID: res.data.dingdingNo ? res.data.dingdingNo : '-',
             remark: res.data.readme ? res.data.readme : '-',
-            FacePicturePath: res.data.userFaceUri ? res.data.userFaceUri : ''
+            FacePicturePath: res.data.userFaceUri
+              ? API_BASE_PREFIX + res.data.userFaceUri
+              : null
           }
           state.componentsDocumentsDetails.visible.forEach((item, index) => {
             if (item.name === 'Staff-Details') {
@@ -998,6 +1003,9 @@
         ]
         for (const item in res.data) {
           state.componentsAddForm.formData[item] = res.data[item]
+          state.componentsAddForm.formData.userFaceUri =
+            API_BASE_PREFIX + res.data.userFaceUri
+
           if (item === 'partTimeOrgans' && res.data[item].length > 0) {
             state.tabSelects.partTimeOrgansSelected = res.data[item].map(i => {
               return {
@@ -1030,6 +1038,10 @@
             )
           }
         }
+
+        state.componentsAddForm.formData.userFaceUri = res.data.userFaceUri
+          ? API_BASE_PREFIX + res.data.userFaceUri
+          : null
       })
       showStaffDialog.value = true
     }
@@ -1057,7 +1069,12 @@
       showPass.value = true
     }
     if (cell.name === 't-zgj-F_SEAL_CONSOLE_FACE_SETTING') {
-      showUpload.value = true
+      api.userGet(column.userId).then(res => {
+        showUpload.value = true
+        state.userUpdateFaceUri = res.data.userFaceUri
+          ? API_BASE_PREFIX + res.data.userFaceUri
+          : null
+      })
     }
   }
   const closeMoreDialog = () => {
@@ -1069,7 +1086,6 @@
   }
   // 提交弹窗
   const submitElMessageBox = type => {
-    console.log(type)
     if (type === '停用') {
       api.userDisable(state.componentsBatch.userIds[0]).then(res => {
         if (res.code === 200) {
@@ -1154,7 +1170,7 @@
 
   // 提交新增表单
   const submitStaffForm = data => {
-    formStaffRef.value.validate(valid => {
+    formStaffRef.value.validate(async valid => {
       if (valid) {
         confirmLoading.value = true
         state.componentsAddForm.formData.partTimeOrgans = []
@@ -1186,6 +1202,20 @@
             }
           })
         })
+
+        if (state.uploadFile) {
+          // 上传图片
+          const fd = new FormData()
+          fd.append('file', state.uploadFile.raw)
+          const fileInfoRes = await api.uploadUserFace(fd)
+          if (fileInfoRes.code !== 200) {
+            return ElMessage.warning('人脸图片上传失败')
+          }
+          state.componentsAddForm.formData.fileId = fileInfoRes.data.fileId
+          state.componentsAddForm.formData.fileSourceType = '1'
+        }
+
+        // 提交信息
         if (state.componentsAddForm.formData.userId) {
           submitEditStaff(state.componentsAddForm.formData)
         } else {

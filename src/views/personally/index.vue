@@ -162,17 +162,19 @@
               <div class="column">
                 <el-upload
                   class="avatar-uploader"
-                  action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                  :action="`/api/user/editUserCenterFace`"
+                  :headers="headers"
                   :show-file-list="false"
                   list-type="picture-card"
                   :on-success="handleAvatarSuccess"
+                  :on-error="onError"
                   :before-upload="beforeAvatarUpload"
                 >
-                  <img
+                  <el-image
                     v-if="userInfo.userFaceImage"
                     :src="userInfo.userFaceImage"
-                    class="avatar"
-                  />
+                    style="padding: 6px"
+                  ></el-image>
                   <el-icon v-else class="avatar-uploader-icon">
                     <Plus />
                   </el-icon>
@@ -277,7 +279,13 @@
   import JyDialog from '@/components/common/JyDialog/index2.vue'
   import VerificationBtn from '@/views/login/components/VerificationBtn.vue'
   import infoApi from '@/api/common/navbar'
+  import { API_BASE_PREFIX } from '@/utils/constants'
+  import { useAccountInfoStore } from '@/store/accountInfo'
+  import { messageError } from '@/hooks/useMessage'
 
+  const headers = ref({
+    'zgj-token': useAccountInfoStore().token
+  })
   const loginform = reactive({
     phone: '',
     code: ''
@@ -285,10 +293,14 @@
   const loginformRef = ref(null)
 
   const handleAvatarSuccess = (response, uploadFile) => {
-    console.log(response, uploadFile)
-    userInfo.userFaceImage = URL.createObjectURL(uploadFile.raw)
+    userInfo.userFaceImage = uploadFile.url
+    // userInfo.userFaceImage = response.data
+    //   ? API_BASE_PREFIX + response.data
+    //   : ''
   }
-
+  const onError = (error, uploadFile, uploadFiles) => {
+    messageError(error)
+  }
   const beforeAvatarUpload = rawFile => {
     if (
       rawFile.type !== 'image/jpeg' &&
@@ -362,6 +374,8 @@
         userInfo.userTitle = res.data.userTitle
         userInfo.userNo = res.data.userNo
         userInfo.userFaceImage = res.data.userFaceImage
+          ? API_BASE_PREFIX + res.data.userFaceImage
+          : ''
         userInfo.organInfoList = res.data.organInfoList
         userInfo.roleInfoList = res.data.roleInfoList
         loading.value = true

@@ -161,4 +161,22 @@ api.roleFunctionEdit = data => {
   })
 }
 
+// 上传 人脸图片
+api.uploadUserFace = data => {
+  return request({
+    method: 'POST',
+    url: `/user/uploadUserFace`,
+    data
+  })
+}
+
+// 编辑 人脸图片 - 设置人脸
+api.editOrganUserFace = data => {
+  return request({
+    method: 'POST',
+    url: `/user/editOrganUserFace`,
+    data
+  })
+}
+
 export default api
