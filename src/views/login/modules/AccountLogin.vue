@@ -253,6 +253,7 @@
       @update:show="showDialog = $event"
       :show="showDialog"
       :title="title"
+      closeOnPressEscape
       :footer="false"
       :width="900"
       :height="600"

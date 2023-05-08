@@ -79,9 +79,9 @@
             style="width: 100%; height: 100%"
             loading="lazy"
             lazy
-            :src="node.fileObjectNameThumb"
+            :src="API_BASE_PREFIX + node.fileObjectNameThumb"
             fit="cover"
-            :preview-src-list="item.imgs.map(i => i.fileUrl)"
+            :preview-src-list="item.imgs.map(i => API_BASE_PREFIX + i.fileUrl)"
           />
           <el-image
             class="imageData-list-iconPath"
@@ -117,6 +117,7 @@
   import { reactive, onBeforeMount, onMounted, watch } from 'vue'
   import dayjs from 'dayjs'
   import gaizhangIcon from '@/assets/svg/gaizhang-icon.svg'
+  import { API_BASE_PREFIX } from '@/utils/constants'
   const props = defineProps({
     // 标识
     refs: {
