@@ -30,24 +30,57 @@
       </template>
       <template #custom_caozuo="scope">
         <div class="rankDisplayData">
-          <el-button
-            type="info"
-            plain
-            @click="customClick(scope, '申请转办')"
-            link
-            text
-          >
-            申请转办
-          </el-button>
-          <el-button
-            type="info"
-            plain
-            @click="customClick(scope, '申请重置')"
-            link
-            text
-          >
-            申请重置
-          </el-button>
+          <template v-if="currentActiveName === 'pageNoUse'">
+            <el-button
+              type="info"
+              plain
+              @click="customClick(scope, '申请转办')"
+              link
+              text
+            >
+              申请转办
+            </el-button>
+            <el-button
+              type="info"
+              plain
+              @click="customClick(scope, '申请重置')"
+              link
+              text
+            >
+              申请重置
+            </el-button>
+          </template>
+          <template v-if="currentActiveName === 'pageUsing'">
+            <el-button
+              type="info"
+              plain
+              @click="customClick(scope, '结束用印')"
+              link
+              text
+            >
+              结束用印
+            </el-button>
+            <el-button
+              type="info"
+              plain
+              @click="customClick(scope, '申请重置')"
+              link
+              text
+            >
+              申请重置
+            </el-button>
+          </template>
+          <template v-if="currentActiveName === 'pageUseDone'">
+            <el-button
+              type="info"
+              plain
+              @click="customClick(scope, '申请重置')"
+              link
+              text
+            >
+              申请重置
+            </el-button>
+          </template>
         </div>
       </template>
     </JyTable>
