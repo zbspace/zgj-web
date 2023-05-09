@@ -22,13 +22,13 @@
             <div class="user-phone">
               <div class="phone-item">
                 <div class="label">手机号:</div>
-                <div class="number">{{ userInfo.userTel }}</div>
+                <div class="number">{{ userInfo.userTel || '-' }}</div>
                 <div class="change" @click="changePhoneNumber">更换</div>
               </div>
               <div class="right-line"></div>
               <div class="phone-item">
                 <div class="label">邮箱:</div>
-                <div class="number">{{ userInfo.userMail }}</div>
+                <div class="number">{{ userInfo.userMail || '-' }}</div>
                 <div class="change">更换</div>
               </div>
             </div>
@@ -258,7 +258,12 @@
               maxlength="6"
               oninput="value=value.replace(/^\.+|[^\d.]/g,'')"
             ></el-input>
-            <VerificationBtn :customStyle="customStyle"></VerificationBtn>
+            <VerificationBtn
+              :customStyle="customStyle"
+              :customClick="true"
+              @customClickFn="customClick"
+              ref="verificationBtn"
+            ></VerificationBtn>
           </el-form-item>
         </el-form>
 
@@ -283,6 +288,7 @@
   import { useAccountInfoStore } from '@/store/accountInfo'
   import { messageError } from '@/hooks/useMessage'
 
+  const verificationBtn = ref(null)
   const headers = ref({
     'zgj-token': useAccountInfoStore().token
   })
@@ -294,9 +300,6 @@
 
   const handleAvatarSuccess = (response, uploadFile) => {
     userInfo.userFaceImage = uploadFile.url
-    // userInfo.userFaceImage = response.data
-    //   ? API_BASE_PREFIX + response.data
-    //   : ''
   }
   const onError = (error, uploadFile, uploadFiles) => {
     messageError(error)
@@ -339,7 +342,13 @@
   const login = () => {
     loginformRef.value.validate(valid => {
       if (valid) {
-        showFormDialog.value = false
+        infoApi
+          .changeMobile({ phone: loginform.phone, code: loginform.code })
+          .then(res => {
+            showFormDialog.value = false
+            ElMessage.success('更改手机号成功!')
+            loadUserInfo()
+          })
       } else {
         return false
       }
@@ -363,7 +372,26 @@
     organInfoList: [],
     roleInfoList: []
   })
-  onBeforeMount(() => {
+
+  const customClick = () => {
+    loginformRef.value.validateField('phone', async valid => {
+      if (valid) {
+        infoApi
+          .sendChangeMobileVerificationCode({
+            phone: loginform.phone,
+            type: 'LOGIN'
+          })
+          .then(res => {
+            verificationBtn.value.countDown()
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    })
+  }
+
+  const loadUserInfo = () => {
     infoApi
       .getUserInfo()
       .then(res => {
@@ -383,6 +411,9 @@
       .catch(_ => {
         loading.value = true
       })
+  }
+  onBeforeMount(() => {
+    loadUserInfo()
   })
 </script>
 
