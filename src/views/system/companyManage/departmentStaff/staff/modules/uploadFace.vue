@@ -39,18 +39,12 @@
         <el-form-item label="人脸照片" prop="userFaceId">
           <el-upload
             class="avatar-uploader"
-            action="#"
+            :action="`${API_BASE_PREFIX}/user/uploadUserFace`"
             :show-file-list="false"
             list-type="picture-card"
             :before-upload="beforeAvatarUpload"
-            :on-change="handleChange"
-            :auto-upload="false"
+            :on-success="handleChange"
           >
-            <el-input
-              type="hidden"
-              v-model="state.formData.userFaceId"
-            ></el-input>
-
             <el-image
               v-if="state.formData.userFaceUri || props.userFaceUri"
               :src="state.formData.userFaceUri || props.userFaceUri"
@@ -87,10 +81,12 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed } from 'vue'
+  import { ref, reactive, computed, watch, nextTick } from 'vue'
   import api from '@/api/system/companyManagement/departmentStaff'
   import { ElMessage } from 'element-plus'
   import { Plus } from '@element-plus/icons-vue'
+  import { messageError, messageSuccess } from '@/hooks/useMessage'
+  import { API_BASE_PREFIX } from '@/utils/constants'
   const uploadForm = ref(null)
   const props = defineProps({
     userId: {
@@ -103,15 +99,31 @@
       type: String,
       default: ''
     },
-    modelValue: {
+    userUpdateFaceId: {
+      type: String,
+      default: ''
+    },
+    show: {
       type: Boolean,
       default: false
     }
   })
-  const emit = defineEmits(['update:modelValue'])
+  const emit = defineEmits(['update:modelValue', 'on-confirm', 'on-cancel'])
+
+  watch(
+    () => props.userUpdateFaceId,
+    val => {
+      nextTick(() => {
+        console.log(val)
+        if (val) {
+          state.formData.userFaceId = val
+        }
+      })
+    }
+  )
   const isVisible = computed({
     get() {
-      return props.modelValue
+      return props.show
     },
     set(value) {
       emit('update:modelValue', value)
@@ -119,7 +131,8 @@
   })
   const state = reactive({
     formData: {
-      userFaceId: ''
+      userFaceId: '',
+      userFaceUri: ''
     },
     formRules: {
       userFaceId: [
@@ -133,45 +146,55 @@
     fileList: ''
   })
   // 上传图片
-  const handleChange = file => {
-    state.fileList = file
-    state.formData.userFaceUri = file.url
+  const handleChange = response => {
+    console.log(response)
+    state.formData.userFaceId = response.data.fileId
+    state.formData.userFaceUri = API_BASE_PREFIX + response.data.fileUrl
   }
 
   const handleClose = () => {
+    emit('on-cancel')
     state.props.show = false
   }
-  const comifrm = value => {
-    uploadForm.value.validate(async valid => {
+  const comifrm = () => {
+    uploadForm.value.validate(valid => {
       if (valid) {
-        const fd = new FormData()
-        fd.append('file', state.uploadFile.raw)
-        const fileInfoRes = await api.uploadUserFace(fd)
-        if (fileInfoRes.code !== 200) {
-          return ElMessage.warning('人脸图片上传失败')
-        }
+        api
+          .editOrganUserFace({
+            userId: props.userId,
+            fileId: state.formData.userFaceId,
+            fileSourceType: '1'
+          })
+          .then(() => {
+            messageSuccess('人脸设置成功')
+            state.formData.userFaceUri = ''
+            state.formData.userFaceId = ''
+            emit('on-confirm')
+          })
       } else {
         ElMessage.error('请上传人脸照片')
       }
     })
-    isVisible.value = false
   }
-  const cancel = value => {
-    isVisible.value = false
+  const cancel = () => {
+    emit('on-cancel')
   }
 
   // 上传图片前处理
   const beforeAvatarUpload = file => {
-    const isJPG = file.type === 'image/jpeg'
-    const isLt2M = file.size / 1024 / 1024 < 2
+    const isJPG =
+      file.type === 'image/jpeg' ||
+      file.type === 'image/jpg' ||
+      file.type === 'image/png'
+    const isLt5M = file.size / 1024 / 1024 < 5
 
     if (!isJPG) {
-      this.$message.error('上传头像图片只能是 JPG 格式!')
+      messageError('上传头像图片只能是 JPG/JPEG/PNG 格式!')
     }
-    if (!isLt2M) {
-      this.$message.error('上传头像图片大小不能超过 2MB!')
+    if (!isLt5M) {
+      messageError('上传头像图片大小不能超过 5MB!')
     }
-    return isJPG && isLt2M
+    return isJPG && isLt5M
   }
 </script>
 <style lang="scss" scoped>

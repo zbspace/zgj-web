@@ -410,19 +410,20 @@
       @submitElMessageBox="submitElMessageBox(state.JyElMessageBox.type)"
     ></actionOneDialog>
     <UpdatePassword
-      v-model="showPass"
       :show="showPass"
       :title="passTitle"
       :userIds="state.componentsBatch.userIds"
-      @on-confirm="confirmPass"
-      @on-cancel="closePass"
+      @on-confirm="confirmSet"
+      @on-cancel="closeSet"
     >
     </UpdatePassword>
     <UploadFace
-      v-if="showUpload"
-      v-model="showUpload"
+      :show="showUpload"
       :userId="state.componentsBatch.userIds[0]"
       :userFaceUri="state.userUpdateFaceUri"
+      :userUpdateFaceId="state.userUpdateFaceId"
+      @on-confirm="confirmSet"
+      @on-cancel="closeSet"
     >
     </UploadFace>
   </div>
@@ -730,7 +731,8 @@
       userIds: []
     },
     uploadFile: '',
-    userUpdateFaceUri: ''
+    userUpdateFaceUri: '',
+    userUpdateFaceId: ''
   })
   function loadFn(node, resolve) {
     if (node.level === 0) {
@@ -767,14 +769,17 @@
     }
   }
 
-  // 提交密码
-  const confirmPass = data => {
-    console.log(data)
+  // 设置弹框
+  const confirmSet = () => {
     showPass.value = false
+    showUpload.value = false
+    table.value.reloadData()
   }
   // 关闭密码弹窗
-  const closePass = data => {
+  const closeSet = () => {
     showPass.value = false
+    showUpload.value = false
+    console.log(1)
   }
 
   // 新增员工
@@ -1085,12 +1090,20 @@
       showPass.value = true
     }
     if (cell.name === 't-zgj-F_SEAL_CONSOLE_FACE_SETTING') {
-      api.userGet(column.userId).then(res => {
-        showUpload.value = true
-        state.userUpdateFaceUri = res.data.userFaceUri
-          ? API_BASE_PREFIX + res.data.userFaceUri
-          : null
-      })
+      api.userGet(column.userId, true).then(
+        res => {
+          showUpload.value = true
+          state.userUpdateFaceUri = res.data.userFaceUri
+            ? API_BASE_PREFIX + res.data.userFaceUri
+            : null
+          state.userUpdateFaceId = res.data.userFaceId
+        },
+        () => {
+          showUpload.value = true
+          state.userUpdateFaceUri = null
+          state.userUpdateFaceId = null
+        }
+      )
     }
   }
   const closeMoreDialog = () => {

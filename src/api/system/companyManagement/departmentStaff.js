@@ -20,10 +20,11 @@ api.userAdd = data => {
   })
 }
 // 获取员工信息
-api.userGet = params => {
+api.userGet = (params, hideError) => {
   return request({
     method: 'GET',
-    url: `/user/${params}`
+    url: `/user/${params}`,
+    hideError
   })
 }
 // 修改员工

@@ -132,9 +132,9 @@
                     ></div>
                     {{
                       scope.row[props.statusColoum] === props.openValue
-                        ? '正常'
+                        ? $t('t-zgj-Enable')
                         : scope.row[props.statusColoum] !== props.openValue
-                        ? '停用'
+                        ? $t('t-zgj-dept.Deactivation')
                         : scope.row[item.prop]
                     }}
                   </div>

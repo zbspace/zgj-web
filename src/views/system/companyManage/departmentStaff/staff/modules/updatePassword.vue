@@ -11,6 +11,7 @@
       :before-close="handleClose"
       :show-close="false"
       destroy-on-close
+      :close-on-press-escape="false"
       :close-on-click-modal="false"
       width="40%"
       align-center
@@ -36,21 +37,21 @@
       >
         <el-form-item label="重置方式" prop="resetType" @change="resetChange">
           <el-radio-group v-model="state.formData.resetType">
-            <el-radio label="手动输入" value="1"></el-radio>
-            <el-radio label="随机生成" value="2"></el-radio>
+            <el-radio label="1">手动输入</el-radio>
+            <el-radio label="2">随机生成</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
           <el-row :gutter="10">
-            <el-col :span="state.formData.resetType === '随机生成' ? 22 : 24">
+            <el-col :span="state.formData.resetType === '2' ? 22 : 24">
               <el-input
                 v-model="state.formData.newPassword"
                 placeholder="请输入新密码"
-                :disabled="state.formData.resetType === '随机生成'"
+                :disabled="state.formData.resetType === '2'"
               >
               </el-input>
             </el-col>
-            <el-col :span="2" v-if="state.formData.resetType === '随机生成'">
+            <el-col :span="2" v-if="state.formData.resetType === '2'">
               <div @click="generatePass">
                 <el-icon class="refresh-icon">
                   <Refresh />
@@ -76,10 +77,10 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed } from 'vue'
-  import { ElMessage } from 'element-plus'
+  import { ref, reactive, computed, watch, nextTick } from 'vue'
   import { Refresh } from '@element-plus/icons-vue'
   import api from '@/api/system/companyManagement/departmentStaff'
+  import { messageError, messageSuccess } from '@/hooks/useMessage'
   const passwordForm = ref(null)
   const props = defineProps({
     show: {
@@ -109,7 +110,7 @@
   const state = reactive({
     formData: {
       newPassword: '',
-      resetType: '手动输入'
+      resetType: '1'
     },
     formRules: {
       resetType: [
@@ -123,14 +124,32 @@
         {
           required: true,
           message: '请输入新密码',
-          trigger: 'change'
+          trigger: 'blur'
         }
       ]
     }
   })
+
+  watch(
+    () => props.show,
+    () => {
+      if (props.show) {
+        nextTick(() => {
+          passwordForm.value.resetFields()
+          state.formData.newPassword = ''
+          state.formData.resetType = '1'
+        })
+      }
+    }
+  )
   // 重置方式切换
-  const resetChange = (item, label) => {
+  const resetChange = () => {
     console.log(state.formData.resetType)
+    if (state.formData.resetType === '2') {
+      generatePass()
+    } else {
+      state.formData.newPassword = null
+    }
   }
   // 生成密码
   const generatePass = () => {
@@ -142,35 +161,40 @@
     console.log('handleClose')
     state.props.show = false
   }
-  const comifrm = value => {
-    console.log(passwordForm)
-    const queryData = {}
-    queryData.newPassword = state.formData.newPassword
+  const comifrm = () => {
     passwordForm.value.validate(valid => {
       if (valid) {
-        if (props.title === '重置密码') {
-          queryData.userId = props.userIds[0]
-          console.log(queryData)
-          api.userResetPassword(queryData).then(res => {
-            if (res.code === 200) {
-              emit('on-confirm', { title: props.title, res })
-            } else {
-              ElMessage.error('重置密码失败，请重试！')
-            }
-          })
+        console.log(props.title)
+        if (props.title === 't-zgj-findpwd.resetPassword') {
+          api
+            .userResetPassword({
+              newPassword: state.formData.newPassword,
+              userId: props.userIds[0]
+            })
+            .then(res => {
+              if (res.code === 200) {
+                emit('on-confirm')
+                messageSuccess('重置密码成功')
+              } else {
+                messageError('重置密码失败，请重试！')
+              }
+            })
         }
-        if (props.title === '批量重置密码') {
-          queryData.userIds = props.userIds
-          api.userBatchResetPassword(queryData).then(res => {
-            if (res.code === 200) {
-              emit('on-confirm', { title: props.title, res })
-            } else {
-              ElMessage.error('重置密码失败，请重试！')
-            }
-          })
+        if (props.title === 't-zgj-findpwd.batchResetPassword') {
+          api
+            .userBatchResetPassword({
+              newPassword: state.formData.newPassword,
+              userIds: props.userIds
+            })
+            .then(res => {
+              if (res.code === 200) {
+                emit('on-confirm')
+                messageSuccess('批量重置密码成功')
+              } else {
+                messageError('重置密码失败，请重试！')
+              }
+            })
         }
-      } else {
-        ElMessage.error('请输入新密码')
       }
     })
     isVisible.value = false
