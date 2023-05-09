@@ -38,16 +38,17 @@
                 size="large"
                 clearable
               >
-                <!-- <template #prepend>
+                <template #prepend>
                   <el-select
                     v-model="state.select"
                     placeholder="+86"
                     style="width: 80px"
                     size="large"
+                    disabled
                   >
                     <el-option label="+86" value="1" />
                   </el-select>
-                </template> -->
+                </template>
               </el-input>
             </el-form-item>
 
