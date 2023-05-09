@@ -28,6 +28,7 @@
                     v-model="baseInfoData.tenantPm"
                     style="width: 180px"
                     placeholder="请输入"
+                    maxlength="128"
                   />
                 </div>
               </el-form-item>
@@ -42,6 +43,7 @@
                     v-model="baseInfoData.tenantPmTel"
                     style="width: 180px"
                     placeholder="请输入"
+                    maxlength="11"
                   />
                 </div>
               </el-form-item>
@@ -56,6 +58,7 @@
                     v-model="baseInfoData.domainName"
                     style="width: 180px"
                     placeholder="请输入"
+                    maxlength="128"
                   />
                 </div>
               </el-form-item>

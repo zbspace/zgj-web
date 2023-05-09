@@ -20,7 +20,11 @@
           <img :src="inputIcon" @click="editTitle" />
         </div>
         <div v-if="edit" class="input">
-          <el-input v-model="input" placeholder="请输入新的头部系统显示名称" />
+          <el-input
+            v-model="tenantTitle"
+            placeholder="请输入新的头部系统显示名称"
+            maxlength="256"
+          />
           <span class="save" @click="save">保存</span>
           <span class="cancel" @click="cancel">取消</span>
         </div>
@@ -47,12 +51,12 @@
     }
   })
 
-  const input = ref(null)
+  const tenantTitle = ref(null)
   const edit = ref(false)
   const save = () => {
     companyInfoApi
       .editTenantTitle({
-        tenantTitle: input.value,
+        tenantTitle: tenantTitle.value,
         tenantId: localStorage.getItem('tenantId')
       })
       .then(res => {
@@ -62,14 +66,14 @@
         })
         edit.value = !edit.value
         emit('reloadData')
-        accountInfo.setOneDeaprtTitle(input.value)
+        accountInfo.setOneDeaprtTitle(tenantTitle.value)
       })
   }
   const cancel = () => {
     edit.value = !edit.value
   }
   const editTitle = () => {
-    input.value = props.tenant.tenantTitle
+    tenantTitle.value = props.tenant.tenantTitle
     edit.value = true
   }
 </script>

@@ -41,7 +41,11 @@
                 :rules="rules"
               >
                 <el-form-item prop="formName" label="表单名称">
-                  <el-input v-model="formData.formName" />
+                  <el-input
+                    v-model="formData.formName"
+                    clearable
+                    maxlength="128"
+                  />
                 </el-form-item>
 
                 <el-form-item label="业务类型" prop="applyTypeId">

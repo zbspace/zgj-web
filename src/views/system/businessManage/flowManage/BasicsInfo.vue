@@ -16,7 +16,12 @@
           ref="ruleFormRef"
         >
           <el-form-item label="流程名称" prop="flowName">
-            <el-input v-model="form.flowName" placeholder="请输入" clearable />
+            <el-input
+              v-model="form.flowName"
+              placeholder="请输入"
+              clearable
+              maxlength="128"
+            />
           </el-form-item>
           <el-form-item label="业务类型" prop="applyTypeId">
             <el-select

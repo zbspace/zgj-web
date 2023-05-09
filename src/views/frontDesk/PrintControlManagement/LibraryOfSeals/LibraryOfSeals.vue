@@ -186,6 +186,7 @@
           <el-input
             v-model="state.form.sealName"
             placeholder="请输入印章全称"
+            maxlength="256"
           />
         </el-form-item>
         <el-row :gutter="20">
@@ -217,6 +218,7 @@
               <el-input
                 v-model="state.form.sealAlias"
                 placeholder="请输入印章简称"
+                maxlength="128"
               />
             </el-form-item>
           </el-col>
@@ -320,6 +322,7 @@
             v-model="state.form.bylawsUrl"
             clearable
             placeholder="请输入http或https开头的网址链接，如https://www.zhangin.com"
+            maxlength="256"
           />
         </el-form-item>
         <el-form-item label="备注" prop="sealExplain">

@@ -51,12 +51,17 @@
           <el-input v-model="formData.sealTypeNo" disabled />
         </el-form-item>
         <el-form-item label="印章类型名称" prop="sealTypeName">
-          <el-input v-model="formData.sealTypeName" placeholder="请输入" />
+          <el-input
+            v-model="formData.sealTypeName"
+            maxlength="128"
+            placeholder="请输入"
+          />
         </el-form-item>
         <el-form-item label="描述" prop="readme">
           <el-input
             v-model="formData.readme"
             type="textarea"
+            maxlength="512"
             placeholder="请填写"
           />
         </el-form-item>

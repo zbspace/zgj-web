@@ -23,10 +23,10 @@
         <el-input v-model="formData.fileTypeNo" disabled />
       </el-form-item>
       <el-form-item label="文件类型名称" prop="fileTypeName">
-        <el-input v-model="formData.fileTypeName" />
+        <el-input v-model="formData.fileTypeName" clearable maxlength="128" />
       </el-form-item>
       <el-form-item label="文件类型字号">
-        <el-input v-model="formData.fileTypeSn" />
+        <el-input v-model="formData.fileTypeSn" clearable maxlength="128" />
       </el-form-item>
       <el-form-item label="上级文件夹">
         <el-tree-select

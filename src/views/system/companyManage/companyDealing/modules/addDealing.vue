@@ -38,6 +38,8 @@
         <el-input
           v-model="state.componentsAddForm.formData.relatedCompanyName"
           placeholder="请输入企业名称"
+          clearable
+          maxlength="128"
         />
       </el-form-item>
       <el-form-item label="所属部门" prop="organId">
@@ -72,12 +74,16 @@
         <el-input
           v-model="state.componentsAddForm.formData.contactName"
           placeholder="请输入联系人"
+          clearable
+          maxlength="64"
         />
       </el-form-item>
       <el-form-item label="联系方式" prop="contactInformation">
         <el-input
           v-model="state.componentsAddForm.formData.contactInformation"
           placeholder="请输入联系方式"
+          clearable
+          maxlength="64"
         />
       </el-form-item>
       <el-form-item label="备注" prop="readme">
@@ -86,6 +92,7 @@
           :rows="4"
           v-model="state.componentsAddForm.formData.readme"
           placehoder="请输入备注"
+          maxlength="512"
         />
       </el-form-item>
     </el-form>

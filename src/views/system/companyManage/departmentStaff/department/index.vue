@@ -108,7 +108,12 @@
         label-width="80px"
       >
         <el-form-item label="部门名称" prop="organName">
-          <el-input v-model="form.organName" placeholder="请输入" />
+          <el-input
+            v-model="form.organName"
+            placeholder="请输入"
+            clearable
+            maxlength="128"
+          />
         </el-form-item>
         <el-form-item label="组织类型" prop="organTypeId">
           <el-radio-group v-model="form.organTypeId">
@@ -117,7 +122,11 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="部门编码" prop="organNo">
-          <el-input v-model="form.organNo" placeholder="请输入" />
+          <el-input
+            v-model="form.organNo"
+            placeholder="请输入"
+            maxlength="64"
+          />
         </el-form-item>
         <el-form-item label="上级部门" prop="organPName">
           <div class="select-box-contBox">
@@ -150,13 +159,12 @@
               <img
                 class="ap-box-contBox-icon-img"
                 src="@/assets/svg/ketanchude.svg"
-                alt=""
               />
             </div>
           </div>
         </el-form-item>
         <el-form-item label="备注" prop="readme">
-          <el-input v-model="form.readme" type="textarea" />
+          <el-input v-model="form.readme" type="textarea" maxlength="512" />
         </el-form-item>
       </el-form>
     </JyDialog>

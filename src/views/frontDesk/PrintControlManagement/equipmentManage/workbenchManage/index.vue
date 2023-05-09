@@ -67,20 +67,28 @@
       >
         <el-row>
           <el-col :span="24">
-            <el-form-item label="工作台编码" prop="benchNo">
-              <el-input v-model="form.benchNo" disabled />
+            <el-form-item label="工作台名称" prop="benchName">
+              <el-input
+                v-model="form.benchName"
+                placeholder="请输入"
+                maxlength="128"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="工作台名称" prop="benchName">
-              <el-input v-model="form.benchName" placeholder="请输入" />
+            <el-form-item label="工作台编码" prop="benchNo">
+              <el-input v-model="form.benchNo" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="设备串号" prop="benchSn">
-              <el-input v-model="form.benchSn" placeholder="请输入" />
+              <el-input
+                v-model="form.benchSn"
+                placeholder="请输入"
+                maxlength="128"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -135,7 +143,12 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注" prop="readme">
-              <el-input v-model="form.readme" type="textarea" clearable />
+              <el-input
+                v-model="form.readme"
+                type="textarea"
+                maxlength="512"
+                clearable
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -645,9 +658,9 @@
     }
   }
   // 点击关闭
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
-  }
+  // function clickClose() {
+  //   state.componentsDocumentsDetails.show = false
+  // }
 
   // 点击表格按钮
   function customClick(row, column, cell, event) {

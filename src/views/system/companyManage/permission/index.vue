@@ -61,7 +61,7 @@
       :centerBtn="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      :width="500"
+      :width="600"
       :height="160"
       @confirm="submitLibraryForm"
     >
@@ -75,7 +75,7 @@
           <el-input v-model="form.roleNo" disabled />
         </el-form-item>
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="form.roleName" clearable />
+          <el-input v-model="form.roleName" clearable maxlength="128" />
         </el-form-item>
       </el-form>
     </JyDialog>

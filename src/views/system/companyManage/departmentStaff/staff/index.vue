@@ -96,12 +96,16 @@
           <el-input
             v-model="state.componentsAddForm.formData.userName"
             placeholder="请输入姓名"
+            clearable
+            maxlength="64"
           />
         </el-form-item>
         <el-form-item label="帐号" prop="accountNo">
           <el-input
             v-model="state.componentsAddForm.formData.accountNo"
             placeholder="请输入帐号"
+            clearable
+            maxlength="64"
           />
         </el-form-item>
         <el-form-item label="手机号" prop="userTel">
@@ -109,6 +113,7 @@
             v-model="state.componentsAddForm.formData.userTel"
             maxlength="11"
             placeholder="请输入手机号"
+            clearable
           />
         </el-form-item>
         <el-form-item label="所属部门" prop="hostOrganName">
@@ -173,18 +178,24 @@
           <el-input
             v-model="state.componentsAddForm.formData.userTitle"
             placeholder="请输入职位"
+            clearable
+            maxlength="128"
           />
         </el-form-item>
         <el-form-item label="邮箱" prop="userMail">
           <el-input
             v-model="state.componentsAddForm.formData.userMail"
             placeholder="请输入邮箱"
+            clearable
+            maxlength="128"
           />
         </el-form-item>
         <el-form-item label="工号" prop="userNo">
           <el-input
             v-model="state.componentsAddForm.formData.userNo"
             placeholder="请输入工号"
+            clearable
+            maxlength="64"
           />
         </el-form-item>
         <el-form-item label="主管" prop="leaderUserName">
@@ -255,6 +266,8 @@
               <el-input
                 v-model="state.componentsAddForm.formData.qweiNo"
                 placeholder="请输入企业微信ID"
+                clearable
+                maxlength="256"
               />
             </el-form-item>
           </el-col>
@@ -263,6 +276,8 @@
               <el-input
                 v-model="state.componentsAddForm.formData.dingdingNo"
                 placeholder="请输入钉钉ID"
+                clearable
+                maxlength="256"
               />
             </el-form-item>
           </el-col>
@@ -318,6 +333,7 @@
                 :rows="7"
                 v-model="state.componentsAddForm.formData.readme"
                 placehoder="请输入备注"
+                maxlength="512"
               />
             </el-form-item>
           </el-col>
