@@ -626,12 +626,16 @@
         if (props.handleApprovalStatus) {
           const statusList = await apiForm.listApplyTypeTree({})
           state.componentsTable.data.forEach(item => {
-            const { applyTypeName } = statusList.data.find(
+            const findRes = statusList.data.find(
               val => Number(val.applyTypeId) === item.subType
             )
-            item.subTypeName = applyTypeName
-            item.createTime = dayjs(item.createTime).format('YYYY-MM-DD HH:mm')
-            item.updateTime = dayjs(item.updateTime).format('YYYY-MM-DD HH:mm')
+            item.subTypeName = findRes ? findRes.applyTypeName : ''
+            item.createTime =
+              item.createTime &&
+              dayjs(item.createTime).format('YYYY-MM-DD HH:mm')
+            item.updateTime =
+              item.updateTime &&
+              dayjs(item.updateTime).format('YYYY-MM-DD HH:mm')
           })
         }
         loading.value = false
