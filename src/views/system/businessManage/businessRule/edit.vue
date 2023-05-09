@@ -48,6 +48,7 @@
                     v-model="ruleForm.ruleBusinessName"
                     clearable
                     placeholder="请输入"
+                    maxlength="128"
                   />
                 </el-form-item>
               </el-col>
