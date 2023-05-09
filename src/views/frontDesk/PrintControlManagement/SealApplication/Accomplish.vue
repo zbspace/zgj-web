@@ -54,7 +54,9 @@
               用印文件名称：单据名称单据名称单据名称单据名称
             </div> -->
             <div class="custom-cont-but">
-              <el-button type="primary">查看单据详情</el-button>
+              <el-button type="primary" @click="getDetail">
+                查看单据详情
+              </el-button>
               <el-button @click="clickBackPage">返回</el-button>
             </div>
           </div>
@@ -90,6 +92,10 @@
   // 点击返回上一页
   function clickBackPage() {
     router.go(-1)
+  }
+
+  const getDetail = () => {
+    router.push({ name: 'RecordWithSeal' })
   }
 
   onBeforeMount(() => {})
