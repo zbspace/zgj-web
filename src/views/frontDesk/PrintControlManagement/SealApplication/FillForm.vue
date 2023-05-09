@@ -389,14 +389,17 @@
         edit: true
       })
       .then(async res => {
-        node.value = res.data.data
-
+        node.value = null
         nextTick(() => {
-          wrapStyle.value = {
-            height:
-              document.getElementById('flow-designer-box').clientHeight + 'px',
-            overflow: 'hidden'
-          }
+          node.value = res.data.data
+          nextTick(() => {
+            wrapStyle.value = {
+              height:
+                document.getElementById('flow-designer-box').clientHeight +
+                'px',
+              overflow: 'hidden'
+            }
+          })
         })
       })
   }
