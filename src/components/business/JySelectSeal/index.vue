@@ -10,6 +10,7 @@
     <JyDialog
       v-model="isVisible"
       :width="1000"
+      :height="600"
       :title="$t('t-zgj-list.SelecSeal')"
       :mode="1"
       @on-opened="opened"
@@ -17,34 +18,51 @@
       :appendToBody="true"
     >
       <div class="jy-select-seal">
-        <el-row :gutter="12">
-          <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+        <el-row :gutter="12" style="height: 100%">
+          <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" style="height: 100%">
             <div class="components-tree">
-              <el-tree
-                :data="sealTypeTreeData"
-                node-key="sealTypeId"
-                check-on-click-node
-                :show-checkbox="false"
-                default-expand-all
-                :expand-on-click-node="false"
-                check-strictly
-                highlight-current
-                current-node-key=""
-                :props="defaultProps"
-                @current-change="sealTypeSelect"
-              >
-                <template #default="{ node, data }">
-                  <span class="custom-tree-node">
-                    <svg class="iconpark-icon" v-if="node.level !== 1">
-                      <use href="#file-line"></use>
-                    </svg>
-                    <span>{{ data.sealTypeName }}</span>
-                  </span>
-                </template>
-              </el-tree>
+              <el-scrollbar always>
+                <el-tree
+                  :data="sealTypeTreeData"
+                  node-key="sealTypeId"
+                  check-on-click-node
+                  :show-checkbox="false"
+                  default-expand-all
+                  :expand-on-click-node="false"
+                  check-strictly
+                  highlight-current
+                  current-node-key=""
+                  :props="defaultProps"
+                  @current-change="sealTypeSelect"
+                >
+                  <template #default="{ node, data }">
+                    <span class="custom-tree-node">
+                      <svg class="iconpark-icon" v-if="node.level !== 1">
+                        <use href="#file-line"></use>
+                      </svg>
+
+                      <el-tooltip
+                        effect="dark"
+                        :content="data.sealTypeName"
+                        placement="bottom"
+                        :show-after="200"
+                      >
+                        <div class="sealTip">{{ data.sealTypeName }}</div>
+                      </el-tooltip>
+                    </span>
+                  </template>
+                </el-tree>
+              </el-scrollbar>
             </div>
           </el-col>
-          <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
+          <el-col
+            :xs="18"
+            :sm="18"
+            :md="18"
+            :lg="18"
+            :xl="18"
+            style="height: 100%"
+          >
             <div class="select-block">
               <div>
                 <el-input
@@ -110,7 +128,6 @@
           </el-col>
         </el-row>
       </div>
-
       <template #footer>
         <el-button type="primary" @click="submit">确定</el-button>
         <el-button @click="isVisible = false">取消</el-button>
@@ -185,7 +202,10 @@
   const getLibraryOfSeal = async () => {
     try {
       loading.value = true
-      const res = await libraryOfSealsService.pageList(searchSealInfo.value)
+      const res = await libraryOfSealsService.pageList({
+        ...searchSealInfo.value,
+        ...paginationInfo.value
+      })
       sealList.value = res.data.records
       paginationInfo.value.total = res.data && res.data.total
       paginationInfo.value.pages = res.data && res.data.pages
@@ -297,6 +317,8 @@
 
 <style lang="scss" scoped>
   .jy-select-seal {
+    height: 100%;
+
     .select-block {
       display: flex;
       justify-content: space-between;
@@ -306,10 +328,17 @@
       }
     }
   }
+  :deep(.el-table) {
+    height: 100%;
+  }
+  .jy-table {
+    height: calc(100% - 100px);
+  }
 </style>
 <style lang="scss">
   .components-tree {
     margin: 0;
+    height: 100%;
 
     .el-tree-node__content {
       min-height: 32px;
@@ -322,6 +351,12 @@
         width: 16px;
         height: 16px;
         margin-right: 8px;
+      }
+      .sealTip {
+        width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
     .is-leaf {
