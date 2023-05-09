@@ -29,7 +29,7 @@
             @change="changeApproverType(group)"
           >
             <a-radio
-              v-for="(approval, i) in approvals"
+              v-for="(approval, i) in newApprovals"
               :key="i"
               :style="approvalRadioStyle()"
               :value="approval.value"
@@ -614,6 +614,18 @@
     assigneeTypes
   } = loadApproverData()
 
+  const newApprovals = computed({
+    get() {
+      let str = []
+      if (props.node.nodeType === 2) {
+        str = approvals.filter(item => item.value !== 9)
+      } else {
+        str = approvals
+      }
+      return str
+    }
+  })
+
   // 人员控件
   const userControl = ref([])
   // 部门控件
@@ -677,7 +689,6 @@
    * 改变审批人类型
    */
   const changeApproverType = group => {
-    debugger
     group.approverIds = []
     group.approverNames = []
     group.controlIds = []
@@ -685,7 +696,7 @@
     // 是否多个人
     changeMultiple(group)
     // ApproverType名称
-    group.approverTypeName = approvals
+    group.approverTypeName = newApprovals.value
       .filter(approval => approval.value == group.approverType)
       .map(approval => approval.name)[0]
     // 如果是表单内人员
@@ -787,13 +798,13 @@
       multiple = true
     } else if (props.node.approverGroups.length == 1) {
       group = props.node.approverGroups[0]
-      multiple = approvals.filter(
+      multiple = newApprovals.value.filter(
         approval => approval.value == group.approverType
       )[0].multiple
       // 指定成员、发起人自选、节点审批人、表单内人员
       // TODO: 需要根据选择判断是否多个人
     } else if (group) {
-      multiple = approvals.filter(
+      multiple = newApprovals.value.filter(
         approval => approval.value == group.approverType
       )[0].multiple
       // 指定成员、发起人自选、节点审批人、表单内人员
