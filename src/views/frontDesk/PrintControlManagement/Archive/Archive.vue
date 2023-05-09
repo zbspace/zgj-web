@@ -267,14 +267,7 @@
   </div>
 </template>
 <script setup>
-  import {
-    ref,
-    reactive,
-    // defineProps,
-    // defineEmits,
-    onBeforeMount,
-    onMounted
-  } from 'vue'
+  import { ref, reactive, onBeforeMount, onMounted } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
   import componentsTabs from '@/views/components/JyTabs.vue'
   import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'

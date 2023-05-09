@@ -154,6 +154,8 @@
 
   const handleClose = () => {
     emit('on-cancel')
+    state.formData.userFaceUri = ''
+    state.formData.userFaceId = ''
     state.props.show = false
   }
   const comifrm = () => {

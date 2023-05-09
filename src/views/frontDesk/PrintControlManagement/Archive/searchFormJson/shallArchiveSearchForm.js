@@ -1,6 +1,6 @@
 const searchForm = [
   {
-    id: 'name',
+    id: 'searchKey',
     label: '关键词',
     type: 'input',
     inCommonUse: true,
@@ -10,45 +10,71 @@ const searchForm = [
     }
   },
   {
-    id: 'picker',
+    id: 'applyDate',
     label: '申请时间',
     type: 'picker',
-    pickerType: 'date',
     inCommonUse: true,
+    requestType: 'array',
+    startRequest: 'applyStartTime',
+    endRequest: 'applyEndTime',
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
       type: 'daterange',
       'start-placeholder': '开始时间',
-      'end-placeholder': '结束时间'
+      'end-placeholder': '结束时间',
+      'value-format': 'YYYY-MM-DD',
+      'disabled-date': time => {
+        return time.getTime() > Date.now()
+      },
+      'default-value': [
+        new Date(new Date().setMonth(new Date().getMonth() - 1)),
+        new Date()
+      ]
     },
     style: {}
   },
   {
-    id: 'derivable',
+    id: 'fileTypeId',
+    requestParams: 'fileTypeIds',
     label: '文件类型',
     type: 'derivable',
+    inCommonUse: false,
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
-      placeholder: '+文件类型'
-    }
+      placeholder: '请选择',
+      type: 'fileType',
+      multiple: true,
+      joinStr: ','
+    },
+    options: []
   },
   {
-    id: 'derivable',
+    id: 'applyUser',
+    requestParams: 'applyUserId',
     label: '申请人',
     type: 'derivable',
-    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
-      placeholder: '+申请人'
-    }
+      type: 'user',
+      multiple: true,
+      placeholder: '+申请人',
+      joinStr: ','
+    },
+    options: [],
+    values: null
   },
   {
-    id: 'derivable',
+    id: 'applyOrgan',
+    requestParams: 'applyOrganIds',
     label: '申请部门',
     type: 'derivable',
-    // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
-      placeholder: '+申请部门'
-    }
+      type: 'organ',
+      multiple: true,
+      placeholder: '+申请部门',
+      joinStr: ','
+    },
+    options: [],
+    values: null
   },
   {
     id: 'derivable',
@@ -74,20 +100,22 @@ const searchForm = [
     style: {}
   },
   {
-    id: 'wdyy',
+    id: 'useSealStatus',
     label: '用印状态',
     type: 'checkButton',
     data: [
       {
+        id: '1',
         name: '正常'
       },
       {
+        id: '2',
         name: '异常'
       }
     ]
   },
   {
-    id: 'wdyy',
+    id: 'onlyMyself',
     label: '',
     type: 'checkbox',
     checkbox: [
