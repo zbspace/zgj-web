@@ -476,7 +476,7 @@
     emit('customClick', row, column, cell, event)
   }
   const clickSubmit = item => {
-    if (item.id === 'reset') {
+    if (!item || item.id === 'reset') {
       table.value.clearSort()
       props.componentsSearchForm.data.forEach(item => {
         if (item.type === 'checkButton') {
@@ -683,6 +683,7 @@
 
   defineExpose({
     reloadData,
+    clickSubmit,
     getSelectionRows,
     setTableHeader,
     reloadSearchForm,

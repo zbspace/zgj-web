@@ -3,12 +3,11 @@ import request from '@/utils/request'
 // 用印申请
 
 const api = {}
-// 文件归档列表
-api.archivePage = params => {
+// 文件归档详情
+api.archiveInfo = useSealApplyId => {
   return request({
     method: 'GET',
-    url: '/archive/page',
-    params
+    url: '/archive/info/' + useSealApplyId
   })
 }
 // 单个文件归档
@@ -16,7 +15,7 @@ api.archiveFileFinish = data => {
   return request({
     method: 'POST',
     url: '/archive/file/finish',
-    params: data
+    data
   })
 }
 // 删除归档文件
@@ -32,7 +31,7 @@ api.archiveFinish = data => {
   return request({
     method: 'POST',
     url: '/archive/finish',
-    params: data
+    data
   })
 }
 // 文件归档申请重置

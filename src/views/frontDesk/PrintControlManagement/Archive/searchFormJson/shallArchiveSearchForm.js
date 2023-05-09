@@ -14,9 +14,6 @@ const searchForm = [
     label: '申请时间',
     type: 'picker',
     inCommonUse: true,
-    requestType: 'array',
-    startRequest: 'applyStartTime',
-    endRequest: 'applyEndTime',
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
       type: 'daterange',
@@ -89,13 +86,20 @@ const searchForm = [
     id: 'archiveDate',
     label: '归档时间',
     type: 'picker',
-    pickerType: 'date',
     inCommonUse: true,
     // 默认属性  可以直接通过默认属性  来绑定组件自带的属性
     defaultAttribute: {
       type: 'daterange',
       'start-placeholder': '开始时间',
-      'end-placeholder': '结束时间'
+      'end-placeholder': '结束时间',
+      'value-format': 'YYYY-MM-DD',
+      'disabled-date': time => {
+        return time.getTime() > Date.now()
+      },
+      'default-value': [
+        new Date(new Date().setMonth(new Date().getMonth() - 1)),
+        new Date()
+      ]
     },
     style: {}
   },

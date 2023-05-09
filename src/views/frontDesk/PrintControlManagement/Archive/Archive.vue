@@ -70,13 +70,15 @@
     </div>
     <!-- 文件归档弹窗 -->
     <JyDialog
-      @update:show="confirmFileAchive"
+      @update:show="dialogData.show = $event"
       :show="dialogData.show"
       title="文件归档"
       centerBtn
       :draggable="true"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
+      @close="closeArchiveFrom"
+      @confirm="submitArchiveForm"
     >
       <documentsDetailsPortion>
         <template #title>
@@ -84,44 +86,48 @@
         </template>
         <template #content>
           <div class="from-wrap">
-            <el-form :inline="true" label-width="70px" label-position="left">
-              <el-form-item label="单据编号">
-                <el-input
-                  v-model="state.componentsArchiveForm.applyCode"
-                  disabled
-                  type="text"
-                />
-              </el-form-item>
-              <el-form-item label="单据名称">
-                <el-input
-                  v-model="state.componentsArchiveForm.applyName"
-                  disabled
-                />
-              </el-form-item>
-            </el-form>
-            <el-form :inline="true" label-width="70px" label-position="left">
-              <el-form-item label="归档时间">
-                <el-date-picker
-                  v-model="state.componentsArchiveForm.time"
-                  type="datetime"
-                  placeholder="请选择时间"
-                />
-              </el-form-item>
-              <el-form-item label="档案字号">
-                <el-input
-                  v-model="state.componentsArchiveForm.fileCode"
-                  placeholder="请输入"
-                />
-              </el-form-item>
-            </el-form>
             <el-form label-width="70px" label-position="left">
-              <el-form-item label="归档备注">
-                <el-input
-                  v-model="state.componentsArchiveForm.remark"
-                  type="textarea"
-                  placeholder="请输入"
-                />
-              </el-form-item>
+              <el-row :gutter="15">
+                <el-col :span="12">
+                  <el-form-item label="单据编号" prop="applyCode">
+                    <el-input
+                      v-model="state.componentsArchiveForm.applyCode"
+                      disabled
+                      type="text"
+                      style="width: 100%"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="单据名称" prop="applyName">
+                    <el-input
+                      v-model="state.componentsArchiveForm.applyName"
+                      disabled
+                      style="width: 100%"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                  <el-form-item label="档案字号" prop="archiveNo">
+                    <el-input
+                      v-model="state.componentsArchiveForm.archiveNo"
+                      placeholder="请输入"
+                      clearable
+                      style="width: 100%"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                  <el-form-item label="归档备注" prop="readme">
+                    <el-input
+                      v-model="state.componentsArchiveForm.readme"
+                      type="textarea"
+                      placeholder="请输入"
+                      style="width: 100%"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
             </el-form>
           </div>
         </template>
@@ -142,15 +148,21 @@
                 v-for="(item, index) in state.componentsArchiveForm.files"
                 :key="index"
               >
-                <div>{{ item.fileName }}</div>
+                <div>{{ item.fileOriginName }}</div>
                 <div class="add-file" v-if="item.type < 2">
                   <el-upload
                     ref="upload"
                     class="upload-demo"
-                    action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                    :action="`${API_BASE_PREFIX}/archive/file/upload`"
                     :limit="1"
-                    :on-exceed="handleExceed"
-                    :auto-upload="false"
+                    :data="{
+                      useSealApplyId:
+                        state.componentsArchiveForm.useSealApplyId,
+                      useSealFileTypeId: state.componentsArchiveForm.fileTypeId,
+                      joinBizFileId: item.bizFileId,
+                      fileSourceType: '1'
+                    }"
+                    :on-success="successArchiveFile"
                     :show-file-list="false"
                   >
                     <template #trigger>
@@ -183,7 +195,11 @@
                     </template>
                   </el-upload>
                 </div>
-                <div class="view-file" v-if="item.type == 2">
+                <div
+                  class="view-file"
+                  :class="{ special: item.fileSourceType === '1' }"
+                  v-if="item.type == 2"
+                >
                   <div class="upload-file">
                     <div v-if="item.isArchived">
                       <img src="@/assets/svg/upload/icon-pdf.svg" />{{
@@ -205,10 +221,19 @@
                       完成归档
                     </div>
                     <div class="archive-status-item" v-else>
-                      <svg class="iconpark-icon">
-                        <use href="#waiting-arvhices"></use>
-                      </svg>
-                      归档中（其他终端）
+                      <el-button
+                        style="margin-right: 20px"
+                        v-if="item.fileSourceType === '1'"
+                        type="primary"
+                        @click="comfirmOneArchive(index)"
+                        >完成归档</el-button
+                      >
+                      <div v-else>
+                        <svg class="iconpark-icon">
+                          <use href="#waiting-arvhices"></use>
+                        </svg>
+                        <span>归档中（其他终端）</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -221,12 +246,11 @@
               <el-upload
                 ref="upload"
                 class="upload-demo"
-                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-                multiple
-                :on-exceed="handleExceed"
-                :auto-upload="false"
+                :action="`${API_BASE_PREFIX}/archive/file/upload/add`"
+                :limit="1"
+                :data="supplemenFilesData"
                 :show-file-list="false"
-                :on-change="uploadFiles"
+                :on-success="uploadFiles"
               >
                 <template #trigger>
                   <svg class="iconpark-icon">
@@ -242,10 +266,12 @@
                     .supplemenFiles"
                   :key="index"
                 >
-                  <div class="file-name" :title="item.name">{{
-                    item.name
+                  <div class="file-name" :title="item.fileOriginName">{{
+                    item.fileOriginName
                   }}</div>
-                  <div class="file-size">{{ item.size }}</div>
+                  <div class="file-size">{{
+                    (item.fileSizeByte / 1024).toFixed(2) + 'KB'
+                  }}</div>
                   <div class="file-status file-btn">已上传</div>
                   <div class="file-view file-btn">预览</div>
                   <div class="file-down file-btn">下载</div>
@@ -280,10 +306,14 @@
   import shallArchiveSearchForm from '@/views/frontDesk/PrintControlManagement/Archive/searchFormJson/shallArchiveSearchForm'
   import archivingSearchForm from '@/views/frontDesk/PrintControlManagement/Archive/searchFormJson/archivingSearchForm'
   import archivedSearchForm from '@/views/frontDesk/PrintControlManagement/Archive/searchFormJson/archivedSearchForm'
+  import api from '@/api/frontDesk/printControl/archive'
+  import { API_BASE_PREFIX } from '@/utils/constants'
+  import { messageWarning, messageSuccess } from '@/hooks/useMessage'
   const router = useRouter()
   const showDepPerDialog = ref(false)
   const currentActiveName = ref('shallArchive')
   const jyTable = ref(null)
+  const supplemenFilesData = ref(null)
   const tableJson = ref({
     shallArchive,
     archiving,
@@ -390,51 +420,20 @@
       data: []
     },
     componentsArchiveForm: {
-      applyCode: '202302081234556',
-      applyName: '单据名称',
-      time: '2023-02-08 15:44:00',
-      fileCode: '',
-      remark: '',
-      files: [
-        {
-          fileName: 'V3.9.5版本测试.xlsx',
-          id: '',
-          fileSize: '500K',
-          type: -1,
-          isArchived: false
-        },
-        {
-          fileName: '居家办公管理方案.docx',
-          id: '',
-          fileSize: '500K',
-          type: 0,
-          isArchived: false
-        },
-        {
-          fileName: '电子盖章问题.doc',
-          id: '',
-          fileSize: '500K',
-          type: 2,
-          archiveAttachmentFileName:
-            'ff808081842bd69201842be2dad701241675818532806.jpg',
-          isArchived: false
-        },
-        {
-          fileName: '电子盖章问题.doc',
-          id: '',
-          fileSize: '500K',
-          type: 2,
-          archiveAttachmentFileName: 'ocr核验.pdf',
-          isArchived: true
-        }
-      ],
+      useSealApplyId: '',
+      fileTypeId: '',
+      applyCode: '',
+      applyName: '',
+      archiveNo: '',
+      readme: '',
+      files: [],
       supplemenFiles: []
     }
   })
-  const confirmFileAchive = data => {
-    dialogData.show = false
-    console.log(state.componentsArchiveForm)
-  }
+  // const confirmFileAchive = data => {
+  //   dialogData.show = false
+  //   console.log(state.componentsArchiveForm)
+  // }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     console.log(row, column, cell, event)
@@ -469,15 +468,41 @@
     }
 
     // 搜索条件
-    state.componentsSearchForm.data =
-      searchFormJs.value[activeName + 'SearchForm']
+    // state.componentsSearchForm.data =
+    // searchFormJs.value[activeName + 'SearchForm']
 
-    jyTable.value.reloadData()
+    jyTable.value.clickSubmit()
   }
   // 点击表格按钮
   const customClick = (row, column, cell, event) => {
     if (cell.name === '文件归档') {
       dialogData.show = true
+      api.archiveInfo(column.useSealApplyId).then(res => {
+        const data = res.data
+        state.componentsArchiveForm.useSealApplyId = data.useSealApplyId
+        state.componentsArchiveForm.fileTypeId = data.fileTypeId
+        state.componentsArchiveForm.applyCode = data.useSealApplyNo
+        state.componentsArchiveForm.applyName = data.useSealFileName
+        state.componentsArchiveForm.files = []
+        state.componentsArchiveForm.supplemenFiles = data.archiveAddFile
+        data.useSealFile.forEach(item => {
+          console.log(!!item.archiveFile)
+          state.componentsArchiveForm.files.push({
+            fileOriginName: item.fileOriginName,
+            bizFileId: item.bizFileId,
+            fileSize: (item.fileSizeByte / 1024).toFixed(2) + 'KB',
+            type: item.archiveFile ? 2 : -1,
+            archiveAttachmentFileName: item.archiveFile?.fileOriginName,
+            isArchived: !!item.archiveFile
+          })
+        })
+        supplemenFilesData.value = {
+          useSealApplyId: data.useSealApplyId,
+          useSealFileTypeId: data.fileTypeId,
+          joinBizFileId: '',
+          fileSourceType: '1'
+        }
+      })
     }
     if (cell.name === '补传') {
       dialogData.show = true
@@ -491,12 +516,70 @@
     }
   }
 
-  // 补充附件上传
-  function uploadFiles(file) {
-    console.log(file)
-    state.componentsArchiveForm.supplemenFiles.push(file)
-    console.log(state.componentsArchiveForm.supplemenFiles)
+  // 归档
+  function successArchiveFile(response) {
+    console.log(response)
+    const index = state.componentsArchiveForm.files.findIndex(
+      i => i.bizFileId === response.data.joinBizFileId
+    )
+    if (index > -1) {
+      state.componentsArchiveForm.files[index].type = 2
+      state.componentsArchiveForm.files[index].archiveAttachmentFileName =
+        response.data.fileOriginName
+      state.componentsArchiveForm.files[index].isArchived = false
+      state.componentsArchiveForm.files[index].fileSourceType =
+        response.data.fileSourceType
+      state.componentsArchiveForm.files[index].bizFileId =
+        response.data.bizFileId
+    }
   }
+
+  function comfirmOneArchive(index) {
+    api
+      .archiveFileFinish({
+        bizFileId: state.componentsArchiveForm.files[index].bizFileId
+      })
+      .then(() => {
+        state.componentsArchiveForm.files[index].isArchived = true
+        state.componentsArchiveForm.files[index].fileSourceType = null
+        jyTable.value.reloadData()
+      })
+  }
+
+  // 补充附件上传
+  function uploadFiles(response) {
+    response.data.fileUrl = response.data.fileUrl
+      ? API_BASE_PREFIX + response.data.fileUrl
+      : ''
+    state.componentsArchiveForm.supplemenFiles.push(response.data)
+  }
+
+  function submitArchiveForm() {
+    console.log(1)
+    const length = state.componentsArchiveForm.files.filter(
+      i => i.isArchived
+    ).length
+    if (!length) {
+      messageWarning('请先完成文件归档')
+    }
+    api
+      .archiveFinish({
+        useSealApplyId: state.componentsArchiveForm.useSealApplyId,
+        archiveNo: state.componentsArchiveForm.archiveNo,
+        readme: state.componentsArchiveForm.readme
+      })
+      .then(() => {
+        dialogData.show = false
+        messageSuccess('归档成功')
+        jyTable.value.reloadData()
+      })
+  }
+
+  function closeArchiveFrom() {
+    state.componentsArchiveForm.archiveNo = ''
+    state.componentsArchiveForm.readme = ''
+  }
+
   onBeforeMount(() => {
     // console.log(`the component is now onBeforeMount.`)
   })
@@ -623,6 +706,11 @@
               margin-right: 5px;
             }
           }
+        }
+
+        .special {
+          display: flex;
+          justify-content: space-between;
         }
       }
     }
