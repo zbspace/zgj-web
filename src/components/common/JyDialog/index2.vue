@@ -41,7 +41,7 @@
         </slot>
       </template>
 
-      <div>
+      <div :style="{ height: props.height + 'px' }">
         <slot> 内容 </slot>
       </div>
 
@@ -81,6 +81,10 @@
     class: {
       type: String,
       default: ''
+    },
+    height: {
+      type: Number,
+      default: 600
     }
   })
 
