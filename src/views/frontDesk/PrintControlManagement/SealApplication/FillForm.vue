@@ -207,6 +207,7 @@
   const route = useRoute()
   const initObj = ref(null)
   const applyTypeId = ref(null)
+  const applyTypePid = ref(null)
   const sealUseTypeId = ref(null)
   const formVersionId = ref(route.query.formVersionId)
   const flowVersionId = ref(null)
@@ -447,6 +448,10 @@
         flowVersionId: flowVersionId.value,
         formMessageId: route.params.id,
         flowMessageId: flowMessageId.value
+      },
+      variable: {
+        subType: applyTypeId.value,
+        instanceType: applyTypePid.value
       }
     }
     submitLoading.value = true
@@ -492,6 +497,7 @@
       })
       .then(res => {
         applyTypeId.value = res.data.applyTypeId
+        applyTypePid.value = res.data.applyTypePid
         sealUseTypeId.value = res.data.sealUseTypeId
         fillFormInformationJson.value = JSON.parse(res.data.formInfo)
         nextTick(() => {
@@ -510,6 +516,7 @@
       })
       .then(res => {
         applyTypeId.value = res.data.applyTypeId
+        applyTypePid.value = res.data.applyTypePid
         sealUseTypeId.value = res.data.sealUseTypeId
         fillFormInformationJson.value = JSON.parse(res.data.formInfo)
         sealApply.templateView(route.query.useId).then(res1 => {

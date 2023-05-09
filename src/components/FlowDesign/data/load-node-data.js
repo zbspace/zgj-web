@@ -37,13 +37,13 @@ export function getStartNode() {
         // 审批类型
         approvalMethod: 1,
         // 审批方式
-        approvalMode: 1,
+        approvalMode: 2,
         // 审批人与发起人为同一人时
         starterAssignee: 1,
         // 相同审批人为同一人时
         adjacent: 2,
         // 审批人为空时
-        emptyFlag: 5,
+        emptyFlag: 1,
         // 允许退回人类型
         allowBackType: 1,
         // 退回审批形式
@@ -60,41 +60,16 @@ export function getStartNode() {
       },
       buttons: [
         {
+          buttonName: '加签',
           checked: false,
-          disabled: true,
-          buttonName: '保存',
-          content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
-          buttonCode: 'save',
-          color: 'default'
-        },
-        {
-          buttonName: '提交',
-          checked: false,
-          disabled: true,
-          content: '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
-          buttonCode: 'submit',
-          color: 'primary'
-        },
-        {
-          buttonName: '同意',
-          checked: true,
           disabled: false,
-          content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
-          buttonCode: 'agree',
-          color: 'success'
-        },
-        {
-          buttonName: '拒绝',
-          checked: true,
-          disabled: false,
-          content:
-            '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
-          buttonCode: 'reject',
-          color: 'error'
+          content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
+          buttonCode: 'addSign',
+          color: 'warning'
         },
         {
           buttonName: '转交',
-          checked: true,
+          checked: false,
           disabled: false,
           content: '转交给他人办理，依然在当前节点',
           buttonCode: 'turn',
@@ -107,32 +82,81 @@ export function getStartNode() {
           content: '退回给申请人，申请人修改完成后，流程按节点开始走',
           buttonCode: 'back',
           color: 'default'
-        },
-        {
-          buttonName: '撤回',
-          checked: false,
-          disabled: false,
-          content:
-            '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
-          buttonCode: 'revoke',
-          color: 'default'
-        },
-        {
-          buttonName: '加签',
-          checked: false,
-          disabled: false,
-          content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
-          buttonCode: 'addSign',
-          color: 'warning'
-        },
-        {
-          buttonName: '征询',
-          checked: false,
-          disabled: false,
-          content: '征询他人意见',
-          buttonCode: 'consult',
-          color: 'warning'
         }
+        // {
+        //   checked: false,
+        //   disabled: true,
+        //   buttonName: '保存',
+        //   content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
+        //   buttonCode: 'save',
+        //   color: 'default'
+        // },
+        // {
+        //   buttonName: '提交',
+        //   checked: false,
+        //   disabled: true,
+        //   content: '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
+        //   buttonCode: 'submit',
+        //   color: 'primary'
+        // },
+        // {
+        //   buttonName: '同意',
+        //   checked: true,
+        //   disabled: false,
+        //   content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
+        //   buttonCode: 'agree',
+        //   color: 'success'
+        // },
+        // {
+        //   buttonName: '拒绝',
+        //   checked: true,
+        //   disabled: false,
+        //   content:
+        //     '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
+        //   buttonCode: 'reject',
+        //   color: 'error'
+        // },
+        // {
+        //   buttonName: '转交',
+        //   checked: true,
+        //   disabled: false,
+        //   content: '转交给他人办理，依然在当前节点',
+        //   buttonCode: 'turn',
+        //   color: 'cyan'
+        // },
+        // {
+        //   buttonName: '退回',
+        //   checked: false,
+        //   disabled: false,
+        //   content: '退回给申请人，申请人修改完成后，流程按节点开始走',
+        //   buttonCode: 'back',
+        //   color: 'default'
+        // },
+        // {
+        //   buttonName: '撤回',
+        //   checked: false,
+        //   disabled: false,
+        //   content:
+        //     '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+        //   buttonCode: 'revoke',
+        //   color: 'default'
+        // },
+        // {
+        //   buttonName: '加签',
+        //   checked: false,
+        //   disabled: false,
+        //   content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
+        //   buttonCode: 'addSign',
+        //   color: 'warning'
+        // },
+        // {
+        //   buttonName: '征询',
+        //   checked: false,
+        //   disabled: false,
+        //   content: '征询他人意见',
+        //   buttonCode: 'consult',
+        //   color: 'warning'
+        // }
       ],
       // 审批设置
       approverGroups: [
@@ -199,37 +223,45 @@ export function getStartNode() {
     // 显示内容
     content: null,
     buttons: [
+      // {
+      //   buttonName: '保存',
+      //   checked: true,
+      //   disabled: false,
+      //   content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
+      //   buttonCode: 'save',
+      //   color: 'default'
+      // },
+      // {
+      //   buttonName: '提交',
+      //   checked: true,
+      //   disabled: false,
+      //   content: '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
+      //   buttonCode: 'submit',
+      //   color: 'primary'
+      // },
+      // {
+      //   buttonName: '同意',
+      //   checked: false,
+      //   disabled: true,
+      //   content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
+      //   buttonCode: 'agree',
+      //   color: 'success'
+      // },
+      // {
+      //   buttonName: '拒绝',
+      //   checked: false,
+      //   disabled: true,
+      //   content: '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
+      //   buttonCode: 'reject',
+      //   color: 'error'
+      // },
       {
-        buttonName: '保存',
-        checked: true,
-        disabled: false,
-        content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
-        buttonCode: 'save',
-        color: 'default'
-      },
-      {
-        buttonName: '提交',
-        checked: true,
-        disabled: false,
-        content: '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
-        buttonCode: 'submit',
-        color: 'primary'
-      },
-      {
-        buttonName: '同意',
+        buttonName: '加签',
         checked: false,
         disabled: true,
-        content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
-        buttonCode: 'agree',
-        color: 'success'
-      },
-      {
-        buttonName: '拒绝',
-        checked: false,
-        disabled: true,
-        content: '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
-        buttonCode: 'reject',
-        color: 'error'
+        content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
+        buttonCode: 'addSign',
+        color: 'warning'
       },
       {
         buttonName: '转交',
@@ -246,24 +278,16 @@ export function getStartNode() {
         content: '退回给申请人，申请人修改完成后，流程按节点开始走',
         buttonCode: 'back',
         color: 'default'
-      },
-      {
-        buttonName: '撤回',
-        checked: false,
-        disabled: true,
-        content:
-          '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
-        buttonCode: 'revoke',
-        color: 'default'
-      },
-      {
-        buttonName: '加签',
-        checked: false,
-        disabled: true,
-        content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
-        buttonCode: 'addSign',
-        color: 'warning'
       }
+      // {
+      //   buttonName: '撤回',
+      //   checked: false,
+      //   disabled: true,
+      //   content:
+      //     '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+      //   buttonCode: 'revoke',
+      //   color: 'default'
+      // },
     ]
   }
 }
@@ -285,13 +309,13 @@ export function addApproverNode(type) {
       // 审批类型
       approvalMethod: 1,
       // 审批方式
-      approvalMode: 1,
+      approvalMode: 2,
       // 审批人与发起人为同一人时
       starterAssignee: 1,
       // 相同审批人为同一人时
       adjacent: 2,
       // 审批人为空时
-      emptyFlag: 5,
+      emptyFlag: 1,
       // 允许退回人类型
       allowBackType: 1,
       // 退回审批形式
@@ -307,37 +331,45 @@ export function addApproverNode(type) {
       noticeContext: ''
     },
     buttons: [
+      // {
+      //   checked: false,
+      //   disabled: true,
+      //   buttonName: '保存',
+      //   content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
+      //   buttonCode: 'save',
+      //   color: 'default'
+      // },
+      // {
+      //   buttonName: '提交',
+      //   checked: false,
+      //   disabled: true,
+      //   content: '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
+      //   buttonCode: 'submit',
+      //   color: 'primary'
+      // },
+      // {
+      //   buttonName: '同意',
+      //   checked: true,
+      //   disabled: false,
+      //   content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
+      //   buttonCode: 'agree',
+      //   color: 'success'
+      // },
+      // {
+      //   buttonName: '拒绝',
+      //   checked: true,
+      //   disabled: false,
+      //   content: '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
+      //   buttonCode: 'reject',
+      //   color: 'error'
+      // },
       {
+        buttonName: '加签',
         checked: false,
-        disabled: true,
-        buttonName: '保存',
-        content: '发起节点保存操作，审批节点下无保存操作，可在草稿箱查看',
-        buttonCode: 'save',
-        color: 'default'
-      },
-      {
-        buttonName: '提交',
-        checked: false,
-        disabled: true,
-        content: '发起节点填写完申请单，,提交流程到下一步，可在我发起的查看',
-        buttonCode: 'submit',
-        color: 'primary'
-      },
-      {
-        buttonName: '同意',
-        checked: true,
         disabled: false,
-        content: '审批节点同意该审核之操作，审批通过，可在我已办查看',
-        buttonCode: 'agree',
-        color: 'success'
-      },
-      {
-        buttonName: '拒绝',
-        checked: true,
-        disabled: false,
-        content: '节点负责人可以拒绝该流程（拒绝后流程直接结束，标记为已拒绝）',
-        buttonCode: 'reject',
-        color: 'error'
+        content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
+        buttonCode: 'addSign',
+        color: 'warning'
       },
       {
         buttonName: '转交',
@@ -354,32 +386,32 @@ export function addApproverNode(type) {
         content: '退回给申请人，申请人修改完成后，流程按节点开始走',
         buttonCode: 'back',
         color: 'default'
-      },
-      {
-        buttonName: '撤回',
-        checked: false,
-        disabled: false,
-        content:
-          '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
-        buttonCode: 'revoke',
-        color: 'default'
-      },
-      {
-        buttonName: '加签',
-        checked: false,
-        disabled: false,
-        content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
-        buttonCode: 'addSign',
-        color: 'warning'
-      },
-      {
-        buttonName: '征询',
-        checked: false,
-        disabled: false,
-        content: '征询他人意见',
-        buttonCode: 'consult',
-        color: 'warning'
       }
+      // {
+      //   buttonName: '撤回',
+      //   checked: false,
+      //   disabled: false,
+      //   content:
+      //     '允许申请人对未进入流程（第一个流程节点为待处理状态）的申请进行撤回',
+      //   buttonCode: 'revoke',
+      //   color: 'default'
+      // },
+      // {
+      //   buttonName: '加签',
+      //   checked: false,
+      //   disabled: false,
+      //   content: '这个事情我不能完全做主，需要某些人先处理，再右我处理',
+      //   buttonCode: 'addSign',
+      //   color: 'warning'
+      // },
+      // {
+      //   buttonName: '征询',
+      //   checked: false,
+      //   disabled: false,
+      //   content: '征询他人意见',
+      //   buttonCode: 'consult',
+      //   color: 'warning'
+      // }
     ],
     // 审批设置
     approverGroups: [
@@ -452,13 +484,13 @@ export function addFreeNode() {
       // 审批类型
       approvalMethod: 1,
       // 审批方式
-      approvalMode: 1,
+      approvalMode: 2,
       // 审批人与发起人为同一人时
       starterAssignee: 1,
       // 相同审批人为同一人时
       adjacent: 2,
       // 审批人为空时
-      emptyFlag: 5
+      emptyFlag: 1
     },
     // 流程基础通知属性
     notice: {

@@ -125,7 +125,7 @@
       }
     }
   })
-
+  console.log(props.node, '抄送人节点')
   // 样式
   const columnItemClass = computed(() => {
     return {

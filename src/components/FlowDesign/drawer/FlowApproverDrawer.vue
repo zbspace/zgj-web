@@ -57,7 +57,11 @@
             :node="props.node"
             :title="props.node.nodeType == 1 ? '审批人' : '办理人'"
           />
-          <FlowApproverNodeAttr :node="props.node" :multiple="multiple" />
+          <FlowApproverNodeAttr
+            :node="props.node"
+            :multiple="multiple"
+            style="margin-top: 16px"
+          />
         </a-tab-pane>
         <a-tab-pane forceRender key="2" tab="选项设置" v-if="false">
           <FlowApproverNodeAttr :node="props.node" :multiple="multiple" />
@@ -261,4 +265,3 @@
     onSave
   })
 </script>
-Template
