@@ -555,7 +555,7 @@
     const length = state.componentsArchiveForm.files.filter(
       i => i.isArchived
     ).length
-    if (!length) {
+    if (!length || length !== state.componentsArchiveForm.files.length) {
       messageWarning('请先完成文件归档')
       return
     }
