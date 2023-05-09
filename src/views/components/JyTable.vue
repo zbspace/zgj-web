@@ -273,6 +273,8 @@
   import componentsBatch from '@/views/components/batch'
   import request from '@/utils/request'
   import screenfull from 'screenfull'
+  import apiForm from '@/api/system/formManagement'
+  import dayjs from 'dayjs'
 
   const props = defineProps({
     url: {
@@ -328,6 +330,11 @@
       default: () => {
         return []
       }
+    },
+    // 审批流处理 流程类型
+    handleApprovalStatus: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -573,7 +580,7 @@
         params[item.id] = item.value
       }
     })
-    // TODO: 分页字段
+
     const requestDatas = {
       current: state.componentsPagination.data.index,
       size: state.componentsPagination.data.pageNumber,
@@ -604,8 +611,7 @@
       },
       ...requestData
     }).then(
-      result => {
-        // TODO: 审批流程待处理
+      async result => {
         state.componentsTable.data =
           result.data?.records || result.data?.data?.records || []
         state.componentsPagination.data.amount =
@@ -616,6 +622,18 @@
           result.data.total === 0
             ? result.data.total
             : result.data.total || result.data.data.total
+
+        if (props.handleApprovalStatus) {
+          const statusList = await apiForm.listApplyTypeTree({})
+          state.componentsTable.data.forEach(item => {
+            const { applyTypeName } = statusList.data.find(
+              val => Number(val.applyTypeId) === item.subType
+            )
+            item.subTypeName = applyTypeName
+            item.createTime = dayjs(item.createTime).format('YYYY-MM-DD HH:mm')
+            item.updateTime = dayjs(item.updateTime).format('YYYY-MM-DD HH:mm')
+          })
+        }
         loading.value = false
         if (props.computedData.length) {
           props.computedData.forEach(i => {
@@ -663,6 +681,7 @@
             })
           })
         }
+
         emit('getResult', state.componentsTable.data)
       },
       () => {

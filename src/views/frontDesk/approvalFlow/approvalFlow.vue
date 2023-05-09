@@ -16,6 +16,7 @@
       tableClick="instanceTitle"
       @cellClick="cellClick"
       @customClick="customClick"
+      :handleApprovalStatus="true"
     >
       <template #title>
         <div class="title">
@@ -73,8 +74,10 @@
   import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import FormInfoApi from '@/api/system/flowManagement'
+  import apiForm from '@/api/system/formManagement'
   import { useVformInfoStore } from '@/store/vform'
   import JyTable from '@/views/components/JyTable.vue'
+
   const vformInfoStore = useVformInfoStore()
   const dialogProcess = ref({
     show: false,
