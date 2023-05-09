@@ -436,7 +436,6 @@
   // }
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
     if (column.property === 'useSealFileName') {
       state.componentsDocumentsDetails.show = true
     }
@@ -486,7 +485,6 @@
         state.componentsArchiveForm.files = []
         state.componentsArchiveForm.supplemenFiles = data.archiveAddFile
         data.useSealFile.forEach(item => {
-          console.log(!!item.archiveFile)
           state.componentsArchiveForm.files.push({
             fileOriginName: item.fileOriginName,
             bizFileId: item.bizFileId,
@@ -518,7 +516,6 @@
 
   // 归档
   function successArchiveFile(response) {
-    console.log(response)
     const index = state.componentsArchiveForm.files.findIndex(
       i => i.bizFileId === response.data.joinBizFileId
     )
@@ -555,12 +552,12 @@
   }
 
   function submitArchiveForm() {
-    console.log(1)
     const length = state.componentsArchiveForm.files.filter(
       i => i.isArchived
     ).length
     if (!length) {
       messageWarning('请先完成文件归档')
+      return
     }
     api
       .archiveFinish({
