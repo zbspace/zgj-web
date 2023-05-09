@@ -29,7 +29,7 @@
               <div class="phone-item">
                 <div class="label">邮箱:</div>
                 <div class="number">{{ userInfo.userMail || '-' }}</div>
-                <div class="change">更换</div>
+                <div class="change" @click="changeEmail">更换</div>
               </div>
             </div>
           </div>
@@ -161,7 +161,6 @@
             <el-col :span="16">
               <div class="column">
                 <el-upload
-                  class="avatar-uploader"
                   :action="`/api/user/editUserCenterFace`"
                   :headers="headers"
                   :show-file-list="false"
@@ -169,13 +168,15 @@
                   :on-success="handleAvatarSuccess"
                   :on-error="onError"
                   :before-upload="beforeAvatarUpload"
+                  :on-preview="handlePictureCardPreview"
+                  :on-remove="handleRemove"
                 >
                   <el-image
                     v-if="userInfo.userFaceImage"
                     :src="userInfo.userFaceImage"
                     style="padding: 6px"
                   ></el-image>
-                  <el-icon v-else class="avatar-uploader-icon">
+                  <el-icon v-else>
                     <Plus />
                   </el-icon>
                 </el-upload>
@@ -214,6 +215,7 @@
           </el-form-item>
           <el-form-item
             prop="phone"
+            required
             :rules="[
               {
                 required: true,
@@ -239,6 +241,7 @@
             class="clearfix"
             label="验证码"
             prop="code"
+            required
             :rules="[
               {
                 required: true,
@@ -272,6 +275,50 @@
           <el-button @click="onClose">取消</el-button>
         </template>
       </JyDialog>
+
+      <JyDialog title="更换邮箱" v-model="showEmailDialog" :width="600">
+        <el-form
+          label-position="left"
+          ref="loginEmailformRef"
+          label-width="100px"
+          :model="loginEmailform"
+          hide-required-asterisk
+        >
+          <el-form-item>
+            <template #label>
+              <div class="from-label">已绑定邮箱</div>
+            </template>
+            <div>{{ userInfo.userMail || '暂未绑定邮箱' }}</div>
+          </el-form-item>
+          <el-form-item
+            prop="email"
+            required
+            :rules="[
+              {
+                required: true,
+                message: '邮箱格式不正确',
+                pattern:
+                  /^[a-z0-9A-Z]+[-|a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-z]{2,}$/,
+                trigger: 'change'
+              }
+            ]"
+          >
+            <template #label>
+              <div class="from-label">新邮箱</div>
+            </template>
+            <el-input
+              v-model="loginEmailform.email"
+              placeholder="请输入"
+              style="width: 210px"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+
+        <template #footer>
+          <el-button type="primary" @click="loginEmail"> 提交 </el-button>
+          <el-button @click="onEmailClose">取消</el-button>
+        </template>
+      </JyDialog>
     </div>
   </div>
 </template>
@@ -296,7 +343,12 @@
     phone: '',
     code: ''
   })
+
+  const loginEmailform = reactive({
+    email: ''
+  })
   const loginformRef = ref(null)
+  const loginEmailformRef = ref(null)
 
   const handleAvatarSuccess = (response, uploadFile) => {
     userInfo.userFaceImage = uploadFile.url
@@ -325,6 +377,33 @@
   }
 
   const showFormDialog = ref(false)
+  const showEmailDialog = ref(false)
+
+  const changeEmail = () => {
+    showEmailDialog.value = true
+    nextTick(() => {
+      loginEmailformRef.value.resetFields()
+      loginEmailform.email = ''
+    })
+  }
+
+  const onEmailClose = value => {
+    showEmailDialog.value = false
+  }
+
+  const loginEmail = () => {
+    loginEmailformRef.value.validate(valid => {
+      if (valid) {
+        infoApi.changeEmail(loginEmailform.email).then(_ => {
+          showEmailDialog.value = false
+          ElMessage.success('更改邮箱成功!')
+          loadUserInfo()
+        })
+      } else {
+        return false
+      }
+    })
+  }
 
   const changePhoneNumber = () => {
     showFormDialog.value = true
@@ -412,6 +491,10 @@
         loading.value = true
       })
   }
+
+  const handleRemove = () => {}
+
+  const handlePictureCardPreview = () => {}
   onBeforeMount(() => {
     loadUserInfo()
   })

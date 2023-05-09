@@ -30,4 +30,12 @@ api.changeMobile = data => {
   })
 }
 
+// 更换邮箱
+api.changeEmail = data => {
+  return request({
+    method: 'GET',
+    url: `/user/changeEmail/${data}`
+  })
+}
+
 export default api
