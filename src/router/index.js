@@ -63,13 +63,17 @@ router.beforeEach((routeTo, routeFrom) => {
   } else {
     const allMenuList = menusInfoStore.businessMenus
       .concat(menusInfoStore.systemMenus)
-      .concat([{ to: '/403' }, { to: '/login/account' }])
-    // const menuIndex = JSON.stringify(allMenuList).indexOf(routeTo.path)
-    // if (routeTo.name && menuIndex === -1) {
-    //   return {
-    //     path: '/403'
-    //   }
-    // }
+      .concat([
+        { to: '/403' },
+        { to: '/login/account' },
+        { to: '/frontDesk/printControlManage/useSealManage/fillForm' }
+      ])
+    const menuIndex = JSON.stringify(allMenuList).indexOf(routeTo.path)
+    if (routeTo.name && menuIndex === -1) {
+      return {
+        path: '/403'
+      }
+    }
   }
 
   NProgress.start()

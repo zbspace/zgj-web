@@ -260,9 +260,9 @@
   // 点击列表按钮
   function clickListBut(formMessageId, formVersionId) {
     router.push({
-      name: 'selectionForms',
-      params: { id: formMessageId },
-      query: { formVersionId }
+      name: 'fillForm',
+      // params: { id: formMessageId },
+      query: { formMessageId, formVersionId }
     })
   }
 
