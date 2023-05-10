@@ -24,24 +24,28 @@
       <span class="flow-status-item-icon flow-status-back">●</span>
       <span>已退回</span>
     </div>
+    <div class="flow-status-item">
+      <span class="flow-status-item-icon flow-status-revoke">●</span>
+      <span>已撤回</span>
+    </div>
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
-// 接收属性
-const props = defineProps({
-  navable: {
-    type: Boolean,
-    default: false
-  },
-  top: {
-    type: [Number, String],
-    default: 72
-  }
-});
+  import { ref } from 'vue'
+  // 接收属性
+  const props = defineProps({
+    navable: {
+      type: Boolean,
+      default: false
+    },
+    top: {
+      type: [Number, String],
+      default: 72
+    }
+  })
 
-const wrapStyle = ref({
-  // 存在自定义nav时候需要减去nav高度
-  top: props.navable ? 20 + Number(props.top) + 'px' : '20px'
-});
+  const wrapStyle = ref({
+    // 存在自定义nav时候需要减去nav高度
+    top: props.navable ? 20 + Number(props.top) + 'px' : '20px'
+  })
 </script>

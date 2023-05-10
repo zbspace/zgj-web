@@ -57,36 +57,46 @@
     </a-row>
 
     <a-card class="model-panel" :style="modelPanelStyle">
-      <a-collapse ghost expand-icon-position="right" :defaultActiveKey="defaultActiveKey">
+      <a-collapse
+        ghost
+        expand-icon-position="right"
+        :defaultActiveKey="defaultActiveKey"
+      >
         <template #expandIcon="{ isActive }">
           <caret-right-outlined :rotate="isActive ? 90 : 0" />
         </template>
-        <a-collapse-panel :key="i" v-for="(category, i) in categoryDatas" forceRender>
+        <a-collapse-panel
+          :key="i"
+          v-for="(category, i) in categoryDatas"
+          forceRender
+        >
           <template #header>
             <a-space>
-              <span style="padding-left: 12px; font-size: 16px">{{ category.categoryName }}</span>
-<!--              <a-divider type="vertical" />-->
-<!--              <a-dropdown v-if="!readable && category.categoryId != -1" @click.stop>-->
-<!--                <a class="ant-dropdown-link">-->
-<!--                  <span>分类编辑 </span>-->
-<!--                  <down-outlined />-->
-<!--                </a>-->
-<!--                <template #overlay>-->
-<!--                  <a-menu>-->
-<!--                    <a-menu-item>-->
-<!--                      <a-button type="link" @click="rename(category)">重命名</a-button>-->
-<!--                    </a-menu-item>-->
-<!--                    <a-menu-item>-->
-<!--                      <a-button type="link" @click="sort(category, 1)">排序</a-button>-->
-<!--                    </a-menu-item>-->
-<!--                    <a-menu-item>-->
-<!--                      <a-popconfirm placement="topRight" title="确定删除？" @confirm="delCategory(category)">-->
-<!--                        <a-button type="link" class="ele-text-danger">删除</a-button>-->
-<!--                      </a-popconfirm>-->
-<!--                    </a-menu-item>-->
-<!--                  </a-menu>-->
-<!--                </template>-->
-<!--              </a-dropdown>-->
+              <span style="padding-left: 12px; font-size: 16px">{{
+                category.categoryName
+              }}</span>
+              <!--              <a-divider type="vertical" />-->
+              <!--              <a-dropdown v-if="!readable && category.categoryId != -1" @click.stop>-->
+              <!--                <a class="ant-dropdown-link">-->
+              <!--                  <span>分类编辑 </span>-->
+              <!--                  <down-outlined />-->
+              <!--                </a>-->
+              <!--                <template #overlay>-->
+              <!--                  <a-menu>-->
+              <!--                    <a-menu-item>-->
+              <!--                      <a-button type="link" @click="rename(category)">重命名</a-button>-->
+              <!--                    </a-menu-item>-->
+              <!--                    <a-menu-item>-->
+              <!--                      <a-button type="link" @click="sort(category, 1)">排序</a-button>-->
+              <!--                    </a-menu-item>-->
+              <!--                    <a-menu-item>-->
+              <!--                      <a-popconfirm placement="topRight" title="确定删除？" @confirm="delCategory(category)">-->
+              <!--                        <a-button type="link" class="ele-text-danger">删除</a-button>-->
+              <!--                      </a-popconfirm>-->
+              <!--                    </a-menu-item>-->
+              <!--                  </a-menu>-->
+              <!--                </template>-->
+              <!--              </a-dropdown>-->
             </a-space>
           </template>
           <a-row type="flex" :gutter="16">
@@ -104,33 +114,47 @@
               <a-tooltip :content="data.modelName">
                 <div class="card-in">
                   <FlowIcon :url="activeIconSrc(data.modelIcon)" />
-                  <div>
+                  <a-space direction="vertical">
                     <div class="first-edit">
                       <strong>
                         <span> {{ data.modelName }}</span>
-                        <span v-if="!readable"> ({{ data.currentVersion }})</span>
+                        <span v-if="!readable">
+                          ({{ data.currentVersion }})</span
+                        >
                       </strong>
                       <a-dropdown v-if="!readable" @click.stop="">
-                        <a class="ant-dropdown-link"> 配置 <down-outlined /> </a>
+                        <a class="ant-dropdown-link">
+                          配置 <down-outlined />
+                        </a>
                         <template #overlay>
                           <a-menu>
                             <a-menu-item v-if="category.categoryId != -1">
-                              <a-button type="link" @click="design(data)">设计</a-button>
+                              <a-button type="link" @click="design(data)"
+                                >设计</a-button
+                              >
                             </a-menu-item>
                             <a-menu-item v-if="category.categoryId != -1">
-                              <a-button type="link" @click="edit(data)">修改</a-button>
+                              <a-button type="link" @click="edit(data)"
+                                >修改</a-button
+                              >
                             </a-menu-item>
-<!--                            <a-menu-item v-if="category.categoryId != -1">-->
-<!--                              <a-button type="link" @click="sort(data, 2)">排序</a-button>-->
-<!--                            </a-menu-item>-->
+                            <!--                            <a-menu-item v-if="category.categoryId != -1">-->
+                            <!--                              <a-button type="link" @click="sort(data, 2)">排序</a-button>-->
+                            <!--                            </a-menu-item>-->
                             <a-menu-item v-if="category.categoryId != -1">
-                              <a-button type="link" @click="move(data)">移动</a-button>
+                              <a-button type="link" @click="move(data)"
+                                >移动</a-button
+                              >
                             </a-menu-item>
                             <a-menu-item v-if="category.categoryId != -1">
-                              <a-button type="link" @click="stop(data)">停用</a-button>
+                              <a-button type="link" @click="stop(data)"
+                                >停用</a-button
+                              >
                             </a-menu-item>
                             <a-menu-item v-if="category.categoryId == -1">
-                              <a-button type="link" @click="open(data)">启用</a-button>
+                              <a-button type="link" @click="open(data)"
+                                >启用</a-button
+                              >
                             </a-menu-item>
                           </a-menu>
                         </template>
@@ -138,7 +162,7 @@
                     </div>
                     <div>{{ data.createTime }}</div>
                     <div>{{ data.remark }}</div>
-                  </div>
+                  </a-space>
                 </div>
               </a-tooltip>
             </a-col>
@@ -149,205 +173,223 @@
   </div>
 </template>
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue';
-import useCommon from '../hooks/useCommon';
-// 公共方法
-const { getflowIcon } = useCommon();
+  import { ref, watch, computed, onMounted } from 'vue'
+  import useCommon from '../hooks/useCommon'
+  // 公共方法
+  const { getflowIcon } = useCommon()
 
-//  数据
-const categoryDatas = ref([]);
+  //  数据
+  const categoryDatas = ref([])
 
-//  数据
-const taskCountDatas = ref(0);
+  //  数据
+  const taskCountDatas = ref(0)
 
-// 默认展开
-let defaultActiveKey = ref([...new Array(100).keys()]);
-// 图标
-const iconList = ref([]);
+  // 默认展开
+  const defaultActiveKey = ref([...new Array(100).keys()])
+  // 图标
+  const iconList = ref([])
 
-// 接收属性
-const props = defineProps({
-  datasource: {
-    type: [Array, Function],
-    required: true
-  },
-  taskCount: {
-    type: [Array, Function],
-    required: false,
-    default: () => []
-  },
-  width: {
-    type: Number,
-    required: false,
-    default: 100
-  },
-  readable: {
-    type: Boolean,
-    default: false
+  // 接收属性
+  const props = defineProps({
+    datasource: {
+      type: [Array, Function],
+      required: true
+    },
+    taskCount: {
+      type: [Array, Function],
+      required: false,
+      default: () => []
+    },
+    width: {
+      type: Number,
+      required: false,
+      default: 100
+    },
+    readable: {
+      type: Boolean,
+      default: false
+    }
+  })
+
+  /**
+   * 监听值变化
+   */
+  watch(
+    () => props.datasource,
+    newVal => {
+      reloadDatasource(newVal)
+    }
+  )
+
+  /**
+   * 图标
+   */
+  const activeIconSrc = computed(() => {
+    return activeIcon => {
+      const icon = iconList.value.find(t => t.name_suffix == activeIcon)
+      return icon ? icon.url : ''
+    }
+  })
+
+  /**
+   * 表单面板样式
+   */
+  const modelPanelStyle = computed(() => {
+    const width = props.width + '%'
+    return {
+      width
+    }
+  })
+
+  onMounted(() => {
+    reloadIcon()
+    reloadDatasource()
+    reloadCount()
+  })
+
+  const reloadIcon = () => {
+    iconList.value = getflowIcon()
   }
-});
 
-/**
- * 监听值变化
- */
-watch(
-  () => props.datasource,
-  newVal => {
-    reloadDatasource(newVal);
+  const reloadDatasource = () => {
+    if (Array.isArray(props.datasource)) {
+      categoryDatas.value = props.datasource
+      defaultActiveKey.value = [...new Array(categoryDatas.value.length).keys()]
+      emit('done', props.datasource)
+    } else if (typeof props.datasource === 'function') {
+      props
+        .datasource()
+        .then(result => {
+          categoryDatas.value = result
+          defaultActiveKey.value = [
+            ...new Array(categoryDatas.value.length).keys()
+          ]
+          emit('done', result)
+        })
+        .catch(e => {
+          console.error(
+            'datasource \u8FD4\u56DE\u7684\u6570\u636E\u9519\u8BEF: ',
+            e == null ? void 0 : e.message
+          )
+        })
+    }
   }
-);
 
-/**
- * 图标
- */
-const activeIconSrc = computed(() => {
-  return activeIcon => {
-    const icon = iconList.value.find(t => t.name_suffix == activeIcon);
-    return icon ? icon.url : '';
-  };
-});
-
-/**
- * 表单面板样式
- */
-const modelPanelStyle = computed(() => {
-  const width = props.width + '%';
-  return {
-    width: width
-  };
-});
-
-onMounted(() => {
-  reloadIcon();
-  reloadDatasource();
-  reloadCount();
-});
-
-const reloadIcon = () => {
-  iconList.value = getflowIcon();
-};
-
-const reloadDatasource = () => {
-  if (Array.isArray(props.datasource)) {
-    categoryDatas.value = props.datasource;
-    defaultActiveKey.value = [...new Array(categoryDatas.value.length).keys()];
-    emit('done', props.datasource);
-  } else if (typeof props.datasource === 'function') {
-    props
-      .datasource()
-      .then(result => {
-        categoryDatas.value = result;
-        defaultActiveKey.value = [...new Array(categoryDatas.value.length).keys()];
-        emit('done', result);
-      })
-      .catch(e => {
-        console.error('datasource \u8FD4\u56DE\u7684\u6570\u636E\u9519\u8BEF: ', e == null ? void 0 : e.message);
-      });
+  const reloadCount = () => {
+    if (Array.isArray(props.taskCount)) {
+      taskCountDatas.value = props.taskCount
+      emit('done', props.taskCount)
+    } else if (typeof props.taskCount === 'function') {
+      props
+        .taskCount()
+        .then(result => {
+          taskCountDatas.value = result
+          emit('done', result)
+        })
+        .catch(e => {
+          console.error(
+            'datasource \u8FD4\u56DE\u7684\u6570\u636E\u9519\u8BEF: ',
+            e == null ? void 0 : e.message
+          )
+        })
+    }
   }
-};
 
-const reloadCount = () => {
-  if (Array.isArray(props.taskCount)) {
-    taskCountDatas.value = props.taskCount;
-    emit('done', props.taskCount);
-  } else if (typeof props.taskCount === 'function') {
-    props
-      .taskCount()
-      .then(result => {
-        taskCountDatas.value = result;
-        emit('done', result);
-      })
-      .catch(e => {
-        console.error('datasource \u8FD4\u56DE\u7684\u6570\u636E\u9519\u8BEF: ', e == null ? void 0 : e.message);
-      });
+  const emit = defineEmits([
+    'toPath',
+    'done',
+    'rename',
+    'sort',
+    'del',
+    'design',
+    'edit',
+    'stop',
+    'open',
+    'move',
+    'click'
+  ])
+
+  /**
+   * 路由跳转
+   * @param {*} record
+   */
+  const toPath = path => {
+    emit('toPath', path)
   }
-};
 
-const emit = defineEmits(['toPath', 'done', 'rename', 'sort', 'del', 'design', 'edit', 'stop', 'open', 'move', 'click']);
+  /**
+   * 重命名
+   * @param {*} record
+   */
+  const rename = record => {
+    emit('rename', record)
+  }
 
-/**
- * 路由跳转
- * @param {*} record
- */
-const toPath = path => {
-  emit('toPath', path);
-};
+  /**
+   * 分类排序
+   * @param {*} record
+   */
+  const sort = (record, type) => {
+    emit('sort', record, type)
+  }
 
-/**
- * 重命名
- * @param {*} record
- */
-const rename = record => {
-  emit('rename', record);
-};
+  /**
+   * 删除分类
+   * @param {*} record
+   */
+  const delCategory = record => {
+    emit('del', record)
+  }
 
-/**
- * 分类排序
- * @param {*} record
- */
-const sort = (record, type) => {
-  emit('sort', record, type);
-};
+  /**
+   * 设计
+   * @param {*} record
+   */
+  const design = record => {
+    emit('design', record)
+  }
 
-/**
- * 删除分类
- * @param {*} record
- */
-const delCategory = record => {
-  emit('del', record);
-};
+  /**
+   * 编辑
+   * @param {*} record
+   */
+  const edit = record => {
+    emit('edit', record)
+  }
 
-/**
- * 设计
- * @param {*} record
- */
-const design = record => {
-  emit('design', record);
-};
+  /**
+   * 停用
+   * @param {*} record
+   */
+  const stop = record => {
+    emit('stop', record)
+  }
 
-/**
- * 编辑
- * @param {*} record
- */
-const edit = record => {
-  emit('edit', record);
-};
+  /**
+   * 启用
+   * @param {*} record
+   */
+  const open = record => {
+    emit('open', record)
+  }
 
-/**
- * 停用
- * @param {*} record
- */
-const stop = record => {
-  emit('stop', record);
-};
+  /**
+   * 移动
+   * @param {*} record
+   */
+  const move = record => {
+    emit('move', record)
+  }
 
-/**
- * 启用
- * @param {*} record
- */
- const open = record => {
-  emit('open', record);
-};
+  /**
+   * 点击
+   * @param {*} record
+   */
+  const click = record => {
+    emit('click', record)
+  }
 
-
-
-/**
- * 移动
- * @param {*} record
- */
-const move = record => {
-  emit('move', record);
-};
-
-/**
- * 点击
- * @param {*} record
- */
-const click = record => {
-  emit('click', record);
-};
-
-defineExpose({
-  reloadDatasource
-});
+  defineExpose({
+    reloadDatasource
+  })
 </script>
