@@ -29,7 +29,7 @@
           <div class="ap-box-tree" v-if="state.Layout.tree">
             <el-scrollbar
               type="track"
-              style="height: 100%; overflow: auto"
+              style="height: auto"
               class="ap-box-tree-scrollbar"
             >
               <div>

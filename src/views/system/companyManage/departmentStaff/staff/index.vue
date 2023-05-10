@@ -1454,6 +1454,8 @@
   }
 
   .components-tree {
+    width: max-content;
+    min-width: 100%;
     margin: 0%;
     .custom-tree-node {
       display: flex;
@@ -1464,8 +1466,9 @@
     }
     :deep {
       margin-bottom: 0%;
-      .el-tree-node__content {
+      .el-tree-node__children .el-tree-node__content {
         @include mixin-height(32);
+        padding-right: 10px;
       }
       .el-tree .el-icon svg {
         //原有的箭头 去掉
@@ -1513,7 +1516,8 @@
       }
 
       .el-tree-node__expand-icon.is-leaf {
-        width: 0px;
+        width: 16px;
+        display: block;
       }
     }
     .el-icon {

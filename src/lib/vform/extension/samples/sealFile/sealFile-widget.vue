@@ -401,27 +401,30 @@
   .cur-upload-list {
     display: flex;
     align-items: center;
-    width: 360px;
-    height: 46px;
-
-    justify-content: space-between;
+    // width: 360px;
+    // height: 46px;
+    // justify-content: space-between;
     div {
       background: rgba(0, 0, 0, 0.04);
-      width: 88%;
-      padding-left: 12px;
-      height: 46px;
-      line-height: 46px;
+      // width: 96%;
+      padding: 10px 15px;
+      // height: 46px;
+      // line-height: 46px;
       font-style: normal;
       font-weight: 400;
       font-size: 14px;
       color: #3e78d0;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
     }
     .iconpark-icon {
       width: 20px;
       height: 20px;
       color: rgba(0, 0, 0, 0.65);
       cursor: pointer;
+      flex-shrink: 0;
     }
   }
 
