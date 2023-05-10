@@ -206,6 +206,7 @@
   import i18n from '@/utils/i18n'
   import { reactive, watch, ref } from 'vue'
   import { ElMessage } from 'element-plus'
+  const loginformPassRef = ref(null)
   const state = reactive({
     active: 1,
     placeholderPhone: null,
@@ -324,7 +325,7 @@
   }
 
   const goConfirm = () => {
-    passLoginForm.value.validate(valid => {
+    loginformPassRef.value.validate(valid => {
       if (valid) {
         state.active = 3
       } else {
