@@ -199,7 +199,12 @@
           </el-row>
         </div>
       </div>
-      <JyDialog title="更换手机号" v-model="showFormDialog" :width="600">
+      <JyDialog
+        title="更换手机号"
+        v-model="showFormDialog"
+        :width="600"
+        :height="220"
+      >
         <el-form
           label-position="left"
           ref="loginformRef"
@@ -276,7 +281,12 @@
         </template>
       </JyDialog>
 
-      <JyDialog title="更换邮箱" v-model="showEmailDialog" :width="600">
+      <JyDialog
+        title="更换邮箱"
+        v-model="showEmailDialog"
+        :width="600"
+        :height="100"
+      >
         <el-form
           label-position="left"
           ref="loginEmailformRef"

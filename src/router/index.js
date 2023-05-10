@@ -20,6 +20,42 @@ const router = createRouter({
   }
 })
 
+const platemMenuList = []
+const whitelist = [
+  { to: '/403' },
+  { to: '/login/account' },
+  { to: '/frontDesk/printControlManage/useSealManage/fillForm' },
+  {
+    to: '/frontDesk/printControlManage/equipmentManage/intelligentSealBoxManagement/sealBoxGridInfo'
+  },
+  {
+    to: '/frontDesk/printControlManage/equipmentManage/IntelligentSealCabinetManagement/cabinetGridInfo'
+  },
+  {
+    to: '/system/businessManage/editBusinessRule'
+  },
+  {
+    to: '/system/companyManage/departmentStaff/config'
+  },
+  {
+    to: '/system/companyManage/departmentStaff/person'
+  },
+  {
+    to: '/personally'
+  }
+]
+getAllMenu(routes)
+
+function getAllMenu(list) {
+  list.forEach(i => {
+    if (i.children?.length) {
+      getAllMenu(i.children)
+    } else if (i.name) {
+      platemMenuList.push(i.name)
+    }
+  })
+}
+
 NProgress.configure({
   easing: 'ease', // 动画方式
   speed: 500, // 递增进度条的速度
@@ -29,6 +65,7 @@ NProgress.configure({
 })
 
 router.beforeEach((routeTo, routeFrom) => {
+  console.log(routeTo)
   // 更具url判断是业务前台
   const menusInfoStore = useMenusInfoStore()
   if (routeTo.fullPath.includes('/frontDesk')) {
@@ -46,7 +83,18 @@ router.beforeEach((routeTo, routeFrom) => {
       // 保存我们所在的位置，以便以后再来
       query: { redirect: encodeURIComponent(routeTo.fullPath) }
     }
+  } else {
+    const allMenuList = menusInfoStore.businessMenus
+      .concat(menusInfoStore.systemMenus)
+      .concat(whitelist)
+    const menuIndex = JSON.stringify(allMenuList).indexOf(routeTo.path)
+    if (routeTo.name && menuIndex === -1) {
+      return {
+        path: '/403'
+      }
+    }
   }
+
   NProgress.start()
 })
 

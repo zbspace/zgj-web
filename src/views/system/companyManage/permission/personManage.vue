@@ -390,23 +390,23 @@
   }
 </style>
 <style lang="scss">
-  .upload-demo {
-    width: 100%;
-    box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color))
-      inset;
-    border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
-    min-height: 100px;
+  // .upload-demo {
+  //   width: 100%;
+  //   box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color))
+  //     inset;
+  //   border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+  //   min-height: 100px;
 
-    .el-upload {
-      width: 100%;
-    }
-  }
-  .el-icon {
-    color: #aaaaaa;
-    margin-right: 5px;
-  }
-  .btnContainer {
-    width: 100%;
-    border-bottom: 1px solid var(--el-border-color);
-  }
+  //   .el-upload {
+  //     width: 100%;
+  //   }
+  // }
+  // .el-icon {
+  //   color: #aaaaaa;
+  //   margin-right: 5px;
+  // }
+  // .btnContainer {
+  //   width: 100%;
+  //   border-bottom: 1px solid var(--el-border-color);
+  // }
 </style>

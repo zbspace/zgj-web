@@ -32,8 +32,8 @@ const routes = {
             )
         },
         {
-          path: 'selectionForm/:id',
-          name: 'selectionForms',
+          path: 'fillForm',
+          name: 'fillForm',
           meta: { title: '用印申请', authRequired: true },
           component: () =>
             import(

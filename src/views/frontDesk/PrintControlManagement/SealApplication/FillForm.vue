@@ -347,7 +347,7 @@
       step.value = 'two'
       sealApply
         .flowList({
-          formMessageId: route.params.id
+          formMessageId: route.query.formMessageId
         })
         .then(res => {
           if (res.data && res.data.length) {
@@ -449,7 +449,7 @@
         ...state.cache.formData,
         formVersionId: formVersionId.value,
         flowVersionId: flowVersionId.value,
-        formMessageId: route.params.id,
+        formMessageId: route.query.formMessageId,
         flowMessageId: flowMessageId.value
       },
       variable: {
@@ -463,7 +463,7 @@
       .then(res => {
         sealApply
           .add({
-            formMessageId: route.params.id,
+            formMessageId: route.query.formMessageId,
             formVersionId: formVersionId.value,
             flowVersionId: flowVersionId.value,
             applyTypeId: applyTypeId.value,
@@ -496,7 +496,7 @@
   const infoDetail = () => {
     sealApply
       .formQuery({
-        formMessageId: route.params.id
+        formMessageId: route.query.formMessageId
       })
       .then(res => {
         applyTypeId.value = res.data.applyTypeId
@@ -515,7 +515,7 @@
   const useInfo = () => {
     sealApply
       .formQuery({
-        formMessageId: route.params.id
+        formMessageId: route.query.formMessageId
       })
       .then(res => {
         applyTypeId.value = res.data.applyTypeId
@@ -718,7 +718,7 @@
     align-items: center;
   }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
   .upload-demo {
     text-align: left;
   }

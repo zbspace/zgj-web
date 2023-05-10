@@ -52,7 +52,8 @@ export const sealNameSchema = {
     limitNum: 1,
     // required: true,
     // -------------------
-    filedList: [
+    hiddenDefaultValue: true,
+    defaultValue: [
       {
         seal: '',
         limitNum: 1,
@@ -80,7 +81,9 @@ export const contactUnitSchema = {
     labelWidth: 100,
     disabled: false,
     labelHidden: true,
-    required: false
+    required: false,
+    hiddenDefaultValue: true,
+    defaultValue: []
     // -------------------
   }
 }
@@ -98,7 +101,16 @@ export const usesealBesidesSchema = {
     labelAlign: 'right',
     size: '',
     labelWidth: 100,
-    disabled: false
+    disabled: false,
+    hiddenDefaultValue: true,
+    defaultValue: [
+      {
+        extSeal: false,
+        besidesTime: [],
+        provinceId: [],
+        detailAddress: ''
+      }
+    ]
   }
 }
 
@@ -162,7 +174,14 @@ export const applicantInfoSchema = {
     labelWidth: 100,
     disabled: false,
     requiredTextShow: false,
-    clearable: true
+    clearable: true,
+    hiddenDefaultValue: true,
+    defaultValue: {
+      applyUserId: '',
+      applyUserName: '',
+      applyOrganId: '',
+      applyOrganName: ''
+    }
   }
 }
 
@@ -180,6 +199,7 @@ export const limitTimeSealSchema = {
     labelWidth: 100,
     disabled: false,
     clearable: false,
+    hiddenDefaultValue: true,
     defaultValue: {
       timeLimit: 2,
       sealTime: []
@@ -242,6 +262,11 @@ export const sealFileSchema = {
     disabled: false,
     required: true,
     requiredTextShow: false,
+    hiddenDefaultValue: true,
+    defaultValue: {
+      fileIds: [],
+      fileAddIds: []
+    },
     // -------------------
     labelIconPosition: 'rear',
     switchWidth: 40
@@ -263,7 +288,9 @@ export const fileTypeSchema = {
     labelWidth: 100,
     disabled: false,
     required: true,
-    optionItems: []
+    optionItems: [],
+    hiddenDefaultValue: true,
+    defaultValue: ''
   }
 }
 
@@ -325,7 +352,8 @@ export const contractAmountSchema = {
     required: false,
     requiredTextShow: false,
     clearable: false,
-    size: ''
+    size: '',
+    defaultValue: ''
   }
 }
 

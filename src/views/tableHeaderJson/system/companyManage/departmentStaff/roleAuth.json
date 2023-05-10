@@ -26,6 +26,7 @@
     "label": "操作",
     "fixed": "right",
     "min-width": 200,
+    "align": "center",
     "show": true,
     "rankDisplayData": [
       {

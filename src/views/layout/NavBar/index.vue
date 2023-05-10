@@ -158,7 +158,9 @@
                     {{
                       accountInfoStore.userInfo &&
                       accountInfoStore.userInfo.userName &&
-                      accountInfoStore.userInfo.userName.substr(1)
+                      accountInfoStore.userInfo.userName.substr(
+                        accountInfoStore.userInfo.userName.length - 1
+                      )
                     }}
                   </span>
                 </div>
@@ -185,7 +187,9 @@
                     {{
                       accountInfoStore.userInfo &&
                       accountInfoStore.userInfo.userName &&
-                      accountInfoStore.userInfo.userName.substr(1)
+                      accountInfoStore.userInfo.userName.substr(
+                        accountInfoStore.userInfo.userName.length - 1
+                      )
                     }}
                   </div>
                   <div class="dropdown-name-text">
@@ -291,19 +295,19 @@
       </div>
     </div>
   </header>
-  <JyDialog title="修改密码" v-model="showFormDialog" :width="540">
-    <el-form label-position="left" ref="loginformRef" :model="loginform">
-      <el-form-item
-        prop="oldPassword"
-        :rules="[
-          {
-            required: true,
-            message: '原密码不能为空',
-            trigger: 'blur'
-          }
-        ]"
-        style="margin-left: 30px"
-      >
+  <JyDialog
+    title="修改密码"
+    v-model="showFormDialog"
+    :width="540"
+    :height="220"
+  >
+    <el-form
+      label-position="left"
+      ref="loginformRef"
+      :model="loginform"
+      :rules="formRules"
+    >
+      <el-form-item prop="oldPassword" style="margin-left: 30px">
         <template #label>
           <div class="from-label">原密码</div>
         </template>
@@ -314,17 +318,7 @@
           style="width: 264px"
         ></el-input>
       </el-form-item>
-      <el-form-item
-        prop="newPassword"
-        :rules="[
-          {
-            required: true,
-            message: '新密码不能为空',
-            trigger: 'blur'
-          }
-        ]"
-        style="margin-left: 30px"
-      >
+      <el-form-item prop="newPassword" style="margin-left: 30px">
         <template #label>
           <div class="from-label">新密码</div>
         </template>
@@ -335,18 +329,7 @@
           style="width: 264px"
         ></el-input>
       </el-form-item>
-      <el-form-item
-        class="clearfix"
-        label="确认新密码"
-        prop="againPassword"
-        :rules="[
-          {
-            required: true,
-            message: '确认新密码不能为空',
-            trigger: 'blur'
-          }
-        ]"
-      >
+      <el-form-item class="clearfix" label="确认新密码" prop="againPassword">
         <template #label>
           <div class="from-label">确认新密码</div>
         </template>
@@ -399,9 +382,12 @@
   import { useRoute } from 'vue-router'
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'
+  import navbarApi from '@/api/common/navbar'
   import { ElMessage } from 'element-plus'
   import { getItem, setItem, removeItem } from '@/utils/storage'
   import { useHomeLogoUrl } from '@/store/logo'
+  import md5 from 'js-md5'
+
   const homeLogoUrl = useHomeLogoUrl()
   const accountInfoStore = useAccountInfoStore()
   const menusInfoStore = useMenusInfoStore()
@@ -433,6 +419,47 @@
   if (CurrentSystemType) {
     state.application.CurrentSystemType = CurrentSystemType
   }
+
+  // const validatePass1 = (rule, value, callback) => {
+  //   if (value !== loginform.value.againPassword) {
+  //     callback(new Error('两次输入密码不一致'))
+  //   } else {
+  //     callback()
+  //   }
+  // }
+
+  const validatePass2 = (rule, value, callback) => {
+    if (value !== loginform.value.newPassword) {
+      callback(new Error('两次输入密码不一致'))
+    } else {
+      callback()
+    }
+  }
+
+  const formRules = reactive({
+    oldPassword: [
+      {
+        required: true,
+        message: '原密码不能为空',
+        trigger: 'blur'
+      }
+    ],
+    newPassword: [
+      {
+        required: true,
+        message: '新密码不能为空',
+        trigger: 'blur'
+      }
+    ],
+    againPassword: [
+      {
+        required: true,
+        message: '确认新密码不能为空',
+        trigger: 'blur'
+      },
+      { validator: validatePass2, trigger: 'change' }
+    ]
+  })
 
   const getCurrentDepart = () => {
     const departId = String(getItem('tenantId'))
@@ -609,7 +636,15 @@
   const login = () => {
     loginformRef.value.validate(valid => {
       if (valid) {
-        showFormDialog.value = false
+        navbarApi
+          .changeMobile({
+            oldPassword: md5(loginform.value.oldPassword),
+            newPassword: md5(loginform.value.newPassword)
+          })
+          .then(res => {
+            ElMessage.success('修改密码成功！')
+            showFormDialog.value = false
+          })
       } else {
         return false
       }

@@ -89,6 +89,7 @@
             display: flex;
             justify-content: flex-end;
             color: var(--jy-color-text-3);
+            flex-shrink: 0;
           }
 
           .ap-cont-list-value {

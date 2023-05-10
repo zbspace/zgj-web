@@ -453,6 +453,7 @@
   import downIconGray from '@/assets/svg/sangedian-gray.svg'
   import Detail from './detail'
   import { messageWarning } from '@/hooks/useMessage'
+  import { getItem } from '@/utils/storage'
   const router = useRouter()
   // 印章库 新增弹框
   const showLibraryDialog = ref(false)
@@ -480,6 +481,7 @@
       state.form.shapes = []
       fileList.value = []
       getSealsBizNo()
+      getUserInfo()
     })
   }
   const getSealsBizNo = () => {
@@ -488,6 +490,15 @@
         state.form.sealNo = res.data
       }
     })
+  }
+  const getUserInfo = () => {
+    console.log(getItem('accountInfo').userInfo)
+    if (getItem('accountInfo') && getItem('accountInfo').userInfo) {
+      const userInfo = getItem('accountInfo').userInfo
+      state.form.keepUserId = userInfo.userId
+      state.form.keepUserName = userInfo.userName
+      getStaffDetail(userInfo.userId)
+    }
   }
 
   const onsuccess = response => {

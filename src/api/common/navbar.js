@@ -38,4 +38,12 @@ api.changeEmail = data => {
   })
 }
 
+// 修改密码
+api.changeMobile = data => {
+  return request({
+    method: 'POST',
+    url: '/user/changePassword',
+    data
+  })
+}
 export default api
