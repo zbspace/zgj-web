@@ -20,10 +20,10 @@
           业务规则状态：<span>{{ detail.flag === '0' ? '停用' : '启用' }}</span>
         </p>
         <p>
-          更新时间：<span>{{ detail.modifyDatetime || '-' }}</span>
+          创建时间：<span>{{ detail.createDatetime || '-' }}</span>
         </p>
         <p>
-          业务规则说明：<span>{{ detail.remark || '-' }}</span>
+          更新时间：<span>{{ detail.modifyDatetime || '-' }}</span>
         </p>
       </div>
       <div>
@@ -35,9 +35,6 @@
         </p>
         <p>
           创建人：<span>{{ detail.createUserName || '-' }}</span>
-        </p>
-        <p>
-          创建时间：<span>{{ detail.createDatetimeStr || '-' }}</span>
         </p>
       </div>
     </div>
@@ -54,7 +51,7 @@
   const fileTypeNames = computed(v => {
     return (
       (detail.value.fileTypeList &&
-        detail.value.fileTypeList.map(v => v.fileTypeName).join('、')) ||
+        detail.value.fileTypeList.map(v => v.name).join('、')) ||
       '-'
     )
   })
@@ -93,12 +90,12 @@
           line-height: 22px;
           color: rgba(0, 0, 0, 0.45);
           margin-bottom: 16px;
-          text-align: right;
+          display: flex;
+          justify-content: flex-end;
           span {
             color: rgba(0, 0, 0, 0.85);
             display: inline-block;
             width: 63%;
-            text-align: left;
           }
         }
       }
