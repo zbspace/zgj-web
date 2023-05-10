@@ -64,12 +64,12 @@ router.beforeEach((routeTo, routeFrom) => {
     const allMenuList = menusInfoStore.businessMenus
       .concat(menusInfoStore.systemMenus)
       .concat([{ to: '/403' }, { to: '/login/account' }])
-    const menuIndex = JSON.stringify(allMenuList).indexOf(routeTo.path)
-    if (routeTo.name && menuIndex === -1) {
-      return {
-        path: '/403'
-      }
-    }
+    // const menuIndex = JSON.stringify(allMenuList).indexOf(routeTo.path)
+    // if (routeTo.name && menuIndex === -1) {
+    //   return {
+    //     path: '/403'
+    //   }
+    // }
   }
 
   NProgress.start()
