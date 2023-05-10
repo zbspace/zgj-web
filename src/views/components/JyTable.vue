@@ -528,11 +528,13 @@
     return table.value.getSelectionRows()
   }
 
-  function reloadData() {
+  function reloadData(isSetOnePage) {
     nextTick(() => {
-      state.componentsPagination.data.index = 1
-      state.componentsTable.data = []
-      state.componentsPagination.data.amount = 0
+      if (!isSetOnePage) {
+        state.componentsPagination.data.index = 1
+        state.componentsTable.data = []
+        state.componentsPagination.data.amount = 0
+      }
       page()
     })
   }

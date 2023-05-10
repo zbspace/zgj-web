@@ -79,7 +79,7 @@
       :confirmLoading="confirmLoading"
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
-      :width="900"
+      :width="950"
       destroy-on-close
       :height="600"
       @close="closeStaffFrom"
@@ -287,12 +287,11 @@
             <el-form-item label="人脸照片" prop="userFaceId">
               <el-upload
                 ref="uploadRef"
-                action="#"
+                :action="`${API_BASE_PREFIX}/user/uploadUserFace`"
                 :show-file-list="false"
                 list-type="picture-card"
-                :on-change="handleChange"
+                :on-success="handleChange"
                 :before-upload="beforeAvatarUpload"
-                :auto-upload="false"
               >
                 <el-input
                   type="hidden"
@@ -301,7 +300,10 @@
 
                 <el-image
                   v-if="state.componentsAddForm.formData.userFaceUri"
-                  :src="state.componentsAddForm.formData.userFaceUri"
+                  :src="
+                    API_BASE_PREFIX +
+                    state.componentsAddForm.formData.userFaceUri
+                  "
                   style="padding: 6px"
                 >
                   <template #error>
@@ -444,6 +446,7 @@
   import actionOneDialog from '@/views/components/actionOneDialog'
   import { getItem } from '@/utils/storage'
   import { API_BASE_PREFIX } from '@/utils/constants.js'
+  import { messageError } from '@/hooks/useMessage'
 
   // 显示新增员工弹窗
   const showStaffDialog = ref(false)
@@ -730,7 +733,6 @@
       ],
       userIds: []
     },
-    uploadFile: '',
     userUpdateFaceUri: '',
     userUpdateFaceId: ''
   })
@@ -894,24 +896,27 @@
     showDepPerDialog.value = false
   }
   // 上传图片
-  const handleChange = file => {
-    state.uploadFile = file
-    state.componentsAddForm.formData.userFaceUri = file.url
+  const handleChange = response => {
+    state.componentsAddForm.formData.fileId = response.data.fileId
+    state.componentsAddForm.formData.userFaceId = response.data.fileId
+    state.componentsAddForm.formData.userFaceUri = response.data.fileUrl
   }
 
   // 上传图片前处理
   const beforeAvatarUpload = file => {
-    console.log(file)
-    const isJPG = file.type === 'image/jpeg'
-    const isLt2M = file.size / 1024 / 1024 < 2
+    const isJPG =
+      file.type === 'image/jpeg' ||
+      file.type === 'image/jpg' ||
+      file.type === 'image/png'
+    const isLt5M = file.size / 1024 / 1024 < 5
 
     if (!isJPG) {
-      this.$message.error('上传头像图片只能是 JPG 格式!')
+      messageError('上传头像图片只能是 JPG/JPEG/PNG 格式!')
     }
-    if (!isLt2M) {
-      this.$message.error('上传头像图片大小不能超过 2MB!')
+    if (!isLt5M) {
+      messageError('上传头像图片大小不能超过 5MB!')
     }
-    return isJPG && isLt2M
+    return isJPG && isLt5M
   }
   // 批量操作
   const clickBatchButton = (item, selection) => {
@@ -975,10 +980,7 @@
             mailbox: res.data.userMail ? res.data.userMail : '-',
             EnterpriseWechatID: res.data.qweiNo ? res.data.qweiNo : '-',
             NailID: res.data.dingdingNo ? res.data.dingdingNo : '-',
-            remark: res.data.readme ? res.data.readme : '-',
-            FacePicturePath: res.data.userFaceUri
-              ? API_BASE_PREFIX + res.data.userFaceUri
-              : null
+            remark: res.data.readme ? res.data.readme : '-'
           }
           state.componentsDocumentsDetails.visible.forEach((item, index) => {
             if (item.name === 'Staff-Details') {
@@ -1007,6 +1009,7 @@
       state.componentsAddForm.formData.roles = []
       state.tabSelects.rolesSelected = []
       state.tabSelects.partTimeOrgansSelected = []
+      state.componentsAddForm.formData.userFaceUri = ''
       api.userGet(column.userId).then(res => {
         state.tabSelects.leaderUserSelected = [
           {
@@ -1024,8 +1027,6 @@
         ]
         for (const item in res.data) {
           state.componentsAddForm.formData[item] = res.data[item]
-          state.componentsAddForm.formData.userFaceUri =
-            API_BASE_PREFIX + res.data.userFaceUri
 
           if (item === 'partTimeOrgans' && res.data[item].length > 0) {
             state.tabSelects.partTimeOrgansSelected = res.data[item].map(i => {
@@ -1058,11 +1059,9 @@
               i => i.roleId
             )
           }
+          // state.componentsAddForm.formData.userFaceId =
+          //   state.componentsAddForm.formData.fileId
         }
-
-        state.componentsAddForm.formData.userFaceUri = res.data.userFaceUri
-          ? API_BASE_PREFIX + res.data.userFaceUri
-          : null
       })
       showStaffDialog.value = true
     }
@@ -1120,7 +1119,7 @@
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
           state.JyElMessageBox.show = false
-          table.value.reloadData()
+          table.value.reloadData(true)
         }
       })
     }
@@ -1129,7 +1128,7 @@
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
           state.JyElMessageBox.show = false
-          table.value.reloadData()
+          table.value.reloadData(true)
         }
       })
     }
@@ -1156,7 +1155,7 @@
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
           state.showToastDialog.show = false
-          table.value.reloadData()
+          table.value.reloadData(true)
         }
       })
     }
@@ -1165,7 +1164,7 @@
         if (res.code === 200) {
           ElMessage.success(`${type}成功！`)
           state.showToastDialog.show = false
-          table.value.reloadData()
+          table.value.reloadData(true)
         }
       })
     }
@@ -1232,18 +1231,6 @@
           })
         })
 
-        if (state.uploadFile) {
-          // 上传图片
-          const fd = new FormData()
-          fd.append('file', state.uploadFile.raw)
-          const fileInfoRes = await api.uploadUserFace(fd)
-          if (fileInfoRes.code !== 200) {
-            return ElMessage.warning('人脸图片上传失败')
-          }
-          state.componentsAddForm.formData.fileId = fileInfoRes.data.fileId
-          state.componentsAddForm.formData.fileSourceType = '1'
-        }
-
         // 提交信息
         if (state.componentsAddForm.formData.userId) {
           submitEditStaff(state.componentsAddForm.formData)
@@ -1269,23 +1256,19 @@
     api
       .userAdd(state.componentsAddForm.formData)
       .then(res => {
-        if (res.code === 200) {
-          ElMessage.success('新增员工成功！')
-          table.value.reloadData()
-          formStaffRef.value.resetFields()
-          showStaffDialog.value = false
-          state.tabSelects = {
-            // 部门弹窗选中信息
-            searchSelected: [],
-            // 部门选中信息
-            hostOrganSelected: [],
-            // 角色选中信息
-            rolesSelected: [],
-            // 主管选中信息
-            leaderUserSelected: []
-          }
-        } else {
-          confirmLoading.value = false
+        ElMessage.success('新增员工成功！')
+        table.value.reloadData()
+        formStaffRef.value.resetFields()
+        showStaffDialog.value = false
+        state.tabSelects = {
+          // 部门弹窗选中信息
+          searchSelected: [],
+          // 部门选中信息
+          hostOrganSelected: [],
+          // 角色选中信息
+          rolesSelected: [],
+          // 主管选中信息
+          leaderUserSelected: []
         }
         confirmLoading.value = false
       })
@@ -1298,7 +1281,7 @@
       if (res.code === 200) {
         ElMessage.success('修改员工成功！')
         formStaffRef.value.resetFields()
-        table.value.reloadData()
+        table.value.reloadData(true)
         showStaffDialog.value = false
         state.tabSelects = {
           // 部门弹窗选中信息

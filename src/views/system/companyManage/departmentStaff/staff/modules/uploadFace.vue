@@ -68,11 +68,11 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="cancel">
-            {{ $t('t-zgj-operation.cancel') }}
-          </el-button>
           <el-button type="primary" @click="comifrm">
             {{ $t('t-zgj-operation.submit') }}
+          </el-button>
+          <el-button @click="cancel">
+            {{ $t('t-zgj-operation.cancel') }}
           </el-button>
         </span>
       </template>

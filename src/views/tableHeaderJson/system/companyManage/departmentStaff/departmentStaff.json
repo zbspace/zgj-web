@@ -2,7 +2,6 @@
   {
     "prop": "userName",
     "label": "姓名",
-    "sortable": true,
     "flex": true,
     "min-width": 150,
     "show": true
@@ -10,35 +9,30 @@
   {
     "prop": "accountNo",
     "label": "账号",
-    "sortable": true,
     "min-width": 150,
     "show": true
   },
   {
     "prop": "hostOrganName",
     "label": "所属部门",
-    "sortable": true,
     "min-width": 150,
     "show": true
   },
   {
     "prop": "userTitle",
     "label": "职位",
-    "sortable": true,
     "min-width": 150,
     "show": true
   },
   {
     "prop": "faceState",
     "label": "人脸状态",
-    "sortable": true,
     "min-width": 150,
     "show": true
   },
   {
     "prop": "flag",
     "label": "状态",
-    "sortable": true,
     "min-width": 150,
     "show": true
   },
