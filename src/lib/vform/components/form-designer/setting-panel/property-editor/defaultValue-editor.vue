@@ -1,6 +1,6 @@
 <template>
   <el-form-item
-    v-if="!hasConfig('optionItems')"
+    v-if="!hasConfig('optionItems') && !optionModel.hiddenDefaultValue"
     :label="i18nt('designer.setting.defaultValue')"
   >
     <el-input
