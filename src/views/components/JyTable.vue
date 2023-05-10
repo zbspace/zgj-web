@@ -416,8 +416,8 @@
     return item.statusList.find(i => i.key === row[item.prop])?.label
   }
 
-  const reloadSearchForm = data => {
-    searchForm.value.initFormData(data)
+  const reloadSearchForm = (data, params) => {
+    searchForm.value.initFormData(data, params)
   }
 
   const clickElement = (item, index) => {

@@ -637,7 +637,6 @@
         state.props.defaultAttribute[key] = props.defaultAttribute[key]
       }
     }
-
     // 初始化表单单数据
     initFormData()
   }
@@ -657,7 +656,7 @@
   )
 
   // 初始化表单单数据
-  function initFormData(searchQuery) {
+  function initFormData(searchQuery, params) {
     const queryData = searchQuery || serachData.value
     let showUnfold = false
     if (props.defaultAttribute.isUnfold) {
@@ -668,10 +667,23 @@
       if (!item.inCommonUse) {
         showUnfold = true
       }
+
       if (item.requestObj) {
-        request(item.requestObj).then(res => {
-          item.options = res.data
-        })
+        if (item.requestObj.method === 'GET') {
+          item.requestObj.params = params
+        } else {
+          item.requestObj.data = params
+        }
+
+        // 流程 - 关联表单 - 排除切换 null请求
+        const flag = ref(false)
+        if (item.requestObj.type === 'flow' && !params) {
+          flag.value = true
+        }
+        !flag.value &&
+          request(item.requestObj).then(res => {
+            item.options = res.data
+          })
       }
     })
     state.cache.showUnfold = showUnfold

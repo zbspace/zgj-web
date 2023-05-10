@@ -277,7 +277,8 @@
       },
       requestObj: {
         method: 'GET',
-        url: '/form/list'
+        url: '/form/list',
+        type: 'flow'
       }
     }
   ]
@@ -353,7 +354,8 @@
       },
       requestObj: {
         method: 'GET',
-        url: '/form/list'
+        url: '/form/list',
+        type: 'flow'
       }
     }
   ]
@@ -878,7 +880,6 @@
       return
     }
     queryParams.value.applyTypeId = e.applyTypeId ? e.applyTypeId : null
-    reloadData()
     state.componentsTree.value = e.applyTypeId
 
     // 更新列表头 和 搜索条件
@@ -894,15 +895,16 @@
       // 用印申请
       state.componentsSearchForm.data = sealApplySearchForm
       state.componentsTable.header = tableHeaderSealApply
-      table.value.reloadSearchForm(sealApplySearchForm)
+      table.value.reloadSearchForm(sealApplySearchForm, { applyTypeId: id })
       table.value.setTableHeader(tableHeaderSealApply)
     } else {
       // 非用印申请
       state.componentsSearchForm.data = noSealApplySearchForm
       state.componentsTable.header = tableHeaderSeal
       table.value.setTableHeader(tableHeaderSeal)
-      table.value.reloadSearchForm(noSealApplySearchForm)
+      table.value.reloadSearchForm(noSealApplySearchForm, { applyTypeId: id })
     }
+    table.value.reloadData()
   }
   onBeforeMount(() => {
     // 发送api请求 查询表单树解构
