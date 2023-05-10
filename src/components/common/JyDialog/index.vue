@@ -172,7 +172,7 @@
       default: 800
     },
     height: {
-      type: Number,
+      type: [Number, String],
       default: 600
     },
     fullscreen: {
@@ -235,7 +235,9 @@
     }
   })
 
-  const height = ref(props.height + 'px')
+  const height = ref(
+    typeof props.height === 'string' ? props.height : props.height + 'px'
+  )
 
   const handelScreen = ref(false)
 
@@ -244,7 +246,8 @@
     if (handelScreen.value) {
       height.value = 'calc(100vh - 112px)'
     } else {
-      height.value = props.height + 'px'
+      height.value =
+        typeof props.height === 'string' ? props.height : props.height + 'px'
     }
   }
 
@@ -285,6 +288,7 @@
   }
 
   .content-custom {
+    min-height: 200px;
     .el-scrollbar__wrap {
       overflow-x: hidden;
       overflow-y: auto;

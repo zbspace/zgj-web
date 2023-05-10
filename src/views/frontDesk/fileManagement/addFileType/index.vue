@@ -11,6 +11,7 @@
     v-model="isVisible"
     @on-opened="opened"
     @on-closed="closed"
+    :height="220"
   >
     <el-form
       ref="formRef"

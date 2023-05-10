@@ -170,7 +170,7 @@
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       :width="1000"
-      :height="600"
+      height="calc(100vh - 500px)"
       destroyOnClose
       @confirm="submitLibraryForm"
       @close="closeForm"

@@ -56,7 +56,7 @@
       :confirmText="$t('t-zgj-operation.submit')"
       :concelText="$t('t-zgj-operation.cancel')"
       :width="880"
-      :height="600"
+      height="calc(100vh - 500px)"
       @confirm="submitForm"
     >
       <el-form

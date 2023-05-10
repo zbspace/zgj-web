@@ -81,7 +81,7 @@
       :concelText="$t('t-zgj-operation.cancel')"
       :width="950"
       destroy-on-close
-      :height="600"
+      height="calc(100vh - 500px)"
       @close="closeStaffFrom"
       @confirm="submitStaffForm"
       class="staff-add"
