@@ -1950,7 +1950,7 @@ export const ch = {
   't-zgj-password.PleaseNew': '请输入新密码',
   't-zgj-password.ConfirmNew': '确认新密码',
   't-zgj-password.PleaseNewAgain': '请再次输入新密码',
-  't-zgj-password.PleaseSet816': '请设置8-16位的密码并且包含大小写字母与数字',
+  't-zgj-password.PleaseSet816': '请设置8-16位的密码且包含大小写字母与数字',
   't-zgj-password.PleaseCurrent': '请输入您目前的密码',
   't-zgj-password.PleaseAgain': '请再次输入密码',
   't-zgj-password.inconsistent': '两次输入的密码不一致',

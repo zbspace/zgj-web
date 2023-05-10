@@ -53,6 +53,7 @@
               :placeholder="state.placeholderPhone"
               size="large"
               clearable
+              maxlength="11"
             >
               <template #prepend>
                 <el-select
@@ -60,6 +61,7 @@
                   placeholder="+86"
                   style="width: 80px"
                   size="large"
+                  disabled
                 >
                   <el-option label="+86" value="1" />
                 </el-select>
@@ -97,7 +99,7 @@
               v-model="passLoginForm.inputAccount"
               :placeholder="state.placeholderPassword"
               size="large"
-              clearable
+              :type="state.showPass1 ? 'text' : 'password'"
               class="l-code-inpt"
             >
               <template #prefix>
@@ -105,22 +107,52 @@
                   <img src="../../../assets/images/login/l_password_icon.svg" />
                 </div>
               </template>
+              <template #suffix>
+                <div
+                  class="open-pass"
+                  @click="state.showPass1 = !state.showPass1"
+                >
+                  <img
+                    v-if="state.showPass1"
+                    src="../../../assets/images/login/l_open_pass.svg"
+                  />
+                  <img
+                    v-else
+                    src="../../../assets/images/login/l_close_pass.svg"
+                  />
+                </div>
+              </template>
             </el-input>
           </el-form-item>
 
-          <el-form-item prop="inputPassword">
+          <el-form-item prop="inputPassword" class="l-inpt">
             <div class="l-code">
               <el-input
                 v-model="passLoginForm.inputPassword"
                 :placeholder="state.placeholderPasswordAgain"
                 size="large"
-                :type="state.showPass ? 'text' : 'password'"
+                :type="state.showPass2 ? 'text' : 'password'"
                 class="l-code-inpt"
               >
                 <template #prefix>
                   <div class="icon">
                     <img
                       src="../../../assets/images/login/l_password_icon.svg"
+                    />
+                  </div>
+                </template>
+                <template #suffix>
+                  <div
+                    class="open-pass"
+                    @click="state.showPass2 = !state.showPass2"
+                  >
+                    <img
+                      v-if="state.showPass2"
+                      src="../../../assets/images/login/l_open_pass.svg"
+                    />
+                    <img
+                      v-else
+                      src="../../../assets/images/login/l_close_pass.svg"
                     />
                   </div>
                 </template>
@@ -193,7 +225,9 @@
         value: 3,
         label: '重置完成'
       }
-    ]
+    ],
+    showPass1: false,
+    showPass2: false
   })
 
   // 监听 语言切换
@@ -356,6 +390,16 @@
 
       .l-inpt {
         padding-bottom: 20px;
+        .open-pass {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+          }
+        }
       }
 
       .l-code {
