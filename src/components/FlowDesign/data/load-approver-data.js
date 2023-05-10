@@ -174,7 +174,7 @@ export default function () {
       // 是否可以多个组
       addable: true,
       // 是否多个
-      multiple: true
+      multiple: false
     },
     {
       name: '指定角色',

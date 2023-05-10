@@ -3,24 +3,31 @@ import Request from '@/utils/request-util'
 /**
  * 流程审批api
  *
- * @author luopeng
  * @date 2022/08/13 13:21
  */
+
 export class ApproverApi {
+  /**
+   * 新流程审批_保存
+   * @date 2022/08/13 13:21
+   */
+  static save(params) {
+    return Request.post('/approver/save', params)
+  }
+
   /**
    * 新流程审批_启动
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static start(params) {
     return Request.post('/approver/start', params)
   }
 
+  // TODO: 2
   /**
    * 新流程审批_退回重新提交
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static startByBack(params) {
@@ -30,7 +37,6 @@ export class ApproverApi {
   /**
    * 新流程审批_同意
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static agree(params) {
@@ -40,7 +46,6 @@ export class ApproverApi {
   /**
    * 新流程审批_拒绝
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static reject(params) {
@@ -50,7 +55,6 @@ export class ApproverApi {
   /**
    * 新流程审批_转办
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static turn(params) {
@@ -60,7 +64,6 @@ export class ApproverApi {
   /**
    * 新流程审批_加签
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static addSign(params) {
@@ -70,7 +73,6 @@ export class ApproverApi {
   /**
    * 新流程审批_添加征询
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static consult(params) {
@@ -80,7 +82,6 @@ export class ApproverApi {
   /**
    * 新流程审批_提交征询
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static consultSubmit(params) {
@@ -90,7 +91,6 @@ export class ApproverApi {
   /**
    * 新流程审批_撤回
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static withdraw(params) {
@@ -100,7 +100,6 @@ export class ApproverApi {
   /**
    * 新流程审批_退回
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static returned(params) {
@@ -110,7 +109,6 @@ export class ApproverApi {
   /**
    * 新流程审批_挂起
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static suspend(params) {
@@ -120,7 +118,6 @@ export class ApproverApi {
   /**
    * 新流程审批_批量挂起
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static suspends(params) {
@@ -130,7 +127,6 @@ export class ApproverApi {
   /**
    * 新流程审批_激活
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static active(params) {
@@ -140,7 +136,6 @@ export class ApproverApi {
   /**
    * 新流程审批_批量激活
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static actives(params) {
@@ -150,7 +145,6 @@ export class ApproverApi {
   /**
    * 新流程审批_终止
    *
-   * @author luopeng
    * @date 2022/08/13 13:21
    */
   static close(params) {

@@ -542,8 +542,30 @@
                 linear-gradient(#d9db9b, #d9db9b);
             }
 
-            //  跳过
+            //  退回
             .node-status-back {
+              background-image: -webkit-gradient(
+                  linear,
+                  left top,
+                  right top,
+                  from(#ebadad),
+                  to(#ebadad)
+                ),
+                -webkit-gradient(linear, left top, left bottom, from(#ebadad), to(#ebadad));
+              background-image: -webkit-linear-gradient(left, #ebadad, #ebadad),
+                -webkit-linear-gradient(#ebadad, #ebadad);
+              background-image: -o-linear-gradient(
+                  left,
+                  #ebadad 0,
+                  #ebadad 100%
+                ),
+                -o-linear-gradient(#ebadad, #ebadad);
+              background-image: linear-gradient(90deg, #ebadad, #ebadad),
+                linear-gradient(#ebadad, #ebadad);
+            }
+
+            //  撤回
+            .node-status-revoke {
               background-image: -webkit-gradient(
                   linear,
                   left top,
@@ -1475,6 +1497,10 @@
     }
 
     .flow-status-back {
+      color: #ebadad;
+    }
+
+    .flow-status-revoke {
       color: #f00056;
     }
   }
@@ -1862,6 +1888,7 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
 
             & > div:first-child {
               max-width: 60%;
@@ -2041,6 +2068,31 @@
   &:hover {
     background-color: @table-row-hover-bg;
   }
+}
+
+.approval-remark {
+  // background-color: #fff;
+  background-image: none;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: #dcdfe6;
+  border-style: dotted;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  font-size: inherit;
+  line-height: 30px;
+  outline: none;
+  -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  padding: 0px 9px;
+  height: auto;
+  width: 100%;
+}
+.approval-time {
+  font-size: 13px;
+  // color: rgba(0, 0, 0, 0.431372549);
+  color: var(--heading-color);
 }
 
 .w-fill {
