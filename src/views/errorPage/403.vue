@@ -25,9 +25,9 @@
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
-        <div class="bullshit__headline">该页面不存在！</div>
+        <div class="bullshit__headline">网站管理员说你不能进入这个页面。</div>
         <div class="bullshit__info"
-          >请检查您输入的网址是否正确，或点击下面的按钮返回主页。</div
+          >请联系您的管理员进行授权，或点击下面的按钮返回主页。</div
         >
         <div @click="toHome" class="bullshit__return-home">返回主页</div>
       </div>

@@ -46,6 +46,11 @@ export default [
     component: () => import('../views/encrypt/decryption')
   },
   {
+    path: '/403',
+    component: () => import('@/views/errorPage/403'),
+    hidden: true
+  },
+  {
     path: '/:pathMatch(.*)',
     component: () => import('@/views/errorPage/404'),
     hidden: true

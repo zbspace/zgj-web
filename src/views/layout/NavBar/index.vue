@@ -158,7 +158,9 @@
                     {{
                       accountInfoStore.userInfo &&
                       accountInfoStore.userInfo.userName &&
-                      accountInfoStore.userInfo.userName.substr(1)
+                      accountInfoStore.userInfo.userName.substr(
+                        accountInfoStore.userInfo.userName.length - 1
+                      )
                     }}
                   </span>
                 </div>
@@ -185,7 +187,9 @@
                     {{
                       accountInfoStore.userInfo &&
                       accountInfoStore.userInfo.userName &&
-                      accountInfoStore.userInfo.userName.substr(1)
+                      accountInfoStore.userInfo.userName.substr(
+                        accountInfoStore.userInfo.userName.length - 1
+                      )
                     }}
                   </div>
                   <div class="dropdown-name-text">
