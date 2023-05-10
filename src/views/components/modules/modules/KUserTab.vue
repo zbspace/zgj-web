@@ -596,7 +596,7 @@
     margin-left: -12px;
     .custom-bread {
       display: flex;
-
+      flex-wrap: wrap;
       .bread-item {
         display: flex;
         align-items: center;
