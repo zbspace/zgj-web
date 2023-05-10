@@ -718,7 +718,7 @@
     align-items: center;
   }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
   .upload-demo {
     text-align: left;
   }

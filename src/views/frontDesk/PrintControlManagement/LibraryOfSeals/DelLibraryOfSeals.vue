@@ -568,7 +568,7 @@
     color: #666666;
   }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
   .upload-demo {
     width: 100%;
     box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color))
