@@ -39,6 +39,9 @@ const whitelist = [
   },
   {
     to: '/system/companyManage/departmentStaff/person'
+  },
+  {
+    to: '/personally'
   }
 ]
 getAllMenu(routes)

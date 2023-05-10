@@ -13,6 +13,7 @@
     :mode="1"
     @on-opened="getDataList"
     :appendToBody="true"
+    :height="400"
   >
     <JyTable
       :data="dataList"
