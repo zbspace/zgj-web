@@ -21,6 +21,26 @@ const router = createRouter({
 })
 
 const platemMenuList = []
+const whitelist = [
+  { to: '/403' },
+  { to: '/login/account' },
+  { to: '/frontDesk/printControlManage/useSealManage/fillForm' },
+  {
+    to: '/frontDesk/printControlManage/equipmentManage/intelligentSealBoxManagement/sealBoxGridInfo'
+  },
+  {
+    to: '/frontDesk/printControlManage/equipmentManage/IntelligentSealCabinetManagement/cabinetGridInfo'
+  },
+  {
+    to: '/system/businessManage/editBusinessRule'
+  },
+  {
+    to: '/system/companyManage/departmentStaff/config'
+  },
+  {
+    to: '/system/companyManage/departmentStaff/person'
+  }
+]
 getAllMenu(routes)
 
 function getAllMenu(list) {
@@ -63,11 +83,7 @@ router.beforeEach((routeTo, routeFrom) => {
   } else {
     const allMenuList = menusInfoStore.businessMenus
       .concat(menusInfoStore.systemMenus)
-      .concat([
-        { to: '/403' },
-        { to: '/login/account' },
-        { to: '/frontDesk/printControlManage/useSealManage/fillForm' }
-      ])
+      .concat(whitelist)
     const menuIndex = JSON.stringify(allMenuList).indexOf(routeTo.path)
     if (routeTo.name && menuIndex === -1) {
       return {
