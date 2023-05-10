@@ -1095,7 +1095,7 @@
           state.userUpdateFaceUri = res.data.userFaceUri
             ? API_BASE_PREFIX + res.data.userFaceUri
             : null
-          state.userUpdateFaceId = res.data.userFaceId
+          state.userUpdateFaceId = res.data.fileId
         },
         () => {
           showUpload.value = true

@@ -8,7 +8,7 @@
           v-for="(approvalMode, i) in approvalModes"
           :key="i"
           :value="approvalMode.value"
-          :disabled="multiple && approvalMode.value == 1"
+          :disabled="props.multiple && approvalMode.value == 1"
           :style="radioStyle()"
         >
           <span>{{ approvalMode.name }}</span>

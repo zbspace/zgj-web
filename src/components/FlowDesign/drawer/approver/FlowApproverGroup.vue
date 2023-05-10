@@ -732,6 +732,8 @@
     // 是否多个人
     if (users.length > 1) {
       emit('update:multiple', true)
+    } else {
+      emit('update:multiple', false)
     }
   }
 
@@ -802,6 +804,14 @@
         approval => approval.value == group.approverType
       )[0].multiple
       // 指定成员、发起人自选、节点审批人、表单内人员
+      if (group.approverIds.length > 1) {
+        multiple = true
+      }
+      // 发起人自选 选择方式-多选
+      if (group.approverType == 9 && group.selectMode == 1) {
+        multiple = true
+      }
+
       // TODO: 需要根据选择判断是否多个人
     } else if (group) {
       multiple = newApprovals.value.filter(
