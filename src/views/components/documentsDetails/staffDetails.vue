@@ -119,6 +119,7 @@
 </template>
 <script setup>
   import { reactive, onBeforeMount, onMounted, watch } from 'vue'
+
   const props = defineProps({
     // 标识
     refs: {
@@ -132,10 +133,11 @@
     },
     data: {
       type: Object,
-      default: {}
+      default() {
+        return {}
+      }
     }
   })
-  const emit = defineEmits([])
   const state = reactive({
     props: {
       data: {}

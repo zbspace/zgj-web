@@ -978,7 +978,6 @@
   import liuchengWanchengSvg from '@/assets/svg/liucheng-wancheng.svg'
   import yuanHuiSvg from '@/assets/svg/common/yuan-hui.svg'
   import UploadBackgroundSvg from '@/assets/svg/Upload__background.svg'
-  import renlianTupian from '@/assets/svg/renlian-tupian.svg'
   import jinggao from '@/assets/svg/jinggao.svg'
 
   const props = defineProps({
@@ -2652,33 +2651,20 @@
       // 员工详情
       StaffDetails: {
         basicInformation: {
-          title: '基本信息',
+          title: '',
           show: true,
           data: {
-            name: '邓家佳',
-            cellPhone: '13789995478',
-            account: 'Zhangsan',
-            departmentList: [
-              {
-                name: '德国威能 - 威能（无锡）供热设备有限公司'
-              },
-              {
-                name: '德国威能 - 威能（中国）供热制冷环境技术有限公司'
-              },
-              {
-                name: '德国威能 - 威能（中国）供热制冷环境技术有限公司北京分公司'
-              },
-              {
-                name: '德国威能 - 威能（中国）供热制冷环境技术有限公司杭州分公司'
-              }
-            ],
-            role: '系统管理员、印章管理员、模板管理员、流程管理员、审计员',
-            jobTitle: '开发',
-            mailbox: 'test@qq.com',
-            EnterpriseWechatID: 'NFHUF744665212',
-            NailID: '11548798778',
-            remark: '-',
-            FacePicturePath: renlianTupian
+            name: '',
+            cellPhone: '',
+            account: '',
+            departmentList: [],
+            role: '',
+            jobTitle: '',
+            mailbox: '',
+            EnterpriseWechatID: '',
+            NailID: '',
+            remark: '',
+            FacePicturePath: ''
           }
         }
       }

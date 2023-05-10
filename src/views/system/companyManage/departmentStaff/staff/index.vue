@@ -980,7 +980,10 @@
             mailbox: res.data.userMail ? res.data.userMail : '-',
             EnterpriseWechatID: res.data.qweiNo ? res.data.qweiNo : '-',
             NailID: res.data.dingdingNo ? res.data.dingdingNo : '-',
-            remark: res.data.readme ? res.data.readme : '-'
+            remark: res.data.readme ? res.data.readme : '-',
+            FacePicturePath: res.data.userFaceUri
+              ? API_BASE_PREFIX + res.data.userFaceUri
+              : null
           }
           state.componentsDocumentsDetails.visible.forEach((item, index) => {
             if (item.name === 'Staff-Details') {
