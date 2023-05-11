@@ -11,7 +11,7 @@
     <div class="base-info">
       <div>
         <p>
-          <span>组织名称：</span> <span>{{ detail.organName || '-' }}</span>
+          <span>部门名称：</span> <span>{{ detail.organName || '-' }}</span>
         </p>
         <p>
           <span>组织类型：</span
@@ -24,19 +24,19 @@
           }}</span>
         </p>
         <p>
-          <span>组织主管：</span
+          <span>部门主管：</span
           ><span>{{ detail.organLeaderName || '-' }}</span>
         </p>
       </div>
       <div>
         <p>
-          <span>组织编码：</span><span>{{ detail.organNo || '-' }}</span>
+          <span>部门编码：</span><span>{{ detail.organNo || '-' }}</span>
         </p>
         <p>
-          <span>组织人数：</span><span>{{ detail.sealTypeName || 0 }}</span>
+          <span>部门人数：</span><span>{{ detail.sealTypeName || 0 }}</span>
         </p>
         <p>
-          <span>上级组织：</span
+          <span>上级部门：</span
           ><span>{{
             detail.organPid === '-1'
               ? getItem('accountInfo').userDepartName
@@ -55,24 +55,31 @@
 
 <script setup>
   import { ref, onMounted } from 'vue'
-  import departmentService from '@/api/system/companyManagement/department'
+  // import departmentService from '@/api/system/companyManagement/department'
   import { getItem } from '@/utils/storage'
 
   const detail = ref({})
-  const loading = ref(false)
+  // const loading = ref(false)
 
   const props = defineProps({
     organId: {
       type: String,
       default: ''
+    },
+    baseInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   })
 
   const getDetail = async () => {
-    loading.value = true
-    const res = await departmentService.detail(props.organId)
-    detail.value = res.data
-    loading.value = false
+    // loading.value = true
+    // const res = await departmentService.detail(props.organId)
+    // detail.value = res.data
+    detail.value = props.baseInfo
+    // loading.value = false
   }
 
   onMounted(() => {

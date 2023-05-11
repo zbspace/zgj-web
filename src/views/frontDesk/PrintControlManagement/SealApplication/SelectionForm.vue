@@ -282,9 +282,12 @@
 
   const useTemplate = id => {
     router.push({
-      name: 'selectionForms',
-      params: { id: chooseTemMessageId.value },
-      query: { formVersionId: null, useId: id }
+      name: 'fillForm',
+      query: {
+        formVersionId: null,
+        useId: id,
+        formMessageId: chooseTemMessageId.value
+      }
     })
   }
 
