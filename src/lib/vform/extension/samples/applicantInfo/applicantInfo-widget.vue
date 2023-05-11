@@ -103,16 +103,7 @@
     data() {
       return {
         rules: [],
-        fieldModel: {
-          applyUserId: getItem('accountInfo')
-            ? getItem('accountInfo').userInfo.userId
-            : '',
-          applyUserName: getItem('accountInfo')
-            ? getItem('accountInfo').userInfo.userName
-            : '',
-          applyOrganId: '',
-          applyOrganName: ''
-        },
+        fieldModel: {},
         organOptions: []
       }
     },
@@ -134,6 +125,16 @@
       this.initEventHandler()
       this.initFieldModel()
       this.handleOnCreated()
+      this.fieldModel = {
+        applyUserId: getItem('accountInfo')
+          ? getItem('accountInfo').userInfo.userId
+          : '',
+        applyUserName: getItem('accountInfo')
+          ? getItem('accountInfo').userInfo.userName
+          : '',
+        applyOrganId: '',
+        applyOrganName: ''
+      }
     },
     beforeUnmount() {
       this.unregisterFromRefList()
