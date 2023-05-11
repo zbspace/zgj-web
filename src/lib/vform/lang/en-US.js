@@ -58,7 +58,6 @@ export default {
 
       'picture-upload': 'Picture',
       'file-upload':    'File',
-      'rich-editor':    'Rich Editor',
       cascader:         'Cascader',
       slot:             'Slot',
 

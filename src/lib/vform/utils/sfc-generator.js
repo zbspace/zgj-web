@@ -684,12 +684,6 @@ const elTemplates = {  //字段组件属性
             ${limit}>${uploadTipSlotChild} ${fileUploadIconChild}</el-upload>`
   },
 
-  'rich-editor': (widget, formConfig, parentWidget) => {
-    const {vModel, disabled, placeholder
-    } = getElAttrs(widget, formConfig, parentWidget)
-    return `<vue-editor ${vModel} ${disabled} ${placeholder}></vue-editor>`
-  },
-
   'cascader': (widget, formConfig, parentWidget) => {
     const {vModel, disabled, size, clearable, filterable, placeholder} = getElAttrs(widget, formConfig, parentWidget)
     let wop = widget.options
