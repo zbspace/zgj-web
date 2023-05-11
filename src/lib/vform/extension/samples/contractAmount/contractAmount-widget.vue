@@ -28,7 +28,7 @@
         <template #append>
           <el-select
             v-model="fieldModel.unit"
-            placeholder="请输入"
+            placeholder="请选择"
             style="width: 100px"
           >
             <el-option
@@ -41,7 +41,7 @@
         </template>
       </el-input>
       <div class="el-form-item__error" v-if="field.options.requiredTextShow"
-        >请输入</div
+        >请选择</div
       >
     </el-form-item>
   </static-content-wrapper>
