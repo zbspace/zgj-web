@@ -62,7 +62,10 @@
       v-model:show="showDocumentTypeDialog"
       @update:searchSelected="documentTypeSubmit"
       :multiple="false"
-      :queryParams="{ bindBizRule: true }"
+      :queryParams="{
+        bindBizRule: true,
+        userId: userId
+      }"
       :searchSelected="searchSelected"
     ></KDocumentTypeDialog>
   </form-item-wrapper>
@@ -76,6 +79,7 @@
   import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
   import { messageError } from '@/hooks/useMessage'
   import { fileManageService } from '@/api/frontDesk/fileManage'
+  import { getItem } from '@/utils/storage'
 
   export default {
     name: 'FileTypeIdWidget',
@@ -123,7 +127,10 @@
             trigger: 'change'
           }
         ],
-        searchSelected: []
+        searchSelected: [],
+        userId: getItem('accountInfo')
+          ? getItem('accountInfo').userInfo.userId
+          : ''
       }
     },
     computed: {

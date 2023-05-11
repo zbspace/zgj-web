@@ -251,7 +251,7 @@
           label: '文件类型层级',
           sortable: true,
           show: true,
-          'min-width': 110
+          'min-width': 150
         },
         {
           prop: 'fileSum',

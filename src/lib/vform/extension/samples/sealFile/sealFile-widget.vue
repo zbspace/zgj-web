@@ -302,8 +302,7 @@
         try {
           const res = await SealApplyService.uploadFile(formData)
           if (['png', 'jpg', 'jpeg'].includes(str) && this.curType === 1) {
-            res.data.fileUrl =
-              location.origin + API_BASE_PREFIX + res.data.fileUrl
+            // res.data.fileUrl = res.data.fileUrl
             this.imgFiles.push({
               ...res.data
             })
@@ -316,7 +315,7 @@
                 fileSizeByte: res.data.fileSizeByte,
                 fileSuffix: res.data.fileSuffix,
                 fileOriginName: res.data.fileOriginName,
-                fileUrl: location.origin + API_BASE_PREFIX + res.data.fileUrl
+                fileUrl: res.data.fileUrl
               })
               this.setRequiredTextShow(false)
             } else {
@@ -325,7 +324,7 @@
                 fileSizeByte: res.data.fileSizeByte,
                 fileSuffix: res.data.fileSuffix,
                 fileOriginName: res.data.fileOriginName,
-                fileUrl: location.origin + API_BASE_PREFIX + res.data.fileUrl
+                fileUrl: res.data.fileUrl
               })
             }
           }
