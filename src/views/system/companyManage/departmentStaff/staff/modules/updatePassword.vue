@@ -81,6 +81,7 @@
   import { Refresh } from '@element-plus/icons-vue'
   import api from '@/api/system/companyManagement/departmentStaff'
   import { messageError, messageSuccess } from '@/hooks/useMessage'
+  import md5 from 'js-md5'
   const passwordForm = ref(null)
   const props = defineProps({
     show: {
@@ -168,7 +169,7 @@
         if (props.title === 't-zgj-findpwd.resetPassword') {
           api
             .userResetPassword({
-              newPassword: state.formData.newPassword,
+              newPassword: md5(state.formData.newPassword),
               userId: props.userIds[0]
             })
             .then(res => {
