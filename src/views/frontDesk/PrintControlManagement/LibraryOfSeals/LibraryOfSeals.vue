@@ -56,7 +56,7 @@
         </div>
       </template>
       <template #tree>
-        <div>
+        <div class="components-tree">
           <componentsTree
             :data="state.componentsTree.data"
             :defaultAttribute="state.componentsTree.defaultAttribute"
@@ -1577,6 +1577,19 @@
     .btnContainer {
       width: 100%;
       border-bottom: 1px solid var(--el-border-color);
+    }
+  }
+
+  .components-tree {
+    width: max-content;
+    min-width: 100%;
+    margin: 0%;
+    :deep {
+      margin-bottom: 0%;
+      .el-tree-node__children .el-tree-node__content {
+        @include mixin-height(32);
+        padding-right: 10px;
+      }
     }
   }
 </style>

@@ -1271,9 +1271,10 @@
     <KDocumentTypeDialog
       v-model:show="showDocumentTypeDialog"
       :searchSelected="documentTypeSelected"
+      @update:show="closeDocumentTypeShow"
       @update:searchSelected="documentTypeSubmit"
       :queryParams="queryParams"
-      v-if="showDocumentTypeDialog"
+      v-if="showDocumentTypeDialog2"
     ></KDocumentTypeDialog>
   </div>
 </template>
@@ -1391,6 +1392,7 @@
 
   const fileTypeOptions = ref([])
   const showDocumentTypeDialog = ref(false)
+  const showDocumentTypeDialog2 = ref(false)
   const documentTypeSelected = ref([])
 
   const submitBusinessRule = () => {
@@ -1431,7 +1433,17 @@
 
   // 选择文件类型
   const clickFileType = () => {
-    showDocumentTypeDialog.value = true
+    showDocumentTypeDialog2.value = true
+    setTimeout(() => {
+      showDocumentTypeDialog.value = true
+    }, 100)
+  }
+
+  const closeDocumentTypeShow = () => {
+    showDocumentTypeDialog.value = false
+    setTimeout(() => {
+      showDocumentTypeDialog2.value = true
+    }, 500)
   }
 
   // 文件类型提交
