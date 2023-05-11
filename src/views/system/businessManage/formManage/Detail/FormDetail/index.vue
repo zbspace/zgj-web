@@ -3,7 +3,7 @@
 * @FileName index.vue
 * @Author zb
 * @module 
-* @LastEditTime 2023-03-29 16:20:32
+ * @LastEditTime: 2023-05-11
 !-->
 <template>
   <div class="form-detail">
@@ -17,26 +17,31 @@
           <span>表单编码：</span><span>{{ detail.formNo || '-' }}</span>
         </p>
         <p>
-          <span>业务类型：</span><span>{{ detail.applyTypeName || '-' }}</span>
+          <span>业务类型：</span>
+          <span>{{ detail.applyTypeName || '-' }}</span>
         </p>
         <p>
-          <span>用印类型：</span
-          ><span>{{ detail.sealUseTypeName || '-' }}</span>
+          <span>用印类型：</span>
+          <span>{{ detail.sealUseTypeName || '-' }}</span>
         </p>
         <p>
-          <span>表单状态：</span
-          ><span>{{ detail.flag === '0' ? '停用' : '启用' }}</span>
+          <span>表单状态：</span>
+          <span>{{ detail.flag === '0' ? '停用' : '启用' }}</span>
         </p>
         <p>
-          <span>创建时间：</span
-          ><span>{{ detail.createDatetimeStr || '-' }}</span>
+          <span>创建时间：</span>
+          <span>{{ detail.createDatetimeStr || '-' }}</span>
         </p>
         <p>
-          <span>创建人：</span><span>{{ detail.createUserName || '-' }}</span>
+          <span>创建人：</span>
+          <span>{{ detail.createUserName || '-' }}</span>
         </p>
         <p>
-          <span>更新时间：</span
-          ><span>{{ detail.modifyDatetimeStr || '-' }}</span>
+          <span>更新时间：</span>
+          <span>{{ detail.modifyDatetimeStr || '-' }}</span>
+        </p>
+        <p style="width: 100%">
+          <span>表单说明：</span><span>{{ detail.readme || '-' }}</span>
         </p>
       </div>
     </div>
