@@ -176,6 +176,7 @@
       },
 
       async getDepartOptions() {
+        if (!this.fieldModel.applyUserId) return
         try {
           const res = await getDepartByUserApi.organListByUser(
             this.fieldModel.applyUserId || ''
