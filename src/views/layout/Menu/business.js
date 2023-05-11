@@ -158,7 +158,7 @@ export const business = [
           {
             name: '印章盒管理',
             to: '/frontDesk/printControlManage/equipmentManage/intelligentSealBoxManagement',
-            label: 't-zgj-cg-menu-zhineng-yinzhang-he-guanli'
+            label: 't-zgj-cg-menu-yinzhang-he-guanli'
           },
           {
             name: '格口管理',
@@ -176,7 +176,7 @@ export const business = [
           {
             name: '印章柜管理',
             to: '/frontDesk/printControlManage/equipmentManage/intelligentSealCabinetManagement',
-            label: 't-zgj-cg-menu-zhineng-yinzhang-gui-guanli'
+            label: 't-zgj-cg-menu-yinzhang-gui-guanli'
           },
           {
             name: '格口管理',
