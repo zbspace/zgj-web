@@ -95,7 +95,7 @@
   }
 
   const getDetail = () => {
-    router.push({ name: 'RecordWithSeal' })
+    router.replace({ name: 'RecordWithSeal' })
   }
 
   onBeforeMount(() => {})

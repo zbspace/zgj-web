@@ -479,7 +479,7 @@
           })
           .then(() => {
             router.replace({
-              name: 'Accomplish',
+              path: '/frontDesk/printControlManage/useSealManage/sealApplication/accomplish',
               query: {
                 applyNo: state.cache.formData.applyNo
               }
@@ -531,6 +531,12 @@
           refFillFormInformation.value.setFormData(
             JSON.parse(res1.data.templateValue)
           )
+          nextTick(() => {
+            refFillFormInformation.value.setFieldValue(
+              'applyNo',
+              generatingNumber()
+            )
+          })
         })
       })
   }

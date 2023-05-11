@@ -45,7 +45,7 @@ const whitelist = [
     to: '/personally'
   },
   {
-    to: '/frontDesk/printControlManage/electronicSeal/eSelectionForm/accomplish'
+    to: '/frontDesk/printControlManage/useSealManage/sealApplication/accomplish'
   }
 ]
 getAllMenu(routes)
