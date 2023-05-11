@@ -6,6 +6,7 @@ import NProgress from 'nprogress'
 import { setWaterMark, removeWatermark } from '@/utils/water'
 import dayjs from 'dayjs'
 import 'nprogress/nprogress.css'
+import { ENV } from '@/utils/constants'
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -48,6 +49,10 @@ const whitelist = [
   }
 ]
 getAllMenu(routes)
+
+if (ENV) {
+  whitelist.push('/test')
+}
 
 function getAllMenu(list) {
   list.forEach(i => {

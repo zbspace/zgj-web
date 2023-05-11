@@ -25,3 +25,8 @@ export const IS_NEED_RSA = true
 export const PATTERN_REG = {
   mobile: /^[1][3,4,5,6,7,8,9][0-9]{9}$/
 }
+
+/**
+ * 环境变量 - 开发环境
+ */
+export const ENV = import.meta.env.DEV
