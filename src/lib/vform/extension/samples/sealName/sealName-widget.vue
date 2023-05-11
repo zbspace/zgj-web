@@ -266,6 +266,7 @@
 
       // 打开弹窗选择数据
       openSelectWin(index) {
+        if (this.field.options.disabled || this.designState) return false
         this.thisIndex = index
         this.xzyzDialogVisible = true
         this.selectedData = this.filedList[index].sealId
@@ -293,6 +294,7 @@
       },
 
       addItem() {
+        if (this.field.options.disabled || this.designState) return false
         this.filedList.push({
           seal: '',
           sealId: '',

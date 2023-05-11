@@ -213,6 +213,7 @@
         }
       },
       onClick() {
+        if (this.field.options.disabled) return false
         this.showDocumentTypeDialog = true
       },
 

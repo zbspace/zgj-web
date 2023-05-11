@@ -30,6 +30,7 @@
             v-model="fieldModel.unit"
             placeholder="请选择"
             style="width: 100px"
+            :disabled="field.options.disabled"
           >
             <el-option
               :label="item.moneyTypeName"
