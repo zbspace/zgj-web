@@ -2,7 +2,7 @@
 * @Descripttion NavBar
 * @FileName index.vue
 * @Author WalterXsk
-* @LastEditTime 2023-03-09 14:08:17
+ * @LastEditTime: 2023-05-11
 !-->
 <template>
   <header id="page-topbar">
@@ -751,6 +751,10 @@
       align-items: center;
       .ap-sys {
         margin-right: 1rem;
+
+        :deep(.el-button.is-text):not(.is-disabled):hover {
+          background-color: var(--el-fill-color-light2);
+        }
 
         .ap-sys-but {
           border-radius: 4px;
