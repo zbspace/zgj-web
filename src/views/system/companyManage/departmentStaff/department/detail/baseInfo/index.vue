@@ -11,27 +11,42 @@
     <div class="base-info">
       <div>
         <p>
-          组织名称：<span>{{ detail.organName || '-' }}</span>
+          <span>组织名称：</span> <span>{{ detail.organName || '-' }}</span>
         </p>
         <p>
-          组织类型：<span>{{ detail.organTypeName || '-' }}</span>
+          <span>组织类型：</span
+          ><span>{{
+            detail.organTypeId
+              ? detail.organTypeId === 'department'
+                ? '部门'
+                : '单位'
+              : '-'
+          }}</span>
         </p>
         <p>
-          组织主管：<span>{{ detail.leaderUserName || '-' }}</span>
-        </p>
-        <p>
-          备注：<span>{{ detail.readme || '-' }}</span>
+          <span>组织主管：</span
+          ><span>{{ detail.organLeaderName || '-' }}</span>
         </p>
       </div>
       <div>
         <p>
-          组织编码：<span>{{ detail.organNo || '-' }}</span>
+          <span>组织编码：</span><span>{{ detail.organNo || '-' }}</span>
         </p>
         <p>
-          组织人数：<span>{{ detail.sealTypeName || 0 }}</span>
+          <span>组织人数：</span><span>{{ detail.sealTypeName || 0 }}</span>
         </p>
         <p>
-          上级组织：<span>{{ detail.organPName || '-' }}</span>
+          <span>上级组织：</span
+          ><span>{{
+            detail.organPid === '-1'
+              ? getItem('accountInfo').userDepartName
+              : detail.organPName || '-'
+          }}</span>
+        </p>
+      </div>
+      <div style="width: 100%">
+        <p>
+          <span>备注：</span><span>{{ detail.readme || '-' }}</span>
         </p>
       </div>
     </div>
@@ -41,6 +56,7 @@
 <script setup>
   import { ref, onMounted } from 'vue'
   import departmentService from '@/api/system/companyManagement/department'
+  import { getItem } from '@/utils/storage'
 
   const detail = ref({})
   const loading = ref(false)
@@ -71,20 +87,28 @@
   .form-detail {
     .base-info {
       display: flex;
+      flex-wrap: wrap;
       div {
-        width: 100%;
+        width: 50%;
         p {
           font-weight: 400;
           font-size: 14px;
           line-height: 22px;
           color: rgba(0, 0, 0, 0.45);
           margin-bottom: 16px;
-          text-align: right;
-          span {
+          display: flex;
+          span:nth-of-type(1) {
+            display: inline-block;
+            text-align: right;
+            width: 130px;
+            flex-shrink: 0;
+          }
+          span:nth-of-type(2) {
             color: rgba(0, 0, 0, 0.85);
             display: inline-block;
-            width: 63%;
             text-align: left;
+            word-break: break-all;
+            width: 80%;
           }
         }
       }
