@@ -87,6 +87,7 @@
     <!-- 部门与单位详情 -->
     <Detail
       :organId="organId"
+      :baseInfo="baseInfo"
       v-model="state.componentsDocumentsDetails.show"
     />
     <!-- 新增部门 -->
@@ -240,6 +241,7 @@
   const firstNode = ref(null)
   const firstTreeData = ref([])
   const deptTreeRef = ref(null)
+  const baseInfo = ref(null)
 
   const form = reactive({
     organId: '',
@@ -403,6 +405,7 @@
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
+    baseInfo.value = row
     organId.value = row.organId
     state.componentsDocumentsDetails.show = true
   }

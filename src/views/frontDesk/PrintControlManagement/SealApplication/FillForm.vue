@@ -347,7 +347,8 @@
       step.value = 'two'
       sealApply
         .flowList({
-          formMessageId: route.query.formMessageId
+          formMessageId: route.query.formMessageId,
+          fileTypeId: formData.fileTypeId
         })
         .then(res => {
           if (res.data && res.data.length) {
