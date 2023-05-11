@@ -302,7 +302,7 @@
         path: '/system/companyManage/departmentStaff/config',
         query: {
           roleId: column.roleId,
-          roleName: encodeURIComponent(column.roleName)
+          roleName: column.roleName
         }
       })
     }
@@ -311,7 +311,7 @@
         path: '/system/companyManage/departmentStaff/person',
         query: {
           roleId: column.roleId,
-          roleName: encodeURIComponent(column.roleName)
+          roleName: column.roleName
         }
       })
     }

@@ -108,7 +108,7 @@
   const route = useRoute()
   const table = ref(null)
   const queryParams = ref({})
-  const roleName = ref(decodeURIComponent(route.query.roleName))
+  const roleName = ref(route.query.roleName)
   const state = reactive({
     sealIds: '',
     msg: '',

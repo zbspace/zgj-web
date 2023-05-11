@@ -105,7 +105,7 @@
 
   // 消息 tabs
   const active = ref('first')
-  const roleName = ref(decodeURIComponent(route.query.roleName))
+  const roleName = ref(route.query.roleName)
   const tabsLabel = ref([
     {
       name: 't-zgj-person.FunctionalPermissions',
