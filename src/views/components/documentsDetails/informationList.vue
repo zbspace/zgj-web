@@ -79,7 +79,7 @@
 
         .ap-cont-list {
           display: flex;
-          align-items: center;
+          // align-items: center;
           width: 50%;
           padding: 0.5rem 0;
           box-sizing: border-box;

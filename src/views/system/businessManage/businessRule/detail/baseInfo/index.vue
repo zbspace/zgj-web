@@ -10,31 +10,33 @@
     <JyLabel label="基本信息" />
     <div class="base-info">
       <div>
-        <p>
-          业务规则名称：<span>{{ detail.ruleBusinessName || '-' }}</span>
+        <p style="width: 100%">
+          <span>业务规则名称：</span
+          ><span>{{ detail.ruleBusinessName || '-' }}</span>
         </p>
         <p>
-          用印类型：<span>{{ detail.sealUseTypeName || '-' }}</span>
+          <span>业务规则编码：</span
+          ><span>{{ detail.ruleBusinessNo || '-' }}</span>
         </p>
         <p>
-          业务规则状态：<span>{{ detail.flag === '0' ? '停用' : '启用' }}</span>
+          <span>用印类型：</span
+          ><span>{{ detail.sealUseTypeName || '-' }}</span>
         </p>
         <p>
-          创建时间：<span>{{ detail.createDatetime || '-' }}</span>
+          <span>关联文件类型：</span><span>{{ fileTypeNames || '-' }}</span>
         </p>
         <p>
-          更新时间：<span>{{ detail.modifyDatetime || '-' }}</span>
-        </p>
-      </div>
-      <div>
-        <p>
-          业务规则编码：<span>{{ detail.ruleBusinessNo || '-' }}</span>
+          <span>业务规则状态：</span
+          ><span>{{ detail.flag === '0' ? '停用' : '启用' }}</span>
         </p>
         <p>
-          关联文件类型：<span>{{ fileTypeNames || '-' }}</span>
+          <span>创建时间：</span><span>{{ detail.createDatetime || '-' }}</span>
         </p>
         <p>
-          创建人：<span>{{ detail.createUserName || '-' }}</span>
+          <span>创建人：</span><span>{{ detail.createUserName || '-' }}</span>
+        </p>
+        <p>
+          <span>更新时间：</span><span>{{ detail.modifyDatetime || '-' }}</span>
         </p>
       </div>
     </div>
@@ -81,21 +83,29 @@
 <style lang="scss" scoped>
   .form-detail {
     .base-info {
-      display: flex;
       div {
-        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
         p {
+          width: 50%;
           font-weight: 400;
           font-size: 14px;
           line-height: 22px;
           color: rgba(0, 0, 0, 0.45);
           margin-bottom: 16px;
           display: flex;
-          justify-content: flex-end;
-          span {
+          span:nth-of-type(1) {
+            display: inline-block;
+            text-align: right;
+            width: 130px;
+            flex-shrink: 0;
+          }
+          span:nth-of-type(2) {
             color: rgba(0, 0, 0, 0.85);
             display: inline-block;
-            width: 63%;
+            text-align: left;
+            word-break: break-all;
+            width: 80%;
           }
         }
       }
