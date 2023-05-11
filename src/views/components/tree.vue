@@ -125,7 +125,7 @@
 </script>
 <style lang="scss" scoped>
   .showname {
-    width: 180px; //外部容器的宽度
+    width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
