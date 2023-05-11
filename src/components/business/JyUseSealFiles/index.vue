@@ -57,7 +57,10 @@
         >
           <template #item="{ element: item, index }">
             <div class="file">
-              <img :src="item.fileUrl" style="object-fit: scale-down" />
+              <img
+                :src="`${API_BASE_PREFIX}/${item.fileUrl}`"
+                style="object-fit: scale-down"
+              />
               <p>
                 <svg class="iconpark-icon" @click="showPreview(index)">
                   <use href="#eye-8o856i26"></use>
@@ -108,7 +111,7 @@
   const tipVisible = ref(false)
 
   const urls = computed(() => {
-    return fileList.value.map(v => v.fileUrl)
+    return fileList.value.map(v => API_BASE_PREFIX + v.fileUrl)
   })
 
   const props = defineProps({
@@ -165,7 +168,6 @@
     formData.append('uploadFile', options.file)
     try {
       const res = await SealApplyService.uploadFile(formData)
-      res.data.fileUrl = location.origin + API_BASE_PREFIX + res.data.fileUrl
       fileList.value.push(res.data)
       options.onSuccess()
     } catch (error) {
@@ -216,6 +218,7 @@
     } else {
       formData.value.fileOriginName = new Date().getTime() + ''
     }
+    console.log(props.imgFiles, '结果')
     fileList.value = props.imgFiles
   }
 
