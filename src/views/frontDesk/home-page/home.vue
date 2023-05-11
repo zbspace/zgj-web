@@ -114,7 +114,7 @@
                 <div class="fast-back">
                   <img
                     class="fast-back-img"
-                    src="@/assets/icon/home-back-kuaijie.png"
+                    src="@/assets/icon/home-back-kuaijie.svg"
                     alt=""
                   />
                 </div>

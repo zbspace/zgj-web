@@ -740,6 +740,9 @@
     }
 
     :deep {
+      .el-popper {
+        max-width: 50% !important;
+      }
       .el-dropdown-item-add {
         color: var(--jy-secondary-5) !important;
       }
