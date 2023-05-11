@@ -7,6 +7,7 @@
         placeholder="搜索文件类型"
         :prefix-icon="Search"
         size="large"
+        clearable
         @input="changeInput"
       />
     </div>
@@ -88,8 +89,7 @@
   import KTreeModel from '../KTreeModel.vue'
   import KSearchTree from '../KSearchTree.vue'
   import Api from '@/api/common/documentType'
-  import { ElMessage } from 'element-plus'
-  import { throttle } from '@/utils/tools'
+  import { debounce } from '@/utils/tools'
   const props = defineProps({
     apiModule: {
       type: String,
@@ -206,7 +206,7 @@
     })
   }
 
-  const handleInp = throttle(searchFn, 800)
+  const handleInp = debounce(searchFn, 500)
 
   const changeInput = () => {
     if (!searchQuery.value) {
@@ -218,6 +218,9 @@
 
   // 自定义事件
   function emitsDemo(attr, val, type) {
+    console.log(attr)
+    console.log(val)
+    console.log(type)
     if (type && type === 'all') {
       handleRootChangeByAll(attr, val)
       handleSelectedChangeByAll(attr, val)
@@ -228,12 +231,18 @@
       })
       return
     }
-    if (
-      selectedData.value.length > 0 &&
-      !props.multiple &&
-      selectedData.value[0].id !== attr.id
-    ) {
-      ElMessage.warning('只能选择一个文件类型')
+    console.log(props.multiple)
+    console.log(treeColumnData.data)
+    if (!props.multiple) {
+      treeColumnData.data.forEach(item => {
+        if (item.id === attr.id) {
+          item.selectedStatus = val
+          selectedData.value = !val ? [] : [attr]
+        } else {
+          item.selectedStatus = 0
+        }
+      })
+      console.log(selectedData.value)
       return
     }
     handleRootChangeByPart(attr, val)

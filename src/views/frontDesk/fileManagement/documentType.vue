@@ -32,7 +32,7 @@
       </template>
 
       <template #tree>
-        <div>
+        <div class="components-tree">
           <componentsTree
             ref="tree"
             v-model="state.componentsTree.value"
@@ -59,9 +59,9 @@
     <!-- 设置可见范围  -->
     <kDepartOrPersonVue
       :show="showDepPerDialog"
-      @update:show="showDepPerDialog = $event"
+      @update:show="closeDepPer"
       @update:searchSelected="submit"
-      v-if="showDepPerDialog"
+      v-if="showDepPerDialog2"
       :searchSelected="userSelected"
       :tabsShow="['user', 'organ', 'role']"
     >
@@ -131,6 +131,7 @@
   import JyTable from '@/views/components/JyTable.vue'
 
   const showDepPerDialog = ref(false)
+  const showDepPerDialog2 = ref(false)
   const searchForm = ref(new GetFileTypeList())
   const paginationInfo = ref(new PaginationInfo())
 
@@ -467,10 +468,20 @@
       const organs = res.data.organs ? res.data.organs : []
       const users = res.data.users ? res.data.users : []
       userSelected.value = [...organs, ...roles, ...users]
-      showDepPerDialog.value = true
+      showDepPerDialog2.value = true
+      setTimeout(() => {
+        showDepPerDialog.value = true
+      }, 50)
     } catch (error) {
       console.log('--->', error)
     }
+  }
+
+  const closeDepPer = () => {
+    showDepPerDialog.value = false
+    setTimeout(() => {
+      showDepPerDialog2.value = false
+    }, 300)
   }
 
   const submit = async list => {
@@ -600,6 +611,8 @@
       }
     }
     .components-tree {
+      width: max-content;
+      min-width: 100%;
       margin: 0%;
       .custom-tree-node {
         display: flex;
@@ -612,6 +625,7 @@
         margin-bottom: 0%;
         .el-tree-node__content {
           @include mixin-height(32);
+          padding-right: 10px;
         }
         .el-tree .el-icon svg {
           //原有的箭头 去掉
