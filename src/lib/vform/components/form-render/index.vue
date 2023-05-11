@@ -165,7 +165,8 @@
         getReadMode: () => this.readModeFlag,
         getSubFormFieldFlag: () => false,
         getSubFormName: () => '',
-        getDSResultCache: () => this.dsResultCache
+        getDSResultCache: () => this.dsResultCache,
+        getPrefabricationFieldList: () => () => {}
       }
     },
     data() {
