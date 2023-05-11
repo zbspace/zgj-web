@@ -21,7 +21,7 @@
             alt=""
             v-if="!data.children || data.children.length === 0"
           />
-          <span>{{ data[props.defaultProps.label] }}</span>
+          <span class="showname">{{ data[props.defaultProps.label] }}</span>
         </span>
       </template>
     </el-tree>
@@ -124,6 +124,15 @@
   })
 </script>
 <style lang="scss" scoped>
+  .showname {
+    width: 180px; //外部容器的宽度
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
   .components-tree {
     margin: 0%;
     .custom-tree-node {
