@@ -4,7 +4,7 @@ import request from '@/utils/request'
 const api = {}
 api.treeList = params => {
   return request({
-    method: 'POST',
+    method: 'GET',
     url: '/fileType/queryList',
     params
   })
