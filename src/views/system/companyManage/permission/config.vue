@@ -166,6 +166,10 @@
     padding: '10px 0 0px 0px'
   })
 </script>
+<script>
+  export default { name: 'PermissionSelect' }
+</script>
+
 <style lang="scss" scoped>
   .accomplish-container {
     margin: 0%;

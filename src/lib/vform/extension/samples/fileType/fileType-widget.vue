@@ -12,10 +12,9 @@
     :class="[labelAlign, field.options.required ? 'required' : '']"
   >
     <el-select
-      ref="fieldEditor"
       v-model="fieldModel"
       v-show="!isReadMode"
-      class="full-width-input select-prefix"
+      class="full-width-input"
       :disabled="field.options.disabled"
       :allow-create="field.options.allowCreate"
       :automatic-dropdown="field.options.automaticDropdown"
@@ -24,15 +23,13 @@
       :placeholder="
         field.options.placeholder || i18nt('render.hint.selectPlaceholder')
       "
-      @blur="handleBlurCustomEvent"
-      @click.stop="onClick"
-      popper-class="select-hidden"
+      :remote-method="getFileTypeList"
+      remote
+      :loading="loading"
+      remote-show-suffix
+      filterable
+      @focus.stop="getFileTypeList('')"
     >
-      <template #prefix>
-        <svg class="iconpark-icon">
-          <use href="#selecticon"></use>
-        </svg>
-      </template>
       <el-option
         v-for="item in field.options.optionItems"
         :key="item.value"
@@ -57,7 +54,7 @@
     }}</div>
 
     <!-- 选择文件类型 -->
-    <KDocumentTypeDialog
+    <!-- <KDocumentTypeDialog
       v-if="searchSelected.length !== 0 || showDocumentTypeDialog"
       v-model:show="showDocumentTypeDialog"
       @update:searchSelected="documentTypeSubmit"
@@ -67,7 +64,7 @@
         userId: userId
       }"
       :searchSelected="searchSelected"
-    ></KDocumentTypeDialog>
+    ></KDocumentTypeDialog> -->
   </form-item-wrapper>
 </template>
 
@@ -80,6 +77,7 @@
   import { messageError } from '@/hooks/useMessage'
   import { fileManageService } from '@/api/frontDesk/fileManage'
   import { getItem } from '@/utils/storage'
+  import { PaginationInfo } from '@/utils/domain/paginationInfo'
 
   export default {
     name: 'FileTypeIdWidget',
@@ -119,6 +117,8 @@
         fieldModel: null,
         fileTypeName: '',
         fileTypeId: '',
+        loading: false,
+        paginationInfo: new PaginationInfo(999),
         showDocumentTypeDialog: false,
         rules: [
           {
@@ -217,21 +217,39 @@
         this.showDocumentTypeDialog = true
       },
 
-      async getFileTypeDetail(fileTypeId) {
+      // async getFileTypeDetail(fileTypeId) {
+      //   try {
+      //     const res = await fileManageService.getFileTypeInfo(fileTypeId)
+      //     if (res.data && res.data.fileTypeId) {
+      //       // eslint-disable-next-line vue/no-mutating-props
+      //       this.field.options.optionItems = [
+      //         {
+      //           label: res.data.fileTypeName,
+      //           value: res.data.fileTypeId
+      //         }
+      //       ]
+      //     }
+      //   } catch (error) {
+      //     messageError(error)
+      //   }
+      // },
+      async getFileTypeList(keyword = '') {
         try {
-          const res = await fileManageService.getFileTypeInfo(fileTypeId)
-          if (res.data && res.data.fileTypeId) {
-            // eslint-disable-next-line vue/no-mutating-props
-            this.field.options.optionItems = [
-              {
-                label: res.data.fileTypeName,
-                value: res.data.fileTypeId
-              }
-            ]
-          }
+          this.loading = true
+          const res = await fileManageService.getFileTypeList({
+            bindBizRule: true,
+            keyword,
+            size: 20,
+            current: 1
+          })
+          // eslint-disable-next-line vue/no-mutating-props
+          this.field.options.optionItems = res.data.map(v => {
+            return { label: v.name, value: v.id }
+          })
         } catch (error) {
-          messageError(error)
+          console.log('--->', error)
         }
+        this.loading = false
       }
     }
   }
@@ -240,30 +258,5 @@
 <style lang="scss" scoped>
   .full-width-input {
     width: 100% !important;
-  }
-  // select 自定义右侧icon
-  :deep(.select-prefix) {
-    .el-input__suffix {
-      display: none;
-    }
-    .el-input__prefix {
-      position: absolute;
-      right: 16px;
-      width: 12px;
-      height: 16px;
-      .el-input__prefix-inner {
-        .iconpark-icon {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          color: #000;
-        }
-      }
-    }
-  }
-</style>
-<style>
-  .select-hidden {
-    display: none;
   }
 </style>
