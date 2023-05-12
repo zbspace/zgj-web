@@ -16,7 +16,7 @@
   >
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="单位与部门详情" name="1">
-        <BaseInfo :organId="props.organId" />
+        <BaseInfo :organId="props.organId" :baseInfo="props.baseInfo" />
       </el-tab-pane>
       <el-tab-pane label="组织人员" name="2">
         <OrgMans :organId="props.organId" />
@@ -48,6 +48,12 @@
     organId: {
       type: String,
       default: ''
+    },
+    baseInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   })
   const emit = defineEmits([

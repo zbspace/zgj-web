@@ -347,7 +347,8 @@
       step.value = 'two'
       sealApply
         .flowList({
-          formMessageId: route.query.formMessageId
+          formMessageId: route.query.formMessageId,
+          fileTypeId: formData.fileTypeId
         })
         .then(res => {
           if (res.data && res.data.length) {
@@ -478,7 +479,7 @@
           })
           .then(() => {
             router.replace({
-              name: 'Accomplish',
+              path: '/frontDesk/printControlManage/useSealManage/sealApplication/accomplish',
               query: {
                 applyNo: state.cache.formData.applyNo
               }
@@ -530,6 +531,12 @@
           refFillFormInformation.value.setFormData(
             JSON.parse(res1.data.templateValue)
           )
+          nextTick(() => {
+            refFillFormInformation.value.setFieldValue(
+              'applyNo',
+              generatingNumber()
+            )
+          })
         })
       })
   }

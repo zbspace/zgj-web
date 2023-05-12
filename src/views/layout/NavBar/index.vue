@@ -383,7 +383,7 @@
   import { ArrowDown } from '@element-plus/icons-vue'
   import loginApi from '@/api/login'
   import navbarApi from '@/api/common/navbar'
-  import { ElMessage } from 'element-plus'
+  import { ElMessage, ElMessageBox } from 'element-plus'
   import { getItem, setItem, removeItem } from '@/utils/storage'
   import { useHomeLogoUrl } from '@/store/logo'
   import md5 from 'js-md5'
@@ -642,8 +642,17 @@
             newPassword: md5(loginform.value.newPassword)
           })
           .then(res => {
-            ElMessage.success('修改密码成功！')
+            // ElMessage.success('修改密码成功！')
+            removeItem('accountInfo')
             showFormDialog.value = false
+            ElMessageBox.alert('修改密码成功,请重新登陆', '提示', {
+              confirmButtonText: '重新登陆',
+              showClose: false,
+              callback: () => {
+                removeItem('accountInfo')
+                window.location.reload()
+              }
+            })
           })
       } else {
         return false

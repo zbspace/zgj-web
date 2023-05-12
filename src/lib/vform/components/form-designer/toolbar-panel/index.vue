@@ -183,18 +183,22 @@
             <el-button type="primary" @click="getFormData">{{
               i18nt('designer.hint.getFormData')
             }}</el-button>
-            <!-- <el-button type="primary" @click="resetForm">{{
+            <el-button type="primary" @click="resetForm" v-if="ENV">{{
               i18nt('designer.hint.resetForm')
             }}</el-button>
-            <el-button type="primary" @click="setFormDisabled">{{
+            <el-button type="primary" @click="setFormDisabled" v-if="ENV">{{
               i18nt('designer.hint.disableForm')
             }}</el-button>
-            <el-button type="primary" @click="setFormEnabled">{{
+            <el-button type="primary" @click="setFormEnabled" v-if="ENV">{{
               i18nt('designer.hint.enableForm')
             }}</el-button>
-            <el-button type="primary" plain @click="switchReadMode">{{
-              i18nt('designer.hint.switchReadMode')
-            }}</el-button> -->
+            <el-button
+              type="primary"
+              plain
+              @click="switchReadMode"
+              v-if="ENV"
+              >{{ i18nt('designer.hint.switchReadMode') }}</el-button
+            >
             <el-button @click="showPreviewDialogFlag = false">{{
               i18nt('designer.hint.closePreview')
             }}</el-button>
@@ -412,7 +416,7 @@
       </el-dialog>
     </div>
 
-    <!-- <div
+    <div
       v-if="showExportSFCDialogFlag"
       class=""
       v-drag="['.drag-dialog.el-dialog', '.drag-dialog .el-dialog__header']"
@@ -482,7 +486,7 @@
           </div>
         </template>
       </el-dialog>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -504,6 +508,7 @@
   import { genSFC } from '@/lib/vform/utils/sfc-generator'
   import loadBeautifier from '@/lib/vform/utils/beautifierLoader'
   import { saveAs } from 'file-saver'
+  import { ENV } from '@/utils/constants'
 
   export default {
     name: 'ToolbarPanel',
@@ -524,6 +529,7 @@
     inject: ['getDesignerConfig'],
     data() {
       return {
+        ENV,
         designerConfig: this.getDesignerConfig(),
 
         toolbarWidth: 450,
@@ -895,22 +901,22 @@
         this.saveAsFile(this.htmlCode, `vform${generateId()}.html`)
       },
 
-      // generateSFC() {
-      //   loadBeautifier(beautifier => {
-      //     this.sfcCode = genSFC(
-      //       this.designer.formConfig,
-      //       this.designer.widgetList,
-      //       beautifier
-      //     )
-      //     this.sfcCodeV3 = genSFC(
-      //       this.designer.formConfig,
-      //       this.designer.widgetList,
-      //       beautifier,
-      //       true
-      //     )
-      //     this.showExportSFCDialogFlag = true
-      //   })
-      // },
+      generateSFC() {
+        loadBeautifier(beautifier => {
+          this.sfcCode = genSFC(
+            this.designer.formConfig,
+            this.designer.widgetList,
+            beautifier
+          )
+          this.sfcCodeV3 = genSFC(
+            this.designer.formConfig,
+            this.designer.widgetList,
+            beautifier,
+            true
+          )
+          this.showExportSFCDialogFlag = true
+        })
+      },
 
       copyV2SFC(e) {
         copyToClipboard(
