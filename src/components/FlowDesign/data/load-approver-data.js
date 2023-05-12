@@ -245,7 +245,7 @@ export default function () {
       addable: false,
       // 是否多个
       multiple: true
-    }
+    },
     // {
     //   name: '部门审批人',
     //   value: 3,
@@ -473,22 +473,22 @@ export default function () {
       href: 'system/user',
       hrefName: '如何配置项目部门？'
     }, */
-    // {
-    //   name: '选择审批',
-    //   value: 20,
-    //   disabled: false,
-    //   // 是否可以多个组
-    //   addable: true,
-    //   // 是否多个
-    //   multiple: false,
-    //   popovers: [
-    //     {
-    //       title: '什么是选择审批？',
-    //       content:
-    //         '在当前节点配置候选人,当前一个节点审批时,可以指定一个或多个候选人作为当前节点的审批人'
-    //     }
-    //   ]
-    // },
+    {
+      name: '选择审批',
+      value: 20,
+      disabled: false,
+      // 是否可以多个组
+      addable: true,
+      // 是否多个
+      multiple: false,
+      popovers: [
+        {
+          title: '什么是选择审批？',
+          content:
+            '在当前节点配置候选人,当前一个节点审批时,可以指定一个或多个候选人作为当前节点的审批人'
+        }
+      ]
+    }
     // {
     //   name: '连续多级上级审批',
     //   value: 12,

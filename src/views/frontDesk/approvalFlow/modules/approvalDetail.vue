@@ -456,16 +456,16 @@
         const formInfoData = ref(null)
         formInformation.value.getFormData().then(async formData => {
           formInfoData.value = formData
-
+          // return
           // 处理表单key
           for (const item in formInfoData.value) {
             const index = fixedParamsArr.indexOf(item)
             if (index > -1) {
               fixedParams = {
-                ...fixedParams,
-                ...{
-                  [item]: cacheFormData[item]
-                }
+                ...fixedParams
+                // ...{
+                //   [item]: cacheFormData[item]
+                // }
               }
             } else {
               customApplyField = {
