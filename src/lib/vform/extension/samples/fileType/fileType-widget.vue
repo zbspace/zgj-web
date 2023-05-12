@@ -23,12 +23,10 @@
       :placeholder="
         field.options.placeholder || i18nt('render.hint.selectPlaceholder')
       "
-      :remote-method="getFileTypeList"
       remote
       :loading="loading"
       remote-show-suffix
       filterable
-      @focus.stop="getFileTypeList('')"
     >
       <el-option
         v-for="item in field.options.optionItems"
@@ -52,19 +50,6 @@
     <div class="el-form-item__error" v-if="field.options.requiredHint">{{
       field.options.requiredHint
     }}</div>
-
-    <!-- 选择文件类型 -->
-    <!-- <KDocumentTypeDialog
-      v-if="searchSelected.length !== 0 || showDocumentTypeDialog"
-      v-model:show="showDocumentTypeDialog"
-      @update:searchSelected="documentTypeSubmit"
-      :multiple="false"
-      :queryParams="{
-        bindBizRule: true,
-        userId: userId
-      }"
-      :searchSelected="searchSelected"
-    ></KDocumentTypeDialog> -->
   </form-item-wrapper>
 </template>
 
@@ -73,7 +58,6 @@
   import emitter from '@/lib/vform/utils/emitter'
   import i18n from '@/lib/vform/utils/i18n'
   import fieldMixin from '@/lib/vform/components/form-designer/form-widget/field-widget/fieldMixin'
-  import KDocumentTypeDialog from '@/views/components/modules/KDocumentTypeDialog'
   import { messageError } from '@/hooks/useMessage'
   import { fileManageService } from '@/api/frontDesk/fileManage'
   import { getItem } from '@/utils/storage'
@@ -109,8 +93,7 @@
       }
     },
     components: {
-      FormItemWrapper,
-      KDocumentTypeDialog
+      FormItemWrapper
     },
     data() {
       return {
@@ -157,7 +140,9 @@
       this.initFieldModel()
       this.initOptionItems()
     },
-
+    mounted() {
+      this.getFileTypeList()
+    },
     watch: {
       test: {
         handler(val) {
@@ -217,22 +202,6 @@
         this.showDocumentTypeDialog = true
       },
 
-      // async getFileTypeDetail(fileTypeId) {
-      //   try {
-      //     const res = await fileManageService.getFileTypeInfo(fileTypeId)
-      //     if (res.data && res.data.fileTypeId) {
-      //       // eslint-disable-next-line vue/no-mutating-props
-      //       this.field.options.optionItems = [
-      //         {
-      //           label: res.data.fileTypeName,
-      //           value: res.data.fileTypeId
-      //         }
-      //       ]
-      //     }
-      //   } catch (error) {
-      //     messageError(error)
-      //   }
-      // },
       async getFileTypeList(keyword = '') {
         try {
           this.loading = true

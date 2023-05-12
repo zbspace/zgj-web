@@ -1000,9 +1000,6 @@
         Object.keys(this.formDataModel).forEach(propName => {
           if (!!formData && formData.hasOwnProperty(propName)) {
             this.formDataModel[propName] = deepClone(formData[propName])
-            if (propName === 'fileTypeId') {
-              this.getWidgetRef('fileTypeId').getFileTypeList()
-            }
           }
         })
 
