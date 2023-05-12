@@ -44,7 +44,7 @@
                   <el-input
                     v-model="formData.formName"
                     clearable
-                    maxlength="128"
+                    maxlength="64"
                   />
                 </el-form-item>
 

@@ -33,7 +33,7 @@
           <span>部门编码：</span><span>{{ detail.organNo || '-' }}</span>
         </p>
         <p>
-          <span>部门人数：</span><span>{{ detail.sealTypeName || 0 }}</span>
+          <span>部门人数：</span><span>{{ detail.organUserNum || 0 }}</span>
         </p>
         <p>
           <span>上级部门：</span
