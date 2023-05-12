@@ -11,10 +11,12 @@
     <div class="base-info">
       <div>
         <p style="width: 100%">
-          <span>表单名称：</span><span>{{ detail.formName || '-' }}</span>
+          <span>表单名称：</span>
+          <span>{{ detail.formName || '-' }}</span>
         </p>
         <p>
-          <span>表单编码：</span><span>{{ detail.formNo || '-' }}</span>
+          <span>表单编码：</span>
+          <span>{{ detail.formNo || '-' }}</span>
         </p>
         <p>
           <span>业务类型：</span>
@@ -41,7 +43,8 @@
           <span>{{ detail.modifyDatetimeStr || '-' }}</span>
         </p>
         <p style="width: 100%">
-          <span>表单说明：</span><span>{{ detail.readme || '-' }}</span>
+          <span>表单说明：</span>
+          <span>{{ detail.readme || '-' }}</span>
         </p>
       </div>
     </div>

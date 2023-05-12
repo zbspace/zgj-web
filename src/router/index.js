@@ -45,6 +45,15 @@ const whitelist = [
   },
   {
     to: '/frontDesk/printControlManage/electronicSeal/eSelectionForm/accomplish'
+  },
+  {
+    to: '/frontDesk/printControlManage/useSealManage/intelligentPrinting/transferApplication'
+  },
+  {
+    to: '/frontDesk/printControlManage/useSealManage/archive/ArchiveReset'
+  },
+  {
+    to: '/frontDesk/printControlManage/useSealManage/recordWithSeal/voidApply'
   }
 ]
 getAllMenu(routes)

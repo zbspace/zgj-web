@@ -21,7 +21,7 @@
             alt=""
             v-if="!data.children || data.children.length === 0"
           />
-          <span class="showname">{{ data[props.defaultProps.label] }}</span>
+          <span>{{ data[props.defaultProps.label] }}</span>
         </span>
       </template>
     </el-tree>
@@ -124,15 +124,15 @@
   })
 </script>
 <style lang="scss" scoped>
-  .showname {
-    width: 180px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
+  // .showname {
+  // width: 180px;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // display: block;
+  // -webkit-line-clamp: 2;
+  // line-clamp: 2;
+  // -webkit-box-orient: vertical;
+  // }
   .components-tree {
     margin: 0%;
     .custom-tree-node {
@@ -144,8 +144,9 @@
     }
     :deep {
       margin-bottom: 0%;
-      .el-tree-node__content {
+      .el-tree-node__children .el-tree-node__content {
         @include mixin-height(32);
+        padding-right: 10px;
       }
       .el-tree .el-icon svg {
         //原有的箭头 去掉
