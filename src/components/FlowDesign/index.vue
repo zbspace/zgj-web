@@ -249,8 +249,8 @@
               formId: item.formDefinitionId,
               fieldId: item.fieldId,
               name: item.fieldName,
-              writable: true,
-              readable: false,
+              writable: false,
+              readable: true,
               displayable: false,
               required: false,
               tenantId: null

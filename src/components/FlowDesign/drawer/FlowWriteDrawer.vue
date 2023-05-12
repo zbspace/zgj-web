@@ -41,79 +41,79 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue';
-import useCommon from '../hooks/useCommon';
-import useIcon from '../hooks/useIcon';
-// import { useFlowStore } from '../store/flow';
-import EditName from '../common/EditName.vue';
-import FlowAuthForm from './FlowAuthForm.vue';
-import FlowDrawerFooter from './FlowDrawerFooter.vue';
-// 图标
-const { writeIcon } = useIcon();
-// 公共
-const { drawerWidth, drawerBodyStyle, visible } = useCommon();
-// Store
-// const flowStore = useFlowStore();
-// 节点
-let node = ref({});
+  import { ref, reactive, computed } from 'vue'
+  import useCommon from '../hooks/useCommon'
+  import useIcon from '../hooks/useIcon'
+  // import { useFlowStore } from '../store/flow';
+  import EditName from '../common/EditName.vue'
+  import FlowAuthForm from './FlowAuthForm.vue'
+  import FlowDrawerFooter from './FlowDrawerFooter.vue'
+  // 图标
+  const { writeIcon } = useIcon()
+  // 公共
+  const { drawerWidth, drawerBodyStyle, visible } = useCommon()
+  // Store
+  // const flowStore = useFlowStore();
+  // 节点
+  const node = ref({})
 
-// 表单
-let flowAuthForm = ref();
+  // 表单
+  const flowAuthForm = ref()
 
-// tabs
-let tabsActiveKey = ref('1');
+  // tabs
+  const tabsActiveKey = ref('1')
 
-// 侧边头样式
-const headerStyle = computed(() => nodeType => {
-  if (nodeType == 0) {
-    return {
-      background: 'linear-gradient(90.04deg,#29cc80 -16.37%,#5ccc98 137.34%)',
-      'border-radius': '0px 0px 0 0'
-    };
-  } else {
-    return {
-      background: 'linear-gradient(90.04deg,#ccd053 -16.37%,#dcf306 137.34%)',
-      'border-radius': '0px 0px 0 0'
-    };
-  }
-});
-
-// 显示侧边
-const show = currNode => {
-  node.value = currNode;
-  visible.value = true;
-};
-
-// 事件
-const emit = defineEmits(['close', 'nodeUpdate']);
-// 关闭侧边
-const onClose = () => {
-  visible.value = false;
-  emit('close');
-};
-
-// 侧边保存
-const onSave = () => {
-  const privileges = flowAuthForm.value.privileges;
-  node.value.privileges = privileges;
-  // 更新节点显示信息
-  if (privileges.length > 0) {
-    node.value['error'] = false;
-    node.value['content'] = '已设置';
-    // 修改事件
-    if (node.value.update) {
-      emit('nodeUpdate', node.value);
+  // 侧边头样式
+  const headerStyle = computed(() => nodeType => {
+    if (nodeType == 0) {
+      return {
+        background: 'linear-gradient(90.04deg,#29cc80 -16.37%,#5ccc98 137.34%)',
+        'border-radius': '0px 0px 0 0'
+      }
+    } else {
+      return {
+        background: 'linear-gradient(90.04deg,#ccd053 -16.37%,#dcf306 137.34%)',
+        'border-radius': '0px 0px 0 0'
+      }
     }
-    onClose();
-  } else {
-    node.value['error'] = false;
-    node.value['content'] = null;
-  }
-  return node.value;
-};
+  })
 
-defineExpose({
-  show,
-  onSave
-});
+  // 显示侧边
+  const show = currNode => {
+    node.value = currNode
+    visible.value = true
+  }
+
+  // 事件
+  const emit = defineEmits(['close', 'nodeUpdate'])
+  // 关闭侧边
+  const onClose = () => {
+    visible.value = false
+    emit('close')
+  }
+
+  // 侧边保存
+  const onSave = () => {
+    const privileges = flowAuthForm.value.privileges
+    node.value.privileges = privileges
+    // 更新节点显示信息
+    if (privileges.length > 0) {
+      node.value.error = false
+      node.value.content = '已设置'
+      // 修改事件
+      if (node.value.update) {
+        emit('nodeUpdate', node.value)
+      }
+      onClose()
+    } else {
+      node.value.error = false
+      node.value.content = null
+    }
+    return node.value
+  }
+
+  defineExpose({
+    show,
+    onSave
+  })
 </script>

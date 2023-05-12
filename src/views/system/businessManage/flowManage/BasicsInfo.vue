@@ -20,7 +20,7 @@
               v-model="form.flowName"
               placeholder="请输入"
               clearable
-              maxlength="128"
+              maxlength="45"
             />
           </el-form-item>
           <el-form-item label="业务类型" prop="applyTypeId">

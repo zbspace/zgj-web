@@ -28,7 +28,7 @@
         </a-tab-pane>
         <a-tab-pane forceRender key="3" tab="表单权限">
           <FlowDrawerContent name="表单权限">
-            <FlowAuthForm ref="flowAuthForm" :node="props.node" />
+            <FlowAuthForm ref="flowAuthForm" :node="props.node" readable />
           </FlowDrawerContent>
         </a-tab-pane>
         <!--<a-tab-pane forceRender key="4" tab="高级设置">

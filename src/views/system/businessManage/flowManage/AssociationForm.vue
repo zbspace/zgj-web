@@ -394,7 +394,7 @@
     const res = await sealApplyService.flowList({
       formMessageId
     })
-    if (res.data) {
+    if (res.data && res.data.length !== 0) {
       state.showRelatedfFlow.show = true
       showToastDialogContent.value = {
         header: '提示',

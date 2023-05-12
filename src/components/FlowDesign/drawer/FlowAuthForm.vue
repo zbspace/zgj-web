@@ -125,7 +125,6 @@
       }
     }
   })
-  console.log(props.node, '抄送人节点')
   // 样式
   const columnItemClass = computed(() => {
     return {
@@ -158,7 +157,6 @@
     if (props.node.privileges && props.node.privileges.length === 0) {
       privileges.value = await flowStore.getPrivileges()
       privileges.value.forEach(item => {
-        // TODO: 默认只读 - 待测试
         if (!props.readable) {
           setWritable(true, item)
         } else {
@@ -166,7 +164,7 @@
         }
       })
       // eslint-disable-next-line vue/no-mutating-props
-      props.node.privileges = privileges
+      props.node.privileges = privileges.value
     } else {
       privileges.value = props.node.privileges ? props.node.privileges : []
     }

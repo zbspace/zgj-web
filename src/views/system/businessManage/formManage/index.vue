@@ -950,7 +950,7 @@
     const res = await sealApplyService.flowList({
       formMessageId
     })
-    if (!res.data) {
+    if (!res.data || res.data.length === 0) {
       if (type === 'edit') {
         state.componentsAddForm.dialogVisible = true
         state.componentsAddForm.addTitle = '修改'
