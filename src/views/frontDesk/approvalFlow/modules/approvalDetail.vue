@@ -303,7 +303,7 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed, onBeforeMount } from 'vue'
+  import { ref, reactive, computed, onBeforeMount, watch } from 'vue'
   import { ElMessage } from 'element-plus'
   import kDepartOrPersonVue from '@/views/components/modules/KDepartOrPersonDialog'
   import loadApproverData from '@/components/FlowDesign/data/load-approver-data'
@@ -950,18 +950,24 @@
   }
 
   const node = ref(null)
-  onBeforeMount(() => {
-    // 获取流程展示
-    ModelApi.predictionDesign({
-      formData: props.params.formData,
-      instanceId: props.params.instanceId,
-      definitionId: props.params.definitionId
-    }).then(res => {
-      node.value = res.data
-    })
-    // 获取记录
-    getRuNode()
-  })
+  watch(
+    () => props.show,
+    () => {
+      if (props.show) {
+        // 获取流程展示
+        ModelApi.predictionDesign({
+          formData: props.params.formData,
+          instanceId: props.params.instanceId,
+          definitionId: props.params.definitionId
+        }).then(res => {
+          node.value = res.data
+        })
+        // 获取记录
+        getRuNode()
+      }
+    }
+  )
+  onBeforeMount(() => {})
 </script>
 
 <style lang="scss" scoped>

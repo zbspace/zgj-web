@@ -52,7 +52,6 @@
       </componentsDocumentsDetails>
     </div>
     <ApprovalDetail
-      v-if="dialogProcess.show"
       ref="drawer"
       :show="dialogProcess.show"
       @update:show="show = $event"
@@ -74,7 +73,6 @@
   import { NodeButtonApi } from '@/api/flow/NodeButtonApi'
   import { InstanceApi } from '@/api/flow/InstanceApi'
   import FormInfoApi from '@/api/system/flowManagement'
-  import apiForm from '@/api/system/formManagement'
   import { useVformInfoStore } from '@/store/vform'
   import JyTable from '@/views/components/JyTable.vue'
 
