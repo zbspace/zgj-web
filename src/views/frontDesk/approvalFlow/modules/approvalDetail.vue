@@ -453,19 +453,19 @@
         let fixedParams = {}
         let customApplyField = {}
         const cacheFormData = props.params.formData
+
         const formInfoData = ref(null)
         formInformation.value.getFormData().then(async formData => {
           formInfoData.value = formData
-          // return
           // 处理表单key
           for (const item in formInfoData.value) {
             const index = fixedParamsArr.indexOf(item)
             if (index > -1) {
               fixedParams = {
-                ...fixedParams
-                // ...{
-                //   [item]: cacheFormData[item]
-                // }
+                ...fixedParams,
+                ...{
+                  [item]: formData[item] ? formData[item] : cacheFormData[item]
+                }
               }
             } else {
               customApplyField = {
@@ -530,7 +530,13 @@
           })
 
           if (state.form.suggest === '1') {
-            onAgree()
+            onAgree({
+              ...fixedParams,
+              formMessageId: cacheFormData.formMessageId,
+              formVersionId: cacheFormData.formVersionId,
+              flowVersionId: cacheFormData.flowVersionId,
+              flowMessageId: cacheFormData.flowMessageId
+            })
           } else if (state.form.suggest === '2') {
             onReject()
           } else if (state.form.suggest === '3') {
@@ -582,7 +588,7 @@
     const params = {
       instanceId: props.params.instanceId,
       modelId: props.params.modelId,
-      formData: props.params.formData,
+      formData: res,
       definitionId: props.params.definitionId,
       remark: state.form.remark,
       suggest: 1
