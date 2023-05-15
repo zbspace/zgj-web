@@ -12,7 +12,7 @@
     >
       <template #title>
         <div class="title">
-          <div>用印记录</div>
+          <div>智能用印</div>
           <div class="title-more">
             <div class="title-more-add"> </div>
           </div>

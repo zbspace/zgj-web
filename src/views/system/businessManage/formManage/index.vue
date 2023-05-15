@@ -891,11 +891,14 @@
   // 确定批量删除
   const deleteMore = () => {
     const list = state.componentsBatch.selectionData
-    const idList = []
-    const idObj = { formMessageId: '' }
+    const idList = {
+      formMessageIds: []
+    }
+    // const idObj = { formMessageId: '' }
     list.forEach(v => {
-      idObj.formMessageId = v.formMessageId
-      idList.push(idObj)
+      // idObj.formMessageId = v.formMessageId
+      // idList.push(idObj)
+      idList.formMessageIds.push(v.formMessageId)
     })
     api.batchDelete(idList).then(res => {
       if (res.data.length > 0) {
@@ -912,9 +915,11 @@
           }
         ]
       } else {
-        api.batchDelete(idList).then(res => {
-          table.value.reloadData()
-        })
+        state.showToastDialog.show = false
+        table.value.reloadData()
+        // api.batchDelete(idList).then(res => {
+        //   table.value.reloadData()
+        // })
       }
     })
   }

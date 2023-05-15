@@ -15,7 +15,7 @@
             "
             @click="router.go(-1)"
           >
-            业务规则管理
+            业务规则配置
           </el-breadcrumb-item>
           <el-breadcrumb-item
             style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"

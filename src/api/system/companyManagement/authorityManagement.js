@@ -23,8 +23,8 @@ api.roleEdit = data => {
 // 角色删除
 api.roleDelete = data => {
   return request({
-    method: 'get',
-    url: `/role/user/delete/${data}`
+    method: 'POST',
+    url: `/role/delete/${data}`
   })
 }
 

@@ -16,7 +16,7 @@
     >
       <template #title>
         <div class="title">
-          <div>业务规则管理</div>
+          <div>业务规则配置</div>
           <div class="title-more">
             <div class="title-more-add">
               <el-button type="primary" @click="addBussinessRule"
