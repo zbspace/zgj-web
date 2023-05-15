@@ -33,7 +33,10 @@
                     查看最近一次盘点结果<span>({{ state.lastCheckTime }})</span>
                   </div>
                 </u>
-                <div class="check-button" @click="checkAll">一键盘点</div>
+                <!-- <div class="check-button" @click="checkAll">一键盘点</div> -->
+                <el-button class="check-button" type="primary" @click="checkAll"
+                  >一键盘点</el-button
+                >
               </div>
             </div>
           </div>
@@ -99,29 +102,14 @@
   </div>
 </template>
 <script setup>
-  import { reactive, onBeforeMount, onMounted, ref } from 'vue'
-  import componentsTable from '../../../components/table'
-  import componentsSearchForm from '../../../components/searchForm'
-  import componentsTree from '../../../components/tree'
-  import componentsBreadcrumb from '../../../components/breadcrumb'
-  import componentsPagination from '../../../components/pagination.vue'
-  import componentsTabs from '../../../components/JyTabs.vue'
+  import { reactive, onBeforeMount, onMounted } from 'vue'
   import componentsLayout from '../../../components/Layout.vue'
-  import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
-  import { ElMessage, ElMessageBox } from 'element-plus'
-  import componentsDocumentsDetails from '../../../components/documentsDetails.vue'
   import MouthStatus from '@/views/frontDesk/PrintControlManagement/Grid-management/components/mouthStatus.vue'
   import MouthCard from '@/views/frontDesk/PrintControlManagement/Grid-management/components/mouthCard'
   import { useRouter } from 'vue-router'
 
   const router = useRouter()
-  const props = defineProps({
-    // 处理类型
-    type: {
-      type: String,
-      default: '0'
-    }
-  })
+
   const state = reactive({
     lastCheckTime: '2022-12-26 12:00:00',
     terminalGrid: '243印章盒001',
@@ -236,56 +224,6 @@
     }
   })
 
-  const showFormDialog = ref(false)
-  const formJson = reactive(FormJson)
-  const formData = reactive({})
-  const optionData = reactive({})
-  const dialogVisible = ref(false)
-  const vFormRef = ref(null)
-  const submitForm = type => {
-    if (!type) {
-      vFormRef.value.resetForm()
-      return
-    }
-    vFormRef.value
-      .getFormData()
-      .then(formData => {
-        // Form Validation OK
-        alert(JSON.stringify(formData))
-        showFormDialog.value = false
-      })
-      .catch(error => {
-        // Form Validation failed
-
-        ElMessage.error(error)
-      })
-  }
-
-  const emit = defineEmits([])
-
-  // 点击表格单元格
-  function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
-    if (column.property == '3') {
-      state.componentsDocumentsDetails.show = true
-    }
-  }
-  // 点击关闭
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
-  }
-  // 点击表格按钮
-  function customClick(row, column, cell, event) {
-    console.log(cell.name)
-    if (cell.name === '修改') {
-      showFormDialog.value = true
-    }
-    if (cell.name == '删除') {
-      state.JyElMessageBox.header.data = '提示？'
-      state.JyElMessageBox.content.data = '您确定要删除该记录吗？'
-      state.JyElMessageBox.show = true
-    }
-  }
   function goDetail(item) {
     router.push({
       path: '/frontDesk/printControlManage/equipmentManage/intelligentSealBoxManagement/sealBoxGridInfo'
@@ -374,13 +312,13 @@
         .check-button {
           width: 118px;
           height: 36px;
-          color: #ffffff;
-          background: var(--jy-primary-6);
-          border-radius: 4px;
-          text-align: center;
-          line-height: 36px;
-          cursor: pointer;
-          font-size: 14px;
+          // color: #ffffff;
+          // background: var(--jy-primary-6);
+          // border-radius: 4px;
+          // text-align: center;
+          // line-height: 36px;
+          // cursor: pointer;
+          // font-size: 14px;
         }
 
         .check-flex {

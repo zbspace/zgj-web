@@ -111,13 +111,6 @@
             </div>
             <div class="ap-cont-module-right">
               <div class="module-box fast">
-                <div class="fast-back">
-                  <img
-                    class="fast-back-img"
-                    src="@/assets/icon/home-back-kuaijie.svg"
-                    alt=""
-                  />
-                </div>
                 <div class="fast-cont">
                   <div class="fast-cont-title">快捷申请用印 </div>
                   <div class="fast-cont-but">
@@ -648,17 +641,13 @@
         .ap-cont-module-right {
           width: 30%;
           .fast {
-            position: relative;
-            .fast-back {
-              position: absolute;
-              height: 100%;
-              right: 0%;
-              top: 0%;
-              .fast-back-img {
-                height: 100%;
-              }
-            }
+            padding: 0;
+
             .fast-cont {
+              background: url(@/assets/icon/home-back-kuaijie.svg) no-repeat;
+              background-position: right bottom;
+              background-size: auto 100%;
+              padding: 16px;
               .fast-cont-title {
                 font-size: var(--jy-font-size-title-2);
                 color: var(--jy-color-text-1);

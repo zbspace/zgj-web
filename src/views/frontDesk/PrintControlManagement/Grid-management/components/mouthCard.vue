@@ -373,7 +373,11 @@
         .unlock-btn,
         .seal-btn {
           color: #fafafa;
-          background-image: linear-gradient(90deg, #e2a952 0%, var(--jy-primary-6) 100%);
+          background-image: linear-gradient(
+            90deg,
+            #e2a952 0%,
+            var(--jy-primary-6) 100%
+          );
           box-shadow: 2px 3px 11px 0 rgba(0, 0, 0, 0.11),
             -2px -6px 11px 0 #ffffff, inset -2px -3px 4px 0 rgba(0, 0, 0, 0.09),
             inset 2px 3px 4px 0 rgba(255, 255, 255, 0.36);

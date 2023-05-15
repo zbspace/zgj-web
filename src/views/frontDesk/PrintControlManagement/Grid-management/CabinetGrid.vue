@@ -252,8 +252,6 @@
 <script setup>
   import { reactive, onBeforeMount, onMounted, ref } from 'vue'
   import componentsLayout from '../../../components/Layout.vue'
-  import FormJson from '@/views/addDynamicFormJson/IntelligentSealBoxManagement.json'
-  import { ElMessage, ElMessageBox } from 'element-plus'
   import MouthStatus from '@/views/frontDesk/PrintControlManagement/Grid-management/components/mouthStatus'
   import { useRouter } from 'vue-router'
 
@@ -512,58 +510,6 @@
     ]
   })
 
-  const showFormDialog = ref(false)
-  const formJson = reactive(FormJson)
-  const formData = reactive({})
-  const optionData = reactive({})
-  const dialogVisible = ref(false)
-  const vFormRef = ref(null)
-  const submitForm = type => {
-    if (!type) {
-      vFormRef.value.resetForm()
-      return
-    }
-    vFormRef.value
-      .getFormData()
-      .then(formData => {
-        // Form Validation OK
-        alert(JSON.stringify(formData))
-        showFormDialog.value = false
-      })
-      .catch(error => {
-        // Form Validation failed
-
-        ElMessage.error(error)
-      })
-  }
-
-  const emit = defineEmits([])
-
-  // 点击表格单元格
-  function cellClick(row, column, cell, event) {
-    console.log(row, column, cell, event)
-    if (column.property == '3') {
-      state.componentsDocumentsDetails.show = true
-    }
-  }
-  // 点击关闭
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
-  }
-  // 点击表格按钮
-  function customClick(row, column, cell, event) {
-    console.log(cell.name)
-    if (cell.name === '修改') {
-      showFormDialog.value = true
-    }
-    if (cell.name == '删除') {
-      ElMessageBox.confirm('您确定要删除该记录吗？', {
-        confirmButtonText: '确认',
-        cancelButtonText: '关闭',
-        type: 'warning'
-      }).then(() => {})
-    }
-  }
   function goDetail(item) {
     router.push({
       path: '/frontDesk/printControlManage/equipmentManage/IntelligentSealCabinetManagement/cabinetGridInfo'

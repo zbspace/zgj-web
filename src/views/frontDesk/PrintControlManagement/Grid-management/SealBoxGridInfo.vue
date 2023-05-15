@@ -58,15 +58,19 @@
             >
             </componentsTabs>
             <div class="btn-list">
-              <button>忽略异常</button>
+              <el-button type="primary" plain>忽略异常</el-button>
+              <el-button type="primary" plain>停用</el-button>
+              <el-button type="primary">盘点</el-button>
+              <!-- <button>忽略异常</button>
               <button>停用</button>
-              <button class="pan">盘点</button>
+              <button class="pan">盘点</button> -->
             </div>
           </div>
           <div v-if="state.componentsDetails.activeName == 1">
             <div
               class="seal-item"
               v-for="(item, index) in state.componentsDetails.bindData"
+              :key="index"
             >
               <div class="seal-name"
                 >{{ item.name }}<span>（{{ item.mac }}）</span></div
@@ -77,7 +81,9 @@
                 <div class="operate-time">操作人：{{ item.operateTime }}</div>
                 <div class="in-box" v-if="!item.isbind">不属于该印章盒</div>
               </div>
-              <div class="open-btn">开锁</div>
+              <div class="open-btn">
+                <el-button type="primary">开锁</el-button>
+              </div>
             </div>
           </div>
           <div v-if="state.componentsDetails.activeName == 2">
@@ -339,23 +345,23 @@
         align-items: center;
         color: var(--jy-primary-6);
 
-        .btn-list {
-          > button {
-            border: none;
-            padding: 5px 16px;
-            background: #ffffff;
-            border: 1px solid var(--jy-primary-6);
-            border-radius: 2px;
-            margin-left: 16px;
-            color: var(--jy-primary-6);
-            font-size: 14px;
-          }
+        // .btn-list {
+        // > button {
+        //   border: none;
+        //   padding: 5px 16px;
+        //   background: #ffffff;
+        //   border: 1px solid var(--jy-primary-6);
+        //   border-radius: 2px;
+        //   margin-left: 16px;
+        //   color: var(--jy-primary-6);
+        //   font-size: 14px;
+        // }
 
-          > .pan {
-            color: #fff;
-            background: var(--jy-primary-6);
-          }
-        }
+        // > .pan {
+        //   color: #fff;
+        //   background: var(--jy-primary-6);
+        // }
+        // }
       }
 
       .seal-item {
@@ -405,12 +411,12 @@
           position: absolute;
           bottom: 16px;
           right: 16px;
-          background: var(--jy-primary-6);
-          border-radius: 2px;
-          border: none;
-          padding: 5px 16px;
-          color: #ffffff;
-          cursor: pointer;
+          // background: var(--jy-primary-6);
+          // border-radius: 2px;
+          // border: none;
+          // padding: 5px 16px;
+          // color: #ffffff;
+          // cursor: pointer;
         }
       }
     }
