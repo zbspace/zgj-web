@@ -29,31 +29,36 @@
   import { ref, nextTick, onBeforeMount } from 'vue'
   import sealApply from '@/api/frontDesk/printControl/sealApply'
 
-  // const props = defineProps({
-
-  // })
+  const props = defineProps({
+    importParams: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  })
   const wrapStyle = ref({})
   const node = ref(null)
 
   const flowDetail = (modelId, definitionId) => {
     sealApply
       .flowDetail({
-        modelId,
-        definitionId,
+        modelId: props.importParams.modelId,
+        definitionId: props.importParams.definitionId,
         edit: true
       })
       .then(async res => {
         node.value = null
         nextTick(() => {
           node.value = res.data.data
-          nextTick(() => {
-            wrapStyle.value = {
-              height:
-                document.getElementById('flow-designer-box').clientHeight +
-                'px',
-              overflow: 'hidden'
-            }
-          })
+          // nextTick(() => {
+          //   wrapStyle.value = {
+          //     height:
+          //       document.getElementById('flow-designer-box').clientHeight +
+          //       'px',
+          //     overflow: 'hidden'
+          //   }
+          // })
         })
       })
   }

@@ -21,17 +21,21 @@
       @update:active="active = $event"
       :border="true"
     ></VTabs>
-    <div v-if="updateActive">
-      <keep-alive>
-        <component
-          v-for="item in state.TABS[indx].children"
-          :key="item"
-          :is="map[item]"
-          :ref="item"
-        ></component>
-      </keep-alive>
+
+    <div v-if="state.updateActive">
+      <div v-for="(item, index) in state.componentList" :key="index">
+        <keep-alive>
+          <component
+            :is="map[item]"
+            :ref="item"
+            :requestObj="requestObj"
+            :importParams="importParams"
+          ></component>
+        </keep-alive>
+      </div>
     </div>
-    <div v-if="!updateActive">
+
+    <div v-if="!state.updateActive">
       <keep-alive>
         <component
           :is="map[state.componentName]"
@@ -49,6 +53,8 @@
    *  1、modelValue boolean 打开、关闭
    *  2、tabsLabl tabs
    *  3、modulesName 模块名称
+   *  4、detailParams tabs对应的参数
+   *  5、importParams 从表格传递参数
    */
   import { ref, computed, watch, reactive } from 'vue'
   import VTabs from '@/components/common/JyTabs.vue'
@@ -100,6 +106,7 @@
 
   const state = reactive({
     ...params,
+    componentList: [],
     componentName: '',
     updateActive: false
   })
@@ -126,6 +133,7 @@
         state.componentName = res.children[0]
         state.updateActive = false
       } else if (res.children && res.children.length > 1) {
+        state.componentList = state.TABS[indx.value].children
         state.updateActive = true
       }
     }
@@ -160,10 +168,10 @@
     () => active.value,
     () => {
       indx.value = state.TABS.findIndex(item => item.value === active.value)
-      handleComponent()
       if (props.modelValue) {
         handleParams()
       }
+      handleComponent()
     },
     {
       immediate: true

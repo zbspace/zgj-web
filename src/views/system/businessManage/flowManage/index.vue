@@ -157,7 +157,7 @@
   import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
   import yuanLvSvg from '@/assets/svg/common/yuan-lv.svg'
   import yuanHuiSvg from '@/assets/svg/common/yuan-hui.svg'
-  import JyDetailDrawer from '@/views/components/DetailDrawer/index.vue'
+  import JyDetailDrawer from '@/views/components/detailDrawer/index.vue'
 
   const detailDrawerShow = ref(false)
 

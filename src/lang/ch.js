@@ -2675,6 +2675,5 @@ export const ch = {
   't-zgj-detail-requisition.Record': '领用记录',
   't-zgj-detail-operation.Record': '操作记录',
   't-zgj-detail-flow.Detail': '流程详情',
-  't-zgj-detail-flow.Version': '流程版本',
-  't-zgj-detail-flow.Record': '流程记录'
+  't-zgj-detail-flow.Version': '流程版本'
 }

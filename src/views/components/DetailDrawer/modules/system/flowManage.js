@@ -5,10 +5,14 @@
  * 各个模块常量定义
  * TABS： tabs
  * URLS： tab对应的接口
+ * INFO: 基础信息label
+ * TABLEHEADERS: tab 下表格的表头信息
  */
 const SYSTEMFLOWMANAGEMENT = {
   TABS: [],
-  URLS: []
+  URLS: [],
+  INFO: [],
+  TABLEHEADERS: []
 }
 
 SYSTEMFLOWMANAGEMENT.URLS = [
@@ -30,17 +34,17 @@ SYSTEMFLOWMANAGEMENT.TABS = [
   {
     name: 't-zgj-detail-flow.Detail',
     value: 'detail',
-    // children: ['BaseInfo', 'FlowDetail']
-    children: ['BaseInfo']
+    children: ['BaseInfo', 'FlowDetail']
+    // children: ['BaseInfo']
+  },
+  {
+    name: 't-zgj-detail-operation.Record',
+    value: 'record',
+    children: ['VersionTable']
   },
   {
     name: 't-zgj-detail-flow.Version',
     value: 'version',
-    children: ['VersionTable']
-  },
-  {
-    name: 't-zgj-detail-flow.Record',
-    value: 'record',
     children: ['VersionTable']
   }
 ]
