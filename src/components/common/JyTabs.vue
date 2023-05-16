@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-  const emit = defineEmits(['update:active'])
   const props = defineProps({
     active: {
       type: String,
@@ -41,7 +40,7 @@
       default: true
     }
   })
-
+  const emit = defineEmits(['update:active'])
   const handleTab = val => {
     emit('update:active', val)
   }

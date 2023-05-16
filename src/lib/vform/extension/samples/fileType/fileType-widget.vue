@@ -207,7 +207,6 @@
           this.loading = true
           const res = await fileManageService.getFileTypeList({
             bindBizRule: true,
-            parentId: '-1',
             userId: this.userId,
             formId: this.$route.query.formMessageId,
             keyword

@@ -2669,5 +2669,12 @@ export const ch = {
   't-zgj-cg-menu-xitong-caozuo-rizhi': '系统操作日志',
   't-zgj-cg-menu-xitong-yunxing-rizhi': '系统运行日志',
   't-zgj-cg-menu-zongduan-caozuorizhi': '终端操作日志',
-  't-zgj-cg-menu-gujian-shengji-rizhi': '固件升级日志'
+  't-zgj-cg-menu-gujian-shengji-rizhi': '固件升级日志',
+  't-zgj-detail-seal.Detail': '用印详情',
+  't-zgj-detail-approval.Process': '审批流程',
+  't-zgj-detail-requisition.Record': '领用记录',
+  't-zgj-detail-operation.Record': '操作记录',
+  't-zgj-detail-flow.Detail': '流程详情',
+  't-zgj-detail-flow.Version': '流程版本',
+  't-zgj-detail-flow.Record': '流程记录'
 }
