@@ -119,6 +119,54 @@ api = {
     //     params
     //   })
     // }
+  },
+  // 往来单位
+  [PAGENAME.DEALINGUNIT]: {
+    // 基础信息
+    [handleApiName(
+      PAGENAME.DEALINGUNIT,
+      handleIndx(PAGENAME.DEALINGUNIT, 'detail')
+    )]: relatedCompanyId => {
+      return request({
+        method: 'GET',
+        url: `/tenant/relatedCompany/detail/${relatedCompanyId}`
+      })
+    }
+  },
+  // 单位和部门
+  [PAGENAME.UNITANDDEPARTMENT]: {
+    // 单位和部门详情
+    [handleApiName(
+      PAGENAME.UNITANDDEPARTMENT,
+      handleIndx(PAGENAME.UNITANDDEPARTMENT, 'detail')
+    )]: organId => {
+      return request({
+        method: 'GET',
+        url: `/organ/${organId}`
+      })
+    },
+    // 组织人员
+    [handleApiName(
+      PAGENAME.UNITANDDEPARTMENT,
+      handleIndx(PAGENAME.UNITANDDEPARTMENT, 'organizer')
+    )]: organId => {
+      return request({
+        method: 'GET',
+        url: `/organ/userInfoList/${organId}`
+      })
+    }
+
+    // 操作记录
+    // [handleApiName(
+    //   PAGENAME.UNITANDDEPARTMENT,
+    //   handleIndx(PAGENAME.UNITANDDEPARTMENT, 'record')
+    // )]: params => {
+    //   return request({
+    //     method: 'GET',
+    //     url: '',
+    //     params
+    //   })
+    // }
   }
 }
 

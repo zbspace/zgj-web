@@ -61,14 +61,14 @@
       </template>
     </JyTable>
     <!-- 往来详情 -->
-    <div class="ap-box">
-      <componentsDocumentsDetails
-        :show="state.componentsDocumentsDetails.show"
-        :visible="state.componentsDocumentsDetails.visible"
-        @clickClose="clickClose"
-      >
-      </componentsDocumentsDetails>
-    </div>
+
+    <JyDetailDrawer
+      v-model="detailDrawerShow"
+      modulesName="dealing_unit"
+      :detailParams="detailParams"
+      :importParams="importParams"
+    ></JyDetailDrawer>
+
     <!-- 新建 -->
     <componetsAddForm
       :showAdd="showFormDialog"
@@ -101,10 +101,14 @@
 <script setup>
   import { ref, reactive, onBeforeMount } from 'vue'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import componetsAddForm from './modules/addDealing.vue'
   import { ElMessage } from 'element-plus'
   import api from '@/api/system/companyManagement/companyDealing'
+  import JyDetailDrawer from '@/views/components/drawerDetails/index.vue'
+
+  const detailDrawerShow = ref(false)
+  const detailParams = ref([])
+
   const showFormDialog = ref(false)
   const table = ref(null)
   const state = reactive({
@@ -281,19 +285,7 @@
         background: true
       }
     },
-    componentsDocumentsDetails: {
-      show: false,
-      visible: [
-        {
-          label: '往来企业详情',
-          name: 'Current-Business-Details'
-        }
-        // {
-        //   label: '流程记录',
-        //   name: 'operating-record'
-        // }
-      ]
-    },
+
     componentsBatch: {
       selectionData: [],
       defaultAttribute: {
@@ -332,48 +324,14 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     if (column.property === 'relatedCompanyName') {
-      api.detailRelatedCompany(row.relatedCompanyId).then(res => {
-        if (res.code === 200) {
-          const baseData = [
-            {
-              label: '企业名称',
-              value: res.data.relatedCompanyName
-            },
-            {
-              label: '企业编码',
-              value: res.data.relatedCompanyNo
-            },
-            {
-              label: '企业所属部门',
-              value: res.data.organName
-            },
-            {
-              label: '联系人',
-              value: res.data.contactName
-            },
-            {
-              label: '备注：',
-              value: res.data.readme,
-              lineStyle: {
-                width: '100%'
-              }
-            }
-          ]
-          state.componentsDocumentsDetails.visible.forEach(item => {
-            if (item.name === 'Current-Business-Details') {
-              state.componentsDocumentsDetails.visible[0][
-                'basicInformation-data'
-              ] = baseData
-            }
-          })
-          state.componentsDocumentsDetails.show = true
+      detailDrawerShow.value = true
+      detailParams.value = [
+        {
+          value: 'detail',
+          params: row.relatedCompanyId
         }
-      })
+      ]
     }
-  }
-  // 点击关闭
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
   }
   // 点击表格按钮
   function customClick(row, column, cell, event) {

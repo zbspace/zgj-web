@@ -75,21 +75,14 @@
         </div>
       </template>
     </JyTable>
-    <!-- </componentsLayout> -->
-    <!-- <div class="ap-box">
-      <componentsDocumentsDetails
-        :show="state.componentsDocumentsDetails.show"
-        :visible="state.componentsDocumentsDetails.visible"
-        @clickClose="clickClose"
-      >
-      </componentsDocumentsDetails>
-    </div> -->
+
     <!-- 部门与单位详情 -->
-    <Detail
-      :organId="organId"
-      :baseInfo="baseInfo"
-      v-model="state.componentsDocumentsDetails.show"
-    />
+    <JyDetailDrawer
+      v-model="detailDrawerShow"
+      modulesName="unit_and_department"
+      :detailParams="detailParams"
+    ></JyDetailDrawer>
+
     <!-- 新增部门 -->
     <JyDialog
       @update:show="showFormDialog = $event"
@@ -219,6 +212,10 @@
   import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/department.json'
   import { getItem } from '@/utils/storage'
   import Detail from './detail'
+  import JyDetailDrawer from '@/views/components/drawerDetails/index.vue'
+
+  const detailDrawerShow = ref(false)
+  const detailParams = ref([])
 
   const showFormDialog = ref(false)
   const showDepPerDialog = ref(false)
@@ -241,7 +238,6 @@
   const firstNode = ref(null)
   const firstTreeData = ref([])
   const deptTreeRef = ref(null)
-  const baseInfo = ref(null)
 
   const form = reactive({
     organId: '',
@@ -370,24 +366,6 @@
       },
       value: ''
     },
-    componentsDocumentsDetails: {
-      show: false,
-      visible: [
-        {
-          label: '单位与部门详情',
-          name: 'Unit-Department-Details',
-          'basicInformation-data': null
-        },
-        {
-          label: '组织人员',
-          name: 'organization-Person'
-        },
-        {
-          label: '流程记录',
-          name: 'operating-record'
-        }
-      ]
-    },
     componentsBatch: {
       selectionData: [],
       data: [
@@ -405,9 +383,24 @@
   })
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
-    baseInfo.value = row
     organId.value = row.organId
-    state.componentsDocumentsDetails.show = true
+    detailDrawerShow.value = true
+    detailParams.value = [
+      {
+        value: 'detail',
+        params: row.organId
+      },
+      // {
+      //   value: 'record', // 操作记录
+      //   params: {
+      //     operationId: row.organId // 传参
+      //   }
+      // },
+      {
+        value: 'organizer', // 组织人员
+        params: row.organId
+      }
+    ]
   }
 
   function customClick(row, column, cell, event) {
@@ -525,11 +518,6 @@
     state.componentsBatch.selectionData = selectionData
     showToastDialog.value = true
   }
-
-  // 点击关闭
-  // function clickClose() {
-  //   state.componentsDocumentsDetails.show = false
-  // }
 
   const chooseOrgan = type => {
     showDeptDialog.value = true
