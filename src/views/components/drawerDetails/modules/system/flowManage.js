@@ -63,19 +63,19 @@ SYSTEMFLOWMANAGEMENT.INFO = [
   },
   {
     label: '文件类型',
-    key: 'fileTypeName'
+    key: ['fileTypeScope'],
+    handleKey: 'fileScope'
   },
   {
     label: '流程状态',
     key: 'flag',
     type: 'status',
-    // iconPath: handleIcon(data),
     customStyle: true
   },
   {
     label: '流程适用范围',
-    key: 'fileTypeScope',
-    handleArrToStr: true
+    key: ['organScope', 'organUserScope'],
+    handleKey: 'flowScope'
   },
   {
     label: '创建人',

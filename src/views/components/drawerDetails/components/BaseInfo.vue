@@ -56,11 +56,22 @@
     }
   })
 
+  const colors = [
+    'var(--jy-success-6)', // 成功
+    'var(--jy-color-text-4)', // 失败
+    'var(--jy-warning-6)', // 警告
+    'var(--jy-primary-6)', // 主色
+    'var(--jy-danger-6)' // 危险
+  ]
+
   const infoList = computed({
     get() {
       return props.requestObj.info
     }
   })
+
+  const scopes = ref({})
+
   onBeforeMount(() => {
     API[props.requestObj.modulesName]
       [props.requestObj.urlName](props.requestObj.params)
@@ -68,12 +79,21 @@
         if (result.data) {
           infoList.value.forEach(item => {
             for (const k in result.data) {
+              if (
+                item.handleKey &&
+                item.key.includes(k) &&
+                Array.isArray(item.key)
+              ) {
+                getAllArrKey(item.handleKey, result.data[k])
+                continue
+              }
+
               if (k === item.key) {
                 // 将 数组处理成 字符串
-                if (item.handleArrToStr) {
-                  item.value = handleArrToStr(result.data[k])
-                  continue
-                }
+                // if (item.handleKey) {
+                //   item.value = handleArrToStr(result.data[k])
+                //   continue
+                // }
 
                 // 处理 特殊状态
                 if (item.customStyle) {
@@ -87,25 +107,34 @@
               }
             }
           })
+
+          // 处理 拼接字符
+          infoList.value.forEach(k => {
+            if (k.handleKey) {
+              k.value = handleArrToStr(scopes.value[k.handleKey])
+            }
+          })
         }
       })
   })
 
-  const colors = [
-    'var(--jy-success-6)', // 成功
-    'var(--jy-color-text-4)', // 失败
-    'var(--jy-warning-6)', // 警告
-    'var(--jy-primary-6)', // 主色
-    'var(--jy-danger-6)' // 危险
-  ]
+  // 获取数据
+  const getAllArrKey = (key, value) => {
+    if (!value || !Array.isArray(value)) return
+    // eslint-disable-next-line no-prototype-builtins
+    if (scopes.value.hasOwnProperty(key)) {
+      scopes.value[key] = scopes.value[key].concat(value)
+    } else {
+      scopes.value[key] = value
+    }
+  }
 
   // 处理数据
-  const handleArrToStr = attr => {
-    if (!attr || !Array.isArray(attr)) return '-'
+  const handleArrToStr = (attr, preVal) => {
+    if (!attr || !Array.isArray(attr)) return ''
     const arr = []
     attr.forEach(item => arr.push(item.name))
-
-    return arr.join(',')
+    return preVal ? preVal + ',' + arr.join(',') : arr.join(',')
   }
 
   // 处理特殊样式
