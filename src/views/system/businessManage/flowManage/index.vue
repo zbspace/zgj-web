@@ -52,15 +52,6 @@
       </template>
     </JyTable>
 
-    <!-- 流程详情 删除 -->
-    <div class="ap-box">
-      <componentsDocumentsDetails
-        v-model="state.componentsDocumentsDetails.show"
-        :visible="state.componentsDocumentsDetails.visible"
-        @clickClose="clickClose"
-      >
-      </componentsDocumentsDetails>
-    </div>
     <!-- 流程详情 -->
     <JyDetailDrawer
       v-model="detailDrawerShow"
@@ -68,6 +59,7 @@
       :detailParams="detailParams"
       :importParams="importParams"
     ></JyDetailDrawer>
+
     <!-- 新建弹框 -->
     <Addflow
       v-if="addFlowModalShow"
@@ -147,7 +139,6 @@
    */
   import { reactive, onBeforeMount, ref } from 'vue'
   import componentsTree from '@/views/components/tree'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import Addflow from './AddOrEditFlow.vue'
   import apiFlow from '@/api/system/flowManagement'
   import apiForm from '@/api/system/formManagement'
@@ -155,12 +146,14 @@
   import { ElMessage } from 'element-plus'
   import tableHeaderSealApply from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSealApply.json'
   import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
-  import yuanLvSvg from '@/assets/svg/common/yuan-lv.svg'
-  import yuanHuiSvg from '@/assets/svg/common/yuan-hui.svg'
   import JyDetailDrawer from '@/views/components/drawerDetails/index.vue'
 
   const detailDrawerShow = ref(false)
-
+  const detailParams = ref([])
+  const importParams = ref({
+    modelId: '',
+    definitionId: ''
+  })
   const addFlowModalShow = ref(false)
   const openType = ref(null)
   const tree = ref(null)
@@ -518,32 +511,9 @@
           clickName: closeBatchTabel
         }
       ]
-    },
-
-    componentsDocumentsDetails: {
-      show: false,
-      visible: [
-        {
-          label: '流程详情',
-          name: 'Process-Details'
-        },
-        {
-          label: '流程版本',
-          name: 'Process-Version'
-        },
-        {
-          label: '流程记录',
-          name: 'operating-record'
-        }
-      ]
     }
   })
 
-  const detailParams = ref([])
-  const importParams = ref({
-    modelId: '',
-    definitionId: ''
-  })
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'flowName') {
@@ -562,7 +532,7 @@
         {
           value: 'record',
           params: {
-            operationId: row.operationId // 传参
+            operationId: row.flowMessageId // 传参
           }
         },
         {
@@ -574,35 +544,7 @@
       ]
     }
   }
-  const handleIcon = data => {
-    return data.flag && data.flag === '1' ? yuanLvSvg : yuanHuiSvg
-  }
 
-  const handleColor = data => {
-    return data.flag && data.flag === '1'
-      ? {
-          color: 'var(--jy-success-6)'
-        }
-      : {}
-  }
-
-  const handleScope = data => {
-    const organScope = data.organScope ? data.organScope : []
-    const organUserScope = data.organUserScope ? data.organUserScope : []
-    const dataScopeLength = organScope.length + organUserScope.length
-    const dataScope = organScope.concat(organUserScope)
-    if (dataScopeLength.length <= 0) return '-'
-    const arr = []
-    dataScope.map(item => arr.push(item.name))
-
-    return arr.join(',')
-  }
-  // const handleFile = data => {
-  //   if (!data.fileType || data.fileType.length <= 0) return '-'
-  //   const arr = []
-  //   data.fileType.map(item => arr.push(item.name))
-  //   return arr.join(',')
-  // }
   const customClick = (row, column, cell, event) => {
     state.columnData = column
     state.flowMessageId = column.flowMessageId
@@ -785,11 +727,6 @@
       state.showToastDialog.show = false
       reloadData()
     })
-  }
-
-  // 点击关闭
-  const clickClose = () => {
-    // state.componentsDocumentsDetails.show = false
   }
 
   // 发送api请求 查询表单树解构

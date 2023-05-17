@@ -41,15 +41,7 @@
         </div>
       </template>
     </JyTable>
-    <!-- 表单管理详情 -->
-    <div class="ap-box">
-      <componentsDocumentsDetails
-        :show="state.componentsDocumentsDetails.show"
-        :visible="state.componentsDocumentsDetails.visible"
-        @clickClose="clickClose"
-      >
-      </componentsDocumentsDetails>
-    </div>
+
     <!-- 新增表单 -->
     <AddFrom
       v-model="state.componentsAddForm.dialogVisible"
@@ -151,12 +143,13 @@
       label="flowName"
       @sureAction="state.showDeleteForm.show = false"
     ></actionMoreDialog>
+
     <!-- 详情 -->
-    <Detail
-      v-model="detailVisible"
-      :operationId="operationId"
-      :formMessageId="formMessageId"
-    />
+    <JyDetailDrawer
+      v-model="detailDrawerShow"
+      modulesName="system_form_management"
+      :detailParams="detailParams"
+    ></JyDetailDrawer>
   </div>
 </template>
 
@@ -164,22 +157,20 @@
   import { reactive, ref, defineAsyncComponent, onBeforeMount } from 'vue'
   import componentsTree from '@/views/components/tree'
   import JyTable from '@/views/components/JyTable.vue'
-  import componentsDocumentsDetails from '@/views/components/documentsDetails.vue'
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import api from '@/api/system/formManagement'
-  import Detail from './Detail'
   import sealApplyService from '@/api/frontDesk/printControl/sealApply'
   import { messageSuccess, messageError } from '@/hooks/useMessage'
+  import JyDetailDrawer from '@/views/components/drawerDetails/index.vue'
 
+  const detailDrawerShow = ref(false)
+  const detailParams = ref([])
   const AddFrom = defineAsyncComponent(() => import('./AddForm'))
   const optionData = ref([])
   const table = ref(null)
   const queryParams = ref(null)
   const showToastDialogContent = ref(null)
   const tree = ref(null)
-  const detailVisible = ref(false)
-  const operationId = ref('')
-  const formMessageId = ref('')
   const copyInfo = ref({ formMessageId: '', formName: '' })
   const state = reactive({
     componentsAddForm: {
@@ -461,23 +452,7 @@
       },
       value: ''
     },
-    componentsDocumentsDetails: {
-      show: false,
-      visible: [
-        {
-          label: '表单详情',
-          name: 'Form-Details'
-        },
-        {
-          label: '操作记录',
-          name: 'operating-record'
-        },
-        {
-          label: '历史版本',
-          name: 'Process-Version'
-        }
-      ]
-    },
+
     JyElMessageBox: {
       show: false,
       header: {
@@ -876,11 +851,27 @@
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'formName') {
-      // state.componentsDocumentsDetails.show = true
-      // queryOperation(row.applyTypeId)
-      operationId.value = row.operationId
-      formMessageId.value = row.formMessageId
-      detailVisible.value = true
+      detailDrawerShow.value = true
+      detailParams.value = [
+        {
+          value: 'detail',
+          params: {
+            formMessageId: row.formMessageId
+          }
+        },
+        {
+          value: 'record',
+          params: {
+            operationId: row.formMessageId
+          }
+        },
+        {
+          value: 'version',
+          params: {
+            formMessageId: row.formMessageId
+          }
+        }
+      ]
     }
   }
 
@@ -944,11 +935,6 @@
     } catch (error) {
       messageError(error)
     }
-  }
-
-  // 点击关闭详情
-  function clickClose() {
-    state.componentsDocumentsDetails.show = false
   }
 
   async function getFlowList(formMessageId, column, type) {

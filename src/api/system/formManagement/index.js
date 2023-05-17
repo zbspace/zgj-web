@@ -182,33 +182,6 @@ api.queryColumInfoByFormId = params => {
   })
 }
 
-// 表单详情_操作记录
-api.queryOperation = params => {
-  return request({
-    method: 'GET',
-    url: '/form/queryOperation',
-    params
-  })
-}
-
-// 表单详情_历史版本
-api.queryHisVersion = params => {
-  return request({
-    method: 'GET',
-    url: '/form/queryHisVersion',
-    params
-  })
-}
-
-// 表单详情 formMessageId
-api.getFormDetail = params => {
-  return request({
-    method: 'GET',
-    url: '/form/query',
-    params
-  })
-}
-
 // 流程  搜素 - 表单列表
 api.getFormSeachList = params => {
   return request({

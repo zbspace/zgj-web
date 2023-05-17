@@ -1,5 +1,5 @@
 /**
- * 后台 流程管理 system_flow_management SYSTEMFLOWMANAGEMENT
+ * 后台 表单管理 system_form_management SYSTEMFORMMANAGENMENT
  */
 /**
  * 各个模块常量定义
@@ -8,14 +8,14 @@
  * INFO: 基础信息label
  * TABLEHEADERS: tab 下表格的表头信息
  */
-const SYSTEMFLOWMANAGEMENT = {
+const SYSTEMFORMMANAGENMENT = {
   TABS: [],
   URLS: [],
   INFO: [],
   TABLEHEADERS: []
 }
 
-SYSTEMFLOWMANAGEMENT.URLS = [
+SYSTEMFORMMANAGENMENT.URLS = [
   {
     value: 'detail',
     urlName: 'baseInfo'
@@ -30,11 +30,11 @@ SYSTEMFLOWMANAGEMENT.URLS = [
   }
 ]
 
-SYSTEMFLOWMANAGEMENT.TABS = [
+SYSTEMFORMMANAGENMENT.TABS = [
   {
     name: 't-zgj-detail-flow.Detail',
     value: 'detail',
-    children: ['BaseInfo', 'FlowDetail']
+    children: ['BaseInfo']
   },
   {
     name: 't-zgj-detail-operation.Record',
@@ -52,74 +52,52 @@ SYSTEMFLOWMANAGEMENT.TABS = [
  * key: [] + handleKey => 组合 name 以 逗号； key 支持多个元素 - 不同key集合
  * type + customStyle => 展示不同状态
  */
-SYSTEMFLOWMANAGEMENT.INFO = [
+SYSTEMFORMMANAGENMENT.INFO = [
   {
-    label: '流程名称',
-    key: 'flowName'
+    label: '表单名称',
+    key: 'formName'
   },
   {
-    label: '流程编码',
-    key: 'flowNo'
+    label: '表单编码',
+    key: 'formNo'
   },
   {
     label: '业务类型',
     key: 'applyTypeName'
   },
   {
-    label: '文件类型',
-    key: ['fileTypeScope'],
-    handleKey: 'fileScope'
+    label: '用印类型',
+    key: 'sealUseTypeName'
   },
   {
-    label: '流程状态',
+    label: '表单状态',
     key: 'flag',
     type: 'status',
     customStyle: true
   },
   {
-    label: '流程适用范围',
-    key: ['organScope', 'organUserScope'],
-    handleKey: 'flowScope'
+    label: '创建时间',
+    key: 'createDatetimeStr'
   },
   {
     label: '创建人',
     key: 'createUserName'
   },
   {
-    label: '创建时间',
-    key: 'createDatetime'
-  },
-  {
     label: '更新时间',
-    key: 'modifyDatetime'
+    key: 'modifyDatetimeStr'
   },
-  // {
-  //   label: '流程类型',
-  //   key: '无字段'
-  // },
   {
-    label: '流程说明',
+    label: '表单说明',
     key: 'readme'
-  },
-  {
-    label: '关联表单',
-    key: 'formMessageName'
   }
-  // {
-  //   label: '超时提醒',
-  //   key: '无字段'
-  // },
-  // {
-  //   label: '审批人自动去重',
-  //   key: '无字段'
-  // }
 ]
 
-SYSTEMFLOWMANAGEMENT.TABLEHEADERS = {
+SYSTEMFORMMANAGENMENT.TABLEHEADERS = {
   version: [
     {
       label: '版本号',
-      prop: 'flowVerison'
+      prop: 'formVerison'
     },
     {
       label: '版本时间',
@@ -146,4 +124,4 @@ SYSTEMFLOWMANAGEMENT.TABLEHEADERS = {
   ]
 }
 
-export default SYSTEMFLOWMANAGEMENT
+export default SYSTEMFORMMANAGENMENT

@@ -28,10 +28,11 @@
       </template>
     </JyTable>
     <!-- 业务规则详情 -->
-    <Detail
-      v-model="state.componentsDocumentsDetails.show"
-      :ruleBusinessId="ruleBusinessId"
-    />
+    <JyDetailDrawer
+      v-model="detailDrawerShow"
+      modulesName="rule_business_management"
+      :detailParams="detailParams"
+    ></JyDetailDrawer>
     <!-- 单个操作弹框 -->
     <actionOneDialog
       v-model="state.JyElMessageBox.show"
@@ -108,10 +109,11 @@
   import { useRouter } from 'vue-router'
   import ruleApi from '@/api/system/businessManage/businessRule'
   import { messageSuccess } from '@/hooks/useMessage'
-  import Detail from './detail'
+  import JyDetailDrawer from '@/views/components/drawerDetails/index.vue'
 
+  const detailDrawerShow = ref(false)
+  const detailParams = ref([])
   const router = useRouter()
-  const ruleBusinessId = ref('')
 
   const state = reactive({
     componentsSearchForm: {
@@ -259,19 +261,6 @@
         }
       ]
     },
-    componentsDocumentsDetails: {
-      show: false,
-      visible: [
-        {
-          label: '业务规则详情',
-          name: 'Business-Rule-Details'
-        },
-        {
-          label: '流程记录',
-          name: 'operating-record'
-        }
-      ]
-    },
     JyElMessageBox: {
       type: '',
       id: '',
@@ -338,8 +327,19 @@
   // 点击表格单元格
   function cellClick(row, column, cell, event) {
     if (column.property === 'ruleBusinessName') {
-      ruleBusinessId.value = row.ruleBusinessId
-      state.componentsDocumentsDetails.show = true
+      detailDrawerShow.value = true
+      detailParams.value = [
+        {
+          value: 'detail',
+          params: row.ruleBusinessId
+        },
+        {
+          value: 'record',
+          params: {
+            operationId: ''
+          }
+        }
+      ]
     }
   }
 
