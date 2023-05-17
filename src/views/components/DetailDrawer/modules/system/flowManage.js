@@ -35,12 +35,11 @@ SYSTEMFLOWMANAGEMENT.TABS = [
     name: 't-zgj-detail-flow.Detail',
     value: 'detail',
     children: ['BaseInfo', 'FlowDetail']
-    // children: ['BaseInfo']
   },
   {
     name: 't-zgj-detail-operation.Record',
     value: 'record',
-    children: ['VersionTable']
+    children: ['RecordTable']
   },
   {
     name: 't-zgj-detail-flow.Version',

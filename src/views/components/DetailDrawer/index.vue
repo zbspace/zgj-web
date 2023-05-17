@@ -22,27 +22,16 @@
       :border="true"
     ></VTabs>
 
+    <!-- 缓存 -->
     <div v-if="state.updateActive">
       <div v-for="(item, index) in state.componentList" :key="index">
-        <keep-alive>
-          <component
-            :is="map[item]"
-            :ref="item"
-            :requestObj="requestObj"
-            :importParams="importParams"
-          ></component>
-        </keep-alive>
-      </div>
-    </div>
-
-    <div v-if="!state.updateActive">
-      <keep-alive>
         <component
-          :is="map[state.componentName]"
-          :ref="item"
+          :is="map[item.copName]"
           :requestObj="requestObj"
-        />
-      </keep-alive>
+          :importParams="importParams"
+          :style="{ display: item.value === active ? 'block' : 'none' }"
+        ></component>
+      </div>
     </div>
   </JyDrawer>
 </template>
@@ -60,14 +49,16 @@
   import VTabs from '@/components/common/JyTabs.vue'
   import BaseInfo from './components/BaseInfo.vue'
   import FlowDetail from './components/FlowDetail.vue'
-  import VersionTable from './components/RecordTable.vue'
+  import RecordTable from './components/RecordTable.vue'
+  import VersionTable from './components/VersionTable.vue'
   import CONSTANTDATA from './constantData'
   // import API from './api/index'
 
   const map = {
     BaseInfo,
     FlowDetail,
-    VersionTable
+    VersionTable,
+    RecordTable
   }
 
   const props = defineProps({
@@ -102,7 +93,6 @@
   // 获取模块信息
   const index = CONSTANTDATA.findIndex(item => item[props.modulesName])
   const params = CONSTANTDATA[index][props.modulesName]
-  console.log(CONSTANTDATA, 'CONSTANTDATA', params)
 
   const state = reactive({
     ...params,
@@ -124,19 +114,53 @@
   })
 
   const indx = ref(0)
-
   // 切换 tab下 组件
   const handleComponent = () => {
+    indx.value = state.TABS.findIndex(item => item.value === active.value)
     const res = state.TABS[indx.value]
     if (res.value === active.value) {
-      if (res.children && res.children.length === 1) {
-        state.componentName = res.children[0]
-        state.updateActive = false
-      } else if (res.children && res.children.length > 1) {
-        state.componentList = state.TABS[indx.value].children
-        state.updateActive = true
+      if (state.componentList.length === 0 || !isReload()) {
+        state.componentList = handleRepeat(res)
       }
+      state.updateActive = true
     }
+  }
+
+  // 打开状态 是否已 加载
+  const isReload = () => {
+    if (state.componentList.length === 0) return false
+    const i = state.componentList.findIndex(item => item.value === active.value)
+    if (i === -1) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  // 组件去重
+  const handleRepeat = attr => {
+    const arr = state.componentList
+    if (!attr || !Array.isArray(attr.children)) return []
+    if (state.componentList.length === 0) {
+      attr.children.forEach(copName => {
+        arr.push({
+          value: attr.value,
+          copName
+        })
+      })
+    } else {
+      // 是否重复
+      attr.children.forEach(copName => {
+        const i = arr.findIndex(val => val.copName === copName)
+        if (i === -1) {
+          arr.push({
+            value: attr.value,
+            copName
+          })
+        }
+      })
+    }
+    return arr
   }
 
   // 获取不同tab的参数
@@ -154,12 +178,17 @@
       tableHeaders: state.TABLEHEADERS
     }
   }
+
   watch(
     () => props.modelValue,
     val => {
       if (val) {
         active.value = state.TABS.length > 0 && state.TABS[0].value
         handleParams()
+      } else {
+        state.componentList = []
+        state.updateActive = false
+        active.value = null
       }
     }
   )
@@ -167,7 +196,10 @@
   watch(
     () => active.value,
     () => {
-      indx.value = state.TABS.findIndex(item => item.value === active.value)
+      // 缓存
+      if (isReload() || !active.value) {
+        return
+      }
       if (props.modelValue) {
         handleParams()
       }
@@ -179,7 +211,7 @@
   )
 </script>
 <script>
-  // export default { name: 'FormManageDetail' }
+  export default { name: 'DetailDrawer' }
 </script>
 <style lang="scss">
   .detail-drawer {

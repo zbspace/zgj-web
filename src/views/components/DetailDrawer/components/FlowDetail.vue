@@ -68,6 +68,10 @@
   })
 </script>
 
+<script>
+  export default { name: 'FlowDetail' }
+</script>
+
 <style lang="scss" scoped>
   .flow-detail {
     padding-top: 28px;

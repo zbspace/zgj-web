@@ -134,6 +134,10 @@
   }
 </script>
 
+<script>
+  export default { name: 'BaseInfo' }
+</script>
+
 <style lang="scss" scoped>
   .flow-detail {
     padding-top: 28px;

@@ -1,5 +1,5 @@
 <!--
-* @Descripttion 操作记录详情表格数据
+* @Descripttion 历史版本表格数据
 * @FileName index.vue
 * @Author walterXsk
 * @module 
@@ -9,7 +9,7 @@
   <JyTable
     :data="tableData"
     :loading="loading"
-    ref="recordTableRef"
+    ref="versionTableRef"
     :highlightCurrentRow="true"
     class="table"
   >
@@ -70,7 +70,7 @@
 </script>
 
 <script>
-  export default { name: 'RecordTable' }
+  export default { name: 'VersionTable' }
 </script>
 
 <style lang="scss" scoped>
