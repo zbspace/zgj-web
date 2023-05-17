@@ -211,7 +211,6 @@
   import actionMoreDialog from '@/views/components/actionMoreDialog'
   import tableHeader from '@/views/tableHeaderJson/system/companyManage/departmentStaff/department.json'
   import { getItem } from '@/utils/storage'
-  import Detail from './detail'
   import JyDetailDrawer from '@/views/components/drawerDetails/index.vue'
 
   const detailDrawerShow = ref(false)
