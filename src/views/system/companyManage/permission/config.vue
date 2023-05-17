@@ -11,7 +11,7 @@
             <el-breadcrumb-item
               style="--el-text-color-regular: rgba(0, 0, 0, 0.65)"
             >
-              角色权限管理
+              权限管理
             </el-breadcrumb-item>
             <el-breadcrumb-item
               style="--el-text-color-regular: rgba(0, 0, 0, 0.25)"

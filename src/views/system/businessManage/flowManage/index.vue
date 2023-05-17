@@ -52,7 +52,7 @@
       </template>
     </JyTable>
 
-    <!-- 流程详情 -->
+    <!-- 流程详情 删除 -->
     <div class="ap-box">
       <componentsDocumentsDetails
         v-model="state.componentsDocumentsDetails.show"
@@ -61,6 +61,13 @@
       >
       </componentsDocumentsDetails>
     </div>
+    <!-- 流程详情 -->
+    <JyDetailDrawer
+      v-model="detailDrawerShow"
+      modulesName="system_flow_management"
+      :detailParams="detailParams"
+      :importParams="importParams"
+    ></JyDetailDrawer>
     <!-- 新建弹框 -->
     <Addflow
       v-if="addFlowModalShow"
@@ -148,9 +155,12 @@
   import { ElMessage } from 'element-plus'
   import tableHeaderSealApply from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSealApply.json'
   import tableHeaderSeal from '@/views/tableHeaderJson/system/companyManage/departmentStaff/flowSeal.json'
-  import flowApi from '@/api/system/flowManagement/index'
   import yuanLvSvg from '@/assets/svg/common/yuan-lv.svg'
   import yuanHuiSvg from '@/assets/svg/common/yuan-hui.svg'
+  import JyDetailDrawer from '@/views/components/detailDrawer/index.vue'
+
+  const detailDrawerShow = ref(false)
+
   const addFlowModalShow = ref(false)
   const openType = ref(null)
   const tree = ref(null)
@@ -529,103 +539,39 @@
     }
   })
 
+  const detailParams = ref([])
+  const importParams = ref({
+    modelId: '',
+    definitionId: ''
+  })
   // 点击表格单元格
   const cellClick = (row, column, cell, event) => {
     if (column.property === 'flowName') {
-      flowApi
-        .flowDetail({
-          flowMessageId: row.flowMessageId
-        })
-        .then(res => {
-          const data = res.data
-          const detail = [
-            {
-              label: '流程名称',
-              value: data.flowName
-            },
-            {
-              label: '流程编码',
-              value: data.flowNo
-            },
-            {
-              label: '业务类型',
-              value: data.applyTypeName
-            },
-            {
-              label: '流程状态',
-              value: data.flagName,
-              iconPath: handleIcon(data),
-              valStyle: handleColor(data)
-            },
-            {
-              label: '流程适用范围',
-              value: handleScope(data)
-            },
-            {
-              label: '创建人',
-              value: data.createUserName
-            },
-            {
-              label: '创建时间',
-              value: data.createDatetime
-            },
-            {
-              label: '更新时间',
-              value: data.modifyDatetime
-            },
-            // {
-            //   label: '流程类型',
-            //   value: '无字段'
-            // },
-            {
-              label: '流程说明',
-              value: data.readme || '-'
-            },
-            {
-              label: '关联表单',
-              value: data.formMessageName || '-'
-            }
-            // {
-            //   label: '超时提醒',
-            //   value: '无字段'
-            // },
-            // {
-            //   label: '审批人自动去重',
-            //   value: '无字段'
-            // }
-          ]
-          state.componentsDocumentsDetails.visible[0].basicInformation = {
-            show: true,
-            data: detail
+      detailDrawerShow.value = true
+      importParams.value = {
+        modelId: row.modelId,
+        definitionId: row.definitionId
+      }
+      detailParams.value = [
+        {
+          value: 'detail',
+          params: {
+            flowMessageId: row.flowMessageId
           }
-          state.componentsDocumentsDetails.show = true
-        })
-
-      flowApi
-        .queryHisVersion({
-          flowMessageId: row.flowMessageId
-        })
-        .then(res => {
-          const data = res.data
-          const header = [
-            {
-              prop: 'flowVerison',
-              label: '版本号',
-              sortable: true,
-              'min-width': 150
-            },
-            {
-              prop: 'modifyDatetime',
-              label: '版本时间',
-              sortable: true,
-              'min-width': 150
-            }
-          ]
-          state.componentsDocumentsDetails.visible[1].ProcessVersion = {
-            data,
-            header
+        },
+        {
+          value: 'record',
+          params: {
+            operationId: row.operationId // 传参
           }
-        })
+        },
+        {
+          value: 'version',
+          params: {
+            flowMessageId: row.flowMessageId
+          }
+        }
+      ]
     }
   }
   const handleIcon = data => {

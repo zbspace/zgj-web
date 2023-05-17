@@ -17,7 +17,7 @@
     >
       <template #title>
         <div class="title">
-          <div>部门管理</div>
+          <div>单位与部门管理</div>
           <div class="title-more">
             <div class="title-more-add">
               <el-button type="primary" @click="add"

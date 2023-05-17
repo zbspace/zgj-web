@@ -21,7 +21,7 @@
     >
       <template #title>
         <div class="title">
-          <div>角色权限管理</div>
+          <div>权限管理</div>
           <div class="title-more">
             <div class="title-more-add">
               <el-button type="primary" @click="add"> + 新建 </el-button>

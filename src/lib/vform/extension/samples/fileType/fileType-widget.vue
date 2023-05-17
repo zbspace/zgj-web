@@ -207,9 +207,9 @@
           this.loading = true
           const res = await fileManageService.getFileTypeList({
             bindBizRule: true,
-            keyword,
-            size: 20,
-            current: 1
+            userId: this.userId,
+            formId: this.$route.query.formMessageId,
+            keyword
           })
           // eslint-disable-next-line vue/no-mutating-props
           this.field.options.optionItems = res.data.map(v => {
