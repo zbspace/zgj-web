@@ -103,14 +103,12 @@ export const usesealBesidesSchema = {
     labelWidth: 100,
     disabled: false,
     hiddenDefaultValue: true,
-    defaultValue: [
-      {
-        extSeal: false,
-        besidesTime: [],
-        provinceId: [],
-        detailAddress: ''
-      }
-    ]
+    defaultValue: {
+      extSeal: false,
+      besidesTime: ['', ''],
+      provinceId: [],
+      detailAddress: ''
+    }
   }
 }
 
