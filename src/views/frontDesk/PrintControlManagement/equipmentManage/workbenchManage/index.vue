@@ -244,7 +244,10 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="休眠" prop="dormantOpen">
-              <el-radio-group v-model="form.dormantOpen">
+              <el-radio-group
+                v-model="form.dormantOpen"
+                @change="changeDormantOpen"
+              >
                 <el-radio label="1" size="large">启用</el-radio>
                 <el-radio label="0" size="large">禁用</el-radio>
               </el-radio-group>
@@ -344,7 +347,7 @@
     faceLogin: '1',
     autoLock: '1',
     dormantOpen: '0',
-    dormantValue: '',
+    dormantValue: null,
     readme: ''
   })
   const rules = reactive({
@@ -615,13 +618,21 @@
     form.manUserId && getDepartOptions(form.manUserId)
   }
 
+  const changeDormantOpen = () => {
+    if (form.dormantOpen === '0') {
+      form.dormantValue = null
+    } else {
+      form.dormantValue = 10
+    }
+  }
+
   const submitForm = () => {
     vFormLibraryRef.value.validate(valid => {
       if (valid) {
         confirmLoading.value = true
-        if (form.dormantOpen === '0') {
-          delete form.dormantValue
-        }
+        // if (form.dormantOpen === '0') {
+        //   delete form.dormantValue
+        // }
         if (form.benchId) {
           workbenchManagement
             .edit(form)
