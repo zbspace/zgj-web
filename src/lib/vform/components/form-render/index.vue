@@ -930,6 +930,14 @@
                 }
               })
             }
+            if (widget.type === 'agentMan') {
+              if (!widgetData.id) {
+                _self.requiredMsgList.push('请选择代办人')
+                widgetInstance.setRequiredTextShow(true)
+              } else {
+                widgetInstance.setRequiredTextShow(false)
+              }
+            }
             data[dataId] = widgetData
             additionalList.push(data)
           }

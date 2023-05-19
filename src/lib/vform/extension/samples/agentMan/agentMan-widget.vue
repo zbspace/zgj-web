@@ -17,40 +17,42 @@
     :sub-form-col-index="subFormColIndex"
     :sub-form-row-id="subFormRowId"
   >
-    <el-input v-model="organId" v-if="false"></el-input>
-    <el-input v-model="fieldModel.unitIds" v-if="false"></el-input>
     <el-form-item
       :label="field.options.label"
-      :rules="rules"
       :label-width="field.options.labelWidth + 'px'"
       :class="[labelAlign, field.options.required ? 'required' : '']"
       :size="field.options.size"
     >
-      <el-input
-        v-model="fieldModel.unitNames"
-        v-show="!field.options.hidden"
+      <el-select
+        v-model="fieldModel.id"
         :disabled="field.options.disabled"
         :readonly="field.options.readonly"
-        :clearable="field.options.clearable"
-        @blur="validate"
-        @click="openSelectWin"
-        @clear="onClear"
-        @change="valueChange"
+        collapse-tags
+        collapse-tags-tooltip
+        :max-collapse-tags="5"
+        placeholder="请选择"
+        style="width: 100%"
+        @focus="openSelectWin"
+        popper-class="select-hidden"
+        ref="contactUnitRef"
+        class="select-prefix"
       >
-        <template #append>
-          <el-button
-            icon="el-icon-search"
-            :size="field.options.size"
-            :readonly="field.options.readonly"
-            :disabled="field.options.disabled"
-            @click="openSelectWin(index)"
-          ></el-button>
+        <template #prefix>
+          <svg class="iconpark-icon">
+            <use href="#selecticon"></use>
+          </svg>
         </template>
-      </el-input>
+        <el-option
+          v-for="item in searchSelected"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        />
+      </el-select>
       <div
         class="el-form-item__error"
         v-if="field.options.requiredTextShow && field.options.required"
-        >{{ '请输入' }}</div
+        >请选择</div
       >
     </el-form-item>
 
@@ -58,11 +60,11 @@
     <kDepartOrPersonVue
       :show="xzyzDialogVisible"
       @update:show="xzyzDialogVisible = $event"
-      :searchSelected="[]"
+      :searchSelected="searchSelected"
       @update:searchSelected="submit"
       :tabsShow="tabsShow"
-      :queryParams="queryParams"
       v-if="xzyzDialogVisible"
+      :multiple="false"
     />
   </static-content-wrapper>
 </template>
@@ -114,9 +116,10 @@
         organId: '123456789',
         editFlag: 'add',
         fieldModel: {
-          unitIds: '',
-          unitNames: ''
+          id: '',
+          name: ''
         },
+        searchSelected: [],
         oldFieldValue: null, // field组件change之前的值
         rules: [],
         thisIndex: null,
@@ -159,7 +162,7 @@
       /* 注意：子组件mounted在父组件created之后、父组件mounted之前触发，故子组件mounted需要用到的prop
          需要在父组件created中初始化！！ */
       this.registerToRefList()
-      // this.initFieldModel()
+      this.initFieldModel()
       this.initEventHandler()
       this.buildFieldRules()
 
@@ -190,18 +193,13 @@
       },
       valueChange(v) {
         if (!v) {
-          this.fieldModel.unitIds = null
+          this.fieldModel.id = null
           this.fieldModel.name = null
         }
         this.validate()
       },
-      onClear() {
-        this.fieldModel.unitIds = null
-        this.fieldModel.name = null
-        this.validate()
-      },
       validate() {
-        if (!this.fieldModel.unitIds) {
+        if (!this.fieldModel.id) {
           this.setRequiredTextShow(true)
         } else {
           this.setRequiredTextShow(false)
@@ -209,36 +207,25 @@
       },
       // 打开弹窗选择数据
       openSelectWin() {
+        this.$refs.contactUnitRef.blur()
         this.xzyzDialogVisible = true
       },
 
       submit(list) {
-        const selectRecords = list
+        this.searchSelected = list
         this.xzyzDialogVisible = false
-        if (selectRecords.length === 0) {
+        if (this.searchSelected.length === 0) {
           return
         }
-        let tenantIds = ''
-        let relatedCompanyNames = ''
-        for (let i = 0; i < selectRecords.length; i++) {
-          if (i === 0) {
-            tenantIds = selectRecords[i].id
-            relatedCompanyNames = selectRecords[i].name
-          } else {
-            tenantIds = tenantIds + ',' + selectRecords[i].id
-            relatedCompanyNames =
-              relatedCompanyNames + ',' + selectRecords[i].name
-          }
-        }
-        this.fieldModel.unitIds = tenantIds
-        this.fieldModel.unitNames = relatedCompanyNames
+        this.fieldModel.id = this.searchSelected[0].id
+        this.fieldModel.name = this.searchSelected[0].name
+        console.log('--->', this.fieldModel)
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  @import '@/lib/vform/styles/global.scss'; /* form-item-wrapper已引入，还需要重复引入吗？ */
   .required :deep(.el-form-item__label)::before {
     content: '*';
     color: #f56c6c;
@@ -276,5 +263,30 @@
   :deep(.label-right-align) .el-form-item__label {
     text-align: right;
     justify-content: flex-end !important;
+  }
+  // select 自定义右侧icon
+  :deep(.select-prefix) {
+    .el-input__suffix {
+      display: none;
+    }
+    .el-input__prefix {
+      position: absolute;
+      right: 16px;
+      width: 12px;
+      height: 16px;
+      .el-input__prefix-inner {
+        .iconpark-icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          color: #000;
+        }
+      }
+    }
+  }
+</style>
+<style>
+  .select-hidden {
+    display: none;
   }
 </style>

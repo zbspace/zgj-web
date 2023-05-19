@@ -306,12 +306,11 @@ export const agentManSchema = {
     nameDisabled: true,
     labelWidth: 100,
     readonly: false,
-
     disabled: false,
     hidden: false,
-    labelHidden: true,
     required: true,
-    defaultValue: { unitIds: '', unitNames: '' }
+    hiddenDefaultValue: true,
+    defaultValue: { id: '', name: '' }
   }
 }
 

@@ -45,7 +45,7 @@
 
                 <el-collapse-item
                   name="2"
-                  v-if="showCollapse(advProps) && userType === 'root'"
+                  v-if="showCollapse(advProps) && DEV"
                   :title="i18nt('designer.setting.advancedSetting')"
                 >
                   <template v-for="(editorName, propName) in advProps">
@@ -62,11 +62,7 @@
 
                 <el-collapse-item
                   name="3"
-                  v-if="
-                    showEventCollapse() &&
-                    showCollapse(eventProps) &&
-                    userType === 'root'
-                  "
+                  v-if="showEventCollapse() && showCollapse(eventProps) && DEV"
                   :title="i18nt('designer.setting.eventSetting')"
                 >
                   <template v-for="(editorName, propName) in eventProps">
