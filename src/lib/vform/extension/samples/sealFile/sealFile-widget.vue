@@ -300,7 +300,12 @@
         const formData = new FormData()
         formData.append('uploadFile', options.file)
         try {
-          const res = await SealApplyService.uploadFile(formData)
+          let res = {}
+          if (this.curType === 1) {
+            res = await SealApplyService.uploadFile(formData)
+          } else {
+            res = await SealApplyService.uploadAddFile(formData)
+          }
           if (['png', 'jpg', 'jpeg'].includes(str) && this.curType === 1) {
             // res.data.fileUrl = res.data.fileUrl
             this.imgFiles.push({

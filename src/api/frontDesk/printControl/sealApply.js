@@ -90,6 +90,14 @@ api.uploadFile = data => {
     data
   })
 }
+// 补充附件上传
+api.uploadAddFile = data => {
+  return request({
+    method: 'POST',
+    url: '/sealApply/uploadAddFile',
+    data
+  })
+}
 // 用印流程
 api.flowList = params => {
   return request({

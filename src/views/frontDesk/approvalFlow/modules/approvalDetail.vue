@@ -486,13 +486,13 @@
             gunsSysId: props.params.instanceId
           })
 
-          if (JSON.stringify(customApplyField) !== '{}') {
-            const sealFileRes = await sealApply.applyPdfFile({
-              sealUseApplyId: instanceIdRes.data
-            })
-            console.log(sealFileRes, 'sealFileRes返回的pdf')
-            customApplyField.sealFile = sealFileRes.data
-          }
+          // if (JSON.stringify(customApplyField) !== '{}') {
+          //   const sealFileRes = await sealApply.applyPdfFile({
+          //     useSealApplyId: instanceIdRes.data
+          //   })
+          //   console.log(sealFileRes, 'sealFileRes返回的pdf')
+          //   customApplyField.sealFile = sealFileRes.data
+          // }
 
           console.log(
             {
