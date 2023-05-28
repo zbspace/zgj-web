@@ -1,1 +1,0 @@
-import{d as e,F as t}from"./chunk-vform-ec6574e8.js";const o=e({id:"homeLogoPath",state:()=>({homeUrl:""}),getters:{},actions:{setHomeUrl(e){this.homeUrl=e?t+e:""}},persist:{enabled:!0,strategies:[{storage:localStorage}]}});export{o as u};

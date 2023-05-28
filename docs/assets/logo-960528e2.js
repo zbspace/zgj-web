@@ -1,0 +1,1 @@
+import{A as e,ab as t}from"./main-35f8b412.js";const s=e({id:"homeLogoPath",state:()=>({homeUrl:""}),getters:{},actions:{setHomeUrl(e){this.homeUrl=e?t+e:""}},persist:{enabled:!0,strategies:[{storage:localStorage}]}});export{s as u};

@@ -1,0 +1,1 @@
+System.register(["./main-legacy-32c40b54.js"],(function(e,t){"use strict";var r,n,u,s;return{setters:[e=>{r=e._,n=e.r,u=e.o,s=e.f}],execute:function(){e("default",r({},[["render",function(e,t){const r=n("router-view");return u(),s(r)}]]))}}}));

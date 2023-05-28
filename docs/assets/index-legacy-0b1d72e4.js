@@ -1,1 +1,0 @@
-System.register(["./chunk-vform-legacy-f1b551df.js","./chunk-ant-design-vue-legacy-78f2abeb.js","./chunk-element-plus-legacy-3362d1f8.js"],(function(e,n){"use strict";var t,u,r,c;return{setters:[e=>{t=e.g},e=>{u=e.aQ,r=e.W,c=e.ah},null],execute:function(){e("default",t({},[["render",function(e,n){const t=u("router-view");return r(),c(t)}]]))}}}));

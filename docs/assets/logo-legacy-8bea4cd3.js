@@ -1,0 +1,1 @@
+System.register(["./main-legacy-32c40b54.js"],(function(e,t){"use strict";var s,r;return{setters:[e=>{s=e.A,r=e.ab}],execute:function(){e("u",s({id:"homeLogoPath",state:()=>({homeUrl:""}),getters:{},actions:{setHomeUrl(e){this.homeUrl=e?r+e:""}},persist:{enabled:!0,strategies:[{storage:localStorage}]}}))}}}));
