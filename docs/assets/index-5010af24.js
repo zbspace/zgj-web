@@ -1,0 +1,1 @@
+import r from"./index-c94400aa.js";import{g as n}from"./chunk-vform-d740b35c.js";import{F as o,G as s,B as t}from"./chunk-element-plus-a77de3d2.js";import"./index-d761d72f.js";const e=n({},[["render",function(n,e){const m=r;return o(),s("div",null,[t(m)])}]]);export{e as default};

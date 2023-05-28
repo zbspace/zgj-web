@@ -5,12 +5,14 @@ import ViteCompression from 'vite-plugin-compression'
 import ViteComponents from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import viteSvgIcons from 'vite-plugin-svg-icons'
+import { visualizer } from 'rollup-plugin-visualizer'
 import {
   createStyleImportPlugin,
   VxeTableResolve
 } from 'vite-plugin-style-import'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { resolve } from 'path'
+import createVitePlugins from './plugins/index'
 
 const projectRootDir = resolve(__dirname)
 
@@ -30,6 +32,14 @@ export default defineConfig((mode, command) => {
       }
     },
     plugins: [
+      createVitePlugins(),
+      visualizer({
+        gzipSize: true,
+        brotliSize: true,
+        emitFile: false,
+        filename: 'visualizer.html', // 分析图生成的文件名
+        open: true // 如果存在本地服务端口，将在打包后自动展示
+      }),
       vue({
         template: {
           compilerOptions: {
@@ -70,17 +80,36 @@ export default defineConfig((mode, command) => {
         symbolId: 'icon-[dir]-[name]'
       })
     ],
+    base: '/zgj-web/',
     build: {
       target: 'es2015',
       minify: 'terser',
       sourcemap: false,
       brotliSize: true,
+      outDir: 'docs',
       rollupOptions: {
         input: {
           main: resolve(__dirname, 'index.html')
+        },
+        output: {
+          manualChunks: id => {
+            // console.log("id-------------",id);
+            if (id.includes('node_modules/echarts')) {
+              return 'chunk-echarts'
+            }
+            if (id.includes('node_modules/element-plus')) {
+              return 'chunk-element-plus'
+            }
+            if (id.includes('/lib/vform')) {
+              return 'chunk-vform'
+            }
+            if (id.includes('/node_modules/ant-design-vue/')) {
+              return 'chunk-ant-design-vue'
+            }
+          }
         }
       },
-      chunkSizeWarningLimit: 2000,
+      chunkSizeWarningLimit: 20000,
       terserOptions: {
         compress: {
           drop_console: true,

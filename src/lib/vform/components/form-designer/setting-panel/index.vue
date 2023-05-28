@@ -479,6 +479,11 @@
 <style lang="scss" scoped>
   .panel-container {
     padding: 0 8px;
+    :deep(.el-tabs) {
+      .el-tabs__content {
+        width: 280px;
+      }
+    }
   }
 
   .setting-scrollbar {

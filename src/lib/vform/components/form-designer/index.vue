@@ -9,7 +9,7 @@
 -->
 
 <template>
-  <el-container class="main-container full-height">
+  <el-container class="main-container">
     <el-container>
       <el-aside class="side-panel">
         <widget-panel :designer="designer" />

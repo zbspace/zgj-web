@@ -9,7 +9,7 @@
               {{ i18nt('designer.componentLib') }}</span
             >
           </template>
-          <el-scrollbar height="calc(100vh - 110px)">
+          <el-scrollbar>
             <el-collapse v-model="activeNames" class="widget-collapse">
               <el-collapse-item
                 name="1"
@@ -497,8 +497,6 @@
     }
 
     :deep(.el-collapse-item__content) {
-      padding-bottom: 6px;
-
       ul {
         padding-left: 10px; /* 重置IE11默认样式 */
         margin: 0; /* 重置IE11默认样式 */

@@ -1,0 +1,1 @@
+System.register(["./chunk-vform-legacy-9e71fe2f.js","./chunk-element-plus-legacy-cff7802d.js"],(function(e,t){"use strict";var n,r,u;return{setters:[e=>{n=e.g},e=>{r=e.F,u=e.G}],execute:function(){e("default",n({},[["render",function(e,t){return r(),u("div")}]]))}}}));

@@ -97,14 +97,18 @@
           </div>
 
           <!-- 表单设计 -->
-          <JyVform
-            ref="vformRef"
+          <div
+            style="height: 100%; width: 100%"
             v-if="formKey > 0 || props.columnData.formMessageId"
             v-show="state.processTabs.checkedNode.index === '2'"
-            style="margin-top: 0; width: 100%"
-            :prefabricationFieldList="prefabricationFieldList"
-            @on-loaded="loaded"
-          />
+          >
+            <JyVform
+              ref="vformRef"
+              style="margin-top: 0; width: 100%"
+              :prefabricationFieldList="prefabricationFieldList"
+              @on-loaded="loaded"
+            />
+          </div>
         </template>
       </layout>
       <JyMessageBox v-model="tipVisible" :mode="1" @on-confirm="emit('close')">
@@ -379,7 +383,7 @@
     .el-dialog__body {
       padding: 0;
       height: 100%;
-      overflow: auto;
+      overflow: hidden;
     }
 
     .el-dialog__footer {

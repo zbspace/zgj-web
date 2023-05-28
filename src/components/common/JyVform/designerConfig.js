@@ -15,13 +15,13 @@ export const designerConfig = {
   // 是否显示预览表单按钮
   previewFormButton: true,
   // 是否显示导入JSON按钮
-  importJsonButton: false,
+  importJsonButton: true,
   // 是否显示导出JSON器按钮
-  exportJsonButton: false,
+  exportJsonButton: true,
   // 是否显示导出代码按钮
   exportCodeButton: false,
   // 是否显示生成SFC按钮
-  generateSFCButton: false,
+  generateSFCButton: true,
   // 工具按钮栏最大宽度（单位px）
   // 如新增按钮后不可见，请调大
   // 如右侧空白区域过大，请调小
