@@ -10,7 +10,7 @@ import { ENV } from '@/utils/constants'
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  mode: 'history',
+  // mode: 'history',
 
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

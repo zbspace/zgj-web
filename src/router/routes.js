@@ -12,7 +12,7 @@ export default [
       {
         path: '',
         name: 'Home',
-        redirect: '/login/account'
+        redirect: '/frontDesk/home'
       },
       frontDeskRoutes,
       systemRoutes
@@ -44,11 +44,6 @@ export default [
     name: 'Decryption',
     meta: { title: 'decryption', authRequired: false },
     component: () => import('../views/encrypt/decryption')
-  },
-  {
-    path: '/403',
-    component: () => import('@/views/errorPage/403'),
-    hidden: true
   },
   {
     path: '/:pathMatch(.*)',
