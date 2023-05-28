@@ -1,1 +1,0 @@
-System.register(["./index-legacy-18902ed1.js","./chunk-vform-legacy-9e71fe2f.js","./chunk-element-plus-legacy-cff7802d.js","./index-legacy-58f7c896.js"],(function(e,n){"use strict";var t,u,c,l,r;return{setters:[e=>{t=e.default},e=>{u=e.g},e=>{c=e.F,l=e.G,r=e.B},null],execute:function(){e("default",u({},[["render",function(e,n){const u=t;return c(),l("div",null,[r(u)])}]]))}}}));

@@ -1,1 +1,0 @@
-System.register(["./chunk-vform-legacy-9e71fe2f.js","./chunk-element-plus-legacy-cff7802d.js"],(function(e,t){"use strict";var r,n,u,c;return{setters:[e=>{r=e.g},e=>{n=e.C,u=e.F,c=e.Q}],execute:function(){e("default",r({},[["render",function(e,t){const r=n("router-view");return u(),c(r)}]]))}}}));

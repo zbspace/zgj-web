@@ -1,0 +1,1 @@
+import{g as r}from"./chunk-vform-ec6574e8.js";import{aQ as e,W as n,ah as s}from"./chunk-ant-design-vue-a1de3c57.js";import"./chunk-element-plus-636450f3.js";const t=r({},[["render",function(r,t){const o=e("router-view");return n(),s(o)}]]);export{t as default};

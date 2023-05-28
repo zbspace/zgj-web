@@ -12,7 +12,7 @@ export default [
       {
         path: '',
         name: 'Home',
-        redirect: '/frontDesk/home'
+        redirect: '/login/account'
       },
       frontDeskRoutes,
       systemRoutes
