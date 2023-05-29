@@ -8,9 +8,9 @@ import dayjs from 'dayjs'
 import 'nprogress/nprogress.css'
 import { ENV } from '@/utils/constants'
 const router = createRouter({
-  // history: createWebHistory(),
+  history: createWebHistory(),
   routes,
-  // mode: 'history',
+  mode: 'history',
 
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -95,25 +95,25 @@ router.beforeEach((routeTo, routeFrom) => {
   }
 
   const accountInfoStore = useAccountInfoStore()
-  if (routeTo.meta.authRequired && !accountInfoStore.token) {
-    // 此路由需要授权，请检查是否已登录
-    // 如果没有，则重定向到登录页面
-    return {
-      path: '/login/account',
-      // 保存我们所在的位置，以便以后再来
-      query: { redirect: encodeURIComponent(routeTo.fullPath) }
-    }
-  } else {
-    const allMenuList = menusInfoStore.businessMenus
-      .concat(menusInfoStore.systemMenus)
-      .concat(whitelist)
-    const menuIndex = JSON.stringify(allMenuList).indexOf(routeTo.path)
-    if (routeTo.name && menuIndex === -1) {
-      return {
-        path: '/403'
-      }
-    }
-  }
+  // if (routeTo.meta.authRequired && !accountInfoStore.token) {
+  //   // 此路由需要授权，请检查是否已登录
+  //   // 如果没有，则重定向到登录页面
+  //   return {
+  //     path: '/login/account',
+  //     // 保存我们所在的位置，以便以后再来
+  //     query: { redirect: encodeURIComponent(routeTo.fullPath) }
+  //   }
+  // } else {
+  //   const allMenuList = menusInfoStore.businessMenus
+  //     .concat(menusInfoStore.systemMenus)
+  //     .concat(whitelist)
+  //   const menuIndex = JSON.stringify(allMenuList).indexOf(routeTo.path)
+  //   if (routeTo.name && menuIndex === -1) {
+  //     return {
+  //       path: '/403'
+  //     }
+  //   }
+  // }
 
   NProgress.start()
 })
