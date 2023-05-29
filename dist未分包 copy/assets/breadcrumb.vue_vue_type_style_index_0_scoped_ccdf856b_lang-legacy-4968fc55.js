@@ -1,1 +1,0 @@
-System.register([],(function(e,t){"use strict";var n=document.createElement("style");return n.textContent=".components-breadcrumb[data-v-ccdf856b]{margin:0%}.components-breadcrumb[data-v-ccdf856b] .ap-box .el-breadcrumb__inner{color:var(--jy-secondary-5)}\n",document.head.appendChild(n),{execute:function(){}}}));

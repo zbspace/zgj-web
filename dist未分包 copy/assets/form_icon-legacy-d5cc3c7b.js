@@ -1,1 +1,0 @@
-System.register([],(function(s,e){"use strict";return{execute:function(){s("a","/assets/step_icon1-b44d5b08.svg"),s("b","/assets/step_icon2-4b777c38.svg"),s("c","/assets/step_icon3-e8a6f09f.svg"),s("_","/assets/form_icon-5abae060.svg")}}}));

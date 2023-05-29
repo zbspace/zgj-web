@@ -1,1 +1,0 @@
-import{A as t}from"./index-34e8d656.js";import{_ as s,I as a,h as e,o,f as r,u as i}from"./main-5d732c2e.js";import"./index-bf861a3a.js";import"./index-b9b96043.js";import"./Layout-db7f64fa.js";const m=s({setup(s){a();const m=e({title:"文件归档"});return(s,a)=>(o(),r(t,{resetData:i(m)},null,8,["resetData"]))}},[["__scopeId","data-v-afd3b080"]]);export{m as default};

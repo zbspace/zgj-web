@@ -1,1 +1,0 @@
-import{a7 as a}from"./main-e75bd94c.js";class t{static async get(t,s){void 0===s&&(s={});return(await a.get(t,{params:s})).data}static async getAndLoadData(a,t){return(await this.get(a,t)).data}static async post(t,s){void 0===s&&(s={});return(await a.post(t,s)).data}static async postAndLoadData(a,t){return(await this.post(a,t)).data}}export{t as R};

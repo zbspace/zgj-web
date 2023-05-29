@@ -1,1 +1,0 @@
-System.register([],(function(s,e){"use strict";return{execute:function(){s("_","/assets/quanping-c190ef69.svg"),s("a","/assets/quanping-close-82543256.svg"),s("b","/assets/cha-kong-4d9a1273.svg")}}}));

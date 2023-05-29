@@ -86,7 +86,6 @@ export default defineConfig((mode, command) => {
       minify: 'terser',
       sourcemap: false,
       brotliSize: true,
-      outDir: 'docs',
       rollupOptions: {
         input: {
           main: resolve(__dirname, 'index.html')

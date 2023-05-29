@@ -30,8 +30,8 @@
 </template>
 
 <script setup>
-  import { QuillEditor } from '@vueup/vue-quill'
-  import '@vueup/vue-quill/dist/vue-quill.snow.css'
+  // import { QuillEditor } from '@vueup/vue-quill'
+  // import '@vueup/vue-quill/dist/vue-quill.snow.css'
   import { reactive, onMounted, ref, toRaw, watch, nextTick } from 'vue'
 
   const props = defineProps(['value'])
