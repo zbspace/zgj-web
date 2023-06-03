@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import 'nprogress/nprogress.css'
 import { ENV } from '@/utils/constants'
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.VITE_BASE_PATH),
   routes,
   mode: 'history',
 
